@@ -1,50 +1,74 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Link, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Link, NavLink, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { AuthProvider, ProtectedRoute, useAuth } from './auth';
 import { configured, supabase } from './supabase';
 import './style.css';
-function Home() { return <section><p className="eyebrow">A home for stories</p><h1>The Starry Palace</h1><p>Gather. Have a cup of tea. Write and read with me.</p><Link className="button" to="/account">Enter the Palace</Link></section>; }
-function Login() {
-  const { session, loading, error: sessionError } = useAuth();
-  const [mode, setMode] = useState('login');
-  const [email, setEmail] = useState(''); const [password, setPassword] = useState('');
-  const [busy, setBusy] = useState(false); const [message, setMessage] = useState('');
-  const location = useLocation();
-  const requested = location.state?.from;
-  const destination = typeof requested === 'string' && requested.startsWith('/') && !requested.startsWith('//') && requested !== '/login' ? requested : '/account';
-  if (!loading && session) return <Navigate to={destination} replace />;
-  async function submit(event) {
-    event.preventDefault(); setBusy(true); setMessage('');
-    try {
-      const result = mode === 'signup'
-        ? await supabase.auth.signUp({ email, password, options: { emailRedirectTo: window.location.origin + '/auth/callback' } })
-        : await supabase.auth.signInWithPassword({ email, password });
-      if (result.error) throw result.error;
-      if (mode === 'signup' && !result.data.session) setMessage('Check your email to confirm your account, then sign in.');
-    } catch (error) { setMessage(error.message || 'Sign-in failed. Please try again.'); }
-    finally { setBusy(false); }
-  }
-  return <section className="panel"><h1>{mode === 'signup' ? 'Join the Palace' : 'Welcome back'}</h1>
-    {!configured ? <p role="alert">Sign-in is not configured. Follow docs/SETUP.md to connect the application.</p> : <>
-      <form onSubmit={submit}><label>Email<input type="email" autoComplete="email" required value={email} onChange={e => setEmail(e.target.value)} /></label>
-      <label>Password<input type="password" autoComplete={mode === 'signup' ? 'new-password' : 'current-password'} minLength={mode === 'signup' ? 8 : undefined} required value={password} onChange={e => setPassword(e.target.value)} /></label>
-      <button disabled={busy || loading}>{busy ? 'Please wait…' : mode === 'signup' ? 'Create account' : 'Sign in'}</button></form>
-      <button className="secondary" disabled={busy} onClick={() => { setMode(mode === 'signup' ? 'login' : 'signup'); setMessage(''); }}>{mode === 'signup' ? 'Already a member? Sign in' : 'Create an account'}</button></>}
-    {(message || sessionError) && <p role="status">{message || sessionError}</p>}</section>;
+
+const rooms=[
+  ['Reading Rooms','/reading','Read, discover and return to the stories waiting for you.'],
+  ['Writing Chamber','/writing','Draft, publish and tend the worlds you are creating.'],
+  ['Palace Life','/palace-life','Clubs, Commons, Moonlight Chat and kindred stars.'],
+  ['Events & Heritage','/events','Creative gatherings and carefully sourced heritage observances.'],
+  ['Royal Treasury','/treasury','Achievements, gifts, court honours and your collection.'],
+  ['Lost Works','/lost-works','A rights-conscious preservation archive for works at risk of being lost.']
+];
+
+function Frame({children,privateArea=false}){
+ const {session}=useAuth();
+ return <div className="palace-shell">
+  <aside className="sidebar">
+   <Link className="crest" to="/"><span className="moon">☾</span><strong>The Starry Palace</strong><small>INKVERSE</small></Link>
+   <nav className="room-nav" aria-label="Palace rooms">
+    {session&&<NavLink to="/chamber">✦ <span>My Chamber</span></NavLink>}
+    {rooms.map(([name,path])=><NavLink key={path} to={path}>◇ <span>{name}</span></NavLink>)}
+   </nav>
+   <div className="sidebar-foot">{session?<Link to="/settings">Settings & privacy</Link>:<Link to="/login">Enter the Palace</Link>}</div>
+  </aside>
+  <div className="palace-stage">
+   <header className="topbar"><div><p className="top-kicker">{privateArea?'YOUR PALACE':'GATHER · READ · CREATE'}</p></div><div className="top-actions"><Link to="/search">Search the Palace</Link>{session?<Link className="avatar-link" to="/chamber">{(session.user.email||'P').slice(0,1).toUpperCase()}</Link>:<Link className="pill" to="/login">Sign in</Link>}</div></header>
+   <main>{children}</main>
+  </div>
+ </div>
 }
-function Account() {
-  const { session } = useAuth(); const navigate = useNavigate();
-  const [busy, setBusy] = useState(false); const [error, setError] = useState('');
-  async function signOut() { setBusy(true); setError(''); try { const { error } = await supabase.auth.signOut(); if (error) throw error; navigate('/', { replace: true }); } catch (e) { setError(e.message); } finally { setBusy(false); } }
-  return <section className="panel"><h1>Your Palace account</h1><p>Signed in as {session.user.email}</p><p>Your session is saved on this device until you sign out.</p><button onClick={signOut} disabled={busy}>{busy ? 'Signing out…' : 'Sign out'}</button>{error && <p role="alert">{error}</p>}</section>;
+
+function Home(){
+ return <Frame><section className="home-hero"><div className="stars" aria-hidden="true">✦　·　✧　　·　✦</div><p className="eyebrow">WRITE AMONG KINDRED STARS.</p><h1>There’s a place<br/>for you here.</h1><p className="lede">A palace for stories, art, reading rooms and communities beneath one shared sky.</p><div className="hero-actions"><Link className="button" to="/reading">Enter the Reading Rooms</Link><Link className="text-link" to="/writing">Open the Writing Chamber →</Link></div></section><section className="room-grid">{rooms.slice(0,4).map(([name,path,copy],i)=><Link className={"room-card room-"+i} to={path} key={path}><span>0{i+1}</span><h2>{name}</h2><p>{copy}</p><b>Enter room →</b></Link>)}</section><section className="manifesto"><p>EVERY VOICE CARRIES A WORLD.</p><h2>Gather. Have a cup of tea.<br/>Write and read with me.</h2></section></Frame>
 }
-function Callback() {
-  const { session, loading, error } = useAuth();
-  const params = new URLSearchParams(window.location.search);
-  if (params.has('error') || error) return <section><h1>Sign-in could not finish</h1><p role="alert">{params.get('error_description') || error || 'Please try signing in again.'}</p><Link to="/login">Return to sign in</Link></section>;
-  if (loading) return <p role="status">Completing sign-in…</p>;
-  return <Navigate to={session ? '/account' : '/login'} replace />;
+
+function Login(){
+ const {session,loading,error:sessionError}=useAuth(); const [mode,setMode]=useState('login'); const [email,setEmail]=useState(''); const [password,setPassword]=useState(''); const [busy,setBusy]=useState(false); const [message,setMessage]=useState(''); const location=useLocation();
+ const requested=location.state?.from; const destination=typeof requested==='string'&&requested.startsWith('/')&&!requested.startsWith('//')&&requested!=='/login'?requested:'/chamber';
+ if(!loading&&session)return <Navigate to={destination} replace/>;
+ async function submit(e){e.preventDefault();setBusy(true);setMessage('');try{const result=mode==='signup'?await supabase.auth.signUp({email,password,options:{emailRedirectTo:window.location.origin+'/auth/callback'}}):await supabase.auth.signInWithPassword({email,password});if(result.error)throw result.error;if(mode==='signup'&&!result.data.session)setMessage('Check your email to confirm your account, then return to the Palace.')}catch(error){setMessage(error.message||'Sign-in failed. Please try again.')}finally{setBusy(false)}}
+ return <Frame><section className="gate"><div className="gate-copy"><p className="eyebrow">THE PALACE GATES</p><h1>{mode==='signup'?'A place among the stars.':'Welcome home.'}</h1><p>Enter your chamber, return to your shelves, and continue wherever you left off.</p></div><div className="auth-panel">{!configured?<p role="alert">Sign-in is not configured.</p>:<><form onSubmit={submit}><label>Email<input type="email" autoComplete="email" required value={email} onChange={e=>setEmail(e.target.value)}/></label><label>Password<input type="password" autoComplete={mode==='signup'?'new-password':'current-password'} minLength={mode==='signup'?8:undefined} required value={password} onChange={e=>setPassword(e.target.value)}/></label><button disabled={busy||loading}>{busy?'Please wait…':mode==='signup'?'Create my chamber':'Enter the Palace'}</button></form><button className="secondary" disabled={busy} onClick={()=>{setMode(mode==='signup'?'login':'signup');setMessage('')}}>{mode==='signup'?'Already a member? Sign in':'New beneath these stars? Create an account'}</button></>}{(message||sessionError)&&<p className="status" role="status">{message||sessionError}</p>}</div></section></Frame>
 }
-function App() { return <AuthProvider><header><Link className="brand" to="/">☾ The Starry Palace</Link><nav aria-label="Main navigation"><Link to="/">Explore</Link><Link to="/account">My account</Link></nav></header><main><Routes><Route path="/" element={<Home />} /><Route path="/login" element={<Login />} /><Route path="/auth/callback" element={<Callback />} /><Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} /><Route path="*" element={<section><h1>You left palace grounds.</h1><Link to="/">Return to the Palace</Link></section>} /></Routes></main></AuthProvider>; }
-createRoot(document.getElementById('root')).render(<React.StrictMode><BrowserRouter><App /></BrowserRouter></React.StrictMode>);
+
+function Chamber(){
+ const {session}=useAuth(); const navigate=useNavigate(); const [busy,setBusy]=useState(false); const [error,setError]=useState('');
+ async function signOut(){setBusy(true);try{const{error}=await supabase.auth.signOut();if(error)throw error;navigate('/',{replace:true})}catch(e){setError(e.message)}finally{setBusy(false)}}
+ return <Frame privateArea><section className="chamber-head"><p className="eyebrow">MY CHAMBER</p><h1>Welcome home.</h1><p className="lede">Your private doorway into everything you read, write, collect and share.</p></section><section className="chamber-grid"><article className="chamber-card feature"><small>CONTINUE</small><h2>Your Palace is ready.</h2><p>Your secure session is active as <strong>{session.user.email}</strong>. Reading continuity and live shelves are the next data connection.</p><Link to="/reading">Go to Reading Rooms →</Link></article><article className="chamber-card"><small>CREATE</small><h2>Writing Chamber</h2><p>Return to drafts, chapters and collaborations.</p><Link to="/writing">Open chamber →</Link></article><article className="chamber-card"><small>COLLECT</small><h2>Royal Treasury</h2><p>Badges, gifts and court honours live here.</p><Link to="/treasury">View treasury →</Link></article><article className="chamber-card"><small>COMMUNITY</small><h2>Palace Life</h2><p>Find your clubs, Commons and Moonlight conversations.</p><Link to="/palace-life">Enter Palace Life →</Link></article></section><div className="account-strip"><span>Signed in securely</span><button className="quiet-button" onClick={signOut} disabled={busy}>{busy?'Leaving…':'Leave the Palace'}</button>{error&&<span role="alert">{error}</span>}</div></Frame>
+}
+
+function Room({title,eyebrow,description,protectedRoom=false}){
+ const content=<Frame privateArea={protectedRoom}><section className="room-title"><p className="eyebrow">{eyebrow}</p><h1>{title}</h1><p className="lede">{description}</p><div className="coming"><span>PRODUCTION ROOM</span><h2>The doors are open. The furniture comes next.</h2><p>This route now belongs to the production Palace shell. Its existing prototype experience will be connected to Supabase here without pretending unfinished data is live.</p></div></section></Frame>;
+ return protectedRoom?<ProtectedRoute>{content}</ProtectedRoute>:content;
+}
+
+function Callback(){const{session,loading,error}=useAuth();const p=new URLSearchParams(window.location.search);if(p.has('error')||error)return <Frame><section className="room-title"><h1>Sign-in could not finish</h1><p role="alert">{p.get('error_description')||error||'Please try again.'}</p><Link to="/login">Return to the Palace gates</Link></section></Frame>;if(loading)return <p role="status">Completing sign-in…</p>;return <Navigate to={session?'/chamber':'/login'} replace/>}
+
+function App(){return <AuthProvider><Routes>
+ <Route path="/" element={<Home/>}/><Route path="/login" element={<Login/>}/><Route path="/auth/callback" element={<Callback/>}/>
+ <Route path="/chamber" element={<ProtectedRoute><Chamber/></ProtectedRoute>}/>
+ <Route path="/reading" element={<Room title="Reading Rooms" eyebrow="STORIES BENEATH ONE SKY" description="Discover stories, return to your place, follow writers and build a library that remembers where you left off."/>}/>
+ <Route path="/writing" element={<Room protectedRoom title="Writing Chamber" eyebrow="MAKE A WORLD" description="Draft quietly, shape chapters, invite collaborators and publish when the work is ready."/>}/>
+ <Route path="/palace-life" element={<Room protectedRoom title="Palace Life" eyebrow="KINDRED STARS" description="Clubs, Palace Commons, Moonlight Chat and the social rooms of the Palace."/>}/>
+ <Route path="/events" element={<Room title="Events & Heritage" eyebrow="NEWS FROM OUR LITTLE WORLD" description="Creative gatherings and heritage observances held with context, care and room for many communities."/>}/>
+ <Route path="/treasury" element={<Room protectedRoom title="Royal Treasury" eyebrow="COLLECT · ACHIEVE · CELEBRATE" description="Five achievement tiers, an expanding gift collection and court honours designed to celebrate participation—not artistic worth."/>}/>
+ <Route path="/lost-works" element={<Room title="Lost Works" eyebrow="PRESERVE WITHOUT CLAIMING" description="A rights-conscious archive for fragments, abandoned works, translations and stories at risk of disappearing."/>}/>
+ <Route path="/settings" element={<Room protectedRoom title="Settings & Privacy" eyebrow="YOUR PALACE, YOUR BOUNDARIES" description="Privacy, Quiet Corners, notifications and account controls belong to you."/>}/>
+ <Route path="/search" element={<Room title="Search the Palace" eyebrow="THE TAG CONSTELLATION" description="Stories, people, tags, fandoms, relationships and rooms will meet here."/>}/>
+ <Route path="*" element={<Frame><section className="room-title"><p className="eyebrow">BEYOND THE GATES</p><h1>You left palace grounds.</h1><Link className="button" to="/">Return to the Palace</Link></section></Frame>}/>
+ </Routes></AuthProvider>}
+
+createRoot(document.getElementById('root')).render(<React.StrictMode><BrowserRouter><App/></BrowserRouter></React.StrictMode>);
