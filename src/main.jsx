@@ -4,6 +4,7 @@ import { BrowserRouter, Link, NavLink, Navigate, Route, Routes, useLocation, use
 import { AuthProvider, ProtectedRoute, useAuth } from './auth';
 import { configured, supabase } from './supabase';
 import './style.css';
+import { ChamberLive, ReadingLive, WritingLive } from './liveRooms';
 
 const rooms=[
   ['Reading Rooms','/reading','Read, discover and return to the stories waiting for you.'],
@@ -59,14 +60,15 @@ function Callback(){const{session,loading,error}=useAuth();const p=new URLSearch
 
 function App(){return <AuthProvider><Routes>
  <Route path="/" element={<Home/>}/><Route path="/login" element={<Login/>}/><Route path="/auth/callback" element={<Callback/>}/>
- <Route path="/chamber" element={<ProtectedRoute><Chamber/></ProtectedRoute>}/>
- <Route path="/reading" element={<Room title="Reading Rooms" eyebrow="STORIES BENEATH ONE SKY" description="Discover stories, return to your place, follow writers and build a library that remembers where you left off."/>}/>
- <Route path="/writing" element={<Room protectedRoom title="Writing Chamber" eyebrow="MAKE A WORLD" description="Draft quietly, shape chapters, invite collaborators and publish when the work is ready."/>}/>
+ <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
+ <Route path="/reading" element={<ReadingLive Frame={Frame}/>}/>
+ <Route path="/writing" element={<ProtectedRoute><WritingLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/palace-life" element={<Room protectedRoom title="Palace Life" eyebrow="KINDRED STARS" description="Clubs, Palace Commons, Moonlight Chat and the social rooms of the Palace."/>}/>
  <Route path="/events" element={<Room title="Events & Heritage" eyebrow="NEWS FROM OUR LITTLE WORLD" description="Creative gatherings and heritage observances held with context, care and room for many communities."/>}/>
  <Route path="/treasury" element={<Room protectedRoom title="Royal Treasury" eyebrow="COLLECT · ACHIEVE · CELEBRATE" description="Five achievement tiers, an expanding gift collection and court honours designed to celebrate participation—not artistic worth."/>}/>
  <Route path="/lost-works" element={<Room title="Lost Works" eyebrow="PRESERVE WITHOUT CLAIMING" description="A rights-conscious archive for fragments, abandoned works, translations and stories at risk of disappearing."/>}/>
  <Route path="/settings" element={<Room protectedRoom title="Settings & Privacy" eyebrow="YOUR PALACE, YOUR BOUNDARIES" description="Privacy, Quiet Corners, notifications and account controls belong to you."/>}/>
+ <Route path="/activity" element={<Room protectedRoom title="Moonlight Activity Room" eyebrow="NEWS FROM YOUR LITTLE WORLD" description="Replies, invitations, follows, publication notices and Palace activity gather here."/>}/>
  <Route path="/search" element={<Room title="Search the Palace" eyebrow="THE TAG CONSTELLATION" description="Stories, people, tags, fandoms, relationships and rooms will meet here."/>}/>
  <Route path="*" element={<Frame><section className="room-title"><p className="eyebrow">BEYOND THE GATES</p><h1>You left palace grounds.</h1><Link className="button" to="/">Return to the Palace</Link></section></Frame>}/>
  </Routes></AuthProvider>}
