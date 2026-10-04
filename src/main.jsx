@@ -5,7 +5,7 @@ import { AuthProvider, ProtectedRoute, useAuth } from './auth';
 import { configured, supabase } from './supabase';
 import './style.css';
 import TreasuryCatalogue from './Treasury';
-import { ChamberLive, ReadingLive, WritingLive, SettingsLive, ActivityLive, LibraryLive, TagsLive, PalaceLifeLive, LettersLive, EventsLive, TreasuryLive, LostWorksLive, MemberProfileLive, SearchLive, WorkLive, ChapterLive, WorkStudioLive } from './liveRooms';
+import { ChamberLive, ReadingLive, WritingLive, SettingsLive, ActivityLive, LibraryLive, TagsLive, PalaceLifeLive, LettersLive, EventsLive, TreasuryLive, LostWorksLive, MemberProfileLive, SearchLive, WorkLive, ChapterLive, WorkStudioLive, TagSearchLive } from './liveRooms';
 
 const rooms=[
   ['Reading Rooms','/reading','Read, discover and return to the stories waiting for you.'],
@@ -78,7 +78,7 @@ function App(){return <AuthProvider><Routes>
  <Route path="/activity" element={<ProtectedRoute><ActivityLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/library" element={<ProtectedRoute><LibraryLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/letters" element={<ProtectedRoute><LettersLive Frame={Frame}/></ProtectedRoute>}/>
- <Route path="/tags" element={<TagsLive Frame={Frame}/>}/>
+ <Route path="/tags" element={<TagSearchLive Frame={Frame}/>}/>
  <Route path="/search" element={<SearchLive Frame={Frame}/>}/>
  <Route path="/member/:username" element={<MemberProfileLive Frame={Frame}/>}/>
  <Route path="*" element={<Frame><section className="room-title"><p className="eyebrow">BEYOND THE GATES</p><h1>You left palace grounds.</h1><Link className="button" to="/">Return to the Palace</Link></section></Frame>}/>
