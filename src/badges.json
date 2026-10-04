@@ -1,0 +1,3902 @@
+[
+  {
+    "id": "chapter-voyager",
+    "number": 1,
+    "name": "Chapter Voyager",
+    "symbol": "▤",
+    "category": "Reading",
+    "metric": "chapters_read",
+    "description": "Read distinct chapters across the palace.",
+    "difficulty": "Standard",
+    "accent": "#6a7fc8",
+    "accent2": "#a9b7ed",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 100
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 500
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 2500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 10000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 50000
+      }
+    ]
+  },
+  {
+    "id": "story-pilgrim",
+    "number": 2,
+    "name": "Story Pilgrim",
+    "symbol": "◇",
+    "category": "Reading",
+    "metric": "works_completed",
+    "description": "Complete distinct stories from beginning to end.",
+    "difficulty": "Standard",
+    "accent": "#6a7fc8",
+    "accent2": "#a9b7ed",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 25
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 100
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 2000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 10000
+      }
+    ]
+  },
+  {
+    "id": "night-library-lantern",
+    "number": 3,
+    "name": "Night Library Lantern",
+    "symbol": "☾",
+    "category": "Reading",
+    "metric": "reading_sessions",
+    "description": "Return for meaningful reading sessions.",
+    "difficulty": "Standard",
+    "accent": "#6a7fc8",
+    "accent2": "#a9b7ed",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 50
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 250
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 1000
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 5000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 25000
+      }
+    ]
+  },
+  {
+    "id": "longform-constellation",
+    "number": 4,
+    "name": "Longform Constellation",
+    "symbol": "∞",
+    "category": "Reading",
+    "metric": "words_read",
+    "description": "Travel through published words across completed reading sessions.",
+    "difficulty": "Rare",
+    "accent": "#6a7fc8",
+    "accent2": "#a9b7ed",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 100000
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 1000000
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 5000000
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 25000000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 100000000
+      }
+    ]
+  },
+  {
+    "id": "serial-keeper",
+    "number": 5,
+    "name": "Serial Keeper",
+    "symbol": "⌁",
+    "category": "Reading",
+    "metric": "serial_updates_read",
+    "description": "Keep pace with works that are still unfolding.",
+    "difficulty": "Standard",
+    "accent": "#6a7fc8",
+    "accent2": "#a9b7ed",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 25
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 100
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 2500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 10000
+      }
+    ]
+  },
+  {
+    "id": "quiet-shelf",
+    "number": 6,
+    "name": "Quiet Shelf",
+    "symbol": "▥",
+    "category": "Reading",
+    "metric": "works_saved",
+    "description": "Build a private shelf of stories you intend to return to.",
+    "difficulty": "Standard",
+    "accent": "#6a7fc8",
+    "accent2": "#a9b7ed",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 25
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 100
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 2000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "reread-moon",
+    "number": 7,
+    "name": "Reread Moon",
+    "symbol": "↺",
+    "category": "Reading",
+    "metric": "chapters_reread",
+    "description": "Return to chapters that continue to matter.",
+    "difficulty": "Standard",
+    "accent": "#6a7fc8",
+    "accent2": "#a9b7ed",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 50
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 250
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 1000
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 5000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 25000
+      }
+    ]
+  },
+  {
+    "id": "fandom-voyager",
+    "number": 8,
+    "name": "Fandom Voyager",
+    "symbol": "✺",
+    "category": "Reading",
+    "metric": "fandoms_explored",
+    "description": "Explore distinct fandom constellations.",
+    "difficulty": "Standard",
+    "accent": "#6a7fc8",
+    "accent2": "#a9b7ed",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 5
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 25
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "original-worlds-explorer",
+    "number": 9,
+    "name": "Original Worlds Explorer",
+    "symbol": "✦",
+    "category": "Reading",
+    "metric": "original_works_completed",
+    "description": "Complete original works across creator-owned worlds.",
+    "difficulty": "Standard",
+    "accent": "#6a7fc8",
+    "accent2": "#a9b7ed",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 25
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 100
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 2000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 10000
+      }
+    ]
+  },
+  {
+    "id": "archive-reader",
+    "number": 10,
+    "name": "Archive Reader",
+    "symbol": "⌂",
+    "category": "Reading",
+    "metric": "lost_works_explored",
+    "description": "Explore preserved, abandoned and historical archive records.",
+    "difficulty": "Rare",
+    "accent": "#6a7fc8",
+    "accent2": "#a9b7ed",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "chapter-architect",
+    "number": 11,
+    "name": "Chapter Architect",
+    "symbol": "▰",
+    "category": "Writing",
+    "metric": "chapters_posted",
+    "description": "Publish chapters to your works.",
+    "difficulty": "Rare",
+    "accent": "#805eb8",
+    "accent2": "#d4b0f0",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 100
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 250
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 1000
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 5000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 10000
+      }
+    ]
+  },
+  {
+    "id": "infinite-inkwell",
+    "number": 12,
+    "name": "Infinite Inkwell",
+    "symbol": "✒",
+    "category": "Writing",
+    "metric": "words_posted",
+    "description": "Publish words across your chapters.",
+    "difficulty": "Legendary",
+    "accent": "#805eb8",
+    "accent2": "#d4b0f0",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10000
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 100000
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 1000000
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 5000000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 10000000
+      }
+    ]
+  },
+  {
+    "id": "series-weaver",
+    "number": 13,
+    "name": "Series Weaver",
+    "symbol": "⌘",
+    "category": "Writing",
+    "metric": "series_items_published",
+    "description": "Connect stories and comics into ordered series.",
+    "difficulty": "Standard",
+    "accent": "#805eb8",
+    "accent2": "#d4b0f0",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 5
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 25
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 2000
+      }
+    ]
+  },
+  {
+    "id": "finisher-s-crown",
+    "number": 14,
+    "name": "Finisher's Crown",
+    "symbol": "♔",
+    "category": "Writing",
+    "metric": "works_completed",
+    "description": "Bring complete works safely to their final chapter.",
+    "difficulty": "Standard",
+    "accent": "#805eb8",
+    "accent2": "#d4b0f0",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 25
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 100
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 500
+      }
+    ]
+  },
+  {
+    "id": "revision-alchemist",
+    "number": 15,
+    "name": "Revision Alchemist",
+    "symbol": "△",
+    "category": "Writing",
+    "metric": "published_revisions",
+    "description": "Return to published work and strengthen it.",
+    "difficulty": "Standard",
+    "accent": "#805eb8",
+    "accent2": "#d4b0f0",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 25
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 100
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 2500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 10000
+      }
+    ]
+  },
+  {
+    "id": "consistent-quill",
+    "number": 16,
+    "name": "Consistent Quill",
+    "symbol": "〽",
+    "category": "Writing",
+    "metric": "active_posting_months",
+    "description": "Publish across distinct months instead of chasing daily streaks.",
+    "difficulty": "Standard",
+    "accent": "#805eb8",
+    "accent2": "#d4b0f0",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 6
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 12
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 36
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 60
+      }
+    ]
+  },
+  {
+    "id": "draft-moon",
+    "number": 17,
+    "name": "Draft Moon",
+    "symbol": "◐",
+    "category": "Writing",
+    "metric": "drafts_created",
+    "description": "Begin new drafts in the Writing Chamber.",
+    "difficulty": "Standard",
+    "accent": "#805eb8",
+    "accent2": "#d4b0f0",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "long-chapter-observatory",
+    "number": 18,
+    "name": "Long Chapter Observatory",
+    "symbol": "◉",
+    "category": "Writing",
+    "metric": "long_chapters",
+    "description": "Publish substantial chapters above the longform threshold.",
+    "difficulty": "Rare",
+    "accent": "#805eb8",
+    "accent2": "#d4b0f0",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "collaboration-scribe",
+    "number": 19,
+    "name": "Collaboration Scribe",
+    "symbol": "∞",
+    "category": "Writing",
+    "metric": "cowritten_chapters",
+    "description": "Publish chapters with credited co-writers.",
+    "difficulty": "Standard",
+    "accent": "#805eb8",
+    "accent2": "#d4b0f0",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 5
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 25
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 2500
+      }
+    ]
+  },
+  {
+    "id": "palace-novelist",
+    "number": 20,
+    "name": "Palace Novelist",
+    "symbol": "⚜",
+    "category": "Writing",
+    "metric": "novels_completed",
+    "description": "Complete novel-length works.",
+    "difficulty": "Legendary",
+    "accent": "#805eb8",
+    "accent2": "#d4b0f0",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 3
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 10
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 50
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 200
+      }
+    ]
+  },
+  {
+    "id": "panel-maker",
+    "number": 21,
+    "name": "Panel Maker",
+    "symbol": "◫",
+    "category": "Art & Comics",
+    "metric": "comic_pages_posted",
+    "description": "Publish comic pages with creator credit.",
+    "difficulty": "Rare",
+    "accent": "#477c9d",
+    "accent2": "#98d5de",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 100
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 500
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 2500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 10000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 50000
+      }
+    ]
+  },
+  {
+    "id": "panel-voyager",
+    "number": 22,
+    "name": "Panel Voyager",
+    "symbol": "▦",
+    "category": "Art & Comics",
+    "metric": "comic_pages_read",
+    "description": "Read distinct hosted comic pages.",
+    "difficulty": "Standard",
+    "accent": "#477c9d",
+    "accent2": "#98d5de",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 250
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 1000
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 5000
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 25000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 100000
+      }
+    ]
+  },
+  {
+    "id": "episode-builder",
+    "number": 23,
+    "name": "Episode Builder",
+    "symbol": "▣",
+    "category": "Art & Comics",
+    "metric": "episodes_posted",
+    "description": "Publish complete comic episodes.",
+    "difficulty": "Standard",
+    "accent": "#477c9d",
+    "accent2": "#98d5de",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "visual-storyteller",
+    "number": 24,
+    "name": "Visual Storyteller",
+    "symbol": "✹",
+    "category": "Art & Comics",
+    "metric": "comics_completed",
+    "description": "Complete hosted comics.",
+    "difficulty": "Legendary",
+    "accent": "#477c9d",
+    "accent2": "#98d5de",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 25
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 100
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 500
+      }
+    ]
+  },
+  {
+    "id": "alt-text-lantern",
+    "number": 25,
+    "name": "Alt-Text Lantern",
+    "symbol": "◒",
+    "category": "Art & Comics",
+    "metric": "described_pages",
+    "description": "Add useful image descriptions to comic or artwork pages.",
+    "difficulty": "Standard",
+    "accent": "#477c9d",
+    "accent2": "#98d5de",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 25
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 100
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 2500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 10000
+      }
+    ]
+  },
+  {
+    "id": "artist-s-seal",
+    "number": 26,
+    "name": "Artist's Seal",
+    "symbol": "✾",
+    "category": "Art & Comics",
+    "metric": "artworks_published",
+    "description": "Publish credited artwork through the palace.",
+    "difficulty": "Standard",
+    "accent": "#477c9d",
+    "accent2": "#98d5de",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 25
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 100
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 2500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 10000
+      }
+    ]
+  },
+  {
+    "id": "layout-astronomer",
+    "number": 27,
+    "name": "Layout Astronomer",
+    "symbol": "⌗",
+    "category": "Art & Comics",
+    "metric": "page_revisions",
+    "description": "Refine page layouts and replace improved comic pages.",
+    "difficulty": "Standard",
+    "accent": "#477c9d",
+    "accent2": "#98d5de",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 25
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 100
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 2500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 10000
+      }
+    ]
+  },
+  {
+    "id": "cover-constellation",
+    "number": 28,
+    "name": "Cover Constellation",
+    "symbol": "✧",
+    "category": "Art & Comics",
+    "metric": "covers_published",
+    "description": "Publish distinct cover designs.",
+    "difficulty": "Standard",
+    "accent": "#477c9d",
+    "accent2": "#98d5de",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "gallery-keeper",
+    "number": 29,
+    "name": "Gallery Keeper",
+    "symbol": "▧",
+    "category": "Art & Comics",
+    "metric": "art_collections_created",
+    "description": "Curate collections of your own visual work.",
+    "difficulty": "Standard",
+    "accent": "#477c9d",
+    "accent2": "#98d5de",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "creator-credit-keeper",
+    "number": 30,
+    "name": "Creator Credit Keeper",
+    "symbol": "©",
+    "category": "Art & Comics",
+    "metric": "credited_downloads",
+    "description": "Share art downloads while preserving your chosen credit line.",
+    "difficulty": "Standard",
+    "accent": "#477c9d",
+    "accent2": "#98d5de",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "thoughtful-voice",
+    "number": 31,
+    "name": "Thoughtful Voice",
+    "symbol": "❝",
+    "category": "Community",
+    "metric": "approved_comments",
+    "description": "Leave approved, substantive comments on works.",
+    "difficulty": "Standard",
+    "accent": "#7c568f",
+    "accent2": "#dda9dc",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 25
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 100
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 2500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 10000
+      }
+    ]
+  },
+  {
+    "id": "reply-lantern",
+    "number": 32,
+    "name": "Reply Lantern",
+    "symbol": "↳",
+    "category": "Community",
+    "metric": "replies_posted",
+    "description": "Take part in respectful threaded conversations.",
+    "difficulty": "Standard",
+    "accent": "#7c568f",
+    "accent2": "#dda9dc",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 25
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 100
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 2500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 10000
+      }
+    ]
+  },
+  {
+    "id": "club-hearth",
+    "number": 33,
+    "name": "Club Hearth",
+    "symbol": "◎",
+    "category": "Community",
+    "metric": "club_sessions",
+    "description": "Participate in club rooms and gatherings.",
+    "difficulty": "Standard",
+    "accent": "#7c568f",
+    "accent2": "#dda9dc",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "forum-stargazer",
+    "number": 34,
+    "name": "Forum Stargazer",
+    "symbol": "✵",
+    "category": "Community",
+    "metric": "forum_threads",
+    "description": "Open useful forum conversations.",
+    "difficulty": "Standard",
+    "accent": "#7c568f",
+    "accent2": "#dda9dc",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 5
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 25
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 2500
+      }
+    ]
+  },
+  {
+    "id": "forum-constellation",
+    "number": 35,
+    "name": "Forum Constellation",
+    "symbol": "⁂",
+    "category": "Community",
+    "metric": "forum_replies",
+    "description": "Contribute to long-form forum discussions.",
+    "difficulty": "Standard",
+    "accent": "#7c568f",
+    "accent2": "#dda9dc",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 50
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 250
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 1000
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 5000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 25000
+      }
+    ]
+  },
+  {
+    "id": "welcome-lantern",
+    "number": 36,
+    "name": "Welcome Lantern",
+    "symbol": "⌂",
+    "category": "Community",
+    "metric": "newcomer_welcomes",
+    "description": "Welcome new members without turning kindness into spam.",
+    "difficulty": "Standard",
+    "accent": "#7c568f",
+    "accent2": "#dda9dc",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "recommendation-bell",
+    "number": 37,
+    "name": "Recommendation Bell",
+    "symbol": "♢",
+    "category": "Community",
+    "metric": "recommendations_shared",
+    "description": "Share thoughtful story or comic recommendations.",
+    "difficulty": "Standard",
+    "accent": "#7c568f",
+    "accent2": "#dda9dc",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 25
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 100
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 2500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 10000
+      }
+    ]
+  },
+  {
+    "id": "co-writer-s-key",
+    "number": 38,
+    "name": "Co-writer's Key",
+    "symbol": "⚿",
+    "category": "Community",
+    "metric": "collaborations_joined",
+    "description": "Join credited creative collaborations.",
+    "difficulty": "Standard",
+    "accent": "#7c568f",
+    "accent2": "#dda9dc",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "community-host",
+    "number": 39,
+    "name": "Community Host",
+    "symbol": "♙",
+    "category": "Community",
+    "metric": "community_events_hosted",
+    "description": "Host writing, reading or art gatherings.",
+    "difficulty": "Standard",
+    "accent": "#7c568f",
+    "accent2": "#dda9dc",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "quiet-steward",
+    "number": 40,
+    "name": "Quiet Steward",
+    "symbol": "◌",
+    "category": "Community",
+    "metric": "moderation_actions",
+    "description": "Complete reviewed stewardship actions with an audit trail.",
+    "difficulty": "Rare",
+    "accent": "#7c568f",
+    "accent2": "#dda9dc",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 25
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 100
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 2500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 10000
+      }
+    ]
+  },
+  {
+    "id": "sprint-moon",
+    "number": 41,
+    "name": "Sprint Moon",
+    "symbol": "◔",
+    "category": "Events",
+    "metric": "writing_sprints",
+    "description": "Complete self-paced writing sprints.",
+    "difficulty": "Standard",
+    "accent": "#5d7698",
+    "accent2": "#b9cce8",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "reading-festival-voyager",
+    "number": 42,
+    "name": "Reading Festival Voyager",
+    "symbol": "☽",
+    "category": "Events",
+    "metric": "challenge_chapters",
+    "description": "Read chapters while taking part in Palace reading challenges.",
+    "difficulty": "Standard",
+    "accent": "#5d7698",
+    "accent2": "#b9cce8",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 25
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 100
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 2500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 10000
+      }
+    ]
+  },
+  {
+    "id": "salon-guest",
+    "number": 43,
+    "name": "Salon Guest",
+    "symbol": "♧",
+    "category": "Events",
+    "metric": "events_attended",
+    "description": "Attend writing, reading, comic and community events.",
+    "difficulty": "Standard",
+    "accent": "#5d7698",
+    "accent2": "#b9cce8",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "workshop-scholar",
+    "number": 44,
+    "name": "Workshop Scholar",
+    "symbol": "⌬",
+    "category": "Events",
+    "metric": "workshops_attended",
+    "description": "Attend craft or learning workshops.",
+    "difficulty": "Standard",
+    "accent": "#5d7698",
+    "accent2": "#b9cce8",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 5
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 25
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 2500
+      }
+    ]
+  },
+  {
+    "id": "calendar-keeper",
+    "number": 45,
+    "name": "Calendar Keeper",
+    "symbol": "▨",
+    "category": "Events",
+    "metric": "events_joined",
+    "description": "Join events through the Palace calendars.",
+    "difficulty": "Standard",
+    "accent": "#5d7698",
+    "accent2": "#b9cce8",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 25
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 100
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 2500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 10000
+      }
+    ]
+  },
+  {
+    "id": "challenge-finisher",
+    "number": 46,
+    "name": "Challenge Finisher",
+    "symbol": "✪",
+    "category": "Events",
+    "metric": "challenges_completed",
+    "description": "Finish opt-in reading or writing challenges.",
+    "difficulty": "Standard",
+    "accent": "#5d7698",
+    "accent2": "#b9cce8",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "prompt-collector",
+    "number": 47,
+    "name": "Prompt Collector",
+    "symbol": "❖",
+    "category": "Events",
+    "metric": "prompts_completed",
+    "description": "Complete community writing prompts.",
+    "difficulty": "Standard",
+    "accent": "#5d7698",
+    "accent2": "#b9cce8",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "seasonal-scribe",
+    "number": 48,
+    "name": "Seasonal Scribe",
+    "symbol": "❂",
+    "category": "Events",
+    "metric": "seasonal_events",
+    "description": "Take part across different seasonal event cycles.",
+    "difficulty": "Standard",
+    "accent": "#5d7698",
+    "accent2": "#b9cce8",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 4
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 12
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 36
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 100
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 250
+      }
+    ]
+  },
+  {
+    "id": "event-steward",
+    "number": 49,
+    "name": "Event Steward",
+    "symbol": "⚜",
+    "category": "Events",
+    "metric": "events_hosted",
+    "description": "Host approved Palace events.",
+    "difficulty": "Standard",
+    "accent": "#5d7698",
+    "accent2": "#b9cce8",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 5
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 25
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 2500
+      }
+    ]
+  },
+  {
+    "id": "heritage-visitor",
+    "number": 50,
+    "name": "Heritage Visitor",
+    "symbol": "✺",
+    "category": "Events",
+    "metric": "heritage_events_joined",
+    "description": "Join contextualised heritage and culture events.",
+    "difficulty": "Standard",
+    "accent": "#5d7698",
+    "accent2": "#b9cce8",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 5
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 25
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 2500
+      }
+    ]
+  },
+  {
+    "id": "tag-cartographer",
+    "number": 51,
+    "name": "Tag Cartographer",
+    "symbol": "⌖",
+    "category": "Discovery & Tags",
+    "metric": "canonical_tags_used",
+    "description": "Use canonical tags accurately across reading or publishing.",
+    "difficulty": "Standard",
+    "accent": "#6e649e",
+    "accent2": "#c9b9ea",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 50
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 250
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 1000
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 5000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 25000
+      }
+    ]
+  },
+  {
+    "id": "fandom-navigator",
+    "number": 52,
+    "name": "Fandom Navigator",
+    "symbol": "✷",
+    "category": "Discovery & Tags",
+    "metric": "fandom_tags_explored",
+    "description": "Explore distinct fandom tags.",
+    "difficulty": "Standard",
+    "accent": "#6e649e",
+    "accent2": "#c9b9ea",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "relationship-mapper",
+    "number": 53,
+    "name": "Relationship Mapper",
+    "symbol": "∞",
+    "category": "Discovery & Tags",
+    "metric": "relationship_tags_explored",
+    "description": "Explore relationship tags and their canonical forms.",
+    "difficulty": "Standard",
+    "accent": "#6e649e",
+    "accent2": "#c9b9ea",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "warning-keeper",
+    "number": 54,
+    "name": "Warning Keeper",
+    "symbol": "⚑",
+    "category": "Discovery & Tags",
+    "metric": "warnings_added",
+    "description": "Use appropriate content warnings on your works.",
+    "difficulty": "Standard",
+    "accent": "#6e649e",
+    "accent2": "#c9b9ea",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "alias-wrangler",
+    "number": 55,
+    "name": "Alias Wrangler",
+    "symbol": "≈",
+    "category": "Discovery & Tags",
+    "metric": "tag_corrections_accepted",
+    "description": "Submit useful tag corrections or aliases that are accepted.",
+    "difficulty": "Rare",
+    "accent": "#6e649e",
+    "accent2": "#c9b9ea",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "search-constellation",
+    "number": 56,
+    "name": "Search Constellation",
+    "symbol": "⌕",
+    "category": "Discovery & Tags",
+    "metric": "searches_saved",
+    "description": "Save useful searches and return to them.",
+    "difficulty": "Standard",
+    "accent": "#6e649e",
+    "accent2": "#c9b9ea",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "filter-alchemist",
+    "number": 57,
+    "name": "Filter Alchemist",
+    "symbol": "⌘",
+    "category": "Discovery & Tags",
+    "metric": "advanced_searches",
+    "description": "Use include/exclude filters to find the right work.",
+    "difficulty": "Standard",
+    "accent": "#6e649e",
+    "accent2": "#c9b9ea",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 25
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 100
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 2500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 10000
+      }
+    ]
+  },
+  {
+    "id": "new-voice-seeker",
+    "number": 58,
+    "name": "New Voice Seeker",
+    "symbol": "✦",
+    "category": "Discovery & Tags",
+    "metric": "new_creator_works_read",
+    "description": "Read works from newer creators highlighted by rotating discovery.",
+    "difficulty": "Standard",
+    "accent": "#6e649e",
+    "accent2": "#c9b9ea",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "hidden-gem-keeper",
+    "number": 59,
+    "name": "Hidden Gem Keeper",
+    "symbol": "◈",
+    "category": "Discovery & Tags",
+    "metric": "low_exposure_works_completed",
+    "description": "Complete works outside the most-viewed shelves.",
+    "difficulty": "Rare",
+    "accent": "#6e649e",
+    "accent2": "#c9b9ea",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 5
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 25
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 2500
+      }
+    ]
+  },
+  {
+    "id": "collection-curator",
+    "number": 60,
+    "name": "Collection Curator",
+    "symbol": "▥",
+    "category": "Discovery & Tags",
+    "metric": "collections_created",
+    "description": "Create personal or public reading collections.",
+    "difficulty": "Standard",
+    "accent": "#6e649e",
+    "accent2": "#c9b9ea",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "lost-work-lantern",
+    "number": 61,
+    "name": "Lost Work Lantern",
+    "symbol": "⌁",
+    "category": "Archive",
+    "metric": "archive_records_opened",
+    "description": "Explore Lost Works archive records.",
+    "difficulty": "Standard",
+    "accent": "#66567e",
+    "accent2": "#b7aacd",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "archive-contributor",
+    "number": 62,
+    "name": "Archive Contributor",
+    "symbol": "▤",
+    "category": "Archive",
+    "metric": "archive_submissions",
+    "description": "Submit archive records for rights and provenance review.",
+    "difficulty": "Rare",
+    "accent": "#66567e",
+    "accent2": "#b7aacd",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "source-keeper",
+    "number": 63,
+    "name": "Source Keeper",
+    "symbol": "§",
+    "category": "Archive",
+    "metric": "sources_added",
+    "description": "Add usable source information to archive or heritage records.",
+    "difficulty": "Standard",
+    "accent": "#66567e",
+    "accent2": "#b7aacd",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "provenance-scribe",
+    "number": 64,
+    "name": "Provenance Scribe",
+    "symbol": "¶",
+    "category": "Archive",
+    "metric": "provenance_reviews",
+    "description": "Help document where archived material came from.",
+    "difficulty": "Rare",
+    "accent": "#66567e",
+    "accent2": "#b7aacd",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 5
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 25
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 2500
+      }
+    ]
+  },
+  {
+    "id": "translation-lantern",
+    "number": 65,
+    "name": "Translation Lantern",
+    "symbol": "字",
+    "category": "Archive",
+    "metric": "translation_credits",
+    "description": "Publish or archive works with proper translation credit.",
+    "difficulty": "Standard",
+    "accent": "#66567e",
+    "accent2": "#b7aacd",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 5
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 25
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 2500
+      }
+    ]
+  },
+  {
+    "id": "public-domain-scholar",
+    "number": 66,
+    "name": "Public Domain Scholar",
+    "symbol": "◍",
+    "category": "Archive",
+    "metric": "public_domain_reviews",
+    "description": "Complete reviewed public-domain assessments.",
+    "difficulty": "Legendary",
+    "accent": "#66567e",
+    "accent2": "#b7aacd",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "restored-page",
+    "number": 67,
+    "name": "Restored Page",
+    "symbol": "▱",
+    "category": "Archive",
+    "metric": "archive_pages_transcribed",
+    "description": "Transcribe archive pages into accessible text.",
+    "difficulty": "Standard",
+    "accent": "#66567e",
+    "accent2": "#b7aacd",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 25
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 100
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 2500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 10000
+      }
+    ]
+  },
+  {
+    "id": "rights-respecter",
+    "number": 68,
+    "name": "Rights Respecter",
+    "symbol": "⚖",
+    "category": "Archive",
+    "metric": "permissions_documented",
+    "description": "Document creator/rightsholder permission before hosting.",
+    "difficulty": "Standard",
+    "accent": "#66567e",
+    "accent2": "#b7aacd",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 5
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 25
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 2500
+      }
+    ]
+  },
+  {
+    "id": "language-bridge",
+    "number": 69,
+    "name": "Language Bridge",
+    "symbol": "語",
+    "category": "Archive",
+    "metric": "languages_explored",
+    "description": "Explore works across different languages and translations.",
+    "difficulty": "Standard",
+    "accent": "#66567e",
+    "accent2": "#b7aacd",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 5
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 15
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 150
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 500
+      }
+    ]
+  },
+  {
+    "id": "memory-keeper",
+    "number": 70,
+    "name": "Memory Keeper",
+    "symbol": "◑",
+    "category": "Archive",
+    "metric": "archive_collections_completed",
+    "description": "Complete curated archival collections.",
+    "difficulty": "Standard",
+    "accent": "#66567e",
+    "accent2": "#b7aacd",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "heritage-hall-visitor",
+    "number": 71,
+    "name": "Heritage Hall Visitor",
+    "symbol": "✺",
+    "category": "Heritage",
+    "metric": "heritage_entries_explored",
+    "description": "Explore contextualised heritage calendar entries.",
+    "difficulty": "Standard",
+    "accent": "#8b5c76",
+    "accent2": "#e2aeca",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "global-calendar-voyager",
+    "number": 72,
+    "name": "Global Calendar Voyager",
+    "symbol": "⊙",
+    "category": "Heritage",
+    "metric": "regions_explored",
+    "description": "Explore cultural observances across distinct regions.",
+    "difficulty": "Standard",
+    "accent": "#8b5c76",
+    "accent2": "#e2aeca",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 5
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 15
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 150
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 300
+      }
+    ]
+  },
+  {
+    "id": "lunar-lantern",
+    "number": 73,
+    "name": "Lunar Lantern",
+    "symbol": "☾",
+    "category": "Heritage",
+    "metric": "lunar_events_explored",
+    "description": "Explore Lunar New Year and related cultural entries.",
+    "difficulty": "Standard",
+    "accent": "#8b5c76",
+    "accent2": "#e2aeca",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 20
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 100
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 500
+      }
+    ]
+  },
+  {
+    "id": "emancipation-constellation",
+    "number": 74,
+    "name": "Emancipation Constellation",
+    "symbol": "☀",
+    "category": "Heritage",
+    "metric": "emancipation_entries_explored",
+    "description": "Explore emancipation and freedom observances across countries.",
+    "difficulty": "Standard",
+    "accent": "#8b5c76",
+    "accent2": "#e2aeca",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "pride-constellation",
+    "number": 75,
+    "name": "Pride Constellation",
+    "symbol": "◇",
+    "category": "Heritage",
+    "metric": "pride_entries_explored",
+    "description": "Explore LGBTQ+ heritage, history and remembrance entries.",
+    "difficulty": "Standard",
+    "accent": "#8b5c76",
+    "accent2": "#e2aeca",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "black-history-lantern",
+    "number": 76,
+    "name": "Black History Lantern",
+    "symbol": "✦",
+    "category": "Heritage",
+    "metric": "black_history_entries_explored",
+    "description": "Explore Black history and culture across regional contexts.",
+    "difficulty": "Standard",
+    "accent": "#8b5c76",
+    "accent2": "#e2aeca",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 5
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 25
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 2500
+      }
+    ]
+  },
+  {
+    "id": "indigenous-stars",
+    "number": 77,
+    "name": "Indigenous Stars",
+    "symbol": "✹",
+    "category": "Heritage",
+    "metric": "indigenous_entries_explored",
+    "description": "Explore Indigenous histories, writing and cultural observances.",
+    "difficulty": "Standard",
+    "accent": "#8b5c76",
+    "accent2": "#e2aeca",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "deaf-culture-lantern",
+    "number": 78,
+    "name": "Deaf Culture Lantern",
+    "symbol": "⌁",
+    "category": "Heritage",
+    "metric": "deaf_entries_explored",
+    "description": "Explore Deaf culture and sign-language heritage.",
+    "difficulty": "Standard",
+    "accent": "#8b5c76",
+    "accent2": "#e2aeca",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "disability-pride-moon",
+    "number": 79,
+    "name": "Disability Pride Moon",
+    "symbol": "◐",
+    "category": "Heritage",
+    "metric": "disability_entries_explored",
+    "description": "Explore disability culture, history and access-focused entries.",
+    "difficulty": "Standard",
+    "accent": "#8b5c76",
+    "accent2": "#e2aeca",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "language-constellation",
+    "number": 80,
+    "name": "Language Constellation",
+    "symbol": "※",
+    "category": "Heritage",
+    "metric": "language_entries_explored",
+    "description": "Explore language heritage and multilingual traditions.",
+    "difficulty": "Standard",
+    "accent": "#8b5c76",
+    "accent2": "#e2aeca",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 5
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 25
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 2500
+      }
+    ]
+  },
+  {
+    "id": "club-founder",
+    "number": 81,
+    "name": "Club Founder",
+    "symbol": "♜",
+    "category": "Clubs & Social",
+    "metric": "clubs_created",
+    "description": "Create sustainable clubs with clear rules and purpose.",
+    "difficulty": "Standard",
+    "accent": "#557e79",
+    "accent2": "#a5d3c5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 3
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 10
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 50
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 250
+      }
+    ]
+  },
+  {
+    "id": "steward-s-key",
+    "number": 82,
+    "name": "Steward's Key",
+    "symbol": "⚿",
+    "category": "Clubs & Social",
+    "metric": "steward_months",
+    "description": "Steward a club across distinct months.",
+    "difficulty": "Rare",
+    "accent": "#557e79",
+    "accent2": "#a5d3c5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 12
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 36
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 60
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 120
+      }
+    ]
+  },
+  {
+    "id": "reading-circle-host",
+    "number": 83,
+    "name": "Reading Circle Host",
+    "symbol": "◌",
+    "category": "Clubs & Social",
+    "metric": "reading_salons_hosted",
+    "description": "Host club reading salons.",
+    "difficulty": "Standard",
+    "accent": "#557e79",
+    "accent2": "#a5d3c5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "writing-circle-host",
+    "number": 84,
+    "name": "Writing Circle Host",
+    "symbol": "✒",
+    "category": "Clubs & Social",
+    "metric": "writing_gatherings_hosted",
+    "description": "Host club writing gatherings.",
+    "difficulty": "Standard",
+    "accent": "#557e79",
+    "accent2": "#a5d3c5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "panel-circle-host",
+    "number": 85,
+    "name": "Panel Circle Host",
+    "symbol": "◫",
+    "category": "Clubs & Social",
+    "metric": "comic_gatherings_hosted",
+    "description": "Host comic and visual-story gatherings.",
+    "difficulty": "Standard",
+    "accent": "#557e79",
+    "accent2": "#a5d3c5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "circle-of-moons",
+    "number": 86,
+    "name": "Circle of Moons",
+    "symbol": "☾",
+    "category": "Clubs & Social",
+    "metric": "clubs_joined",
+    "description": "Join distinct clubs and build a constellation of communities across the Palace.",
+    "difficulty": "Standard",
+    "accent": "#557e79",
+    "accent2": "#a5d3c5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 150
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 300
+      }
+    ]
+  },
+  {
+    "id": "circle-keeper",
+    "number": 87,
+    "name": "Circle Keeper",
+    "symbol": "◎",
+    "category": "Clubs & Social",
+    "metric": "club_months_active",
+    "description": "Remain meaningfully active in club spaces.",
+    "difficulty": "Standard",
+    "accent": "#557e79",
+    "accent2": "#a5d3c5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 12
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 36
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 60
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 120
+      }
+    ]
+  },
+  {
+    "id": "cross-court-visitor",
+    "number": 88,
+    "name": "Cross-Court Visitor",
+    "symbol": "♢",
+    "category": "Clubs & Social",
+    "metric": "club_types_explored",
+    "description": "Explore different kinds of clubs.",
+    "difficulty": "Standard",
+    "accent": "#557e79",
+    "accent2": "#a5d3c5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 25
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 50
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 100
+      }
+    ]
+  },
+  {
+    "id": "invitation-keeper",
+    "number": 89,
+    "name": "Invitation Keeper",
+    "symbol": "✉",
+    "category": "Clubs & Social",
+    "metric": "invitations_accepted",
+    "description": "Accept collaboration, club or event invitations.",
+    "difficulty": "Standard",
+    "accent": "#557e79",
+    "accent2": "#a5d3c5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 5
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 25
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 2500
+      }
+    ]
+  },
+  {
+    "id": "community-bridge",
+    "number": 90,
+    "name": "Community Bridge",
+    "symbol": "⌘",
+    "category": "Clubs & Social",
+    "metric": "cross_club_events",
+    "description": "Take part in collaborations between distinct clubs.",
+    "difficulty": "Rare",
+    "accent": "#557e79",
+    "accent2": "#a5d3c5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 25
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 100
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 500
+      }
+    ]
+  },
+  {
+    "id": "billion-word-reader",
+    "number": 91,
+    "name": "Billion-Word Reader",
+    "symbol": "∞",
+    "category": "Legendary",
+    "metric": "words_read_legendary",
+    "description": "Read on a truly astronomical scale.",
+    "difficulty": "Legendary",
+    "accent": "#8a6b3f",
+    "accent2": "#ead29a",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1000000
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10000000
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50000000
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250000000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000000000
+      }
+    ]
+  },
+  {
+    "id": "ten-thousand-chapter-reader",
+    "number": 92,
+    "name": "Ten-Thousand-Chapter Reader",
+    "symbol": "▤",
+    "category": "Legendary",
+    "metric": "chapters_read_legendary",
+    "description": "Read thousands of distinct chapters.",
+    "difficulty": "Legendary",
+    "accent": "#8a6b3f",
+    "accent2": "#ead29a",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1000
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5000
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 10000
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 25000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 100000
+      }
+    ]
+  },
+  {
+    "id": "ten-thousand-chapter-writer",
+    "number": 93,
+    "name": "Ten-Thousand-Chapter Writer",
+    "symbol": "▰",
+    "category": "Legendary",
+    "metric": "chapters_posted_legendary",
+    "description": "Publish chapters across an extraordinary body of work.",
+    "difficulty": "Legendary",
+    "accent": "#8a6b3f",
+    "accent2": "#ead29a",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 100
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 500
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 2500
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 10000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 25000
+      }
+    ]
+  },
+  {
+    "id": "century-of-worlds",
+    "number": 94,
+    "name": "Century of Worlds",
+    "symbol": "✦",
+    "category": "Legendary",
+    "metric": "works_published_legendary",
+    "description": "Publish an immense constellation of works.",
+    "difficulty": "Legendary",
+    "accent": "#8a6b3f",
+    "accent2": "#ead29a",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "century-of-comics",
+    "number": 95,
+    "name": "Century of Comics",
+    "symbol": "◫",
+    "category": "Legendary",
+    "metric": "comics_published_legendary",
+    "description": "Publish a vast library of hosted comics.",
+    "difficulty": "Legendary",
+    "accent": "#8a6b3f",
+    "accent2": "#ead29a",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "five-year-constellation",
+    "number": 96,
+    "name": "Five-Year Constellation",
+    "symbol": "★",
+    "category": "Legendary",
+    "metric": "active_months_legendary",
+    "description": "Build a long creative history measured in months, not addictive daily streaks.",
+    "difficulty": "Legendary",
+    "accent": "#8a6b3f",
+    "accent2": "#ead29a",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 12
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 24
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 60
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 84
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 120
+      }
+    ]
+  },
+  {
+    "id": "crown-of-completion",
+    "number": 97,
+    "name": "Crown of Completion",
+    "symbol": "♕",
+    "category": "Legendary",
+    "metric": "completed_works_legendary",
+    "description": "Complete an exceptional number of works.",
+    "difficulty": "Legendary",
+    "accent": "#8a6b3f",
+    "accent2": "#ead29a",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 10
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 50
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 250
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 5000
+      }
+    ]
+  },
+  {
+    "id": "emerald-archivist",
+    "number": 98,
+    "name": "Emerald Archivist",
+    "symbol": "◆",
+    "category": "Legendary",
+    "metric": "archive_records_legendary",
+    "description": "Build an extraordinary history of archival stewardship.",
+    "difficulty": "Legendary",
+    "accent": "#8a6b3f",
+    "accent2": "#ead29a",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 50
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 250
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 1000
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 5000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 25000
+      }
+    ]
+  },
+  {
+    "id": "palace-polymath",
+    "number": 99,
+    "name": "Palace Polymath",
+    "symbol": "✺",
+    "category": "Legendary",
+    "metric": "palace_disciplines",
+    "description": "Participate meaningfully across different creative disciplines.",
+    "difficulty": "Legendary",
+    "accent": "#8a6b3f",
+    "accent2": "#ead29a",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 7
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 10
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 12
+      }
+    ]
+  },
+  {
+    "id": "celestial-monarch",
+    "number": 100,
+    "name": "Celestial Monarch",
+    "symbol": "☼",
+    "category": "Legendary",
+    "metric": "celestial_points",
+    "description": "A composite long-term honour for broad creative participation.",
+    "difficulty": "Mythic",
+    "accent": "#8a6b3f",
+    "accent2": "#ead29a",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1000
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10000
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100000
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 1000000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 10000000
+      }
+    ]
+  }
+]
