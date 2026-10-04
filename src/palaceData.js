@@ -1,0 +1,16 @@
+import { supabase } from './supabase';
+
+function needClient(){if(!supabase) throw new Error('The Palace data connection is not configured.');return supabase}
+export async function getMyProfile(userId){const{data,error}=await needClient().from('profiles').select('id,username,display_name,title,bio,avatar_url,cover_url,visibility,message_policy').eq('id',userId).single();if(error)throw error;return data}
+export async function updateMyProfile(userId,patch){const allowed={display_name:patch.display_name?.trim(),title:patch.title?.trim()||null,bio:patch.bio?.trim()||'',visibility:patch.visibility,message_policy:patch.message_policy};const{data,error}=await needClient().from('profiles').update(allowed).eq('id',userId).select().single();if(error)throw error;return data}
+export async function getMyPrivacy(userId){const{data,error}=await needClient().from('privacy_preferences').select('*').eq('user_id',userId).maybeSingle();if(error)throw error;return data}
+export async function ensureMyPrivacy(userId){const current=await getMyPrivacy(userId);if(current)return current;const{data,error}=await needClient().from('privacy_preferences').insert({user_id:userId}).select().single();if(error)throw error;return data}
+export async function getChamberSnapshot(userId){const [profile,privacy,works,progress,notices]=await Promise.all([
+ getMyProfile(userId),ensureMyPrivacy(userId),
+ needClient().from('works').select('id,title,slug,publication_status,completion_status,updated_at').eq('author_id',userId).order('updated_at',{ascending:false}).limit(4),
+ needClient().from('reading_progress').select('work_id,chapter_id,progress_percent,completed,updated_at,works(id,title,slug,cover_url)').eq('user_id',userId).eq('completed',false).order('updated_at',{ascending:false}).limit(3),
+ needClient().from('notifications').select('id,title,body,notice_type,created_at,unread').eq('user_id',userId).eq('dismissed',false).order('created_at',{ascending:false}).limit(4)
+]);if(works.error)throw works.error;if(progress.error)throw progress.error;if(notices.error)throw notices.error;return{profile,privacy,works:works.data||[],progress:progress.data||[],notices:notices.data||[]}}
+export async function getPublishedWorks(){const{data,error}=await needClient().from('works').select('id,title,slug,summary,rating,language,completion_status,cover_url,last_published_at,profiles!works_author_id_fkey(username,display_name)').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(24);if(error)throw error;return data||[]}
+export async function getMyWorks(userId){const{data,error}=await needClient().from('works').select('id,title,slug,summary,publication_status,completion_status,visibility,updated_at,chapters(id,status,word_count)').eq('author_id',userId).order('updated_at',{ascending:false});if(error)throw error;return data||[]}
+export async function createDraft(userId,title){const clean=title.trim();if(!clean)throw new Error('Give your work a title first.');const slug=(clean.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,70)||'untitled')+'-'+Date.now().toString(36);const{data,error}=await needClient().from('works').insert({author_id:userId,title:clean,slug,publication_status:'draft',visibility:'private'}).select().single();if(error)throw error;return data}
