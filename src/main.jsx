@@ -4,7 +4,7 @@ import { BrowserRouter, Link, NavLink, Navigate, Route, Routes, useLocation, use
 import { AuthProvider, ProtectedRoute, useAuth } from './auth';
 import { configured, supabase } from './supabase';
 import './style.css';
-import { ChamberLive, ReadingLive, WritingLive, SettingsLive, ActivityLive } from './liveRooms';
+import { ChamberLive, ReadingLive, WritingLive, SettingsLive, ActivityLive, LibraryLive, TagsLive } from './liveRooms';
 
 const rooms=[
   ['Reading Rooms','/reading','Read, discover and return to the stories waiting for you.'],
