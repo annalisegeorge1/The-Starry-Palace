@@ -4,7 +4,7 @@ import { BrowserRouter, Link, NavLink, Navigate, Route, Routes, useLocation, use
 import { AuthProvider, ProtectedRoute, useAuth } from './auth';
 import { configured, supabase } from './supabase';
 import './style.css';
-import { ChamberLive, ReadingLive, WritingLive } from './liveRooms';
+import { ChamberLive, ReadingLive, WritingLive, SettingsLive, ActivityLive } from './liveRooms';
 
 const rooms=[
   ['Reading Rooms','/reading','Read, discover and return to the stories waiting for you.'],
@@ -67,8 +67,8 @@ function App(){return <AuthProvider><Routes>
  <Route path="/events" element={<Room title="Events & Heritage" eyebrow="NEWS FROM OUR LITTLE WORLD" description="Creative gatherings and heritage observances held with context, care and room for many communities."/>}/>
  <Route path="/treasury" element={<Room protectedRoom title="Royal Treasury" eyebrow="COLLECT · ACHIEVE · CELEBRATE" description="Five achievement tiers, an expanding gift collection and court honours designed to celebrate participation—not artistic worth."/>}/>
  <Route path="/lost-works" element={<Room title="Lost Works" eyebrow="PRESERVE WITHOUT CLAIMING" description="A rights-conscious archive for fragments, abandoned works, translations and stories at risk of disappearing."/>}/>
- <Route path="/settings" element={<Room protectedRoom title="Settings & Privacy" eyebrow="YOUR PALACE, YOUR BOUNDARIES" description="Privacy, Quiet Corners, notifications and account controls belong to you."/>}/>
- <Route path="/activity" element={<Room protectedRoom title="Moonlight Activity Room" eyebrow="NEWS FROM YOUR LITTLE WORLD" description="Replies, invitations, follows, publication notices and Palace activity gather here."/>}/>
+ <Route path="/settings" element={<ProtectedRoute><SettingsLive Frame={Frame}/></ProtectedRoute>}/>
+ <Route path="/activity" element={<ProtectedRoute><ActivityLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/search" element={<Room title="Search the Palace" eyebrow="THE TAG CONSTELLATION" description="Stories, people, tags, fandoms, relationships and rooms will meet here."/>}/>
  <Route path="*" element={<Frame><section className="room-title"><p className="eyebrow">BEYOND THE GATES</p><h1>You left palace grounds.</h1><Link className="button" to="/">Return to the Palace</Link></section></Frame>}/>
  </Routes></AuthProvider>}
