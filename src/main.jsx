@@ -4,7 +4,7 @@ import { BrowserRouter, Link, NavLink, Navigate, Route, Routes, useLocation, use
 import { AuthProvider, ProtectedRoute, useAuth } from './auth';
 import { configured, supabase } from './supabase';
 import './style.css';
-import Treasury from './Treasury';
+import TreasuryCatalogue from './Treasury';
 import { ChamberLive, ReadingLive, WritingLive, SettingsLive, ActivityLive, LibraryLive, TagsLive, PalaceLifeLive, LettersLive, EventsLive, TreasuryLive, LostWorksLive, MemberProfileLive, SearchLive } from './liveRooms';
 
 const rooms=[
@@ -24,6 +24,8 @@ function Frame({children,privateArea=false}){
    <nav className="room-nav" aria-label="Palace rooms">
     {session&&<NavLink to="/chamber">✦ <span>My Chamber</span></NavLink>}
     {rooms.map(([name,path])=><NavLink key={path} to={path}>◇ <span>{name}</span></NavLink>)}
+    {session&&<><NavLink to="/library">☾ <span>My Library</span></NavLink><NavLink to="/letters">✉ <span>Palace Letters</span></NavLink></>}
+    <NavLink to="/tags">✧ <span>Tag Constellation</span></NavLink>
    </nav>
    <div className="sidebar-foot">{session?<Link to="/settings">Settings & privacy</Link>:<Link to="/login">Enter the Palace</Link>}</div>
   </aside>
@@ -66,10 +68,14 @@ function App(){return <AuthProvider><Routes>
  <Route path="/writing" element={<ProtectedRoute><WritingLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/palace-life" element={<ProtectedRoute><PalaceLifeLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/events" element={<EventsLive Frame={Frame}/>}/>
- <Route path="/treasury" element={<ProtectedRoute><Treasury Frame={Frame}/></ProtectedRoute>}/>
+ <Route path="/treasury" element={<ProtectedRoute><TreasuryLive Frame={Frame}/></ProtectedRoute>}/>
+ <Route path="/treasury/catalogue" element={<ProtectedRoute><TreasuryCatalogue Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/lost-works" element={<LostWorksLive Frame={Frame}/>}/>
  <Route path="/settings" element={<ProtectedRoute><SettingsLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/activity" element={<ProtectedRoute><ActivityLive Frame={Frame}/></ProtectedRoute>}/>
+ <Route path="/library" element={<ProtectedRoute><LibraryLive Frame={Frame}/></ProtectedRoute>}/>
+ <Route path="/letters" element={<ProtectedRoute><LettersLive Frame={Frame}/></ProtectedRoute>}/>
+ <Route path="/tags" element={<TagsLive Frame={Frame}/>}/>
  <Route path="/search" element={<SearchLive Frame={Frame}/>}/>
  <Route path="/member/:username" element={<MemberProfileLive Frame={Frame}/>}/>
  <Route path="*" element={<Frame><section className="room-title"><p className="eyebrow">BEYOND THE GATES</p><h1>You left palace grounds.</h1><Link className="button" to="/">Return to the Palace</Link></section></Frame>}/>
