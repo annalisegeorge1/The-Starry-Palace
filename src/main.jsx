@@ -4,6 +4,7 @@ import { BrowserRouter, Link, NavLink, Navigate, Route, Routes, useLocation, use
 import { AuthProvider, ProtectedRoute, useAuth } from './auth';
 import { configured, supabase } from './supabase';
 import './style.css';
+import Treasury from './Treasury';
 import { ChamberLive, ReadingLive, WritingLive, SettingsLive, ActivityLive, LibraryLive, TagsLive } from './liveRooms';
 
 const rooms=[
@@ -65,7 +66,7 @@ function App(){return <AuthProvider><Routes>
  <Route path="/writing" element={<ProtectedRoute><WritingLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/palace-life" element={<Room protectedRoom title="Palace Life" eyebrow="KINDRED STARS" description="Clubs, Palace Commons, Moonlight Chat and the social rooms of the Palace."/>}/>
  <Route path="/events" element={<Room title="Events & Heritage" eyebrow="NEWS FROM OUR LITTLE WORLD" description="Creative gatherings and heritage observances held with context, care and room for many communities."/>}/>
- <Route path="/treasury" element={<Room protectedRoom title="Royal Treasury" eyebrow="COLLECT · ACHIEVE · CELEBRATE" description="Five achievement tiers, an expanding gift collection and court honours designed to celebrate participation—not artistic worth."/>}/>
+ <Route path="/treasury" element={<ProtectedRoute><Treasury Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/lost-works" element={<Room title="Lost Works" eyebrow="PRESERVE WITHOUT CLAIMING" description="A rights-conscious archive for fragments, abandoned works, translations and stories at risk of disappearing."/>}/>
  <Route path="/settings" element={<ProtectedRoute><SettingsLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/activity" element={<ProtectedRoute><ActivityLive Frame={Frame}/></ProtectedRoute>}/>
