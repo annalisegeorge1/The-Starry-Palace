@@ -318,6 +318,18 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain("if(saved.blocked){navigate('/settings?tab=boundaries');return}");
   });
 
+  it('makes member Mute quiet ambient personal feeds without blocking direct access',()=>{
+    const data=read('src/palaceData.js');
+    expect(data).toContain("from('user_member_boundaries').select('other_user_id,muted,blocked').eq('user_id',userId)");
+    expect(data).toContain("const quiet=new Set((boundaries.data||[]).filter(x=>x.muted||x.blocked).map(x=>x.other_user_id))");
+    expect(data).toContain('const quietMemberIds=new Set((boundaries.data||[]).filter(x=>x.muted||x.blocked).map(x=>x.other_user_id))');
+    expect(data).toContain('const visibleThreads=(threads.data||[]).filter(x=>!quietMemberIds.has(x.author_id))');
+    expect(data).toContain('const visibleReplies=(replies.data||[]).filter(x=>!quietMemberIds.has(x.author_id))');
+    expect(data).toContain('const visibleChat=(chat.data||[]).filter(x=>!quietMemberIds.has(x.author_id))');
+    expect(data).toContain("select('id,author_id,title,body,highlighted,created_at,profiles!member_introductions_author_id_fkey");
+    expect(data).toContain('introductions:visibleIntros');
+  });
+
   it('keeps Reading Rooms and My Library polished and functional',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
