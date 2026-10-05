@@ -176,6 +176,15 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('Visit Palace Life');
   });
 
+  it('keeps shared room states visually finished across the Palace',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('palace-state-loading');
+    expect(live).toContain('Try this room again');
+    expect(polish).toContain('.palace-state');
+    expect(polish).toContain('.palace-dialog');
+    expect(polish).toContain('.library-tabs,.treasury-tabs,.life-tabs');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
