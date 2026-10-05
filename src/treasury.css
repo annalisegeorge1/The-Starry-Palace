@@ -1,1 +1,56 @@
 .badge-controls{display:flex;flex-wrap:wrap;gap:1rem;margin:2rem 0}.badge-controls label{display:grid;gap:.5rem;flex:1;min-width:180px}.badge-controls input,.badge-controls select{font:inherit;padding:.85rem;background:#161b31;color:#eef0ff;border:1px solid #596080;border-radius:8px;width:100%}.badge-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:1.25rem}.badge-card{padding:1.3rem;border:1px solid #41496a;border-radius:16px;background:#191d32;overflow:hidden}.badge-card img{width:100%;height:200px;object-fit:contain;display:block;margin-bottom:1rem}.badge-card h2{font-size:1.25rem;line-height:1.4}.badge-card small{color:#bbc6eb}.badge-card p{line-height:1.6}.badge-goal{color:#c8ceff}.badge-requirements{padding:0;list-style:none}.badge-requirements li{display:flex;justify-content:space-between;gap:1rem;padding:.6rem 0;border-bottom:1px solid #3b425e}.badge-card button:focus-visible,.badge-controls input:focus-visible,.badge-controls select:focus-visible{outline:3px solid #bfcaff;outline-offset:3px}
+
+
+/* Palace gift catalogue */
+.treasury-catalogue-head{max-width:880px}
+.treasury-collection-switch{margin-bottom:1rem}
+.gift-catalogue-status{display:flex;justify-content:space-between;gap:1rem;align-items:center;margin:.85rem 0 1rem;color:var(--muted,#9ba4c5)}
+.gift-catalogue-status p{margin:0;color:var(--text,#edf0ff);font-weight:650}
+.gift-catalogue-status span{font-size:.78rem;opacity:.72;text-align:right}
+.gift-catalogue-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.gift-catalogue-card{display:grid;grid-template-rows:auto 1fr;overflow:hidden;border:1px solid var(--line,rgba(255,255,255,.1));border-radius:22px;background:linear-gradient(155deg,color-mix(in srgb,var(--surface,#11162d) 95%,#2a2453 5%),var(--surface,#11162d));box-shadow:0 16px 40px rgba(4,7,20,.12)}
+.gift-catalogue-copy{padding:1rem 1rem 1.1rem;display:grid;align-content:start}
+.gift-catalogue-copy small{font-size:.64rem;letter-spacing:.11em;opacity:.58;text-transform:uppercase}
+.gift-catalogue-copy h2{font-family:Georgia,'Times New Roman',serif;font-weight:500;font-size:1.25rem;margin:.35rem 0 .5rem}
+.gift-catalogue-copy p{font-size:.86rem;line-height:1.55;opacity:.72;margin:0 0 1rem}
+.gift-catalogue-copy footer{display:flex;justify-content:space-between;gap:.65rem;align-items:center;margin-top:auto;font-size:.7rem}
+.gift-catalogue-copy footer span{opacity:.58}.gift-catalogue-copy footer b{font-weight:650}
+.catalogue-pagination{display:flex;justify-content:center;align-items:center;gap:.8rem;margin:1.2rem 0 2rem}
+.catalogue-pagination button{border:1px solid var(--line,rgba(255,255,255,.12));background:var(--surface,#11162d);color:inherit;border-radius:999px;padding:.6rem .85rem}
+.catalogue-pagination button:disabled{opacity:.35;cursor:not-allowed}
+.catalogue-pagination span{font-size:.78rem;opacity:.68}
+.catalogue-message{padding:1.4rem;border:1px dashed var(--line,rgba(255,255,255,.12));border-radius:18px;text-align:center;opacity:.75}
+
+.palace-gift-art{--gift-ink:#c9c2ec;position:relative;isolation:isolate;overflow:hidden;min-height:210px;margin:0;display:grid;place-items:center;background:
+ linear-gradient(180deg,rgba(7,11,28,.15),rgba(7,11,28,.56)),
+ radial-gradient(circle at 25% 25%,rgba(132,107,196,.25),transparent 36%),
+ linear-gradient(145deg,#131832,#0a0f24)}
+.palace-gift-art:before{content:'';position:absolute;inset:9%;border:1px solid color-mix(in srgb,var(--gift-ink) 45%,transparent);border-radius:48% 52% 46% 54%/44% 54% 46% 56%;box-shadow:inset 0 0 35px rgba(255,255,255,.025),0 0 35px color-mix(in srgb,var(--gift-ink) 10%,transparent);transform:rotate(-2deg);z-index:1}
+.palace-gift-art:after{content:'';position:absolute;width:54%;height:35%;left:22%;bottom:17%;border-bottom:1px solid color-mix(in srgb,var(--gift-ink) 32%,transparent);border-radius:50%;opacity:.8;z-index:2}
+.gift-watercolour{position:absolute;border-radius:50%;filter:blur(18px);opacity:.34;mix-blend-mode:screen;z-index:0}
+.wash-a{width:54%;height:48%;left:7%;top:14%;background:color-mix(in srgb,var(--gift-ink) 44%,transparent);transform:rotate(14deg)}
+.wash-b{width:44%;height:44%;right:8%;bottom:6%;background:rgba(74,95,149,.34);transform:rotate(-18deg)}
+.gift-object-glyph{position:relative;z-index:3;font-family:Georgia,'Times New Roman',serif;font-size:4.5rem;line-height:1;color:var(--gift-ink);text-shadow:0 10px 30px rgba(0,0,0,.35);filter:saturate(.75);transform:rotate(-2deg)}
+.gift-moon-line{position:absolute;right:14%;top:11%;z-index:3;font:2.2rem Georgia,'Times New Roman',serif;color:color-mix(in srgb,var(--gift-ink) 72%,#fff 28%);opacity:.75}
+.gift-catalogue-mark{position:absolute;left:12%;bottom:13%;z-index:3;font:.66rem/1.1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.16em;color:color-mix(in srgb,var(--gift-ink) 72%,#fff 28%);opacity:.75}
+.palace-gift-art figcaption{position:absolute;right:10%;bottom:9%;z-index:3;display:grid;text-align:right}
+.palace-gift-art figcaption strong{font:500 .78rem Georgia,'Times New Roman',serif;max-width:150px}
+.palace-gift-art figcaption span{font-size:.58rem;text-transform:uppercase;letter-spacing:.15em;opacity:.7}
+.palace-gift-art.compact{min-height:86px;width:86px;border-radius:18px}
+.palace-gift-art.compact .gift-object-glyph{font-size:2.2rem}.palace-gift-art.compact .gift-moon-line{font-size:1rem}.palace-gift-art.compact .gift-catalogue-mark{font-size:.48rem;left:10%;bottom:9%}
+.palace-gift-art.is-locked{filter:grayscale(.8);opacity:.55}
+.palace-gift-art.tier-bronze{--gift-ink:#b89277}.palace-gift-art.tier-silver{--gift-ink:#bcc8d8}.palace-gift-art.tier-gold{--gift-ink:#d2ba79}.palace-gift-art.tier-platinum{--gift-ink:#b9b8d9}.palace-gift-art.tier-emerald{--gift-ink:#86b7a0}
+.palace-gift-art.seed-1{background:linear-gradient(180deg,rgba(7,11,28,.1),rgba(7,11,28,.58)),radial-gradient(circle at 72% 28%,rgba(94,123,168,.28),transparent 34%),linear-gradient(145deg,#12182f,#0a0f24)}
+.palace-gift-art.seed-2{background:linear-gradient(180deg,rgba(7,11,28,.1),rgba(7,11,28,.58)),radial-gradient(circle at 30% 72%,rgba(102,82,146,.28),transparent 36%),linear-gradient(145deg,#17152d,#0b1025)}
+.palace-gift-art.seed-3{background:linear-gradient(180deg,rgba(7,11,28,.1),rgba(7,11,28,.58)),radial-gradient(circle at 70% 72%,rgba(66,106,132,.27),transparent 35%),linear-gradient(145deg,#101a30,#0a0f24)}
+.palace-gift-art.seed-4{background:linear-gradient(180deg,rgba(7,11,28,.1),rgba(7,11,28,.58)),radial-gradient(circle at 45% 20%,rgba(120,89,143,.25),transparent 36%),linear-gradient(145deg,#18152c,#0b1025)}
+.palace-gift-art.seed-5{background:linear-gradient(180deg,rgba(7,11,28,.1),rgba(7,11,28,.58)),radial-gradient(circle at 20% 35%,rgba(71,111,132,.25),transparent 34%),linear-gradient(145deg,#111a2c,#0a1024)}
+.palace-gift-art.seed-6{background:linear-gradient(180deg,rgba(7,11,28,.1),rgba(7,11,28,.58)),radial-gradient(circle at 80% 42%,rgba(90,83,150,.26),transparent 37%),linear-gradient(145deg,#14162f,#090f23)}
+.palace-gift-art.seed-7{background:linear-gradient(180deg,rgba(7,11,28,.1),rgba(7,11,28,.58)),radial-gradient(circle at 46% 78%,rgba(64,102,149,.25),transparent 35%),linear-gradient(145deg,#10172c,#0a0f22)}
+.palace-gift-art.seed-8{background:linear-gradient(180deg,rgba(7,11,28,.1),rgba(7,11,28,.58)),radial-gradient(circle at 30% 25%,rgba(118,99,156,.23),transparent 35%),linear-gradient(145deg,#17162e,#0c1025)}
+.palace-gift-art.seed-9{background:linear-gradient(180deg,rgba(7,11,28,.1),rgba(7,11,28,.58)),radial-gradient(circle at 70% 25%,rgba(65,107,144,.26),transparent 33%),linear-gradient(145deg,#111a2e,#0a1025)}
+.palace-gift-art.seed-10{background:linear-gradient(180deg,rgba(7,11,28,.1),rgba(7,11,28,.58)),radial-gradient(circle at 75% 75%,rgba(108,84,147,.25),transparent 35%),linear-gradient(145deg,#16142b,#0a0f22)}
+.palace-gift-art.seed-11{background:linear-gradient(180deg,rgba(7,11,28,.1),rgba(7,11,28,.58)),radial-gradient(circle at 24% 75%,rgba(63,98,139,.25),transparent 34%),linear-gradient(145deg,#11172b,#090f22)}
+
+@media(max-width:1050px){.gift-catalogue-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.gift-catalogue-grid{grid-template-columns:1fr}.gift-catalogue-status{display:grid}.gift-catalogue-status span{text-align:left}.palace-gift-art{min-height:190px}}
