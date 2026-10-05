@@ -765,8 +765,13 @@ export function WorkLive({Frame}){
  const totalWords=readable.reduce((n,ch)=>n+Number(ch.word_count||0),0);
  const first=readable[0];
  const resumeChapter=readerState.progress?.chapter_id&&readable.find(ch=>ch.id===readerState.progress.chapter_id);
- const startChapter=resumeChapter||first;
+ const updatedSinceRead=!!(readerState.progress?.updated_at&&data?.last_published_at&&new Date(data.last_published_at)>new Date(readerState.progress.updated_at));
+ const reopenedAfterFinish=!!readerState.progress?.completed&&updatedSinceRead;
+ const resumeIndex=resumeChapter?publicChapters.findIndex(ch=>ch.id===resumeChapter.id):-1;
+ const nextUnreadChapter=reopenedAfterFinish?(publicChapters[resumeIndex+1]||publicChapters[publicChapters.length-1]||first):null;
+ const startChapter=reopenedAfterFinish?nextUnreadChapter:(resumeChapter||first);
  const hasProgress=!!(resumeChapter&&Number(readerState.progress?.progress_percent||0)>0&&!readerState.progress?.completed);
+ const primaryReadLabel=reopenedAfterFinish?'Read new chapter →':hasProgress?'Continue reading →':readerState.progress?.completed?'Read again →':publicChapters.length?'Begin reading →':'Open draft';
  return <Frame><State loading={data===undefined&&!error} error={error}>{data&&<article className="work-page restored">
   <section className="work-entry-hero">
    <div className="work-cover restored">{data.cover_url?<img decoding="async" fetchPriority="high" src={data.cover_url} alt=""/>:<span>☾</span>}</div>
@@ -776,11 +781,12 @@ export function WorkLive({Frame}){
     <p className="work-byline">by <Link to={"/member/"+data.profiles?.username}>{data.profiles?.display_name||data.profiles?.username||'Palace writer'}</Link></p>
     <p className="lede">{data.summary||'The author has left this doorway without a summary.'}</p>
     {community.tags.length>0&&<div className="work-tag-row">{community.tags.map(x=><Link key={x.tags.id} to={"/tags?q="+encodeURIComponent(x.tags.name)}>#{x.tags.name}</Link>)}</div>}
-    <div className="work-actions restored">{startChapter&&<Link className="primary-read-action" to={"/work/"+data.slug+"/chapter/"+startChapter.id}>{hasProgress?'Continue reading →':publicChapters.length?'Begin reading':'Open draft'}</Link>}<button className={readerState.saved?'active':''} disabled={readerBusy==='save'} onClick={()=>keep('save')}>{readerBusy==='save'?'Saving…':readerState.saved?'Saved ✓':'Save to Library'}</button><button className={"quiet-button "+(readerState.following?'active':'')} disabled={readerBusy==='follow'} onClick={()=>keep('follow')}>{readerBusy==='follow'?'Updating…':readerState.following?'Following ✓':'Follow story'}</button>{session&&session.user.id!==data.author_id&&<button className="quiet-button danger-action" onClick={openWorkReport}>Report work</button>}</div>
+    <div className="work-actions restored">{startChapter&&<Link className="primary-read-action" to={"/work/"+data.slug+"/chapter/"+startChapter.id}>{primaryReadLabel}</Link>}<button className={readerState.saved?'active':''} disabled={readerBusy==='save'} onClick={()=>keep('save')}>{readerBusy==='save'?'Saving…':readerState.saved?'Saved ✓':'Save to Library'}</button><button className={"quiet-button "+(readerState.following?'active':'')} disabled={readerBusy==='follow'} onClick={()=>keep('follow')}>{readerBusy==='follow'?'Updating…':readerState.following?'Following ✓':'Follow story'}</button>{session&&session.user.id!==data.author_id&&<button className="quiet-button danger-action" onClick={openWorkReport}>Report work</button>}</div>
     {notice&&<small className="save-note" role="status">{notice}</small>}
    </div>
   </section>
-  {hasProgress&&<section className="work-resume-strip"><div><span aria-hidden="true">▤</span><div><small>YOUR READING PLACE</small><strong>{resumeChapter?.title}</strong><p>{Math.round(Number(readerState.progress?.progress_percent||0))}% through this work</p></div></div><Link to={"/work/"+data.slug+"/chapter/"+resumeChapter.id}>Continue →</Link></section>}
+  {hasProgress&&<section className={"work-resume-strip"+(updatedSinceRead?' has-new-chapter':'')}><div><span aria-hidden="true">{updatedSinceRead?'✦':'▤'}</span><div><small>{updatedSinceRead?'YOUR PLACE · NEW CHAPTER AHEAD':'YOUR READING PLACE'}</small><strong>{resumeChapter?.title}</strong><p>{Math.round(Number(readerState.progress?.progress_percent||0))}% through this work{updatedSinceRead?' · your current place stays unchanged':''}</p></div></div><Link to={"/work/"+data.slug+"/chapter/"+resumeChapter.id}>Continue →</Link></section>}
+  {reopenedAfterFinish&&nextUnreadChapter&&<section className="work-resume-strip has-new-chapter"><div><span aria-hidden="true">✦</span><div><small>NEW CHAPTER AFTER YOU FINISHED</small><strong>{nextUnreadChapter.title}</strong><p>Your completed reading history is kept, and this new chapter reopens the story for you.</p></div></div><Link to={"/work/"+data.slug+"/chapter/"+nextUnreadChapter.id}>Read new →</Link></section>}
   <section className="work-stat-strip">
    <article><strong>{readable.length}</strong><span>chapter{readable.length===1?'':'s'}</span></article>
    <article><strong>{totalWords.toLocaleString()}</strong><span>words</span></article>
