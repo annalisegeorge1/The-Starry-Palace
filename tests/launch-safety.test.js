@@ -688,6 +688,12 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.comic-resume-strip.new-panels');
   });
 
+  it('records comic progress when the visible page opens',()=>{
+    expect(live).toContain('if(!session||!data||!page)return');
+    expect(live).toContain('recordComicProgress(session.user.id,data.comic.id,data.episode.id,page.id,comicCompleted)');
+    expect(live).toContain('index===pages.length-1&&episodeIndex===readableEpisodes.length-1');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
