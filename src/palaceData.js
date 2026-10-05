@@ -152,6 +152,35 @@ export async function getLibrary(userId){const [saved,progress,subs,savedComics,
 export async function getTagConstellation(){const{data,error}=await needClient().from('tags').select('id,name,category,status,canonical_tag_id').eq('status','canonical').order('name').limit(250);if(error)throw error;return data||[]}
 export async function getWorksForTag(tagId){const{data,error}=await needClient().from('work_tags').select('position,works(id,title,slug,summary,rating,completion_status,cover_url,publication_status,profiles!works_author_id_fkey(username,display_name))').eq('tag_id',tagId).order('position').limit(50);if(error)throw error;return(data||[]).filter(x=>x.works?.publication_status==='published')}
 
+export async function createClub(userId,{name,clubType='reading',privacy='open',description='',guidelines=''}) {
+ const clean=String(name||'').trim();
+ if(clean.length<3)throw new Error('Give the club a name of at least 3 characters.');
+ const base=clean.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,42)||'palace-club';
+ const suffix=Date.now().toString(36).slice(-5);
+ const slug=base+'-'+suffix;
+ const{data,error}=await needClient().from('clubs').insert({
+  owner_id:userId,
+  name:clean,
+  slug,
+  club_type:clubType,
+  privacy,
+  description:String(description||'').trim(),
+  guidelines:String(guidelines||'').trim()||'The Palace Code applies in this room.',
+  discoverable:privacy!=='invite_only'
+ }).select().single();
+ if(error)throw error;return data
+}
+export async function createClubPoll(clubId,question,options){
+ const cleanOptions=(options||[]).map(x=>String(x||'').trim()).filter(Boolean);
+ const{data,error}=await needClient().rpc('create_club_poll',{
+  p_club_id:clubId,
+  p_question:String(question||'').trim(),
+  p_options:cleanOptions,
+  p_closes_at:null
+ });
+ if(error)throw error;return data
+}
+
 export async function getClubRoom(slug,userId){
  const clubReq=await needClient().from('clubs').select('id,owner_id,name,slug,club_type,privacy,description,guidelines,discoverable,created_at,updated_at').eq('slug',slug).maybeSingle();
  if(clubReq.error)throw clubReq.error;
