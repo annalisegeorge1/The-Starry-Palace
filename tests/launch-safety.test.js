@@ -47,6 +47,15 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('support_enabled');
   });
 
+  it('resets scroll and shows a recoverable room loader on route changes',()=>{
+    expect(main).toContain('function NavigationReset()');
+    expect(main).toContain('window.scrollTo({top:0,left:0,behavior:\'auto\'})');
+    expect(main).toContain('function RouteLoading()');
+    expect(main).toContain('Reload room');
+    expect(main).toContain('RouteErrorBoundary');
+    expect(main).toContain('importWithRecovery');
+  });
+
   it('keeps production chunks split and recoverable',()=>{
     const vite=read('vite.config.js');
     expect(vite).toContain("name: 'react-vendor'");
@@ -140,6 +149,14 @@ describe('Starry Palace launch safety',()=>{
     for(const tier of ['bronze','silver','gold','platinum','emerald']){
       expect(badge).toContain(`badgeFrames.${tier}.json`);
     }
+  });
+
+  it('keeps the tablet Palace header tall enough for both icon and search rows',()=>{
+    const css=read('src/style.css');
+    expect(css).toContain('@media(min-width:721px) and (max-width:1120px)');
+    expect(css).toContain('min-height:118px');
+    expect(css).toContain('grid-template-rows:44px 48px');
+    expect(css).toContain('overflow:visible!important');
   });
 
   it('keeps restored sidebar sections fully wired',()=>{
