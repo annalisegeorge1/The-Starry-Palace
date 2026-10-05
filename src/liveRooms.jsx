@@ -59,7 +59,7 @@ export function ChamberLive({Frame}){
   unread&&{kind:'ACTIVITY',icon:'✦',count:unread,title:unread+' unread notification'+(unread===1?'':'s'),copy:'Recent Palace activity is waiting to be reviewed.',to:'/activity'}
  ].filter(Boolean);
  const attentionTotal=attention.reduce((n,x)=>n+Number(x.count||0),0);
- const scheduled=(data?.scheduledComicEpisodes||[]).slice(0,3);
+ const scheduled=[...(data?.scheduledChapters||[]).map(ch=>({id:'writing-'+ch.id,type:'writing',title:ch.title,scheduled_for:ch.scheduled_for,parent:ch.works?.title,href:ch.works?.slug?'/writing/'+ch.works.slug:'/writing'})),...(data?.scheduledComicEpisodes||[]).map(ep=>({id:'comic-'+ep.id,type:'comic',title:ep.title,scheduled_for:ep.scheduled_for,parent:ep.comics?.title,href:'/comics/studio#comic-'+ep.comic_id}))].sort((a,b)=>new Date(a.scheduled_for)-new Date(b.scheduled_for)).slice(0,4);
  const draftChapters=nextDraft?.chapters||[];const draftWords=draftChapters.reduce((n,ch)=>n+(Number(ch.word_count)||0),0);const draftPublished=draftChapters.filter(ch=>ch.status==='published').length;
  return <Frame privateArea><State loading={!data&&!error} error={error}>{p&&<section className="legacy-home-dashboard palace-command-centre">
    <nav className="legacy-home-tabs">
@@ -74,7 +74,7 @@ export function ChamberLive({Frame}){
     <div><p className="eyebrow">✦ MY PALACE</p><h1>Welcome home,<br/><span>{p.display_name||p.username}.</span></h1><p>Pick up what matters next. Everything else can remain quiet until you are ready.</p></div>
     <div className="palace-home-pulse" aria-label="Your Palace today">
       <span><strong>{attentionTotal}</strong><small>attention</small></span>
-      <span><strong>{counts.scheduledComics||0}</strong><small>scheduled</small></span>
+      <span><strong>{(counts.scheduledComics||0)+(counts.scheduledChapters||0)}</strong><small>scheduled</small></span>
       <span><strong>{counts.saved||0}</strong><small>saved worlds</small></span>
     </div>
    </section>
@@ -114,7 +114,7 @@ export function ChamberLive({Frame}){
       <article className="palace-next-event">
         <span className="coming-icon">✧</span><div><small>NEXT EVENT</small><h3>{nextEvent?.title||'Your calendar is open.'}</h3><p>{nextEvent?.starts_at?new Date(nextEvent.starts_at).toLocaleString(undefined,{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Events you mark Going or Interested will appear here.'}</p></div>{nextEvent?<Link to="/events?tab=calendar">View calendar →</Link>:<Link to="/events">Explore events →</Link>}
       </article>
-      <article className="palace-release-desk"><div className="release-desk-head"><span>◷</span><div><small>CREATOR RELEASE DESK</small><h3>{scheduled.length?scheduled.length+' upcoming comic release'+(scheduled.length===1?'':'s'):'No timed release waiting.'}</h3></div></div>{scheduled.length?<div className="release-desk-list">{scheduled.map(ep=><Link key={ep.id} to={"/comics/studio#comic-"+ep.comic_id}><span>{new Date(ep.scheduled_for).toLocaleDateString(undefined,{month:'short',day:'numeric'})}</span><div><strong>{ep.title}</strong><small>{ep.comics?.title} · {new Date(ep.scheduled_for).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'})}</small></div><b>→</b></Link>)}</div>:<p>When you schedule comic episodes, the nearest releases will gather here automatically.</p>}<Link className="release-desk-link" to="/comics/studio">Open Comic Studio →</Link></article>
+      <article className="palace-release-desk"><div className="release-desk-head"><span>◷</span><div><small>CREATOR RELEASE DESK</small><h3>{scheduled.length?scheduled.length+' upcoming release'+(scheduled.length===1?'':'s'):'No timed release waiting.'}</h3></div></div>{scheduled.length?<div className="release-desk-list">{scheduled.map(item=><Link key={item.id} to={item.href}><span>{new Date(item.scheduled_for).toLocaleDateString(undefined,{month:'short',day:'numeric'})}</span><div><strong>{item.title}</strong><small>{item.type==='writing'?'Chapter':'Comic'} · {item.parent||'Untitled'} · {new Date(item.scheduled_for).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'})}</small></div><b>→</b></Link>)}</div>:<p>When you schedule chapters or comic episodes, the nearest releases will gather here automatically.</p>}<div className="release-desk-links"><Link className="release-desk-link" to="/writing">Writing Chamber →</Link><Link className="release-desk-link" to="/comics/studio">Comic Studio →</Link></div></article>
     </div>
    </section>
 
