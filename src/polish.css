@@ -543,3 +543,22 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   }
   .palace-footer nav{justify-content:flex-start}
 }
+
+
+/* Scrolling and media stability */
+.story-row,.library-card,.comic-card,.gift-catalogue-card,.badge-card,.club-card-live,.commons-thread.expanded{
+  content-visibility:auto;
+  contain-intrinsic-size:auto 260px;
+}
+.story-cover,.library-cover,.comic-cover{
+  background:
+    radial-gradient(circle at 50% 35%,rgba(124,108,184,.12),transparent 48%),
+    rgba(13,18,37,.72);
+}
+.story-cover img,.library-cover img,.comic-cover img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+img{max-width:100%}
