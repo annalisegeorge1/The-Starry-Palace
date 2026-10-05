@@ -925,3 +925,28 @@ linear-gradient(145deg,#2d245f,#151c3c 58%,#0c1225);box-shadow:inset 0 0 0 1px r
 .search-archive-list{display:grid;gap:8px}.search-archive-list article{display:grid;grid-template-columns:42px minmax(0,1fr);gap:12px;border:1px solid var(--line);border-radius:16px;padding:12px;background:rgba(18,24,45,.72)}.search-archive-list>article>span{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:1px solid #67587f;color:#bba7da}.search-archive-list h3{font:700 20px Georgia,'Times New Roman',serif;margin:3px 0}.search-archive-list p{margin:0;color:var(--muted)}
 @media(max-width:860px){.search-card-grid,.people-results.restored{grid-template-columns:1fr}.search-club-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:620px){.legacy-search-page{padding-left:14px;padding-right:14px}.palace-search.restored{grid-template-columns:auto minmax(0,1fr)}.palace-search.restored button{grid-column:1/-1}.search-club-grid{grid-template-columns:1fr}.search-result-card{grid-template-columns:76px minmax(0,1fr)}.search-cover{width:76px}}
+
+
+/* Series shelves + 404 recovery */
+.legacy-series-page{max-width:1180px;margin:0 auto;padding:26px clamp(18px,3vw,34px) 90px}
+.series-head{padding-left:0;padding-right:0}
+.series-principle-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 16px}
+.series-principle-row article{border:1px solid var(--line);border-radius:18px;padding:15px;background:linear-gradient(145deg,rgba(31,38,67,.76),rgba(15,21,40,.88))}
+.series-principle-row span{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1px solid #62537f;color:#c6b4ea;font:700 12px Georgia,'Times New Roman',serif}
+.series-principle-row strong,.series-principle-row small{display:block}.series-principle-row strong{margin-top:10px}.series-principle-row small{margin-top:5px;color:var(--muted);line-height:1.45}
+.series-create-row{display:flex;justify-content:space-between;gap:12px;align-items:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;margin-bottom:18px}.series-create-row span{color:var(--muted);font-size:12px}
+.series-grid.restored{display:grid;gap:16px}
+.series-grid.restored>article{border:1px solid #4a506f;border-radius:24px;padding:18px;background:radial-gradient(circle at 90% 10%,rgba(112,86,171,.10),transparent 16rem),linear-gradient(145deg,rgba(31,38,67,.80),rgba(14,20,39,.90))}
+.series-grid.restored>article>header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.series-grid.restored h2{font:700 31px Georgia,'Times New Roman',serif;margin:5px 0}.series-grid.restored header p{color:var(--muted);margin:5px 0}.series-grid.restored header span{color:#b6a9cc;font-size:12px}
+.series-stack{display:grid;margin-top:16px;border-top:1px solid var(--line)}
+.series-stack>article{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
+.series-stack>article>span{font:700 24px Georgia,'Times New Roman',serif;color:#9d90ba}.series-stack h3{margin:0}.series-stack h3 a{color:inherit;text-decoration:none}.series-stack small{color:var(--muted)}
+
+.lost-gates-page{max-width:860px;margin:0 auto;padding:80px 24px 120px;text-align:center;position:relative}
+.lost-gates-orbit{width:210px;height:210px;border-radius:50%;margin:0 auto 28px;display:grid;place-items:center;position:relative;border:1px solid rgba(129,105,180,.24);box-shadow:inset 0 0 70px rgba(107,78,166,.09),0 0 90px rgba(80,58,132,.07)}
+.lost-gates-orbit>span{font:120px/1 Georgia,'Times New Roman',serif;color:rgba(212,203,242,.55)}.lost-gates-orbit>i{position:absolute;right:34px;top:32px;font-style:normal;font-size:30px;color:#cbb9ff}
+.lost-gates-page h1{font:700 clamp(48px,7vw,76px)/1 Georgia,'Times New Roman',serif;letter-spacing:-.04em;margin:10px 0 16px}.lost-gates-page>p:not(.eyebrow){max-width:620px;margin:0 auto;color:var(--muted);font-size:18px;line-height:1.65}
+.lost-gates-actions{display:flex;justify-content:center;gap:14px;align-items:center;margin-top:28px;flex-wrap:wrap}.lost-gates-actions>a:not(.button){color:#accbff;text-decoration:none;font-weight:700}
+@media(max-width:800px){.series-principle-row{grid-template-columns:1fr}.series-grid.restored>article>header{flex-direction:column}.series-stack>article{grid-template-columns:42px minmax(0,1fr)}.series-stack>article>button{grid-column:2;justify-self:start}}
+@media(max-width:560px){.legacy-series-page{padding-left:14px;padding-right:14px}.series-create-row{align-items:flex-start;flex-direction:column}.lost-gates-page{padding-top:54px}.lost-gates-orbit{width:160px;height:160px}.lost-gates-orbit>span{font-size:92px}.lost-gates-page h1{font-size:44px}}
