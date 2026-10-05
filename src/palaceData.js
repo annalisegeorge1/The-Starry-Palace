@@ -93,7 +93,44 @@ export async function getLibrary(userId){const [saved,progress,subs,savedComics,
 export async function getTagConstellation(){const{data,error}=await needClient().from('tags').select('id,name,category,status,canonical_tag_id').eq('status','canonical').order('name').limit(250);if(error)throw error;return data||[]}
 export async function getWorksForTag(tagId){const{data,error}=await needClient().from('work_tags').select('position,works(id,title,slug,summary,rating,completion_status,cover_url,publication_status,profiles!works_author_id_fkey(username,display_name))').eq('tag_id',tagId).order('position').limit(50);if(error)throw error;return(data||[]).filter(x=>x.works?.publication_status==='published')}
 
-export async function getPalaceLife(userId){const [clubs,threads,chat,intros]=await Promise.all([needClient().from('clubs').select('id,name,slug,club_type,privacy,description,club_members!inner(user_id,status)').eq('club_members.user_id',userId).eq('club_members.status','active').limit(12),needClient().from('forum_threads').select('id,title,body,room,created_at,profiles!forum_threads_author_id_fkey(username,display_name)').eq('status','active').order('created_at',{ascending:false}).limit(12),needClient().from('public_chat_messages').select('id,body,created_at,profiles!public_chat_messages_author_id_fkey(username,display_name)').eq('status','active').order('created_at',{ascending:false}).limit(12),needClient().from('member_introductions').select('id,title,body,highlighted,created_at,profiles!member_introductions_author_id_fkey(username,display_name)').eq('status','active').order('created_at',{ascending:false}).limit(8)]);for(const r of[clubs,threads,chat,intros])if(r.error)throw r.error;return{clubs:clubs.data||[],threads:threads.data||[],chat:(chat.data||[]).reverse(),introductions:intros.data||[]}}
+export async function getPalaceLife(userId){
+ const [clubs,threads,chat,intros,clubInvites,clubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions]=await Promise.all([
+  needClient().from('clubs').select('id,name,slug,club_type,privacy,description,club_members!inner(user_id,status,role)').eq('club_members.user_id',userId).eq('club_members.status','active').limit(24),
+  needClient().from('forum_threads').select('id,author_id,title,body,room,created_at,updated_at,profiles!forum_threads_author_id_fkey(username,display_name,avatar_url)').eq('status','active').order('updated_at',{ascending:false}).limit(30),
+  needClient().from('public_chat_messages').select('id,author_id,body,created_at,profiles!public_chat_messages_author_id_fkey(username,display_name,avatar_url)').eq('status','active').order('created_at',{ascending:false}).limit(30),
+  needClient().from('member_introductions').select('id,title,body,highlighted,created_at,profiles!member_introductions_author_id_fkey(username,display_name,avatar_url)').eq('status','active').order('created_at',{ascending:false}).limit(16),
+  needClient().from('club_invitations').select('id,club_id,sender_id,recipient_id,note,status,created_at,clubs(id,name,slug,club_type,privacy),profiles!club_invitations_sender_id_fkey(username,display_name,avatar_url)').eq('recipient_id',userId).eq('status','pending').order('created_at',{ascending:false}).limit(12),
+  needClient().from('club_membership_requests').select('id,club_id,requester_id,note,status,created_at,clubs(id,name,slug),profiles!club_membership_requests_requester_id_fkey(username,display_name,avatar_url)').eq('status','pending').order('created_at',{ascending:false}).limit(30),
+  needClient().from('forum_thread_subscriptions').select('thread_id').eq('user_id',userId),
+  needClient().from('forum_thread_mutes').select('thread_id').eq('user_id',userId),
+  needClient().from('forum_saved_threads').select('thread_id').eq('user_id',userId),
+  needClient().from('community_highlights').select('id,member_id,created_by,reason,status,created_at,profiles!community_highlights_member_id_fkey(username,display_name,avatar_url,title)').in('status',['nominated','approved','featured']).order('created_at',{ascending:false}).limit(20),
+  needClient().from('community_highlight_champions').select('highlight_id,user_id'),
+  needClient().from('community_introductions').select('id,member_id,title,body,tags,visibility,created_at,profiles!community_introductions_member_id_fkey(username,display_name,avatar_url,title)').in('visibility',['public','members']).order('created_at',{ascending:false}).limit(20),
+  needClient().from('community_introduction_reactions').select('introduction_id,user_id,reaction')
+ ]);
+ for(const r of[clubs,threads,chat,intros,clubInvites,clubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions])if(r.error)throw r.error;
+
+ const joined=clubs.data||[];
+ const stewardClubIds=joined.filter(c=>(c.club_members||[]).some(m=>m.role==='steward'||m.role==='owner')).map(c=>c.id);
+ const stewardRequests=(clubRequests.data||[]).filter(r=>stewardClubIds.includes(r.club_id));
+ const subSet=new Set((subscriptions.data||[]).map(x=>x.thread_id));
+ const muteSet=new Set((mutes.data||[]).map(x=>x.thread_id));
+ const saveSet=new Set((savedThreads.data||[]).map(x=>x.thread_id));
+ const championRows=highlightChampions.data||[];
+ const reactionRows=introReactions.data||[];
+
+ return{
+  clubs:joined,
+  threads:(threads.data||[]).map(x=>({...x,subscribed:subSet.has(x.id),muted:muteSet.has(x.id),saved:saveSet.has(x.id)})),
+  chat:(chat.data||[]).reverse(),
+  introductions:intros.data||[],
+  clubInvites:clubInvites.data||[],
+  stewardRequests,
+  highlights:(highlights.data||[]).map(h=>({...h,champion_count:championRows.filter(x=>x.highlight_id===h.id).length,championed:championRows.some(x=>x.highlight_id===h.id&&x.user_id===userId)})),
+  communityIntroductions:(communityIntros.data||[]).map(i=>({...i,reaction_count:reactionRows.filter(x=>x.introduction_id===i.id).length,reacted:reactionRows.some(x=>x.introduction_id===i.id&&x.user_id===userId)}))
+ }
+}
 export async function postMoonlight(userId,body){const text=body.trim();if(!text)throw new Error('Write something before sending it into the room.');const{data,error}=await needClient().from('public_chat_messages').insert({author_id:userId,body:text}).select().single();if(error)throw error;return data}
 export async function createForumThread(userId,title,body){const{data,error}=await needClient().from('forum_threads').insert({author_id:userId,title:title.trim(),body:body.trim(),room:'Palace Commons'}).select().single();if(error)throw error;return data}
 export async function getLetters(userId){const [members,requests,prefs]=await Promise.all([needClient().from('conversation_members').select('conversation_id,joined_at,conversations(id,kind,status,last_message_at,direct_user_a,direct_user_b)').eq('user_id',userId).is('left_at',null),needClient().from('message_requests').select('id,sender_id,recipient_id,intro_text,status,created_at,profiles!message_requests_sender_id_fkey(username,display_name)').eq('recipient_id',userId).eq('status','pending').order('created_at',{ascending:false}),needClient().from('conversation_preferences').select('*').eq('user_id',userId)]);for(const r of[members,requests,prefs])if(r.error)throw r.error;const conversations=members.data||[];const ids=conversations.map(x=>x.conversation_id);let messages=[];if(ids.length){const r=await needClient().from('messages').select('id,conversation_id,sender_id,body,created_at,status').in('conversation_id',ids).eq('status','active').order('created_at',{ascending:false}).limit(100);if(r.error)throw r.error;messages=r.data||[]}const prefMap=Object.fromEntries((prefs.data||[]).map(p=>[p.conversation_id,p]));return{conversations:conversations.map(c=>({...c,preference:prefMap[c.conversation_id]||{starred:false,archived:false,muted:false}})),requests:requests.data||[],messages}}
