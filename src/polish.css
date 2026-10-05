@@ -4331,3 +4331,37 @@ img{max-width:100%}
   .comic-release-queue a{grid-template-columns:auto 1fr}
   .comic-release-queue a b{grid-column:2}
 }
+
+
+.episode-health{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.32rem;
+  margin-top:.42rem;
+}
+.episode-health span{
+  padding:.24rem .46rem;
+  border:1px solid var(--palace-border);
+  border-radius:999px;
+  color:var(--palace-dim);
+  background:rgba(255,255,255,.018);
+  font-size:.55rem;
+}
+.episode-health span.ready,.episode-health span.published{
+  border-color:rgba(113,158,145,.3);
+  color:#bdd8cf;
+  background:rgba(64,108,94,.08);
+}
+.episode-health span.scheduled{
+  border-color:rgba(126,149,210,.32);
+  color:#c2cdec;
+  background:rgba(74,91,153,.1);
+}
+.episode-health span.needs-work{
+  border-color:rgba(184,139,148,.24);
+  color:#d4b9c0;
+  background:rgba(128,72,87,.06);
+}
+.daylight .episode-health span.ready,.daylight .episode-health span.published{color:#35675b}
+.daylight .episode-health span.scheduled{color:#4b5f99}
+.daylight .episode-health span.needs-work{color:#815461}
