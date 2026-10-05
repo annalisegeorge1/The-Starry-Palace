@@ -274,7 +274,7 @@ export async function castClubPollVote(userId,pollId,optionId){
 }
 
 export async function getPalaceLife(userId){
- const [clubs,threads,replies,chat,intros,clubInvites,clubRequests,myClubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions,discovery]=await Promise.all([
+ const [clubs,threads,replies,chat,intros,clubInvites,clubRequests,myClubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions,discovery,boundaries]=await Promise.all([
   needClient().from('clubs').select('id,name,slug,club_type,privacy,description,club_members!inner(user_id,status,role)').eq('club_members.user_id',userId).eq('club_members.status','active').limit(24),
   needClient().from('forum_threads').select('id,author_id,title,body,room,created_at,updated_at,profiles!forum_threads_author_id_fkey(username,display_name,avatar_url)').eq('status','active').order('updated_at',{ascending:false}).limit(30),
   needClient().from('forum_replies').select('id,thread_id,author_id,body,status,created_at,updated_at,profiles!forum_replies_author_id_fkey(username,display_name,avatar_url)').eq('status','active').order('created_at',{ascending:true}).limit(240),
@@ -290,10 +290,18 @@ export async function getPalaceLife(userId){
   needClient().from('community_highlight_champions').select('highlight_id,user_id'),
   needClient().from('community_introductions').select('id,member_id,title,body,tags,visibility,created_at,profiles!community_introductions_member_id_fkey(username,display_name,avatar_url,title)').in('visibility',['public','members']).order('created_at',{ascending:false}).limit(20),
   needClient().from('community_introduction_reactions').select('introduction_id,user_id,reaction'),
-  needClient().from('clubs').select('id,name,slug,club_type,privacy,description,owner_id,created_at').eq('discoverable',true).in('privacy',['open','request_to_join']).order('created_at',{ascending:false}).limit(24)
+  needClient().from('clubs').select('id,name,slug,club_type,privacy,description,owner_id,created_at').eq('discoverable',true).in('privacy',['open','request_to_join']).order('created_at',{ascending:false}).limit(24),
+  needClient().from('user_member_boundaries').select('other_user_id,muted,blocked').eq('user_id',userId)
  ]);
- for(const r of[clubs,threads,replies,chat,intros,clubInvites,clubRequests,myClubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions,discovery])if(r.error)throw r.error;
+ for(const r of[clubs,threads,replies,chat,intros,clubInvites,clubRequests,myClubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions,discovery,boundaries])if(r.error)throw r.error;
 
+ const quietMemberIds=new Set((boundaries.data||[]).filter(x=>x.muted||x.blocked).map(x=>x.other_user_id));
+ const visibleThreads=(threads.data||[]).filter(x=>!quietMemberIds.has(x.author_id));
+ const visibleReplies=(replies.data||[]).filter(x=>!quietMemberIds.has(x.author_id));
+ const visibleChat=(chat.data||[]).filter(x=>!quietMemberIds.has(x.author_id));
+ const visibleIntros=(intros.data||[]).filter(x=>!quietMemberIds.has(x.profiles?.id)&&!quietMemberIds.has(x.author_id));
+ const visibleHighlights=(highlights.data||[]).filter(x=>!quietMemberIds.has(x.member_id));
+ const visibleCommunityIntros=(communityIntros.data||[]).filter(x=>!quietMemberIds.has(x.member_id));
  const joined=clubs.data||[];
  const joinedIds=new Set(joined.map(c=>c.id));
  const discoverableClubs=(discovery.data||[]).filter(c=>!joinedIds.has(c.id));
@@ -308,14 +316,14 @@ export async function getPalaceLife(userId){
  return{
   clubs:joined,
   discoverableClubs,
-  threads:(threads.data||[]).map(x=>{const threadReplies=(replies.data||[]).filter(r=>r.thread_id===x.id);return{...x,subscribed:subSet.has(x.id),muted:muteSet.has(x.id),saved:saveSet.has(x.id),replies:threadReplies,reply_count:threadReplies.length}}),
-  chat:(chat.data||[]).reverse(),
-  introductions:intros.data||[],
+  threads:visibleThreads.map(x=>{const threadReplies=visibleReplies.filter(r=>r.thread_id===x.id);return{...x,subscribed:subSet.has(x.id),muted:muteSet.has(x.id),saved:saveSet.has(x.id),replies:threadReplies,reply_count:threadReplies.length}}),
+  chat:visibleChat.reverse(),
+  introductions:visibleIntros,
   clubInvites:clubInvites.data||[],
   myClubRequests:myClubRequests.data||[],
   stewardRequests,
-  highlights:(highlights.data||[]).map(h=>({...h,champion_count:championRows.filter(x=>x.highlight_id===h.id).length,championed:championRows.some(x=>x.highlight_id===h.id&&x.user_id===userId)})),
-  communityIntroductions:(communityIntros.data||[]).map(i=>({...i,reaction_count:reactionRows.filter(x=>x.introduction_id===i.id).length,reacted:reactionRows.some(x=>x.introduction_id===i.id&&x.user_id===userId)}))
+  highlights:visibleHighlights.map(h=>({...h,champion_count:championRows.filter(x=>x.highlight_id===h.id).length,championed:championRows.some(x=>x.highlight_id===h.id&&x.user_id===userId)})),
+  communityIntroductions:visibleCommunityIntros.map(i=>({...i,reaction_count:reactionRows.filter(x=>x.introduction_id===i.id).length,reacted:reactionRows.some(x=>x.introduction_id===i.id&&x.user_id===userId)}))
  }
 }
 export async function respondClubInvitation(userId,id,status){
@@ -553,9 +561,13 @@ export async function deleteProfilePost(userId,id){
  if(error)throw error
 }
 export async function getFollowingProfilePosts(userId){
- const follows=await needClient().from('member_follows').select('followed_id').eq('follower_id',userId);
- if(follows.error)throw follows.error;
- const ids=(follows.data||[]).map(x=>x.followed_id);
+ const[follows,boundaries]=await Promise.all([
+  needClient().from('member_follows').select('followed_id').eq('follower_id',userId),
+  needClient().from('user_member_boundaries').select('other_user_id,muted,blocked').eq('user_id',userId)
+ ]);
+ if(follows.error)throw follows.error;if(boundaries.error)throw boundaries.error;
+ const quiet=new Set((boundaries.data||[]).filter(x=>x.muted||x.blocked).map(x=>x.other_user_id));
+ const ids=(follows.data||[]).map(x=>x.followed_id).filter(id=>!quiet.has(id));
  if(!ids.length)return[];
  const posts=await needClient().from('profile_posts').select('id,author_id,body,visibility,created_at,updated_at,profiles!profile_posts_author_id_fkey(id,username,display_name,title,avatar_url)').in('author_id',ids).eq('status','active').order('created_at',{ascending:false}).limit(30);
  if(posts.error)throw posts.error;return posts.data||[]
