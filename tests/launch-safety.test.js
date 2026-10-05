@@ -279,6 +279,32 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('/* Member chamber — profile identity should read clearly before decoration. */');
   });
 
+  it('keeps member chambers complete, boundary-aware and creator-focused',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain("from('comics').select('id,title,slug,summary,completion_status,cover_path,last_published_at')");
+    expect(data).toContain("from('series').select('id,title,slug,summary,visibility,updated_at,series_works");
+    expect(data).toContain('comics:signedComics,series:visibleSeries');
+    expect(live).toContain('chamber-creator-overview');
+    expect(live).toContain('Open correspondence');
+    expect(live).toContain('Requests at the door');
+    expect(live).toContain('Letters closed');
+    expect(live).toContain('Begin correspondence');
+    expect(live).toContain('CREATIVE SHELVES');
+    expect(live).toContain('Illustrated worlds');
+    expect(live).toContain('Connected reading paths');
+    expect(live).toContain('const fullBio=p?.bio?.trim()');
+    expect(polish).toContain('/* Member chamber creator-home expansion */');
+    expect(polish).toContain('.member-comics-grid');
+    expect(polish).toContain('.member-series-grid');
+  });
+
+  it('deep-links open chamber correspondence into Palace Letters',()=>{
+    expect(live).toContain("const requestedConversation=new URLSearchParams(window.location.search).get('conversation')");
+    expect(live).toContain("navigate('/letters?conversation='+encodeURIComponent(r.conversation_id))");
+    expect(live).toContain("setSeriesQuery]=useState(()=>new URLSearchParams(window.location.search).get('q')||'')");
+  });
+
   it('keeps Reading Rooms and My Library polished and functional',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
@@ -691,8 +717,8 @@ describe('Starry Palace launch safety',()=>{
     const polish=read('src/polish.css');
     expect(main).toContain('roomCssMatches');
     expect(main).toContain('palace-room-css-sync-reload');
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100513');
-    expect(polish).toContain('--palace-room-css-version:2026100513');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100514');
+    expect(polish).toContain('--palace-room-css-version:2026100514');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
