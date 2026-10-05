@@ -580,16 +580,28 @@ export function SearchLive({Frame}){
  </section></Frame>
 }
 export function TagSearchLive({Frame}){
- const initialText=new URLSearchParams(window.location.search).get('q')||'';const[tags,setTags]=useState([]);const[include,setInclude]=useState([]);const[exclude,setExclude]=useState([]);const[text,setText]=useState(initialText);const[works,setWorks]=useState([]);const[error,setError]=useState('');const[busy,setBusy]=useState(false);
+ const initialText=new URLSearchParams(window.location.search).get('q')||'';const[tags,setTags]=useState([]);const[include,setInclude]=useState([]);const[exclude,setExclude]=useState([]);const[text,setText]=useState(initialText);const[works,setWorks]=useState([]);const[error,setError]=useState('');const[busy,setBusy]=useState(false);const[savedConstellations,setSavedConstellations]=useState(()=>{try{return JSON.parse(localStorage.getItem('palace-saved-constellations')||'[]').slice(0,12)}catch{return[]}});
  useEffect(()=>{getTagConstellation().then(setTags).catch(e=>setError(e.message))},[]);
  useEffect(()=>{if(initialText){setBusy(true);searchWorksByTags([],[],initialText).then(setWorks).catch(e=>setError(e.message)).finally(()=>setBusy(false))}},[]);
  async function run(e){e?.preventDefault();setBusy(true);setError('');try{setWorks(await searchWorksByTags(include,exclude,text));history.replaceState(null,'','/tags'+(text.trim()?('?q='+encodeURIComponent(text.trim())):''))}catch(e){setError(e.message)}finally{setBusy(false)}}
  function flip(id,mode){if(mode==='include'){setExclude(x=>x.filter(v=>v!==id));setInclude(x=>x.includes(id)?x.filter(v=>v!==id):[...x,id])}else{setInclude(x=>x.filter(v=>v!==id));setExclude(x=>x.includes(id)?x.filter(v=>v!==id):[...x,id])}}
  const categories=[...new Set(tags.map(t=>t.category))];
  const byId=Object.fromEntries(tags.map(t=>[t.id,t]));
+ function saveConstellation(){
+  if(!text.trim()&&!include.length&&!exclude.length)return;
+  const names=[...include.map(id=>'+'+(byId[id]?.name||'tag')),...exclude.map(id=>'−'+(byId[id]?.name||'tag'))];
+  const label=text.trim()||names.slice(0,3).join(' · ')||'Saved constellation';
+  const item={id:Date.now().toString(36),label:label.slice(0,70),text:text.trim(),include:[...include],exclude:[...exclude]};
+  const next=[item,...savedConstellations].slice(0,12);setSavedConstellations(next);try{localStorage.setItem('palace-saved-constellations',JSON.stringify(next))}catch{}
+ }
+ function applyConstellation(item){setText(item.text||'');setInclude(item.include||[]);setExclude(item.exclude||[]);setBusy(true);searchWorksByTags(item.include||[],item.exclude||[],item.text||'').then(setWorks).catch(e=>setError(e.message)).finally(()=>setBusy(false))}
+ function removeConstellation(id){const next=savedConstellations.filter(x=>x.id!==id);setSavedConstellations(next);try{localStorage.setItem('palace-saved-constellations',JSON.stringify(next))}catch{}}
+ function resetConstellation(){setInclude([]);setExclude([]);setText('');setWorks([]);history.replaceState(null,'','/tags')}
  return <Frame><section className="legacy-tags-page">
   <section className="room-title"><p className="eyebrow">THE TAG CONSTELLATION</p><h1>Find the thread between worlds.</h1><p className="lede">Include what you want. Exclude what you do not. Canonical tags guide discovery without deciding artistic worth.</p></section>
-  <form className="constellation-search restored" onSubmit={run}><span>⌕</span><input value={text} onChange={e=>setText(e.target.value)} placeholder="Search title, summary or a quoted phrase…"/><button disabled={busy}>{busy?'Gathering…':'Search stories'}</button></form>
+  <form className="constellation-search restored" onSubmit={run}><span aria-hidden="true">⌕</span><input aria-label="Search stories inside the Tag Constellation" value={text} onChange={e=>setText(e.target.value)} placeholder="Search title, summary or a quoted phrase…"/><button disabled={busy}>{busy?'Gathering…':'Search stories'}</button></form>
+  <div className="constellation-actions"><button disabled={!text.trim()&&!include.length&&!exclude.length} onClick={saveConstellation}>☆ Save constellation</button><button className="quiet-button" disabled={!text.trim()&&!include.length&&!exclude.length&&!works.length} onClick={resetConstellation}>Reset</button><span>Saved constellations stay on this device.</span></div>
+  {savedConstellations.length>0&&<section className="saved-constellations"><div><p className="eyebrow">SAVED CONSTELLATIONS</p><h2>Return to a familiar search.</h2></div><div>{savedConstellations.map(item=><article key={item.id}><button className="saved-constellation-open" onClick={()=>applyConstellation(item)}><strong>{item.label}</strong><small>{item.include.length} included · {item.exclude.length} excluded{item.text?' · text search':''}</small></button><button className="saved-constellation-remove" onClick={()=>removeConstellation(item.id)} aria-label={"Remove "+item.label}>×</button></article>)}</div></section>}
   {(include.length>0||exclude.length>0)&&<section className="tag-selection-ledger"><div><p className="eyebrow">YOUR CONSTELLATION</p><h2>Included & excluded signals.</h2></div><div>{include.map(id=><button className="include" key={'i-'+id} onClick={()=>flip(id,'include')}>＋ {byId[id]?.name||'tag'} ×</button>)}{exclude.map(id=><button className="exclude" key={'e-'+id} onClick={()=>flip(id,'exclude')}>− {byId[id]?.name||'tag'} ×</button>)}</div></section>}
   <section className="tag-category-grid">{categories.map(category=><article key={category}><header><span>✦</span><div><small>CONSTELLATION</small><h2>{category}</h2></div></header><div className="tag-picker restored">{tags.filter(t=>t.category===category).map(tag=><div key={tag.id} className={(include.includes(tag.id)?'included ':'')+(exclude.includes(tag.id)?'excluded':'')}><strong>{tag.name}</strong><div><button className={include.includes(tag.id)?'on':''} onClick={()=>flip(tag.id,'include')}>＋ include</button><button className={exclude.includes(tag.id)?'off':''} onClick={()=>flip(tag.id,'exclude')}>− exclude</button></div></div>)}</div></article>)}</section>
   {error&&<div className="live-state error-state">{error}</div>}
