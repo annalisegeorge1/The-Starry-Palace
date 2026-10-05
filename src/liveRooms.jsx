@@ -79,6 +79,15 @@ export function ChamberLive({Frame}){
     </div>
    </section>
 
+   <nav className="palace-home-shortcuts" aria-label="My Palace quick actions">
+    <Link to="/writing"><span>✎</span><small>Writing</small></Link>
+    <Link to="/library"><span>▤</span><small>Library</small></Link>
+    <Link to="/comics/studio"><span>◈</span><small>Comic Studio</small></Link>
+    <Link to="/events?tab=calendar"><span>✧</span><small>Calendar</small></Link>
+    <Link to="/treasury"><span>♛</span><small>Treasury</small></Link>
+    <Link to="/search"><span>⌕</span><small>Search</small></Link>
+   </nav>
+
    <section className="palace-dashboard-section palace-resume-section">
     <div className="section-heading"><div><p className="eyebrow">CONTINUE</p><h2>Return to where you were.</h2><p>Your private creative and reading places, gathered without ranking them against anyone else.</p></div><Link to="/library">Open full library →</Link></div>
     <div className="palace-resume-grid">
