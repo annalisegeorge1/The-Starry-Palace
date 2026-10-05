@@ -763,6 +763,20 @@ export async function addToLibraryOrganizer(kind,containerId,item){
  const row={[key]:containerId,work_id:item.type==='work'?item.id:null,comic_id:item.type==='comic'?item.id:null};
  const{data,error}=await needClient().from(table).insert(row).select().single();if(error?.code==='23505')throw new Error('That item is already in this shelf.');if(error)throw error;return data
 }
+export async function updateLibraryOrganizer(userId,kind,id,{name,description=''}) {
+ const table=kind==='collection'?'library_collections':'reading_lists';
+ const clean=String(name||'').trim();if(!clean)throw new Error('Give this shelf a name.');
+ const{data,error}=await needClient().from(table).update({name:clean.slice(0,100),description:String(description||'').trim().slice(0,600),updated_at:new Date().toISOString()}).eq('id',id).eq('user_id',userId).select().single();
+ if(error)throw error;return data
+}
+export async function deleteLibraryOrganizer(userId,kind,id){
+ const table=kind==='collection'?'library_collections':'reading_lists';
+ const{error}=await needClient().from(table).delete().eq('id',id).eq('user_id',userId);if(error)throw error;return true
+}
+export async function removeLibraryOrganizerItem(kind,itemId){
+ const table=kind==='collection'?'library_collection_items':'reading_list_items';
+ const{error}=await needClient().from(table).delete().eq('id',itemId);if(error)throw error;return true
+}
 export async function getReaderNotesForChapter(userId,chapterId){
  const{data,error}=await needClient().from('reader_notes').select('id,work_id,chapter_id,note_text,bookmark_label,created_at,updated_at').eq('user_id',userId).eq('chapter_id',chapterId).order('updated_at',{ascending:false});
  if(error)throw error;return data||[]
