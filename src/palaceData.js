@@ -126,7 +126,7 @@ export async function getArchive(){const{data,error}=await needClient().from('ar
 export async function saveArchiveRecord(userId,recordId){const{error}=await needClient().from('user_archive_records').upsert({user_id:userId,record_id:recordId,saved:true,visited_at:new Date().toISOString(),updated_at:new Date().toISOString()},{onConflict:'user_id,record_id'});if(error)throw error}
 
 export async function getMemberProfile(username,viewerId){
- const{data:profile,error}=await needClient().from('profiles').select('id,username,display_name,title,bio,avatar_url,cover_url,visibility,message_policy').eq('username',username).maybeSingle();
+ const{data:profile,error}=await needClient().from('profiles').select('id,username,display_name,title,bio,avatar_url,cover_url,visibility,message_policy,pronouns,status_line,availability,roles,featured_genres,featured_fandoms,accent,cover_position').eq('username',username).maybeSingle();
  if(error)throw error;if(!profile)return null;
  const own=viewerId===profile.id;
  const [privacy,works,follow,counting,seriesCount,clubCount,honourCount]=await Promise.all([
