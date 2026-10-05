@@ -305,6 +305,19 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain("setSeriesQuery]=useState(()=>new URLSearchParams(window.location.search).get('q')||'')");
   });
 
+  it('keeps Exile destructive to stale social links without weakening authenticated creator RPCs',()=>{
+    const sql=read('database/social-boundary-hardening.sql');
+    expect(sql).toContain('private.enforce_member_exile_cleanup()');
+    expect(sql).toContain('delete from public.member_follows');
+    expect(sql).toContain('delete from public.message_requests');
+    expect(sql).toContain("where status='pending'");
+    expect(sql).toContain('revoke execute on function public.ascend_palace_gift(uuid,text) from public, anon');
+    expect(sql).toContain('grant execute on function public.ascend_palace_gift(uuid,text) to authenticated');
+    expect(sql).toContain('revoke execute on function public.reorder_comic_pages(uuid,uuid[]) from public, anon');
+    expect(sql).toContain('revoke execute on function public.set_profile_gift_showcase(uuid,text,integer) from public, anon');
+    expect(live).toContain("if(saved.blocked){navigate('/settings?tab=boundaries');return}");
+  });
+
   it('keeps Reading Rooms and My Library polished and functional',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
