@@ -337,6 +337,38 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.series-browser-tools');
   });
 
+  it('keeps the story reader deeply configurable without changing global theme',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('palace-reader-face');
+    expect(live).toContain('palace-reader-leading');
+    expect(live).toContain('palace-reader-tone');
+    expect(live).toContain('Reset reader');
+    expect(live).toContain('reader-quick-jump');
+    expect(polish).toContain('.reader-page.face-sans');
+    expect(polish).toContain('.reader-page.tone-paper');
+  });
+
+  it('keeps spoilers functionally hidden until the reader reveals them',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('revealedSpoilers');
+    expect(live).toContain('Spoiler hidden');
+    expect(live).toContain('spoiler-reveal');
+    expect(polish).toContain('.reader-comment.spoiler-hidden');
+  });
+
+  it('keeps work pages aware of saved following and reading progress state',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('getWorkReaderState');
+    expect(data).toContain('setWorkSaved');
+    expect(data).toContain('setWorkFollowing');
+    expect(live).toContain('Continue reading →');
+    expect(live).toContain('work-resume-strip');
+    expect(live).toContain('Saved ✓');
+    expect(live).toContain('Following ✓');
+    expect(polish).toContain('.work-resume-strip');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
