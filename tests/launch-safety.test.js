@@ -84,6 +84,19 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('520 gifts');
   });
 
+  it('keeps gift artwork as painted editions rather than generic placeholders',()=>{
+    const gift=read('src/PalaceGift.jsx');
+    const treasury=read('src/Treasury.jsx');
+    for(const edition of ['nocturne','starlit','moonwashed','celestial','cloudglass','silverleaf','dreaming','blue-hour','midnight']){
+      expect(gift).toContain(edition);
+    }
+    expect(gift).toContain('gift-painted-object');
+    expect(gift).toContain('feTurbulence');
+    expect(gift).toContain('ObjectDrawing');
+    expect(treasury).toContain('giftEditionFilter');
+    expect(treasury).toContain('gift-edition-ribbon');
+  });
+
   it('keeps badge artwork split by tier',()=>{
     const badge=read('src/PalaceBadge.jsx');
     expect(badge).not.toContain('originalBadgeArt.json');
