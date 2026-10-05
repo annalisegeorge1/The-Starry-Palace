@@ -402,10 +402,10 @@ export async function reviewEventProposal(id,status,council_note=''){
 export async function getHonour(userId){const periods=await needClient().from('monthly_court_periods').select('id,month_start,category,status,finalized_at').order('month_start',{ascending:false}).limit(12);if(periods.error)throw periods.error;const ids=(periods.data||[]).map(p=>p.id);let rankings=[];if(ids.length){const r=await needClient().from('monthly_court_rankings').select('period_id,user_id,rank,score,calculated_at,profiles!monthly_court_rankings_user_id_fkey(username,display_name,title,avatar_url)').in('period_id',ids).order('rank');if(r.error)throw r.error;rankings=r.data||[]}let pref=null;if(userId){const pr=await needClient().from('ranking_preferences').select('*').eq('user_id',userId).maybeSingle();if(pr.error)throw pr.error;pref=pr.data;if(!pref){const made=await needClient().from('ranking_preferences').insert({user_id:userId}).select().single();if(made.error)throw made.error;pref=made.data}}return{periods:periods.data||[],rankings,preferences:pref}}
 export async function updateRankingPreferences(userId,patch){const{data,error}=await needClient().from('ranking_preferences').upsert({user_id:userId,...patch,updated_at:new Date().toISOString()},{onConflict:'user_id'}).select().single();if(error)throw error;return data}
 
-export async function getTreasury(userId){const [ach,gifts,showA,showG,pref]=await Promise.all([needClient().from('user_achievement_progress').select('current_value,bronze_unlocked_at,silver_unlocked_at,gold_unlocked_at,platinum_unlocked_at,emerald_unlocked_at,achievement_families(id,name,description,thresholds,art_status,catalogue_number)').eq('user_id',userId),needClient().from('user_gift_inventory').select('tier,copies,virtual_gifts(id,name,description,court_name,catalogue_number,art_status,upgrade_copies)').eq('user_id',userId).gt('copies',0),needClient().from('profile_achievement_showcase').select('achievement_id,display_tier,position').eq('user_id',userId).order('position'),needClient().from('profile_gift_showcase').select('gift_id,display_tier,position').eq('user_id',userId).order('position'),needClient().from('ranking_preferences').select('*').eq('user_id',userId).maybeSingle()]);for(const r of[ach,gifts,showA,showG,pref])if(r.error)throw r.error;return{achievements:ach.data||[],gifts:gifts.data||[],achievementShowcase:showA.data||[],giftShowcase:showG.data||[],rankingPreferences:pref.data}}
+export async function getTreasury(userId){const [ach,gifts,showA,showG,pref]=await Promise.all([needClient().from('user_achievement_progress').select('current_value,bronze_unlocked_at,silver_unlocked_at,gold_unlocked_at,platinum_unlocked_at,emerald_unlocked_at,achievement_families(id,name,description,thresholds,art_status,catalogue_number)').eq('user_id',userId),needClient().from('user_gift_inventory').select('tier,copies,virtual_gifts(id,gift_key,name,description,court_name,catalogue_number,art_status,upgrade_copies)').eq('user_id',userId).gt('copies',0),needClient().from('profile_achievement_showcase').select('achievement_id,display_tier,position').eq('user_id',userId).order('position'),needClient().from('profile_gift_showcase').select('gift_id,display_tier,position').eq('user_id',userId).order('position'),needClient().from('ranking_preferences').select('*').eq('user_id',userId).maybeSingle()]);for(const r of[ach,gifts,showA,showG,pref])if(r.error)throw r.error;return{achievements:ach.data||[],gifts:gifts.data||[],achievementShowcase:showA.data||[],giftShowcase:showG.data||[],rankingPreferences:pref.data}}
 
 export async function getGiftCatalogue(){
- const{data,error,count}=await needClient().from('virtual_gifts').select('id,catalogue_number,name,description,court_name,collection_type,art_status,upgrade_copies',{count:'exact'}).eq('catalogue_status','catalogued').eq('reward_eligible',true).order('catalogue_number');
+ const{data,error,count}=await needClient().from('virtual_gifts').select('id,gift_key,catalogue_number,name,description,court_name,collection_type,art_status,upgrade_copies',{count:'exact'}).eq('catalogue_status','catalogued').eq('reward_eligible',true).order('catalogue_number');
  if(error)throw error;return{items:data||[],count:count||data?.length||0}
 }
 export async function getArchive(){const{data,error}=await needClient().from('archive_records').select('id,accession_number,slug,title,creator_name,record_nature,category,summary,original_language,languages,surviving_extent,known_gaps,provenance_summary,rights_status,hosting_basis,host_mode,continuation_status,verified_at').eq('publication_status','published').order('updated_at',{ascending:false}).limit(100);if(error)throw error;return data||[]}
@@ -446,7 +446,7 @@ export async function getMemberProfile(username,viewerId){
   needClient().from('series').select('id',{count:'exact',head:true}).eq('owner_id',profile.id),
   needClient().from('club_members').select('club_id',{count:'exact',head:true}).eq('user_id',profile.id).eq('status','active'),
   needClient().from('profile_achievement_showcase').select('achievement_id,display_tier,position,achievement_families(id,name,description,catalogue_number,art_status)').eq('user_id',profile.id).order('position'),
-  needClient().from('profile_gift_showcase').select('gift_id,display_tier,position,virtual_gifts(id,name,description,court_name,catalogue_number,art_status)').eq('user_id',profile.id).order('position')
+  needClient().from('profile_gift_showcase').select('gift_id,display_tier,position,virtual_gifts(id,gift_key,name,description,court_name,catalogue_number,art_status)').eq('user_id',profile.id).order('position')
  ]);
  for(const r of[works,follow,counting,seriesCount,clubCount,showA,showG])if(r.error)throw r.error;
  return{
@@ -630,10 +630,10 @@ export async function getLuckyDrawState(userId){
  const month=new Date().toISOString().slice(0,7)+'-01';
  const [catalogue,claim]=await Promise.all([
   needClient().from('virtual_gifts').select('id,catalogue_number,name,description,court_name,collection_type,art_status',{count:'exact'}).eq('catalogue_status','catalogued').eq('reward_eligible',true).order('catalogue_number').limit(8),
-  needClient().from('lucky_draw_claims').select('id,draw_month,gift_id,tier,claimed_at,virtual_gifts(id,catalogue_number,name,description,court_name,art_status)').eq('user_id',userId).eq('draw_month',month).maybeSingle()
+  needClient().from('lucky_draw_claims').select('id,draw_month,gift_id,tier,claimed_at,virtual_gifts(id,gift_key,catalogue_number,name,description,court_name,art_status)').eq('user_id',userId).eq('draw_month',month).maybeSingle()
  ]);
  if(catalogue.error)throw catalogue.error;if(claim.error)throw claim.error;
- const history=await needClient().from('lucky_draw_claims').select('id,draw_month,tier,claimed_at,virtual_gifts(id,catalogue_number,name,court_name)').eq('user_id',userId).order('draw_month',{ascending:false}).limit(12);
+ const history=await needClient().from('lucky_draw_claims').select('id,draw_month,tier,claimed_at,virtual_gifts(id,gift_key,catalogue_number,name,court_name)').eq('user_id',userId).order('draw_month',{ascending:false}).limit(12);
  if(history.error)throw history.error;
  return{catalogueCount:catalogue.count||0,preview:catalogue.data||[],claim:claim.data||null,history:history.data||[]}
 }
@@ -797,3 +797,4 @@ export async function setGiftShowcase(userId,giftId,displayTier,show){
  }
  return true
 }
+
