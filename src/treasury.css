@@ -95,9 +95,9 @@
 .gift-court-motif{fill:none;stroke:var(--court-accent);opacity:.32}
 .gift-court-motif+ .gift-landscape-wash{opacity:.26}
 .gift-court-sigil{position:absolute;right:12%;top:10%;z-index:4;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--court-accent) 46%,transparent);background:color-mix(in srgb,var(--court-glow) 18%,transparent);color:color-mix(in srgb,var(--court-accent) 82%,white 18%);font:1rem Georgia,'Times New Roman',serif}
-.palace-gift-art:before{border-color:color-mix(in srgb,var(--court-accent) 34%,var(--gift-ink) 16%,transparent);box-shadow:inset 0 0 35px rgba(255,255,255,.025),0 0 38px color-mix(in srgb,var(--court-glow) 12%,transparent)}
-.palace-gift-art .wash-a{background:color-mix(in srgb,var(--court-accent) 34%,var(--gift-ink) 22%,transparent)}
-.palace-gift-art .wash-b{background:color-mix(in srgb,var(--court-glow) 34%,#496389 18%,transparent)}
+.palace-gift-art:before{border-color:color-mix(in srgb,var(--court-accent) 58%,transparent);box-shadow:inset 0 0 35px rgba(255,255,255,.025),0 0 38px color-mix(in srgb,var(--court-glow) 12%,transparent)}
+.palace-gift-art .wash-a{background:color-mix(in srgb,var(--court-accent) 48%,transparent)}
+.palace-gift-art .wash-b{background:color-mix(in srgb,var(--court-glow) 42%,transparent)}
 .palace-gift-art figcaption strong{color:color-mix(in srgb,var(--court-accent) 62%,white 38%)}
 .palace-gift-art figcaption span{max-width:170px}
 .palace-gift-art.compact .gift-court-sigil{width:20px;height:20px;right:8%;top:7%;font-size:.68rem}
