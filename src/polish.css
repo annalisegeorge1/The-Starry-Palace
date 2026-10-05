@@ -5310,3 +5310,22 @@ img{max-width:100%}
 .daylight .history-shelf article.has-new-chapter{
   background:linear-gradient(145deg,rgba(240,244,255,.96),rgba(246,241,252,.94))!important;
 }
+
+
+/* Story landing update continuity */
+.work-resume-strip.has-new-chapter{
+  border-color:rgba(128,151,213,.34);
+  background:linear-gradient(135deg,rgba(66,84,150,.12),rgba(92,69,145,.08));
+}
+.work-resume-strip.has-new-chapter>div>span{
+  color:#cbd7f6;
+}
+.work-resume-strip.has-new-chapter small{
+  color:#afbee7;
+}
+.daylight .work-resume-strip.has-new-chapter{
+  background:linear-gradient(135deg,rgba(239,244,255,.96),rgba(246,241,252,.95));
+}
+.daylight .work-resume-strip.has-new-chapter small{
+  color:#566a9f;
+}
