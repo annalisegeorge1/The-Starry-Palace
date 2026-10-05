@@ -229,6 +229,10 @@ export async function replyToClubPost(userId,postId,body){
  const{data,error}=await needClient().from('club_post_replies').insert({post_id:postId,author_id:userId,body:text,status:'active'}).select().single();
  if(error)throw error;return data
 }
+export async function getClubChatMessages(clubId,limit=80){
+ const{data,error}=await needClient().from('club_chat_messages').select('id,club_id,author_id,body,status,created_at,profiles!club_chat_messages_author_id_fkey(id,username,display_name,title,avatar_url)').eq('club_id',clubId).eq('status','active').order('created_at',{ascending:false}).limit(Math.max(1,Math.min(120,Number(limit)||80)));
+ if(error)throw error;return(data||[]).reverse()
+}
 export async function postClubChat(userId,clubId,body){
  const text=String(body||'').trim();if(!text)throw new Error('Write a message first.');
  if(text.length>280)throw new Error('Club chat messages are limited to 280 characters.');
@@ -326,7 +330,11 @@ export async function setIntroductionReaction(userId,introductionId,enabled){
  else{const{error}=await needClient().from('community_introduction_reactions').delete().eq('introduction_id',introductionId).eq('user_id',userId);if(error)throw error}
  return enabled
 }
-export async function postMoonlight(userId,body){const text=body.trim();if(!text)throw new Error('Write something before sending it into the room.');const{data,error}=await needClient().from('public_chat_messages').insert({author_id:userId,body:text}).select().single();if(error)throw error;return data}
+export async function getMoonlightMessages(limit=50){
+ const{data,error}=await needClient().from('public_chat_messages').select('id,author_id,body,created_at,profiles!public_chat_messages_author_id_fkey(username,display_name,avatar_url)').eq('status','active').order('created_at',{ascending:false}).limit(Math.max(1,Math.min(100,Number(limit)||50)));
+ if(error)throw error;return(data||[]).reverse()
+}
+export async function postMoonlight(userId,body){const text=body.trim();if(!text)throw new Error('Write something before sending it into the room.');if(text.length>500)throw new Error('Moonlight messages are limited to 500 characters.');const{data,error}=await needClient().from('public_chat_messages').insert({author_id:userId,body:text,status:'active'}).select().single();if(error)throw error;return data}
 export async function createForumThread(userId,title,body){const cleanTitle=String(title||'').trim();const cleanBody=String(body||'').trim();if(!cleanTitle||!cleanBody)throw new Error('Give the conversation a title and opening thought.');const{data,error}=await needClient().from('forum_threads').insert({author_id:userId,title:cleanTitle.slice(0,120),body:cleanBody.slice(0,4000),room:'Palace Commons'}).select().single();if(error)throw error;return data}
 export async function replyForumThread(userId,threadId,body){
  const text=String(body||'').trim();if(!text)throw new Error('Write a reply first.');if(text.length>2400)throw new Error('Forum replies are limited to 2,400 characters.');
