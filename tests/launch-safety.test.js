@@ -121,6 +121,12 @@ describe('Starry Palace launch safety',()=>{
     expect(treasury).toContain('In your cabinet');
   });
 
+  it('renders showcased gifts with the painted Palace gift system',()=>{
+    expect(live).toContain('<PalaceGift gift={x.virtual_gifts} tier={x.display_tier}/>');
+    expect(live).not.toContain('<div className="showcase-orb">☾</div>');
+    expect(live).toContain('DISPLAYED HONOURS');
+  });
+
   it('keeps badge artwork split by tier',()=>{
     const badge=read('src/PalaceBadge.jsx');
     expect(badge).not.toContain('originalBadgeArt.json');
