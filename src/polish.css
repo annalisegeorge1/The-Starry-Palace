@@ -1,4 +1,4 @@
-:root{--palace-room-css-version:2026100502}
+:root{--palace-room-css-version:2026100503}
 /* The Starry Palace — final professional polish layer
    Keep this file intentionally small and authoritative. New global visual
    refinements belong here instead of adding another override to style.css. */
@@ -3438,4 +3438,114 @@ img{max-width:100%}
     min-width:40px;
     min-height:40px;
   }
+}
+
+
+/* Live Palace chat — realtime first, quiet refresh fallback */
+.moon-connection{
+  flex:0 0 auto;
+  min-height:34px;
+  display:inline-flex;
+  align-items:center;
+  gap:.42rem;
+  padding:.38rem .58rem;
+  border:1px solid var(--palace-border);
+  border-radius:999px;
+  background:rgba(10,15,30,.52);
+  color:var(--palace-muted);
+  font-size:.61rem;
+  letter-spacing:.03em;
+}
+.moon-connection i{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#8790aa;
+  box-shadow:0 0 0 3px rgba(135,144,170,.08);
+}
+.moon-connection.live i{
+  background:#83b7a6;
+  box-shadow:0 0 0 3px rgba(131,183,166,.1),0 0 12px rgba(131,183,166,.28);
+}
+.moon-connection.connecting i{animation:palace-live-pulse 1.15s ease-in-out infinite}
+.moon-connection.refreshing i{background:#b29dca}
+@keyframes palace-live-pulse{50%{opacity:.3;transform:scale(.72)}}
+
+.moon-chat-wrap,.club-chat-wrap{
+  position:relative;
+  min-height:0;
+}
+.moon-stage{
+  overflow:hidden;
+}
+.chat-scroll.live-chat,
+.club-chat-stream{
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(137,132,178,.45) transparent;
+}
+.chat-scroll.live-chat{
+  max-height:min(58vh,600px);
+  overflow-y:auto;
+  scroll-behavior:smooth;
+  padding-right:.25rem;
+}
+.club-chat-stream{
+  max-height:min(56vh,560px);
+  overflow-y:auto;
+  scroll-behavior:smooth;
+}
+.moon-new-messages{
+  position:absolute;
+  left:50%;
+  bottom:.7rem;
+  z-index:4;
+  transform:translateX(-50%);
+  min-height:34px;
+  padding:.4rem .7rem;
+  border:1px solid rgba(170,153,223,.4);
+  border-radius:999px;
+  background:rgba(23,28,52,.95);
+  color:#ece8fb;
+  box-shadow:0 8px 28px rgba(2,5,17,.28);
+  font-size:.65rem;
+  font-weight:700;
+}
+.moon-new-messages:hover{
+  border-color:rgba(190,173,238,.62);
+  background:rgba(45,43,78,.98);
+}
+.club-chat-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:1rem;
+  margin-bottom:.7rem;
+}
+.club-chat-head .eyebrow{margin-bottom:.18rem}
+.club-chat-head strong{font:600 .95rem Georgia,'Times New Roman',serif}
+.club-chat-room{
+  border:1px solid var(--palace-border);
+  border-radius:18px;
+  padding:.9rem;
+  background:rgba(13,18,36,.64);
+}
+.club-chat-compose{
+  margin-top:.65rem;
+  border-top:1px solid var(--palace-border);
+  padding-top:.65rem;
+}
+.club-chat-compose>div span{color:var(--palace-dim);font-size:.6rem}
+.daylight .moon-connection,
+.daylight .club-chat-room,
+.daylight .moon-new-messages{
+  background:rgba(255,255,255,.92);
+}
+.daylight .moon-new-messages{color:#2c3450}
+@media(max-width:620px){
+  .life-room-intro{align-items:flex-start}
+  .moon-connection{min-height:32px}
+  .chat-scroll.live-chat{max-height:54vh}
+  .club-chat-stream{max-height:52vh}
+  .club-chat-head{align-items:flex-start;flex-direction:column}
 }
