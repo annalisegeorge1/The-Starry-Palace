@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import badges from './badges.json';
 import originals from './originalBadges.json';
 import PalaceBadge from './PalaceBadge';
-import PalaceGift, { giftEdition, giftEditions } from './PalaceGift';
+import PalaceGift, { giftCourt, giftCourts, giftEdition, giftEditions } from './PalaceGift';
 import { getGiftCatalogue } from './palaceData';
 import './treasury.css';
 
@@ -66,14 +66,19 @@ export default function Treasury({Frame}) {
     <label>Preview tier<select value={tier} onChange={e=>setTier(e.target.value)}>{tiers.map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label>
    </div>
    <div className="gift-edition-ribbon" aria-label="Painted gift editions">{giftEditions.map(e=><button key={e} className={giftEditionFilter===e?'active':''} onClick={()=>setGiftEditionFilter(giftEditionFilter===e?'all':e)}>{e.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</button>)}</div>
-   <div className="gift-catalogue-status"><p role="status">{visibleGifts.length} prizes found</p><span>Nine ink-wash editions · twenty Palace courts · Bronze through Emerald ascension.</span></div>
+   <div className="gift-court-atlas" aria-label="Palace court atlas">
+    {giftCourts.map(c=><button key={c.slug} className={giftCourt===c.name?'active':''} style={{'--court-accent':c.accent,'--court-glow':c.glow}} onClick={()=>setGiftCourt(giftCourt===c.name?'all':c.name)}>
+     <span className="court-atlas-sigil">{c.sigil}</span><span><strong>{c.name}</strong><small>{c.motto}</small></span>
+    </button>)}
+   </div>
+      <div className="gift-catalogue-status"><p role="status">{visibleGifts.length} prizes found</p><span>Nine ink-wash editions · twenty Palace courts · Bronze through Emerald ascension.</span></div>
    {giftLoading&&<p className="catalogue-message">Gathering the collection beneath the stars…</p>}
    {giftError&&<p className="catalogue-message error-state">{giftError}</p>}
    {!giftLoading&&!giftError&&<>
     <div className="gift-catalogue-grid">{pagedGifts.map(g=><article className="gift-catalogue-card" key={g.id}>
      <PalaceGift gift={g} tier={tier}/>
      <div className="gift-catalogue-copy">
-      <small>CATALOGUE {String(g.catalogue_number).padStart(3,'0')} · {g.court_name} · {giftEdition(g).replace('-',' ')}</small>
+      <small>CATALOGUE {String(g.catalogue_number).padStart(3,'0')} · {giftCourt(g).sigil} {g.court_name} · {giftEdition(g).replace('-',' ')}</small>
       <h2>{g.name}</h2>
       <p>{g.description}</p>
       <footer><span>{g.collection_type||'Palace collectible'}</span><b>{g.upgrade_copies||3} copies to ascend</b></footer>
