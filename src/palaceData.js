@@ -701,8 +701,8 @@ export async function recordComicProgress(userId,comicId,episodeId,pageId,comple
 export async function saveComic(userId,comicId){
  const{error}=await needClient().from('saved_comics').upsert({user_id:userId,comic_id:comicId},{onConflict:'user_id,comic_id'});if(error)throw error
 }
-export async function subscribeComic(userId,comicId,frequency='instant'){
- const{error}=await needClient().from('comic_subscriptions').upsert({user_id:userId,comic_id:comicId,frequency,enabled:true,updated_at:new Date().toISOString()},{onConflict:'user_id,comic_id'});if(error)throw error
+export async function subscribeComic(userId,comicId,frequency='immediate'){
+ const safeFrequency=['immediate','weekly'].includes(frequency)?frequency:'immediate';const{error}=await needClient().from('comic_subscriptions').upsert({user_id:userId,comic_id:comicId,frequency:safeFrequency,enabled:true,updated_at:new Date().toISOString()},{onConflict:'user_id,comic_id'});if(error)throw error
 }
 export async function getComicReaderState(userId,comicId){
  if(!userId)return{saved:false,following:false,progress:null};
@@ -712,7 +712,7 @@ export async function getComicReaderState(userId,comicId){
   needClient().from('comic_reading_progress').select('*').eq('user_id',userId).eq('comic_id',comicId).maybeSingle()
  ]);
  for(const r of[saved,sub,progress])if(r.error)throw r.error;
- return{saved:!!saved.data,following:!!sub.data?.enabled,frequency:sub.data?.frequency||'instant',progress:progress.data||null}
+ return{saved:!!saved.data,following:!!sub.data?.enabled,frequency:sub.data?.frequency||'immediate',progress:progress.data||null}
 }
 export async function getComicShelfState(userId){
  if(!userId)return{};
@@ -724,7 +724,7 @@ export async function getComicShelfState(userId){
  for(const r of[saved,subs,progress])if(r.error)throw r.error;
  const state={};
  for(const row of saved.data||[])state[row.comic_id]={...(state[row.comic_id]||{}),saved:true};
- for(const row of subs.data||[])state[row.comic_id]={...(state[row.comic_id]||{}),following:true,frequency:row.frequency||'instant'};
+ for(const row of subs.data||[])state[row.comic_id]={...(state[row.comic_id]||{}),following:true,frequency:row.frequency||'immediate'};
  for(const row of progress.data||[])state[row.comic_id]={...(state[row.comic_id]||{}),progress:row};
  return state
 }
@@ -733,8 +733,8 @@ export async function setComicSaved(userId,comicId,enabled){
  else{const{error}=await needClient().from('saved_comics').delete().eq('user_id',userId).eq('comic_id',comicId);if(error)throw error}
  return enabled
 }
-export async function setComicFollowing(userId,comicId,enabled,frequency='instant'){
- const{error}=await needClient().from('comic_subscriptions').upsert({user_id:userId,comic_id:comicId,frequency,enabled,updated_at:new Date().toISOString()},{onConflict:'user_id,comic_id'});if(error)throw error;return enabled
+export async function setComicFollowing(userId,comicId,enabled,frequency='immediate'){
+ const safeFrequency=['immediate','weekly'].includes(frequency)?frequency:'immediate';const{error}=await needClient().from('comic_subscriptions').upsert({user_id:userId,comic_id:comicId,frequency:safeFrequency,enabled,updated_at:new Date().toISOString()},{onConflict:'user_id,comic_id'});if(error)throw error;return enabled
 }
 export async function requestComicDownload(userId,comicId,requested_scope='images',note=''){
  const{data,error}=await needClient().from('comic_download_requests').insert({comic_id:comicId,requester_id:userId,requested_scope,note:note.trim(),status:'pending'}).select().single();if(error)throw error;return data
