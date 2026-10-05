@@ -508,6 +508,22 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.top-icon-link');
   });
 
+  it('keeps gift ascension server-validated and chamber showcases ownership-safe',()=>{
+    const data=read('src/palaceData.js');
+    const treasury=read('src/Treasury.jsx');
+    const collection=read('src/treasuryCollection.js');
+    const css=read('src/treasury.css');
+    expect(data).toContain('ascendPalaceGift');
+    expect(data).toContain('setProfileGiftShowcase');
+    expect(data).toContain('removeProfileGiftShowcase');
+    expect(treasury).toContain('Ascend ');
+    expect(treasury).toContain('Add to chamber showcase');
+    expect(treasury).toContain('treasury-showcase-dialog');
+    expect(collection).toContain('counts:{}');
+    expect(collection).toContain('entry.ascendable');
+    expect(css).toContain('.gift-card-actions');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
