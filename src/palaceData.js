@@ -755,6 +755,17 @@ export async function deleteComicPage(userId,comicId,page){
  const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
  const del=await needClient().from('comic_pages').delete().eq('id',page.id);if(del.error)throw del.error;if(page.reader_path)await needClient().storage.from('comic-pages').remove([page.reader_path]);return true
 }
+export async function reorderComicEpisodes(userId,comicId,episodeIds){
+ const ids=[...new Set((episodeIds||[]).filter(Boolean))];const{data,error}=await needClient().rpc('reorder_comic_episodes',{p_comic_id:comicId,p_episode_ids:ids});if(error)throw error;return data
+}
+export async function reorderComicPages(userId,episodeId,pageIds){
+ const ids=[...new Set((pageIds||[]).filter(Boolean))];const{data,error}=await needClient().rpc('reorder_comic_pages',{p_episode_id:episodeId,p_page_ids:ids});if(error)throw error;return data
+}
+export async function updateComicPage(userId,comicId,pageId,patch){
+ const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
+ const decorative=!!patch.decorative;const alt=String(patch.alt_text||'').trim();if(!decorative&&!alt)throw new Error('Add an image description or mark the page decorative.');
+ const{data,error}=await needClient().from('comic_pages').update({caption:String(patch.caption||'').trim().slice(0,500),alt_text:decorative?'':alt.slice(0,1200),decorative,updated_at:new Date().toISOString()}).eq('id',pageId).select().single();if(error)throw error;return data
+}
 export async function getMemberBoundary(userId,otherUserId){
  if(!userId||!otherUserId||userId===otherUserId)return{muted:false,blocked:false};
  const{data,error}=await needClient().from('user_member_boundaries').select('muted,blocked').eq('user_id',userId).eq('other_user_id',otherUserId).maybeSingle();if(error)throw error;return data||{muted:false,blocked:false}
