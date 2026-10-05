@@ -272,11 +272,26 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   .full-topbar{
     position:sticky;
     top:0;
+    height:auto;
+    min-height:118px;
     padding:12px 18px 14px;
+    align-items:stretch;
+    overflow:visible;
   }
-  .full-topbar-row{max-width:none}
-  .global-search-live{height:46px}
-  .full-brand strong{font-size:19px}
+  .full-topbar-row{
+    width:100%;
+    max-width:none;
+    grid-template-columns:minmax(0,1fr) auto;
+    grid-template-rows:44px 48px;
+    column-gap:12px;
+    row-gap:10px;
+    align-items:center;
+  }
+  .full-brand{grid-column:1;grid-row:1;min-width:0}
+  .full-brand>a{min-width:0}
+  .full-brand strong{font-size:19px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .full-top-actions{grid-column:2;grid-row:1;justify-self:end;margin-left:0}
+  .global-search-live{grid-column:1/-1;grid-row:2;width:100%;min-width:0;height:46px}
   .brandmark{width:40px;height:40px;font-size:22px}
   .top-icon-link,.write-action,.nav-toggle{width:40px;height:40px;min-width:40px;min-height:40px}
   .full-stage>main{min-height:calc(100dvh - 118px)}
