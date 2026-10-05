@@ -3972,3 +3972,72 @@ img{max-width:100%}
   .comic-library-search{grid-column:auto}
   .comic-card-head-actions{justify-content:flex-start}
 }
+
+
+/* Comic doorway remembers the reader */
+.comic-work-actions button.active{
+  border-color:rgba(126,160,151,.38);
+  background:rgba(69,111,101,.1);
+  color:#bdd7cf;
+}
+.comic-resume-strip{
+  max-width:1180px;
+  margin:0 auto 1rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  padding:.85rem 1rem;
+  border:1px solid rgba(137,153,201,.24);
+  border-radius:17px;
+  background:linear-gradient(135deg,rgba(71,86,138,.13),rgba(89,68,142,.1));
+}
+.comic-resume-strip>div{
+  display:flex;
+  align-items:center;
+  gap:.8rem;
+  min-width:0;
+}
+.comic-resume-strip>div>span{
+  width:42px;
+  height:42px;
+  flex:0 0 42px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--palace-border);
+  border-radius:12px;
+  background:rgba(107,88,169,.09);
+  font-size:1.1rem;
+}
+.comic-resume-strip>div>div{min-width:0}
+.comic-resume-strip small{
+  display:block;
+  color:var(--palace-dim);
+  font-size:.54rem;
+  letter-spacing:.12em;
+}
+.comic-resume-strip strong{
+  display:block;
+  margin:.16rem 0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font:600 .95rem Georgia,'Times New Roman',serif;
+}
+.comic-resume-strip p{
+  margin:0;
+  color:var(--palace-muted);
+  font-size:.66rem;
+}
+.comic-resume-strip>a{
+  flex:0 0 auto;
+  font-size:.72rem;
+  font-weight:700;
+}
+.daylight .comic-resume-strip{
+  background:rgba(255,255,255,.88);
+}
+@media(max-width:620px){
+  .comic-resume-strip{align-items:flex-start}
+  .comic-resume-strip>a{align-self:center}
+}
