@@ -110,6 +110,18 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.palace-coming-grid');
   });
 
+  it('keeps My Palace counts aligned and merges prose with comic releases',()=>{
+    const data=read('src/palaceData.js');
+    expect(data).toContain('unreadNotices,savedNotices,letterRequests,savedCount');
+    expect(data).toContain('scheduledComicEpisodes,scheduledChapters,collaborationInvites');
+    expect(data).toContain('scheduledChapters:scheduledChapters.data||[]');
+    expect(data).toContain('savedNotices:savedNotices.count||0');
+    expect(live).toContain("type:'writing'");
+    expect(live).toContain("type:'comic'");
+    expect(live).toContain('(counts.scheduledComics||0)+(counts.scheduledChapters||0)');
+    expect(live).toContain('When you schedule chapters or comic episodes');
+  });
+
   it('keeps My Palace quick actions compact and mobile-scrollable',()=>{
     const polish=read('src/polish.css');
     expect(live).toContain('palace-home-shortcuts');
@@ -311,6 +323,29 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.writing-library-tools');
   });
 
+  it('keeps scheduled prose publishing real, safe and creator-visible',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    const sql=read('database/chapter-scheduled-publishing.sql');
+    expect(data).toContain('scheduleChapter');
+    expect(data).toContain('cancelChapterSchedule');
+    expect(data).toContain('assertChapterPublishable');
+    expect(data).toContain("scheduled_for:null");
+    expect(live).toContain("chapter.scheduled_for?'Reschedule':'Schedule'");
+    expect(live).toContain('Schedule publication');
+    expect(live).toContain('writing-chapter-health');
+    expect(live).toContain('writing-release-queue');
+    expect(live).toContain('Search my works and chapters');
+    expect(live).toContain("draftFilter==='scheduled'&&workHasScheduled(w)");
+    expect(polish).toContain('/* Writing Chamber release readiness */');
+    expect(polish).toContain('.writing-release-queue');
+    expect(sql).toContain('private.process_scheduled_chapters()');
+    expect(sql).toContain("'palace-scheduled-chapter-publisher'");
+    expect(sql).toContain("'* * * * *'");
+    expect(sql).toContain('for update of ch skip locked');
+    expect(sql).toContain("'work',v_slug,'Read chapter'");
+  });
+
   it('keeps Palace Letters searchable, unread-aware and draft-safe',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
@@ -478,6 +513,14 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.activity-search');
   });
 
+  it('keeps story and blocked-writing notices pointed at the exact destination',()=>{
+    expect(live).toContain("item.metadata?.chapter_id?'/chapter/'");
+    expect(live).toContain("item.route_name==='writing'&&item.route_param");
+    expect(live).toContain("'?chapter='+encodeURIComponent(item.metadata.chapter_id)");
+    expect(live).toContain("const requestedChapter=new URLSearchParams(window.location.search).get('chapter')");
+    expect(live).toContain("d.chapters.find(ch=>ch.id===requestedChapter)");
+  });
+
   it('keeps My Library search honest across shelves and resumes exact reading places',()=>{
     const polish=read('src/polish.css');
     expect(live).toContain('Search the current Library shelf');
@@ -586,8 +629,8 @@ describe('Starry Palace launch safety',()=>{
     const polish=read('src/polish.css');
     expect(main).toContain('roomCssMatches');
     expect(main).toContain('palace-room-css-sync-reload');
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100509');
-    expect(polish).toContain('--palace-room-css-version:2026100509');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100510');
+    expect(polish).toContain('--palace-room-css-version:2026100510');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
