@@ -321,6 +321,17 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('/* Story landing update continuity */');
   });
 
+  it('makes Reading Room tag and fandom search match its own placeholder',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('work_tags(tags(id,name,category,status))');
+    expect(live).toContain("const workTags=w=>(w.work_tags||[]).map(x=>x.tags).filter(t=>t?.status==='canonical')");
+    expect(live).toContain('...workTags(w).flatMap(t=>[t.name,t.category])');
+    expect(live).toContain('reading-card-tags');
+    expect(live).toContain('Title, writer, fandom or tag…');
+    expect(polish).toContain('/* Reading Room canonical tag hints */');
+  });
+
   it('keeps dual-layer writing recovery and Palace Life discovery wired',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
@@ -680,8 +691,8 @@ describe('Starry Palace launch safety',()=>{
     const polish=read('src/polish.css');
     expect(main).toContain('roomCssMatches');
     expect(main).toContain('palace-room-css-sync-reload');
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100512');
-    expect(polish).toContain('--palace-room-css-version:2026100512');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100513');
+    expect(polish).toContain('--palace-room-css-version:2026100513');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
