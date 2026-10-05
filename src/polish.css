@@ -2737,3 +2737,31 @@ img{max-width:100%}
   .activity-list.restored>article{grid-template-columns:30px minmax(0,1fr)}
   .activity-notice-actions{grid-column:2;justify-content:flex-start}
 }
+
+
+/* My Library search now belongs to every shelf */
+.library-search-live{
+  grid-template-columns:auto minmax(0,1fr) auto;
+}
+.library-search-live>button{
+  width:36px;
+  height:36px;
+  margin-right:.3rem;
+  border:0;
+  border-radius:9px;
+  background:transparent;
+  color:var(--palace-muted);
+  font-size:1.1rem;
+}
+.library-search-live>button:hover{background:rgba(108,88,171,.1);color:var(--palace-text)}
+.library-card-grid .library-card{
+  content-visibility:auto;
+  contain-intrinsic-size:auto 210px;
+}
+.library-card .progress-track{
+  margin:.5rem 0 .35rem;
+  background:rgba(255,255,255,.07);
+}
+.library-card .progress-track i{
+  background:linear-gradient(90deg,#7768b7,#7895bc);
+}
