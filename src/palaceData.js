@@ -536,6 +536,11 @@ export async function searchPalace(term){
 }
 
 export async function getWorkBySlug(slug){const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,language,completion_status,publication_status,visibility,comment_policy,constructive_criticism,translation_policy,download_policy,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(username,display_name,avatar_url),chapters(id,title,position,status,word_count,published_at)').eq('slug',slug).maybeSingle();if(error)throw error;if(!data)return null;data.chapters=(data.chapters||[]).sort((a,b)=>a.position-b.position);return data}
+export async function getWorkExport(slug){
+ const work=await getWorkBySlug(slug);if(!work)return null;
+ const{data:chapters,error}=await needClient().from('chapters').select('id,title,position,body_html,status,revision_note,word_count,created_at,updated_at,published_at').eq('work_id',work.id).order('position');
+ if(error)throw error;return{work,chapters:chapters||[]}
+}
 export async function getChapter(workSlug,chapterId){const work=await getWorkBySlug(workSlug);if(!work)return null;const{data,error}=await needClient().from('chapters').select('id,work_id,title,position,body_html,status,revision,revision_note,published_at,word_count,star_count,updated_at').eq('id',chapterId).eq('work_id',work.id).maybeSingle();if(error)throw error;return data?{work,chapter:data}:null}
 export async function getMyChapterStar(userId,chapterId){
  const{data,error}=await needClient().from('chapter_stars').select('chapter_id').eq('user_id',userId).eq('chapter_id',chapterId).maybeSingle();
