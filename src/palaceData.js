@@ -131,6 +131,37 @@ export async function getPalaceLife(userId){
   communityIntroductions:(communityIntros.data||[]).map(i=>({...i,reaction_count:reactionRows.filter(x=>x.introduction_id===i.id).length,reacted:reactionRows.some(x=>x.introduction_id===i.id&&x.user_id===userId)}))
  }
 }
+export async function respondClubInvitation(userId,id,status){
+ if(!['accepted','declined'].includes(status))throw new Error('Unknown invitation response.');
+ const{data,error}=await needClient().from('club_invitations').update({status,resolved_at:new Date().toISOString()}).eq('id',id).eq('recipient_id',userId).eq('status','pending').select().single();
+ if(error)throw error;
+ if(status==='accepted'){
+  const{error:joinError}=await needClient().from('club_members').upsert({club_id:data.club_id,user_id:userId,role:'member',status:'active'},{onConflict:'club_id,user_id'});
+  if(joinError)throw joinError;
+ }
+ return data
+}
+export async function setForumThreadPreference(userId,threadId,type,enabled){
+ const map={subscription:'forum_thread_subscriptions',mute:'forum_thread_mutes',saved:'forum_saved_threads'};
+ const table=map[type];if(!table)throw new Error('Unknown forum preference.');
+ if(enabled){
+  const row={user_id:userId,thread_id:threadId};
+  const{error}=await needClient().from(table).upsert(row,{onConflict:'user_id,thread_id'});if(error)throw error;
+ }else{
+  const{error}=await needClient().from(table).delete().eq('user_id',userId).eq('thread_id',threadId);if(error)throw error;
+ }
+ return enabled
+}
+export async function setCommunityHighlightChampion(userId,highlightId,enabled){
+ if(enabled){const{error}=await needClient().from('community_highlight_champions').upsert({highlight_id:highlightId,user_id:userId},{onConflict:'highlight_id,user_id'});if(error)throw error}
+ else{const{error}=await needClient().from('community_highlight_champions').delete().eq('highlight_id',highlightId).eq('user_id',userId);if(error)throw error}
+ return enabled
+}
+export async function setIntroductionReaction(userId,introductionId,enabled){
+ if(enabled){const{error}=await needClient().from('community_introduction_reactions').upsert({introduction_id:introductionId,user_id:userId,reaction:'star'},{onConflict:'introduction_id,user_id'});if(error)throw error}
+ else{const{error}=await needClient().from('community_introduction_reactions').delete().eq('introduction_id',introductionId).eq('user_id',userId);if(error)throw error}
+ return enabled
+}
 export async function postMoonlight(userId,body){const text=body.trim();if(!text)throw new Error('Write something before sending it into the room.');const{data,error}=await needClient().from('public_chat_messages').insert({author_id:userId,body:text}).select().single();if(error)throw error;return data}
 export async function createForumThread(userId,title,body){const{data,error}=await needClient().from('forum_threads').insert({author_id:userId,title:title.trim(),body:body.trim(),room:'Palace Commons'}).select().single();if(error)throw error;return data}
 export async function getLetters(userId){const [members,requests,prefs]=await Promise.all([needClient().from('conversation_members').select('conversation_id,joined_at,conversations(id,kind,status,last_message_at,direct_user_a,direct_user_b)').eq('user_id',userId).is('left_at',null),needClient().from('message_requests').select('id,sender_id,recipient_id,intro_text,status,created_at,profiles!message_requests_sender_id_fkey(username,display_name)').eq('recipient_id',userId).eq('status','pending').order('created_at',{ascending:false}),needClient().from('conversation_preferences').select('*').eq('user_id',userId)]);for(const r of[members,requests,prefs])if(r.error)throw r.error;const conversations=members.data||[];const ids=conversations.map(x=>x.conversation_id);let messages=[];if(ids.length){const r=await needClient().from('messages').select('id,conversation_id,sender_id,body,created_at,status').in('conversation_id',ids).eq('status','active').order('created_at',{ascending:false}).limit(100);if(r.error)throw r.error;messages=r.data||[]}const prefMap=Object.fromEntries((prefs.data||[]).map(p=>[p.conversation_id,p]));return{conversations:conversations.map(c=>({...c,preference:prefMap[c.conversation_id]||{starred:false,archived:false,muted:false}})),requests:requests.data||[],messages}}
