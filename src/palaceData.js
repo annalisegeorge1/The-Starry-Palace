@@ -33,7 +33,7 @@ export async function getWorksForTag(tagId){const{data,error}=await needClient()
 export async function getPalaceLife(userId){const [clubs,threads,chat,intros]=await Promise.all([needClient().from('clubs').select('id,name,slug,club_type,privacy,description,club_members!inner(user_id,status)').eq('club_members.user_id',userId).eq('club_members.status','active').limit(12),needClient().from('forum_threads').select('id,title,body,room,created_at,profiles!forum_threads_author_id_fkey(username,display_name)').eq('status','active').order('created_at',{ascending:false}).limit(12),needClient().from('public_chat_messages').select('id,body,created_at,profiles!public_chat_messages_author_id_fkey(username,display_name)').eq('status','active').order('created_at',{ascending:false}).limit(12),needClient().from('member_introductions').select('id,title,body,highlighted,created_at,profiles!member_introductions_author_id_fkey(username,display_name)').eq('status','active').order('created_at',{ascending:false}).limit(8)]);for(const r of[clubs,threads,chat,intros])if(r.error)throw r.error;return{clubs:clubs.data||[],threads:threads.data||[],chat:(chat.data||[]).reverse(),introductions:intros.data||[]}}
 export async function postMoonlight(userId,body){const text=body.trim();if(!text)throw new Error('Write something before sending it into the room.');const{data,error}=await needClient().from('public_chat_messages').insert({author_id:userId,body:text}).select().single();if(error)throw error;return data}
 export async function createForumThread(userId,title,body){const{data,error}=await needClient().from('forum_threads').insert({author_id:userId,title:title.trim(),body:body.trim(),room:'Palace Commons'}).select().single();if(error)throw error;return data}
-export async function getLetters(userId){const [members,requests]=await Promise.all([needClient().from('conversation_members').select('conversation_id,joined_at,conversations(id,kind,status,last_message_at,direct_user_a,direct_user_b)').eq('user_id',userId).is('left_at',null),needClient().from('message_requests').select('id,sender_id,recipient_id,intro_text,status,created_at,profiles!message_requests_sender_id_fkey(username,display_name)').eq('recipient_id',userId).eq('status','pending').order('created_at',{ascending:false})]);if(members.error)throw members.error;if(requests.error)throw requests.error;const conversations=members.data||[];const ids=conversations.map(x=>x.conversation_id);let messages=[];if(ids.length){const r=await needClient().from('messages').select('id,conversation_id,sender_id,body,created_at,status').in('conversation_id',ids).eq('status','active').order('created_at',{ascending:false}).limit(100);if(r.error)throw r.error;messages=r.data||[]}return{conversations,requests:requests.data||[],messages}}
+export async function getLetters(userId){const [members,requests,prefs]=await Promise.all([needClient().from('conversation_members').select('conversation_id,joined_at,conversations(id,kind,status,last_message_at,direct_user_a,direct_user_b)').eq('user_id',userId).is('left_at',null),needClient().from('message_requests').select('id,sender_id,recipient_id,intro_text,status,created_at,profiles!message_requests_sender_id_fkey(username,display_name)').eq('recipient_id',userId).eq('status','pending').order('created_at',{ascending:false}),needClient().from('conversation_preferences').select('*').eq('user_id',userId)]);for(const r of[members,requests,prefs])if(r.error)throw r.error;const conversations=members.data||[];const ids=conversations.map(x=>x.conversation_id);let messages=[];if(ids.length){const r=await needClient().from('messages').select('id,conversation_id,sender_id,body,created_at,status').in('conversation_id',ids).eq('status','active').order('created_at',{ascending:false}).limit(100);if(r.error)throw r.error;messages=r.data||[]}const prefMap=Object.fromEntries((prefs.data||[]).map(p=>[p.conversation_id,p]));return{conversations:conversations.map(c=>({...c,preference:prefMap[c.conversation_id]||{starred:false,archived:false,muted:false}})),requests:requests.data||[],messages}}
 export async function sendLetter(userId,conversationId,body){const text=body.trim();if(!text)throw new Error('Your letter is empty.');const{data,error}=await needClient().from('messages').insert({conversation_id:conversationId,sender_id:userId,body:text}).select().single();if(error)throw error;return data}
 export async function respondToLetterRequest(userId,requestId,status){if(!['accepted','declined'].includes(status))throw new Error('Unknown request response.');const{error}=await needClient().from('message_requests').update({status,responded_at:new Date().toISOString()}).eq('id',requestId).eq('recipient_id',userId).eq('status','pending');if(error)throw error}
 
@@ -78,3 +78,45 @@ export async function addComment(userId,workId,chapterId,body,type='response',sp
 export async function moderateComment(commentId,status){const{data,error}=await needClient().from('comments').update({status,updated_at:new Date().toISOString()}).eq('id',commentId).select().single();if(error)throw error;return data}
 
 export async function searchWorksByTags(includeIds=[],excludeIds=[],text=''){let q=needClient().from('works').select('id,title,slug,summary,rating,language,completion_status,cover_url,profiles!works_author_id_fkey(username,display_name),work_tags(tag_id,tags(id,name,category,status))').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(100);if(text.trim())q=q.or(`title.ilike.%${text.trim()}%,summary.ilike.%${text.trim()}%`);const{data,error}=await q;if(error)throw error;return(data||[]).filter(w=>{const ids=(w.work_tags||[]).filter(x=>x.tags?.status==='canonical').map(x=>x.tag_id);return includeIds.every(id=>ids.includes(id))&&!excludeIds.some(id=>ids.includes(id))})}
+
+
+async function signedAsset(bucket,path,expiresIn=3600){
+ if(!path)return null;
+ try{const{data,error}=await needClient().storage.from(bucket).createSignedUrl(path,expiresIn);if(error)return null;return data?.signedUrl||data?.signedURL||null}catch{return null}
+}
+export async function getPublishedComics(){
+ const{data,error}=await needClient().from('comics').select('id,creator_id,title,slug,summary,rating,completion_status,reading_direction,download_policy,required_credit_line,comment_policy,cover_path,last_published_at').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(30);
+ if(error)throw error;const comics=data||[];const creators=[...new Set(comics.map(c=>c.creator_id).filter(Boolean))];let profiles=[];
+ if(creators.length){const p=await needClient().from('profiles').select('id,username,display_name,avatar_url').in('id',creators);if(p.error)throw p.error;profiles=p.data||[]}
+ return Promise.all(comics.map(async c=>({...c,creator:profiles.find(p=>p.id===c.creator_id)||null,cover_url:await signedAsset('comic-covers',c.cover_path)})));
+}
+export async function getComicBySlug(slug){
+ const{data:comic,error}=await needClient().from('comics').select('*').eq('slug',slug).maybeSingle();if(error)throw error;if(!comic)return null;
+ const[episodes,profile,tags]=await Promise.all([
+  needClient().from('comic_episodes').select('*').eq('comic_id',comic.id).order('position'),
+  needClient().from('profiles').select('id,username,display_name,avatar_url').eq('id',comic.creator_id).maybeSingle(),
+  needClient().from('comic_tags').select('position,tags(id,name,category,status)').eq('comic_id',comic.id).order('position')
+ ]);for(const r of[episodes,profile,tags])if(r.error)throw r.error;
+ const eps=episodes.data||[];const ids=eps.map(e=>e.id);let pages=[];
+ if(ids.length){const pr=await needClient().from('comic_pages').select('*').in('episode_id',ids).order('position');if(pr.error)throw pr.error;pages=pr.data||[]}
+ const signedPages=await Promise.all(pages.map(async p=>({...p,reader_url:await signedAsset('comic-pages',p.reader_path)})));
+ return{...comic,creator:profile.data||null,cover_url:await signedAsset('comic-covers',comic.cover_path),tags:(tags.data||[]).filter(x=>x.tags?.status==='canonical'),episodes:eps.map(e=>({...e,pages:signedPages.filter(p=>p.episode_id===e.id).sort((a,b)=>a.position-b.position)}))};
+}
+export async function getComicProgress(userId,comicId){
+ if(!userId)return null;const{data,error}=await needClient().from('comic_reading_progress').select('*').eq('user_id',userId).eq('comic_id',comicId).maybeSingle();if(error)throw error;return data
+}
+export async function recordComicProgress(userId,comicId,episodeId,pageId,completed=false){
+ if(!userId)return;const{error}=await needClient().from('comic_reading_progress').upsert({user_id:userId,comic_id:comicId,episode_id:episodeId,page_id:pageId,completed,updated_at:new Date().toISOString()},{onConflict:'user_id,comic_id'});if(error)throw error
+}
+export async function saveComic(userId,comicId){
+ const{error}=await needClient().from('saved_comics').upsert({user_id:userId,comic_id:comicId},{onConflict:'user_id,comic_id'});if(error)throw error
+}
+export async function subscribeComic(userId,comicId,frequency='instant'){
+ const{error}=await needClient().from('comic_subscriptions').upsert({user_id:userId,comic_id:comicId,frequency,enabled:true,updated_at:new Date().toISOString()},{onConflict:'user_id,comic_id'});if(error)throw error
+}
+export async function requestComicDownload(userId,comicId,requested_scope='images',note=''){
+ const{data,error}=await needClient().from('comic_download_requests').insert({comic_id:comicId,requester_id:userId,requested_scope,note:note.trim(),status:'pending'}).select().single();if(error)throw error;return data
+}
+export async function setConversationPreference(userId,conversationId,patch){
+ const{data,error}=await needClient().from('conversation_preferences').upsert({user_id:userId,conversation_id:conversationId,...patch,updated_at:new Date().toISOString()},{onConflict:'user_id,conversation_id'}).select().single();if(error)throw error;return data
+}
