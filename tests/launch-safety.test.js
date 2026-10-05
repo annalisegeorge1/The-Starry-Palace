@@ -551,6 +551,20 @@ describe('Starry Palace launch safety',()=>{
     expect(css).toContain('.gift-trade-list');
   });
 
+  it('keeps earned achievement showcases tied to verified progress',()=>{
+    const data=read('src/palaceData.js');
+    const treasury=read('src/Treasury.jsx');
+    const css=read('src/treasury.css');
+    expect(data).toContain('setProfileAchievementShowcase');
+    expect(data).toContain('removeProfileAchievementShowcase');
+    expect(treasury).toContain('achievementProgress');
+    expect(treasury).toContain('Not unlocked yet');
+    expect(treasury).toContain('Earned · ');
+    expect(treasury).toContain('badge-showcase-dialog');
+    expect(css).toContain('.badge-earned-state');
+    expect(css).toContain('.badge-showcase-actions');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
