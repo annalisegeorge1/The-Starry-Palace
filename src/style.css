@@ -670,3 +670,8 @@ linear-gradient(145deg,#2d245f,#151c3c 58%,#0c1225);box-shadow:inset 0 0 0 1px r
 @media(min-width:981px) and (max-width:1400px){
  .full-sidebar.nav-open,.nav-open .full-sidebar{width:min(430px,34vw)!important}
 }
+
+
+.identity-avatar.sigil-fallback{background:radial-gradient(circle at 34% 28%,#ddd4ff 0%,#9d83ea 36%,#5a3f9a 70%,#201d47 100%);color:white;display:grid;place-items:center}
+.identity-avatar.sigil-fallback span{position:relative;font:30px/1 Georgia,'Times New Roman',serif}
+.identity-avatar.sigil-fallback span b{position:absolute;right:-5px;top:0;font-size:10px}
