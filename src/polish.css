@@ -1833,3 +1833,105 @@ img{max-width:100%}
   .settings-presets{grid-template-columns:1fr}
   .settings-presets button{min-height:88px}
 }
+
+
+/* Search — scoped discovery with quiet local history */
+.legacy-search-page{max-width:1180px;margin:0 auto;padding-bottom:4rem}
+.palace-search.restored{
+  margin-top:.8rem;
+  border-color:var(--palace-border);
+  border-radius:16px;
+  background:rgba(12,17,34,.7);
+  box-shadow:var(--palace-shadow-soft);
+}
+.search-lenses{
+  display:flex;
+  gap:.4rem;
+  overflow-x:auto;
+  padding:.75rem 0 .25rem;
+  scrollbar-width:none;
+}
+.search-lenses::-webkit-scrollbar{display:none}
+.search-lenses button{
+  flex:0 0 auto;
+  min-height:38px;
+  display:flex;
+  align-items:center;
+  gap:.4rem;
+  padding:.5rem .7rem;
+  border:1px solid var(--palace-border);
+  border-radius:999px;
+  background:transparent;
+  color:var(--palace-muted);
+  font-size:.7rem;
+}
+.search-lenses button.active{
+  border-color:var(--palace-border-strong);
+  background:rgba(108,88,171,.15);
+  color:var(--palace-text);
+}
+.search-lenses button span{
+  min-width:20px;
+  height:20px;
+  display:grid;
+  place-items:center;
+  border-radius:999px;
+  background:rgba(255,255,255,.05);
+  font-size:.56rem;
+}
+.recent-searches{
+  display:flex;
+  align-items:center;
+  gap:.35rem;
+  overflow-x:auto;
+  padding:.45rem 0 .8rem;
+  scrollbar-width:none;
+}
+.recent-searches::-webkit-scrollbar{display:none}
+.recent-searches>span{
+  flex:0 0 auto;
+  margin-right:.1rem;
+  color:var(--palace-dim);
+  font-size:.54rem;
+  letter-spacing:.13em;
+}
+.recent-searches button{
+  flex:0 0 auto;
+  min-height:32px;
+  padding:.38rem .58rem;
+  border:1px solid var(--palace-border);
+  border-radius:999px;
+  background:rgba(14,19,38,.58);
+  color:var(--palace-muted);
+  font-size:.64rem;
+}
+.recent-searches button:hover{border-color:var(--palace-border-strong);color:var(--palace-text)}
+.recent-searches .clear-recent{border-style:dashed;opacity:.7}
+.search-summary{
+  margin:.75rem 0 1rem;
+  padding:.65rem .8rem;
+  border:1px solid var(--palace-border);
+  border-radius:13px;
+  background:rgba(13,18,36,.58);
+}
+.search-summary strong{font:600 1.1rem Georgia,'Times New Roman',serif}
+.search-result-card,.search-club-grid>article,.search-tag-cloud a,.people-results.restored>a,.search-archive-list article{
+  border-color:var(--palace-border);
+  background:rgba(14,19,38,.7);
+  box-shadow:var(--palace-shadow-soft);
+  transition:transform var(--palace-motion),border-color var(--palace-motion),box-shadow var(--palace-motion);
+}
+.search-result-card:hover,.search-club-grid>article:hover,.search-tag-cloud a:hover,.people-results.restored>a:hover{
+  transform:translateY(-2px);
+  border-color:var(--palace-border-strong);
+  box-shadow:var(--palace-shadow);
+}
+.search-group{margin-top:1.6rem}
+.search-group-head{
+  padding-bottom:.7rem;
+  border-bottom:1px solid var(--palace-border);
+  margin-bottom:.75rem;
+}
+.daylight .palace-search.restored,.daylight .recent-searches button,.daylight .search-summary,
+.daylight .search-result-card,.daylight .search-club-grid>article,.daylight .search-tag-cloud a,
+.daylight .people-results.restored>a,.daylight .search-archive-list article{background:rgba(255,255,255,.86)}
