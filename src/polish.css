@@ -2090,7 +2090,7 @@ img{max-width:100%}
 /* Comics + Series — discovery controls at the same standard as prose */
 .comic-tools.refined{
   display:grid;
-  grid-template-columns:minmax(240px,1fr) repeat(4,minmax(130px,160px)) auto;
+  grid-template-columns:minmax(220px,1fr) repeat(5,minmax(115px,150px)) auto;
   gap:.55rem;
   align-items:end;
   padding:.7rem;
