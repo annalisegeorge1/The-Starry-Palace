@@ -146,7 +146,7 @@ export async function getLibrary(userId){const [saved,progress,subs,savedComics,
  needClient().from('story_subscriptions').select('work_id,enabled,frequency,works(id,title,slug)').eq('user_id',userId).eq('enabled',true),
  needClient().from('saved_comics').select('saved_at,comics(id,title,slug,summary,completion_status,cover_path)').eq('user_id',userId).order('saved_at',{ascending:false}),
  needClient().from('comic_reading_progress').select('comic_id,episode_id,page_id,completed,updated_at,comics(id,title,slug,cover_path,last_published_at)').eq('user_id',userId).order('updated_at',{ascending:false}),
- needClient().from('comic_subscriptions').select('comic_id,enabled,frequency,comics(id,title,slug)').eq('user_id',userId).eq('enabled',true),
+ needClient().from('comic_subscriptions').select('comic_id,enabled,frequency,comics(id,title,slug,last_published_at)').eq('user_id',userId).eq('enabled',true),
  needClient().from('member_follows').select('followed_id,created_at,profiles!member_follows_followed_id_fkey(id,username,display_name,title,avatar_url)').eq('follower_id',userId).order('created_at',{ascending:false})
 ]);for(const r of [saved,progress,subs,savedComics,comicProgress,comicSubs,follows])if(r.error)throw r.error;
  const comics=await Promise.all((savedComics.data||[]).map(async x=>({...x,cover_url:await signedAsset('comic-covers',x.comics?.cover_path)})));
