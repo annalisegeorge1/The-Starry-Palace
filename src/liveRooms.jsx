@@ -14,24 +14,42 @@ function PalaceDialog({open,title,eyebrow,children,onClose,actions}){
 function State({children,error,loading,empty}){if(loading)return <div className="live-state">Gathering the room beneath the stars…</div>;if(error)return <div className="live-state error-state"><strong>This room could not be gathered.</strong><span>{error}</span></div>;if(empty)return <div className="live-state">{empty}</div>;return children}
 
 export function ChamberLive({Frame}){
- const{session}=useAuth();const[data,setData]=useState(null);const[error,setError]=useState('');const[editing,setEditing]=useState(false);const[saving,setSaving]=useState(false);
+ const{session}=useAuth();const[data,setData]=useState(null);const[error,setError]=useState('');
  const load=()=>{setError('');getChamberSnapshot(session.user.id).then(setData).catch(e=>setError(e.message))};useEffect(load,[session.user.id]);
- async function save(e){e.preventDefault();setSaving(true);const f=new FormData(e.currentTarget);try{await updateMyProfile(session.user.id,{username:f.get('username'),display_name:f.get('display_name'),title:f.get('title'),bio:f.get('bio'),visibility:f.get('visibility'),message_policy:f.get('message_policy')});setEditing(false);load()}catch(e){setError(e.message)}finally{setSaving(false)}}
- const p=data?.profile;const unread=data?.notices.filter(n=>n.unread).length||0;const counts=data?.counts||{};
- return <Frame privateArea><State loading={!data&&!error} error={error}>{p&&<><section className="profile-banner full-chamber-banner" style={p.cover_url?{backgroundImage:`linear-gradient(90deg,#0a0d20dd,#0a0d2077),url("${p.cover_url}")`}:undefined}><div className="profile-orb">{p.avatar_url?<img src={p.avatar_url} alt=""/>:(p.display_name||p.username||'P').slice(0,1).toUpperCase()}</div><div><p className="eyebrow">MY PALACE · MY CHAMBER</p><h1>Welcome home, {p.display_name||p.username}.</h1><p>{p.title||'Palace Member'} · @{p.username}</p></div><button className="outline-button" onClick={()=>setEditing(!editing)}>{editing?'Close':'Tend my profile'}</button></section>
- {editing&&<form className="profile-editor" onSubmit={save}><label>Display name<input name="display_name" defaultValue={p.display_name}/></label><label>Palace handle<input name="username" defaultValue={p.username}/><small>3–30 lowercase letters, numbers or underscores.</small></label><label>Palace title<input name="title" defaultValue={p.title||''}/></label><label className="wide">About your world<textarea name="bio" defaultValue={p.bio||''} rows="4"/></label><label>Profile visibility<select name="visibility" defaultValue={p.visibility}><option value="public">Everyone</option><option value="members">Palace members</option><option value="hidden">Hidden</option></select></label><label>Palace Letters<select name="message_policy" defaultValue={p.message_policy}><option value="open">Open</option><option value="requests">Requests first</option><option value="closed">Closed</option></select></label><button disabled={saving}>{saving?'Saving…':'Save chamber profile'}</button></form>}
- <section className="palace-command-grid">
-  <Link className="command-card feature" to="/reading"><span className="command-icon">◈</span><small>CONTINUE READING</small><h2>{data.progress[0]?.works?.title||'Your next story will wait here.'}</h2><p>{data.progress[0]?`${Number(data.progress[0].progress_percent).toFixed(0)}% read · your place is saved privately.`:'When you begin reading, the Palace remembers your place.'}</p><b>Enter Reading Rooms →</b></Link>
-  <Link className="command-card" to="/writing"><span className="command-icon">✎</span><small>WRITING CHAMBER</small><h2>{data.works.length?data.works[0].title:'A quiet desk awaits.'}</h2><p>{data.works.length?`${data.works.length} prose work${data.works.length===1?'':'s'} in your chamber.`:'Begin a private draft whenever a world arrives.'}</p><b>Open chamber →</b></Link>
-  <Link className="command-card" to="/comics/studio"><span className="command-icon">▤</span><small>COMIC STUDIO</small><h2>{counts.comics||0} series</h2><p>Panels, episodes, reading direction and creator-controlled rights.</p><b>Open studio →</b></Link>
-  <Link className="command-card" to="/activity"><span className="command-icon">✦</span><small>NOTIFICATIONS</small><h2>{unread} unread</h2><p>{data.notices[0]?.title||'The Palace is quiet for now.'}</p><b>See activity →</b></Link>
-  <Link className="command-card" to="/letters"><span className="command-icon">✉</span><small>PALACE LETTERS</small><h2>{counts.letterRequests||0} at the door</h2><p>Private correspondence, requests and conversation controls.</p><b>Open Letters →</b></Link>
-  <Link className="command-card" to="/library"><span className="command-icon">☾</span><small>MY LIBRARY</small><h2>{counts.saved||0} saved</h2><p>Your shelves, reading continuity, followed stories and finished worlds.</p><b>Visit library →</b></Link>
-  <Link className="command-card" to="/events"><span className="command-icon">✧</span><small>EVENTS & HERITAGE</small><h2>{counts.events||0} on your calendar</h2><p>Gatherings, heritage observances, proposals and Palace participation.</p><b>Open calendar →</b></Link>
-  <Link className="command-card" to="/treasury"><span className="command-icon">♛</span><small>ROYAL TREASURY</small><h2>{counts.gifts||0} gifts held</h2><p>Badges, gifts, tier progress, collections and court recognition.</p><b>Enter Treasury →</b></Link>
-  <Link className="command-card" to="/settings"><span className="command-icon">⚙</span><small>SETTINGS & SAFETY</small><h2>{data.privacy.reading_activity_visibility==='private'?'Reading stays private.':'Your boundaries, your choice.'}</h2><p>Discovery: {data.privacy.discovery_visibility} · Gifts: {data.privacy.gifts_visibility}</p><b>Review boundaries →</b></Link>
- </section>
- <section className="palace-dashboard-footer"><div><p className="eyebrow">YOUR PLACE AMONG THE STARS</p><h2>The Palace should feel inhabited, not gamified.</h2><p>Your dashboard gathers continuity without turning creativity, reading or community into a pressure loop.</p></div><div><Link to="/palace-life">Palace Life →</Link><Link to="/honour">Throne of Honour →</Link><Link to="/code">The Palace Code →</Link></div></section></>}</State></Frame>
+ const p=data?.profile;const counts=data?.counts||{};const latest=data?.works?.[0];
+ return <Frame privateArea><State loading={!data&&!error} error={error}>{p&&<section className="legacy-home-dashboard">
+   <nav className="legacy-home-tabs">
+    <Link className="active" to="/chamber">Home</Link>
+    <Link to={"/member/"+p.username}>My chamber</Link>
+    <Link to="/activity">Notifications</Link>
+    <Link to="/letters">Messages</Link>
+    <Link to="/events?tab=calendar">Invitations</Link>
+   </nav>
+   <section className="legacy-home-hero">
+    <p className="eyebrow">✦ THE STARRY PALACE</p>
+    <h1>Welcome home,<br/><span>{p.display_name||p.username}.</span></h1>
+    <p>Return to your stories, your people, and the rooms waiting for you.</p>
+   </section>
+   <section className="legacy-home-actions">
+    <Link className="primary-home-action" to={latest?.slug?"/writing/"+latest.slug:"/writing"}>✎ Continue writing</Link>
+    <div className="secondary-home-actions">
+      <Link to="/reading">▤ Explore Reading Rooms</Link>
+      <Link to="/letters">✉ Palace Letters</Link>
+      <Link to="/palace-life">◉ Palace Commons</Link>
+    </div>
+   </section>
+   <section className="legacy-home-stats">
+    <Link to="/library?tab=saved"><strong>{counts.saved||0}</strong><span>saved works</span><small>Your private shelf</small></Link>
+    <Link to="/library?tab=following"><strong>{counts.subscriptions||0}</strong><span>subscriptions</span><small>Work-by-work updates</small></Link>
+    <Link to="/library?tab=writers"><strong>{counts.followedWriters||0}</strong><span>writers followed</span><small>Your chosen voices</small></Link>
+    <Link to="/library?tab=history"><strong>{counts.recentStops||0}</strong><span>recent stops</span><small>Private reading trail</small></Link>
+    <Link to="/library?tab=comics"><strong>{counts.savedComics||0}</strong><span>saved comics</span><small>Your illustrated shelf</small></Link>
+   </section>
+   <section className="legacy-home-lower">
+    <article><p className="eyebrow">NOTIFICATIONS</p><h2>{data.notices?.[0]?.title||'The Palace is quiet.'}</h2><p>{data.notices?.[0]?.body||'New activity will gather here when it arrives.'}</p><Link to="/activity">Open notifications →</Link></article>
+    <article><p className="eyebrow">INVITATIONS</p><h2>{counts.letterRequests||0} waiting</h2><p>Letter requests, event invitations and collaboration doors stay gathered instead of scattered.</p><Link to="/events?tab=calendar">Review invitations →</Link></article>
+   </section>
+ </section>}</State></Frame>
 }
 export function ReadingLive({Frame}){
  const[works,setWorks]=useState(null);const[error,setError]=useState('');const[query,setQuery]=useState('');const[rating,setRating]=useState('all');const[status,setStatus]=useState('all');
@@ -191,9 +209,38 @@ export function MemberProfileLive({Frame}){
  async function toggleBoundary(key){try{const next={...boundary,[key]:!boundary[key]};if(key==='blocked'&&!boundary.blocked)next.muted=true;const saved=await setMemberBoundary(session.user.id,data.profile.id,next);setBoundary(saved);setNotice(saved.blocked?'This member is now Exiled from your Palace boundaries.':saved.muted?'This member is muted.':'Boundary updated.');load()}catch(e){setError(e.message)}}
  function letter(){setLetterIntro('');setLetterOpen(true)} async function submitLetter(){if(!letterIntro.trim())return;try{await requestPalaceLetter(session.user.id,data.profile.id,letterIntro);setLetterOpen(false);setNotice('Letter request sent.')}catch(e){setError(e.message)}}
  if(data===null)return <Frame><section className="room-title"><p className="eyebrow">NO STAR BY THAT NAME</p><h1>This chamber cannot be found.</h1></section></Frame>;
- const p=data?.profile;const own=session?.user?.id===p?.id;
- return <Frame><State loading={data===undefined&&!error} error={error}>{p&&<><section className="member-banner" style={p.cover_url?{backgroundImage:`linear-gradient(90deg,#090c20dd,#090c2077),url("${p.cover_url}")`}:undefined}><div className="profile-orb">{p.avatar_url?<img src={p.avatar_url} alt=""/>:(p.display_name||p.username).slice(0,1).toUpperCase()}</div><div><p className="eyebrow">PALACE MEMBER</p><h1>{p.display_name||p.username}</h1><p>{p.title||'Palace Member'} · @{p.username}</p></div><div className="member-actions">{own?<Link className="outline-button" to="/chamber">My Chamber</Link>:session&&<><button className="outline-button" disabled={boundary.blocked} onClick={follow}>{data.following?'Following ✓':'Follow'}</button><button onClick={letter} disabled={boundary.blocked||p.message_policy==='closed'}>Palace Letter</button></>}</div></section>{!own&&session&&<section className="boundary-bar"><div><p className="eyebrow">YOUR BOUNDARIES</p><strong>{boundary.blocked?'Exiled':boundary.muted?'Muted':'Open'}</strong><span>{boundary.blocked?'This member cannot interact with you through supported Palace features.':boundary.muted?'Their activity is softened without blocking access.':'You have no special boundary set with this member.'}</span></div><div><button className={boundary.muted?'active':''} onClick={()=>toggleBoundary('muted')} disabled={boundary.blocked}>{boundary.muted?'Unmute':'Mute'}</button><button className={"quiet-button "+(boundary.blocked?'active':'')} onClick={()=>toggleBoundary('blocked')}>{boundary.blocked?'Lift Exile':'Exile'}</button></div></section>}{notice&&<div className="save-note" role="status">{notice}</div>}<section className="member-body"><div><p className="member-bio">{p.bio||'This member has left their chamber introduction unwritten.'}</p>{(own?data.privacy?.follower_counts_visible:true)&&<span className="member-count">{data.followerCount} follower{data.followerCount===1?'':'s'}</span>}</div><div><p className="eyebrow">PUBLISHED WORLDS</p>{data.works.length?<div className="member-works">{data.works.map(w=><article key={w.id}><h2><Link to={"/work/"+w.slug}>{w.title}</Link></h2><p>{w.summary||'No summary yet.'}</p><small>{w.completion_status.replaceAll('_',' ')}</small></article>)}</div>:<p className="quiet-copy">No published works are visible from this chamber.</p>}</div></section></>}</State>
-  <PalaceDialog open={letterOpen} title="Send a Palace Letter request" eyebrow="PRIVATE CORRESPONDENCE" onClose={()=>setLetterOpen(false)} actions={<><button className="quiet-button" onClick={()=>setLetterOpen(false)}>Cancel</button><button onClick={submitLetter}>Send request</button></>}><label>Introduction<textarea rows="4" maxLength="600" value={letterIntro} onChange={e=>setLetterIntro(e.target.value)} placeholder="Introduce yourself or say why you’d like to write."/></label><small>{letterIntro.length}/600</small></PalaceDialog>
+ const p=data?.profile;const own=session?.user?.id===p?.id;const counts=data?.counts||{};
+ const intro=p?.bio?.trim();
+ return <Frame><State loading={data===undefined&&!error} error={error}>{p&&<>
+  <section className="legacy-profile-card">
+   <div className="legacy-profile-cover" style={p.cover_url?{backgroundImage:`url("${p.cover_url}")`}:undefined}>
+    <div className="legacy-cover-shade"/>
+    {own&&<Link className="legacy-edit-cover" to="/chamber">✎ Edit cover</Link>}
+   </div>
+   <div className="legacy-profile-avatar">{p.avatar_url?<img src={p.avatar_url} alt=""/>:(p.display_name||p.username).slice(0,1).toUpperCase()}</div>
+   <div className="legacy-profile-copy">
+    <p className="eyebrow">{(p.title||'PALACE MEMBER').toUpperCase()}</p>
+    <h1>{p.display_name||p.username}</h1>
+    {own&&<span className="legacy-public-pill">YOUR PUBLIC CHAMBER</span>}
+    <p className="legacy-profile-meta">@{p.username}{counts.works?' · Writer · Creator':''}</p>
+    {intro&&<blockquote>“{intro}”</blockquote>}
+    {counts.works>0&&<div className="legacy-profile-tags"><span>Writer</span><span>Published worlds</span><span>Palace creator</span></div>}
+    <div className="legacy-profile-actions">
+     {own?<><Link className="primary-profile-action" to="/chamber">Edit my chamber</Link><Link className="secondary-profile-action" to="/letters">Open Palace Letters</Link></>:session&&<><button className="secondary-profile-action" disabled={boundary.blocked} onClick={follow}>{data.following?'Following ✓':'Follow'}</button><button className="primary-profile-action" onClick={letter} disabled={boundary.blocked||p.message_policy==='closed'}>Palace Letter</button></>}
+    </div>
+   </div>
+   <div className="legacy-profile-stats">
+    <div><strong>{counts.works||0}</strong><span>PUBLIC WORKS</span></div>
+    <div><strong>{counts.series||0}</strong><span>SERIES</span></div>
+    <div><strong>{counts.clubs||0}</strong><span>CLUBS</span></div>
+    <div><strong>{counts.honours||0}</strong><span>DISPLAYED HONOURS</span></div>
+   </div>
+  </section>
+  {!own&&session&&<section className="boundary-bar"><div><p className="eyebrow">YOUR BOUNDARIES</p><strong>{boundary.blocked?'Exiled':boundary.muted?'Muted':'Open'}</strong><span>{boundary.blocked?'This member cannot interact with you through supported Palace features.':boundary.muted?'Their activity is softened without blocking access.':'You have no special boundary set with this member.'}</span></div><div><button className={boundary.muted?'active':''} onClick={()=>toggleBoundary('muted')} disabled={boundary.blocked}>{boundary.muted?'Unmute':'Mute'}</button><button className={"quiet-button "+(boundary.blocked?'active':'')} onClick={()=>toggleBoundary('blocked')}>{boundary.blocked?'Lift Exile':'Exile'}</button></div></section>}
+  {notice&&<div className="save-note" role="status">{notice}</div>}
+  <section className="legacy-profile-worlds"><div className="section-heading"><div><p className="eyebrow">PUBLISHED WORLDS</p><h2>Stories from this chamber.</h2></div></div>{data.works.length?<div className="member-works">{data.works.map(w=><article key={w.id}><h2><Link to={"/work/"+w.slug}>{w.title}</Link></h2><p>{w.summary||'No summary yet.'}</p><small>{w.completion_status.replaceAll('_',' ')}</small></article>)}</div>:<p className="quiet-copy">No published works are visible from this chamber.</p>}</section>
+ </>}</State>
+ <PalaceDialog open={letterOpen} title="Send a Palace Letter request" eyebrow="PRIVATE CORRESPONDENCE" onClose={()=>setLetterOpen(false)} actions={<><button className="quiet-button" onClick={()=>setLetterOpen(false)}>Cancel</button><button onClick={submitLetter}>Send request</button></>}><label>Introduction<textarea rows="4" maxLength="600" value={letterIntro} onChange={e=>setLetterIntro(e.target.value)} placeholder="Introduce yourself or say why you’d like to write."/></label><small>{letterIntro.length}/600</small></PalaceDialog>
  </Frame>
 }
 export function SearchLive({Frame}){const[q,setQ]=useState('');const[people,setPeople]=useState([]);const[busy,setBusy]=useState(false);const[error,setError]=useState('');async function go(e){e.preventDefault();setBusy(true);setError('');try{setPeople(await searchMembers(q))}catch(e){setError(e.message)}finally{setBusy(false)}}return <Frame><section className="room-title"><p className="eyebrow">FIND A PERSON, THEN A WORLD</p><h1>Search the Palace</h1><p className="lede">Member discovery begins with names. Story discovery lives in Reading Rooms and the Tag Constellation.</p></section><form className="palace-search" onSubmit={go}><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Search a member name or @username…" required/><button disabled={busy}>{busy?'Searching…':'Search'}</button></form>{error&&<div className="live-state error-state">{error}</div>}<section className="people-results">{people.map(p=><Link to={'/member/'+encodeURIComponent(p.username)} key={p.id}><div className="mini-avatar">{p.avatar_url?<img src={p.avatar_url} alt=""/>:(p.display_name||p.username).slice(0,1).toUpperCase()}</div><div><strong>{p.display_name||p.username}</strong><span>@{p.username} · {p.title||'Palace Member'}</span></div></Link>)}</section></Frame>}
