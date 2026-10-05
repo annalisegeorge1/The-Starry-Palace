@@ -1,5 +1,25 @@
 [
   {
+    "path": "public/assets/palace-courts/achievement-archive.png",
+    "size": 3023493,
+    "sha": "bd0680970e449c58b3797fd9714243ff351823fb"
+  },
+  {
+    "path": "public/assets/palace-courts/achievement-art-comics.png",
+    "size": 3102822,
+    "sha": "defbe454aa5933d63aedda5bd904276e58ba9cf2"
+  },
+  {
+    "path": "public/assets/palace-courts/achievement-clubs-social.png",
+    "size": 3068685,
+    "sha": "403c02d84bf78d1c00eedbea66130b3cd021a6bd"
+  },
+  {
+    "path": "public/assets/palace-courts/achievement-community.png",
+    "size": 2917428,
+    "sha": "d518ecfce5ccfd92f34ef1b51beb4c946ff3a466"
+  },
+  {
     "path": "public/assets/palace-courts/achievement-discovery-tags.png",
     "size": 3133364,
     "sha": "5670005e3b2c42a4579e6f176826f426a296b2df"
@@ -15,9 +35,9 @@
     "sha": "1ccbe5567285993c762372ae0c1b24392ecb1880"
   },
   {
-    "path": "public/assets/palace-courts/courts-3.png",
-    "size": 3238259,
-    "sha": "5ba308922e89db0af9ea0ca3d68d94bef5d1cda5"
+    "path": "public/assets/palace-courts/achievement-legendary.png",
+    "size": 2612810,
+    "sha": "d044db1fadd485ede5484c4053d12efc0169bde9"
   },
   {
     "path": "public/assets/palace-courts/achievement-reading.png",
@@ -25,33 +45,43 @@
     "sha": "224130df5c4d034f6304bbef780e2e3740ad222c"
   },
   {
-    "path": "public/assets/palace-courts/courts-2.png",
-    "size": 3345239,
-    "sha": "81a6f2dbec97b186196055a541d41131dc3c07ba"
-  },
-  {
-    "path": "public/assets/palace-courts/achievement-art-comics.png",
-    "size": 3102822,
-    "sha": "defbe454aa5933d63aedda5bd904276e58ba9cf2"
-  },
-  {
-    "path": "public/assets/palace-courts/achievement-community.png",
-    "size": 2917428,
-    "sha": "d518ecfce5ccfd92f34ef1b51beb4c946ff3a466"
-  },
-  {
-    "path": "public/assets/palace-courts/achievement-archive.png",
-    "size": 3023493,
-    "sha": "bd0680970e449c58b3797fd9714243ff351823fb"
+    "path": "public/assets/palace-courts/achievement-writing.png",
+    "size": 2522488,
+    "sha": "efe5cf6ab3b0e2b7568b8d908e8a00d41effdac3"
   },
   {
     "path": "public/assets/palace-courts/courts-1.png",
-    "size": 3096492,
-    "sha": "f1e75ffa9986c47470104eafa8ea92ea0cbfbbaf"
+    "size": 2971237,
+    "sha": "bbf586245123b19f05bbce602353f35c5314d7b3"
   },
   {
-    "path": "public/assets/palace-courts/achievement-clubs-social.png",
-    "size": 3068685,
-    "sha": "403c02d84bf78d1c00eedbea66130b3cd021a6bd"
+    "path": "public/assets/palace-courts/courts-2.png",
+    "size": 3056493,
+    "sha": "247d6d19bc4be938cd7f23f888b315f9a9cdc2bf"
+  },
+  {
+    "path": "public/assets/palace-courts/courts-3.png",
+    "size": 2989736,
+    "sha": "e2238e8ef1fc04311fafe24e5d6fdf88aba84c89"
+  },
+  {
+    "path": "public/assets/palace-courts/prize-achaemenid-17.png",
+    "size": 2648524,
+    "sha": "286dc2b9b310e43307362f89b104b4abb944f789"
+  },
+  {
+    "path": "public/assets/palace-courts/prize-majapahit-3.png",
+    "size": 2199376,
+    "sha": "f39e4482c46d858ed985f06407a3c4b786678905"
+  },
+  {
+    "path": "public/assets/palace-courts/prize-majapahit-8.png",
+    "size": 1843398,
+    "sha": "a757c3b9afe57eb546ad1b49daac75fc7367dd5e"
+  },
+  {
+    "path": "public/assets/palace-courts/prize-majapahit-9.png",
+    "size": 2407378,
+    "sha": "8cfb435fa3524e3f69a739e9d9f36bb3de5c98ff"
   }
 ]

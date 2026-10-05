@@ -14,7 +14,7 @@ export default function CourtsOfMoonlight(){
   <div className="badge-collection-switch" role="group" aria-label="Court portrait collection">{courtSheets.map(s=><button key={s.id} aria-pressed={selected===s.id} onClick={()=>setSelected(s.id)}>{s.name}</button>)}</div>
   <figure>
    <figcaption><strong>{sheet.name}</strong><br/>Rows follow the cultures above. Columns: Bronze · Silver · Gold · Platinum · Emerald.</figcaption>
-   <img key={sheet.id} src={'/assets/palace-courts/'+sheet.id+'.png?v=complete-2'} alt={`${sheet.name}: four rows of watercolour portraits, each progressing from Bronze through Emerald`} loading="lazy" decoding="async"/>
+   <img key={sheet.id} src={'/assets/palace-courts/'+sheet.id+'.png?v=consistent-3'} alt={`${sheet.name}: four rows of watercolour portraits, each progressing from Bronze through Emerald`} loading="lazy" decoding="async"/>
   </figure>
  </section>;
 }

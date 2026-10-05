@@ -184,3 +184,11 @@
 .court-watercolour-gallery img{display:block;width:100%;height:auto;object-fit:contain;filter:none}
 .court-watercolour-gallery .badge-collection-switch{display:flex;flex-wrap:wrap;gap:.5rem}
 .court-watercolour-gallery button{max-width:100%;white-space:normal}
+
+.badge-art-preview-button{display:block;margin:0 auto;background:transparent!important;border:0!important;padding:4px;cursor:zoom-in;color:inherit}
+.badge-art-dialog{width:min(90vw,520px);max-height:90dvh;overflow:auto;box-sizing:border-box;background:var(--surface,#111a2d);color:var(--text,#edf0ff);border:1px solid #647299;border-radius:20px;padding:24px}
+.badge-art-dialog::backdrop{background:rgba(4,8,20,.8)}
+.badge-art-dialog .palace-watercolour-badge{margin:20px auto;width:280px;max-width:100%}
+.badge-art-dialog .original-badge-stage{width:min(280px,65vw);height:min(300px,70vw)}
+.badge-art-dialog select{margin-left:12px;padding:8px;background:#17213a;color:#edf0ff;border:1px solid #647299;border-radius:8px}
+.badge-dialog-close{display:block;margin-left:auto}

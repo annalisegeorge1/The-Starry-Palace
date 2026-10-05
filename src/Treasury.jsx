@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useAuth } from './auth';
 import badges from './badges.json';
 import originals from './originalBadges.json';
@@ -16,9 +16,13 @@ const PAGE_SIZE=48;
 
 export default function Treasury({Frame}) {
  const {session}=useAuth();
- const [collection,setCollection]=useState(()=>{const requested=new URLSearchParams(window.location.search).get('collection');return ['original-treasures','moonlit-tea','courts-of-moonlight'].includes(requested)?requested:'originals'});
+ const [collection,setCollection]=useState(()=>{const requested=new URLSearchParams(window.location.search).get('collection');return ['original-treasures','moonlit-tea','courts-of-moonlight','expanded','gifts','originals'].includes(requested)?requested:'originals'});
  const [query,setQuery]=useState('');
+ const [badgePage,setBadgePage]=useState(1);
+ const [artPreview,setArtPreview]=useState(null);
+
  const [category,setCategory]=useState('all');
+ useEffect(()=>setBadgePage(1),[query,category,collection]);
  const [tier,setTier]=useState('bronze');
  const [selected,setSelected]=useState(null);
  const [giftData,setGiftData]=useState({items:[],count:0});
@@ -69,7 +73,7 @@ export default function Treasury({Frame}) {
  const pagedGifts=visibleGifts.slice((giftPage-1)*PAGE_SIZE,giftPage*PAGE_SIZE);
 
  function choose(next){
-  setCollection(next);setCategory('all');setGiftCourt('all');setGiftEditionFilter('all');setGiftOwnership('all');setSelected(null);
+  setCollection(next);const url=new URL(window.location.href);url.searchParams.set('collection',next);window.history.replaceState(null,'',url);setCategory('all');setGiftCourt('all');setGiftEditionFilter('all');setGiftOwnership('all');setSelected(null);
  }
 
  return <Frame privateArea>
@@ -137,15 +141,30 @@ export default function Treasury({Frame}) {
     <label>Preview tier<select value={tier} onChange={e=>setTier(e.target.value)}>{tiers.map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label>
    </div>
    <p role="status">{visibleBadges.length} badge families</p>
-   <div className="badge-grid">{visibleBadges.map(b=><article className="badge-card" key={b.id}>
-    <PalaceBadge family={b} tier={tier}/>
+   <div className="badge-grid">{visibleBadges.slice((badgePage-1)*24,badgePage*24).map(b=><article className="badge-card" key={b.id}>
+    <button className="badge-art-preview-button" aria-label={"Enlarge "+b.name+" artwork"} onClick={()=>setArtPreview(b)}><PalaceBadge family={b} tier={tier}/></button>
     <small>{b.category} · {b.difficulty}</small><h2>{b.name}</h2><p>{b.description}</p>
     <p className="badge-goal">{b.tiers.find(t=>t.slug===tier)?.threshold.toLocaleString()} · {b.unit||b.metric.replaceAll('_',' ')}</p>
     <button onClick={()=>setSelected(selected===b.id?null:b.id)} aria-expanded={selected===b.id}>{selected===b.id?'Hide requirements':'View all tiers'}</button>
     {selected===b.id&&<ul className="badge-requirements">{b.tiers.map(t=><li key={t.slug}><strong>{t.name}</strong><span>{t.threshold.toLocaleString()}</span></li>)}</ul>}
    </article>)}</div>
+   {visibleBadges.length>24&&<nav className="catalogue-pagination" aria-label="Badge catalogue pages"><button disabled={badgePage===1} onClick={()=>setBadgePage(p=>p-1)}>← Previous</button><span>Page {badgePage} of {Math.ceil(visibleBadges.length/24)}</span><button disabled={badgePage*24>=visibleBadges.length} onClick={()=>setBadgePage(p=>p+1)}>Next →</button></nav>}
    {!visibleBadges.length&&<p>No badges match these filters. Try another name or category.</p>}
   </>}
+ {artPreview&&<BadgePreview family={artPreview} tier={tier} close={()=>setArtPreview(null)}/>}
  </Frame>;
 }
 
+
+function BadgePreview({family,tier,close}){
+ const [rank,setRank]=useState(tier);
+ const dialogRef=useRef(null);
+ useEffect(()=>{dialogRef.current?.showModal();},[]);
+ return <dialog ref={dialogRef} className="badge-art-dialog" onCancel={close} onClose={close}>
+  <button autoFocus className="badge-dialog-close" onClick={close} aria-label="Close artwork preview">Close ×</button>
+  <h2>{family.name}</h2><p>{family.description}</p>
+  <PalaceBadge family={family} tier={rank}/>
+  <label>Artwork tier<select value={rank} onChange={e=>setRank(e.target.value)}>{tiers.map(t=><option key={t} value={t}>{t}</option>)}</select></label>
+  <p>{family.tiers.find(t=>t.slug===rank)?.threshold.toLocaleString()} · {family.unit||family.metric.replaceAll('_',' ')}</p>
+ </dialog>;
+}

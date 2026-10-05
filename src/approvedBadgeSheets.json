@@ -4,559 +4,3899 @@
     "asset": "achievement-discovery-tags.png",
     "width": 887,
     "height": 1774,
-    "row": 0
+    "row": 0,
+    "frames": [
+      [
+        25,
+        23,
+        133,
+        127
+      ],
+      [
+        189,
+        21,
+        148,
+        131
+      ],
+      [
+        362,
+        21,
+        147,
+        148
+      ],
+      [
+        535,
+        21,
+        146,
+        149
+      ],
+      [
+        706,
+        19,
+        164,
+        157
+      ]
+    ]
   },
   "fandom-navigator": {
     "name": "Fandom Navigator",
     "asset": "achievement-discovery-tags.png",
     "width": 887,
     "height": 1774,
-    "row": 1
+    "row": 1,
+    "frames": [
+      [
+        27,
+        194,
+        135,
+        127
+      ],
+      [
+        194,
+        187,
+        142,
+        141
+      ],
+      [
+        365,
+        186,
+        147,
+        141
+      ],
+      [
+        536,
+        183,
+        156,
+        156
+      ],
+      [
+        710,
+        181,
+        156,
+        162
+      ]
+    ]
   },
   "relationship-mapper": {
     "name": "Relationship Mapper",
     "asset": "achievement-discovery-tags.png",
     "width": 887,
     "height": 1774,
-    "row": 2
+    "row": 2,
+    "frames": [
+      [
+        19,
+        359,
+        151,
+        142
+      ],
+      [
+        189,
+        358,
+        154,
+        141
+      ],
+      [
+        365,
+        356,
+        149,
+        145
+      ],
+      [
+        535,
+        355,
+        154,
+        152
+      ],
+      [
+        707,
+        352,
+        161,
+        159
+      ]
+    ]
   },
   "warning-keeper": {
     "name": "Warning Keeper",
     "asset": "achievement-discovery-tags.png",
     "width": 887,
     "height": 1774,
-    "row": 3
+    "row": 3,
+    "frames": [
+      [
+        40,
+        524,
+        101,
+        129
+      ],
+      [
+        205,
+        523,
+        120,
+        132
+      ],
+      [
+        373,
+        520,
+        134,
+        138
+      ],
+      [
+        542,
+        519,
+        142,
+        145
+      ],
+      [
+        712,
+        511,
+        149,
+        160
+      ]
+    ]
   },
   "alias-wrangler": {
     "name": "Alias Wrangler",
     "asset": "achievement-discovery-tags.png",
     "width": 887,
     "height": 1774,
-    "row": 4
+    "row": 4,
+    "frames": [
+      [
+        18,
+        679,
+        148,
+        140
+      ],
+      [
+        190,
+        679,
+        150,
+        144
+      ],
+      [
+        361,
+        675,
+        150,
+        150
+      ],
+      [
+        533,
+        675,
+        156,
+        152
+      ],
+      [
+        706,
+        674,
+        162,
+        157
+      ]
+    ]
   },
   "search-constellation": {
     "name": "Search Constellation",
     "asset": "achievement-discovery-tags.png",
     "width": 887,
     "height": 1774,
-    "row": 5
+    "row": 5,
+    "frames": [
+      [
+        18,
+        846,
+        153,
+        140
+      ],
+      [
+        189,
+        846,
+        156,
+        141
+      ],
+      [
+        363,
+        846,
+        155,
+        143
+      ],
+      [
+        534,
+        839,
+        160,
+        152
+      ],
+      [
+        706,
+        838,
+        163,
+        158
+      ]
+    ]
   },
   "filter-alchemist": {
     "name": "Filter Alchemist",
     "asset": "achievement-discovery-tags.png",
     "width": 887,
     "height": 1774,
-    "row": 6
+    "row": 6,
+    "frames": [
+      [
+        35,
+        1008,
+        108,
+        160
+      ],
+      [
+        198,
+        1003,
+        132,
+        168
+      ],
+      [
+        380,
+        1002,
+        121,
+        173
+      ],
+      [
+        549,
+        1002,
+        129,
+        176
+      ],
+      [
+        713,
+        998,
+        147,
+        180
+      ]
+    ]
   },
   "new-voice-seeker": {
     "name": "New Voice Seeker",
     "asset": "achievement-discovery-tags.png",
     "width": 887,
     "height": 1774,
-    "row": 7
+    "row": 7,
+    "frames": [
+      [
+        21,
+        1190,
+        150,
+        141
+      ],
+      [
+        190,
+        1186,
+        154,
+        166
+      ],
+      [
+        363,
+        1186,
+        155,
+        163
+      ],
+      [
+        534,
+        1185,
+        159,
+        166
+      ],
+      [
+        707,
+        1178,
+        170,
+        179
+      ]
+    ]
   },
   "hidden-gem-keeper": {
     "name": "Hidden Gem Keeper",
     "asset": "achievement-discovery-tags.png",
     "width": 887,
     "height": 1774,
-    "row": 8
+    "row": 8,
+    "frames": [
+      [
+        30,
+        1372,
+        120,
+        129
+      ],
+      [
+        196,
+        1365,
+        125,
+        138
+      ],
+      [
+        368,
+        1364,
+        139,
+        143
+      ],
+      [
+        534,
+        1359,
+        153,
+        153
+      ],
+      [
+        706,
+        1359,
+        162,
+        157
+      ]
+    ]
   },
   "collection-curator": {
     "name": "Collection Curator",
     "asset": "achievement-discovery-tags.png",
     "width": 887,
     "height": 1774,
-    "row": 9
+    "row": 9,
+    "frames": [
+      [
+        24,
+        1534,
+        136,
+        167
+      ],
+      [
+        189,
+        1530,
+        140,
+        173
+      ],
+      [
+        359,
+        1521,
+        149,
+        187
+      ],
+      [
+        535,
+        1520,
+        154,
+        192
+      ],
+      [
+        706,
+        1516,
+        165,
+        231
+      ]
+    ]
   },
   "club-founder": {
     "name": "Club Founder",
     "asset": "achievement-clubs-social.png",
     "width": 887,
     "height": 1774,
-    "row": 0
+    "row": 0,
+    "frames": [
+      [
+        37,
+        39,
+        127,
+        112
+      ],
+      [
+        210,
+        33,
+        132,
+        120
+      ],
+      [
+        378,
+        24,
+        134,
+        133
+      ],
+      [
+        539,
+        16,
+        144,
+        144
+      ],
+      [
+        707,
+        10,
+        163,
+        155
+      ]
+    ]
   },
   "steward-s-key": {
     "name": "Steward's Key",
     "asset": "achievement-clubs-social.png",
     "width": 887,
     "height": 1774,
-    "row": 1
+    "row": 1,
+    "frames": [
+      [
+        31,
+        180,
+        128,
+        130
+      ],
+      [
+        205,
+        182,
+        131,
+        134
+      ],
+      [
+        370,
+        180,
+        142,
+        134
+      ],
+      [
+        544,
+        178,
+        148,
+        141
+      ],
+      [
+        710,
+        177,
+        154,
+        146
+      ]
+    ]
   },
   "reading-circle-host": {
     "name": "Reading Circle Host",
     "asset": "achievement-clubs-social.png",
     "width": 887,
     "height": 1774,
-    "row": 2
+    "row": 2,
+    "frames": [
+      [
+        30,
+        339,
+        137,
+        126
+      ],
+      [
+        202,
+        336,
+        139,
+        131
+      ],
+      [
+        371,
+        337,
+        142,
+        129
+      ],
+      [
+        543,
+        330,
+        145,
+        138
+      ],
+      [
+        705,
+        330,
+        162,
+        141
+      ]
+    ]
   },
   "writing-circle-host": {
     "name": "Writing Circle Host",
     "asset": "achievement-clubs-social.png",
     "width": 887,
     "height": 1774,
-    "row": 3
+    "row": 3,
+    "frames": [
+      [
+        26,
+        491,
+        144,
+        146
+      ],
+      [
+        199,
+        490,
+        143,
+        146
+      ],
+      [
+        369,
+        490,
+        147,
+        151
+      ],
+      [
+        538,
+        487,
+        152,
+        157
+      ],
+      [
+        708,
+        484,
+        156,
+        165
+      ]
+    ]
   },
   "panel-circle-host": {
     "name": "Panel Circle Host",
     "asset": "achievement-clubs-social.png",
     "width": 887,
     "height": 1774,
-    "row": 4
+    "row": 4,
+    "frames": [
+      [
+        29,
+        658,
+        137,
+        135
+      ],
+      [
+        201,
+        657,
+        140,
+        136
+      ],
+      [
+        368,
+        655,
+        148,
+        142
+      ],
+      [
+        538,
+        653,
+        151,
+        159
+      ],
+      [
+        707,
+        649,
+        160,
+        177
+      ]
+    ]
   },
   "circle-of-moons": {
     "name": "Circle of Moons",
     "asset": "achievement-clubs-social.png",
     "width": 887,
     "height": 1774,
-    "row": 5
+    "row": 5,
+    "frames": [
+      [
+        26,
+        844,
+        146,
+        123
+      ],
+      [
+        199,
+        845,
+        149,
+        124
+      ],
+      [
+        370,
+        842,
+        153,
+        129
+      ],
+      [
+        540,
+        834,
+        156,
+        139
+      ],
+      [
+        711,
+        839,
+        159,
+        138
+      ]
+    ]
   },
   "circle-keeper": {
     "name": "Circle Keeper",
     "asset": "achievement-clubs-social.png",
     "width": 887,
     "height": 1774,
-    "row": 6
+    "row": 6,
+    "frames": [
+      [
+        28,
+        995,
+        138,
+        162
+      ],
+      [
+        200,
+        995,
+        139,
+        173
+      ],
+      [
+        366,
+        993,
+        152,
+        176
+      ],
+      [
+        535,
+        987,
+        157,
+        200
+      ],
+      [
+        705,
+        981,
+        165,
+        206
+      ]
+    ]
   },
   "cross-court-visitor": {
     "name": "Cross-Court Visitor",
     "asset": "achievement-clubs-social.png",
     "width": 887,
     "height": 1774,
-    "row": 7
+    "row": 7,
+    "frames": [
+      [
+        20,
+        1194,
+        156,
+        129
+      ],
+      [
+        190,
+        1194,
+        163,
+        145
+      ],
+      [
+        362,
+        1191,
+        163,
+        159
+      ],
+      [
+        527,
+        1187,
+        172,
+        167
+      ],
+      [
+        702,
+        1187,
+        176,
+        170
+      ]
+    ]
   },
   "invitation-keeper": {
     "name": "Invitation Keeper",
     "asset": "achievement-clubs-social.png",
     "width": 887,
     "height": 1774,
-    "row": 8
+    "row": 8,
+    "frames": [
+      [
+        19,
+        1366,
+        144,
+        140
+      ],
+      [
+        187,
+        1366,
+        165,
+        147
+      ],
+      [
+        358,
+        1366,
+        161,
+        147
+      ],
+      [
+        527,
+        1362,
+        169,
+        159
+      ],
+      [
+        703,
+        1362,
+        171,
+        166
+      ]
+    ]
   },
   "community-bridge": {
     "name": "Community Bridge",
     "asset": "achievement-clubs-social.png",
     "width": 887,
     "height": 1774,
-    "row": 9
+    "row": 9,
+    "frames": [
+      [
+        12,
+        1560,
+        165,
+        151
+      ],
+      [
+        182,
+        1553,
+        173,
+        163
+      ],
+      [
+        355,
+        1550,
+        171,
+        173
+      ],
+      [
+        526,
+        1552,
+        176,
+        181
+      ],
+      [
+        702,
+        1540,
+        177,
+        198
+      ]
+    ]
   },
   "lost-work-lantern": {
     "name": "Lost Work Lantern",
     "asset": "achievement-archive.png",
     "width": 1024,
     "height": 1536,
-    "row": 0
+    "row": 0,
+    "frames": [
+      [
+        51,
+        34,
+        131,
+        108
+      ],
+      [
+        241,
+        27,
+        140,
+        117
+      ],
+      [
+        427,
+        20,
+        154,
+        126
+      ],
+      [
+        619,
+        16,
+        171,
+        131
+      ],
+      [
+        819,
+        4,
+        181,
+        147
+      ]
+    ]
   },
   "archive-contributor": {
     "name": "Archive Contributor",
     "asset": "achievement-archive.png",
     "width": 1024,
     "height": 1536,
-    "row": 1
+    "row": 1,
+    "frames": [
+      [
+        37,
+        158,
+        120,
+        108
+      ],
+      [
+        231,
+        158,
+        140,
+        111
+      ],
+      [
+        424,
+        157,
+        146,
+        115
+      ],
+      [
+        616,
+        152,
+        171,
+        128
+      ],
+      [
+        818,
+        151,
+        181,
+        132
+      ]
+    ]
   },
   "source-keeper": {
     "name": "Source Keeper",
     "asset": "achievement-archive.png",
     "width": 1024,
     "height": 1536,
-    "row": 2
+    "row": 2,
+    "frames": [
+      [
+        37,
+        291,
+        145,
+        112
+      ],
+      [
+        235,
+        291,
+        139,
+        115
+      ],
+      [
+        428,
+        290,
+        151,
+        120
+      ],
+      [
+        622,
+        287,
+        169,
+        127
+      ],
+      [
+        819,
+        285,
+        185,
+        134
+      ]
+    ]
   },
   "provenance-scribe": {
     "name": "Provenance Scribe",
     "asset": "achievement-archive.png",
     "width": 1024,
     "height": 1536,
-    "row": 3
+    "row": 3,
+    "frames": [
+      [
+        28,
+        443,
+        155,
+        90
+      ],
+      [
+        228,
+        442,
+        154,
+        97
+      ],
+      [
+        420,
+        438,
+        162,
+        105
+      ],
+      [
+        611,
+        434,
+        183,
+        117
+      ],
+      [
+        816,
+        423,
+        189,
+        128
+      ]
+    ]
   },
   "translation-lantern": {
     "name": "Translation Lantern",
     "asset": "achievement-archive.png",
     "width": 1024,
     "height": 1536,
-    "row": 4
+    "row": 4,
+    "frames": [
+      [
+        20,
+        561,
+        168,
+        120
+      ],
+      [
+        216,
+        559,
+        172,
+        124
+      ],
+      [
+        410,
+        556,
+        179,
+        132
+      ],
+      [
+        606,
+        552,
+        190,
+        147
+      ],
+      [
+        806,
+        551,
+        204,
+        155
+      ]
+    ]
   },
   "public-domain-scholar": {
     "name": "Public Domain Scholar",
     "asset": "achievement-archive.png",
     "width": 1024,
     "height": 1536,
-    "row": 5
+    "row": 5,
+    "frames": [
+      [
+        30,
+        719,
+        149,
+        107
+      ],
+      [
+        220,
+        718,
+        159,
+        109
+      ],
+      [
+        411,
+        716,
+        167,
+        113
+      ],
+      [
+        609,
+        711,
+        182,
+        123
+      ],
+      [
+        811,
+        707,
+        194,
+        132
+      ]
+    ]
   },
   "restored-page": {
     "name": "Restored Page",
     "asset": "achievement-archive.png",
     "width": 1024,
     "height": 1536,
-    "row": 6
+    "row": 6,
+    "frames": [
+      [
+        46,
+        850,
+        137,
+        132
+      ],
+      [
+        237,
+        850,
+        143,
+        135
+      ],
+      [
+        426,
+        851,
+        153,
+        137
+      ],
+      [
+        623,
+        849,
+        163,
+        149
+      ],
+      [
+        822,
+        846,
+        169,
+        152
+      ]
+    ]
   },
   "rights-respecter": {
     "name": "Rights Respecter",
     "asset": "achievement-archive.png",
     "width": 1024,
     "height": 1536,
-    "row": 7
+    "row": 7,
+    "frames": [
+      [
+        31,
+        1002,
+        151,
+        127
+      ],
+      [
+        222,
+        1001,
+        161,
+        131
+      ],
+      [
+        422,
+        999,
+        164,
+        137
+      ],
+      [
+        616,
+        998,
+        175,
+        141
+      ],
+      [
+        815,
+        998,
+        185,
+        146
+      ]
+    ]
   },
   "language-bridge": {
     "name": "Language Bridge",
     "asset": "achievement-archive.png",
     "width": 1024,
     "height": 1536,
-    "row": 8
+    "row": 8,
+    "frames": [
+      [
+        19,
+        1182,
+        176,
+        85
+      ],
+      [
+        212,
+        1172,
+        180,
+        98
+      ],
+      [
+        407,
+        1166,
+        183,
+        109
+      ],
+      [
+        603,
+        1158,
+        197,
+        120
+      ],
+      [
+        805,
+        1149,
+        208,
+        153
+      ]
+    ]
   },
   "memory-keeper": {
     "name": "Memory Keeper",
     "asset": "achievement-archive.png",
     "width": 1024,
     "height": 1536,
-    "row": 9
+    "row": 9,
+    "frames": [
+      [
+        42,
+        1306,
+        145,
+        159
+      ],
+      [
+        229,
+        1306,
+        145,
+        164
+      ],
+      [
+        425,
+        1305,
+        151,
+        177
+      ],
+      [
+        617,
+        1304,
+        165,
+        192
+      ],
+      [
+        821,
+        1304,
+        179,
+        205
+      ]
+    ]
   },
   "heritage-hall-visitor": {
     "name": "Heritage Hall Visitor",
     "asset": "achievement-heritage.png",
     "width": 887,
     "height": 1774,
-    "row": 0
+    "row": 0,
+    "frames": [
+      [
+        48,
+        48,
+        103,
+        90
+      ],
+      [
+        206,
+        36,
+        122,
+        104
+      ],
+      [
+        371,
+        29,
+        133,
+        119
+      ],
+      [
+        528,
+        20,
+        145,
+        132
+      ],
+      [
+        688,
+        11,
+        172,
+        142
+      ]
+    ]
   },
   "global-calendar-voyager": {
     "name": "Global Calendar Voyager",
     "asset": "achievement-heritage.png",
     "width": 887,
     "height": 1774,
-    "row": 1
+    "row": 1,
+    "frames": [
+      [
+        48,
+        182,
+        109,
+        100
+      ],
+      [
+        206,
+        174,
+        124,
+        113
+      ],
+      [
+        366,
+        167,
+        142,
+        130
+      ],
+      [
+        524,
+        160,
+        156,
+        139
+      ],
+      [
+        694,
+        155,
+        163,
+        149
+      ]
+    ]
   },
   "lunar-lantern": {
     "name": "Lunar Lantern",
     "asset": "achievement-heritage.png",
     "width": 887,
     "height": 1774,
-    "row": 2
+    "row": 2,
+    "frames": [
+      [
+        60,
+        311,
+        82,
+        153
+      ],
+      [
+        214,
+        305,
+        103,
+        163
+      ],
+      [
+        371,
+        304,
+        116,
+        169
+      ],
+      [
+        531,
+        304,
+        133,
+        175
+      ],
+      [
+        700,
+        304,
+        150,
+        177
+      ]
+    ]
   },
   "emancipation-constellation": {
     "name": "Emancipation Constellation",
     "asset": "achievement-heritage.png",
     "width": 887,
     "height": 1774,
-    "row": 3
+    "row": 3,
+    "frames": [
+      [
+        34,
+        491,
+        131,
+        108
+      ],
+      [
+        197,
+        488,
+        140,
+        127
+      ],
+      [
+        366,
+        483,
+        142,
+        134
+      ],
+      [
+        524,
+        482,
+        156,
+        141
+      ],
+      [
+        692,
+        481,
+        170,
+        142
+      ]
+    ]
   },
   "pride-constellation": {
     "name": "Pride Constellation",
     "asset": "achievement-heritage.png",
     "width": 887,
     "height": 1774,
-    "row": 4
+    "row": 4,
+    "frames": [
+      [
+        50,
+        652,
+        103,
+        103
+      ],
+      [
+        202,
+        642,
+        133,
+        124
+      ],
+      [
+        365,
+        640,
+        141,
+        126
+      ],
+      [
+        527,
+        636,
+        148,
+        136
+      ],
+      [
+        696,
+        630,
+        158,
+        145
+      ]
+    ]
   },
   "black-history-lantern": {
     "name": "Black History Lantern",
     "asset": "achievement-heritage.png",
     "width": 887,
     "height": 1774,
-    "row": 5
+    "row": 5,
+    "frames": [
+      [
+        35,
+        794,
+        128,
+        134
+      ],
+      [
+        195,
+        791,
+        142,
+        139
+      ],
+      [
+        358,
+        785,
+        152,
+        154
+      ],
+      [
+        521,
+        781,
+        161,
+        158
+      ],
+      [
+        686,
+        775,
+        176,
+        170
+      ]
+    ]
   },
   "indigenous-stars": {
     "name": "Indigenous Stars",
     "asset": "achievement-heritage.png",
     "width": 887,
     "height": 1774,
-    "row": 6
+    "row": 6,
+    "frames": [
+      [
+        37,
+        972,
+        126,
+        131
+      ],
+      [
+        192,
+        968,
+        143,
+        141
+      ],
+      [
+        357,
+        960,
+        153,
+        153
+      ],
+      [
+        521,
+        953,
+        163,
+        163
+      ],
+      [
+        685,
+        947,
+        182,
+        178
+      ]
+    ]
   },
   "deaf-culture-lantern": {
     "name": "Deaf Culture Lantern",
     "asset": "achievement-heritage.png",
     "width": 887,
     "height": 1774,
-    "row": 7
+    "row": 7,
+    "frames": [
+      [
+        38,
+        1147,
+        121,
+        133
+      ],
+      [
+        193,
+        1137,
+        145,
+        152
+      ],
+      [
+        359,
+        1131,
+        151,
+        166
+      ],
+      [
+        521,
+        1126,
+        161,
+        188
+      ],
+      [
+        689,
+        1126,
+        175,
+        190
+      ]
+    ]
   },
   "disability-pride-moon": {
     "name": "Disability Pride Moon",
     "asset": "achievement-heritage.png",
     "width": 887,
     "height": 1774,
-    "row": 8
+    "row": 8,
+    "frames": [
+      [
+        41,
+        1342,
+        116,
+        115
+      ],
+      [
+        204,
+        1335,
+        131,
+        127
+      ],
+      [
+        369,
+        1330,
+        139,
+        134
+      ],
+      [
+        532,
+        1329,
+        149,
+        169
+      ],
+      [
+        702,
+        1322,
+        157,
+        186
+      ]
+    ]
   },
   "language-constellation": {
     "name": "Language Constellation",
     "asset": "achievement-heritage.png",
     "width": 887,
     "height": 1774,
-    "row": 9
+    "row": 9,
+    "frames": [
+      [
+        41,
+        1519,
+        116,
+        139
+      ],
+      [
+        199,
+        1515,
+        135,
+        151
+      ],
+      [
+        355,
+        1508,
+        158,
+        168
+      ],
+      [
+        521,
+        1510,
+        157,
+        171
+      ],
+      [
+        685,
+        1510,
+        181,
+        186
+      ]
+    ]
   },
   "thoughtful-voice": {
     "name": "Thoughtful Voice",
     "asset": "achievement-community.png",
     "width": 1024,
     "height": 1536,
-    "row": 0
+    "row": 0,
+    "frames": [
+      [
+        46,
+        41,
+        125,
+        116
+      ],
+      [
+        238,
+        29,
+        129,
+        125
+      ],
+      [
+        440,
+        23,
+        134,
+        131
+      ],
+      [
+        632,
+        14,
+        152,
+        144
+      ],
+      [
+        832,
+        11,
+        157,
+        148
+      ]
+    ]
   },
   "reply-lantern": {
     "name": "Reply Lantern",
     "asset": "achievement-community.png",
     "width": 1024,
     "height": 1536,
-    "row": 1
+    "row": 1,
+    "frames": [
+      [
+        49,
+        159,
+        125,
+        134
+      ],
+      [
+        245,
+        159,
+        134,
+        134
+      ],
+      [
+        439,
+        159,
+        147,
+        131
+      ],
+      [
+        630,
+        161,
+        166,
+        132
+      ],
+      [
+        825,
+        159,
+        176,
+        134
+      ]
+    ]
   },
   "club-hearth": {
     "name": "Club Hearth",
     "asset": "achievement-community.png",
     "width": 1024,
     "height": 1536,
-    "row": 2
+    "row": 2,
+    "frames": [
+      [
+        34,
+        309,
+        142,
+        101
+      ],
+      [
+        238,
+        303,
+        141,
+        111
+      ],
+      [
+        428,
+        293,
+        166,
+        122
+      ],
+      [
+        626,
+        293,
+        172,
+        133
+      ],
+      [
+        823,
+        293,
+        180,
+        134
+      ]
+    ]
   },
   "forum-stargazer": {
     "name": "Forum Stargazer",
     "asset": "achievement-community.png",
     "width": 1024,
     "height": 1536,
-    "row": 3
+    "row": 3,
+    "frames": [
+      [
+        37,
+        437,
+        136,
+        121
+      ],
+      [
+        232,
+        433,
+        144,
+        127
+      ],
+      [
+        434,
+        432,
+        146,
+        131
+      ],
+      [
+        631,
+        432,
+        154,
+        133
+      ],
+      [
+        833,
+        430,
+        160,
+        136
+      ]
+    ]
   },
   "forum-constellation": {
     "name": "Forum Constellation",
     "asset": "achievement-community.png",
     "width": 1024,
     "height": 1536,
-    "row": 4
+    "row": 4,
+    "frames": [
+      [
+        30,
+        588,
+        146,
+        90
+      ],
+      [
+        228,
+        588,
+        151,
+        91
+      ],
+      [
+        429,
+        584,
+        160,
+        111
+      ],
+      [
+        625,
+        576,
+        170,
+        121
+      ],
+      [
+        822,
+        573,
+        179,
+        124
+      ]
+    ]
   },
   "welcome-lantern": {
     "name": "Welcome Lantern",
     "asset": "achievement-community.png",
     "width": 1024,
     "height": 1536,
-    "row": 5
+    "row": 5,
+    "frames": [
+      [
+        30,
+        699,
+        153,
+        156
+      ],
+      [
+        230,
+        700,
+        154,
+        157
+      ],
+      [
+        432,
+        701,
+        160,
+        156
+      ],
+      [
+        625,
+        699,
+        170,
+        166
+      ],
+      [
+        824,
+        697,
+        179,
+        171
+      ]
+    ]
   },
   "recommendation-bell": {
     "name": "Recommendation Bell",
     "asset": "achievement-community.png",
     "width": 1024,
     "height": 1536,
-    "row": 6
+    "row": 6,
+    "frames": [
+      [
+        24,
+        889,
+        166,
+        100
+      ],
+      [
+        224,
+        884,
+        166,
+        103
+      ],
+      [
+        422,
+        882,
+        173,
+        118
+      ],
+      [
+        619,
+        878,
+        179,
+        127
+      ],
+      [
+        815,
+        871,
+        190,
+        135
+      ]
+    ]
   },
   "co-writer-s-key": {
     "name": "Co-writer's Key",
     "asset": "achievement-community.png",
     "width": 1024,
     "height": 1536,
-    "row": 7
+    "row": 7,
+    "frames": [
+      [
+        40,
+        1007,
+        143,
+        143
+      ],
+      [
+        243,
+        1008,
+        144,
+        150
+      ],
+      [
+        438,
+        1006,
+        146,
+        147
+      ],
+      [
+        631,
+        1006,
+        157,
+        158
+      ],
+      [
+        825,
+        1006,
+        171,
+        158
+      ]
+    ]
   },
   "community-host": {
     "name": "Community Host",
     "asset": "achievement-community.png",
     "width": 1024,
     "height": 1536,
-    "row": 8
+    "row": 8,
+    "frames": [
+      [
+        19,
+        1183,
+        166,
+        106
+      ],
+      [
+        223,
+        1177,
+        167,
+        112
+      ],
+      [
+        422,
+        1172,
+        175,
+        119
+      ],
+      [
+        618,
+        1164,
+        182,
+        140
+      ],
+      [
+        816,
+        1164,
+        190,
+        149
+      ]
+    ]
   },
   "quiet-steward": {
     "name": "Quiet Steward",
     "asset": "achievement-community.png",
     "width": 1024,
     "height": 1536,
-    "row": 9
+    "row": 9,
+    "frames": [
+      [
+        19,
+        1323,
+        178,
+        136
+      ],
+      [
+        222,
+        1330,
+        172,
+        137
+      ],
+      [
+        415,
+        1323,
+        180,
+        140
+      ],
+      [
+        614,
+        1322,
+        185,
+        159
+      ],
+      [
+        815,
+        1313,
+        193,
+        185
+      ]
+    ]
   },
   "sprint-moon": {
     "name": "Sprint Moon",
     "asset": "achievement-events.png",
     "width": 887,
     "height": 1774,
-    "row": 0
+    "row": 0,
+    "frames": [
+      [
+        27,
+        12,
+        132,
+        150
+      ],
+      [
+        194,
+        9,
+        137,
+        157
+      ],
+      [
+        366,
+        8,
+        136,
+        156
+      ],
+      [
+        537,
+        6,
+        142,
+        161
+      ],
+      [
+        711,
+        5,
+        151,
+        164
+      ]
+    ]
   },
   "reading-festival-voyager": {
     "name": "Reading Festival Voyager",
     "asset": "achievement-events.png",
     "width": 887,
     "height": 1774,
-    "row": 1
+    "row": 1,
+    "frames": [
+      [
+        25,
+        169,
+        132,
+        143
+      ],
+      [
+        188,
+        169,
+        143,
+        150
+      ],
+      [
+        361,
+        169,
+        151,
+        153
+      ],
+      [
+        533,
+        169,
+        159,
+        156
+      ],
+      [
+        705,
+        169,
+        168,
+        162
+      ]
+    ]
   },
   "salon-guest": {
     "name": "Salon Guest",
     "asset": "achievement-events.png",
     "width": 887,
     "height": 1774,
-    "row": 2
+    "row": 2,
+    "frames": [
+      [
+        24,
+        341,
+        141,
+        116
+      ],
+      [
+        190,
+        340,
+        146,
+        124
+      ],
+      [
+        357,
+        338,
+        154,
+        129
+      ],
+      [
+        531,
+        334,
+        157,
+        141
+      ],
+      [
+        704,
+        332,
+        166,
+        151
+      ]
+    ]
   },
   "workshop-scholar": {
     "name": "Workshop Scholar",
     "asset": "achievement-events.png",
     "width": 887,
     "height": 1774,
-    "row": 3
+    "row": 3,
+    "frames": [
+      [
+        25,
+        499,
+        139,
+        134
+      ],
+      [
+        192,
+        495,
+        145,
+        140
+      ],
+      [
+        360,
+        488,
+        153,
+        152
+      ],
+      [
+        529,
+        488,
+        163,
+        159
+      ],
+      [
+        701,
+        483,
+        171,
+        175
+      ]
+    ]
   },
   "calendar-keeper": {
     "name": "Calendar Keeper",
     "asset": "achievement-events.png",
     "width": 887,
     "height": 1774,
-    "row": 4
+    "row": 4,
+    "frames": [
+      [
+        27,
+        675,
+        133,
+        118
+      ],
+      [
+        186,
+        667,
+        151,
+        129
+      ],
+      [
+        355,
+        667,
+        158,
+        133
+      ],
+      [
+        527,
+        658,
+        166,
+        160
+      ],
+      [
+        701,
+        658,
+        171,
+        165
+      ]
+    ]
   },
   "challenge-finisher": {
     "name": "Challenge Finisher",
     "asset": "achievement-events.png",
     "width": 887,
     "height": 1774,
-    "row": 5
+    "row": 5,
+    "frames": [
+      [
+        27,
+        847,
+        137,
+        131
+      ],
+      [
+        194,
+        842,
+        136,
+        137
+      ],
+      [
+        362,
+        838,
+        147,
+        148
+      ],
+      [
+        530,
+        823,
+        157,
+        166
+      ],
+      [
+        702,
+        823,
+        166,
+        170
+      ]
+    ]
   },
   "prompt-collector": {
     "name": "Prompt Collector",
     "asset": "achievement-events.png",
     "width": 887,
     "height": 1774,
-    "row": 6
+    "row": 6,
+    "frames": [
+      [
+        22,
+        1006,
+        138,
+        131
+      ],
+      [
+        184,
+        999,
+        153,
+        153
+      ],
+      [
+        355,
+        1001,
+        157,
+        154
+      ],
+      [
+        527,
+        995,
+        165,
+        164
+      ],
+      [
+        701,
+        993,
+        172,
+        170
+      ]
+    ]
   },
   "seasonal-scribe": {
     "name": "Seasonal Scribe",
     "asset": "achievement-events.png",
     "width": 887,
     "height": 1774,
-    "row": 7
+    "row": 7,
+    "frames": [
+      [
+        22,
+        1172,
+        134,
+        146
+      ],
+      [
+        191,
+        1170,
+        143,
+        155
+      ],
+      [
+        355,
+        1167,
+        149,
+        157
+      ],
+      [
+        527,
+        1166,
+        157,
+        162
+      ],
+      [
+        701,
+        1164,
+        170,
+        170
+      ]
+    ]
   },
   "event-steward": {
     "name": "Event Steward",
     "asset": "achievement-events.png",
     "width": 887,
     "height": 1774,
-    "row": 8
+    "row": 8,
+    "frames": [
+      [
+        20,
+        1359,
+        145,
+        140
+      ],
+      [
+        185,
+        1353,
+        158,
+        151
+      ],
+      [
+        357,
+        1348,
+        161,
+        174
+      ],
+      [
+        528,
+        1347,
+        169,
+        185
+      ],
+      [
+        701,
+        1344,
+        171,
+        189
+      ]
+    ]
   },
   "heritage-visitor": {
     "name": "Heritage Visitor",
     "asset": "achievement-events.png",
     "width": 887,
     "height": 1774,
-    "row": 9
+    "row": 9,
+    "frames": [
+      [
+        17,
+        1544,
+        154,
+        174
+      ],
+      [
+        181,
+        1540,
+        167,
+        182
+      ],
+      [
+        355,
+        1533,
+        165,
+        189
+      ],
+      [
+        527,
+        1536,
+        169,
+        204
+      ],
+      [
+        701,
+        1533,
+        175,
+        216
+      ]
+    ]
   },
   "panel-maker": {
     "name": "Panel Maker",
     "asset": "achievement-art-comics.png",
     "width": 1024,
     "height": 1536,
-    "row": 0
+    "row": 0,
+    "frames": [
+      [
+        43,
+        25,
+        123,
+        114
+      ],
+      [
+        237,
+        18,
+        139,
+        122
+      ],
+      [
+        444,
+        17,
+        140,
+        124
+      ],
+      [
+        627,
+        17,
+        155,
+        126
+      ],
+      [
+        820,
+        15,
+        169,
+        128
+      ]
+    ]
   },
   "panel-voyager": {
     "name": "Panel Voyager",
     "asset": "achievement-art-comics.png",
     "width": 1024,
     "height": 1536,
-    "row": 1
+    "row": 1,
+    "frames": [
+      [
+        37,
+        150,
+        140,
+        123
+      ],
+      [
+        231,
+        146,
+        149,
+        127
+      ],
+      [
+        432,
+        145,
+        151,
+        128
+      ],
+      [
+        627,
+        144,
+        162,
+        134
+      ],
+      [
+        825,
+        143,
+        169,
+        135
+      ]
+    ]
   },
   "episode-builder": {
     "name": "Episode Builder",
     "asset": "achievement-art-comics.png",
     "width": 1024,
     "height": 1536,
-    "row": 2
+    "row": 2,
+    "frames": [
+      [
+        40,
+        281,
+        131,
+        129
+      ],
+      [
+        239,
+        280,
+        132,
+        130
+      ],
+      [
+        441,
+        280,
+        145,
+        130
+      ],
+      [
+        635,
+        278,
+        153,
+        141
+      ],
+      [
+        827,
+        278,
+        166,
+        143
+      ]
+    ]
   },
   "visual-storyteller": {
     "name": "Visual Storyteller",
     "asset": "achievement-art-comics.png",
     "width": 1024,
     "height": 1536,
-    "row": 3
+    "row": 3,
+    "frames": [
+      [
+        22,
+        426,
+        165,
+        121
+      ],
+      [
+        221,
+        425,
+        165,
+        124
+      ],
+      [
+        421,
+        425,
+        167,
+        125
+      ],
+      [
+        616,
+        422,
+        183,
+        131
+      ],
+      [
+        819,
+        421,
+        183,
+        139
+      ]
+    ]
   },
   "alt-text-lantern": {
     "name": "Alt-Text Lantern",
     "asset": "achievement-art-comics.png",
     "width": 1024,
     "height": 1536,
-    "row": 4
+    "row": 4,
+    "frames": [
+      [
+        31,
+        563,
+        151,
+        133
+      ],
+      [
+        233,
+        562,
+        150,
+        135
+      ],
+      [
+        435,
+        562,
+        151,
+        135
+      ],
+      [
+        633,
+        560,
+        158,
+        141
+      ],
+      [
+        829,
+        560,
+        168,
+        142
+      ]
+    ]
   },
   "artist-s-seal": {
     "name": "Artist's Seal",
     "asset": "achievement-art-comics.png",
     "width": 1024,
     "height": 1536,
-    "row": 5
+    "row": 5,
+    "frames": [
+      [
+        41,
+        709,
+        139,
+        115
+      ],
+      [
+        243,
+        709,
+        140,
+        115
+      ],
+      [
+        445,
+        709,
+        139,
+        115
+      ],
+      [
+        630,
+        708,
+        161,
+        122
+      ],
+      [
+        828,
+        708,
+        163,
+        126
+      ]
+    ]
   },
   "layout-astronomer": {
     "name": "Layout Astronomer",
     "asset": "achievement-art-comics.png",
     "width": 1024,
     "height": 1536,
-    "row": 6
+    "row": 6,
+    "frames": [
+      [
+        38,
+        842,
+        140,
+        131
+      ],
+      [
+        230,
+        838,
+        148,
+        136
+      ],
+      [
+        430,
+        835,
+        147,
+        140
+      ],
+      [
+        627,
+        838,
+        164,
+        143
+      ],
+      [
+        826,
+        834,
+        167,
+        148
+      ]
+    ]
   },
   "cover-constellation": {
     "name": "Cover Constellation",
     "asset": "achievement-art-comics.png",
     "width": 1024,
     "height": 1536,
-    "row": 7
+    "row": 7,
+    "frames": [
+      [
+        46,
+        988,
+        129,
+        142
+      ],
+      [
+        246,
+        987,
+        129,
+        141
+      ],
+      [
+        442,
+        986,
+        132,
+        143
+      ],
+      [
+        631,
+        985,
+        159,
+        152
+      ],
+      [
+        829,
+        983,
+        169,
+        157
+      ]
+    ]
   },
   "gallery-keeper": {
     "name": "Gallery Keeper",
     "asset": "achievement-art-comics.png",
     "width": 1024,
     "height": 1536,
-    "row": 8
+    "row": 8,
+    "frames": [
+      [
+        49,
+        1140,
+        118,
+        175
+      ],
+      [
+        245,
+        1140,
+        135,
+        175
+      ],
+      [
+        436,
+        1140,
+        149,
+        175
+      ],
+      [
+        624,
+        1140,
+        168,
+        175
+      ],
+      [
+        826,
+        1140,
+        163,
+        175
+      ]
+    ]
   },
   "creator-credit-keeper": {
     "name": "Creator Credit Keeper",
     "asset": "achievement-art-comics.png",
     "width": 1024,
     "height": 1536,
-    "row": 9
+    "row": 9,
+    "frames": [
+      [
+        24,
+        1315,
+        177,
+        164
+      ],
+      [
+        222,
+        1315,
+        176,
+        166
+      ],
+      [
+        422,
+        1315,
+        175,
+        166
+      ],
+      [
+        617,
+        1315,
+        187,
+        170
+      ],
+      [
+        819,
+        1315,
+        182,
+        180
+      ]
+    ]
   },
   "chapter-voyager": {
     "name": "Chapter Voyager",
     "asset": "achievement-reading.png",
     "width": 887,
     "height": 1774,
-    "row": 0
+    "row": 0,
+    "frames": [
+      [
+        25,
+        37,
+        148,
+        115
+      ],
+      [
+        195,
+        30,
+        153,
+        122
+      ],
+      [
+        365,
+        27,
+        155,
+        127
+      ],
+      [
+        536,
+        24,
+        156,
+        133
+      ],
+      [
+        708,
+        18,
+        158,
+        150
+      ]
+    ]
   },
   "story-pilgrim": {
     "name": "Story Pilgrim",
     "asset": "achievement-reading.png",
     "width": 887,
     "height": 1774,
-    "row": 1
+    "row": 1,
+    "frames": [
+      [
+        29,
+        177,
+        140,
+        131
+      ],
+      [
+        199,
+        176,
+        142,
+        134
+      ],
+      [
+        372,
+        175,
+        145,
+        140
+      ],
+      [
+        536,
+        174,
+        156,
+        144
+      ],
+      [
+        707,
+        170,
+        160,
+        150
+      ]
+    ]
   },
   "night-library-lantern": {
     "name": "Night Library Lantern",
     "asset": "achievement-reading.png",
     "width": 887,
     "height": 1774,
-    "row": 2
+    "row": 2,
+    "frames": [
+      [
+        24,
+        332,
+        149,
+        148
+      ],
+      [
+        193,
+        329,
+        153,
+        152
+      ],
+      [
+        365,
+        328,
+        154,
+        153
+      ],
+      [
+        538,
+        323,
+        154,
+        161
+      ],
+      [
+        708,
+        320,
+        158,
+        170
+      ]
+    ]
   },
   "longform-constellation": {
     "name": "Longform Constellation",
     "asset": "achievement-reading.png",
     "width": 887,
     "height": 1774,
-    "row": 3
+    "row": 3,
+    "frames": [
+      [
+        17,
+        510,
+        157,
+        117
+      ],
+      [
+        186,
+        508,
+        162,
+        120
+      ],
+      [
+        359,
+        506,
+        161,
+        125
+      ],
+      [
+        532,
+        494,
+        161,
+        150
+      ],
+      [
+        707,
+        491,
+        162,
+        157
+      ]
+    ]
   },
   "serial-keeper": {
     "name": "Serial Keeper",
     "asset": "achievement-reading.png",
     "width": 887,
     "height": 1774,
-    "row": 4
+    "row": 4,
+    "frames": [
+      [
+        42,
+        661,
+        111,
+        134
+      ],
+      [
+        208,
+        654,
+        117,
+        149
+      ],
+      [
+        380,
+        651,
+        123,
+        152
+      ],
+      [
+        555,
+        651,
+        127,
+        152
+      ],
+      [
+        727,
+        652,
+        125,
+        151
+      ]
+    ]
   },
   "quiet-shelf": {
     "name": "Quiet Shelf",
     "asset": "achievement-reading.png",
     "width": 887,
     "height": 1774,
-    "row": 5
+    "row": 5,
+    "frames": [
+      [
+        31,
+        811,
+        122,
+        158
+      ],
+      [
+        203,
+        808,
+        130,
+        163
+      ],
+      [
+        375,
+        806,
+        135,
+        166
+      ],
+      [
+        536,
+        803,
+        156,
+        174
+      ],
+      [
+        707,
+        803,
+        162,
+        178
+      ]
+    ]
   },
   "reread-moon": {
     "name": "Reread Moon",
     "asset": "achievement-reading.png",
     "width": 887,
     "height": 1774,
-    "row": 6
+    "row": 6,
+    "frames": [
+      [
+        21,
+        995,
+        150,
+        135
+      ],
+      [
+        190,
+        994,
+        157,
+        136
+      ],
+      [
+        360,
+        993,
+        160,
+        140
+      ],
+      [
+        533,
+        991,
+        159,
+        151
+      ],
+      [
+        707,
+        985,
+        160,
+        167
+      ]
+    ]
   },
   "fandom-voyager": {
     "name": "Fandom Voyager",
     "asset": "achievement-reading.png",
     "width": 887,
     "height": 1774,
-    "row": 7
+    "row": 7,
+    "frames": [
+      [
+        20,
+        1162,
+        153,
+        148
+      ],
+      [
+        195,
+        1157,
+        154,
+        154
+      ],
+      [
+        364,
+        1158,
+        157,
+        149
+      ],
+      [
+        533,
+        1157,
+        160,
+        155
+      ],
+      [
+        707,
+        1154,
+        162,
+        167
+      ]
+    ]
   },
   "original-worlds-explorer": {
     "name": "Original Worlds Explorer",
     "asset": "achievement-reading.png",
     "width": 887,
     "height": 1774,
-    "row": 8
+    "row": 8,
+    "frames": [
+      [
+        18,
+        1332,
+        153,
+        153
+      ],
+      [
+        187,
+        1327,
+        161,
+        160
+      ],
+      [
+        360,
+        1326,
+        160,
+        162
+      ],
+      [
+        532,
+        1324,
+        160,
+        173
+      ],
+      [
+        707,
+        1321,
+        160,
+        192
+      ]
+    ]
   },
   "archive-reader": {
     "name": "Archive Reader",
     "asset": "achievement-reading.png",
     "width": 887,
     "height": 1774,
-    "row": 9
+    "row": 9,
+    "frames": [
+      [
+        17,
+        1530,
+        157,
+        182
+      ],
+      [
+        187,
+        1527,
+        158,
+        182
+      ],
+      [
+        357,
+        1528,
+        161,
+        182
+      ],
+      [
+        532,
+        1522,
+        161,
+        194
+      ],
+      [
+        707,
+        1517,
+        163,
+        217
+      ]
+    ]
+  },
+  "chapter-architect": {
+    "name": "Chapter Architect",
+    "asset": "achievement-writing.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 0,
+    "frames": [
+      [
+        41,
+        23,
+        138,
+        123
+      ],
+      [
+        226,
+        20,
+        144,
+        127
+      ],
+      [
+        424,
+        15,
+        152,
+        134
+      ],
+      [
+        628,
+        11,
+        169,
+        140
+      ],
+      [
+        838,
+        8,
+        161,
+        143
+      ]
+    ]
+  },
+  "infinite-inkwell": {
+    "name": "Infinite Inkwell",
+    "asset": "achievement-writing.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 1,
+    "frames": [
+      [
+        26,
+        162,
+        164,
+        118
+      ],
+      [
+        221,
+        157,
+        169,
+        125
+      ],
+      [
+        422,
+        155,
+        177,
+        129
+      ],
+      [
+        626,
+        151,
+        173,
+        140
+      ],
+      [
+        829,
+        151,
+        174,
+        140
+      ]
+    ]
+  },
+  "series-weaver": {
+    "name": "Series Weaver",
+    "asset": "achievement-writing.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 2,
+    "frames": [
+      [
+        19,
+        299,
+        170,
+        108
+      ],
+      [
+        218,
+        299,
+        173,
+        109
+      ],
+      [
+        423,
+        299,
+        173,
+        113
+      ],
+      [
+        623,
+        297,
+        174,
+        116
+      ],
+      [
+        829,
+        291,
+        175,
+        123
+      ]
+    ]
+  },
+  "finisher-s-crown": {
+    "name": "Finisher's Crown",
+    "asset": "achievement-writing.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 3,
+    "frames": [
+      [
+        24,
+        418,
+        163,
+        125
+      ],
+      [
+        223,
+        417,
+        162,
+        126
+      ],
+      [
+        423,
+        416,
+        165,
+        129
+      ],
+      [
+        626,
+        414,
+        168,
+        136
+      ],
+      [
+        831,
+        414,
+        169,
+        135
+      ]
+    ]
+  },
+  "revision-alchemist": {
+    "name": "Revision Alchemist",
+    "asset": "achievement-writing.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 4,
+    "frames": [
+      [
+        22,
+        560,
+        175,
+        124
+      ],
+      [
+        220,
+        558,
+        174,
+        126
+      ],
+      [
+        419,
+        557,
+        182,
+        131
+      ],
+      [
+        621,
+        557,
+        185,
+        136
+      ],
+      [
+        824,
+        557,
+        185,
+        136
+      ]
+    ]
+  },
+  "consistent-quill": {
+    "name": "Consistent Quill",
+    "asset": "achievement-writing.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 5,
+    "frames": [
+      [
+        30,
+        696,
+        141,
+        133
+      ],
+      [
+        231,
+        695,
+        143,
+        136
+      ],
+      [
+        433,
+        695,
+        145,
+        142
+      ],
+      [
+        621,
+        695,
+        177,
+        145
+      ],
+      [
+        826,
+        695,
+        178,
+        145
+      ]
+    ]
+  },
+  "draft-moon": {
+    "name": "Draft Moon",
+    "asset": "achievement-writing.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 6,
+    "frames": [
+      [
+        29,
+        846,
+        147,
+        139
+      ],
+      [
+        231,
+        844,
+        144,
+        142
+      ],
+      [
+        424,
+        844,
+        164,
+        143
+      ],
+      [
+        625,
+        844,
+        171,
+        144
+      ],
+      [
+        826,
+        840,
+        174,
+        149
+      ]
+    ]
+  },
+  "long-chapter-observatory": {
+    "name": "Long Chapter Observatory",
+    "asset": "achievement-writing.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 7,
+    "frames": [
+      [
+        21,
+        996,
+        170,
+        147
+      ],
+      [
+        221,
+        997,
+        168,
+        146
+      ],
+      [
+        423,
+        993,
+        168,
+        149
+      ],
+      [
+        622,
+        991,
+        180,
+        154
+      ],
+      [
+        830,
+        990,
+        175,
+        157
+      ]
+    ]
+  },
+  "collaboration-scribe": {
+    "name": "Collaboration Scribe",
+    "asset": "achievement-writing.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 8,
+    "frames": [
+      [
+        26,
+        1156,
+        158,
+        142
+      ],
+      [
+        232,
+        1156,
+        156,
+        142
+      ],
+      [
+        430,
+        1156,
+        161,
+        142
+      ],
+      [
+        631,
+        1155,
+        166,
+        147
+      ],
+      [
+        833,
+        1156,
+        164,
+        146
+      ]
+    ]
+  },
+  "palace-novelist": {
+    "name": "Palace Novelist",
+    "asset": "achievement-writing.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 9,
+    "frames": [
+      [
+        15,
+        1314,
+        182,
+        172
+      ],
+      [
+        214,
+        1308,
+        182,
+        182
+      ],
+      [
+        417,
+        1304,
+        182,
+        188
+      ],
+      [
+        617,
+        1302,
+        183,
+        204
+      ],
+      [
+        819,
+        1302,
+        183,
+        210
+      ]
+    ]
+  },
+  "billion-word-reader": {
+    "name": "Billion-Word Reader",
+    "asset": "achievement-legendary.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 0,
+    "frames": [
+      [
+        44,
+        16,
+        136,
+        128
+      ],
+      [
+        238,
+        15,
+        145,
+        132
+      ],
+      [
+        424,
+        15,
+        166,
+        134
+      ],
+      [
+        616,
+        4,
+        177,
+        147
+      ],
+      [
+        804,
+        1,
+        193,
+        151
+      ]
+    ]
+  },
+  "ten-thousand-chapter-reader": {
+    "name": "Ten-Thousand-Chapter Reader",
+    "asset": "achievement-legendary.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 1,
+    "frames": [
+      [
+        37,
+        169,
+        158,
+        96
+      ],
+      [
+        229,
+        162,
+        166,
+        108
+      ],
+      [
+        422,
+        157,
+        169,
+        114
+      ],
+      [
+        615,
+        153,
+        177,
+        125
+      ],
+      [
+        808,
+        152,
+        185,
+        127
+      ]
+    ]
+  },
+  "ten-thousand-chapter-writer": {
+    "name": "Ten-Thousand-Chapter Writer",
+    "asset": "achievement-legendary.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 2,
+    "frames": [
+      [
+        47,
+        284,
+        145,
+        122
+      ],
+      [
+        231,
+        281,
+        150,
+        126
+      ],
+      [
+        417,
+        281,
+        168,
+        133
+      ],
+      [
+        617,
+        282,
+        169,
+        133
+      ],
+      [
+        808,
+        279,
+        180,
+        139
+      ]
+    ]
+  },
+  "century-of-worlds": {
+    "name": "Century of Worlds",
+    "asset": "achievement-legendary.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 3,
+    "frames": [
+      [
+        44,
+        429,
+        145,
+        133
+      ],
+      [
+        233,
+        433,
+        153,
+        130
+      ],
+      [
+        424,
+        426,
+        156,
+        138
+      ],
+      [
+        610,
+        418,
+        183,
+        147
+      ],
+      [
+        802,
+        421,
+        198,
+        145
+      ]
+    ]
+  },
+  "century-of-comics": {
+    "name": "Century of Comics",
+    "asset": "achievement-legendary.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 4,
+    "frames": [
+      [
+        36,
+        579,
+        161,
+        115
+      ],
+      [
+        223,
+        578,
+        173,
+        117
+      ],
+      [
+        417,
+        573,
+        174,
+        127
+      ],
+      [
+        610,
+        566,
+        184,
+        140
+      ],
+      [
+        805,
+        566,
+        192,
+        151
+      ]
+    ]
+  },
+  "five-year-constellation": {
+    "name": "Five-Year Constellation",
+    "asset": "achievement-legendary.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 5,
+    "frames": [
+      [
+        38,
+        723,
+        157,
+        108
+      ],
+      [
+        231,
+        722,
+        161,
+        111
+      ],
+      [
+        420,
+        721,
+        168,
+        118
+      ],
+      [
+        615,
+        719,
+        171,
+        120
+      ],
+      [
+        811,
+        717,
+        180,
+        122
+      ]
+    ]
+  },
+  "crown-of-completion": {
+    "name": "Crown of Completion",
+    "asset": "achievement-legendary.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 6,
+    "frames": [
+      [
+        37,
+        851,
+        150,
+        125
+      ],
+      [
+        233,
+        849,
+        154,
+        129
+      ],
+      [
+        410,
+        841,
+        188,
+        137
+      ],
+      [
+        610,
+        839,
+        184,
+        142
+      ],
+      [
+        802,
+        839,
+        196,
+        144
+      ]
+    ]
+  },
+  "emerald-archivist": {
+    "name": "Emerald Archivist",
+    "asset": "achievement-legendary.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 7,
+    "frames": [
+      [
+        33,
+        990,
+        163,
+        128
+      ],
+      [
+        224,
+        989,
+        172,
+        132
+      ],
+      [
+        413,
+        991,
+        183,
+        135
+      ],
+      [
+        610,
+        983,
+        185,
+        148
+      ],
+      [
+        802,
+        983,
+        198,
+        148
+      ]
+    ]
+  },
+  "palace-polymath": {
+    "name": "Palace Polymath",
+    "asset": "achievement-legendary.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 8,
+    "frames": [
+      [
+        35,
+        1137,
+        160,
+        141
+      ],
+      [
+        225,
+        1133,
+        165,
+        150
+      ],
+      [
+        415,
+        1135,
+        175,
+        154
+      ],
+      [
+        610,
+        1131,
+        185,
+        166
+      ],
+      [
+        802,
+        1132,
+        196,
+        165
+      ]
+    ]
+  },
+  "celestial-monarch": {
+    "name": "Celestial Monarch",
+    "asset": "achievement-legendary.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 9,
+    "frames": [
+      [
+        27,
+        1299,
+        164,
+        170
+      ],
+      [
+        220,
+        1297,
+        175,
+        181
+      ],
+      [
+        413,
+        1297,
+        181,
+        182
+      ],
+      [
+        610,
+        1297,
+        183,
+        198
+      ],
+      [
+        802,
+        1297,
+        196,
+        204
+      ]
+    ]
   }
 }

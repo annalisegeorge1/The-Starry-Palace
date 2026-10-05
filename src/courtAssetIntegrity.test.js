@@ -2,8 +2,8 @@ import {it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import assets from './courtAssetIntegrity.json';
-it('ships all eleven complete approved badge and court PNG files',()=>{
- expect(assets).toHaveLength(11);
+it('ships all seventeen complete badge, court and restored-prize PNG files',()=>{
+ expect(assets).toHaveLength(17);
  for(const asset of assets){
   const data=readFileSync(asset.path);
   expect(data.length,asset.path).toBe(asset.size);
