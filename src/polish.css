@@ -421,3 +421,83 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
  .palace-state{grid-template-columns:1fr;justify-items:center;text-align:center}
  .palace-state .outline-button{justify-self:center}
 }
+
+
+/* Tabs and section headings: one visual grammar across the Palace. */
+.section-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:1rem;
+  margin-bottom:1rem;
+}
+.section-heading h2{
+  margin:.2rem 0;
+  font:600 clamp(1.45rem,2.7vw,2.15rem) Georgia,'Times New Roman',serif;
+  letter-spacing:-.02em;
+}
+.section-heading p{margin:.25rem 0 0;color:var(--palace-muted);line-height:1.55}
+.library-tabs,.treasury-tabs,.life-tabs,.settings-tabs,.writing-tabs,.room-tabs{
+  gap:.4rem;
+  padding:.38rem;
+  border:1px solid var(--palace-border);
+  border-radius:16px;
+  background:rgba(14,19,38,.72);
+  box-shadow:0 1px 0 rgba(255,255,255,.015);
+}
+.library-tabs button,.treasury-tabs button,.life-tabs button,.settings-tabs button,.writing-tabs button,.room-tabs button,
+.library-tabs a,.treasury-tabs a,.life-tabs a,.settings-tabs a,.writing-tabs a,.room-tabs a{
+  min-height:40px;
+  border-radius:12px;
+  font-weight:650;
+  transition:background var(--palace-motion),color var(--palace-motion),box-shadow var(--palace-motion),transform var(--palace-motion);
+}
+.library-tabs button:hover,.treasury-tabs button:hover,.life-tabs button:hover,.settings-tabs button:hover,.writing-tabs button:hover,.room-tabs button:hover,
+.library-tabs a:hover,.treasury-tabs a:hover,.life-tabs a:hover,.settings-tabs a:hover,.writing-tabs a:hover,.room-tabs a:hover{
+  background:rgba(112,93,173,.09);
+}
+.library-tabs .active,.treasury-tabs .active,.life-tabs .active,.settings-tabs .active,.writing-tabs .active,.room-tabs .active{
+  background:rgba(112,93,173,.16);
+  box-shadow:inset 0 0 0 1px rgba(159,143,211,.18),0 5px 15px rgba(5,7,20,.08);
+}
+.legacy-home-tabs{
+  gap:1.4rem;
+  margin-bottom:2rem;
+  border-color:var(--palace-border);
+}
+.legacy-home-tabs a{font-size:.86rem;letter-spacing:-.01em}
+.legacy-home-tabs a.active:after{height:2px;background:#b8a7e7}
+
+/* Dialogs should feel like native Palace surfaces. */
+.palace-dialog-backdrop{
+  background:rgba(3,6,17,.72);
+  -webkit-backdrop-filter:blur(10px);
+  backdrop-filter:blur(10px);
+}
+.palace-dialog{
+  border-color:var(--palace-border-strong);
+  border-radius:22px;
+  background:linear-gradient(155deg,rgba(20,26,49,.985),rgba(11,15,31,.99));
+  box-shadow:0 34px 100px rgba(0,0,0,.44);
+}
+.palace-dialog>header{padding:1.15rem 1.25rem .9rem}
+.palace-dialog>header h2{font-size:1.55rem;letter-spacing:-.02em}
+.dialog-close{transition:background var(--palace-motion),transform var(--palace-motion)}
+.dialog-close:hover{background:rgba(116,94,181,.12);transform:rotate(2deg)}
+.palace-dialog-body{padding:1.15rem 1.25rem}
+.palace-dialog>footer{padding:.9rem 1.25rem 1.15rem}
+.daylight .library-tabs,.daylight .treasury-tabs,.daylight .life-tabs,.daylight .settings-tabs,.daylight .writing-tabs,.daylight .room-tabs{
+  background:rgba(255,255,255,.78);
+}
+.daylight .palace-dialog{background:linear-gradient(155deg,#fff,#f7f7fb)}
+
+@media(max-width:720px){
+  .section-heading{align-items:flex-start;flex-direction:column}
+  .library-tabs,.treasury-tabs,.life-tabs,.settings-tabs,.writing-tabs,.room-tabs{
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    overscroll-behavior-inline:contain;
+    scrollbar-width:none;
+  }
+  .library-tabs::-webkit-scrollbar,.treasury-tabs::-webkit-scrollbar,.life-tabs::-webkit-scrollbar,.settings-tabs::-webkit-scrollbar,.writing-tabs::-webkit-scrollbar,.room-tabs::-webkit-scrollbar{display:none}
+}
