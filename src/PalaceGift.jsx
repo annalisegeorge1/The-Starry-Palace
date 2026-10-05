@@ -6,6 +6,28 @@ const editions=[
  ['nocturne',1,60],['starlit',61,120],['moonwashed',121,180],['celestial',181,240],
  ['cloudglass',241,300],['silverleaf',301,360],['dreaming',361,420],['blue-hour',421,480],['midnight',481,520]
 ];
+const courts=[
+ {name:'Moon Garden',slug:'moon-garden',sigil:'☾',motto:'Moonlit petals',accent:'#8396b8',glow:'#6f6597'},
+ {name:'Celestial Library',slug:'celestial-library',sigil:'▤',motto:'Stars between pages',accent:'#8495bc',glow:'#65769d'},
+ {name:'Lantern Court',slug:'lantern-court',sigil:'◇',motto:'Light carried home',accent:'#8b91b9',glow:'#71659d'},
+ {name:'Sapphire Observatory',slug:'sapphire-observatory',sigil:'✦',motto:'Maps of the night',accent:'#7191b7',glow:'#526d9d'},
+ {name:'Ink Pavilion',slug:'ink-pavilion',sigil:'✒',motto:'Brush, rain and paper',accent:'#788aa9',glow:'#5b647f'},
+ {name:'Jade Conservatory',slug:'jade-conservatory',sigil:'❧',motto:'Leaves under glass',accent:'#7fa7a2',glow:'#5e847f'},
+ {name:'Silver Archive',slug:'silver-archive',sigil:'⌑',motto:'Seals and old records',accent:'#9ca8b6',glow:'#6f7987'},
+ {name:'Starfall Salon',slug:'starfall-salon',sigil:'✧',motto:'A room of falling stars',accent:'#8c83b7',glow:'#6d6298'},
+ {name:'Lotus Chamber',slug:'lotus-chamber',sigil:'❀',motto:'Still water, open bloom',accent:'#86a5ad',glow:'#6c8296'},
+ {name:'Midnight Gallery',slug:'midnight-gallery',sigil:'◈',motto:'Frames after dusk',accent:'#787fa8',glow:'#565c82'},
+ {name:'Dreaming Terrace',slug:'dreaming-terrace',sigil:'〰',motto:'Clouds beyond the rail',accent:'#9588b1',glow:'#746793'},
+ {name:'Crescent Atelier',slug:'crescent-atelier',sigil:'◔',motto:'Paint beneath the moon',accent:'#8e89b3',glow:'#6b6694'},
+ {name:'Cloud Pavilion',slug:'cloud-pavilion',sigil:'☁',motto:'Mist, silk and sky',accent:'#8ba6b7',glow:'#647f94'},
+ {name:"Poet's Alcove",slug:'poets-alcove',sigil:'❦',motto:'A quiet line of verse',accent:'#9690b1',glow:'#736e92'},
+ {name:'Aurora Hall',slug:'aurora-hall',sigil:'⌁',motto:'Curtains of northern light',accent:'#7ca1b3',glow:'#607b96'},
+ {name:'Tea Moon Court',slug:'tea-moon-court',sigil:'◡',motto:'Steam beneath a crescent',accent:'#8da0ad',glow:'#687986'},
+ {name:'Astral Music Room',slug:'astral-music-room',sigil:'♪',motto:'Constellations in tempo',accent:'#8587b5',glow:'#62658f'},
+ {name:'Compass Court',slug:'compass-court',sigil:'✥',motto:'Every road returns',accent:'#819aae',glow:'#60798a'},
+ {name:"Storyteller's Garden",slug:'storytellers-garden',sigil:'♧',motto:'Branches full of tales',accent:'#839e9c',glow:'#637c7c'},
+ {name:'Royal Post',slug:'royal-post',sigil:'✉',motto:'Letters across the Palace',accent:'#8791ac',glow:'#636d89'}
+];
 const kinds=[
  ['porcelain moon','porcelain-moon'],['paired moons','paired-moons'],['flowering tree','flowering-tree'],
  ['music box','music-box'],['tea caddy','tea-caddy'],['celestial bell','celestial-bell'],['ballot box','ballot-box'],
@@ -25,6 +47,38 @@ export function giftKind(gift){
  return kinds.find(([word])=>text.includes(word))?.[1]||'star';
 }
 export const giftEditions=editions.map(([slug])=>slug);
+export const giftCourts=courts;
+export function giftCourt(gift){
+ const name=gift?.court_name||'';
+ return courts.find(c=>c.name===name)||{name:name||'The Starry Palace',slug:'starry-palace',sigil:'✦',motto:'A Palace collection',accent:'#8993b8',glow:'#666f94'};
+}
+
+function CourtMotif({court}){
+ const common={fill:'none',stroke:'currentColor',strokeWidth:1.7,strokeLinecap:'round',strokeLinejoin:'round',vectorEffect:'non-scaling-stroke'};
+ switch(court){
+  case'moon-garden':return <g {...common}><path d="M24 43c20 3 33 15 42 33M31 56c12-9 22-11 31-7M45 78c-7 6-11 15-12 26"/><path d="M177 28c-19 6-27 28-17 45 9 15 27 21 42 13-21-2-35-20-32-40 1-7 3-13 7-18Z"/><circle cx="48" cy="48" r="3"/><circle cx="58" cy="64" r="3"/><circle cx="36" cy="75" r="3"/></g>;
+  case'celestial-library':return <g {...common}><path d="M21 38h49v74H21Zm8 10h33M29 59h24M29 70h29"/><path d="M154 26h44v68h-44Zm8 12h27M162 50h22M162 62h25"/><path d="m105 26 4 11 12 1-9 7 3 12-10-7-10 7 3-12-9-7 12-1Z"/></g>;
+  case'lantern-court':return <g {...common}><path d="M29 22v23m-11 0h22l4 25H14Zm11 25v27m154-72v23m-11 0h22l4 25h-30Zm11 25v27"/><path d="M42 116c34-14 103-15 137 0"/></g>;
+  case'sapphire-observatory':return <g {...common}><path d="M16 112c26-66 162-66 188 0"/><path d="M39 95 63 73l28 8 25-35 29 21 31-28"/><circle cx="63" cy="73" r="2.5"/><circle cx="91" cy="81" r="2.5"/><circle cx="116" cy="46" r="2.5"/><circle cx="145" cy="67" r="2.5"/><circle cx="176" cy="39" r="2.5"/></g>;
+  case'ink-pavilion':return <g {...common}><path d="M18 48c31-23 60-17 73 5 10 17 1 33-18 40-18 7-37 4-49 18"/><path d="M153 30c-12 30-11 60 12 85M144 52c21-8 37-6 51 4M150 84c17-3 31 0 43 8"/></g>;
+  case'jade-conservatory':return <g {...common}><path d="M42 130c11-49 15-77 9-108m13 111c7-44 21-75 40-103m-50 36c-15-6-26-14-34-25m40 7c11-8 20-18 25-30m6 57c-15-3-28-9-39-18m53-2c12-7 22-16 29-27"/><path d="M168 134c0-45 5-78 16-103m-17 44-20-17m25-6 18-18"/></g>;
+  case'silver-archive':return <g {...common}><rect x="21" y="36" width="52" height="79" rx="3"/><path d="M31 51h31M31 63h25M31 75h30M31 87h20"/><circle cx="176" cy="68" r="25"/><path d="M176 43v50m-25-25h50"/><path d="M151 116h51"/></g>;
+  case'starfall-salon':return <g {...common}><path d="m35 26 4 12 13 1-10 8 3 13-10-7-11 7 4-13-11-8 13-1Zm70 2 3 9 10 1-8 6 3 10-8-6-9 6 3-10-8-6 10-1Zm76 18 4 12 13 1-10 8 3 13-10-7-11 7 4-13-11-8 13-1Z"/><path d="M24 112c42-22 128-22 173 1"/></g>;
+  case'lotus-chamber':return <g {...common}><path d="M20 118c45 5 76 6 104 0m-92-17c14-24 31-27 46-3 14-27 34-30 51-4-5 22-23 34-51 35-25-2-40-11-46-28Z"/><path d="M161 86c8-15 19-17 30-2 10-16 22-17 31-2-4 13-13 20-30 21-16-1-27-7-31-17Z"/></g>;
+  case'midnight-gallery':return <g {...common}><rect x="19" y="28" width="55" height="77"/><rect x="147" y="38" width="55" height="67"/><path d="M27 36h39v61H27Zm128 10h39v51h-39Z"/><path d="M90 25h40v18H90m-13 82h66"/></g>;
+  case'dreaming-terrace':return <g {...common}><path d="M14 102c18-19 38-18 51 0 13-25 43-26 58-4 15-19 39-19 53 1 10-12 22-14 34-7"/><path d="M25 126h170M39 126V98m35 28V98m72 28V98m35 28V98"/></g>;
+  case'crescent-atelier':return <g {...common}><path d="M26 31c-15 5-22 21-15 34 6 12 21 17 33 11-16-1-26-14-24-29 1-7 3-12 6-16Z"/><path d="m170 30 20 20-54 54-28 9 9-28Z"/><path d="M34 119c26-13 51-13 72 0"/></g>;
+  case'cloud-pavilion':return <g {...common}><path d="M18 63c10-18 35-20 46-3 8-20 40-24 54-5 11-12 32-11 42 4 21-6 40 4 44 20H20"/><path d="M34 109c21-15 43-15 62 0 15-18 43-18 57 0 14-11 31-11 45 0"/></g>;
+  case'poets-alcove':return <g {...common}><path d="M29 104c33-31 54-50 82-71-2 26-13 48-35 68-14 13-29 20-47 22 11-8 23-14 35-20"/><path d="M104 39c19-6 39-7 58-2m-54 14c22-5 44-4 66 2m-73 14c29-2 55 3 78 14"/></g>;
+  case'aurora-hall':return <g {...common}><path d="M16 47c34-19 52 19 86-1s50-12 68 0 29 5 38-3M14 68c31-14 50 15 82-1 33-17 52-8 72 4 16 10 29 7 40 2M18 89c31-11 48 10 75-1 33-14 50-6 72 5 17 8 30 7 43 2"/></g>;
+  case'tea-moon-court':return <g {...common}><path d="M35 95h52v18c0 18-10 28-26 28s-26-10-26-28Z"/><path d="M87 100h8c12 0 12 23 0 25h-10"/><path d="M48 85c-6-10 5-14 0-23m18 23c-6-10 5-14 0-23"/><path d="M171 31c-17 5-24 24-15 39 8 13 24 18 37 11-18-1-30-17-27-34 1-6 2-11 5-16Z"/></g>;
+  case'astral-music-room':return <g {...common}><path d="M25 54h146M25 68h146M25 82h146M25 96h146"/><path d="M73 45v55c0 13-20 18-25 7-5-10 7-18 25-16m55-56v54c0 13-21 18-26 7-4-10 8-18 26-16l24-7V27Z"/><circle cx="190" cy="48" r="3"/></g>;
+  case'compass-court':return <g {...common}><circle cx="110" cy="81" r="58"/><circle cx="110" cy="81" r="40"/><path d="m110 22 12 47 45 12-45 12-12 47-12-47-45-12 45-12Z"/><path d="M110 13v15m0 105v15M42 81H27m166 0h-15"/></g>;
+  case'storytellers-garden':return <g {...common}><path d="M31 133c3-42 12-72 31-99m-8 43c-15-4-26-11-35-21m40 0c14-8 24-17 30-29m69 104c-5-39-14-69-29-91m9 43c13-5 23-13 31-24m-37 2c-11-8-19-18-23-30"/><circle cx="70" cy="30" r="3"/><circle cx="145" cy="30" r="3"/><circle cx="177" cy="57" r="3"/></g>;
+  case'royal-post':return <g {...common}><rect x="22" y="49" width="62" height="45" rx="3"/><path d="m25 54 28 23 28-23"/><circle cx="166" cy="83" r="24"/><path d="m154 84 8 8 17-22"/><path d="M105 44h89M105 58h69M105 112h84M105 126h55"/></g>;
+  default:return <g {...common}><path d="M22 116c44-19 132-19 176 0"/><circle cx="39" cy="39" r="3"/><circle cx="181" cy="45" r="3"/></g>;
+ }
+}
 
 function ObjectDrawing({kind}){
  const common={fill:'none',stroke:'currentColor',strokeWidth:3.1,strokeLinecap:'round',strokeLinejoin:'round',vectorEffect:'non-scaling-stroke'};
@@ -71,8 +125,9 @@ export default function PalaceGift({gift,tier='bronze',compact=false,locked=fals
  const kind=giftKind(gift);
  const name=gift?.name||'Palace collectible';
  const court=gift?.court_name||'The Starry Palace';
+ const courtMeta=giftCourt(gift);
  const filterId=`gift-brush-${id}`;
- return <figure className={`palace-gift-art tier-${rank} edition-${edition} seed-${seed}${compact?' compact':''}${locked?' is-locked':''}`} aria-label={`${name}, ${rank} Palace collectible`}>
+ return <figure className={`palace-gift-art tier-${rank} edition-${edition} court-${courtMeta.slug} seed-${seed}${compact?' compact':''}${locked?' is-locked':''}`} style={{'--court-accent':courtMeta.accent,'--court-glow':courtMeta.glow}} aria-label={`${name}, ${rank} Palace collectible from ${courtMeta.name}`}>
   <svg className="gift-painted-object" viewBox="0 0 220 160" aria-hidden="true" focusable="false">
    <defs>
     <filter id={filterId} x="-12%" y="-12%" width="124%" height="124%">
@@ -80,6 +135,7 @@ export default function PalaceGift({gift,tier='bronze',compact=false,locked=fals
      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
    </defs>
+   <g className="gift-court-motif"><CourtMotif court={courtMeta.slug}/></g>
    <g className="gift-landscape-wash">
     <path d="M18 132c28-24 48-24 71-5 18-17 38-27 58-17 22 11 35 8 56-2"/>
     <path d="M20 140c45-7 91-5 180 1"/>
@@ -88,9 +144,9 @@ export default function PalaceGift({gift,tier='bronze',compact=false,locked=fals
   </svg>
   <span className="gift-watercolour wash-a" aria-hidden="true"/>
   <span className="gift-watercolour wash-b" aria-hidden="true"/>
-  <span className="gift-moon-line" aria-hidden="true">☾</span>
+  <span className="gift-court-sigil" aria-hidden="true">{courtMeta.sigil}</span>
   <span className="gift-edition-mark" aria-hidden="true">{edition.replace('-',' ')}</span>
   <span className="gift-catalogue-mark" aria-hidden="true">{number?String(number).padStart(3,'0'):'✦'}</span>
-  {!compact&&<figcaption><strong>{court}</strong><span>{rank}</span></figcaption>}
+  {!compact&&<figcaption><strong>{courtMeta.sigil} {court}</strong><span>{courtMeta.motto} · {rank}</span></figcaption>}
  </figure>;
 }
