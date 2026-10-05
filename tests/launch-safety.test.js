@@ -34,6 +34,12 @@ describe('Starry Palace launch safety',()=>{
     expect(main).not.toContain('Your email password is never required by the Palace.');
   });
 
+  it('avoids ambiguous ballot-option embeds',()=>{
+    const data=read('src/palaceData.js');
+    expect(data).not.toContain("member_ballot_options(id,label,description,position)");
+    expect(data).toContain("from('member_ballot_options').select('id,ballot_id,label,description,position')");
+  });
+
   it('uses the schema-approved comic permission scope',()=>{
     expect(live).toContain("'offline_reader_copy'");
     expect(live).not.toContain("requestComicDownload(session.user.id,data.id,'images'");
