@@ -223,6 +223,29 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('/* My Library — private, organised and calm */');
   });
 
+  it('keeps dual-layer writing recovery and Palace Life discovery wired',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(live).toContain('palace-recovery:');
+    expect(live).toContain('Saved to Palace');
+    expect(live).toContain('Recovery copy kept on this device');
+    expect(live).toContain('commons-lens');
+    expect(live).toContain('club-discovery-room');
+    expect(data).toContain('discoverableClubs');
+    expect(polish).toContain('.draft-recovery-banner');
+    expect(polish).toContain('.club-discovery-grid');
+  });
+
+  it('keeps the global quick-navigation palette wired',()=>{
+    const polish=read('src/polish.css');
+    expect(main).toContain('commandOpen');
+    expect(main).toContain("e.key.toLowerCase()==='k'");
+    expect(main).toContain('palace-command');
+    expect(main).toContain('Open Palace quick navigation');
+    expect(polish).toContain('.palace-command-backdrop');
+    expect(polish).toContain('.command-trigger');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
