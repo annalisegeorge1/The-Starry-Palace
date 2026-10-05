@@ -565,7 +565,7 @@ export async function getLibraryOrganizers(userId){
  const [collections,lists,notes]=await Promise.all([
   needClient().from('library_collections').select('id,name,description,is_public,created_at,updated_at,library_collection_items(id,work_id,comic_id,note,added_at,works(id,title,slug,cover_url),comics(id,title,slug,cover_path))').eq('user_id',userId).order('updated_at',{ascending:false}),
   needClient().from('reading_lists').select('id,name,description,created_at,updated_at,reading_list_items(id,work_id,comic_id,position,added_at,works(id,title,slug,cover_url),comics(id,title,slug,cover_path))').eq('user_id',userId).order('updated_at',{ascending:false}),
-  needClient().from('reader_notes').select('id,work_id,chapter_id,comic_id,episode_id,page_id,note_text,bookmark_label,created_at,updated_at,works(id,title,slug),comics(id,title,slug)').eq('user_id',userId).order('updated_at',{ascending:false})
+  needClient().from('reader_notes').select('id,work_id,chapter_id,comic_id,episode_id,page_id,note_text,bookmark_label,created_at,updated_at,works(id,title,slug),chapters(id,title,position),comics(id,title,slug)').eq('user_id',userId).order('updated_at',{ascending:false})
  ]);for(const r of[collections,lists,notes])if(r.error)throw r.error;
  async function signRows(rows,key){return Promise.all((rows||[]).map(async row=>({...row,[key]:await Promise.all((row[key]||[]).map(async item=>({...item,comic_cover_url:await signedAsset('comic-covers',item.comics?.cover_path)})))})))}
  return{collections:await signRows(collections.data,'library_collection_items'),lists:await signRows(lists.data,'reading_list_items'),notes:notes.data||[]}
@@ -584,9 +584,22 @@ export async function addToLibraryOrganizer(kind,containerId,item){
  const row={[key]:containerId,work_id:item.type==='work'?item.id:null,comic_id:item.type==='comic'?item.id:null};
  const{data,error}=await needClient().from(table).insert(row).select().single();if(error?.code==='23505')throw new Error('That item is already in this shelf.');if(error)throw error;return data
 }
+export async function getReaderNotesForChapter(userId,chapterId){
+ const{data,error}=await needClient().from('reader_notes').select('id,work_id,chapter_id,note_text,bookmark_label,created_at,updated_at').eq('user_id',userId).eq('chapter_id',chapterId).order('updated_at',{ascending:false});
+ if(error)throw error;return data||[]
+}
 export async function addReaderNote(userId,item,noteText,label=''){
  const text=noteText.trim();if(!text)throw new Error('Write a note first.');
- const row={user_id:userId,note_text:text,bookmark_label:label.trim(),work_id:item.type==='work'?item.id:null,comic_id:item.type==='comic'?item.id:null};
+ const row={
+  user_id:userId,
+  note_text:text,
+  bookmark_label:label.trim(),
+  work_id:item.type==='work'?item.id:item.type==='chapter'?item.workId:null,
+  chapter_id:item.type==='chapter'?item.id:null,
+  comic_id:item.type==='comic'?item.id:null,
+  episode_id:item.type==='episode'?item.id:null,
+  page_id:item.type==='page'?item.id:null
+ };
  const{data,error}=await needClient().from('reader_notes').insert(row).select().single();if(error)throw error;return data
 }
 export async function deleteReaderNote(userId,id){const{error}=await needClient().from('reader_notes').delete().eq('id',id).eq('user_id',userId);if(error)throw error;return true}
