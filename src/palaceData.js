@@ -131,17 +131,18 @@ export async function requestAccountDeletion(){const{data,error}=await needClien
 export async function cancelAccountDeletion(requestId){const{data,error}=await needClient().rpc('cancel_account_deletion',{p_request_id:requestId});if(error)throw error;return data}
 
 export async function getActivity(userId){
- const [notices,progress,works,clubs]=await Promise.all([
-  needClient().from('notifications').select('id,title,body,notice_type,route_name,route_param,metadata,action_label,unread,saved,created_at').eq('user_id',userId).eq('dismissed',false).order('created_at',{ascending:false}).limit(50),
+ const [notices,unreadCount,progress,works,clubs]=await Promise.all([
+  needClient().from('notifications').select('id,title,body,notice_type,route_name,route_param,metadata,action_label,unread,saved,created_at').eq('user_id',userId).eq('dismissed',false).order('created_at',{ascending:false}).limit(100),
+  needClient().from('notifications').select('id',{count:'exact',head:true}).eq('user_id',userId).eq('dismissed',false).eq('unread',true),
   needClient().from('reading_progress').select('work_id,chapter_id,completed,updated_at').eq('user_id',userId).order('updated_at',{ascending:false}).limit(100),
   needClient().from('works').select('id,publication_status').eq('author_id',userId),
   needClient().from('club_members').select('club_id,status').eq('user_id',userId).eq('status','active')
  ]);
- for(const r of[notices,progress,works,clubs])if(r.error)throw r.error;
+ for(const r of[notices,unreadCount,progress,works,clubs])if(r.error)throw r.error;
  return{
   notifications:notices.data||[],
   metrics:{
-   unread:(notices.data||[]).filter(x=>x.unread).length,
+   unread:unreadCount.count||0,
    readingStops:(progress.data||[]).length,
    finished:(progress.data||[]).filter(x=>x.completed).length,
    publishedWorks:(works.data||[]).filter(x=>x.publication_status==='published').length,
