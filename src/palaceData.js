@@ -565,21 +565,24 @@ export async function getMemberProfile(username,viewerId){
  const{data:profile,error}=await needClient().from('profiles').select('id,username,display_name,title,bio,avatar_url,cover_url,visibility,message_policy,pronouns,status_line,availability,roles,featured_genres,featured_fandoms,accent,cover_position,support_enabled,support_label,support_url').eq('username',username).maybeSingle();
  if(error)throw error;if(!profile)return null;
  const own=viewerId===profile.id;
- const [privacy,works,follow,counting,seriesCount,clubCount,showA,showG]=await Promise.all([
+ const [privacy,works,comics,series,follow,counting,clubCount,showA,showG]=await Promise.all([
   own?getMyPrivacy(profile.id):Promise.resolve(null),
   needClient().from('works').select('id,title,slug,summary,cover_url,completion_status,last_published_at').eq('author_id',profile.id).eq('publication_status','published').order('last_published_at',{ascending:false}).limit(12),
+  needClient().from('comics').select('id,title,slug,summary,completion_status,cover_path,last_published_at').eq('creator_id',profile.id).eq('publication_status','published').order('last_published_at',{ascending:false}).limit(12),
+  needClient().from('series').select('id,title,slug,summary,visibility,updated_at,series_works(work_id,position,works(id,title,slug,publication_status,completion_status))').eq('owner_id',profile.id).order('updated_at',{ascending:false}).limit(12),
   viewerId&&!own?needClient().from('member_follows').select('followed_id').eq('follower_id',viewerId).eq('followed_id',profile.id).maybeSingle():Promise.resolve({data:null,error:null}),
   needClient().from('member_follows').select('follower_id',{count:'exact',head:true}).eq('followed_id',profile.id),
-  needClient().from('series').select('id',{count:'exact',head:true}).eq('owner_id',profile.id),
   needClient().from('club_members').select('club_id',{count:'exact',head:true}).eq('user_id',profile.id).eq('status','active'),
   needClient().from('profile_achievement_showcase').select('achievement_id,display_tier,position,achievement_families(id,name,description,catalogue_number,art_status)').eq('user_id',profile.id).order('position'),
   needClient().from('profile_gift_showcase').select('gift_id,display_tier,position,virtual_gifts(id,gift_key,name,description,court_name,catalogue_number,art_status)').eq('user_id',profile.id).order('position')
  ]);
- for(const r of[works,follow,counting,seriesCount,clubCount,showA,showG])if(r.error)throw r.error;
+ for(const r of[works,comics,series,follow,counting,clubCount,showA,showG])if(r.error)throw r.error;
+ const signedComics=await Promise.all((comics.data||[]).map(async comic=>({...comic,cover_url:await signedAsset('comic-covers',comic.cover_path)})));
+ const visibleSeries=(series.data||[]).map(s=>({...s,series_works:(s.series_works||[]).filter(x=>x.works?.publication_status==='published').sort((a,b)=>a.position-b.position)}));
  return{
-  profile,privacy:privacy||null,works:works.data||[],following:!!follow.data,followerCount:counting.count||0,
+  profile,privacy:privacy||null,works:works.data||[],comics:signedComics,series:visibleSeries,following:!!follow.data,followerCount:counting.count||0,
   showcase:{achievements:showA.data||[],gifts:showG.data||[]},
-  counts:{works:works.data?.length||0,series:seriesCount.count||0,clubs:clubCount.count||0,honours:(showA.data?.length||0)+(showG.data?.length||0)}
+  counts:{works:works.data?.length||0,comics:signedComics.length,series:visibleSeries.length,clubs:clubCount.count||0,honours:(showA.data?.length||0)+(showG.data?.length||0)}
  }
 }
 export async function setFollow(viewerId,memberId,follow){if(follow){const{error}=await needClient().from('member_follows').insert({follower_id:viewerId,followed_id:memberId});if(error)throw error}else{const{error}=await needClient().from('member_follows').delete().eq('follower_id',viewerId).eq('followed_id',memberId);if(error)throw error}}
