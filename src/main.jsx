@@ -17,37 +17,62 @@ const rooms=[
   ['Lost Works','/lost-works','A rights-conscious preservation archive for works at risk of being lost.']
 ];
 
+const fullPalaceRooms=[
+ {id:'palace',icon:'☾',label:'My Palace',path:'/chamber',private:true,sections:[
+  ['My chamber','/chamber'],['Notifications','/activity'],['Messages','/letters'],['Invitations','/events']
+ ]},
+ {id:'reading',icon:'◈',label:'Reading Rooms',path:'/reading',sections:[
+  ['All works','/reading'],['Comics','/comics'],['Lost Works','/lost-works'],['Series',null],['Tags','/tags']
+ ]},
+ {id:'library',icon:'▧',label:'My Library',path:'/library',private:true,sections:[
+  ['Saved Stories','/library'],['Comics Shelf',null],['Collections & Readers’ Choice',null],['Reading lists',null],['History',null],['Notes & Bookmarks',null],['Lost Works Shelf','/lost-works'],['Subscriptions','/library'],['Writers I Follow','/search']
+ ]},
+ {id:'writing',icon:'✎',label:'Writing Chamber',path:'/writing',private:true,sections:[
+  ['Editor & drafts','/writing'],['Comic studio','/comics/studio'],['Co-writing',null],['Comment review',null],['Requests & permissions',null]
+ ]},
+ {id:'life',icon:'♢',label:'Palace Life',path:'/palace-life',sections:[
+  ['Palace Tidings','/palace-life'],['Clubs','/palace-life'],['Forum & Chat','/palace-life'],['Members & Exile','/search'],['Introductions & highlights','/palace-life'],['Activities','/activity'],['Throne of Honour','/honour']
+ ]},
+ {id:'events',icon:'✧',label:'Events & Heritage',path:'/events',sections:[
+  ['Writing calendar','/events'],['Heritage calendar','/events'],['My calendar','/events'],['Event proposals','/events'],['Member ballots','/events']
+ ]},
+ {id:'treasury',icon:'♛',label:'Royal Treasury',path:'/treasury',private:true,sections:[
+  ['Badges & gifts','/treasury'],['Lucky draw & 520+ prizes',null],['Monthly rankings','/honour']
+ ]},
+ {id:'settings',icon:'⚙',label:'Settings & Safety',path:'/settings',private:true,sections:[
+  ['Comfort','/settings'],['Storage & uploads','/settings'],['Quiet corners','/settings'],['Privacy','/settings'],['Account & downloads','/settings'],['System status',null],['Welcome guide',null],['Testing room',null]
+ ]}
+];
+
 function Frame({children,privateArea=false}){
  const {session}=useAuth();
  const [navOpen,setNavOpen]=useState(false);
  const [daylight,setDaylight]=useState(()=>localStorage.getItem('palace-theme')==='daylight');
- const location=useLocation();
+ const [search,setSearch]=useState('');
+ const location=useLocation();const navigate=useNavigate();
  React.useEffect(()=>setNavOpen(false),[location.pathname]);
  React.useEffect(()=>localStorage.setItem('palace-theme',daylight?'daylight':'night'),[daylight]);
- const nav=[
-  ...(session?[['✦','My Chamber','/chamber']]:[]),
-  ['◈','Reading Rooms','/reading'],['▤','Comics Gallery','/comics'],
-  ...(session?[['✎','Writing Chamber','/writing'],['▧','Comics Studio','/comics/studio'],['☾','My Library','/library']]:[]),
-  ['♢','Palace Life','/palace-life'],['✧','Events & Heritage','/events'],
-  ...(session?[['♛','Royal Treasury','/treasury']]:[]),
-  ['⌁','Lost Works','/lost-works'],['✦','Tag Constellation','/tags'],['♜','Throne of Honour','/honour'],['⚖','Palace Council','/council'],['§','The Palace Code','/code'],
-  ...(session?[['✉','Palace Letters','/letters'],['◌','Moonlight Activity','/activity']]:[])
- ];
- return <div className={"palace-shell "+(navOpen?'nav-open ':'')+(daylight?'daylight':'nightfall')}>
-  <aside className="sidebar" aria-label="Palace navigation">
-   <div className="sidebar-brand"><Link className="crest" to="/"><span className="moon crest-orbit">☾<b>✦</b></span><strong>The Starry Palace</strong><small>INKVERSE · A PALACE OF STORIES</small></Link><button className="nav-close" onClick={()=>setNavOpen(false)} aria-label="Close Palace navigation">×</button></div>
-   <p className="nav-section-label">PALACE ROOMS</p>
-   <nav className="room-nav">{nav.map(([icon,name,path])=><NavLink key={path} to={path}><i aria-hidden="true">{icon}</i><span>{name}</span></NavLink>)}</nav>
-   <div className="sidebar-celestial" aria-hidden="true"><span>✦</span><span>☾</span><span>·</span><span>✧</span></div><div className="sidebar-foot">{session?<><NavLink to="/settings">⚙ <span>Settings & privacy</span></NavLink><Link to="/search">⌕ <span>Search the Palace</span></Link></>:<Link to="/login">Enter the Palace</Link>}</div>
+ const visibleRooms=fullPalaceRooms.filter(r=>!r.private||session);
+ const activeRoom=visibleRooms.find(r=>location.pathname===r.path||r.sections.some(([,p])=>p&&location.pathname===p)||(r.id==='reading'&&['/comics','/lost-works','/tags'].some(p=>location.pathname.startsWith(p)))||(r.id==='writing'&&location.pathname.startsWith('/writing'))||(r.id==='life'&&['/palace-life','/search','/honour','/activity'].some(p=>location.pathname.startsWith(p)))||(r.id==='events'&&location.pathname.startsWith('/events'))||(r.id==='treasury'&&location.pathname.startsWith('/treasury'))||(r.id==='settings'&&location.pathname.startsWith('/settings')));
+ const profileInitial=(session?.user?.email||'P').slice(0,1).toUpperCase();
+ function submitSearch(e){e.preventDefault();if(search.trim())navigate('/search?q='+encodeURIComponent(search.trim()))}
+ return <div className={"palace-shell full-palace-shell "+(navOpen?'nav-open ':'')+(daylight?'daylight':'nightfall')}>
+  <aside className="sidebar full-sidebar" aria-label="Palace navigation">
+   <div className="palace-cover-live"><div className="palace-cover-stars">✦　·　✧　　☾　·　✦</div><div className="cover-sigil"><span>☾</span><i>✦</i></div><div className="cover-copy"><strong>The Starry Palace</strong><span>Your place among the stars</span></div><button className="nav-close" onClick={()=>setNavOpen(false)} aria-label="Close Palace navigation">×</button></div>
+   {session?<Link className="identity-card-live" to="/chamber"><div className="identity-avatar">{profileInitial}</div><div><strong>Your Chamber</strong><span>Palace member</span></div></Link>:<Link className="identity-card-live guest" to="/login"><div className="identity-avatar">✦</div><div><strong>Enter the Palace</strong><span>Sign in or create your chamber</span></div></Link>}
+   <p className="nav-section-label">EXPLORE THE PALACE</p>
+   <nav className="full-room-nav">{visibleRooms.map(room=>{const active=activeRoom?.id===room.id;return <div className="full-nav-room" key={room.id}><NavLink className={active?'active':''} to={room.path}><i>{room.icon}</i><span>{room.label}</span></NavLink>{active&&<div className="full-subnav"><small>SECTIONS</small>{room.sections.map(([label,path])=>path?<Link key={label} className={location.pathname===path?'active':''} to={path}><span>{label}</span></Link>:<span key={label} className="restoring-section" title="This full-build section is being reconnected to the live backend.">{label}<b>RESTORING</b></span>)}</div>}</div>})}</nav>
+   <p className="nav-section-label stewardship-label">STEWARDSHIP</p>
+   <nav className="full-room-nav secondary"><div className="full-nav-room"><NavLink to="/council"><i>⚖</i><span>Palace Council</span></NavLink>{location.pathname.startsWith('/council')&&<div className="full-subnav"><small>SECTIONS</small><span className="restored-static">Council overview</span><span className="restored-static">Moderation desk</span><span className="restored-static">Palace Tidings desk</span><span className="restored-static">Cases & appeals</span></div>}</div><div className="full-nav-room"><NavLink to="/code"><i>§</i><span>The Palace Code</span></NavLink>{location.pathname.startsWith('/code')&&<div className="full-subnav"><small>SECTIONS</small><span className="restored-static">Community conduct</span><span className="restored-static">Safety & privacy</span><span className="restored-static">Member rights</span><span className="restored-static">Appeals</span></div>}</div></nav>
+   <div className="sidebar-spacer"/><div className="sidebar-foot full-foot">{session&&<><Link to="/letters">✉ <span>Palace Letters</span></Link><Link to="/activity">◌ <span>Moonlight Activity</span></Link></>}<button className="sidebar-theme" onClick={()=>setDaylight(v=>!v)}>{daylight?'☾ Nightfall':'☼ Daylight'}</button></div>
   </aside>
   <button className="nav-scrim" aria-label="Close navigation" onClick={()=>setNavOpen(false)}/>
-  <div className="palace-stage">
-   <header className="topbar"><div className="topbar-left"><button className="nav-toggle" onClick={()=>setNavOpen(true)} aria-label="Open Palace navigation">☰</button><div><p className="top-kicker">{privateArea?'YOUR PALACE':'GATHER · READ · CREATE'}</p><Link className="mobile-palace-name" to="/">The Starry Palace</Link></div></div><div className="top-actions"><button className="theme-toggle" onClick={()=>setDaylight(v=>!v)} aria-label={daylight?'Return to Nightfall':'Enter Daylight'} title={daylight?'Nightfall':'Daylight'}>{daylight?'☾':'☼'}</button><Link to="/search">Search the Palace</Link>{session&&<Link className="activity-link" to="/activity" aria-label="Moonlight Activity">✦</Link>}{session?<Link className="avatar-link" to="/chamber">{(session.user.email||'P').slice(0,1).toUpperCase()}</Link>:<Link className="pill" to="/login">Sign in</Link>}</div></header>
+  <div className="palace-stage full-stage">
+   <header className="topbar full-topbar"><div className="full-topbar-row"><div className="full-brand"><button className="nav-toggle" onClick={()=>setNavOpen(true)} aria-label="Open Palace navigation">☰</button><Link to="/"><span className="brandmark">☾<b>✦</b></span><strong>The Starry Palace</strong></Link><small>BETA</small></div><form className="global-search-live" onSubmit={submitSearch}><span>⌕</span><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search works, writers, tags, fandoms…"/><button>Search</button></form><div className="full-top-actions">{session&&<Link className="top-icon-link" to="/letters" aria-label="Palace Letters">✉</Link>}{session&&<Link className="top-icon-link" to="/activity" aria-label="Notifications">✦</Link>}<Link className="write-action" to={session?'/writing':'/login'}>✎ <span>Write</span></Link></div></div></header>
    <main>{children}</main>
   </div>
  </div>
 }
-
 function Home(){
  return <Frame><section className="home-hero realised"><div className="stars" aria-hidden="true">✦　·　✧　　·　✦　　☾</div><div className="hero-copy"><p className="eyebrow">WRITE AMONG KINDRED STARS.</p><h1>There’s a place<br/>for you here.</h1><p className="lede">Read deeply. Write privately before you publish. Find people without turning creativity into a popularity contest.</p><div className="hero-actions"><Link className="button" to="/reading">Enter the Reading Rooms</Link><Link className="text-link" to="/writing">Open the Writing Chamber →</Link></div></div><aside className="hero-orbit" aria-label="Palace principles"><span>YOUR WORK REMAINS YOURS</span><strong>☾</strong><p>Stories, art, communities, heritage and creative life beneath one shared sky.</p><div><b>READ</b><b>WRITE</b><b>GATHER</b><b>KEEP</b></div></aside></section><section className="home-intro-strip"><span>NO ALGORITHM DECIDES ARTISTIC WORTH</span><span>PRIVATE BY CHOICE</span><span>CREATIVE RIGHTS FIRST</span><span>COMMUNITY WITH BOUNDARIES</span></section><section className="room-grid expanded">{rooms.map(([name,path,copy],i)=><Link className={"room-card room-"+i} to={path} key={path}><span>0{i+1}</span><div className="room-glyph">{['◈','▤','✎','♢','✧','♛','⌁'][i]}</div><h2>{name}</h2><p>{copy}</p><b>Enter room →</b></Link>)}</section><section className="palace-paths"><div><p className="eyebrow">A PALACE, NOT A FEED</p><h2>Different rooms for different kinds of attention.</h2><p>Long-form reading does not need to compete with live chat. Private drafts do not need to become public before they are ready. Community, governance and creative ownership each have their own doorway.</p></div><div className="path-list"><Link to="/tags"><span>01</span><strong>Tag Constellation</strong><small>Include what you seek. Exclude what you do not.</small></Link><Link to="/honour"><span>02</span><strong>Throne of Honour</strong><small>Recognition without controlling discovery.</small></Link><Link to="/code"><span>03</span><strong>The Palace Code</strong><small>Rights, safety, moderation and appeals.</small></Link><Link to="/council"><span>04</span><strong>Palace Council</strong><small>Review with a record, not invisible power.</small></Link></div></section><section className="manifesto"><p>EVERY VOICE CARRIES A WORLD.</p><h2>Gather. Have a cup of tea.<br/>Write and read with me.</h2><div><Link to="/reading">Find a story</Link><Link to="/login">Create your chamber</Link></div></section></Frame>
 }
