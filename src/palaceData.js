@@ -31,7 +31,18 @@ export async function getActivity(userId){const{data,error}=await needClient().f
 export async function markNoticeRead(userId,id){const{error}=await needClient().from('notifications').update({unread:false,read_at:new Date().toISOString()}).eq('id',id).eq('user_id',userId);if(error)throw error}
 export async function markAllNoticesRead(userId){const{error}=await needClient().from('notifications').update({unread:false,read_at:new Date().toISOString()}).eq('user_id',userId).eq('unread',true);if(error)throw error}
 
-export async function getLibrary(userId){const [saved,progress,subs]=await Promise.all([needClient().from('saved_works').select('saved_at,works(id,title,slug,summary,cover_url,completion_status,profiles!works_author_id_fkey(username,display_name))').eq('user_id',userId).order('saved_at',{ascending:false}),needClient().from('reading_progress').select('work_id,chapter_id,progress_percent,completed,updated_at,works(id,title,slug,cover_url)').eq('user_id',userId).order('updated_at',{ascending:false}),needClient().from('story_subscriptions').select('work_id,enabled,frequency,works(id,title,slug)').eq('user_id',userId).eq('enabled',true)]);for(const r of [saved,progress,subs])if(r.error)throw r.error;return{saved:saved.data||[],progress:progress.data||[],subscriptions:subs.data||[]}}
+export async function getLibrary(userId){const [saved,progress,subs,savedComics,comicProgress,comicSubs,follows]=await Promise.all([
+ needClient().from('saved_works').select('saved_at,works(id,title,slug,summary,cover_url,completion_status,profiles!works_author_id_fkey(username,display_name))').eq('user_id',userId).order('saved_at',{ascending:false}),
+ needClient().from('reading_progress').select('work_id,chapter_id,progress_percent,completed,updated_at,works(id,title,slug,cover_url)').eq('user_id',userId).order('updated_at',{ascending:false}),
+ needClient().from('story_subscriptions').select('work_id,enabled,frequency,works(id,title,slug)').eq('user_id',userId).eq('enabled',true),
+ needClient().from('saved_comics').select('saved_at,comics(id,title,slug,summary,completion_status,cover_path)').eq('user_id',userId).order('saved_at',{ascending:false}),
+ needClient().from('comic_reading_progress').select('comic_id,episode_id,page_id,completed,updated_at,comics(id,title,slug,cover_path)').eq('user_id',userId).order('updated_at',{ascending:false}),
+ needClient().from('comic_subscriptions').select('comic_id,enabled,frequency,comics(id,title,slug)').eq('user_id',userId).eq('enabled',true),
+ needClient().from('member_follows').select('followed_id,created_at,profiles!member_follows_followed_id_fkey(id,username,display_name,title,avatar_url)').eq('follower_id',userId).order('created_at',{ascending:false})
+]);for(const r of [saved,progress,subs,savedComics,comicProgress,comicSubs,follows])if(r.error)throw r.error;
+ const comics=await Promise.all((savedComics.data||[]).map(async x=>({...x,cover_url:await signedAsset('comic-covers',x.comics?.cover_path)})));
+ const comicHistory=await Promise.all((comicProgress.data||[]).map(async x=>({...x,cover_url:await signedAsset('comic-covers',x.comics?.cover_path)})));
+ return{saved:saved.data||[],progress:progress.data||[],subscriptions:subs.data||[],savedComics:comics,comicProgress:comicHistory,comicSubscriptions:comicSubs.data||[],followedWriters:follows.data||[]}}
 export async function getTagConstellation(){const{data,error}=await needClient().from('tags').select('id,name,category,status,canonical_tag_id').eq('status','canonical').order('name').limit(250);if(error)throw error;return data||[]}
 export async function getWorksForTag(tagId){const{data,error}=await needClient().from('work_tags').select('position,works(id,title,slug,summary,rating,completion_status,cover_url,publication_status,profiles!works_author_id_fkey(username,display_name))').eq('tag_id',tagId).order('position').limit(50);if(error)throw error;return(data||[]).filter(x=>x.works?.publication_status==='published')}
 
