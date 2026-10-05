@@ -5,9 +5,9 @@ import Treasury from './Treasury';
 vi.mock('./auth',()=>({useAuth:()=>({session:{user:{id:'member'}}})}));
 vi.mock('./PalaceBadge',()=>({default:()=>null}));
 vi.mock('./PalaceGift',()=>({
- default:()=> <span>Gift artwork</span>,
+ default:({tier})=> <span>Gift artwork: {tier}</span>,
  giftCourt:()=>({sigil:'☾'}),
- giftCourts:[{name:'Moon Garden',sigil:'☾',motto:'A quiet court'}],
+ giftCourts:[{name:'Moon Garden',slug:'moon-garden',sigil:'☾',motto:'A quiet court'}],
  giftEditions:['nocturne'],giftEdition:()=> 'nocturne'
 }));
 vi.mock('./palaceData',()=>({
@@ -19,4 +19,24 @@ it('opens the gift collection without confusing the selected court with its artw
  render(<Treasury Frame={({children})=><main>{children}</main>}/>);
  fireEvent.click(screen.getByRole('button',{name:/Gift collection/i}));
  expect(await screen.findByRole('heading',{name:'Moon cup'})).toBeTruthy();
+});
+
+it('previews any tier while preserving the highest owned tier default',async()=>{
+ render(<Treasury Frame={({children})=><main>{children}</main>}/>);
+ fireEvent.click(screen.getByRole('button',{name:/Gift collection/i}));
+ await screen.findByRole('heading',{name:'Moon cup'});
+ expect(screen.getByText('Gift artwork: silver')).toBeTruthy();
+ fireEvent.change(screen.getByLabelText('Artwork tier'),{target:{value:'emerald'}});
+ expect(screen.getByText('Gift artwork: emerald')).toBeTruthy();
+ fireEvent.change(screen.getByLabelText('Artwork tier'),{target:{value:'owned'}});
+ expect(screen.getByText('Gift artwork: silver')).toBeTruthy();
+});
+it('clears empty duplicate filters without treating different tiers as duplicates',async()=>{
+ render(<Treasury Frame={({children})=><main>{children}</main>}/>);
+ fireEvent.click(screen.getByRole('button',{name:/Gift collection/i}));
+ await screen.findByRole('heading',{name:'Moon cup'});
+ fireEvent.change(screen.getByLabelText('My collection'),{target:{value:'duplicates'}});
+ expect(screen.queryByRole('heading',{name:'Moon cup'})).toBeNull();
+ fireEvent.click(screen.getByRole('button',{name:'Clear gift filters'}));
+ expect(screen.getByRole('heading',{name:'Moon cup'})).toBeTruthy();
 });

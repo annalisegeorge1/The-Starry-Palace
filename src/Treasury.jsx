@@ -24,6 +24,7 @@ export default function Treasury({Frame}) {
  const [giftEditionFilter,setGiftEditionFilter]=useState('all');
  const [giftOwnership,setGiftOwnership]=useState('all');
  const [giftPage,setGiftPage]=useState(1);
+ const [giftPreviewTier,setGiftPreviewTier]=useState('owned');
  const [giftError,setGiftError]=useState('');
  const [giftLoading,setGiftLoading]=useState(true);
 
@@ -88,9 +89,9 @@ export default function Treasury({Frame}) {
     <label>Court<select value={selectedCourt} onChange={e=>setGiftCourt(e.target.value)}><option value="all">All Palace courts</option>{courts.map(c=><option key={c} value={c}>{c}</option>)}</select></label>
     <label>Painted edition<select value={giftEditionFilter} onChange={e=>setGiftEditionFilter(e.target.value)}><option value="all">All nine editions</option>{giftEditions.map(e=><option key={e} value={e}>{e.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</option>)}</select></label>
     <label>My collection<select value={giftOwnership} onChange={e=>setGiftOwnership(e.target.value)}><option value="all">All prizes</option><option value="owned">Owned</option><option value="missing">Not yet owned</option><option value="duplicates">Duplicates</option><option value="ascendable">Ready to ascend</option></select></label>
-    <label>Preview tier<select value={tier} onChange={e=>setTier(e.target.value)}>{tiers.map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label>
+    <label>Artwork tier<select value={giftPreviewTier} onChange={e=>setGiftPreviewTier(e.target.value)}><option value="owned">Highest owned tier · Bronze for previews</option>{tiers.map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label>
    </div>
-   <div className="gift-edition-ribbon" aria-label="Painted gift editions">{giftEditions.map(e=><button key={e} className={giftEditionFilter===e?'active':''} onClick={()=>setGiftEditionFilter(giftEditionFilter===e?'all':e)}>{e.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</button>)}</div>
+   <div className="gift-edition-ribbon" aria-label="Painted gift editions">{giftEditions.map(e=><button key={e} aria-pressed={giftEditionFilter===e} className={giftEditionFilter===e?'active':''} onClick={()=>setGiftEditionFilter(giftEditionFilter===e?'all':e)}>{e.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</button>)}</div>
    <section className="gift-collection-summary" aria-label="My gift collection progress">
     <article><strong>{ownedDistinct}</strong><span>of {giftData.count||520} collected</span></article>
     <article><strong>{totalCopies}</strong><span>total copies</span></article>
@@ -98,7 +99,7 @@ export default function Treasury({Frame}) {
     <article><strong>{ascendableDistinct}</strong><span>ready to ascend</span></article>
    </section>
    <div className="gift-court-atlas" aria-label="Palace court atlas">
-    {giftCourts.map(c=>{const progress=courtProgress.get(c.name)||{owned:0,total:0};return <button key={c.slug} className={selectedCourt===c.name?'active':''} style={{'--court-accent':c.accent,'--court-glow':c.glow}} onClick={()=>setGiftCourt(selectedCourt===c.name?'all':c.name)}>
+    {giftCourts.map(c=>{const progress=courtProgress.get(c.name)||{owned:0,total:0};return <button key={c.slug} aria-pressed={selectedCourt===c.name} className={selectedCourt===c.name?'active':''} style={{'--court-accent':c.accent,'--court-glow':c.glow}} onClick={()=>setGiftCourt(selectedCourt===c.name?'all':c.name)}>
      <span className="court-atlas-sigil">{c.sigil}</span><span><strong>{c.name}</strong><small>{c.motto}</small><em>{progress.owned}/{progress.total} collected</em></span>
     </button>})}
    </div>
@@ -107,16 +108,16 @@ export default function Treasury({Frame}) {
    {giftError&&<p className="catalogue-message error-state">{giftError}</p>}
    {!giftLoading&&!giftError&&<>
     <div className="gift-catalogue-grid">{pagedGifts.map(g=>{const owned=inventory.get(g.id);return <article className={"gift-catalogue-card"+(owned?' is-owned':' is-missing')} key={g.id}>
-     <PalaceGift gift={g} tier={owned?.tiers?.at(-1)||tier} locked={!owned}/>
+     <PalaceGift gift={g} tier={giftPreviewTier==='owned'?(owned?.tiers?.at(-1)||'bronze'):giftPreviewTier} locked={!owned}/>
      <div className="gift-catalogue-copy">
       <div className="gift-owned-line">{owned?<><b>In your cabinet</b><span>{owned.copies} cop{owned.copies===1?'y':'ies'} · {owned.tiers.join(' / ')}</span></>:<><b>Not yet collected</b><span>Catalogue preview</span></>}</div>
       <small>CATALOGUE {String(g.catalogue_number).padStart(3,'0')} · {giftCourt(g).sigil} {g.court_name} · {giftEdition(g).replace('-',' ')}</small>
       <h2>{g.name}</h2>
       <p>{g.description}</p>
-      <footer><span>{g.collection_type||'Palace collectible'}</span><b>{g.upgrade_copies||3} copies to ascend</b></footer>
+      <footer><span>{g.collection_type||'Palace collectible'}</span><b>{owned?.tiers?.at(-1)==='emerald'?'Emerald tier collected':`${g.upgrade_copies||3} copies of the same tier to ascend`}</b></footer>
      </div>
     </article>})}</div>
-    {!pagedGifts.length&&<p className="catalogue-message">No Palace gifts match these filters.</p>}
+    {!pagedGifts.length&&<div className="catalogue-message"><p>No Palace gifts match these filters.</p><button onClick={()=>{setQuery('');setGiftCourt('all');setGiftEditionFilter('all');setGiftOwnership('all');setGiftPage(1)}}>Clear gift filters</button></div>}
     {giftPages>1&&<nav className="catalogue-pagination" aria-label="Gift catalogue pages">
      <button disabled={giftPage===1} onClick={()=>setGiftPage(p=>Math.max(1,p-1))}>← Previous</button>
      <span>Page {giftPage} of {giftPages}</span>
