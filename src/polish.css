@@ -1342,3 +1342,55 @@ img{max-width:100%}
   .palace-command-backdrop{padding:62px 8px 8px;align-items:start}
   .palace-command{width:100%;border-radius:18px}
 }
+
+
+/* Writing library management */
+.writing-library-tools{
+  display:grid;
+  grid-template-columns:minmax(240px,1fr) 170px 170px;
+  gap:.65rem;
+  margin:.8rem 0 1rem;
+  padding:.65rem;
+  border:1px solid var(--palace-border);
+  border-radius:16px;
+  background:rgba(12,17,34,.62);
+}
+.writing-library-search{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:.55rem;
+  align-items:center;
+  min-width:0;
+  padding:0 .75rem;
+  border:1px solid var(--palace-border);
+  border-radius:12px;
+  background:rgba(8,12,27,.46);
+}
+.writing-library-search span{opacity:.5}
+.writing-library-search input{
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  padding:.55rem 0!important;
+  min-width:0
+}
+.writing-library-tools select{min-height:42px}
+.draft-list article{
+  border-color:var(--palace-border);
+  background:rgba(14,19,38,.7);
+  box-shadow:var(--palace-shadow-soft);
+  transition:transform var(--palace-motion),border-color var(--palace-motion),box-shadow var(--palace-motion);
+}
+.draft-list article:hover{transform:translateY(-1px);border-color:var(--palace-border-strong);box-shadow:var(--palace-shadow)}
+.draft-list h2{letter-spacing:-.015em}
+.draft-list p{color:var(--palace-muted);line-height:1.5}
+.daylight .writing-library-tools,.daylight .writing-library-search,.daylight .draft-list article{background:rgba(255,255,255,.84)}
+
+@media(max-width:780px){
+  .writing-library-tools{grid-template-columns:1fr 1fr}
+  .writing-library-search{grid-column:1/-1}
+}
+@media(max-width:520px){
+  .writing-library-tools{grid-template-columns:1fr}
+  .writing-library-search{grid-column:auto}
+}
