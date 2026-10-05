@@ -537,6 +537,20 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.moon-new-messages');
   });
 
+  it('keeps duplicate gift trading atomic and duplicate-only',()=>{
+    const data=read('src/palaceData.js');
+    const treasury=read('src/Treasury.jsx');
+    const css=read('src/treasury.css');
+    expect(data).toContain('getGiftTrades');
+    expect(data).toContain('createGiftTradeOffer');
+    expect(data).toContain('respondGiftTradeOffer');
+    expect(treasury).toContain('DUPLICATE EXCHANGE');
+    expect(treasury).toContain('Trade without giving up your only copy.');
+    expect(treasury).toContain('Accept trade');
+    expect(treasury).toContain('Cancel offer');
+    expect(css).toContain('.gift-trade-list');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
