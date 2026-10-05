@@ -352,7 +352,10 @@ export async function getLetters(userId){
   conversations:conversations.map(c=>{
    const conv=c.conversations;
    const otherId=conv?.kind==='direct'?(conv.direct_user_a===userId?conv.direct_user_b:conv.direct_user_a):null;
-   return{...c,correspondent:otherId?personMap[otherId]||null:null,preference:prefMap[c.conversation_id]||{starred:false,archived:false,muted:false}}
+   const preference=prefMap[c.conversation_id]||{starred:false,archived:false,muted:false,last_read_at:null};
+   const latest=messages.find(m=>m.conversation_id===c.conversation_id)||null;
+   const unread=!!(latest&&latest.sender_id!==userId&&(!preference.last_read_at||new Date(latest.created_at)>new Date(preference.last_read_at)));
+   return{...c,correspondent:otherId?personMap[otherId]||null:null,preference,latest_message:latest,unread}
   }),
   requests:requests.data||[],
   messages
