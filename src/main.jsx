@@ -78,17 +78,29 @@ function Frame({children,privateArea=false}){
  const [navOpen,setNavOpen]=useState(false);
  const [daylight,setDaylight]=useState(()=>localStorage.getItem('palace-theme')==='daylight');
  const [search,setSearch]=useState('');
+ const [commandOpen,setCommandOpen]=useState(false);
+ const [commandQuery,setCommandQuery]=useState('');
  const [shellProfile,setShellProfile]=useState(null);
  const [letterBadge,setLetterBadge]=useState(0);
  const location=useLocation();const navigate=useNavigate();
  React.useEffect(()=>setNavOpen(false),[location.pathname]);
+ React.useEffect(()=>{setCommandOpen(false);setCommandQuery('')},[location.pathname,location.search]);
  React.useEffect(()=>localStorage.setItem('palace-theme',daylight?'daylight':'night'),[daylight]);
+ React.useEffect(()=>{const onKey=e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();setCommandOpen(v=>!v)}else if(e.key==='Escape')setCommandOpen(false)};window.addEventListener('keydown',onKey);return()=>window.removeEventListener('keydown',onKey)},[]);
  React.useEffect(()=>{let alive=true;if(!session){setShellProfile(null);setLetterBadge(0);return;}Promise.all([supabase.from('profiles').select('username,display_name,title,avatar_url,cover_url').eq('id',session.user.id).maybeSingle(),supabase.from('message_requests').select('id',{count:'exact',head:true}).eq('recipient_id',session.user.id).eq('status','pending')]).then(([profileReq,letterReq])=>{if(!alive)return;setShellProfile(profileReq.data||null);setLetterBadge(letterReq.count||0)});return()=>{alive=false}},[session?.user?.id,location.pathname]);
  const visibleRooms=fullPalaceRooms.filter(r=>!r.private||session);
+ const commandItems=[
+  ...visibleRooms.map(r=>({label:r.label,path:r.path,icon:r.icon,detail:r.sections?.[0]?.[0]||'Palace room'})),
+  {label:'Search the Palace',path:'/search',icon:'⌕',detail:'Works, writers, tags and clubs'},
+  {label:'The Palace Code',path:'/code',icon:'§',detail:'Rights, safety and community rules'},
+  {label:'Palace Council',path:'/council',icon:'⚖',detail:'Stewardship and review'}
+ ];
+ const commandMatches=commandItems.filter(item=>!commandQuery.trim()||[item.label,item.detail].join(' ').toLowerCase().includes(commandQuery.trim().toLowerCase())).slice(0,12);
  const activeRoom=visibleRooms.find(r=>location.pathname===r.path||r.sections.some(([,p])=>{const target=p==='/member'&&shellProfile?.username?'/member/'+shellProfile.username:p;return target&&location.pathname===target})||(r.id==='reading'&&['/comics','/comic/','/work/','/lost-works','/tags','/series'].some(p=>location.pathname.startsWith(p)))||(r.id==='writing'&&location.pathname.startsWith('/writing'))||(r.id==='life'&&['/palace-life','/club/','/search','/honour','/activity'].some(p=>location.pathname.startsWith(p))||(r.id==='life'&&location.pathname.startsWith('/member/')&&location.pathname!==('/member/'+(shellProfile?.username||''))))||(r.id==='events'&&location.pathname.startsWith('/events'))||(r.id==='treasury'&&location.pathname.startsWith('/treasury'))||(r.id==='settings'&&location.pathname.startsWith('/settings')));
  const currentHref=location.pathname+location.search;
  const profileInitial=(shellProfile?.display_name||shellProfile?.username||session?.user?.email||'P').slice(0,1).toUpperCase();
  function submitSearch(e){e.preventDefault();if(search.trim())navigate('/search?q='+encodeURIComponent(search.trim()))}
+ function chooseCommand(path){setCommandOpen(false);setCommandQuery('');navigate(path)}
  return <div className={"palace-shell full-palace-shell "+(navOpen?'nav-open ':'')+(daylight?'daylight':'nightfall')}>
   <a className="skip-to-content" href="#palace-content">Skip to main content</a>
   <aside className="sidebar full-sidebar" aria-label="Palace navigation">
@@ -102,13 +114,20 @@ function Frame({children,privateArea=false}){
   </aside>
   <button className="nav-scrim" aria-label="Close navigation" onClick={()=>setNavOpen(false)}/>
   <div className="palace-stage full-stage">
-   <header className="topbar full-topbar"><div className="full-topbar-row"><div className="full-brand"><button className="nav-toggle" onClick={()=>setNavOpen(true)} aria-label="Open Palace navigation">☰</button><Link to="/"><span className="brandmark">☾<b>✦</b></span><strong>The Starry Palace</strong></Link><small>BETA</small></div><form className="global-search-live" role="search" aria-label="Search The Starry Palace" onSubmit={submitSearch}><span aria-hidden="true">⌕</span><input aria-label="Search works, writers, tags and fandoms" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search works, writers, tags, fandoms…"/><button type="submit">Search</button></form><div className="full-top-actions">{session&&<Link className="top-icon-link" to="/letters" aria-label="Palace Letters">✉</Link>}{session&&<Link className="top-icon-link" to="/activity" aria-label="Notifications">✦</Link>}<Link className="write-action" to={session?'/writing':'/login'}>✎ <span>Write</span></Link></div></div></header>
+   <header className="topbar full-topbar"><div className="full-topbar-row"><div className="full-brand"><button className="nav-toggle" onClick={()=>setNavOpen(true)} aria-label="Open Palace navigation">☰</button><Link to="/"><span className="brandmark">☾<b>✦</b></span><strong>The Starry Palace</strong></Link><small>BETA</small></div><form className="global-search-live" role="search" aria-label="Search The Starry Palace" onSubmit={submitSearch}><span aria-hidden="true">⌕</span><input aria-label="Search works, writers, tags and fandoms" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search works, writers, tags, fandoms…"/><button type="submit">Search</button></form><div className="full-top-actions"><button className="command-trigger" type="button" onClick={()=>setCommandOpen(true)} aria-label="Open Palace quick navigation" title="Quick navigation · Ctrl or Command K"><span>⌕</span><kbd>⌘K</kbd></button>{session&&<Link className="top-icon-link" to="/letters" aria-label="Palace Letters">✉</Link>}{session&&<Link className="top-icon-link" to="/activity" aria-label="Notifications">✦</Link>}<Link className="write-action" to={session?'/writing':'/login'}>✎ <span>Write</span></Link></div></div></header>
    <main id="palace-content" tabIndex="-1">{children}</main>
    <footer className="palace-footer">
     <div><span className="palace-footer-mark" aria-hidden="true">☾<b>✦</b></span><div><strong>The Starry Palace</strong><small>Gather. Have a cup of tea. Write and read with me.</small></div></div>
     <nav aria-label="Palace footer"><Link to="/code">Palace Code</Link><Link to="/council">Council</Link><Link to="/search">Search</Link>{session&&<Link to="/settings">Settings & Safety</Link>}</nav>
    </footer>
   </div>
+  {commandOpen&&<div className="palace-command-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setCommandOpen(false)}}>
+    <section className="palace-command" role="dialog" aria-modal="true" aria-label="Palace quick navigation">
+      <header><span aria-hidden="true">⌕</span><input autoFocus value={commandQuery} onChange={e=>setCommandQuery(e.target.value)} placeholder="Go to a room…" aria-label="Search Palace rooms"/><kbd>ESC</kbd></header>
+      <div className="palace-command-results">{commandMatches.length?commandMatches.map((item,i)=><button key={item.path} onClick={()=>chooseCommand(item.path)}><span className="command-icon">{item.icon}</span><span><strong>{item.label}</strong><small>{item.detail}</small></span>{i===0&&<em>Enter</em>}</button>):<div className="command-empty"><span>☾</span><p>No Palace room matches that phrase.</p></div>}</div>
+      <footer><span>Ctrl/⌘ K to open</span><span>Esc to close</span></footer>
+    </section>
+   </div>}
   {session&&<div className="floating-controls restored-floating-controls">
     <Link className="float-btn palace-float-sigil notification-anchor" to="/letters" aria-label="Open Palace Letters" title="Palace Letters"><span className="float-letter-art">✉</span>{letterBadge>0&&<span className="float-unread-badge">{letterBadge>99?'99+':letterBadge}</span>}</Link>
     <button className="float-btn theme-orb" onClick={()=>setDaylight(v=>!v)} aria-label={daylight?'Switch to night mode':'Switch to light mode'} title={daylight?'Night mode':'Light mode'}><span className="theme-main">{daylight?'☾':'☼'}</span><span className="theme-star">✦</span></button>
