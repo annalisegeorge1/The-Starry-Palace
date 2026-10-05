@@ -290,3 +290,111 @@
   .treasury-showcase-controls{grid-template-columns:1fr}
   .gift-card-actions{display:grid}
 }
+
+
+/* Duplicate exchange */
+.gift-exchange-desk{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:1rem;
+  align-items:center;
+  margin:1rem 0;
+  padding:1rem 1.05rem;
+  border:1px solid rgba(151,143,191,.2);
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(78,65,126,.12),rgba(45,63,100,.08));
+}
+.gift-exchange-desk h2{
+  margin:.18rem 0 .35rem;
+  font:600 1.28rem Georgia,'Times New Roman',serif;
+}
+.gift-exchange-desk p:last-child{margin:0;color:var(--muted);font-size:.72rem;line-height:1.5}
+.gift-exchange-stats{
+  display:flex;
+  gap:.45rem;
+  align-items:center;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.gift-exchange-stats>span{
+  min-width:82px;
+  display:grid;
+  justify-items:center;
+  padding:.5rem .6rem;
+  border:1px solid rgba(151,143,191,.18);
+  border-radius:12px;
+  color:var(--muted);
+  font-size:.58rem;
+}
+.gift-exchange-stats strong{font:600 1rem Georgia,'Times New Roman',serif;color:inherit}
+.gift-exchange-stats>button{min-height:40px;border-radius:11px;padding:.5rem .72rem}
+.gift-trade-list{
+  display:grid;
+  gap:.55rem;
+  margin:.7rem 0 1rem;
+}
+.gift-trade-list>article{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:.8rem;
+  align-items:center;
+  padding:.85rem .9rem;
+  border:1px solid rgba(151,143,191,.18);
+  border-radius:15px;
+  background:rgba(13,18,36,.62);
+}
+.gift-trade-list small{font-size:.54rem;letter-spacing:.1em;color:var(--muted)}
+.gift-trade-list h3{margin:.18rem 0 .28rem;font:600 .92rem Georgia,'Times New Roman',serif}
+.gift-trade-list p{margin:0;color:var(--muted);font-size:.7rem}
+.gift-trade-list blockquote{
+  margin:.45rem 0 0;
+  padding:.42rem .58rem;
+  border-left:2px solid rgba(160,143,210,.3);
+  color:var(--muted);
+  font-size:.66rem;
+}
+.gift-trade-list>article>div:last-child{display:flex;gap:.35rem;flex-wrap:wrap;justify-content:flex-end}
+.gift-trade-list button{min-height:36px;border-radius:10px;padding:.4rem .58rem;font-size:.64rem}
+.gift-trade-form{
+  display:grid;
+  gap:.7rem;
+  padding:1rem 1.1rem;
+}
+.gift-trade-form label{display:grid;gap:.3rem;font-size:.62rem;color:var(--muted)}
+.gift-trade-form label>small{font-size:.56rem}
+.trade-member-search{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:.4rem;
+}
+.trade-member-search button{min-width:84px}
+.trade-member-results{
+  display:flex;
+  gap:.4rem;
+  flex-wrap:wrap;
+  max-height:150px;
+  overflow:auto;
+  padding:.25rem 0;
+}
+.trade-member-results button{
+  min-width:130px;
+  display:grid;
+  gap:.1rem;
+  text-align:left;
+  padding:.55rem .65rem;
+  border:1px solid rgba(151,143,191,.2);
+  border-radius:11px;
+  background:rgba(100,80,155,.06);
+  color:inherit;
+}
+.trade-member-results button.active{border-color:rgba(136,174,164,.42);background:rgba(67,111,101,.1)}
+.trade-member-results strong{font-size:.7rem}
+.trade-member-results small{font-size:.58rem;color:var(--muted)}
+.gift-trade-form>p{margin:0;color:var(--muted);font-size:.66rem;line-height:1.5}
+.daylight .gift-exchange-desk,.daylight .gift-trade-list>article{background:rgba(255,255,255,.88)}
+@media(max-width:760px){
+  .gift-exchange-desk{grid-template-columns:1fr}
+  .gift-exchange-stats{justify-content:flex-start}
+  .gift-trade-list>article{grid-template-columns:1fr}
+  .gift-trade-list>article>div:last-child{justify-content:flex-start}
+}
