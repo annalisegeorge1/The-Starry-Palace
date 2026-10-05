@@ -5329,3 +5329,28 @@ img{max-width:100%}
 .daylight .work-resume-strip.has-new-chapter small{
   color:#566a9f;
 }
+
+
+/* Reading Room canonical tag hints */
+.reading-card-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.28rem;
+  margin:.48rem 0 .15rem;
+}
+.reading-card-tags span{
+  max-width:100%;
+  padding:.22rem .42rem;
+  border:1px solid rgba(139,148,190,.18);
+  border-radius:999px;
+  background:rgba(255,255,255,.014);
+  color:var(--palace-dim);
+  font-size:.54rem;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.daylight .reading-card-tags span{
+  background:rgba(246,247,252,.9);
+  color:#68718d;
+}
