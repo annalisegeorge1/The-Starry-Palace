@@ -4041,3 +4041,37 @@ img{max-width:100%}
   .comic-resume-strip{align-items:flex-start}
   .comic-resume-strip>a{align-self:center}
 }
+
+
+/* Reader continuity inside the Comics Gallery */
+.comic-reader-flags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.35rem;
+  margin:.5rem 0 .15rem;
+}
+.comic-reader-flags span{
+  display:inline-flex;
+  align-items:center;
+  min-height:24px;
+  padding:.2rem .5rem;
+  border:1px solid rgba(137,153,201,.22);
+  border-radius:999px;
+  background:rgba(107,88,169,.08);
+  color:var(--palace-muted);
+  font-size:.55rem;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.comic-reader-flags span.resume{
+  border-color:rgba(126,160,151,.34);
+  background:rgba(69,111,101,.1);
+  color:#bdd7cf;
+}
+.daylight .comic-reader-flags span{
+  background:rgba(74,61,128,.05);
+}
+.daylight .comic-reader-flags span.resume{
+  color:#315f55;
+}
