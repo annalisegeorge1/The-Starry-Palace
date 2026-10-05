@@ -5,17 +5,28 @@ export async function getMyProfile(userId){const{data,error}=await needClient().
 export async function updateMyProfile(userId,patch){const username=patch.username?.trim().toLowerCase().replace(/^@/,'');if(username&&!/^[a-z0-9_]{3,30}$/.test(username))throw new Error('Your Palace handle may use 3–30 lowercase letters, numbers and underscores.');const allowed={display_name:patch.display_name?.trim(),title:patch.title?.trim()||null,bio:patch.bio?.trim()||'',visibility:patch.visibility,message_policy:patch.message_policy};if(username)allowed.username=username;const{data,error}=await needClient().from('profiles').update(allowed).eq('id',userId).select().single();if(error?.code==='23505')throw new Error('That Palace handle is already taken.');if(error)throw error;return data}
 export async function getMyPrivacy(userId){const{data,error}=await needClient().from('privacy_preferences').select('*').eq('user_id',userId).maybeSingle();if(error)throw error;return data}
 export async function ensureMyPrivacy(userId){const current=await getMyPrivacy(userId);if(current)return current;const{data,error}=await needClient().from('privacy_preferences').insert({user_id:userId}).select().single();if(error)throw error;return data}
-export async function getChamberSnapshot(userId){const [profile,privacy,works,progress,notices,letterRequests,savedCount,giftCount,eventCount,comicCount]=await Promise.all([
- getMyProfile(userId),ensureMyPrivacy(userId),
- needClient().from('works').select('id,title,slug,publication_status,completion_status,updated_at').eq('author_id',userId).order('updated_at',{ascending:false}).limit(4),
- needClient().from('reading_progress').select('work_id,chapter_id,progress_percent,completed,updated_at,works(id,title,slug,cover_url)').eq('user_id',userId).eq('completed',false).order('updated_at',{ascending:false}).limit(3),
- needClient().from('notifications').select('id,title,body,notice_type,created_at,unread').eq('user_id',userId).eq('dismissed',false).order('created_at',{ascending:false}).limit(4),
- needClient().from('message_requests').select('id',{count:'exact',head:true}).eq('recipient_id',userId).eq('status','pending'),
- needClient().from('saved_works').select('work_id',{count:'exact',head:true}).eq('user_id',userId),
- needClient().from('user_gift_inventory').select('gift_id',{count:'exact',head:true}).eq('user_id',userId).gt('copies',0),
- needClient().from('event_rsvps').select('event_id',{count:'exact',head:true}).eq('user_id',userId),
- needClient().from('comics').select('id',{count:'exact',head:true}).eq('creator_id',userId)
-]);for(const r of[works,progress,notices,letterRequests,savedCount,giftCount,eventCount,comicCount])if(r.error)throw r.error;return{profile,privacy,works:works.data||[],progress:progress.data||[],notices:notices.data||[],counts:{letterRequests:letterRequests.count||0,saved:savedCount.count||0,gifts:giftCount.count||0,events:eventCount.count||0,comics:comicCount.count||0}}}
+export async function getChamberSnapshot(userId){
+ const [profile,privacy,works,progress,notices,letterRequests,savedCount,giftCount,eventCount,comicCount,subscriptions,followedWriters,savedComics,recentStops]=await Promise.all([
+  getMyProfile(userId),ensureMyPrivacy(userId),
+  needClient().from('works').select('id,title,slug,publication_status,completion_status,updated_at').eq('author_id',userId).order('updated_at',{ascending:false}).limit(4),
+  needClient().from('reading_progress').select('work_id,chapter_id,progress_percent,completed,updated_at,works(id,title,slug,cover_url)').eq('user_id',userId).eq('completed',false).order('updated_at',{ascending:false}).limit(3),
+  needClient().from('notifications').select('id,title,body,notice_type,created_at,unread').eq('user_id',userId).eq('dismissed',false).order('created_at',{ascending:false}).limit(4),
+  needClient().from('message_requests').select('id',{count:'exact',head:true}).eq('recipient_id',userId).eq('status','pending'),
+  needClient().from('saved_works').select('work_id',{count:'exact',head:true}).eq('user_id',userId),
+  needClient().from('user_gift_inventory').select('gift_id',{count:'exact',head:true}).eq('user_id',userId).gt('copies',0),
+  needClient().from('event_rsvps').select('event_id',{count:'exact',head:true}).eq('user_id',userId),
+  needClient().from('comics').select('id',{count:'exact',head:true}).eq('creator_id',userId),
+  needClient().from('story_subscriptions').select('work_id',{count:'exact',head:true}).eq('user_id',userId).eq('enabled',true),
+  needClient().from('member_follows').select('followed_id',{count:'exact',head:true}).eq('follower_id',userId),
+  needClient().from('saved_comics').select('comic_id',{count:'exact',head:true}).eq('user_id',userId),
+  needClient().from('reading_progress').select('work_id',{count:'exact',head:true}).eq('user_id',userId)
+ ]);
+ for(const r of[works,progress,notices,letterRequests,savedCount,giftCount,eventCount,comicCount,subscriptions,followedWriters,savedComics,recentStops])if(r.error)throw r.error;
+ return{profile,privacy,works:works.data||[],progress:progress.data||[],notices:notices.data||[],counts:{
+  letterRequests:letterRequests.count||0,saved:savedCount.count||0,gifts:giftCount.count||0,events:eventCount.count||0,comics:comicCount.count||0,
+  subscriptions:subscriptions.count||0,followedWriters:followedWriters.count||0,savedComics:savedComics.count||0,recentStops:recentStops.count||0
+ }}
+}
 export async function getPublishedWorks(){const{data,error}=await needClient().from('works').select('id,title,slug,summary,rating,language,completion_status,cover_url,last_published_at,profiles!works_author_id_fkey(username,display_name)').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(24);if(error)throw error;return data||[]}
 export async function getMyWorks(userId){const{data,error}=await needClient().from('works').select('id,title,slug,summary,publication_status,completion_status,visibility,updated_at,chapters(id,status,word_count)').eq('author_id',userId).order('updated_at',{ascending:false});if(error)throw error;return data||[]}
 export async function createDraft(userId,title){const clean=title.trim();if(!clean)throw new Error('Give your work a title first.');const slug=(clean.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,70)||'untitled')+'-'+Date.now().toString(36);const{data,error}=await needClient().from('works').insert({author_id:userId,title:clean,slug,publication_status:'draft',visibility:'private'}).select().single();if(error)throw error;return data}
