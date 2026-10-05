@@ -54,3 +54,33 @@
 
 @media(max-width:1050px){.gift-catalogue-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:680px){.gift-catalogue-grid{grid-template-columns:1fr}.gift-catalogue-status{display:grid}.gift-catalogue-status span{text-align:left}.palace-gift-art{min-height:190px}}
+
+
+/* Ink-wash gift editions */
+.gift-edition-ribbon{display:flex;gap:.45rem;overflow-x:auto;padding:.1rem 0 .75rem;scrollbar-width:thin}
+.gift-edition-ribbon button{flex:0 0 auto;border:1px solid var(--line,rgba(255,255,255,.12));background:color-mix(in srgb,var(--surface,#11162d) 90%,transparent);color:inherit;border-radius:999px;padding:.5rem .72rem;font-size:.72rem;letter-spacing:.035em}
+.gift-edition-ribbon button.active{border-color:color-mix(in srgb,var(--gift-accent,#9ca7db) 62%,white 10%);background:rgba(95,82,155,.2);box-shadow:inset 0 0 0 1px rgba(151,139,205,.12)}
+
+.gift-painted-object{position:relative;z-index:3;width:78%;height:78%;color:var(--gift-ink);overflow:visible;filter:drop-shadow(0 12px 18px rgba(0,0,0,.26))}
+.gift-brush-object{opacity:.92}
+.gift-brush-object path,.gift-brush-object circle,.gift-brush-object ellipse,.gift-brush-object rect{stroke:currentColor}
+.gift-landscape-wash{fill:none;stroke:color-mix(in srgb,var(--gift-ink) 34%,transparent);stroke-width:1.8;stroke-linecap:round;opacity:.44}
+.gift-edition-mark{position:absolute;left:12%;top:11%;z-index:4;font:italic .62rem/1.1 Georgia,'Times New Roman',serif;letter-spacing:.09em;text-transform:capitalize;color:color-mix(in srgb,var(--gift-ink) 76%,white 24%);opacity:.78}
+.palace-gift-art.compact .gift-painted-object{width:82%;height:82%}
+.palace-gift-art.compact .gift-edition-mark{display:none}
+.palace-gift-art.compact figcaption{display:none}
+
+.palace-gift-art.edition-nocturne{--gift-accent:#7775a8;background:linear-gradient(180deg,rgba(8,11,27,.12),rgba(5,8,20,.65)),radial-gradient(circle at 27% 24%,rgba(104,92,156,.27),transparent 36%),linear-gradient(145deg,#15162f,#090d20)}
+.palace-gift-art.edition-starlit{--gift-accent:#8298ba;background:linear-gradient(180deg,rgba(9,13,29,.1),rgba(6,10,23,.62)),radial-gradient(circle at 72% 23%,rgba(91,121,158,.3),transparent 34%),linear-gradient(145deg,#111a31,#090e22)}
+.palace-gift-art.edition-moonwashed{--gift-accent:#a0a5c8;background:linear-gradient(180deg,rgba(11,14,29,.08),rgba(7,10,21,.61)),radial-gradient(circle at 35% 26%,rgba(143,147,187,.25),transparent 38%),linear-gradient(145deg,#171b31,#0b1023)}
+.palace-gift-art.edition-celestial{--gift-accent:#7d90bc;background:linear-gradient(180deg,rgba(8,12,28,.1),rgba(5,9,22,.63)),radial-gradient(circle at 69% 31%,rgba(73,100,155,.3),transparent 37%),linear-gradient(145deg,#101932,#080d21)}
+.palace-gift-art.edition-cloudglass{--gift-accent:#88a8b9;background:linear-gradient(180deg,rgba(8,13,26,.08),rgba(5,10,20,.6)),radial-gradient(circle at 25% 70%,rgba(89,126,143,.27),transparent 39%),linear-gradient(145deg,#101c2e,#09101f)}
+.palace-gift-art.edition-silverleaf{--gift-accent:#9ca9b8;background:linear-gradient(180deg,rgba(10,13,25,.08),rgba(7,10,19,.61)),radial-gradient(circle at 73% 69%,rgba(117,134,147,.24),transparent 36%),linear-gradient(145deg,#161a29,#0b0f1e)}
+.palace-gift-art.edition-dreaming{--gift-accent:#9885b5;background:linear-gradient(180deg,rgba(10,11,27,.08),rgba(7,8,20,.63)),radial-gradient(circle at 31% 30%,rgba(121,93,151,.27),transparent 39%),linear-gradient(145deg,#19152f,#0b0d20)}
+.palace-gift-art.edition-blue-hour{--gift-accent:#668cad;background:linear-gradient(180deg,rgba(7,12,27,.07),rgba(5,9,21,.64)),radial-gradient(circle at 72% 64%,rgba(61,101,139,.3),transparent 38%),linear-gradient(145deg,#0d1b31,#080e21)}
+.palace-gift-art.edition-midnight{--gift-accent:#696f9c;background:linear-gradient(180deg,rgba(5,8,22,.1),rgba(3,6,16,.7)),radial-gradient(circle at 31% 70%,rgba(78,76,125,.28),transparent 36%),linear-gradient(145deg,#0e1127,#060914)}
+.palace-gift-art.edition-midnight:before{border-color:color-mix(in srgb,var(--gift-ink) 36%,transparent)}
+.palace-gift-art.edition-cloudglass .gift-landscape-wash,.palace-gift-art.edition-blue-hour .gift-landscape-wash{opacity:.56}
+.palace-gift-art.edition-moonwashed .gift-brush-object,.palace-gift-art.edition-silverleaf .gift-brush-object{opacity:.82}
+.palace-gift-art.edition-dreaming .gift-painted-object{transform:rotate(-1.2deg)}
+.palace-gift-art.edition-nocturne .gift-painted-object{transform:rotate(.8deg)}
