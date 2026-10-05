@@ -217,3 +217,37 @@ export async function getLuckyDrawState(userId){
 export async function claimLuckyDraw(){
  const{data,error}=await needClient().rpc('claim_monthly_lucky_draw');if(error)throw error;return data?.[0]||null
 }
+
+export async function getWritingExtras(userId){
+ const [incoming,outgoing,comments,downloads]=await Promise.all([
+  needClient().from('work_collaborators').select('work_id,user_id,role,status,invited_by,created_at,responded_at,works(id,title,slug,author_id,publication_status)').eq('user_id',userId).order('created_at',{ascending:false}),
+  needClient().from('work_collaborators').select('work_id,user_id,role,status,invited_by,created_at,responded_at,works(id,title,slug,author_id,publication_status)').eq('invited_by',userId).order('created_at',{ascending:false}),
+  needClient().from('comments').select('id,work_id,chapter_id,author_id,comment_type,body,spoiler,status,created_at,works!inner(id,title,slug,author_id),profiles!comments_author_id_fkey(username,display_name,avatar_url)').eq('works.author_id',userId).order('created_at',{ascending:false}).limit(100),
+  needClient().from('comic_download_requests').select('id,comic_id,requester_id,requested_scope,note,status,created_at,decided_at,comics!inner(id,title,slug,creator_id)').eq('comics.creator_id',userId).order('created_at',{ascending:false}).limit(100)
+ ]);for(const r of[incoming,outgoing,comments,downloads])if(r.error)throw r.error;
+ const profileIds=[...new Set([...(incoming.data||[]).map(x=>x.invited_by),...(outgoing.data||[]).map(x=>x.user_id),...(downloads.data||[]).map(x=>x.requester_id)].filter(Boolean))];let profiles=[];
+ if(profileIds.length){const p=await needClient().from('profiles').select('id,username,display_name,avatar_url,title').in('id',profileIds);if(p.error)throw p.error;profiles=p.data||[]}
+ const byId=id=>profiles.find(p=>p.id===id)||null;
+ return{
+  incoming:(incoming.data||[]).map(x=>({...x,inviter:byId(x.invited_by)})),
+  outgoing:(outgoing.data||[]).map(x=>({...x,collaborator:byId(x.user_id)})),
+  comments:comments.data||[],
+  downloads:(downloads.data||[]).map(x=>({...x,requester:byId(x.requester_id)}))
+ }
+}
+export async function inviteWorkCollaborator(userId,workId,username,role='co_writer'){
+ const handle=username.trim().toLowerCase().replace(/^@/,'');if(!handle)throw new Error('Enter a Palace handle.');
+ const p=await needClient().from('profiles').select('id,username,display_name').eq('username',handle).maybeSingle();if(p.error)throw p.error;if(!p.data)throw new Error('No Palace member uses that handle.');if(p.data.id===userId)throw new Error('You already own this work.');
+ const{data,error}=await needClient().from('work_collaborators').upsert({work_id:workId,user_id:p.data.id,role,status:'invited',invited_by:userId,responded_at:null,updated_at:new Date().toISOString()},{onConflict:'work_id,user_id'}).select().single();if(error)throw error;return data
+}
+export async function respondWorkCollaboration(userId,workId,status){
+ if(!['accepted','declined'].includes(status))throw new Error('Unknown collaboration response.');
+ const{data,error}=await needClient().from('work_collaborators').update({status,responded_at:new Date().toISOString(),updated_at:new Date().toISOString()}).eq('work_id',workId).eq('user_id',userId).select().single();if(error)throw error;return data
+}
+export async function removeWorkCollaborator(userId,workId,otherUserId){
+ const{error}=await needClient().from('work_collaborators').delete().eq('work_id',workId).eq('user_id',otherUserId);if(error)throw error;return true
+}
+export async function respondComicDownloadRequest(userId,requestId,status){
+ if(!['approved','declined'].includes(status))throw new Error('Unknown permission response.');
+ const{data,error}=await needClient().from('comic_download_requests').update({status,decided_at:new Date().toISOString()}).eq('id',requestId).select().single();if(error)throw error;return data
+}
