@@ -650,6 +650,18 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('Completed stories and comics will gather here.');
   });
 
+  it('keeps Comics Gallery aware of reader shelf state',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('getComicShelfState');
+    expect(data).toContain("from('saved_comics').select('comic_id')");
+    expect(data).toContain("from('comic_reading_progress').select('comic_id,episode_id,page_id,completed,updated_at')");
+    expect(live).toContain('comic-reader-flags');
+    expect(live).toContain("keep.progress&&!keep.progress.completed?'Continue →':'Open panels →'");
+    expect(live).toContain('<span className="resume">Reading</span>');
+    expect(polish).toContain('.comic-reader-flags');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
