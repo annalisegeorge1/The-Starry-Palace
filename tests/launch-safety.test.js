@@ -109,6 +109,18 @@ describe('Starry Palace launch safety',()=>{
     expect(treasury).toContain('gift-court-atlas');
   });
 
+  it('keeps the gift catalogue tied to the member collection ledger',()=>{
+    const treasury=read('src/Treasury.jsx');
+    expect(treasury).toContain('getTreasury(session.user.id)');
+    expect(treasury).toContain('giftOwnership');
+    expect(treasury).toContain("value=\"owned\"");
+    expect(treasury).toContain("value=\"missing\"");
+    expect(treasury).toContain("value=\"duplicates\"");
+    expect(treasury).toContain("value=\"ascendable\"");
+    expect(treasury).toContain('gift-collection-summary');
+    expect(treasury).toContain('In your cabinet');
+  });
+
   it('keeps badge artwork split by tier',()=>{
     const badge=read('src/PalaceBadge.jsx');
     expect(badge).not.toContain('originalBadgeArt.json');
