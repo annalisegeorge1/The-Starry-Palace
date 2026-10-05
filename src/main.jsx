@@ -19,8 +19,10 @@ const rooms=[
 function Frame({children,privateArea=false}){
  const {session}=useAuth();
  const [navOpen,setNavOpen]=useState(false);
+ const [daylight,setDaylight]=useState(()=>localStorage.getItem('palace-theme')==='daylight');
  const location=useLocation();
  React.useEffect(()=>setNavOpen(false),[location.pathname]);
+ React.useEffect(()=>{localStorage.setItem('palace-theme',daylight?'daylight':'night')},[daylight]);
  const nav=[
   ...(session?[['✦','My Chamber','/chamber']]:[]),
   ['◈','Reading Rooms','/reading'],
@@ -30,16 +32,16 @@ function Frame({children,privateArea=false}){
   ['⌁','Lost Works','/lost-works'],['✦','Tag Constellation','/tags'],
   ...(session?[['✉','Palace Letters','/letters'],['◌','Moonlight Activity','/activity']]:[])
  ];
- return <div className={"palace-shell "+(navOpen?'nav-open':'')}>
+ return <div className={"palace-shell "+(navOpen?'nav-open ':'')+(daylight?'daylight':'nightfall')}>
   <aside className="sidebar" aria-label="Palace navigation">
-   <div className="sidebar-brand"><Link className="crest" to="/"><span className="moon">☾</span><strong>The Starry Palace</strong><small>INKVERSE</small></Link><button className="nav-close" onClick={()=>setNavOpen(false)} aria-label="Close Palace navigation">×</button></div>
+   <div className="sidebar-brand"><Link className="crest" to="/"><span className="moon crest-orbit">☾<b>✦</b></span><strong>The Starry Palace</strong><small>INKVERSE · A PALACE OF STORIES</small></Link><button className="nav-close" onClick={()=>setNavOpen(false)} aria-label="Close Palace navigation">×</button></div>
    <p className="nav-section-label">PALACE ROOMS</p>
    <nav className="room-nav">{nav.map(([icon,name,path])=><NavLink key={path} to={path}><i aria-hidden="true">{icon}</i><span>{name}</span></NavLink>)}</nav>
-   <div className="sidebar-foot">{session?<><NavLink to="/settings">⚙ <span>Settings & privacy</span></NavLink><Link to="/search">⌕ <span>Search the Palace</span></Link></>:<Link to="/login">Enter the Palace</Link>}</div>
+   <div className="sidebar-celestial" aria-hidden="true"><span>✦</span><span>☾</span><span>·</span><span>✧</span></div><div className="sidebar-foot">{session?<><NavLink to="/settings">⚙ <span>Settings & privacy</span></NavLink><Link to="/search">⌕ <span>Search the Palace</span></Link></>:<Link to="/login">Enter the Palace</Link>}</div>
   </aside>
   <button className="nav-scrim" aria-label="Close navigation" onClick={()=>setNavOpen(false)}/>
   <div className="palace-stage">
-   <header className="topbar"><div className="topbar-left"><button className="nav-toggle" onClick={()=>setNavOpen(true)} aria-label="Open Palace navigation">☰</button><div><p className="top-kicker">{privateArea?'YOUR PALACE':'GATHER · READ · CREATE'}</p><Link className="mobile-palace-name" to="/">The Starry Palace</Link></div></div><div className="top-actions"><Link to="/search">Search the Palace</Link>{session&&<Link className="activity-link" to="/activity" aria-label="Moonlight Activity">✦</Link>}{session?<Link className="avatar-link" to="/chamber">{(session.user.email||'P').slice(0,1).toUpperCase()}</Link>:<Link className="pill" to="/login">Sign in</Link>}</div></header>
+   <header className="topbar"><div className="topbar-left"><button className="nav-toggle" onClick={()=>setNavOpen(true)} aria-label="Open Palace navigation">☰</button><div><p className="top-kicker">{privateArea?'YOUR PALACE':'GATHER · READ · CREATE'}</p><Link className="mobile-palace-name" to="/">The Starry Palace</Link></div></div><div className="top-actions"><button className="theme-toggle" onClick={()=>setDaylight(v=>!v)} aria-label={daylight?'Return to Nightfall':'Enter Daylight'} title={daylight?'Nightfall':'Daylight'}>{daylight?'☾':'☼'}</button><Link to="/search">Search the Palace</Link>{session&&<Link className="activity-link" to="/activity" aria-label="Moonlight Activity">✦</Link>}{session?<Link className="avatar-link" to="/chamber">{(session.user.email||'P').slice(0,1).toUpperCase()}</Link>:<Link className="pill" to="/login">Sign in</Link>}</div></header>
    <main>{children}</main>
   </div>
  </div>
