@@ -4,6 +4,7 @@ import { BrowserRouter, Link, NavLink, Navigate, Route, Routes, useLocation, use
 import { AuthProvider, ProtectedRoute, useAuth } from './auth';
 import { configured, supabase } from './supabase';
 import './style.css';
+import './polish.css';
 
 const chunkErrorPattern=/dynamically imported module|importing a module script failed|failed to fetch|chunkloaderror|loading chunk/i;
 function reloadForStaleChunk(error){
@@ -89,6 +90,7 @@ function Frame({children,privateArea=false}){
  const profileInitial=(shellProfile?.display_name||shellProfile?.username||session?.user?.email||'P').slice(0,1).toUpperCase();
  function submitSearch(e){e.preventDefault();if(search.trim())navigate('/search?q='+encodeURIComponent(search.trim()))}
  return <div className={"palace-shell full-palace-shell "+(navOpen?'nav-open ':'')+(daylight?'daylight':'nightfall')}>
+  <a className="skip-to-content" href="#palace-content">Skip to main content</a>
   <aside className="sidebar full-sidebar" aria-label="Palace navigation">
    <div className="palace-cover-live restored-cover" style={shellProfile?.cover_url?{backgroundImage:`linear-gradient(180deg,transparent,rgba(5,8,20,.82)),url("${shellProfile.cover_url}")`}:undefined}><div className="palace-cover-stars">✦　·　✧　　☾　·　✦</div><div className="cover-sigil"><span>☾</span><i>✦</i></div><div className="cover-copy"><strong>The Starry Palace</strong><span>Your place among the stars</span></div><button className="nav-close" onClick={()=>setNavOpen(false)} aria-label="Close Palace navigation">×</button></div>
    {session?<Link className="identity-card-live restored-identity" to={shellProfile?.username?"/member/"+shellProfile.username:"/chamber"}><div className={"identity-avatar "+(!shellProfile?.avatar_url?'sigil-fallback':'')}>{shellProfile?.avatar_url?<img src={shellProfile.avatar_url} alt=""/>:<span aria-hidden="true">☾<b>✦</b></span>}</div><div><strong>{shellProfile?.display_name||shellProfile?.username||'Your Chamber'}</strong><span>{shellProfile?.title||'Palace member'}</span></div></Link>:<Link className="identity-card-live guest" to="/login"><div className="identity-avatar">✦</div><div><strong>Enter the Palace</strong><span>Sign in or create your chamber</span></div></Link>}
@@ -101,7 +103,7 @@ function Frame({children,privateArea=false}){
   <button className="nav-scrim" aria-label="Close navigation" onClick={()=>setNavOpen(false)}/>
   <div className="palace-stage full-stage">
    <header className="topbar full-topbar"><div className="full-topbar-row"><div className="full-brand"><button className="nav-toggle" onClick={()=>setNavOpen(true)} aria-label="Open Palace navigation">☰</button><Link to="/"><span className="brandmark">☾<b>✦</b></span><strong>The Starry Palace</strong></Link><small>BETA</small></div><form className="global-search-live" onSubmit={submitSearch}><span>⌕</span><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search works, writers, tags, fandoms…"/><button>Search</button></form><div className="full-top-actions">{session&&<Link className="top-icon-link" to="/letters" aria-label="Palace Letters">✉</Link>}{session&&<Link className="top-icon-link" to="/activity" aria-label="Notifications">✦</Link>}<Link className="write-action" to={session?'/writing':'/login'}>✎ <span>Write</span></Link></div></div></header>
-   <main>{children}</main>
+   <main id="palace-content" tabIndex="-1">{children}</main>
   </div>
   {session&&<div className="floating-controls restored-floating-controls">
     <Link className="float-btn palace-float-sigil notification-anchor" to="/letters" aria-label="Open Palace Letters" title="Palace Letters"><span className="float-letter-art">✉</span>{letterBadge>0&&<span className="float-unread-badge">{letterBadge>99?'99+':letterBadge}</span>}</Link>
