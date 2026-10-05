@@ -5247,3 +5247,66 @@ img{max-width:100%}
   .writing-chapter-manager-tools{grid-template-columns:1fr}
   .writing-chapter-manager-tools>.quiet-button{grid-column:auto}
 }
+
+
+/* Prose reader continuity */
+.story-reader-flags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.3rem;
+  margin:0 0 .42rem;
+}
+.story-reader-flags span{
+  padding:.26rem .46rem;
+  border:1px solid var(--palace-border);
+  border-radius:999px;
+  background:rgba(255,255,255,.018);
+  color:var(--palace-dim);
+  font-size:.54rem;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.story-reader-flags .new{
+  border-color:rgba(125,151,214,.34);
+  background:rgba(70,91,155,.1);
+  color:#c9d5f5;
+}
+.story-reader-flags .reading{
+  border-color:rgba(130,151,194,.26);
+  color:#bec9e5;
+}
+.story-reader-flags .finished{
+  border-color:rgba(111,153,137,.24);
+  color:#bcd2c9;
+}
+.story-reader-flags .saved,
+.story-reader-flags .following{
+  border-color:rgba(157,137,203,.24);
+  color:#cabee6;
+}
+.story-row.has-new-chapter,
+.legacy-constellation-list article.has-new-chapter,
+.library-card.has-new-chapter,
+.followed-list a.has-new-chapter,
+.history-shelf article.has-new-chapter{
+  border-color:rgba(127,151,215,.34)!important;
+  background:linear-gradient(145deg,rgba(66,84,150,.11),rgba(91,68,145,.075))!important;
+}
+.story-row.has-new-chapter .story-meta,
+.library-card.has-new-chapter small,
+.followed-list a.has-new-chapter small,
+.history-shelf article.has-new-chapter small{
+  color:#b9c7eb;
+}
+.daylight .story-reader-flags .new{color:#4c639e;background:rgba(225,232,250,.9)}
+.daylight .story-reader-flags .finished{color:#3f6d60}
+.daylight .story-reader-flags .saved,
+.daylight .story-reader-flags .following{color:#66558d}
+.daylight .story-row.has-new-chapter,
+.daylight .legacy-constellation-list article.has-new-chapter,
+.daylight .library-card.has-new-chapter,
+.daylight .followed-list a.has-new-chapter,
+.daylight .history-shelf article.has-new-chapter{
+  background:linear-gradient(145deg,rgba(240,244,255,.96),rgba(246,241,252,.94))!important;
+}
