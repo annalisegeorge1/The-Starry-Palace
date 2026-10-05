@@ -437,6 +437,18 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.honour-monthly-courts');
   });
 
+  it('keeps Library organizers editable removable and safely deletable',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('updateLibraryOrganizer');
+    expect(data).toContain('deleteLibraryOrganizer');
+    expect(data).toContain('removeLibraryOrganizerItem');
+    expect(live).toContain('edit-organizer');
+    expect(live).toContain('delete-organizer');
+    expect(live).toContain('Remove "+(i.works?.title||i.comics?.title||\'item\')+" from collection');
+    expect(polish).toContain('.organizer-item-row');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
