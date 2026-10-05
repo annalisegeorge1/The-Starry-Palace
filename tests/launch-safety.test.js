@@ -502,8 +502,8 @@ describe('Starry Palace launch safety',()=>{
     const polish=read('src/polish.css');
     expect(main).toContain('roomCssMatches');
     expect(main).toContain('palace-room-css-sync-reload');
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100502');
-    expect(polish).toContain('--palace-room-css-version:2026100502');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100503');
+    expect(polish).toContain('--palace-room-css-version:2026100503');
     expect(polish).toContain('env(safe-area-inset-top)');
     expect(polish).toContain('.top-icon-link');
   });
@@ -522,6 +522,19 @@ describe('Starry Palace launch safety',()=>{
     expect(collection).toContain('counts:{}');
     expect(collection).toContain('entry.ascendable');
     expect(css).toContain('.gift-card-actions');
+  });
+
+  it('keeps Moonlight and club chat realtime with a refresh fallback',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('getMoonlightMessages');
+    expect(data).toContain('getClubChatMessages');
+    expect(live).toContain("table:'public_chat_messages'");
+    expect(live).toContain("table:'club_chat_messages'");
+    expect(live).toContain('Auto-refreshing');
+    expect(live).toContain('new message');
+    expect(polish).toContain('.moon-connection.live');
+    expect(polish).toContain('.moon-new-messages');
   });
 
   it('keeps restored sidebar sections fully wired',()=>{
