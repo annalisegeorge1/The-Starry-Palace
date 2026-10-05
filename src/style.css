@@ -881,3 +881,28 @@ linear-gradient(145deg,#2d245f,#151c3c 58%,#0c1225);box-shadow:inset 0 0 0 1px r
 .letter-paper-head h2{margin-bottom:3px}
 @media(max-width:900px){.library-pulse{grid-template-columns:1fr 1fr}}
 @media(max-width:620px){.legacy-library-page{padding-left:14px;padding-right:14px}.library-pulse{grid-template-columns:1fr 1fr}.heritage-ribbon-live{align-items:flex-start}}
+
+
+/* Council + Code governance recovery */
+.legacy-council-page{max-width:1180px;margin:0 auto;padding:26px clamp(18px,3vw,34px) 90px}
+.council-hero{padding-left:0;padding-right:0}
+.council-principles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 16px}
+.council-principles article{border:1px solid var(--line);border-radius:18px;padding:15px;background:linear-gradient(145deg,rgba(32,38,68,.78),rgba(15,21,40,.88))}
+.council-principles span{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1px solid #62537f;color:#c2afe5;font-family:Georgia,'Times New Roman',serif}
+.council-principles strong,.council-principles small{display:block}.council-principles strong{margin-top:10px}.council-principles small{margin-top:5px;color:var(--muted);line-height:1.45}
+.council-status{display:flex;gap:12px;align-items:center;border:1px solid #51476b;border-radius:16px;padding:13px 15px;background:linear-gradient(100deg,rgba(82,59,126,.20),rgba(28,37,67,.10));margin-bottom:14px}
+.council-status>span{flex:0 0 auto;border:1px solid #756092;border-radius:999px;padding:6px 9px;font-size:9px;letter-spacing:.12em}.council-status p{margin:0;color:var(--muted)}
+.council-desk{border:1px solid var(--line);border-radius:22px;padding:15px;background:linear-gradient(145deg,rgba(27,33,60,.76),rgba(13,19,37,.88))}
+.council-list article{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:start;border-top:1px solid var(--line);padding:16px 0}.council-list article:first-child{border-top:0}
+.council-list h2{font:700 25px Georgia,'Times New Roman',serif;margin:4px 0}.council-list p{color:var(--muted)}.council-list blockquote{border-left:3px solid #715a94;padding-left:12px;color:#c7bfd5;margin:10px 0 0}
+.council-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.code-head{max-width:1180px;margin:0 auto;padding-top:30px}
+.code-oath{border-left:3px solid #9f85d4;background:linear-gradient(90deg,rgba(92,65,139,.22),transparent);padding:16px 18px;margin-top:22px}.code-oath span,.code-oath strong{display:block}.code-oath span{font-size:9px;letter-spacing:.14em;color:#bca6db}.code-oath strong{font:700 24px Georgia,'Times New Roman',serif;margin-top:6px}.code-oath p{color:var(--muted);margin:6px 0 0}
+.code-grid{max-width:1180px;margin:18px auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:0 clamp(18px,3vw,34px)}
+.code-card{display:grid;grid-template-columns:58px minmax(0,1fr);gap:14px;border:1px solid var(--line);border-radius:22px;padding:18px;background:linear-gradient(145deg,rgba(31,37,66,.76),rgba(14,20,39,.88))}
+.code-number{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;border:1px solid #665480;background:rgba(108,79,155,.14);font:700 18px Georgia,'Times New Roman',serif;color:#d0b9f4}
+.code-card small{letter-spacing:.11em;color:#af9ac8}.code-card h2{font:700 27px Georgia,'Times New Roman',serif;margin:5px 0}.code-card p{color:var(--muted)}.code-card ul{padding-left:18px;color:#c9ccdc}.code-card li{margin:.4rem 0}
+.code-footer-panel{max-width:1180px;margin:18px auto 90px;padding:20px clamp(18px,3vw,34px);display:grid;grid-template-columns:1.4fr .6fr;gap:18px;border-top:1px solid var(--line)}
+.code-footer-panel h2{font:700 30px Georgia,'Times New Roman',serif;margin:4px 0}.code-footer-panel p{color:var(--muted)}.code-links{display:grid;gap:8px;align-content:start}.code-links a{border:1px solid var(--line);border-radius:12px;padding:11px 12px;color:#abcaff;text-decoration:none;background:rgba(18,24,45,.66)}
+@media(max-width:860px){.council-principles,.code-grid{grid-template-columns:1fr}.code-footer-panel{grid-template-columns:1fr}.council-list article{grid-template-columns:1fr}.council-actions{justify-content:flex-start}}
+@media(max-width:620px){.legacy-council-page{padding-left:14px;padding-right:14px}.council-status{align-items:flex-start;flex-direction:column}.code-grid{padding-left:14px;padding-right:14px}.code-card{grid-template-columns:44px minmax(0,1fr)}.code-number{width:40px;height:40px}.code-footer-panel{padding-left:14px;padding-right:14px}}
