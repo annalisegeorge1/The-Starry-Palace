@@ -1013,3 +1013,11 @@ linear-gradient(145deg,#2d245f,#151c3c 58%,#0c1225);box-shadow:inset 0 0 0 1px r
 .home-following-posts{margin:22px 0;border-top:1px solid var(--line);padding-top:20px}.home-post-strip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.home-post-strip article{border:1px solid var(--line);border-radius:18px;padding:14px;background:linear-gradient(145deg,rgba(29,35,64,.76),rgba(14,20,39,.88));min-width:0}.post-author-row{display:flex;gap:9px;align-items:center}.post-author-row>div:last-child{min-width:0}.post-author-row a{display:block;color:var(--text);text-decoration:none;font-weight:750;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.post-author-row small{display:block;color:var(--muted);font-size:10px;margin-top:2px}.home-post-strip article>p{font:16px/1.55 Georgia,'Times New Roman',serif;margin:12px 0 0;white-space:pre-wrap}
 @media(max-width:760px){.home-post-strip{grid-template-columns:1fr}.chamber-post-compose>div{grid-template-columns:1fr auto}.chamber-post-compose span{grid-column:1}.chamber-post-compose button{grid-column:2;grid-row:1/3}}
 @media(max-width:520px){.chamber-posts-room{margin-left:14px;margin-right:14px;padding:15px}.chamber-post-compose>div{display:flex;flex-wrap:wrap}.chamber-post-compose select{flex:1 1 160px}.chamber-post-compose button{margin-left:auto}}
+
+
+/* Private chapter stars */
+.reader-head-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.chapter-star-button{min-height:40px;border:1px solid #4b5575;border-radius:999px;background:rgba(16,22,43,.7);color:#c9c4d8;padding:7px 12px;font-weight:750}
+.chapter-star-button:hover{border-color:#8067ad}.chapter-star-button.active{border-color:#8d75be;background:linear-gradient(135deg,rgba(106,77,157,.33),rgba(42,52,90,.38));color:#efe6ff;box-shadow:0 0 18px rgba(123,91,186,.12)}
+.chapter-star-button:disabled{opacity:.55}
+@media(max-width:620px){.reader-back-row{gap:12px;align-items:flex-start}.reader-head-actions{justify-content:flex-end}.chapter-star-button{min-height:38px}}
