@@ -645,7 +645,7 @@ describe('Starry Palace launch safety',()=>{
   it('only completes a comic on the final page of the final readable episode',()=>{
     expect(live).toContain('const comicCompleted=ix===pages.length-1&&episodeIndex===readableEpisodes.length-1');
     expect(live).toContain('i===pages.length-1&&episodeIndex===readableEpisodes.length-1');
-    expect(live).toContain("comicHistory.filter(x=>x.completed)");
+    expect(live).toContain("comicHistory.filter(comicFinished)");
     expect(live).toContain('Finished comic · your reading history is kept');
     expect(live).toContain('Completed stories and comics will gather here.');
   });
