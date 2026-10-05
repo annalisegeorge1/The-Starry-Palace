@@ -3894,3 +3894,81 @@ img{max-width:100%}
   .comic-episode-nav>*:first-child{grid-column:1;grid-row:2}
   .comic-episode-nav>*:last-child{grid-column:2;grid-row:2}
 }
+
+
+/* Creator comic library */
+.comic-library-tools{
+  display:grid;
+  grid-template-columns:minmax(240px,1fr) 170px 180px;
+  gap:.65rem;
+  margin:.9rem 0 .65rem;
+  padding:.65rem;
+  border:1px solid var(--palace-border);
+  border-radius:16px;
+  background:rgba(12,17,34,.64);
+}
+.comic-library-search{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:.55rem;
+  align-items:center;
+  min-height:42px;
+  padding:0 .75rem;
+  border:1px solid var(--palace-border);
+  border-radius:12px;
+  background:rgba(7,11,27,.48);
+}
+.comic-library-search span{opacity:.5}
+.comic-library-search input{
+  min-width:0;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  padding:.55rem 0!important;
+}
+.comic-library-summary{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:.55rem;
+  margin:0 0 .9rem;
+}
+.comic-library-summary>span{
+  min-height:64px;
+  display:grid;
+  align-content:center;
+  gap:.1rem;
+  padding:.65rem .75rem;
+  border:1px solid var(--palace-border);
+  border-radius:13px;
+  background:rgba(14,19,38,.64);
+  color:var(--palace-muted);
+  font-size:.6rem;
+}
+.comic-library-summary strong{
+  font:600 1.15rem Georgia,'Times New Roman',serif;
+  color:var(--palace-text);
+}
+.comic-card-head-actions{
+  display:flex;
+  gap:.4rem;
+  align-items:center;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.comic-card-head-actions button{
+  min-height:38px;
+  border-radius:10px;
+}
+.daylight .comic-library-tools,.daylight .comic-library-search,.daylight .comic-library-summary>span{
+  background:rgba(255,255,255,.88);
+}
+@media(max-width:780px){
+  .comic-library-tools{grid-template-columns:1fr 1fr}
+  .comic-library-search{grid-column:1/-1}
+  .comic-library-summary{grid-template-columns:1fr 1fr}
+}
+@media(max-width:520px){
+  .comic-library-tools{grid-template-columns:1fr}
+  .comic-library-search{grid-column:auto}
+  .comic-card-head-actions{justify-content:flex-start}
+}
