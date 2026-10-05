@@ -173,3 +173,14 @@
 .painted-family-filters button[aria-pressed="true"]{background:#303e69;border-color:#a9bde5;color:#f4f6ff}
 .painted-family-filters button:focus-visible{outline:3px solid #a9bde5;outline-offset:3px}
 .painted-family-title{font:500 1.5rem/1.4 Georgia,serif;margin:1.5rem 0 .4rem}
+
+
+/* Approved object paintings keep their native colours and never receive portrait frames. */
+.approved-badge-stage{background:#0c1929;border-radius:12px;overflow:hidden}
+.palace-watercolour-badge:has(.approved-badge-stage){filter:none}
+.court-watercolour-gallery{min-width:0;max-width:100%}
+.court-watercolour-gallery figure{margin:1.25rem 0;padding:clamp(.6rem,2vw,1.5rem);background:#101a2b;border:1px solid #394761;border-radius:20px;overflow:hidden}
+.court-watercolour-gallery figcaption{color:#d6def5;line-height:1.6;margin-bottom:1rem}
+.court-watercolour-gallery img{display:block;width:100%;height:auto;object-fit:contain;filter:none}
+.court-watercolour-gallery .badge-collection-switch{display:flex;flex-wrap:wrap;gap:.5rem}
+.court-watercolour-gallery button{max-width:100%;white-space:normal}

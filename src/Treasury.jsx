@@ -10,12 +10,13 @@ import {buildInventory} from './treasuryCollection';
 
 const PalaceCollectibles=lazy(()=>import('./PalaceCollectibles'));
 const MoonlitTea=lazy(()=>import('./MoonlitTea'));
+const CourtsOfMoonlight=lazy(()=>import('./CourtsOfMoonlight'));
 const tiers=['bronze','silver','gold','platinum','emerald'];
 const PAGE_SIZE=48;
 
 export default function Treasury({Frame}) {
  const {session}=useAuth();
- const [collection,setCollection]=useState(()=>{const requested=new URLSearchParams(window.location.search).get('collection');return ['original-treasures','moonlit-tea'].includes(requested)?requested:'originals'});
+ const [collection,setCollection]=useState(()=>{const requested=new URLSearchParams(window.location.search).get('collection');return ['original-treasures','moonlit-tea','courts-of-moonlight'].includes(requested)?requested:'originals'});
  const [query,setQuery]=useState('');
  const [category,setCategory]=useState('all');
  const [tier,setTier]=useState('bronze');
@@ -84,10 +85,11 @@ export default function Treasury({Frame}) {
    <button aria-pressed={collection==='expanded'} onClick={()=>choose('expanded')}>Expanded paths · 100 families</button>
    <button aria-pressed={collection==='original-treasures'} onClick={()=>choose('original-treasures')}>Original painted treasures · 600</button>
    <button aria-pressed={collection==='moonlit-tea'} onClick={()=>choose('moonlit-tea')}>New watercolours · 25 paintings</button>
+   <button aria-pressed={collection==='courts-of-moonlight'} onClick={()=>choose('courts-of-moonlight')}>Courts of Moonlight · 60 portraits</button>
    <button aria-pressed={collection==='gifts'} onClick={()=>choose('gifts')}>Gift collection · {giftData.count||520} prizes</button>
   </div>
 
-  {collection==='original-treasures'?<Suspense fallback={<p role="status">Opening the painted treasury…</p>}><PalaceCollectibles/></Suspense>:collection==='moonlit-tea'?<Suspense fallback={<p role="status">Preparing Moonlit Tea…</p>}><MoonlitTea/></Suspense>:collection==='gifts'?<>
+  {collection==='courts-of-moonlight'?<Suspense fallback={<p role="status">Opening the moonlit courts…</p>}><CourtsOfMoonlight/></Suspense>:collection==='original-treasures'?<Suspense fallback={<p role="status">Opening the painted treasury…</p>}><PalaceCollectibles/></Suspense>:collection==='moonlit-tea'?<Suspense fallback={<p role="status">Preparing Moonlit Tea…</p>}><MoonlitTea/></Suspense>:collection==='gifts'?<>
    <div className="badge-controls gift-catalogue-controls">
     <label>Search gifts<input value={query} onChange={e=>setQuery(e.target.value)} type="search" placeholder="Name, court or catalogue number"/></label>
     <label>Court<select value={selectedCourt} onChange={e=>setGiftCourt(e.target.value)}><option value="all">All Palace courts</option>{courts.map(c=><option key={c} value={c}>{c}</option>)}</select></label>

@@ -1,0 +1,562 @@
+{
+  "tag-cartographer": {
+    "name": "Tag Cartographer",
+    "asset": "achievement-discovery-tags.png",
+    "width": 887,
+    "height": 1774,
+    "row": 0
+  },
+  "fandom-navigator": {
+    "name": "Fandom Navigator",
+    "asset": "achievement-discovery-tags.png",
+    "width": 887,
+    "height": 1774,
+    "row": 1
+  },
+  "relationship-mapper": {
+    "name": "Relationship Mapper",
+    "asset": "achievement-discovery-tags.png",
+    "width": 887,
+    "height": 1774,
+    "row": 2
+  },
+  "warning-keeper": {
+    "name": "Warning Keeper",
+    "asset": "achievement-discovery-tags.png",
+    "width": 887,
+    "height": 1774,
+    "row": 3
+  },
+  "alias-wrangler": {
+    "name": "Alias Wrangler",
+    "asset": "achievement-discovery-tags.png",
+    "width": 887,
+    "height": 1774,
+    "row": 4
+  },
+  "search-constellation": {
+    "name": "Search Constellation",
+    "asset": "achievement-discovery-tags.png",
+    "width": 887,
+    "height": 1774,
+    "row": 5
+  },
+  "filter-alchemist": {
+    "name": "Filter Alchemist",
+    "asset": "achievement-discovery-tags.png",
+    "width": 887,
+    "height": 1774,
+    "row": 6
+  },
+  "new-voice-seeker": {
+    "name": "New Voice Seeker",
+    "asset": "achievement-discovery-tags.png",
+    "width": 887,
+    "height": 1774,
+    "row": 7
+  },
+  "hidden-gem-keeper": {
+    "name": "Hidden Gem Keeper",
+    "asset": "achievement-discovery-tags.png",
+    "width": 887,
+    "height": 1774,
+    "row": 8
+  },
+  "collection-curator": {
+    "name": "Collection Curator",
+    "asset": "achievement-discovery-tags.png",
+    "width": 887,
+    "height": 1774,
+    "row": 9
+  },
+  "club-founder": {
+    "name": "Club Founder",
+    "asset": "achievement-clubs-social.png",
+    "width": 887,
+    "height": 1774,
+    "row": 0
+  },
+  "steward-s-key": {
+    "name": "Steward's Key",
+    "asset": "achievement-clubs-social.png",
+    "width": 887,
+    "height": 1774,
+    "row": 1
+  },
+  "reading-circle-host": {
+    "name": "Reading Circle Host",
+    "asset": "achievement-clubs-social.png",
+    "width": 887,
+    "height": 1774,
+    "row": 2
+  },
+  "writing-circle-host": {
+    "name": "Writing Circle Host",
+    "asset": "achievement-clubs-social.png",
+    "width": 887,
+    "height": 1774,
+    "row": 3
+  },
+  "panel-circle-host": {
+    "name": "Panel Circle Host",
+    "asset": "achievement-clubs-social.png",
+    "width": 887,
+    "height": 1774,
+    "row": 4
+  },
+  "circle-of-moons": {
+    "name": "Circle of Moons",
+    "asset": "achievement-clubs-social.png",
+    "width": 887,
+    "height": 1774,
+    "row": 5
+  },
+  "circle-keeper": {
+    "name": "Circle Keeper",
+    "asset": "achievement-clubs-social.png",
+    "width": 887,
+    "height": 1774,
+    "row": 6
+  },
+  "cross-court-visitor": {
+    "name": "Cross-Court Visitor",
+    "asset": "achievement-clubs-social.png",
+    "width": 887,
+    "height": 1774,
+    "row": 7
+  },
+  "invitation-keeper": {
+    "name": "Invitation Keeper",
+    "asset": "achievement-clubs-social.png",
+    "width": 887,
+    "height": 1774,
+    "row": 8
+  },
+  "community-bridge": {
+    "name": "Community Bridge",
+    "asset": "achievement-clubs-social.png",
+    "width": 887,
+    "height": 1774,
+    "row": 9
+  },
+  "lost-work-lantern": {
+    "name": "Lost Work Lantern",
+    "asset": "achievement-archive.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 0
+  },
+  "archive-contributor": {
+    "name": "Archive Contributor",
+    "asset": "achievement-archive.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 1
+  },
+  "source-keeper": {
+    "name": "Source Keeper",
+    "asset": "achievement-archive.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 2
+  },
+  "provenance-scribe": {
+    "name": "Provenance Scribe",
+    "asset": "achievement-archive.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 3
+  },
+  "translation-lantern": {
+    "name": "Translation Lantern",
+    "asset": "achievement-archive.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 4
+  },
+  "public-domain-scholar": {
+    "name": "Public Domain Scholar",
+    "asset": "achievement-archive.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 5
+  },
+  "restored-page": {
+    "name": "Restored Page",
+    "asset": "achievement-archive.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 6
+  },
+  "rights-respecter": {
+    "name": "Rights Respecter",
+    "asset": "achievement-archive.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 7
+  },
+  "language-bridge": {
+    "name": "Language Bridge",
+    "asset": "achievement-archive.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 8
+  },
+  "memory-keeper": {
+    "name": "Memory Keeper",
+    "asset": "achievement-archive.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 9
+  },
+  "heritage-hall-visitor": {
+    "name": "Heritage Hall Visitor",
+    "asset": "achievement-heritage.png",
+    "width": 887,
+    "height": 1774,
+    "row": 0
+  },
+  "global-calendar-voyager": {
+    "name": "Global Calendar Voyager",
+    "asset": "achievement-heritage.png",
+    "width": 887,
+    "height": 1774,
+    "row": 1
+  },
+  "lunar-lantern": {
+    "name": "Lunar Lantern",
+    "asset": "achievement-heritage.png",
+    "width": 887,
+    "height": 1774,
+    "row": 2
+  },
+  "emancipation-constellation": {
+    "name": "Emancipation Constellation",
+    "asset": "achievement-heritage.png",
+    "width": 887,
+    "height": 1774,
+    "row": 3
+  },
+  "pride-constellation": {
+    "name": "Pride Constellation",
+    "asset": "achievement-heritage.png",
+    "width": 887,
+    "height": 1774,
+    "row": 4
+  },
+  "black-history-lantern": {
+    "name": "Black History Lantern",
+    "asset": "achievement-heritage.png",
+    "width": 887,
+    "height": 1774,
+    "row": 5
+  },
+  "indigenous-stars": {
+    "name": "Indigenous Stars",
+    "asset": "achievement-heritage.png",
+    "width": 887,
+    "height": 1774,
+    "row": 6
+  },
+  "deaf-culture-lantern": {
+    "name": "Deaf Culture Lantern",
+    "asset": "achievement-heritage.png",
+    "width": 887,
+    "height": 1774,
+    "row": 7
+  },
+  "disability-pride-moon": {
+    "name": "Disability Pride Moon",
+    "asset": "achievement-heritage.png",
+    "width": 887,
+    "height": 1774,
+    "row": 8
+  },
+  "language-constellation": {
+    "name": "Language Constellation",
+    "asset": "achievement-heritage.png",
+    "width": 887,
+    "height": 1774,
+    "row": 9
+  },
+  "thoughtful-voice": {
+    "name": "Thoughtful Voice",
+    "asset": "achievement-community.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 0
+  },
+  "reply-lantern": {
+    "name": "Reply Lantern",
+    "asset": "achievement-community.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 1
+  },
+  "club-hearth": {
+    "name": "Club Hearth",
+    "asset": "achievement-community.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 2
+  },
+  "forum-stargazer": {
+    "name": "Forum Stargazer",
+    "asset": "achievement-community.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 3
+  },
+  "forum-constellation": {
+    "name": "Forum Constellation",
+    "asset": "achievement-community.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 4
+  },
+  "welcome-lantern": {
+    "name": "Welcome Lantern",
+    "asset": "achievement-community.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 5
+  },
+  "recommendation-bell": {
+    "name": "Recommendation Bell",
+    "asset": "achievement-community.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 6
+  },
+  "co-writer-s-key": {
+    "name": "Co-writer's Key",
+    "asset": "achievement-community.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 7
+  },
+  "community-host": {
+    "name": "Community Host",
+    "asset": "achievement-community.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 8
+  },
+  "quiet-steward": {
+    "name": "Quiet Steward",
+    "asset": "achievement-community.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 9
+  },
+  "sprint-moon": {
+    "name": "Sprint Moon",
+    "asset": "achievement-events.png",
+    "width": 887,
+    "height": 1774,
+    "row": 0
+  },
+  "reading-festival-voyager": {
+    "name": "Reading Festival Voyager",
+    "asset": "achievement-events.png",
+    "width": 887,
+    "height": 1774,
+    "row": 1
+  },
+  "salon-guest": {
+    "name": "Salon Guest",
+    "asset": "achievement-events.png",
+    "width": 887,
+    "height": 1774,
+    "row": 2
+  },
+  "workshop-scholar": {
+    "name": "Workshop Scholar",
+    "asset": "achievement-events.png",
+    "width": 887,
+    "height": 1774,
+    "row": 3
+  },
+  "calendar-keeper": {
+    "name": "Calendar Keeper",
+    "asset": "achievement-events.png",
+    "width": 887,
+    "height": 1774,
+    "row": 4
+  },
+  "challenge-finisher": {
+    "name": "Challenge Finisher",
+    "asset": "achievement-events.png",
+    "width": 887,
+    "height": 1774,
+    "row": 5
+  },
+  "prompt-collector": {
+    "name": "Prompt Collector",
+    "asset": "achievement-events.png",
+    "width": 887,
+    "height": 1774,
+    "row": 6
+  },
+  "seasonal-scribe": {
+    "name": "Seasonal Scribe",
+    "asset": "achievement-events.png",
+    "width": 887,
+    "height": 1774,
+    "row": 7
+  },
+  "event-steward": {
+    "name": "Event Steward",
+    "asset": "achievement-events.png",
+    "width": 887,
+    "height": 1774,
+    "row": 8
+  },
+  "heritage-visitor": {
+    "name": "Heritage Visitor",
+    "asset": "achievement-events.png",
+    "width": 887,
+    "height": 1774,
+    "row": 9
+  },
+  "panel-maker": {
+    "name": "Panel Maker",
+    "asset": "achievement-art-comics.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 0
+  },
+  "panel-voyager": {
+    "name": "Panel Voyager",
+    "asset": "achievement-art-comics.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 1
+  },
+  "episode-builder": {
+    "name": "Episode Builder",
+    "asset": "achievement-art-comics.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 2
+  },
+  "visual-storyteller": {
+    "name": "Visual Storyteller",
+    "asset": "achievement-art-comics.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 3
+  },
+  "alt-text-lantern": {
+    "name": "Alt-Text Lantern",
+    "asset": "achievement-art-comics.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 4
+  },
+  "artist-s-seal": {
+    "name": "Artist's Seal",
+    "asset": "achievement-art-comics.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 5
+  },
+  "layout-astronomer": {
+    "name": "Layout Astronomer",
+    "asset": "achievement-art-comics.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 6
+  },
+  "cover-constellation": {
+    "name": "Cover Constellation",
+    "asset": "achievement-art-comics.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 7
+  },
+  "gallery-keeper": {
+    "name": "Gallery Keeper",
+    "asset": "achievement-art-comics.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 8
+  },
+  "creator-credit-keeper": {
+    "name": "Creator Credit Keeper",
+    "asset": "achievement-art-comics.png",
+    "width": 1024,
+    "height": 1536,
+    "row": 9
+  },
+  "chapter-voyager": {
+    "name": "Chapter Voyager",
+    "asset": "achievement-reading.png",
+    "width": 887,
+    "height": 1774,
+    "row": 0
+  },
+  "story-pilgrim": {
+    "name": "Story Pilgrim",
+    "asset": "achievement-reading.png",
+    "width": 887,
+    "height": 1774,
+    "row": 1
+  },
+  "night-library-lantern": {
+    "name": "Night Library Lantern",
+    "asset": "achievement-reading.png",
+    "width": 887,
+    "height": 1774,
+    "row": 2
+  },
+  "longform-constellation": {
+    "name": "Longform Constellation",
+    "asset": "achievement-reading.png",
+    "width": 887,
+    "height": 1774,
+    "row": 3
+  },
+  "serial-keeper": {
+    "name": "Serial Keeper",
+    "asset": "achievement-reading.png",
+    "width": 887,
+    "height": 1774,
+    "row": 4
+  },
+  "quiet-shelf": {
+    "name": "Quiet Shelf",
+    "asset": "achievement-reading.png",
+    "width": 887,
+    "height": 1774,
+    "row": 5
+  },
+  "reread-moon": {
+    "name": "Reread Moon",
+    "asset": "achievement-reading.png",
+    "width": 887,
+    "height": 1774,
+    "row": 6
+  },
+  "fandom-voyager": {
+    "name": "Fandom Voyager",
+    "asset": "achievement-reading.png",
+    "width": 887,
+    "height": 1774,
+    "row": 7
+  },
+  "original-worlds-explorer": {
+    "name": "Original Worlds Explorer",
+    "asset": "achievement-reading.png",
+    "width": 887,
+    "height": 1774,
+    "row": 8
+  },
+  "archive-reader": {
+    "name": "Archive Reader",
+    "asset": "achievement-reading.png",
+    "width": 887,
+    "height": 1774,
+    "row": 9
+  }
+}
