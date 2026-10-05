@@ -46,7 +46,7 @@ export function ChamberLive({Frame}){
  const p=data?.profile;const counts=data?.counts||{};const latest=data?.works?.[0];const currentRead=data?.progress?.[0]?.works;const unread=(data?.notices||[]).filter(n=>n.unread).length;
  return <Frame privateArea><State loading={!data&&!error} error={error}>{p&&<section className="legacy-home-dashboard">
    <nav className="legacy-home-tabs">
-    <Link className="active" to="/chamber">Home</Link>
+    <Link className="active" aria-current="page" to="/chamber">Home</Link>
     <Link to={"/member/"+p.username}>My chamber</Link>
     <Link to="/activity">Notifications</Link>
     <Link to="/letters">Messages</Link>
@@ -436,7 +436,7 @@ export function MemberProfileLive({Frame}){
     <div className="legacy-cover-shade"/>
     {own&&<button className="legacy-edit-cover" onClick={openEdit}>✎ Edit cover</button>}
    </div>
-   <div className={"legacy-profile-avatar "+(!p.avatar_url?'sigil-fallback':'')}>{p.avatar_url?<img src={p.avatar_url} alt=""/>:<span aria-hidden="true">☾<b>✦</b></span>}</div>
+   <div className={"legacy-profile-avatar "+(!p.avatar_url?'sigil-fallback':'')}>{p.avatar_url?<img loading="lazy" decoding="async" src={p.avatar_url} alt=""/>:<span aria-hidden="true">☾<b>✦</b></span>}</div>
    <div className="legacy-profile-copy">
     <p className="eyebrow">{(p.title||'PALACE MEMBER').toUpperCase()}</p>
     <h1>{p.display_name||p.username}</h1>
