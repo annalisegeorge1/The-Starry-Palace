@@ -4134,7 +4134,8 @@ img{max-width:100%}
   background:linear-gradient(135deg,rgba(79,94,160,.1),rgba(105,83,157,.08));
 }
 .library-card.has-new-panels,
-.history-shelf>article.has-new-panels{
+.history-shelf>article.has-new-panels,
+.followed-list>a.has-new-panels{
   border-color:rgba(145,163,218,.3);
   background:linear-gradient(135deg,rgba(71,86,148,.1),rgba(108,86,158,.07));
 }
@@ -4145,6 +4146,7 @@ img{max-width:100%}
 .daylight .comic-resume-strip.new-panels,
 .daylight .comic-episodes>article.new-for-reader,
 .daylight .library-card.has-new-panels,
-.daylight .history-shelf>article.has-new-panels{
+.daylight .history-shelf>article.has-new-panels,
+.daylight .followed-list>a.has-new-panels{
   background:rgba(244,246,255,.92);
 }
