@@ -920,16 +920,38 @@ export async function getSeriesLibrary(userId){
  const{data,error}=await q;if(error)throw error;
  return(data||[]).map(s=>({...s,series_works:(s.series_works||[]).sort((a,b)=>a.position-b.position)}))
 }
-export async function createSeries(userId,title,summary=''){
- const clean=title.trim();if(!clean)throw new Error('Give the series a title.');
+export async function createSeries(userId,title,summary='',visibility='public'){
+ const clean=String(title||'').trim();if(!clean)throw new Error('Give the series a title.');
  const slug=(clean.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,70)||'series')+'-'+Date.now().toString(36);
- const{data,error}=await needClient().from('series').insert({owner_id:userId,title:clean,slug,summary:summary.trim(),visibility:'public'}).select().single();if(error)throw error;return data
+ const allowed=['public','members','private'].includes(visibility)?visibility:'public';
+ const{data,error}=await needClient().from('series').insert({owner_id:userId,title:clean.slice(0,160),slug,summary:String(summary||'').trim().slice(0,1500),visibility:allowed}).select().single();if(error)throw error;return data
+}
+export async function updateSeries(userId,seriesId,{title,summary='',visibility='public'}){
+ const clean=String(title||'').trim();if(!clean)throw new Error('Give the series a title.');
+ const allowed=['public','members','private'].includes(visibility)?visibility:'public';
+ const{data,error}=await needClient().from('series').update({title:clean.slice(0,160),summary:String(summary||'').trim().slice(0,1500),visibility:allowed,updated_at:new Date().toISOString()}).eq('id',seriesId).eq('owner_id',userId).select().single();
+ if(error)throw error;return data
+}
+export async function deleteSeries(userId,seriesId){
+ const{error}=await needClient().from('series').delete().eq('id',seriesId).eq('owner_id',userId);if(error)throw error;return true
 }
 export async function addWorkToSeries(userId,seriesId,workId){
  const pos=await needClient().from('series_works').select('position').eq('series_id',seriesId).order('position',{ascending:false}).limit(1);if(pos.error)throw pos.error;
- const{data,error}=await needClient().from('series_works').insert({series_id:seriesId,work_id:workId,position:(pos.data?.[0]?.position||0)+1}).select().single();if(error?.code==='23505')throw new Error('That work is already in the series.');if(error)throw error;return data
+ const{data,error}=await needClient().from('series_works').insert({series_id:seriesId,work_id:workId,position:(pos.data?.[0]?.position||0)+1}).select().single();if(error?.code==='23505')throw new Error('That work is already in the series.');if(error)throw error;
+ await needClient().from('series').update({updated_at:new Date().toISOString()}).eq('id',seriesId).eq('owner_id',userId);
+ return data
 }
-export async function removeWorkFromSeries(userId,seriesId,workId){const{error}=await needClient().from('series_works').delete().eq('series_id',seriesId).eq('work_id',workId);if(error)throw error;return true}
+export async function removeWorkFromSeries(userId,seriesId,workId){
+ const{error}=await needClient().from('series_works').delete().eq('series_id',seriesId).eq('work_id',workId);if(error)throw error;
+ const current=await needClient().from('series_works').select('work_id,position').eq('series_id',seriesId).order('position');if(current.error)throw current.error;
+ if(current.data?.length){const{error:reorderError}=await needClient().rpc('reorder_series_works',{p_series_id:seriesId,p_work_ids:current.data.map(x=>x.work_id)});if(reorderError)throw reorderError}
+ else await needClient().from('series').update({updated_at:new Date().toISOString()}).eq('id',seriesId).eq('owner_id',userId);
+ return true
+}
+export async function reorderSeriesWorks(userId,seriesId,workIds){
+ const ids=[...new Set((workIds||[]).filter(Boolean))];
+ const{data,error}=await needClient().rpc('reorder_series_works',{p_series_id:seriesId,p_work_ids:ids});if(error)throw error;return data
+}
 
 export async function setAchievementShowcase(userId,achievementId,displayTier,show){
  if(show){
