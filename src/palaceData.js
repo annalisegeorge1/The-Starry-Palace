@@ -770,7 +770,9 @@ export async function saveComicStudio(userId,comicId,patch){
 }
 export async function setComicArchived(userId,comicId,archived=true){
  const patch=archived?{publication_status:'archived',visibility:'private',updated_at:new Date().toISOString()}:{publication_status:'draft',visibility:'private',updated_at:new Date().toISOString()};
- const{data,error}=await needClient().from('comics').update(patch).eq('id',comicId).eq('creator_id',userId).select().single();if(error)throw error;return data
+ const{data,error}=await needClient().from('comics').update(patch).eq('id',comicId).eq('creator_id',userId).select().single();if(error)throw error;
+ if(archived){const scheduled=await needClient().from('comic_episodes').update({scheduled_for:null,updated_at:new Date().toISOString()}).eq('comic_id',comicId).neq('status','published').not('scheduled_for','is',null);if(scheduled.error)throw scheduled.error}
+ return data
 }
 export async function createComicEpisode(userId,comicId,title){
  const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
@@ -783,7 +785,7 @@ export async function saveComicEpisode(userId,comicId,episodeId,patch){
  const{data,error}=await needClient().from('comic_episodes').update(update).eq('id',episodeId).eq('comic_id',comicId).select().single();if(error)throw error;return data
 }
 async function assertComicEpisodeReady(userId,comicId,episodeId){
- const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
+ const own=await needClient().from('comics').select('id,publication_status').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');if(own.data.publication_status==='archived')throw new Error('Restore this comic before publishing or scheduling an episode.');
  const pages=await needClient().from('comic_pages').select('id,alt_text,decorative').eq('episode_id',episodeId).order('position');if(pages.error)throw pages.error;
  if(!pages.data?.length)throw new Error('Add at least one comic page before publishing this episode.');
  const missing=(pages.data||[]).filter(p=>!p.decorative&&!String(p.alt_text||'').trim());if(missing.length)throw new Error('Add image descriptions to every non-decorative page before publishing.');
