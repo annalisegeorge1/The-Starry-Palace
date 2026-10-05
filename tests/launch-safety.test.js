@@ -590,6 +590,20 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.series-order-actions');
   });
 
+  it('keeps Comics Studio sequence and accessibility metadata editable',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('reorderComicEpisodes');
+    expect(data).toContain('reorderComicPages');
+    expect(data).toContain('updateComicPage');
+    expect(live).toContain('episode-reorder-controls');
+    expect(live).toContain('comic-page-order-actions');
+    expect(live).toContain('Edit page details');
+    expect(live).toContain('Save page details');
+    expect(polish).toContain('.episode-reorder-controls');
+    expect(polish).toContain('.comic-page-order-actions');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
