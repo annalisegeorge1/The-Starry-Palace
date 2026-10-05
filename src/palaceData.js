@@ -480,6 +480,26 @@ export async function setProfileGiftShowcase(giftId,displayTier,position){
 export async function removeProfileGiftShowcase(giftId){
  const{data,error}=await needClient().rpc('remove_profile_gift_showcase',{p_gift_id:giftId});if(error)throw error;return data
 }
+export async function getGiftTrades(userId){
+ const offers=await needClient().from('gift_trade_offers').select('id,offerer_id,recipient_id,offered_gift_id,offered_tier,requested_gift_id,requested_tier,note,status,created_at,resolved_at').or(`offerer_id.eq.${userId},recipient_id.eq.${userId}`).order('created_at',{ascending:false}).limit(50);
+ if(offers.error)throw offers.error;
+ const rows=offers.data||[];if(!rows.length)return[];
+ const profileIds=[...new Set(rows.flatMap(x=>[x.offerer_id,x.recipient_id]))];
+ const giftIds=[...new Set(rows.flatMap(x=>[x.offered_gift_id,x.requested_gift_id]))];
+ const[profiles,gifts]=await Promise.all([
+  needClient().from('profiles').select('id,username,display_name,avatar_url,visibility').in('id',profileIds),
+  needClient().from('virtual_gifts').select('id,gift_key,name,catalogue_number,court_name,collection_type').in('id',giftIds)
+ ]);
+ if(profiles.error)throw profiles.error;if(gifts.error)throw gifts.error;
+ const pmap=Object.fromEntries((profiles.data||[]).map(x=>[x.id,x]));const gmap=Object.fromEntries((gifts.data||[]).map(x=>[x.id,x]));
+ return rows.map(x=>({...x,offerer:pmap[x.offerer_id]||null,recipient:pmap[x.recipient_id]||null,offeredGift:gmap[x.offered_gift_id]||null,requestedGift:gmap[x.requested_gift_id]||null}))
+}
+export async function createGiftTradeOffer({recipientId,offeredGiftId,offeredTier,requestedGiftId,requestedTier,note=''}) {
+ const{data,error}=await needClient().rpc('create_gift_trade_offer',{p_recipient:recipientId,p_offered_gift:offeredGiftId,p_offered_tier:offeredTier,p_requested_gift:requestedGiftId,p_requested_tier:requestedTier,p_note:note});if(error)throw error;return data
+}
+export async function respondGiftTradeOffer(offerId,action){
+ const{data,error}=await needClient().rpc('respond_gift_trade_offer',{p_offer_id:offerId,p_action:action});if(error)throw error;return data
+}
 export async function getArchive(userId=null){
  const{data,error}=await needClient().from('archive_records').select('id,accession_number,slug,title,creator_name,record_nature,category,summary,original_language,languages,surviving_extent,known_gaps,provenance_summary,rights_status,hosting_basis,host_mode,continuation_status,verified_at,updated_at').eq('publication_status','published').order('updated_at',{ascending:false}).limit(100);
  if(error)throw error;const rows=data||[];if(!userId||!rows.length)return rows;
