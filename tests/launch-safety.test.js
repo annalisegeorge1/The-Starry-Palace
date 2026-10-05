@@ -202,6 +202,16 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('contain-intrinsic-size:auto 260px');
   });
 
+  it('keeps the Welcome Home dashboard and public chamber polish wired',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('palace-home-actions');
+    expect(live).toContain('palace-return-card');
+    expect(live).toContain('palace-quick-card');
+    expect(live).toContain('aria-current="page"');
+    expect(polish).toContain('/* Welcome Home — editorial dashboard */');
+    expect(polish).toContain('/* Member chamber — profile identity should read clearly before decoration. */');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
