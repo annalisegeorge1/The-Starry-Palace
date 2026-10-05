@@ -5,10 +5,11 @@ import { AuthProvider, ProtectedRoute, useAuth } from './auth';
 import { configured, supabase } from './supabase';
 import './style.css';
 import TreasuryCatalogue from './Treasury';
-import { ChamberLive, ReadingLive, WritingLive, SettingsLive, ActivityLive, LibraryLive, TagsLive, PalaceLifeLive, LettersLive, EventsLive, TreasuryLive, LostWorksLive, MemberProfileLive, SearchLive, WorkLive, ChapterLive, WorkStudioLive, TagSearchLive, HonourLive, CouncilLive, CodeLive } from './liveRooms';
+import { ChamberLive, ReadingLive, WritingLive, SettingsLive, ActivityLive, LibraryLive, TagsLive, PalaceLifeLive, LettersLive, EventsLive, TreasuryLive, LostWorksLive, MemberProfileLive, SearchLive, WorkLive, ChapterLive, WorkStudioLive, TagSearchLive, HonourLive, CouncilLive, CodeLive, ComicsLive, ComicLive, ComicEpisodeLive } from './liveRooms';
 
 const rooms=[
   ['Reading Rooms','/reading','Read, discover and return to the stories waiting for you.'],
+  ['Comics Gallery','/comics','Sequential art with creator-controlled rights, accessibility and reading direction.'],
   ['Writing Chamber','/writing','Draft, publish and tend the worlds you are creating.'],
   ['Palace Life','/palace-life','Clubs, Commons, Moonlight Chat and kindred stars.'],
   ['Events & Heritage','/events','Creative gatherings and carefully sourced heritage observances.'],
@@ -25,7 +26,7 @@ function Frame({children,privateArea=false}){
  React.useEffect(()=>localStorage.setItem('palace-theme',daylight?'daylight':'night'),[daylight]);
  const nav=[
   ...(session?[['✦','My Chamber','/chamber']]:[]),
-  ['◈','Reading Rooms','/reading'],
+  ['◈','Reading Rooms','/reading'],['▤','Comics Gallery','/comics'],
   ...(session?[['✎','Writing Chamber','/writing'],['☾','My Library','/library']]:[]),
   ['♢','Palace Life','/palace-life'],['✧','Events & Heritage','/events'],
   ...(session?[['♛','Royal Treasury','/treasury']]:[]),
@@ -48,7 +49,7 @@ function Frame({children,privateArea=false}){
 }
 
 function Home(){
- return <Frame><section className="home-hero realised"><div className="stars" aria-hidden="true">✦　·　✧　　·　✦　　☾</div><div className="hero-copy"><p className="eyebrow">WRITE AMONG KINDRED STARS.</p><h1>There’s a place<br/>for you here.</h1><p className="lede">Read deeply. Write privately before you publish. Find people without turning creativity into a popularity contest.</p><div className="hero-actions"><Link className="button" to="/reading">Enter the Reading Rooms</Link><Link className="text-link" to="/writing">Open the Writing Chamber →</Link></div></div><aside className="hero-orbit" aria-label="Palace principles"><span>YOUR WORK REMAINS YOURS</span><strong>☾</strong><p>Stories, art, communities, heritage and creative life beneath one shared sky.</p><div><b>READ</b><b>WRITE</b><b>GATHER</b><b>KEEP</b></div></aside></section><section className="home-intro-strip"><span>NO ALGORITHM DECIDES ARTISTIC WORTH</span><span>PRIVATE BY CHOICE</span><span>CREATIVE RIGHTS FIRST</span><span>COMMUNITY WITH BOUNDARIES</span></section><section className="room-grid expanded">{rooms.map(([name,path,copy],i)=><Link className={"room-card room-"+i} to={path} key={path}><span>0{i+1}</span><div className="room-glyph">{['◈','✎','♢','✧','♛','⌁'][i]}</div><h2>{name}</h2><p>{copy}</p><b>Enter room →</b></Link>)}</section><section className="palace-paths"><div><p className="eyebrow">A PALACE, NOT A FEED</p><h2>Different rooms for different kinds of attention.</h2><p>Long-form reading does not need to compete with live chat. Private drafts do not need to become public before they are ready. Community, governance and creative ownership each have their own doorway.</p></div><div className="path-list"><Link to="/tags"><span>01</span><strong>Tag Constellation</strong><small>Include what you seek. Exclude what you do not.</small></Link><Link to="/honour"><span>02</span><strong>Throne of Honour</strong><small>Recognition without controlling discovery.</small></Link><Link to="/code"><span>03</span><strong>The Palace Code</strong><small>Rights, safety, moderation and appeals.</small></Link><Link to="/council"><span>04</span><strong>Palace Council</strong><small>Review with a record, not invisible power.</small></Link></div></section><section className="manifesto"><p>EVERY VOICE CARRIES A WORLD.</p><h2>Gather. Have a cup of tea.<br/>Write and read with me.</h2><div><Link to="/reading">Find a story</Link><Link to="/login">Create your chamber</Link></div></section></Frame>
+ return <Frame><section className="home-hero realised"><div className="stars" aria-hidden="true">✦　·　✧　　·　✦　　☾</div><div className="hero-copy"><p className="eyebrow">WRITE AMONG KINDRED STARS.</p><h1>There’s a place<br/>for you here.</h1><p className="lede">Read deeply. Write privately before you publish. Find people without turning creativity into a popularity contest.</p><div className="hero-actions"><Link className="button" to="/reading">Enter the Reading Rooms</Link><Link className="text-link" to="/writing">Open the Writing Chamber →</Link></div></div><aside className="hero-orbit" aria-label="Palace principles"><span>YOUR WORK REMAINS YOURS</span><strong>☾</strong><p>Stories, art, communities, heritage and creative life beneath one shared sky.</p><div><b>READ</b><b>WRITE</b><b>GATHER</b><b>KEEP</b></div></aside></section><section className="home-intro-strip"><span>NO ALGORITHM DECIDES ARTISTIC WORTH</span><span>PRIVATE BY CHOICE</span><span>CREATIVE RIGHTS FIRST</span><span>COMMUNITY WITH BOUNDARIES</span></section><section className="room-grid expanded">{rooms.map(([name,path,copy],i)=><Link className={"room-card room-"+i} to={path} key={path}><span>0{i+1}</span><div className="room-glyph">{['◈','▤','✎','♢','✧','♛','⌁'][i]}</div><h2>{name}</h2><p>{copy}</p><b>Enter room →</b></Link>)}</section><section className="palace-paths"><div><p className="eyebrow">A PALACE, NOT A FEED</p><h2>Different rooms for different kinds of attention.</h2><p>Long-form reading does not need to compete with live chat. Private drafts do not need to become public before they are ready. Community, governance and creative ownership each have their own doorway.</p></div><div className="path-list"><Link to="/tags"><span>01</span><strong>Tag Constellation</strong><small>Include what you seek. Exclude what you do not.</small></Link><Link to="/honour"><span>02</span><strong>Throne of Honour</strong><small>Recognition without controlling discovery.</small></Link><Link to="/code"><span>03</span><strong>The Palace Code</strong><small>Rights, safety, moderation and appeals.</small></Link><Link to="/council"><span>04</span><strong>Palace Council</strong><small>Review with a record, not invisible power.</small></Link></div></section><section className="manifesto"><p>EVERY VOICE CARRIES A WORLD.</p><h2>Gather. Have a cup of tea.<br/>Write and read with me.</h2><div><Link to="/reading">Find a story</Link><Link to="/login">Create your chamber</Link></div></section></Frame>
 }
 function Login(){
  const {session,loading,error:sessionError}=useAuth(); const [mode,setMode]=useState('login'); const [email,setEmail]=useState(''); const [password,setPassword]=useState(''); const [busy,setBusy]=useState(false); const [message,setMessage]=useState(''); const location=useLocation();
@@ -78,6 +79,9 @@ function App(){return <AuthProvider><Routes>
  <Route path="/" element={<Home/>}/><Route path="/login" element={<Login/>}/><Route path="/auth/callback" element={<Callback/>}/>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/reading" element={<ReadingLive Frame={Frame}/>}/>
+ <Route path="/comics" element={<ComicsLive Frame={Frame}/>}/>
+ <Route path="/comic/:slug" element={<ComicLive Frame={Frame}/>}/>
+ <Route path="/comic/:slug/episode/:episodeId" element={<ComicEpisodeLive Frame={Frame}/>}/>
  <Route path="/writing" element={<ProtectedRoute><WritingLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/writing/:slug" element={<ProtectedRoute><WorkStudioLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/work/:slug" element={<WorkLive Frame={Frame}/>}/>
