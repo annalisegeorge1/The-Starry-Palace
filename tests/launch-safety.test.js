@@ -687,6 +687,21 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.episode-health span.scheduled');
   });
 
+  it('keeps large Comic Studio episode libraries searchable and safely filterable',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain("const[episodeQuery,setEpisodeQuery]=useState('')");
+    expect(live).toContain("const[episodeView,setEpisodeView]=useState('all')");
+    expect(live).toContain('episodeNeedsWork');
+    expect(live).toContain('episodeReady');
+    expect(live).toContain('shownEpisodes');
+    expect(live).toContain('<option value="needs">Needs attention</option>');
+    expect(live).toContain('<option value="scheduled">Scheduled</option>');
+    expect(live).toContain('comic.comic_episodes.findIndex(x=>x.id===ep.id)');
+    expect(live).toContain('No episodes in this view.');
+    expect(polish).toContain('.episode-manager-tools');
+    expect(polish).toContain('.episode-manager-empty');
+  });
+
   it('keeps comic doorways aware of saved following and reading state',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
