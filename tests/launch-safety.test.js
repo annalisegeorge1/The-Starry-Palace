@@ -194,6 +194,14 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.palace-footer');
   });
 
+  it('keeps long rooms visually stable while media loads',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('loading="lazy" decoding="async"');
+    expect(live).toContain('fetchPriority="high"');
+    expect(polish).toContain('content-visibility:auto');
+    expect(polish).toContain('contain-intrinsic-size:auto 260px');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
