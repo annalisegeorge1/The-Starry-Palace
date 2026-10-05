@@ -3549,3 +3549,115 @@ img{max-width:100%}
   .club-chat-stream{max-height:52vh}
   .club-chat-head{align-items:flex-start;flex-direction:column}
 }
+
+
+/* Chamber honours — separate earned achievements from collected treasures */
+.showcase-arrange-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.55rem;
+  justify-content:flex-end;
+}
+.showcase-arrange-links a{
+  font-size:.7rem;
+}
+.chamber-honour-groups{
+  display:grid;
+  gap:1.25rem;
+}
+.chamber-honour-group{
+  padding-top:.25rem;
+}
+.chamber-honour-group>header{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:1rem;
+  margin-bottom:.75rem;
+  padding-bottom:.65rem;
+  border-bottom:1px solid var(--palace-border);
+}
+.chamber-honour-group>header h3{
+  margin:.18rem 0 0;
+  font:600 1.2rem Georgia,'Times New Roman',serif;
+}
+.chamber-honour-group>header>span{
+  flex:0 0 auto;
+  color:var(--palace-dim);
+  font-size:.6rem;
+  letter-spacing:.08em;
+}
+.legacy-showcase-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:.75rem;
+}
+.showcase-honour{
+  position:relative;
+  min-width:0;
+  overflow:hidden;
+  border:1px solid var(--palace-border);
+  border-radius:18px;
+  background:rgba(14,19,38,.7);
+  box-shadow:var(--palace-shadow-soft);
+}
+.showcase-slot{
+  position:absolute;
+  z-index:2;
+  top:.55rem;
+  left:.55rem;
+  padding:.24rem .38rem;
+  border:1px solid rgba(163,149,213,.18);
+  border-radius:999px;
+  background:rgba(8,12,26,.7);
+  color:var(--palace-dim);
+  font-size:.48rem;
+  letter-spacing:.11em;
+  -webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(8px);
+}
+.showcase-honour>small,
+.showcase-honour>h3,
+.showcase-honour>p{
+  margin-left:.85rem;
+  margin-right:.85rem;
+}
+.showcase-honour>small{
+  display:block;
+  margin-top:.7rem;
+  color:var(--palace-dim);
+  font-size:.54rem;
+  letter-spacing:.08em;
+}
+.showcase-honour>h3{
+  margin-top:.24rem;
+  margin-bottom:.32rem;
+  font:600 .96rem Georgia,'Times New Roman',serif;
+}
+.showcase-honour>p{
+  margin-top:0;
+  margin-bottom:.9rem;
+  color:var(--palace-muted);
+  font-size:.68rem;
+  line-height:1.5;
+}
+.showcase-honour.gift{
+  background:linear-gradient(150deg,rgba(17,23,43,.76),rgba(10,15,31,.76));
+}
+.daylight .showcase-honour{
+  background:rgba(255,255,255,.9);
+}
+.daylight .showcase-slot{
+  background:rgba(255,255,255,.82);
+}
+@media(max-width:980px){
+  .legacy-showcase-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:720px){
+  .showcase-arrange-links{justify-content:flex-start}
+  .chamber-honour-group>header{align-items:flex-start;flex-direction:column}
+  .legacy-showcase-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:460px){
+  .legacy-showcase-grid{grid-template-columns:1fr}
+}
