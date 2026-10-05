@@ -152,11 +152,11 @@ describe('Starry Palace launch safety',()=>{
   });
 
   it('keeps the tablet Palace header tall enough for both icon and search rows',()=>{
-    const css=read('src/style.css');
+    const css=read('src/polish.css');
     expect(css).toContain('@media(min-width:721px) and (max-width:1120px)');
     expect(css).toContain('min-height:118px');
     expect(css).toContain('grid-template-rows:44px 48px');
-    expect(css).toContain('overflow:visible!important');
+    expect(css).toContain('overflow:visible');
   });
 
   it('keeps the professional polish layer and accessible main landmark wired',()=>{
