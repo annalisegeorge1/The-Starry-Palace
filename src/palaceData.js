@@ -555,6 +555,20 @@ export async function saveWork(userId,workId,patch){const allowed={title:patch.t
 export async function createChapter(userId,workId,title){const clean=title.trim();if(!clean)throw new Error('Give the chapter a title first.');const pos=await needClient().from('chapters').select('position').eq('work_id',workId).order('position',{ascending:false}).limit(1);if(pos.error)throw pos.error;const position=(pos.data?.[0]?.position||0)+1;const{data,error}=await needClient().from('chapters').insert({work_id:workId,title:clean,position,status:'draft'}).select().single();if(error)throw error;return data}
 function plainWordCount(text){return text.replace(/<[^>]*>/g,' ').trim().split(/\s+/).filter(Boolean).length}
 export async function saveChapter(userId,chapterId,patch){const body=patch.body_html??'';const{data,error}=await needClient().from('chapters').update({title:patch.title?.trim(),body_html:body,word_count:plainWordCount(body),revision_note:patch.revision_note??'',updated_at:new Date().toISOString()}).eq('id',chapterId).select().single();if(error)throw error;return data}
+export async function getChapterSnapshots(chapterId){
+ const{data,error}=await needClient().from('chapter_revision_snapshots').select('id,chapter_id,created_by,label,title,body_html,revision_note,word_count,source_revision,created_at').eq('chapter_id',chapterId).order('created_at',{ascending:false}).limit(30);
+ if(error)throw error;return data||[]
+}
+export async function createChapterSnapshot(userId,chapter,label=''){
+ if(!chapter?.id)throw new Error('Open a chapter before creating a snapshot.');
+ const body=chapter.body_html||'';
+ const{data,error}=await needClient().from('chapter_revision_snapshots').insert({
+  chapter_id:chapter.id,created_by:userId,label:String(label||'').trim().slice(0,100)||null,title:chapter.title||'Untitled chapter',body_html:body,
+  revision_note:chapter.revision_note||null,word_count:plainWordCount(body),source_revision:Number(chapter.revision||0)
+ }).select().single();
+ if(error)throw error;return data
+}
+export async function deleteChapterSnapshot(userId,id){const{error}=await needClient().from('chapter_revision_snapshots').delete().eq('id',id);if(error)throw error;return true}
 export async function publishChapter(userId,chapterId){const now=new Date().toISOString();const{data,error}=await needClient().from('chapters').update({status:'published',published_at:now,updated_at:now}).eq('id',chapterId).select('id,work_id').single();if(error)throw error;const{data:work,error:we}=await needClient().from('works').select('first_published_at').eq('id',data.work_id).single();if(we)throw we;const update={publication_status:'published',last_published_at:now,updated_at:now};if(!work.first_published_at)update.first_published_at=now;const wr=await needClient().from('works').update(update).eq('id',data.work_id).eq('author_id',userId);if(wr.error)throw wr.error;return data}
 export async function saveWorkToLibrary(userId,workId){const{error}=await needClient().from('saved_works').upsert({user_id:userId,work_id:workId},{onConflict:'user_id,work_id'});if(error)throw error}
 export async function subscribeWork(userId,workId){const{error}=await needClient().from('story_subscriptions').upsert({user_id:userId,work_id:workId,enabled:true,updated_at:new Date().toISOString()},{onConflict:'user_id,work_id'});if(error)throw error}
