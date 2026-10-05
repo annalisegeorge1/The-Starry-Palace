@@ -43,7 +43,7 @@ function State({children,error,loading,empty}){
 export function ChamberLive({Frame}){
  const{session}=useAuth();const[data,setData]=useState(null);const[followingPosts,setFollowingPosts]=useState([]);const[error,setError]=useState('');
  const load=()=>{setError('');Promise.all([getChamberSnapshot(session.user.id),getFollowingProfilePosts(session.user.id)]).then(([snapshot,posts])=>{setData(snapshot);setFollowingPosts(posts)}).catch(e=>setError(e.message))};useEffect(load,[session.user.id]);
- const p=data?.profile;const counts=data?.counts||{};const latest=data?.works?.[0];
+ const p=data?.profile;const counts=data?.counts||{};const latest=data?.works?.[0];const currentRead=data?.progress?.[0]?.works;const unread=(data?.notices||[]).filter(n=>n.unread).length;
  return <Frame privateArea><State loading={!data&&!error} error={error}>{p&&<section className="legacy-home-dashboard">
    <nav className="legacy-home-tabs">
     <Link className="active" to="/chamber">Home</Link>
@@ -57,12 +57,15 @@ export function ChamberLive({Frame}){
     <h1>Welcome home,<br/><span>{p.display_name||p.username}.</span></h1>
     <p>Return to your stories, your people, and the rooms waiting for you.</p>
    </section>
-   <section className="legacy-home-actions">
-    <Link className="primary-home-action" to={latest?.slug?"/writing/"+latest.slug:"/writing"}>✎ Continue writing</Link>
+   <section className="legacy-home-actions palace-home-actions">
+    <Link className="primary-home-action palace-return-card" to={latest?.slug?"/writing/"+latest.slug:"/writing"}>
+      <span className="home-action-icon" aria-hidden="true">✎</span><span><small>WRITING CHAMBER</small><strong>{latest?.title||'Begin a new work'}</strong><em>{latest?'Continue where you left off':'Open a quiet page and start something new'}</em></span><b>Open →</b>
+    </Link>
     <div className="secondary-home-actions">
-      <Link to="/reading">▤ Explore Reading Rooms</Link>
-      <Link to="/letters">✉ Palace Letters</Link>
-      <Link to="/palace-life">◉ Palace Commons</Link>
+      <Link className="palace-quick-card" to={currentRead?.slug?"/work/"+currentRead.slug:"/reading"}><span aria-hidden="true">▤</span><div><small>READING</small><strong>{currentRead?.title||'Explore Reading Rooms'}</strong></div><b>→</b></Link>
+      <Link className="palace-quick-card" to="/letters"><span aria-hidden="true">✉</span><div><small>LETTERS</small><strong>{counts.letterRequests?counts.letterRequests+' request'+(counts.letterRequests===1?'':'s'):'Palace Letters'}</strong></div><b>→</b></Link>
+      <Link className="palace-quick-card" to="/activity"><span aria-hidden="true">✦</span><div><small>ACTIVITY</small><strong>{unread?unread+' unread':'All quiet'}</strong></div><b>→</b></Link>
+      <Link className="palace-quick-card" to="/palace-life"><span aria-hidden="true">◉</span><div><small>COMMUNITY</small><strong>Palace Life</strong></div><b>→</b></Link>
     </div>
    </section>
    <section className="legacy-home-stats">
