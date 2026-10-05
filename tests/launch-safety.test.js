@@ -642,6 +642,27 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.comic-readiness-track');
   });
 
+  it('keeps scheduled comic publishing real, durable and safety-checked',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    const sql=read('database/comic-scheduled-publishing.sql');
+    expect(data).toContain('scheduleComicEpisode');
+    expect(data).toContain('cancelComicEpisodeSchedule');
+    expect(data).toContain("Object.prototype.hasOwnProperty.call(patch,'scheduled_for')");
+    expect(data).toContain("scheduled_for:null");
+    expect(live).toContain('Schedule publication');
+    expect(live).toContain('Cancel schedule');
+    expect(live).toContain('comicLocalDateTimeValue');
+    expect(live).toContain("comic_studio:'/comics/studio'");
+    expect(live).toContain('scheduled</span>');
+    expect(polish).toContain('.episode-schedule-note');
+    expect(sql).toContain('private.process_scheduled_comic_episodes()');
+    expect(sql).toContain("'palace-scheduled-comic-publisher'");
+    expect(sql).toContain("'* * * * *'");
+    expect(sql).toContain('for update of e skip locked');
+    expect(sql).toContain('Scheduled comic release needs attention');
+  });
+
   it('keeps comic doorways aware of saved following and reading state',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
