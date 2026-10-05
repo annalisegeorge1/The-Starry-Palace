@@ -190,6 +190,20 @@ function RouteLoading(){
  React.useEffect(()=>{const timer=window.setTimeout(()=>setSlow(true),2200);return()=>window.clearTimeout(timer)},[]);
  return <div className="route-loading" role="status" aria-live="polite"><div className="route-loading-card"><span className="route-loading-mark" aria-hidden="true">☾<b>✦</b></span><strong>Opening this Palace room…</strong><small>{slow?'This is taking longer than usual. You can safely reload the room.':'Gathering the room beneath the stars.'}</small>{slow&&<button onClick={()=>window.location.reload()}>Reload room</button>}</div></div>
 }
+function RoomBundleWarmup(){
+ React.useEffect(()=>{
+  const connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+  if(connection?.saveData||/2g/.test(connection?.effectiveType||''))return;
+  const warm=()=>{importWithRecovery(()=>import('./liveRooms')).catch(()=>{})};
+  if('requestIdleCallback'in window){
+   const id=window.requestIdleCallback(warm,{timeout:2500});
+   return()=>window.cancelIdleCallback?.(id);
+  }
+  const timer=window.setTimeout(warm,1200);
+  return()=>window.clearTimeout(timer);
+ },[]);
+ return null
+}
 class RouteErrorBoundary extends React.Component{
  constructor(props){super(props);this.state={error:null}}
  static getDerivedStateFromError(error){return{error}}
@@ -204,7 +218,7 @@ function RouteGuard({children}){
  return <RouteErrorBoundary key={location.pathname+location.search}>{children}</RouteErrorBoundary>
 }
 
-function App(){return <AuthProvider><NavigationReset/><RouteGuard><React.Suspense fallback={<RouteLoading/>}><Routes>
+function App(){return <AuthProvider><NavigationReset/><RoomBundleWarmup/><RouteGuard><React.Suspense fallback={<RouteLoading/>}><Routes>
  <Route path="/" element={<Home/>}/><Route path="/login" element={<Login/>}/><Route path="/auth/callback" element={<Callback/>}/>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/reading" element={<ReadingLive Frame={Frame}/>}/><Route path="/series" element={<SeriesLive Frame={Frame}/>}/>
