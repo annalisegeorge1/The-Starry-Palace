@@ -44,7 +44,7 @@ function State({children,error,loading,empty}){
 export function ChamberLive({Frame}){
  const{session}=useAuth();const[data,setData]=useState(null);const[followingPosts,setFollowingPosts]=useState([]);const[error,setError]=useState('');
  const load=()=>{setError('');Promise.all([getChamberSnapshot(session.user.id),getFollowingProfilePosts(session.user.id)]).then(([snapshot,posts])=>{setData(snapshot);setFollowingPosts(posts)}).catch(e=>setError(e.message))};useEffect(load,[session.user.id]);
- const p=data?.profile;const counts=data?.counts||{};const unread=(data?.notices||[]).filter(n=>n.unread).length;
+ const p=data?.profile;const counts=data?.counts||{};const unread=counts.unreadNotices||0;
  const latest=data?.works?.[0];const nextDraft=(data?.works||[]).find(w=>w.publication_status!=='published')||latest;
  const currentStory=data?.progress?.[0]||null;const currentRead=currentStory?.works;
  const currentComic=(data?.comicProgress||[]).find(x=>{const newer=x?.updated_at&&x?.comics?.last_published_at&&new Date(x.comics.last_published_at)>new Date(x.updated_at);return!x.completed||newer})||null;
@@ -58,6 +58,7 @@ export function ChamberLive({Frame}){
   counts.letterRequests&&{kind:'PALACE LETTERS',icon:'✉',count:counts.letterRequests,title:counts.letterRequests+' message request'+(counts.letterRequests===1?'':'s'),copy:'New people are waiting at your correspondence door.',to:'/letters'},
   unread&&{kind:'ACTIVITY',icon:'✦',count:unread,title:unread+' unread notification'+(unread===1?'':'s'),copy:'Recent Palace activity is waiting to be reviewed.',to:'/activity'}
  ].filter(Boolean);
+ const attentionTotal=attention.reduce((n,x)=>n+Number(x.count||0),0);
  const scheduled=(data?.scheduledComicEpisodes||[]).slice(0,3);
  const draftChapters=nextDraft?.chapters||[];const draftWords=draftChapters.reduce((n,ch)=>n+(Number(ch.word_count)||0),0);const draftPublished=draftChapters.filter(ch=>ch.status==='published').length;
  return <Frame privateArea><State loading={!data&&!error} error={error}>{p&&<section className="legacy-home-dashboard palace-command-centre">
@@ -72,7 +73,7 @@ export function ChamberLive({Frame}){
    <section className="legacy-home-hero palace-belonging-panel palace-command-hero"><img className="palace-belonging-art" src="/assets/palace/palace-belonging.gif" alt=""/>
     <div><p className="eyebrow">✦ MY PALACE</p><h1>Welcome home,<br/><span>{p.display_name||p.username}.</span></h1><p>Pick up what matters next. Everything else can remain quiet until you are ready.</p></div>
     <div className="palace-home-pulse" aria-label="Your Palace today">
-      <span><strong>{attention.length}</strong><small>attention</small></span>
+      <span><strong>{attentionTotal}</strong><small>attention</small></span>
       <span><strong>{counts.scheduledComics||0}</strong><small>scheduled</small></span>
       <span><strong>{counts.saved||0}</strong><small>saved worlds</small></span>
     </div>
@@ -94,7 +95,7 @@ export function ChamberLive({Frame}){
    </section>
 
    <section className="palace-dashboard-section palace-attention-section">
-    <div className="section-heading"><div><p className="eyebrow">NEEDS YOUR ATTENTION</p><h2>{attention.length?'A few doors are waiting.':'Nothing urgent is pulling at you.'}</h2><p>{attention.length?'Only items that need a response or review appear here.':'You can create, read or wander the Palace without an obligation queue.'}</p></div>{attention.length>0&&<span className="attention-total">{attention.reduce((n,x)=>n+Number(x.count||0),0)} waiting</span>}</div>
+    <div className="section-heading"><div><p className="eyebrow">NEEDS YOUR ATTENTION</p><h2>{attention.length?'A few doors are waiting.':'Nothing urgent is pulling at you.'}</h2><p>{attention.length?'Only items that need a response or review appear here.':'You can create, read or wander the Palace without an obligation queue.'}</p></div>{attention.length>0&&<span className="attention-total">{attentionTotal} waiting</span>}</div>
     {attention.length?<div className="palace-attention-grid">{attention.slice(0,5).map(item=><Link to={item.to} key={item.kind}><span>{item.icon}</span><div><small>{item.kind}</small><strong>{item.title}</strong><p>{item.copy}</p></div><b>Review →</b></Link>)}</div>:<div className="palace-clear-state"><span>☾<b>✦</b></span><div><strong>Your desk is clear.</strong><p>New invitations, permissions, letters and notices will gather here only when they need you.</p></div></div>}
    </section>
 
