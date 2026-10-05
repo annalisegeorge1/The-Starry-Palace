@@ -2545,3 +2545,88 @@ img{max-width:100%}
   .work-entry-copy h1{font-size:clamp(2.8rem,13vw,4rem)}
   .work-resume-strip{align-items:flex-start}
 }
+
+
+/* Tag Constellation — private reusable discovery recipes */
+.constellation-actions{
+  display:flex;
+  align-items:center;
+  gap:.45rem;
+  flex-wrap:wrap;
+  margin:.55rem 0 .85rem;
+}
+.constellation-actions>button{
+  min-height:36px;
+  padding:.45rem .65rem;
+  border:1px solid var(--palace-border);
+  border-radius:11px;
+  background:rgba(104,84,166,.08);
+  color:var(--palace-text);
+  font-size:.68rem;
+}
+.constellation-actions>button:disabled{opacity:.38}
+.constellation-actions>span{
+  margin-left:auto;
+  color:var(--palace-dim);
+  font-size:.6rem;
+}
+.saved-constellations{
+  display:grid;
+  grid-template-columns:minmax(190px,.7fr) minmax(0,2fr);
+  gap:1rem;
+  align-items:start;
+  margin:0 0 1rem;
+  padding:1rem;
+  border:1px solid var(--palace-border);
+  border-radius:18px;
+  background:linear-gradient(145deg,rgba(16,22,43,.74),rgba(10,15,31,.72));
+}
+.saved-constellations h2{
+  margin:.2rem 0 0;
+  font:600 1.2rem Georgia,'Times New Roman',serif;
+}
+.saved-constellations>div:last-child{
+  display:flex;
+  gap:.45rem;
+  flex-wrap:wrap;
+}
+.saved-constellations article{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  min-width:min(230px,100%);
+  border:1px solid var(--palace-border);
+  border-radius:13px;
+  overflow:hidden;
+  background:rgba(8,12,27,.42);
+}
+.saved-constellation-open{
+  min-width:0;
+  display:grid;
+  gap:.18rem;
+  text-align:left;
+  padding:.62rem .7rem;
+  border:0;
+  background:transparent;
+  color:var(--palace-text);
+}
+.saved-constellation-open strong{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font:600 .77rem Georgia,'Times New Roman',serif;
+}
+.saved-constellation-open small{color:var(--palace-muted);font-size:.56rem}
+.saved-constellation-remove{
+  width:34px;
+  border:0;
+  border-left:1px solid var(--palace-border);
+  background:transparent;
+  color:var(--palace-dim);
+}
+.saved-constellation-remove:hover{background:rgba(146,82,107,.1);color:#dab1bf}
+.daylight .saved-constellations,.daylight .saved-constellations article{background:rgba(255,255,255,.86)}
+@media(max-width:720px){
+  .constellation-actions>span{width:100%;margin-left:0}
+  .saved-constellations{grid-template-columns:1fr}
+  .saved-constellations>div:last-child{display:grid}
+}
