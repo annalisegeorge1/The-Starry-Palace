@@ -137,6 +137,8 @@ export async function getActivity(userId){
 }
 export async function markNoticeRead(userId,id){const{error}=await needClient().from('notifications').update({unread:false,read_at:new Date().toISOString()}).eq('id',id).eq('user_id',userId);if(error)throw error}
 export async function markAllNoticesRead(userId){const{error}=await needClient().from('notifications').update({unread:false,read_at:new Date().toISOString()}).eq('user_id',userId).eq('unread',true);if(error)throw error}
+export async function setNoticeSaved(userId,id,saved){const{data,error}=await needClient().from('notifications').update({saved:!!saved}).eq('id',id).eq('user_id',userId).select('id,saved').single();if(error)throw error;return data}
+export async function dismissNotice(userId,id){const{error}=await needClient().from('notifications').update({dismissed:true,unread:false,read_at:new Date().toISOString()}).eq('id',id).eq('user_id',userId);if(error)throw error;return true}
 
 export async function getLibrary(userId){const [saved,progress,subs,savedComics,comicProgress,comicSubs,follows]=await Promise.all([
  needClient().from('saved_works').select('saved_at,works(id,title,slug,summary,cover_url,completion_status,profiles!works_author_id_fkey(username,display_name))').eq('user_id',userId).order('saved_at',{ascending:false}),
