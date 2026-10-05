@@ -500,6 +500,12 @@ export async function createGiftTradeOffer({recipientId,offeredGiftId,offeredTie
 export async function respondGiftTradeOffer(offerId,action){
  const{data,error}=await needClient().rpc('respond_gift_trade_offer',{p_offer_id:offerId,p_action:action});if(error)throw error;return data
 }
+export async function setProfileAchievementShowcase(achievementId,displayTier,position){
+ const{data,error}=await needClient().rpc('set_profile_achievement_showcase',{p_achievement_id:achievementId,p_display_tier:displayTier,p_position:position});if(error)throw error;return data
+}
+export async function removeProfileAchievementShowcase(achievementId){
+ const{data,error}=await needClient().rpc('remove_profile_achievement_showcase',{p_achievement_id:achievementId});if(error)throw error;return data
+}
 export async function getArchive(userId=null){
  const{data,error}=await needClient().from('archive_records').select('id,accession_number,slug,title,creator_name,record_nature,category,summary,original_language,languages,surviving_extent,known_gaps,provenance_summary,rights_status,hosting_basis,host_mode,continuation_status,verified_at,updated_at').eq('publication_status','published').order('updated_at',{ascending:false}).limit(100);
  if(error)throw error;const rows=data||[];if(!userId||!rows.length)return rows;
