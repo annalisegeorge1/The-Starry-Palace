@@ -12,7 +12,14 @@ vi.mock('./PalaceGift',()=>({
 }));
 vi.mock('./palaceData',()=>({
  getGiftCatalogue:async()=>({items:[{id:'gift',name:'Moon cup',court_name:'Moon Garden',catalogue_number:1}],count:1}),
- getTreasury:async()=>({gifts:[{tier:'bronze',copies:1,virtual_gifts:{id:'gift'}},{tier:'silver',copies:1,virtual_gifts:{id:'gift'}}]})
+ getTreasury:async()=>({gifts:[{tier:'bronze',copies:1,virtual_gifts:{id:'gift'}},{tier:'silver',copies:1,virtual_gifts:{id:'gift'}}],giftShowcase:[]}),
+ getGiftTrades:async()=>[],
+ ascendPalaceGift:async()=>null,
+ setProfileGiftShowcase:async()=>null,
+ removeProfileGiftShowcase:async()=>null,
+ createGiftTradeOffer:async()=>null,
+ respondGiftTradeOffer:async()=>null,
+ searchMembers:async()=>[]
 }));
 afterEach(cleanup);
 it('opens the gift collection without confusing the selected court with its artwork helper',async()=>{
