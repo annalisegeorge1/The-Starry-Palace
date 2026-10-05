@@ -51,10 +51,11 @@ function Frame({children,privateArea=false}){
  const [daylight,setDaylight]=useState(()=>localStorage.getItem('palace-theme')==='daylight');
  const [search,setSearch]=useState('');
  const [shellProfile,setShellProfile]=useState(null);
+ const [letterBadge,setLetterBadge]=useState(0);
  const location=useLocation();const navigate=useNavigate();
  React.useEffect(()=>setNavOpen(false),[location.pathname]);
  React.useEffect(()=>localStorage.setItem('palace-theme',daylight?'daylight':'night'),[daylight]);
- React.useEffect(()=>{let alive=true;if(!session){setShellProfile(null);return;}supabase.from('profiles').select('username,display_name,title,avatar_url,cover_url').eq('id',session.user.id).maybeSingle().then(({data})=>{if(alive)setShellProfile(data||null)});return()=>{alive=false}},[session?.user?.id]);
+ React.useEffect(()=>{let alive=true;if(!session){setShellProfile(null);setLetterBadge(0);return;}Promise.all([supabase.from('profiles').select('username,display_name,title,avatar_url,cover_url').eq('id',session.user.id).maybeSingle(),supabase.from('message_requests').select('id',{count:'exact',head:true}).eq('recipient_id',session.user.id).eq('status','pending')]).then(([profileReq,letterReq])=>{if(!alive)return;setShellProfile(profileReq.data||null);setLetterBadge(letterReq.count||0)});return()=>{alive=false}},[session?.user?.id,location.pathname]);
  const visibleRooms=fullPalaceRooms.filter(r=>!r.private||session);
  const activeRoom=visibleRooms.find(r=>location.pathname===r.path||r.sections.some(([,p])=>{const target=p==='/member'&&shellProfile?.username?'/member/'+shellProfile.username:p;return target&&location.pathname===target})||(r.id==='reading'&&['/comics','/lost-works','/tags'].some(p=>location.pathname.startsWith(p)))||(r.id==='writing'&&location.pathname.startsWith('/writing'))||(r.id==='life'&&['/palace-life','/search','/honour','/activity'].some(p=>location.pathname.startsWith(p)))||(r.id==='events'&&location.pathname.startsWith('/events'))||(r.id==='treasury'&&location.pathname.startsWith('/treasury'))||(r.id==='settings'&&location.pathname.startsWith('/settings')));
  const profileInitial=(shellProfile?.display_name||shellProfile?.username||session?.user?.email||'P').slice(0,1).toUpperCase();
@@ -74,6 +75,10 @@ function Frame({children,privateArea=false}){
    <header className="topbar full-topbar"><div className="full-topbar-row"><div className="full-brand"><button className="nav-toggle" onClick={()=>setNavOpen(true)} aria-label="Open Palace navigation">☰</button><Link to="/"><span className="brandmark">☾<b>✦</b></span><strong>The Starry Palace</strong></Link><small>BETA</small></div><form className="global-search-live" onSubmit={submitSearch}><span>⌕</span><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search works, writers, tags, fandoms…"/><button>Search</button></form><div className="full-top-actions">{session&&<Link className="top-icon-link" to="/letters" aria-label="Palace Letters">✉</Link>}{session&&<Link className="top-icon-link" to="/activity" aria-label="Notifications">✦</Link>}<Link className="write-action" to={session?'/writing':'/login'}>✎ <span>Write</span></Link></div></div></header>
    <main>{children}</main>
   </div>
+  {session&&<div className="floating-controls restored-floating-controls">
+    <Link className="float-btn palace-float-sigil notification-anchor" to="/letters" aria-label="Open Palace Letters" title="Palace Letters"><span className="float-letter-art">✉</span>{letterBadge>0&&<span className="float-unread-badge">{letterBadge>99?'99+':letterBadge}</span>}</Link>
+    <button className="float-btn theme-orb" onClick={()=>setDaylight(v=>!v)} aria-label={daylight?'Switch to night mode':'Switch to light mode'} title={daylight?'Night mode':'Light mode'}><span className="theme-main">{daylight?'☾':'☼'}</span><span className="theme-star">✦</span></button>
+  </div>}
  </div>
 }
 function Home(){
