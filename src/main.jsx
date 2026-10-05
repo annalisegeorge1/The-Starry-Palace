@@ -28,7 +28,7 @@ const fullPalaceRooms=[
   ['Saved Stories','/library'],['Comics Shelf','/library?tab=comics'],['Collections & Readers’ Choice',null],['Reading lists',null],['History','/library?tab=history'],['Notes & Bookmarks',null],['Lost Works Shelf','/lost-works'],['Subscriptions','/library'],['Writers I Follow','/search']
  ]},
  {id:'writing',icon:'✎',label:'Writing Chamber',path:'/writing',private:true,sections:[
-  ['Editor & drafts','/writing'],['Comic studio','/comics/studio'],['Co-writing',null],['Comment review',null],['Requests & permissions',null]
+  ['Editor & drafts','/writing'],['Comic studio','/comics/studio'],['Co-writing','/writing?tab=collab'],['Comment review','/writing?tab=comments'],['Requests & permissions','/writing?tab=permissions']
  ]},
  {id:'life',icon:'♢',label:'Palace Life',path:'/palace-life',sections:[
   ['Palace Tidings','/palace-life'],['Clubs','/palace-life'],['Forum & Chat','/palace-life'],['Members & Exile','/search'],['Introductions & highlights','/palace-life'],['Activities','/activity'],['Throne of Honour','/honour']
