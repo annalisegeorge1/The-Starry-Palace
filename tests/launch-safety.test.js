@@ -246,6 +246,16 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.command-trigger');
   });
 
+  it('keeps Writing Chamber library controls useful at scale',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('writing-library-tools');
+    expect(live).toContain('Search my works');
+    expect(live).toContain('Recently updated');
+    expect(live).toContain('Most words');
+    expect(live).toContain('words across drafts');
+    expect(polish).toContain('.writing-library-tools');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
