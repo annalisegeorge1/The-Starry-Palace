@@ -4150,3 +4150,96 @@ img{max-width:100%}
 .daylight .followed-list>a.has-new-panels{
   background:rgba(244,246,255,.92);
 }
+
+
+/* Comic Studio publication readiness */
+.comic-readiness{
+  margin-bottom:1rem;
+  padding:1rem;
+  border:1px solid rgba(137,153,201,.22);
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(70,82,143,.1),rgba(93,73,148,.07));
+}
+.comic-readiness-head{
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  align-items:flex-start;
+}
+.comic-readiness-head small{
+  display:block;
+  color:var(--palace-dim);
+  font-size:.56rem;
+  font-weight:700;
+  letter-spacing:.12em;
+}
+.comic-readiness-head strong{
+  display:block;
+  margin:.18rem 0;
+  font:600 1.05rem Georgia,'Times New Roman',serif;
+}
+.comic-readiness-head p{
+  max-width:620px;
+  margin:0;
+  color:var(--palace-muted);
+  font-size:.68rem;
+  line-height:1.55;
+}
+.comic-readiness-head>b{
+  flex:0 0 auto;
+  min-width:52px;
+  min-height:52px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--palace-border);
+  border-radius:15px;
+  color:var(--palace-text);
+  background:rgba(255,255,255,.025);
+  font-size:.72rem;
+}
+.comic-readiness-track{
+  height:5px;
+  margin:.85rem 0 .75rem;
+  overflow:hidden;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+}
+.comic-readiness-track i{
+  display:block;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,#7187bc,#8c78c3);
+  transition:width 180ms ease;
+}
+.comic-readiness-checks{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.38rem;
+}
+.comic-readiness-checks span{
+  padding:.28rem .5rem;
+  border:1px solid var(--palace-border);
+  border-radius:999px;
+  color:var(--palace-dim);
+  font-size:.58rem;
+}
+.comic-readiness-checks span.done{
+  border-color:rgba(126,160,151,.34);
+  background:rgba(69,111,101,.08);
+  color:#bdd7cf;
+}
+.comic-readiness-warning{
+  margin:.72rem 0 0;
+  color:#d4bfc4;
+  font-size:.64rem;
+}
+.daylight .comic-readiness{
+  background:rgba(248,249,255,.9);
+}
+.daylight .comic-readiness-checks span.done{
+  color:#315f55;
+}
+@media(max-width:620px){
+  .comic-readiness-head{align-items:stretch}
+  .comic-readiness-head>b{min-width:46px;min-height:46px}
+}
