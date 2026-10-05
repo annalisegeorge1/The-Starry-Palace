@@ -67,7 +67,42 @@ export async function getPublishedWorks(){const{data,error}=await needClient().f
 export async function getMyWorks(userId){const{data,error}=await needClient().from('works').select('id,title,slug,summary,publication_status,completion_status,visibility,updated_at,chapters(id,status,word_count)').eq('author_id',userId).order('updated_at',{ascending:false});if(error)throw error;return data||[]}
 export async function createDraft(userId,title){const clean=title.trim();if(!clean)throw new Error('Give your work a title first.');const slug=(clean.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,70)||'untitled')+'-'+Date.now().toString(36);const{data,error}=await needClient().from('works').insert({author_id:userId,title:clean,slug,publication_status:'draft',visibility:'private'}).select().single();if(error)throw error;return data}
 
-export async function getSettings(userId){const [privacy,notifications,exports,deletions]=await Promise.all([ensureMyPrivacy(userId),needClient().from('notification_preferences').select('*').eq('user_id',userId).maybeSingle(),needClient().from('account_export_requests').select('id,status,format,requested_at,ready_at,expires_at').eq('user_id',userId).order('requested_at',{ascending:false}).limit(3),needClient().from('account_deletion_requests').select('id,status,requested_at,scheduled_for,cancelled_at').eq('user_id',userId).order('requested_at',{ascending:false}).limit(1)]);for(const r of[notifications,exports,deletions])if(r.error)throw r.error;let np=notifications.data;if(!np){const created=await needClient().from('notification_preferences').insert({user_id:userId}).select().single();if(created.error)throw created.error;np=created.data}return{privacy,notifications:np,exports:exports.data||[],deletion:deletions.data?.[0]||null}}
+export async function getSettings(userId){
+ const [privacy,notifications,exports,deletions,boundaries,forumMutes,profile,works,comics]=await Promise.all([
+  ensureMyPrivacy(userId),
+  needClient().from('notification_preferences').select('*').eq('user_id',userId).maybeSingle(),
+  needClient().from('account_export_requests').select('id,status,format,requested_at,ready_at,expires_at').eq('user_id',userId).order('requested_at',{ascending:false}).limit(3),
+  needClient().from('account_deletion_requests').select('id,status,requested_at,scheduled_for,cancelled_at').eq('user_id',userId).order('requested_at',{ascending:false}).limit(1),
+  needClient().from('user_member_boundaries').select('other_user_id,muted,blocked,updated_at,profiles!user_member_boundaries_other_user_id_fkey(id,username,display_name,title,avatar_url)').eq('user_id',userId).order('updated_at',{ascending:false}),
+  needClient().from('forum_thread_mutes').select('thread_id,created_at').eq('user_id',userId),
+  needClient().from('profiles').select('avatar_url,cover_url').eq('id',userId).maybeSingle(),
+  needClient().from('works').select('id,cover_url').eq('author_id',userId),
+  needClient().from('comics').select('id,cover_path').eq('creator_id',userId)
+ ]);
+ for(const r of[notifications,exports,deletions,boundaries,forumMutes,profile,works,comics])if(r.error)throw r.error;
+ let np=notifications.data;
+ if(!np){const created=await needClient().from('notification_preferences').insert({user_id:userId}).select().single();if(created.error)throw created.error;np=created.data}
+ const comicIds=(comics.data||[]).map(x=>x.id);
+ let episodeIds=[],comicPageCount=0;
+ if(comicIds.length){
+  const episodes=await needClient().from('comic_episodes').select('id').in('comic_id',comicIds);
+  if(episodes.error)throw episodes.error;
+  episodeIds=(episodes.data||[]).map(x=>x.id);
+  if(episodeIds.length){
+   const pages=await needClient().from('comic_pages').select('id',{count:'exact',head:true}).in('episode_id',episodeIds);
+   if(pages.error)throw pages.error;
+   comicPageCount=pages.count||0;
+  }
+ }
+ const profileAssets=(profile.data?.avatar_url?1:0)+(profile.data?.cover_url?1:0);
+ const storyCovers=(works.data||[]).filter(x=>x.cover_url).length;
+ const comicCovers=(comics.data||[]).filter(x=>x.cover_path).length;
+ return{
+  privacy,notifications:np,exports:exports.data||[],deletion:deletions.data?.[0]||null,
+  boundaries:boundaries.data||[],forumMutes:forumMutes.data||[],
+  storage:{profileAssets,storyCovers,comicCovers,comicPages:comicPageCount,totalAssets:profileAssets+storyCovers+comicCovers+comicPageCount}
+ }
+}
 export async function updatePrivacy(userId,patch){const{data,error}=await needClient().from('privacy_preferences').update({...patch,updated_at:new Date().toISOString()}).eq('user_id',userId).select().single();if(error)throw error;return data}
 export async function updateNotifications(userId,patch){const{data,error}=await needClient().from('notification_preferences').update({...patch,updated_at:new Date().toISOString()}).eq('user_id',userId).select().single();if(error)throw error;return data}
 export async function requestAccountExport(format='json'){const{data,error}=await needClient().rpc('request_account_export',{p_format:format});if(error)throw error;return data}
