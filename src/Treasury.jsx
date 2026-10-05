@@ -83,7 +83,7 @@ export default function Treasury({Frame}) {
    <button aria-pressed={collection==='originals'} onClick={()=>choose('originals')}>Palace originals · 175 badges</button>
    <button aria-pressed={collection==='expanded'} onClick={()=>choose('expanded')}>Expanded paths · 100 families</button>
    <button aria-pressed={collection==='original-treasures'} onClick={()=>choose('original-treasures')}>Original painted treasures · 600</button>
-   <button aria-pressed={collection==='moonlit-tea'} onClick={()=>choose('moonlit-tea')}>New watercolours · Moonlit Tea</button>
+   <button aria-pressed={collection==='moonlit-tea'} onClick={()=>choose('moonlit-tea')}>New watercolours · 25 paintings</button>
    <button aria-pressed={collection==='gifts'} onClick={()=>choose('gifts')}>Gift collection · {giftData.count||520} prizes</button>
   </div>
 

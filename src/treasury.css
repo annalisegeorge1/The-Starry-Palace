@@ -167,3 +167,9 @@
 @media(max-width:1000px){.original-collectible-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:540px){.original-collectible-grid{grid-template-columns:minmax(0,1fr)}.original-collectible-stage{height:220px}.original-collections .badge-controls label{min-width:0;flex-basis:100%}.original-collections .catalogue-pagination{gap:.4rem;flex-wrap:wrap}.moonlit-tea-image{height:230px}}
 
+
+.painted-family-filters{display:flex;flex-wrap:wrap;gap:.55rem;margin:1rem 0}
+.painted-family-filters button{padding:.7rem 1rem;min-height:44px;border:1px solid var(--line,#475177);border-radius:999px;background:var(--surface,#151c34);color:var(--text,#edf0ff);font:inherit}
+.painted-family-filters button[aria-pressed="true"]{background:#303e69;border-color:#a9bde5;color:#f4f6ff}
+.painted-family-filters button:focus-visible{outline:3px solid #a9bde5;outline-offset:3px}
+.painted-family-title{font:500 1.5rem/1.4 Georgia,serif;margin:1.5rem 0 .4rem}
