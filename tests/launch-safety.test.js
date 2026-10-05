@@ -694,6 +694,16 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('index===pages.length-1&&episodeIndex===readableEpisodes.length-1');
   });
 
+  it('surfaces unread comic updates in Library subscriptions',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('comics(id,title,slug,last_published_at)');
+    expect(live).toContain('comicSubscriptionHasNew');
+    expect(live).toContain('New panels waiting · ');
+    expect(live).toContain("x.frequency==='weekly'?'weekly digest':'immediate updates'");
+    expect(polish).toContain('.followed-list>a.has-new-panels');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
