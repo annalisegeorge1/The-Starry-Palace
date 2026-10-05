@@ -675,6 +675,18 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.comic-release-queue');
   });
 
+  it('shows creator-facing episode release health and precise schedule recovery links',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('episodeMissingDescriptions');
+    expect(live).toContain('episodeReadyForRelease');
+    expect(live).toContain('Ready to publish');
+    expect(live).toContain('Needs work');
+    expect(live).toContain("item.route_name==='comic_studio'");
+    expect(live).toContain("'#comic-'+encodeURIComponent(item.metadata.comic_id)");
+    expect(polish).toContain('.episode-health');
+    expect(polish).toContain('.episode-health span.scheduled');
+  });
+
   it('keeps comic doorways aware of saved following and reading state',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
