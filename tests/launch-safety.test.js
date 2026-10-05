@@ -70,6 +70,20 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain("location.pathname.startsWith('/member/')");
   });
 
+
+  it('keeps the full Palace gift catalogue wired',()=>{
+    const treasury=read('src/Treasury.jsx');
+    const data=read('src/palaceData.js');
+    const main=read('src/main.jsx');
+    expect(treasury).toContain('getGiftCatalogue');
+    expect(treasury).toContain('PalaceGift');
+    expect(treasury).toContain('PAGE_SIZE=48');
+    expect(data).toContain("from('virtual_gifts')");
+    expect(data).toContain("eq('reward_eligible',true)");
+    expect(main).toContain("/treasury/catalogue");
+    expect(main).toContain('520 gifts');
+  });
+
   it('keeps badge artwork split by tier',()=>{
     const badge=read('src/PalaceBadge.jsx');
     expect(badge).not.toContain('originalBadgeArt.json');
