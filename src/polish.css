@@ -4075,3 +4075,40 @@ img{max-width:100%}
 .daylight .comic-reader-flags span.resume{
   color:#315f55;
 }
+
+
+/* Comic follow cadence */
+.comic-follow-frequency{
+  display:flex;
+  align-items:center;
+  gap:.7rem;
+  width:max-content;
+  max-width:100%;
+  margin-top:.72rem;
+  padding:.5rem .65rem;
+  border:1px solid rgba(137,153,201,.2);
+  border-radius:14px;
+  background:rgba(107,88,169,.06);
+}
+.comic-follow-frequency span{
+  color:var(--palace-dim);
+  font-size:.58rem;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.comic-follow-frequency select{
+  min-height:34px;
+  padding:.35rem 1.9rem .35rem .65rem;
+  border:1px solid var(--palace-border);
+  border-radius:10px;
+  background:var(--palace-surface);
+  color:var(--palace-text);
+  font-size:.68rem;
+}
+.comic-follow-frequency select:disabled{opacity:.62}
+.daylight .comic-follow-frequency{background:rgba(255,255,255,.72)}
+@media(max-width:620px){
+  .comic-follow-frequency{width:100%;align-items:flex-start;flex-direction:column}
+  .comic-follow-frequency select{width:100%}
+}
