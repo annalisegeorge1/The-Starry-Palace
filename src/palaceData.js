@@ -310,3 +310,19 @@ export async function castMemberBallotVote(userId,ballotId,optionId){
  if((existing.data||[]).length>=Number(ballot.data.max_selections||1))throw new Error('You have reached this ballot’s selection limit.');
  const{error}=await needClient().from('member_ballot_votes').insert({ballot_id:ballotId,option_id:optionId,user_id:userId});if(error)throw error;return true
 }
+
+export async function getSeriesLibrary(userId){
+ const q=needClient().from('series').select('id,owner_id,title,slug,summary,visibility,created_at,updated_at,profiles!series_owner_id_fkey(username,display_name),series_works(work_id,position,works(id,title,slug,summary,cover_url,publication_status,completion_status))').order('updated_at',{ascending:false});
+ const{data,error}=await q;if(error)throw error;
+ return(data||[]).map(s=>({...s,series_works:(s.series_works||[]).sort((a,b)=>a.position-b.position)}))
+}
+export async function createSeries(userId,title,summary=''){
+ const clean=title.trim();if(!clean)throw new Error('Give the series a title.');
+ const slug=(clean.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,70)||'series')+'-'+Date.now().toString(36);
+ const{data,error}=await needClient().from('series').insert({owner_id:userId,title:clean,slug,summary:summary.trim(),visibility:'public'}).select().single();if(error)throw error;return data
+}
+export async function addWorkToSeries(userId,seriesId,workId){
+ const pos=await needClient().from('series_works').select('position').eq('series_id',seriesId).order('position',{ascending:false}).limit(1);if(pos.error)throw pos.error;
+ const{data,error}=await needClient().from('series_works').insert({series_id:seriesId,work_id:workId,position:(pos.data?.[0]?.position||0)+1}).select().single();if(error?.code==='23505')throw new Error('That work is already in the series.');if(error)throw error;return data
+}
+export async function removeWorkFromSeries(userId,seriesId,workId){const{error}=await needClient().from('series_works').delete().eq('series_id',seriesId).eq('work_id',workId);if(error)throw error;return true}
