@@ -304,6 +304,27 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.settings-presets');
   });
 
+  it('keeps Palace Search scoped with recent local queries',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('palace-recent-searches');
+    expect(live).toContain('search-lenses');
+    expect(live).toContain('recent-searches');
+    expect(live).toContain("scope==='all'");
+    expect(polish).toContain('.search-lenses');
+    expect(polish).toContain('.recent-searches');
+  });
+
+  it('keeps the public Home alive and the Palace Gates free of dead controls',()=>{
+    const polish=read('src/polish.css');
+    expect(main).toContain('home-live-worlds');
+    expect(main).toContain('NEWLY OPENED WORLDS');
+    expect(main).toContain('Email me a passwordless entrance link');
+    expect(main).toContain('password-field');
+    expect(main).not.toContain('Google entrance · coming soon');
+    expect(polish).toContain('.home-world-grid');
+    expect(polish).toContain('.password-field');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
