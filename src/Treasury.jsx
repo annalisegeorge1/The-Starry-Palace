@@ -1,47 +1,73 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useAuth } from './auth';
 import badges from './badges.json';
 import originals from './originalBadges.json';
 import PalaceBadge from './PalaceBadge';
 import PalaceGift, { giftCourt, giftCourts, giftEdition, giftEditions } from './PalaceGift';
-import { getGiftCatalogue } from './palaceData';
+import { getGiftCatalogue, getTreasury } from './palaceData';
 import './treasury.css';
 
 const tiers=['bronze','silver','gold','platinum','emerald'];
 const PAGE_SIZE=48;
 
 export default function Treasury({Frame}) {
+ const {session}=useAuth();
  const [collection,setCollection]=useState('originals');
  const [query,setQuery]=useState('');
  const [category,setCategory]=useState('all');
  const [tier,setTier]=useState('bronze');
  const [selected,setSelected]=useState(null);
  const [giftData,setGiftData]=useState({items:[],count:0});
+ const [ownedData,setOwnedData]=useState({gifts:[]});
  const [giftCourt,setGiftCourt]=useState('all');
  const [giftEditionFilter,setGiftEditionFilter]=useState('all');
+ const [giftOwnership,setGiftOwnership]=useState('all');
  const [giftPage,setGiftPage]=useState(1);
  const [giftError,setGiftError]=useState('');
  const [giftLoading,setGiftLoading]=useState(true);
 
  useEffect(()=>{
   let live=true;
-  getGiftCatalogue().then(result=>{if(live)setGiftData(result)}).catch(error=>{if(live)setGiftError(error.message)}).finally(()=>{if(live)setGiftLoading(false)});
+  setGiftLoading(true);setGiftError('');
+  Promise.all([getGiftCatalogue(),getTreasury(session.user.id)]).then(([catalogue,owned])=>{
+   if(!live)return;setGiftData(catalogue);setOwnedData(owned);
+  }).catch(error=>{if(live)setGiftError(error.message)}).finally(()=>{if(live)setGiftLoading(false)});
   return()=>{live=false};
- },[]);
+ },[session.user.id]);
 
- useEffect(()=>setGiftPage(1),[query,giftCourt,giftEditionFilter,collection]);
+ useEffect(()=>setGiftPage(1),[query,giftCourt,giftEditionFilter,giftOwnership,collection]);
 
  const source=collection==='originals'?originals:badges;
  const visibleBadges=source.filter(b=>(category==='all'||b.category===category)&&`${b.name} ${b.description} ${b.category}`.toLowerCase().includes(query.toLowerCase()));
  const courts=useMemo(()=>[...new Set(giftData.items.map(g=>g.court_name).filter(Boolean))].sort((a,b)=>a.localeCompare(b)),[giftData.items]);
+ const inventory=useMemo(()=>{
+  const map=new Map();
+  for(const row of ownedData.gifts||[]){
+   const id=row.virtual_gifts?.id;if(!id)continue;
+   const existing=map.get(id)||{copies:0,tiers:[],ascendable:false};
+   existing.copies+=Number(row.copies||0);existing.tiers.push(row.tier);
+   if(row.tier!=='emerald'&&Number(row.copies||0)>=Number(row.virtual_gifts?.upgrade_copies||3))existing.ascendable=true;
+   map.set(id,existing);
+  }
+  return map;
+ },[ownedData.gifts]);
+ const ownedDistinct=inventory.size;
+ const totalCopies=[...inventory.values()].reduce((n,x)=>n+x.copies,0);
+ const duplicateDistinct=[...inventory.values()].filter(x=>x.copies>1).length;
+ const ascendableDistinct=[...inventory.values()].filter(x=>x.ascendable).length;
  const visibleGifts=useMemo(()=>{
   const term=query.trim().toLowerCase();
-  return giftData.items.filter(g=>(giftCourt==='all'||g.court_name===giftCourt)&&(giftEditionFilter==='all'||giftEdition(g)===giftEditionFilter)&&(!term||`${g.name} ${g.description} ${g.court_name} ${g.catalogue_number} ${giftEdition(g)}`.toLowerCase().includes(term)));
- },[giftData.items,giftCourt,giftEditionFilter,query]);
+  return giftData.items.filter(g=>{
+   const owned=inventory.get(g.id);
+   const ownershipMatch=giftOwnership==='all'||(giftOwnership==='owned'&&owned)||(giftOwnership==='missing'&&!owned)||(giftOwnership==='duplicates'&&owned?.copies>1)||(giftOwnership==='ascendable'&&owned?.ascendable);
+   return (giftCourt==='all'||g.court_name===giftCourt)&&(giftEditionFilter==='all'||giftEdition(g)===giftEditionFilter)&&ownershipMatch&&(!term||`${g.name} ${g.description} ${g.court_name} ${g.catalogue_number} ${giftEdition(g)}`.toLowerCase().includes(term));
+  });
+ },[giftData.items,giftCourt,giftEditionFilter,giftOwnership,inventory,query]);
  const giftPages=Math.max(1,Math.ceil(visibleGifts.length/PAGE_SIZE));
  const pagedGifts=visibleGifts.slice((giftPage-1)*PAGE_SIZE,giftPage*PAGE_SIZE);
 
  function choose(next){
-  setCollection(next);setCategory('all');setGiftCourt('all');setGiftEditionFilter('all');setSelected(null);
+  setCollection(next);setCategory('all');setGiftCourt('all');setGiftEditionFilter('all');setGiftOwnership('all');setSelected(null);
  }
 
  return <Frame privateArea>
@@ -63,9 +89,16 @@ export default function Treasury({Frame}) {
     <label>Search gifts<input value={query} onChange={e=>setQuery(e.target.value)} type="search" placeholder="Name, court or catalogue number"/></label>
     <label>Court<select value={giftCourt} onChange={e=>setGiftCourt(e.target.value)}><option value="all">All Palace courts</option>{courts.map(c=><option key={c} value={c}>{c}</option>)}</select></label>
     <label>Painted edition<select value={giftEditionFilter} onChange={e=>setGiftEditionFilter(e.target.value)}><option value="all">All nine editions</option>{giftEditions.map(e=><option key={e} value={e}>{e.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</option>)}</select></label>
+    <label>My collection<select value={giftOwnership} onChange={e=>setGiftOwnership(e.target.value)}><option value="all">All prizes</option><option value="owned">Owned</option><option value="missing">Not yet owned</option><option value="duplicates">Duplicates</option><option value="ascendable">Ready to ascend</option></select></label>
     <label>Preview tier<select value={tier} onChange={e=>setTier(e.target.value)}>{tiers.map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label>
    </div>
    <div className="gift-edition-ribbon" aria-label="Painted gift editions">{giftEditions.map(e=><button key={e} className={giftEditionFilter===e?'active':''} onClick={()=>setGiftEditionFilter(giftEditionFilter===e?'all':e)}>{e.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</button>)}</div>
+   <section className="gift-collection-summary" aria-label="My gift collection progress">
+    <article><strong>{ownedDistinct}</strong><span>of {giftData.count||520} collected</span></article>
+    <article><strong>{totalCopies}</strong><span>total copies</span></article>
+    <article><strong>{duplicateDistinct}</strong><span>duplicate gifts</span></article>
+    <article><strong>{ascendableDistinct}</strong><span>ready to ascend</span></article>
+   </section>
    <div className="gift-court-atlas" aria-label="Palace court atlas">
     {giftCourts.map(c=><button key={c.slug} className={giftCourt===c.name?'active':''} style={{'--court-accent':c.accent,'--court-glow':c.glow}} onClick={()=>setGiftCourt(giftCourt===c.name?'all':c.name)}>
      <span className="court-atlas-sigil">{c.sigil}</span><span><strong>{c.name}</strong><small>{c.motto}</small></span>
@@ -75,15 +108,16 @@ export default function Treasury({Frame}) {
    {giftLoading&&<p className="catalogue-message">Gathering the collection beneath the stars…</p>}
    {giftError&&<p className="catalogue-message error-state">{giftError}</p>}
    {!giftLoading&&!giftError&&<>
-    <div className="gift-catalogue-grid">{pagedGifts.map(g=><article className="gift-catalogue-card" key={g.id}>
-     <PalaceGift gift={g} tier={tier}/>
+    <div className="gift-catalogue-grid">{pagedGifts.map(g=>{const owned=inventory.get(g.id);return <article className={"gift-catalogue-card"+(owned?' is-owned':' is-missing')} key={g.id}>
+     <PalaceGift gift={g} tier={owned?.tiers?.at(-1)||tier} locked={!owned}/>
      <div className="gift-catalogue-copy">
+      <div className="gift-owned-line">{owned?<><b>In your cabinet</b><span>{owned.copies} cop{owned.copies===1?'y':'ies'} · {owned.tiers.join(' / ')}</span></>:<><b>Not yet collected</b><span>Catalogue preview</span></>}</div>
       <small>CATALOGUE {String(g.catalogue_number).padStart(3,'0')} · {giftCourt(g).sigil} {g.court_name} · {giftEdition(g).replace('-',' ')}</small>
       <h2>{g.name}</h2>
       <p>{g.description}</p>
       <footer><span>{g.collection_type||'Palace collectible'}</span><b>{g.upgrade_copies||3} copies to ascend</b></footer>
      </div>
-    </article>)}</div>
+    </article>})}</div>
     {!pagedGifts.length&&<p className="catalogue-message">No Palace gifts match these filters.</p>}
     {giftPages>1&&<nav className="catalogue-pagination" aria-label="Gift catalogue pages">
      <button disabled={giftPage===1} onClick={()=>setGiftPage(p=>Math.max(1,p-1))}>← Previous</button>
