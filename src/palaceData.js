@@ -57,6 +57,7 @@ export async function getChamberSnapshot(userId){
   needClient().from('comic_reading_progress').select('comic_id,episode_id,page_id,completed,updated_at,comics(id,title,slug,cover_path,last_published_at)').eq('user_id',userId).order('updated_at',{ascending:false}).limit(4),
   needClient().from('notifications').select('id,title,body,notice_type,route_name,route_param,metadata,created_at,unread').eq('user_id',userId).eq('dismissed',false).order('created_at',{ascending:false}).limit(6),
   needClient().from('notifications').select('id',{count:'exact',head:true}).eq('user_id',userId).eq('dismissed',false).eq('unread',true),
+  needClient().from('notifications').select('id',{count:'exact',head:true}).eq('user_id',userId).eq('dismissed',false).eq('saved',true),
   needClient().from('message_requests').select('id',{count:'exact',head:true}).eq('recipient_id',userId).eq('status','pending'),
   needClient().from('saved_works').select('work_id',{count:'exact',head:true}).eq('user_id',userId),
   needClient().from('user_gift_inventory').select('gift_id',{count:'exact',head:true}).eq('user_id',userId).gt('copies',0),
@@ -131,18 +132,19 @@ export async function requestAccountDeletion(){const{data,error}=await needClien
 export async function cancelAccountDeletion(requestId){const{data,error}=await needClient().rpc('cancel_account_deletion',{p_request_id:requestId});if(error)throw error;return data}
 
 export async function getActivity(userId){
- const [notices,unreadCount,progress,works,clubs]=await Promise.all([
+ const [notices,unreadCount,savedCount,progress,works,clubs]=await Promise.all([
   needClient().from('notifications').select('id,title,body,notice_type,route_name,route_param,metadata,action_label,unread,saved,created_at').eq('user_id',userId).eq('dismissed',false).order('created_at',{ascending:false}).limit(100),
   needClient().from('notifications').select('id',{count:'exact',head:true}).eq('user_id',userId).eq('dismissed',false).eq('unread',true),
   needClient().from('reading_progress').select('work_id,chapter_id,completed,updated_at').eq('user_id',userId).order('updated_at',{ascending:false}).limit(100),
   needClient().from('works').select('id,publication_status').eq('author_id',userId),
   needClient().from('club_members').select('club_id,status').eq('user_id',userId).eq('status','active')
  ]);
- for(const r of[notices,unreadCount,progress,works,clubs])if(r.error)throw r.error;
+ for(const r of[notices,unreadCount,savedCount,progress,works,clubs])if(r.error)throw r.error;
  return{
   notifications:notices.data||[],
   metrics:{
    unread:unreadCount.count||0,
+   saved:savedCount.count||0,
    readingStops:(progress.data||[]).length,
    finished:(progress.data||[]).filter(x=>x.completed).length,
    publishedWorks:(works.data||[]).filter(x=>x.publication_status==='published').length,
