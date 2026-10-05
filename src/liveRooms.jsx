@@ -1,5 +1,16 @@
 import React,{useEffect,useState}from'react';import{Link,useParams}from'react-router-dom';import{useAuth}from'./auth';import{createDraft,getChamberSnapshot,getMyWorks,getPublishedWorks,updateMyProfile,getSettings,updatePrivacy,updateNotifications,requestAccountExport,requestAccountDeletion,cancelAccountDeletion,getActivity,markNoticeRead,markAllNoticesRead,getLibrary,getTagConstellation,getWorksForTag,getPalaceLife,postMoonlight,createForumThread,getLetters,sendLetter,respondToLetterRequest,getEventsHeritage,getEventProposals,createEventProposal,setProposalChampion,setEventRsvp,saveHeritage,getCouncilRoom,reviewCommunityReport,reviewArchiveRequest,getHonour,updateRankingPreferences,getTreasury,getArchive,saveArchiveRecord,getMemberProfile,setFollow,searchMembers,getWorkBySlug,getChapter,saveWork,createChapter,saveChapter,publishChapter,saveWorkToLibrary,subscribeWork,recordReadingProgress,getWorkCommunity,addComment,moderateComment,addWorkTag,removeWorkTag,proposeTag,searchWorksByTags,getPublishedComics,getComicBySlug,getComicProgress,recordComicProgress,saveComic,subscribeComic,requestComicDownload,setConversationPreference,requestPalaceLetter,reportConversation,getMyComics,createComicDraft,saveComicStudio,createComicEpisode,saveComicEpisode,publishComicEpisode,uploadComicPage,uploadComicCover,deleteComicPage,getMemberBoundary,setMemberBoundary,sendMessageRequest,getLuckyDrawState,claimLuckyDraw,getWritingExtras,inviteWorkCollaborator,respondWorkCollaboration,removeWorkCollaborator,respondComicDownloadRequest,getWorkCollaborationAccess,getLibraryOrganizers,createLibraryCollection,createReadingList,addToLibraryOrganizer,addReaderNote,deleteReaderNote,getEventMemberRooms,respondEventInvitation,setEventReminder,castMemberBallotVote,getSeriesLibrary,createSeries,addWorkToSeries,removeWorkFromSeries}from'./palaceData';
 
+function PalaceDialog({open,title,eyebrow,children,onClose,actions}){
+ if(!open)return null;
+ return <div className="palace-dialog-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)onClose?.()}}>
+  <section className="palace-dialog" role="dialog" aria-modal="true" aria-label={title}>
+   <header><div>{eyebrow&&<p className="eyebrow">{eyebrow}</p>}<h2>{title}</h2></div><button className="dialog-close" onClick={onClose} aria-label="Close">×</button></header>
+   <div className="palace-dialog-body">{children}</div>
+   {actions&&<footer>{actions}</footer>}
+  </section>
+ </div>
+}
+
 function State({children,error,loading,empty}){if(loading)return <div className="live-state">Gathering the room beneath the stars…</div>;if(error)return <div className="live-state error-state"><strong>This room could not be gathered.</strong><span>{error}</span></div>;if(empty)return <div className="live-state">{empty}</div>;return children}
 
 export function ChamberLive({Frame}){
