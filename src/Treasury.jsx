@@ -55,6 +55,13 @@ export default function Treasury({Frame}) {
  const totalCopies=[...inventory.values()].reduce((n,x)=>n+x.copies,0);
  const duplicateDistinct=[...inventory.values()].filter(x=>x.copies>1).length;
  const ascendableDistinct=[...inventory.values()].filter(x=>x.ascendable).length;
+ const courtProgress=useMemo(()=>{
+  const map=new Map(giftCourts.map(c=>[c.name,{owned:0,total:0}]));
+  for(const gift of giftData.items){
+   const row=map.get(gift.court_name)||{owned:0,total:0};row.total+=1;if(inventory.has(gift.id))row.owned+=1;map.set(gift.court_name,row);
+  }
+  return map;
+ },[giftData.items,inventory]);
  const visibleGifts=useMemo(()=>{
   const term=query.trim().toLowerCase();
   return giftData.items.filter(g=>{
@@ -100,9 +107,9 @@ export default function Treasury({Frame}) {
     <article><strong>{ascendableDistinct}</strong><span>ready to ascend</span></article>
    </section>
    <div className="gift-court-atlas" aria-label="Palace court atlas">
-    {giftCourts.map(c=><button key={c.slug} className={giftCourt===c.name?'active':''} style={{'--court-accent':c.accent,'--court-glow':c.glow}} onClick={()=>setGiftCourt(giftCourt===c.name?'all':c.name)}>
-     <span className="court-atlas-sigil">{c.sigil}</span><span><strong>{c.name}</strong><small>{c.motto}</small></span>
-    </button>)}
+    {giftCourts.map(c=>{const progress=courtProgress.get(c.name)||{owned:0,total:0};return <button key={c.slug} className={giftCourt===c.name?'active':''} style={{'--court-accent':c.accent,'--court-glow':c.glow}} onClick={()=>setGiftCourt(giftCourt===c.name?'all':c.name)}>
+     <span className="court-atlas-sigil">{c.sigil}</span><span><strong>{c.name}</strong><small>{c.motto}</small><em>{progress.owned}/{progress.total} collected</em></span>
+    </button>})}
    </div>
       <div className="gift-catalogue-status"><p role="status">{visibleGifts.length} prizes found</p><span>Nine ink-wash editions · twenty Palace courts · Bronze through Emerald ascension.</span></div>
    {giftLoading&&<p className="catalogue-message">Gathering the collection beneath the stars…</p>}
