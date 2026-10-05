@@ -394,6 +394,17 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.activity-notice-actions');
   });
 
+  it('keeps My Library search honest across shelves and resumes exact reading places',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('Search the current Library shelf');
+    expect(live).toContain('filteredSavedComics');
+    expect(live).toContain('filteredStorySubs');
+    expect(live).toContain('filteredWriters');
+    expect(live).toContain('x.chapter_id?"/work/"+x.works.slug+"/chapter/"+x.chapter_id');
+    expect(live).toContain('x.episode_id?"/comic/"+x.comics.slug+"/episode/"+x.episode_id');
+    expect(polish).toContain('.library-search-live>button');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
