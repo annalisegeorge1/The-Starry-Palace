@@ -44,42 +44,83 @@ function State({children,error,loading,empty}){
 export function ChamberLive({Frame}){
  const{session}=useAuth();const[data,setData]=useState(null);const[followingPosts,setFollowingPosts]=useState([]);const[error,setError]=useState('');
  const load=()=>{setError('');Promise.all([getChamberSnapshot(session.user.id),getFollowingProfilePosts(session.user.id)]).then(([snapshot,posts])=>{setData(snapshot);setFollowingPosts(posts)}).catch(e=>setError(e.message))};useEffect(load,[session.user.id]);
- const p=data?.profile;const counts=data?.counts||{};const latest=data?.works?.[0];const currentRead=data?.progress?.[0]?.works;const unread=(data?.notices||[]).filter(n=>n.unread).length;
- return <Frame privateArea><State loading={!data&&!error} error={error}>{p&&<section className="legacy-home-dashboard">
+ const p=data?.profile;const counts=data?.counts||{};const unread=(data?.notices||[]).filter(n=>n.unread).length;
+ const latest=data?.works?.[0];const nextDraft=(data?.works||[]).find(w=>w.publication_status!=='published')||latest;
+ const currentStory=data?.progress?.[0]||null;const currentRead=currentStory?.works;
+ const currentComic=(data?.comicProgress||[]).find(x=>{const newer=x?.updated_at&&x?.comics?.last_published_at&&new Date(x.comics.last_published_at)>new Date(x.updated_at);return!x.completed||newer})||null;
+ const comicHasNew=!!(currentComic?.updated_at&&currentComic?.comics?.last_published_at&&new Date(currentComic.comics.last_published_at)>new Date(currentComic.updated_at));
+ const comicHref=currentComic?.comics?.slug?(comicHasNew?"/comic/"+currentComic.comics.slug:currentComic.episode_id?"/comic/"+currentComic.comics.slug+"/episode/"+currentComic.episode_id:"/comic/"+currentComic.comics.slug):"/comics";
+ const nextEvent=data?.upcomingEvents?.[0]?.event||null;
+ const attention=[
+  counts.collaborationInvites&&{kind:'COLLABORATION',icon:'✎',count:counts.collaborationInvites,title:counts.collaborationInvites+' writing invitation'+(counts.collaborationInvites===1?'':'s'),copy:'A writer has opened a shared creative door for you.',to:'/writing?tab=collaborations'},
+  counts.downloadRequests&&{kind:'ART PERMISSIONS',icon:'◇',count:counts.downloadRequests,title:counts.downloadRequests+' comic download request'+(counts.downloadRequests===1?'':'s'),copy:'Readers are waiting for your permission decision.',to:'/writing?tab=permissions'},
+  counts.eventInvitations&&{kind:'INVITATIONS',icon:'✧',count:counts.eventInvitations,title:counts.eventInvitations+' event invitation'+(counts.eventInvitations===1?'':'s'),copy:'A Palace gathering is waiting for your response.',to:'/events?tab=calendar'},
+  counts.letterRequests&&{kind:'PALACE LETTERS',icon:'✉',count:counts.letterRequests,title:counts.letterRequests+' message request'+(counts.letterRequests===1?'':'s'),copy:'New people are waiting at your correspondence door.',to:'/letters'},
+  unread&&{kind:'ACTIVITY',icon:'✦',count:unread,title:unread+' unread notification'+(unread===1?'':'s'),copy:'Recent Palace activity is waiting to be reviewed.',to:'/activity'}
+ ].filter(Boolean);
+ const scheduled=(data?.scheduledComicEpisodes||[]).slice(0,3);
+ const draftChapters=nextDraft?.chapters||[];const draftWords=draftChapters.reduce((n,ch)=>n+(Number(ch.word_count)||0),0);const draftPublished=draftChapters.filter(ch=>ch.status==='published').length;
+ return <Frame privateArea><State loading={!data&&!error} error={error}>{p&&<section className="legacy-home-dashboard palace-command-centre">
    <nav className="legacy-home-tabs">
     <Link className="active" aria-current="page" to="/chamber">Home</Link>
     <Link to={"/member/"+p.username}>My chamber</Link>
-    <Link to="/activity">Notifications</Link>
-    <Link to="/letters">Messages</Link>
-    <Link to="/events?tab=calendar">Invitations</Link>
+    <Link to="/activity">Notifications{unread?' · '+unread:''}</Link>
+    <Link to="/letters">Messages{counts.letterRequests?' · '+counts.letterRequests:''}</Link>
+    <Link to="/events?tab=calendar">Calendar</Link>
    </nav>
-   <section className="legacy-home-hero palace-belonging-panel"><img className="palace-belonging-art" src="/assets/palace/palace-belonging.gif" alt=""/>
-    <p className="eyebrow">✦ THE STARRY PALACE</p>
-    <h1>Welcome home,<br/><span>{p.display_name||p.username}.</span></h1>
-    <p>Return to your stories, your people, and the rooms waiting for you.</p>
-   </section>
-   <section className="legacy-home-actions palace-home-actions">
-    <Link className="primary-home-action palace-return-card" to={latest?.slug?"/writing/"+latest.slug:"/writing"}>
-      <span className="home-action-icon" aria-hidden="true">✎</span><span><small>WRITING CHAMBER</small><strong>{latest?.title||'Begin a new work'}</strong><em>{latest?'Continue where you left off':'Open a quiet page and start something new'}</em></span><b>Open →</b>
-    </Link>
-    <div className="secondary-home-actions">
-      <Link className="palace-quick-card" to={currentRead?.slug?"/work/"+currentRead.slug:"/reading"}><span aria-hidden="true">▤</span><div><small>READING</small><strong>{currentRead?.title||'Explore Reading Rooms'}</strong></div><b>→</b></Link>
-      <Link className="palace-quick-card" to="/letters"><span aria-hidden="true">✉</span><div><small>LETTERS</small><strong>{counts.letterRequests?counts.letterRequests+' request'+(counts.letterRequests===1?'':'s'):'Palace Letters'}</strong></div><b>→</b></Link>
-      <Link className="palace-quick-card" to="/activity"><span aria-hidden="true">✦</span><div><small>ACTIVITY</small><strong>{unread?unread+' unread':'All quiet'}</strong></div><b>→</b></Link>
-      <Link className="palace-quick-card" to="/palace-life"><span aria-hidden="true">◉</span><div><small>COMMUNITY</small><strong>Palace Life</strong></div><b>→</b></Link>
+
+   <section className="legacy-home-hero palace-belonging-panel palace-command-hero"><img className="palace-belonging-art" src="/assets/palace/palace-belonging.gif" alt=""/>
+    <div><p className="eyebrow">✦ MY PALACE</p><h1>Welcome home,<br/><span>{p.display_name||p.username}.</span></h1><p>Pick up what matters next. Everything else can remain quiet until you are ready.</p></div>
+    <div className="palace-home-pulse" aria-label="Your Palace today">
+      <span><strong>{attention.length}</strong><small>attention</small></span>
+      <span><strong>{counts.scheduledComics||0}</strong><small>scheduled</small></span>
+      <span><strong>{counts.saved||0}</strong><small>saved worlds</small></span>
     </div>
    </section>
-   <section className="legacy-home-stats">
-    <Link to="/library?tab=saved"><strong>{counts.saved||0}</strong><span>saved works</span><small>Your private shelf</small></Link>
-    <Link to="/library?tab=following"><strong>{counts.subscriptions||0}</strong><span>subscriptions</span><small>Work-by-work updates</small></Link>
-    <Link to="/library?tab=writers"><strong>{counts.followedWriters||0}</strong><span>writers followed</span><small>Your chosen voices</small></Link>
-    <Link to="/library?tab=history"><strong>{counts.recentStops||0}</strong><span>recent stops</span><small>Private reading trail</small></Link>
-    <Link to="/library?tab=comics"><strong>{counts.savedComics||0}</strong><span>saved comics</span><small>Your illustrated shelf</small></Link>
+
+   <section className="palace-dashboard-section palace-resume-section">
+    <div className="section-heading"><div><p className="eyebrow">CONTINUE</p><h2>Return to where you were.</h2><p>Your private creative and reading places, gathered without ranking them against anyone else.</p></div><Link to="/library">Open full library →</Link></div>
+    <div className="palace-resume-grid">
+      <Link className="palace-resume-card feature" to={nextDraft?.slug?"/writing/"+nextDraft.slug:"/writing"}>
+        <span className="resume-icon">✎</span><div><small>WRITING CHAMBER</small><h3>{nextDraft?.title||'Begin a new work'}</h3><p>{nextDraft?draftChapters.length+' chapter'+(draftChapters.length===1?'':'s')+' · '+draftWords.toLocaleString()+' words'+(draftPublished?' · '+draftPublished+' published':''):'A quiet page is waiting when you are ready.'}</p></div><b>{nextDraft?'Continue writing →':'Start writing →'}</b>
+      </Link>
+      <Link className="palace-resume-card" to={currentRead?.slug&&currentStory?.chapter_id?"/work/"+currentRead.slug+"/chapter/"+currentStory.chapter_id:currentRead?.slug?"/work/"+currentRead.slug:"/reading"}>
+        <span className="resume-icon">▤</span><div><small>STORY READING</small><h3>{currentRead?.title||'Find your next world'}</h3><p>{currentStory?Math.round(Number(currentStory.progress_percent)||0)+'% · your place is saved privately':'The Reading Rooms are ready when you are.'}</p></div><b>{currentStory?'Continue reading →':'Browse stories →'}</b>
+      </Link>
+      <Link className={"palace-resume-card"+(comicHasNew?' has-new-panels':'')} to={comicHref}>
+        <span className="resume-icon">◈</span><div><small>{comicHasNew?'NEW PANELS':'COMIC READING'}</small><h3>{currentComic?.comics?.title||'Enter the Comics Gallery'}</h3><p>{comicHasNew?'A newer episode arrived after your last reading place.':currentComic?'Your last panel is waiting for you.':'Illustrated worlds are gathered in the Gallery.'}</p></div><b>{comicHasNew?'Read new →':currentComic?'Continue comic →':'Browse comics →'}</b>
+      </Link>
+    </div>
    </section>
-   {followingPosts.length>0&&<section className="home-following-posts"><div className="section-heading"><div><p className="eyebrow">FROM PEOPLE YOU CHOSE</p><h2>Quiet notes from followed chambers.</h2><p>No ranking. No trending score. Just recent posts from people you follow.</p></div><Link to="/library?tab=writers">Writers I Follow →</Link></div><div className="home-post-strip">{followingPosts.slice(0,6).map(post=><article key={post.id}><div className="post-author-row"><div className="mini-avatar">{post.profiles?.avatar_url?<img loading="lazy" decoding="async" src={post.profiles.avatar_url} alt=""/>:(post.profiles?.display_name||post.profiles?.username||'P').slice(0,1).toUpperCase()}</div><div><Link to={post.profiles?.username?"/member/"+post.profiles.username:"/search"}>{post.profiles?.display_name||post.profiles?.username||'Palace member'}</Link><small>{post.profiles?.title||'Palace member'} · {new Date(post.created_at).toLocaleDateString(undefined,{month:'short',day:'numeric'})}</small></div></div><p>{post.body}</p></article>)}</div></section>}
-   <section className="legacy-home-lower">
-    <article><p className="eyebrow">NOTIFICATIONS</p><h2>{data.notices?.[0]?.title||'The Palace is quiet.'}</h2><p>{data.notices?.[0]?.body||'New activity will gather here when it arrives.'}</p><Link to="/activity">Open notifications →</Link></article>
-    <article><p className="eyebrow">INVITATIONS</p><h2>{counts.letterRequests||0} waiting</h2><p>Letter requests, event invitations and collaboration doors stay gathered instead of scattered.</p><Link to="/events?tab=calendar">Review invitations →</Link></article>
+
+   <section className="palace-dashboard-section palace-attention-section">
+    <div className="section-heading"><div><p className="eyebrow">NEEDS YOUR ATTENTION</p><h2>{attention.length?'A few doors are waiting.':'Nothing urgent is pulling at you.'}</h2><p>{attention.length?'Only items that need a response or review appear here.':'You can create, read or wander the Palace without an obligation queue.'}</p></div>{attention.length>0&&<span className="attention-total">{attention.reduce((n,x)=>n+Number(x.count||0),0)} waiting</span>}</div>
+    {attention.length?<div className="palace-attention-grid">{attention.slice(0,5).map(item=><Link to={item.to} key={item.kind}><span>{item.icon}</span><div><small>{item.kind}</small><strong>{item.title}</strong><p>{item.copy}</p></div><b>Review →</b></Link>)}</div>:<div className="palace-clear-state"><span>☾<b>✦</b></span><div><strong>Your desk is clear.</strong><p>New invitations, permissions, letters and notices will gather here only when they need you.</p></div></div>}
+   </section>
+
+   <section className="palace-dashboard-section palace-coming-up">
+    <div className="section-heading"><div><p className="eyebrow">COMING UP</p><h2>Your next Palace moments.</h2><p>Scheduled creator releases and gatherings you chose to attend or follow.</p></div><Link to="/events?tab=calendar">Open calendar →</Link></div>
+    <div className="palace-coming-grid">
+      <article className="palace-next-event">
+        <span className="coming-icon">✧</span><div><small>NEXT EVENT</small><h3>{nextEvent?.title||'Your calendar is open.'}</h3><p>{nextEvent?.starts_at?new Date(nextEvent.starts_at).toLocaleString(undefined,{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Events you mark Going or Interested will appear here.'}</p></div>{nextEvent?<Link to="/events?tab=calendar">View calendar →</Link>:<Link to="/events">Explore events →</Link>}
+      </article>
+      <article className="palace-release-desk"><div className="release-desk-head"><span>◷</span><div><small>CREATOR RELEASE DESK</small><h3>{scheduled.length?scheduled.length+' upcoming comic release'+(scheduled.length===1?'':'s'):'No timed release waiting.'}</h3></div></div>{scheduled.length?<div className="release-desk-list">{scheduled.map(ep=><Link key={ep.id} to={"/comics/studio#comic-"+ep.comic_id}><span>{new Date(ep.scheduled_for).toLocaleDateString(undefined,{month:'short',day:'numeric'})}</span><div><strong>{ep.title}</strong><small>{ep.comics?.title} · {new Date(ep.scheduled_for).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'})}</small></div><b>→</b></Link>)}</div>:<p>When you schedule comic episodes, the nearest releases will gather here automatically.</p>}<Link className="release-desk-link" to="/comics/studio">Open Comic Studio →</Link></article>
+    </div>
+   </section>
+
+   <section className="legacy-home-stats palace-home-stats">
+    <Link to="/library?tab=saved"><strong>{counts.saved||0}</strong><span>saved works</span><small>Your private shelf</small></Link>
+    <Link to="/library?tab=comics"><strong>{counts.savedComics||0}</strong><span>saved comics</span><small>Your illustrated shelf</small></Link>
+    <Link to="/library?tab=following"><strong>{counts.subscriptions||0}</strong><span>story updates</span><small>Works you chose to follow</small></Link>
+    <Link to="/library?tab=writers"><strong>{counts.followedWriters||0}</strong><span>writers followed</span><small>Your chosen voices</small></Link>
+    <Link to="/treasury"><strong>{counts.gifts||0}</strong><span>treasures held</span><small>Your Royal Treasury</small></Link>
+   </section>
+
+   {followingPosts.length>0&&<section className="home-following-posts palace-dashboard-section"><div className="section-heading"><div><p className="eyebrow">FROM PEOPLE YOU CHOSE</p><h2>Quiet notes from followed chambers.</h2><p>No ranking. No trending score. Just recent posts from people you follow.</p></div><Link to="/library?tab=writers">Writers I Follow →</Link></div><div className="home-post-strip">{followingPosts.slice(0,6).map(post=><article key={post.id}><div className="post-author-row"><div className="mini-avatar">{post.profiles?.avatar_url?<img loading="lazy" decoding="async" src={post.profiles.avatar_url} alt=""/>:(post.profiles?.display_name||post.profiles?.username||'P').slice(0,1).toUpperCase()}</div><div><Link to={post.profiles?.username?"/member/"+post.profiles.username:"/search"}>{post.profiles?.display_name||post.profiles?.username||'Palace member'}</Link><small>{post.profiles?.title||'Palace member'} · {new Date(post.created_at).toLocaleDateString(undefined,{month:'short',day:'numeric'})}</small></div></div><p>{post.body}</p></article>)}</div></section>}
+
+   <section className="legacy-home-lower palace-home-footer-panels">
+    <article><p className="eyebrow">LATEST ACTIVITY</p><h2>{data.notices?.[0]?.title||'The Palace is quiet.'}</h2><p>{data.notices?.[0]?.body||'New activity will gather here when it arrives.'}</p><Link to="/activity">Open notifications →</Link></article>
+    <article><p className="eyebrow">YOUR CHAMBER</p><h2>Make the Palace feel like yours.</h2><p>Update your public chamber, showcases and member presence without changing your private reading or draft spaces.</p><Link to={"/member/"+p.username}>Visit my chamber →</Link></article>
    </section>
  </section>}</State></Frame>
 }
