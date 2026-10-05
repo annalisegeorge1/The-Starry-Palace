@@ -251,3 +251,7 @@ export async function respondComicDownloadRequest(userId,requestId,status){
  if(!['approved','declined'].includes(status))throw new Error('Unknown permission response.');
  const{data,error}=await needClient().from('comic_download_requests').update({status,decided_at:new Date().toISOString()}).eq('id',requestId).select().single();if(error)throw error;return data
 }
+
+export async function getWorkCollaborationAccess(userId,workId){
+ const{data,error}=await needClient().from('work_collaborators').select('work_id,user_id,role,status,invited_by').eq('work_id',workId).eq('user_id',userId).maybeSingle();if(error)throw error;return data
+}
