@@ -346,6 +346,20 @@ describe('Starry Palace launch safety',()=>{
     expect(sql).toContain("'work',v_slug,'Read chapter'");
   });
 
+  it('keeps long prose works manageable with a searchable chapter manager',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain("const[chapterQuery,setChapterQuery]=useState('')");
+    expect(live).toContain("const[chapterView,setChapterView]=useState('all')");
+    expect(live).toContain('chapterMatchesView');
+    expect(live).toContain('shownChapters');
+    expect(live).toContain('CHAPTER MANAGER');
+    expect(live).toContain('<option value="ready">Ready to publish</option>');
+    expect(live).toContain('<option value="scheduled">Scheduled</option>');
+    expect(live).toContain('No chapters in this view.');
+    expect(polish).toContain('/* Writing Chamber chapter manager */');
+    expect(polish).toContain('.writing-chapter-manager-tools');
+  });
+
   it('keeps Palace Letters searchable, unread-aware and draft-safe',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
@@ -629,8 +643,8 @@ describe('Starry Palace launch safety',()=>{
     const polish=read('src/polish.css');
     expect(main).toContain('roomCssMatches');
     expect(main).toContain('palace-room-css-sync-reload');
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100510');
-    expect(polish).toContain('--palace-room-css-version:2026100510');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100511');
+    expect(polish).toContain('--palace-room-css-version:2026100511');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
