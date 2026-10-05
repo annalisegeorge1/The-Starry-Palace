@@ -33,7 +33,12 @@ function PalaceDialog({open,title,eyebrow,children,onClose,actions}){
  </div>
 }
 
-function State({children,error,loading,empty}){if(loading)return <div className="live-state">Gathering the room beneath the stars…</div>;if(error)return <div className="live-state error-state"><strong>This room could not be gathered.</strong><span>{error}</span></div>;if(empty)return <div className="live-state">{empty}</div>;return children}
+function State({children,error,loading,empty}){
+ if(loading)return <div className="live-state palace-state palace-state-loading" role="status"><span className="palace-state-sigil" aria-hidden="true">☾<b>✦</b></span><div><strong>Gathering the room beneath the stars…</strong><small>Your place will remain here while the Palace opens.</small></div></div>;
+ if(error)return <div className="live-state error-state palace-state palace-state-error" role="alert"><span className="palace-state-sigil" aria-hidden="true">!</span><div><strong>This room could not be gathered.</strong><small>{error}</small><button className="outline-button" onClick={()=>window.location.reload()}>Try this room again</button></div></div>;
+ if(empty)return <div className="live-state palace-state palace-state-empty">{typeof empty==='string'?<><span className="palace-state-sigil" aria-hidden="true">☾</span><div><strong>A quiet room.</strong><small>{empty}</small></div></>:empty}</div>;
+ return children
+}
 
 export function ChamberLive({Frame}){
  const{session}=useAuth();const[data,setData]=useState(null);const[followingPosts,setFollowingPosts]=useState([]);const[error,setError]=useState('');
