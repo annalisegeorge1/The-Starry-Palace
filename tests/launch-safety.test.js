@@ -40,6 +40,11 @@ describe('Starry Palace launch safety',()=>{
     expect(data).toContain("from('member_ballot_options').select('id,ballot_id,label,description,position')");
   });
 
+  it('keeps Tag Constellation links on the live route',()=>{
+    expect(live).not.toContain('/tag-search');
+    expect(main).toContain('<Route path="/tags"');
+  });
+
   it('uses the schema-approved comic permission scope',()=>{
     expect(live).toContain("'offline_reader_copy'");
     expect(live).not.toContain("requestComicDownload(session.user.id,data.id,'images'");
