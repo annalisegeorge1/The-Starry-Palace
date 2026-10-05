@@ -463,6 +463,15 @@ export async function getGiftCatalogue(){
  const{data,error,count}=await needClient().from('virtual_gifts').select('id,gift_key,catalogue_number,name,description,court_name,collection_type,art_status,upgrade_copies',{count:'exact'}).eq('catalogue_status','catalogued').eq('reward_eligible',true).order('catalogue_number');
  if(error)throw error;return{items:data||[],count:count||data?.length||0}
 }
+export async function ascendPalaceGift(giftId,fromTier){
+ const{data,error}=await needClient().rpc('ascend_palace_gift',{p_gift_id:giftId,p_from_tier:fromTier});if(error)throw error;return data?.[0]||null
+}
+export async function setProfileGiftShowcase(giftId,displayTier,position){
+ const{data,error}=await needClient().rpc('set_profile_gift_showcase',{p_gift_id:giftId,p_display_tier:displayTier,p_position:position});if(error)throw error;return data
+}
+export async function removeProfileGiftShowcase(giftId){
+ const{data,error}=await needClient().rpc('remove_profile_gift_showcase',{p_gift_id:giftId});if(error)throw error;return data
+}
 export async function getArchive(userId=null){
  const{data,error}=await needClient().from('archive_records').select('id,accession_number,slug,title,creator_name,record_nature,category,summary,original_language,languages,surviving_extent,known_gaps,provenance_summary,rights_status,hosting_basis,host_mode,continuation_status,verified_at,updated_at').eq('publication_status','published').order('updated_at',{ascending:false}).limit(100);
  if(error)throw error;const rows=data||[];if(!userId||!rows.length)return rows;
