@@ -132,7 +132,7 @@ export async function cancelAccountDeletion(requestId){const{data,error}=await n
 
 export async function getActivity(userId){
  const [notices,progress,works,clubs]=await Promise.all([
-  needClient().from('notifications').select('id,title,body,notice_type,route_name,route_param,unread,saved,created_at').eq('user_id',userId).eq('dismissed',false).order('created_at',{ascending:false}).limit(50),
+  needClient().from('notifications').select('id,title,body,notice_type,route_name,route_param,metadata,action_label,unread,saved,created_at').eq('user_id',userId).eq('dismissed',false).order('created_at',{ascending:false}).limit(50),
   needClient().from('reading_progress').select('work_id,chapter_id,completed,updated_at').eq('user_id',userId).order('updated_at',{ascending:false}).limit(100),
   needClient().from('works').select('id,publication_status').eq('author_id',userId),
   needClient().from('club_members').select('club_id,status').eq('user_id',userId).eq('status','active')
