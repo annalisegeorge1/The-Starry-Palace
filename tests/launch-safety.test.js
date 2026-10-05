@@ -449,6 +449,19 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.organizer-item-row');
   });
 
+  it('keeps Writing Chamber revision snapshots separate from autosave',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('getChapterSnapshots');
+    expect(data).toContain('createChapterSnapshot');
+    expect(data).toContain('deleteChapterSnapshot');
+    expect(live).toContain('Revision snapshots');
+    expect(live).toContain('Create snapshot');
+    expect(live).toContain('Restore to editor');
+    expect(live).toContain('save to Palace when ready');
+    expect(polish).toContain('.snapshot-list');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
