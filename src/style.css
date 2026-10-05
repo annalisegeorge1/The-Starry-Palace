@@ -1085,3 +1085,20 @@ linear-gradient(145deg,#2d245f,#151c3c 58%,#0c1225);box-shadow:inset 0 0 0 1px r
 .club-door a{color:#abcaff;text-decoration:none;font-weight:700}
 @media(max-width:860px){.club-interior-hero{grid-template-columns:72px minmax(0,1fr)}.club-interior-hero>button{grid-column:2;justify-self:start}.club-poll-grid{grid-template-columns:1fr}.club-member-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:620px){.club-interior-page{padding-left:14px;padding-right:14px}.club-interior-hero{grid-template-columns:1fr;text-align:center}.club-interior-sigil{margin:auto}.club-interior-meta{justify-content:center}.club-interior-hero>button{grid-column:auto;justify-self:stretch}.club-guidelines{grid-template-columns:38px minmax(0,1fr)}.club-guidelines>a{grid-column:2}.club-post-compose>div{grid-template-columns:1fr}.club-member-grid{grid-template-columns:1fr}.club-poll-grid footer{align-items:flex-start;flex-direction:column}}
+
+
+/* Painted Lucky Draw preview cabinet */
+.draw-preview-cabinet{display:grid;gap:.8rem;border:1px solid var(--line);border-radius:22px;padding:1rem;background:linear-gradient(135deg,rgba(54,67,111,.14),rgba(78,55,126,.1))}
+.draw-preview-cabinet>header{display:flex;align-items:end;justify-content:space-between;gap:1rem}
+.draw-preview-cabinet h3{font-family:Georgia,'Times New Roman',serif;font-weight:500;margin:.2rem 0 0}
+.draw-preview-cabinet>header>a{font-size:.78rem;white-space:nowrap}
+.draw-preview-cabinet>div{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.6rem}
+.draw-preview-cabinet article{display:flex;align-items:center;gap:.7rem;min-width:0;padding:.6rem;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.draw-preview-cabinet article>.palace-gift-art{flex:0 0 64px;width:64px;min-height:64px;height:64px}
+.draw-preview-cabinet article>span{display:grid;min-width:0}
+.draw-preview-cabinet article strong{font:500 .82rem Georgia,'Times New Roman',serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.draw-preview-cabinet article small{font-size:.62rem;opacity:.58;margin-top:.2rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.draw-history-live article{grid-template-columns:58px 110px minmax(0,1fr) auto;align-items:center}
+.draw-history-live article>.palace-gift-art{width:54px;min-height:54px;height:54px;border-radius:14px}
+@media(max-width:1050px){.draw-preview-cabinet>div{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.draw-preview-cabinet>header{align-items:start;flex-direction:column}.draw-preview-cabinet>div{grid-template-columns:1fr}.draw-history-live article{grid-template-columns:54px 1fr}.draw-history-live article>strong,.draw-history-live article>small{grid-column:2}}
