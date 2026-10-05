@@ -18,11 +18,11 @@ const rooms=[
 
 function Frame({children,privateArea=false}){
  const {session}=useAuth();
- const [navOpen,setNavOpen]=useState(false);\n const [daylight,setDaylight]=useState(()=>localStorage.getItem('palace-theme')==='daylight');
+ const [navOpen,setNavOpen]=useState(false);
  const [daylight,setDaylight]=useState(()=>localStorage.getItem('palace-theme')==='daylight');
  const location=useLocation();
- React.useEffect(()=>setNavOpen(false),[location.pathname]);\n React.useEffect(()=>localStorage.setItem('palace-theme',daylight?'daylight':'night'),[daylight]);
- React.useEffect(()=>{localStorage.setItem('palace-theme',daylight?'daylight':'night')},[daylight]);
+ React.useEffect(()=>setNavOpen(false),[location.pathname]);
+ React.useEffect(()=>localStorage.setItem('palace-theme',daylight?'daylight':'night'),[daylight]);
  const nav=[
   ...(session?[['✦','My Chamber','/chamber']]:[]),
   ['◈','Reading Rooms','/reading'],
