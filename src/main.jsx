@@ -4,6 +4,18 @@ import { BrowserRouter, Link, NavLink, Navigate, Route, Routes, useLocation, use
 import { AuthProvider, ProtectedRoute, useAuth } from './auth';
 import { configured, supabase } from './supabase';
 import './style.css';
+
+if(typeof window!=='undefined'){
+ window.addEventListener('vite:preloadError',event=>{
+  event.preventDefault();
+  const key='palace-preload-reload';
+  const last=Number(sessionStorage.getItem(key)||0);
+  if(Date.now()-last>15000){
+   sessionStorage.setItem(key,String(Date.now()));
+   window.location.reload();
+  }
+ });
+}
 const lazyRoom=name=>React.lazy(()=>import('./liveRooms').then(mod=>({default:mod[name]})));
 const ChamberLive=lazyRoom('ChamberLive'),ReadingLive=lazyRoom('ReadingLive'),WritingLive=lazyRoom('WritingLive'),SettingsLive=lazyRoom('SettingsLive'),ActivityLive=lazyRoom('ActivityLive'),LibraryLive=lazyRoom('LibraryLive'),PalaceLifeLive=lazyRoom('PalaceLifeLive'),LettersLive=lazyRoom('LettersLive'),EventsLive=lazyRoom('EventsLive'),TreasuryLive=lazyRoom('TreasuryLive'),LostWorksLive=lazyRoom('LostWorksLive'),MemberProfileLive=lazyRoom('MemberProfileLive'),SearchLive=lazyRoom('SearchLive'),WorkLive=lazyRoom('WorkLive'),ChapterLive=lazyRoom('ChapterLive'),WorkStudioLive=lazyRoom('WorkStudioLive'),TagSearchLive=lazyRoom('TagSearchLive'),HonourLive=lazyRoom('HonourLive'),CouncilLive=lazyRoom('CouncilLive'),CodeLive=lazyRoom('CodeLive'),ComicsLive=lazyRoom('ComicsLive'),ComicLive=lazyRoom('ComicLive'),ComicEpisodeLive=lazyRoom('ComicEpisodeLive'),ComicStudioLive=lazyRoom('ComicStudioLive'),SeriesLive=lazyRoom('SeriesLive');
 const TreasuryCatalogue=React.lazy(()=>import('./Treasury'));
