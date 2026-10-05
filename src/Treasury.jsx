@@ -4,7 +4,7 @@ import badges from './badges.json';
 import originals from './originalBadges.json';
 import PalaceBadge from './PalaceBadge';
 import PalaceGift, { giftCourt, giftCourts, giftEdition, giftEditions } from './PalaceGift';
-import { ascendPalaceGift, getGiftCatalogue, getTreasury, removeProfileGiftShowcase, setProfileGiftShowcase } from './palaceData';
+import { ascendPalaceGift, createGiftTradeOffer, getGiftCatalogue, getGiftTrades, getTreasury, removeProfileGiftShowcase, respondGiftTradeOffer, searchMembers, setProfileGiftShowcase } from './palaceData';
 import './treasury.css';
 import {buildInventory} from './treasuryCollection';
 
@@ -37,12 +37,18 @@ export default function Treasury({Frame}) {
  const [showcaseGift,setShowcaseGift]=useState(null);
  const [showcaseTier,setShowcaseTier]=useState('bronze');
  const [showcasePosition,setShowcasePosition]=useState(1);
+ const [trades,setTrades]=useState([]);
+ const [tradeOpen,setTradeOpen]=useState(false);
+ const [tradeMemberQuery,setTradeMemberQuery]=useState('');
+ const [tradeMembers,setTradeMembers]=useState([]);
+ const [tradeForm,setTradeForm]=useState({recipientId:'',offeredKey:'',requestedGiftId:'',requestedTier:'bronze',note:''});
+ const [tradeBusy,setTradeBusy]=useState('');
 
  useEffect(()=>{
   let live=true;
   setGiftLoading(true);setGiftError('');
-  Promise.all([getGiftCatalogue(),getTreasury(session.user.id)]).then(([catalogue,owned])=>{
-   if(!live)return;setGiftData(catalogue);setOwnedData(owned);
+  Promise.all([getGiftCatalogue(),getTreasury(session.user.id),getGiftTrades(session.user.id)]).then(([catalogue,owned,tradeRows])=>{
+   if(!live)return;setGiftData(catalogue);setOwnedData(owned);setTrades(tradeRows);
   }).catch(error=>{if(live)setGiftError(error.message)}).finally(()=>{if(live)setGiftLoading(false)});
   return()=>{live=false};
  },[session.user.id]);
@@ -58,6 +64,9 @@ export default function Treasury({Frame}) {
  const totalCopies=[...inventory.values()].reduce((n,x)=>n+x.copies,0);
  const duplicateDistinct=[...inventory.values()].filter(x=>x.hasDuplicates).length;
  const ascendableDistinct=[...inventory.values()].filter(x=>x.ascendable).length;
+ const duplicateRows=(ownedData.gifts||[]).filter(x=>Number(x.copies)>=2);
+ const pendingIncoming=trades.filter(x=>x.recipient_id===session.user.id&&x.status==='pending');
+ const pendingOutgoing=trades.filter(x=>x.offerer_id===session.user.id&&x.status==='pending');
  const courtProgress=useMemo(()=>{
   const map=new Map(giftCourts.map(c=>[c.name,{owned:0,total:0}]));
   for(const gift of giftData.items){
@@ -97,6 +106,21 @@ export default function Treasury({Frame}) {
   if(!sourceTier)return;
   try{setGiftAction('ascend:'+gift.id);setGiftError('');await ascendPalaceGift(gift.id,sourceTier);await reloadTreasury()}catch(e){setGiftError(e.message)}finally{setGiftAction('')}
  }
+ async function reloadTrades(){setTrades(await getGiftTrades(session.user.id))}
+ async function findTradeMembers(){
+  try{setGiftError('');setTradeMembers(await searchMembers(tradeMemberQuery))}catch(e){setGiftError(e.message)}
+ }
+ function openTrade(){
+  const first=duplicateRows[0];setTradeForm({recipientId:'',offeredKey:first?first.virtual_gifts.id+':'+first.tier:'',requestedGiftId:'',requestedTier:'bronze',note:''});setTradeMemberQuery('');setTradeMembers([]);setTradeOpen(true)
+ }
+ async function submitTrade(){
+  const[offeredGiftId,offeredTier]=String(tradeForm.offeredKey||'').split(':');
+  if(!tradeForm.recipientId||!offeredGiftId||!tradeForm.requestedGiftId)return;
+  try{setTradeBusy('create');setGiftError('');await createGiftTradeOffer({recipientId:tradeForm.recipientId,offeredGiftId,offeredTier,requestedGiftId:tradeForm.requestedGiftId,requestedTier:tradeForm.requestedTier,note:tradeForm.note});await reloadTrades();setTradeOpen(false)}catch(e){setGiftError(e.message)}finally{setTradeBusy('')}
+ }
+ async function respondTrade(id,action){
+  try{setTradeBusy(action+':'+id);setGiftError('');await respondGiftTradeOffer(id,action);await Promise.all([reloadTreasury(),reloadTrades()])}catch(e){setGiftError(e.message)}finally{setTradeBusy('')}
+ }
 
  return <Frame privateArea>
   <section className="room-title treasury-catalogue-head">
@@ -130,6 +154,8 @@ export default function Treasury({Frame}) {
     <article><strong>{duplicateDistinct}</strong><span>duplicate gifts</span></article>
     <article><strong>{ascendableDistinct}</strong><span>ready to ascend</span></article>
    </section>
+   <section className="gift-exchange-desk"><div><p className="eyebrow">DUPLICATE EXCHANGE</p><h2>Trade without giving up your only copy.</h2><p>Trades exchange one duplicate tier for one duplicate tier. Ownership is checked again when the recipient accepts.</p></div><div className="gift-exchange-stats"><span><strong>{pendingIncoming.length}</strong> incoming</span><span><strong>{pendingOutgoing.length}</strong> outgoing</span><button disabled={!duplicateRows.length} onClick={openTrade}>{duplicateRows.length?'Propose a trade':'No duplicates to trade'}</button></div></section>
+   {(pendingIncoming.length>0||pendingOutgoing.length>0)&&<section className="gift-trade-list">{[...pendingIncoming,...pendingOutgoing].map(t=>{const incoming=t.recipient_id===session.user.id;return <article key={t.id}><div><small>{incoming?'INCOMING':'OUTGOING'} · {t.status}</small><h3>{incoming?(t.offerer?.display_name||t.offerer?.username||'Palace member'):(t.recipient?.display_name||t.recipient?.username||'Palace member')}</h3><p><strong>{t.offeredGift?.name||'Treasure'} · {t.offered_tier}</strong><span> ⇄ </span><strong>{t.requestedGift?.name||'Treasure'} · {t.requested_tier}</strong></p>{t.note&&<blockquote>{t.note}</blockquote>}</div><div>{incoming?<><button disabled={!!tradeBusy} onClick={()=>respondTrade(t.id,'accept')}>Accept trade</button><button className="quiet-button" disabled={!!tradeBusy} onClick={()=>respondTrade(t.id,'decline')}>Decline</button></>:<button className="quiet-button" disabled={!!tradeBusy} onClick={()=>respondTrade(t.id,'cancel')}>Cancel offer</button>}</div></article>})}</section>}
    <div className="gift-court-atlas" aria-label="Palace court atlas">
     {giftCourts.map(c=>{const progress=courtProgress.get(c.name)||{owned:0,total:0};return <button key={c.slug} aria-pressed={selectedCourt===c.name} className={selectedCourt===c.name?'active':''} style={{'--court-accent':c.accent,'--court-glow':c.glow}} onClick={()=>setGiftCourt(selectedCourt===c.name?'all':c.name)}>
      <span className="court-atlas-sigil">{c.sigil}</span><span><strong>{c.name}</strong><small>{c.motto}</small><em>{progress.owned}/{progress.total} collected</em></span>
@@ -175,6 +201,7 @@ export default function Treasury({Frame}) {
    {!visibleBadges.length&&<p>No badges match these filters. Try another name or category.</p>}
   </>}
  {artPreview&&<BadgePreview family={artPreview} tier={tier} close={()=>setArtPreview(null)}/>}
+ {tradeOpen&&<div className="treasury-showcase-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setTradeOpen(false)}}><section className="treasury-showcase-dialog gift-trade-dialog" role="dialog" aria-modal="true" aria-label="Propose duplicate trade"><header><div><p className="eyebrow">DUPLICATE EXCHANGE</p><h2>Propose a treasure trade</h2></div><button aria-label="Close trade editor" onClick={()=>setTradeOpen(false)}>×</button></header><div className="gift-trade-form"><label>Find a member<div className="trade-member-search"><input value={tradeMemberQuery} onChange={e=>setTradeMemberQuery(e.target.value)} placeholder="Search display name or handle"/><button onClick={findTradeMembers}>Search</button></div></label>{tradeMembers.length>0&&<div className="trade-member-results">{tradeMembers.filter(m=>m.id!==session.user.id).map(m=><button key={m.id} className={tradeForm.recipientId===m.id?'active':''} onClick={()=>setTradeForm(v=>({...v,recipientId:m.id}))}><strong>{m.display_name||m.username}</strong><small>@{m.username}</small></button>)}</div>}<label>You offer<select value={tradeForm.offeredKey} onChange={e=>setTradeForm(v=>({...v,offeredKey:e.target.value}))}>{duplicateRows.map(x=><option key={x.virtual_gifts.id+':'+x.tier} value={x.virtual_gifts.id+':'+x.tier}>{x.virtual_gifts.name} · {x.tier} · {x.copies} copies</option>)}</select></label><label>You request<select value={tradeForm.requestedGiftId} onChange={e=>setTradeForm(v=>({...v,requestedGiftId:e.target.value}))}><option value="">Choose a treasure</option>{giftData.items.map(g=><option key={g.id} value={g.id}>{String(g.catalogue_number).padStart(3,'0')} · {g.name}</option>)}</select></label><label>Requested tier<select value={tradeForm.requestedTier} onChange={e=>setTradeForm(v=>({...v,requestedTier:e.target.value}))}>{tiers.map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label><label>Note <small>optional</small><textarea maxLength="500" rows="3" value={tradeForm.note} onChange={e=>setTradeForm(v=>({...v,note:e.target.value}))} placeholder="Why this exchange might suit both collections."/></label><p>The recipient must also have at least two copies of the requested tier when accepting. Both members keep one copy after the exchange.</p></div><footer><button className="quiet-button" onClick={()=>setTradeOpen(false)}>Cancel</button><button disabled={tradeBusy==='create'||!tradeForm.recipientId||!tradeForm.offeredKey||!tradeForm.requestedGiftId} onClick={submitTrade}>{tradeBusy==='create'?'Sending…':'Send trade offer'}</button></footer></section></div>}
  {showcaseGift&&<div className="treasury-showcase-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setShowcaseGift(null)}}><section className="treasury-showcase-dialog" role="dialog" aria-modal="true" aria-label="Choose showcase slot"><header><div><p className="eyebrow">CHAMBER SHOWCASE</p><h2>{showcaseGift.name}</h2></div><button aria-label="Close showcase editor" onClick={()=>setShowcaseGift(null)}>×</button></header><div className="treasury-showcase-preview"><PalaceGift gift={showcaseGift} tier={showcaseTier}/></div><div className="treasury-showcase-controls"><label>Displayed tier<select value={showcaseTier} onChange={e=>setShowcaseTier(e.target.value)}>{(inventory.get(showcaseGift.id)?.tiers||[]).map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label><label>Showcase slot<select value={showcasePosition} onChange={e=>setShowcasePosition(Number(e.target.value))}>{Array.from({length:12},(_,i)=>i+1).map(pos=><option key={pos} value={pos}>Slot {pos}{ownedData.giftShowcase?.some(x=>x.position===pos&&x.gift_id!==showcaseGift.id)?' · replaces current':''}</option>)}</select></label></div><p>Changing a slot replaces the treasure currently displayed there. Your underlying collection is never deleted.</p><footer><button className="quiet-button" onClick={()=>setShowcaseGift(null)}>Cancel</button><button disabled={giftAction==='showcase:'+showcaseGift.id} onClick={saveShowcase}>{giftAction==='showcase:'+showcaseGift.id?'Saving…':'Save to chamber'}</button></footer></section></div>}
  </Frame>;
 }
