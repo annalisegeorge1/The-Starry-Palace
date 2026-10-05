@@ -674,6 +674,20 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.comic-follow-frequency');
   });
 
+  it('reopens finished comics when newer panels are published',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('comics(id,title,slug,cover_path,last_published_at)');
+    expect(live).toContain('const hasNewPanels=');
+    expect(live).toContain('NEW PANELS ARE WAITING');
+    expect(live).toContain('A newer episode was published after you finished.');
+    expect(live).toContain('comicHasNew');
+    expect(live).toContain('comicFinished');
+    expect(live).toContain('New panels available');
+    expect(polish).toContain('.comic-reader-flags span.new');
+    expect(polish).toContain('.comic-resume-strip.new-panels');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
