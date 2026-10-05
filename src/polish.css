@@ -4820,3 +4820,62 @@ img{max-width:100%}
   .palace-attention-grid>a{padding:.7rem}
   .palace-next-event,.palace-release-desk{padding:.8rem}
 }
+
+
+.palace-home-shortcuts{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:.45rem;
+}
+.palace-home-shortcuts>a{
+  min-width:0;
+  min-height:74px;
+  padding:.65rem .5rem;
+  border:1px solid var(--palace-border);
+  border-radius:15px;
+  background:rgba(255,255,255,.018);
+  color:inherit;
+  text-decoration:none;
+  display:grid;
+  place-items:center;
+  align-content:center;
+  gap:.3rem;
+  text-align:center;
+  transition:transform var(--palace-motion),border-color var(--palace-motion),background var(--palace-motion);
+}
+.palace-home-shortcuts>a:hover{
+  transform:translateY(-2px);
+  border-color:var(--palace-border-strong);
+  background:rgba(95,80,153,.07);
+}
+.palace-home-shortcuts span{
+  font-size:1.15rem;
+  line-height:1;
+  color:#cbd4f2;
+}
+.palace-home-shortcuts small{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  max-width:100%;
+  color:var(--palace-muted);
+  font-size:.58rem;
+}
+.daylight .palace-home-shortcuts>a{
+  background:rgba(255,255,255,.76);
+}
+.daylight .palace-home-shortcuts span{color:#52679f}
+@media(max-width:760px){
+  .palace-home-shortcuts{
+    display:flex;
+    overflow-x:auto;
+    scroll-snap-type:x proximity;
+    padding-bottom:.22rem;
+    scrollbar-width:none;
+  }
+  .palace-home-shortcuts::-webkit-scrollbar{display:none}
+  .palace-home-shortcuts>a{
+    flex:0 0 92px;
+    scroll-snap-align:start;
+  }
+}
