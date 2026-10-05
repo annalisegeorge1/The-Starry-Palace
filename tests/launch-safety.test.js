@@ -383,6 +383,17 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.saved-constellations');
   });
 
+  it('keeps Moonlight Activity actionable instead of decorative',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('setNoticeSaved');
+    expect(data).toContain('dismissNotice');
+    expect(live).toContain('activity-lenses');
+    expect(live).toContain('noticeHref');
+    expect(live).toContain('No notices in this view.');
+    expect(polish).toContain('.activity-notice-actions');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
