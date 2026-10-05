@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { useAuth } from './auth';
 import badges from './badges.json';
 import originals from './originalBadges.json';
@@ -8,12 +8,14 @@ import { getGiftCatalogue, getTreasury } from './palaceData';
 import './treasury.css';
 import {buildInventory} from './treasuryCollection';
 
+const PalaceCollectibles=lazy(()=>import('./PalaceCollectibles'));
+const MoonlitTea=lazy(()=>import('./MoonlitTea'));
 const tiers=['bronze','silver','gold','platinum','emerald'];
 const PAGE_SIZE=48;
 
 export default function Treasury({Frame}) {
  const {session}=useAuth();
- const [collection,setCollection]=useState('originals');
+ const [collection,setCollection]=useState(()=>{const requested=new URLSearchParams(window.location.search).get('collection');return ['original-treasures','moonlit-tea'].includes(requested)?requested:'originals'});
  const [query,setQuery]=useState('');
  const [category,setCategory]=useState('all');
  const [tier,setTier]=useState('bronze');
@@ -73,17 +75,19 @@ export default function Treasury({Frame}) {
   <section className="room-title treasury-catalogue-head">
    <p className="eyebrow">COLLECT · ACHIEVE · CELEBRATE</p>
    <h1>Royal Treasury Catalogue</h1>
-   <p className="lede">The original 175 Palace badges, the expanded achievement paths, and the full 520-piece gift collection live together here.</p>
+   <p className="lede">The original 175 Palace badges, the expanded achievement paths, the live gift collection, and the original painted court treasures live together here.</p>
    <p>Catalogue views are previews only. Earned badges, owned gifts, duplicate counts and showcase choices remain tied to verified Palace activity.</p>
   </section>
 
   <div className="badge-collection-switch treasury-collection-switch" role="group" aria-label="Treasury collection">
    <button aria-pressed={collection==='originals'} onClick={()=>choose('originals')}>Palace originals · 175 badges</button>
    <button aria-pressed={collection==='expanded'} onClick={()=>choose('expanded')}>Expanded paths · 100 families</button>
+   <button aria-pressed={collection==='original-treasures'} onClick={()=>choose('original-treasures')}>Original painted treasures · 600</button>
+   <button aria-pressed={collection==='moonlit-tea'} onClick={()=>choose('moonlit-tea')}>New watercolours · Moonlit Tea</button>
    <button aria-pressed={collection==='gifts'} onClick={()=>choose('gifts')}>Gift collection · {giftData.count||520} prizes</button>
   </div>
 
-  {collection==='gifts'?<>
+  {collection==='original-treasures'?<Suspense fallback={<p role="status">Opening the painted treasury…</p>}><PalaceCollectibles/></Suspense>:collection==='moonlit-tea'?<Suspense fallback={<p role="status">Preparing Moonlit Tea…</p>}><MoonlitTea/></Suspense>:collection==='gifts'?<>
    <div className="badge-controls gift-catalogue-controls">
     <label>Search gifts<input value={query} onChange={e=>setQuery(e.target.value)} type="search" placeholder="Name, court or catalogue number"/></label>
     <label>Court<select value={selectedCourt} onChange={e=>setGiftCourt(e.target.value)}><option value="all">All Palace courts</option>{courts.map(c=><option key={c} value={c}>{c}</option>)}</select></label>
@@ -142,3 +146,4 @@ export default function Treasury({Frame}) {
   </>}
  </Frame>;
 }
+

@@ -141,3 +141,29 @@
 .gift-catalogue-card.is-missing .gift-owned-line b{opacity:.55}
 @media(max-width:820px){.gift-collection-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.gift-collection-summary{grid-template-columns:1fr 1fr}.gift-owned-line{align-items:flex-start;flex-direction:column}.gift-owned-line span{text-align:left}}
+
+/* Restored paintings retain their original colour and complete silhouettes. */
+.painted-collection-intro{max-width:760px;margin:1.5rem 0}
+.painted-collection-intro h2{font:500 clamp(1.7rem,3vw,2.5rem)/1.2 Georgia,serif;margin:.6rem 0}
+.painted-collection-intro p{line-height:1.65;color:var(--muted,#b0b9d5)}
+.original-collections,.moonlit-tea-collection{min-width:0}
+.original-collectible-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.original-collectible-grid>article{min-width:0;border:1px solid var(--line,#354060);border-radius:18px;background:var(--surface,#141a31);overflow:hidden}
+.original-collectible-stage{display:grid;place-items:center;width:100%;height:220px;padding:1rem;box-sizing:border-box;background:radial-gradient(ellipse at center,rgba(104,131,177,.13),transparent 70%)}
+.original-collectible-art{display:block;width:100%;height:100%;filter:none}
+.original-collectible-copy{padding:0 1.1rem 1.1rem}
+.original-collectible-copy small{text-transform:uppercase;letter-spacing:.1em;color:var(--muted,#bac5df)}
+.original-collectible-copy h3{font:500 1.16rem/1.4 Georgia,serif;margin:.55rem 0 .8rem;overflow-wrap:break-word}
+.original-collectible-copy p{font-size:.88rem;line-height:1.6}
+.original-collectible-copy button,.original-collections button{color:inherit}
+.moonlit-tea-image{display:block;width:100%;height:240px;object-fit:contain;object-position:center;padding:12px;box-sizing:border-box;filter:none}
+.palace-gift-art.painted-tea{display:flex;flex-direction:column;min-height:0;isolation:auto;background:radial-gradient(ellipse at 50% 35%,#273353,#11172e 75%);filter:none;opacity:1}
+.palace-gift-art.painted-tea:before,.palace-gift-art.painted-tea:after{display:none}
+.palace-gift-art.painted-tea figcaption{position:static;display:grid;padding:0 1rem 1rem;text-align:center;gap:.3rem}
+.palace-gift-art.painted-tea figcaption strong,.palace-gift-art.painted-tea figcaption span{max-width:none}
+.palace-gift-art.painted-tea.compact{width:86px;height:86px;min-height:86px;padding:0}
+.palace-gift-art.painted-tea.compact .moonlit-tea-image{height:86px;width:86px;padding:4px}
+.gift-catalogue-card.is-missing .palace-gift-art.painted-tea{opacity:1}
+@media(max-width:1000px){.original-collectible-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.original-collectible-grid{grid-template-columns:minmax(0,1fr)}.original-collectible-stage{height:220px}.original-collections .badge-controls label{min-width:0;flex-basis:100%}.original-collections .catalogue-pagination{gap:.4rem;flex-wrap:wrap}.moonlit-tea-image{height:230px}}
+
