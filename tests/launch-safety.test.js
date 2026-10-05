@@ -110,6 +110,15 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.palace-coming-grid');
   });
 
+  it('keeps My Palace quick actions compact and mobile-scrollable',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('palace-home-shortcuts');
+    for(const path of ['/writing','/library','/comics/studio','/events?tab=calendar','/treasury','/search'])expect(live).toContain('to="'+path+'"');
+    expect(polish).toContain('.palace-home-shortcuts');
+    expect(polish).toContain('overflow-x:auto');
+    expect(polish).toContain('scroll-snap-type:x proximity');
+  });
+
   it('keeps badge artwork metadata tier-split',()=>{
     const badge=read('src/PalaceBadge.jsx');
     expect(badge).not.toContain("import frames from './originalBadgeArt.json'");
@@ -548,8 +557,8 @@ describe('Starry Palace launch safety',()=>{
     const polish=read('src/polish.css');
     expect(main).toContain('roomCssMatches');
     expect(main).toContain('palace-room-css-sync-reload');
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100506');
-    expect(polish).toContain('--palace-room-css-version:2026100506');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100507');
+    expect(polish).toContain('--palace-room-css-version:2026100507');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
