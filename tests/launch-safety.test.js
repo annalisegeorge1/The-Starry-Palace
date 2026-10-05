@@ -40,6 +40,14 @@ describe('Starry Palace launch safety',()=>{
     expect(data).toContain("from('member_ballot_options').select('id,ballot_id,label,description,position')");
   });
 
+  it('keeps production chunks split and recoverable',()=>{
+    const vite=read('vite.config.js');
+    expect(vite).toContain("name: 'react-vendor'");
+    expect(vite).toContain("name: 'supabase-vendor'");
+    expect(main).toContain("vite:preloadError");
+    expect(main).toContain("palace-preload-reload");
+  });
+
   it('keeps badge artwork metadata tier-split',()=>{
     const badge=read('src/PalaceBadge.jsx');
     expect(badge).not.toContain("import frames from './originalBadgeArt.json'");
