@@ -191,3 +191,18 @@ export async function sendMessageRequest(userId,recipientId,introText){
  const text=introText.trim();if(!text)throw new Error('Write a short introduction first.');
  const{data,error}=await needClient().from('message_requests').insert({sender_id:userId,recipient_id:recipientId,intro_text:text,status:'pending'}).select().single();if(error)throw error;return data
 }
+
+export async function getLuckyDrawState(userId){
+ const month=new Date().toISOString().slice(0,7)+'-01';
+ const [catalogue,claim]=await Promise.all([
+  needClient().from('virtual_gifts').select('id,catalogue_number,name,description,court_name,collection_type,art_status',{count:'exact'}).eq('catalogue_status','catalogued').eq('reward_eligible',true).order('catalogue_number').limit(8),
+  needClient().from('lucky_draw_claims').select('id,draw_month,gift_id,tier,claimed_at,virtual_gifts(id,catalogue_number,name,description,court_name,art_status)').eq('user_id',userId).eq('draw_month',month).maybeSingle()
+ ]);
+ if(catalogue.error)throw catalogue.error;if(claim.error)throw claim.error;
+ const history=await needClient().from('lucky_draw_claims').select('id,draw_month,tier,claimed_at,virtual_gifts(id,catalogue_number,name,court_name)').eq('user_id',userId).order('draw_month',{ascending:false}).limit(12);
+ if(history.error)throw history.error;
+ return{catalogueCount:catalogue.count||0,preview:catalogue.data||[],claim:claim.data||null,history:history.data||[]}
+}
+export async function claimLuckyDraw(){
+ const{data,error}=await needClient().rpc('claim_monthly_lucky_draw');if(error)throw error;return data?.[0]||null
+}
