@@ -114,6 +114,7 @@ function Frame({children,privateArea=false}){
  const profileInitial=(shellProfile?.display_name||shellProfile?.username||session?.user?.email||'P').slice(0,1).toUpperCase();
  function submitSearch(e){e.preventDefault();if(search.trim())navigate('/search?q='+encodeURIComponent(search.trim()))}
  function chooseCommand(path){setCommandOpen(false);setCommandQuery('');navigate(path)}
+ function searchCommand(){const q=commandQuery.trim();if(!q)return;setCommandOpen(false);setCommandQuery('');navigate('/search?q='+encodeURIComponent(q))}
  return <div className={"palace-shell full-palace-shell "+(navOpen?'nav-open ':'')+(daylight?'daylight':'nightfall')}>
   <a className="skip-to-content" href="#palace-content">Skip to main content</a>
   <aside className="sidebar full-sidebar" aria-label="Palace navigation">
@@ -135,10 +136,10 @@ function Frame({children,privateArea=false}){
    </footer>
   </div>
   {commandOpen&&<div className="palace-command-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setCommandOpen(false)}}>
-    <section className="palace-command" role="dialog" aria-modal="true" aria-label="Palace quick navigation">
-      <header><span aria-hidden="true">⌕</span><input autoFocus value={commandQuery} onChange={e=>setCommandQuery(e.target.value)} placeholder="Go to a room…" aria-label="Search Palace rooms"/><kbd>ESC</kbd></header>
-      <div className="palace-command-results">{commandMatches.length?commandMatches.map((item,i)=><button key={item.path} onClick={()=>chooseCommand(item.path)}><span className="command-icon">{item.icon}</span><span><strong>{item.label}</strong><small>{item.detail}</small></span>{i===0&&<em>Enter</em>}</button>):<div className="command-empty"><span>☾</span><p>No Palace room matches that phrase.</p></div>}</div>
-      <footer><span>Ctrl/⌘ K to open</span><span>Esc to close</span></footer>
+    <section className="palace-command" role="dialog" aria-modal="true" aria-label="Palace quick navigation and search">
+      <header><span aria-hidden="true">⌕</span><input autoFocus value={commandQuery} onChange={e=>setCommandQuery(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'){e.preventDefault();commandMatches[0]?chooseCommand(commandMatches[0].path):searchCommand()}}} placeholder="Go to a room or search the Palace…" aria-label="Search Palace rooms or content"/><kbd>ESC</kbd></header>
+      <div className="palace-command-results">{commandQuery.trim()&&<button className="command-search-all" onClick={searchCommand}><span className="command-icon">⌕</span><span><strong>Search all Palace content</strong><small>Stories, comics, writers, tags, fandoms and clubs for “{commandQuery.trim()}”</small></span><em>Search</em></button>}{commandMatches.length?commandMatches.map((item,i)=><button key={item.path} onClick={()=>chooseCommand(item.path)}><span className="command-icon">{item.icon}</span><span><strong>{item.label}</strong><small>{item.detail}</small></span>{i===0&&<em>Enter</em>}</button>):!commandQuery.trim()&&<div className="command-empty"><span>☾</span><p>Begin typing to find a Palace room or search across its content.</p></div>}</div>
+      <footer><span>Ctrl/⌘ K to open</span><span>Rooms first · full search available</span><span>Esc to close</span></footer>
     </section>
    </div>}
   {session&&<div className="floating-controls restored-floating-controls">
