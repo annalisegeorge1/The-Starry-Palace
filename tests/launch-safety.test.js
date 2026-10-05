@@ -34,6 +34,11 @@ describe('Starry Palace launch safety',()=>{
     expect(main).not.toContain('Your email password is never required by the Palace.');
   });
 
+  it('uses the schema-approved comic permission scope',()=>{
+    expect(live).toContain("'offline_reader_copy'");
+    expect(live).not.toContain("requestComicDownload(session.user.id,data.id,'images'");
+  });
+
   it('keeps the restored full Palace hierarchy visible',()=>{
     for(const label of ['My Palace','Reading Rooms','My Library','Writing Chamber','Palace Life','Events & Heritage','Royal Treasury','Settings & Safety','Palace Council','The Palace Code']){
       expect(main).toContain(label);
