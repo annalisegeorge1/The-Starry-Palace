@@ -32,7 +32,20 @@ if(typeof window!=='undefined'){
   }
  });
 }
-const lazyRoom=name=>React.lazy(()=>importWithRecovery(()=>import('./liveRooms')).then(mod=>({default:mod[name]})));
+function roomCssMatches(mod){
+ if(typeof window==='undefined'||!mod?.PALACE_ROOM_CSS_VERSION)return true;
+ const cssVersion=Number(getComputedStyle(document.documentElement).getPropertyValue('--palace-room-css-version').trim()||0);
+ if(cssVersion===Number(mod.PALACE_ROOM_CSS_VERSION))return true;
+ const key='palace-room-css-sync-reload';
+ const last=Number(sessionStorage.getItem(key)||0);
+ if(Date.now()-last>12000){
+  sessionStorage.setItem(key,String(Date.now()));
+  window.setTimeout(()=>window.location.reload(),40);
+  return false;
+ }
+ return true;
+}
+const lazyRoom=name=>React.lazy(()=>importWithRecovery(()=>import('./liveRooms')).then(mod=>roomCssMatches(mod)?{default:mod[name]}:new Promise(()=>{})));
 const ChamberLive=lazyRoom('ChamberLive'),ReadingLive=lazyRoom('ReadingLive'),ClubLive=lazyRoom('ClubLive'),WritingLive=lazyRoom('WritingLive'),SettingsLive=lazyRoom('SettingsLive'),ActivityLive=lazyRoom('ActivityLive'),LibraryLive=lazyRoom('LibraryLive'),PalaceLifeLive=lazyRoom('PalaceLifeLive'),LettersLive=lazyRoom('LettersLive'),EventsLive=lazyRoom('EventsLive'),TreasuryLive=lazyRoom('TreasuryLive'),LostWorksLive=lazyRoom('LostWorksLive'),MemberProfileLive=lazyRoom('MemberProfileLive'),SearchLive=lazyRoom('SearchLive'),WorkLive=lazyRoom('WorkLive'),ChapterLive=lazyRoom('ChapterLive'),WorkStudioLive=lazyRoom('WorkStudioLive'),TagSearchLive=lazyRoom('TagSearchLive'),HonourLive=lazyRoom('HonourLive'),CouncilLive=lazyRoom('CouncilLive'),CodeLive=lazyRoom('CodeLive'),ComicsLive=lazyRoom('ComicsLive'),ComicLive=lazyRoom('ComicLive'),ComicEpisodeLive=lazyRoom('ComicEpisodeLive'),ComicStudioLive=lazyRoom('ComicStudioLive'),SeriesLive=lazyRoom('SeriesLive');
 const TreasuryCatalogue=React.lazy(()=>importWithRecovery(()=>import('./Treasury')));
 
