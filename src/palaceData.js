@@ -744,7 +744,7 @@ export async function setConversationPreference(userId,conversationId,patch){
 }
 
 export async function getMyComics(userId){
- const{data,error}=await needClient().from('comics').select('*,comic_episodes(id,title,position,status,revision,published_at,comic_pages(id,position,caption,alt_text,decorative,reader_path,width,height))').eq('creator_id',userId).order('updated_at',{ascending:false});if(error)throw error;
+ const{data,error}=await needClient().from('comics').select('*,comic_episodes(id,title,position,status,revision,revision_note,scheduled_for,published_at,comic_pages(id,position,caption,alt_text,decorative,reader_path,width,height))').eq('creator_id',userId).order('updated_at',{ascending:false});if(error)throw error;
  return Promise.all((data||[]).map(async c=>({...c,cover_url:await signedAsset('comic-covers',c.cover_path),comic_episodes:(c.comic_episodes||[]).sort((a,b)=>a.position-b.position).map(e=>({...e,comic_pages:(e.comic_pages||[]).sort((a,b)=>a.position-b.position)}))})));
 }
 function comicSlug(title){const base=title.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,60)||'comic';return base+'-'+crypto.randomUUID().slice(0,8)}
@@ -779,14 +779,29 @@ export async function createComicEpisode(userId,comicId,title){
 }
 export async function saveComicEpisode(userId,comicId,episodeId,patch){
  const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
- const{data,error}=await needClient().from('comic_episodes').update({title:patch.title?.trim(),revision_note:patch.revision_note??'',scheduled_for:patch.scheduled_for||null,updated_at:new Date().toISOString()}).eq('id',episodeId).eq('comic_id',comicId).select().single();if(error)throw error;return data
+ const update={title:patch.title?.trim(),revision_note:patch.revision_note??'',updated_at:new Date().toISOString()};if(Object.prototype.hasOwnProperty.call(patch,'scheduled_for'))update.scheduled_for=patch.scheduled_for||null;
+ const{data,error}=await needClient().from('comic_episodes').update(update).eq('id',episodeId).eq('comic_id',comicId).select().single();if(error)throw error;return data
 }
-export async function publishComicEpisode(userId,comicId,episodeId){
- const own=await needClient().from('comics').select('first_published_at').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
+async function assertComicEpisodeReady(userId,comicId,episodeId){
+ const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
  const pages=await needClient().from('comic_pages').select('id,alt_text,decorative').eq('episode_id',episodeId).order('position');if(pages.error)throw pages.error;
  if(!pages.data?.length)throw new Error('Add at least one comic page before publishing this episode.');
  const missing=(pages.data||[]).filter(p=>!p.decorative&&!String(p.alt_text||'').trim());if(missing.length)throw new Error('Add image descriptions to every non-decorative page before publishing.');
- const now=new Date().toISOString();const ep=await needClient().from('comic_episodes').update({status:'published',published_at:now,updated_at:now}).eq('id',episodeId).eq('comic_id',comicId).select().single();if(ep.error)throw ep.error;
+ return true
+}
+export async function scheduleComicEpisode(userId,comicId,episodeId,scheduledFor){
+ await assertComicEpisodeReady(userId,comicId,episodeId);
+ const when=new Date(scheduledFor);if(Number.isNaN(when.getTime()))throw new Error('Choose a valid publication date and time.');if(when.getTime()<Date.now()+60000)throw new Error('Choose a publication time at least one minute from now.');
+ const{data,error}=await needClient().from('comic_episodes').update({scheduled_for:when.toISOString(),status:'draft',updated_at:new Date().toISOString()}).eq('id',episodeId).eq('comic_id',comicId).select().single();if(error)throw error;return data
+}
+export async function cancelComicEpisodeSchedule(userId,comicId,episodeId){
+ const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
+ const{data,error}=await needClient().from('comic_episodes').update({scheduled_for:null,updated_at:new Date().toISOString()}).eq('id',episodeId).eq('comic_id',comicId).neq('status','published').select().single();if(error)throw error;return data
+}
+export async function publishComicEpisode(userId,comicId,episodeId){
+ const own=await needClient().from('comics').select('first_published_at').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
+ await assertComicEpisodeReady(userId,comicId,episodeId);
+ const now=new Date().toISOString();const ep=await needClient().from('comic_episodes').update({status:'published',published_at:now,scheduled_for:null,updated_at:now}).eq('id',episodeId).eq('comic_id',comicId).select().single();if(ep.error)throw ep.error;
  const patch={publication_status:'published',last_published_at:now,updated_at:now};if(!own.data.first_published_at)patch.first_published_at=now;
  const c=await needClient().from('comics').update(patch).eq('id',comicId).eq('creator_id',userId);if(c.error)throw c.error;return ep.data
 }
