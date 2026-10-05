@@ -89,7 +89,25 @@ export async function getTreasury(userId){const [ach,gifts,showA,showG,pref]=awa
 export async function getArchive(){const{data,error}=await needClient().from('archive_records').select('id,accession_number,slug,title,creator_name,record_nature,category,summary,original_language,languages,surviving_extent,known_gaps,provenance_summary,rights_status,hosting_basis,host_mode,continuation_status,verified_at').eq('publication_status','published').order('updated_at',{ascending:false}).limit(100);if(error)throw error;return data||[]}
 export async function saveArchiveRecord(userId,recordId){const{error}=await needClient().from('user_archive_records').upsert({user_id:userId,record_id:recordId,saved:true,visited_at:new Date().toISOString(),updated_at:new Date().toISOString()},{onConflict:'user_id,record_id'});if(error)throw error}
 
-export async function getMemberProfile(username,viewerId){const{data:profile,error}=await needClient().from('profiles').select('id,username,display_name,title,bio,avatar_url,cover_url,visibility,message_policy').eq('username',username).maybeSingle();if(error)throw error;if(!profile)return null;const own=viewerId===profile.id;const [privacy,works,follow,counting]=await Promise.all([own?getMyPrivacy(profile.id):Promise.resolve(null),needClient().from('works').select('id,title,slug,summary,cover_url,completion_status,last_published_at').eq('author_id',profile.id).eq('publication_status','published').order('last_published_at',{ascending:false}).limit(12),viewerId&&!own?needClient().from('member_follows').select('followed_id').eq('follower_id',viewerId).eq('followed_id',profile.id).maybeSingle():Promise.resolve({data:null,error:null}),needClient().from('member_follows').select('follower_id',{count:'exact',head:true}).eq('followed_id',profile.id)]);for(const r of[works,follow,counting])if(r.error)throw r.error;return{profile,privacy:privacy||null,works:works.data||[],following:!!follow.data,followerCount:counting.count||0}}
+export async function getMemberProfile(username,viewerId){
+ const{data:profile,error}=await needClient().from('profiles').select('id,username,display_name,title,bio,avatar_url,cover_url,visibility,message_policy').eq('username',username).maybeSingle();
+ if(error)throw error;if(!profile)return null;
+ const own=viewerId===profile.id;
+ const [privacy,works,follow,counting,seriesCount,clubCount,honourCount]=await Promise.all([
+  own?getMyPrivacy(profile.id):Promise.resolve(null),
+  needClient().from('works').select('id,title,slug,summary,cover_url,completion_status,last_published_at').eq('author_id',profile.id).eq('publication_status','published').order('last_published_at',{ascending:false}).limit(12),
+  viewerId&&!own?needClient().from('member_follows').select('followed_id').eq('follower_id',viewerId).eq('followed_id',profile.id).maybeSingle():Promise.resolve({data:null,error:null}),
+  needClient().from('member_follows').select('follower_id',{count:'exact',head:true}).eq('followed_id',profile.id),
+  needClient().from('series').select('id',{count:'exact',head:true}).eq('owner_id',profile.id),
+  needClient().from('club_members').select('club_id',{count:'exact',head:true}).eq('user_id',profile.id).eq('status','active'),
+  needClient().from('profile_achievement_showcase').select('achievement_id',{count:'exact',head:true}).eq('user_id',profile.id)
+ ]);
+ for(const r of[works,follow,counting,seriesCount,clubCount,honourCount])if(r.error)throw r.error;
+ return{
+  profile,privacy:privacy||null,works:works.data||[],following:!!follow.data,followerCount:counting.count||0,
+  counts:{works:works.data?.length||0,series:seriesCount.count||0,clubs:clubCount.count||0,honours:honourCount.count||0}
+ }
+}
 export async function setFollow(viewerId,memberId,follow){if(follow){const{error}=await needClient().from('member_follows').insert({follower_id:viewerId,followed_id:memberId});if(error)throw error}else{const{error}=await needClient().from('member_follows').delete().eq('follower_id',viewerId).eq('followed_id',memberId);if(error)throw error}}
 export async function searchMembers(term){const q=term.trim();if(!q)return[];const{data,error}=await needClient().from('profiles').select('id,username,display_name,title,avatar_url,visibility').or(`username.ilike.%${q}%,display_name.ilike.%${q}%`).neq('visibility','hidden').limit(20);if(error)throw error;return data||[]}
 
