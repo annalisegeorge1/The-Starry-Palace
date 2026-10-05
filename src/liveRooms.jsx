@@ -3,6 +3,22 @@ import React,{useEffect,useState,useRef}from'react';import{Link,useParams}from'r
 const BadgeArtwork=React.lazy(()=>import('./PalaceBadge'));
 function PalaceBadge(props){return <React.Suspense fallback={<span className="palace-watercolour-badge" aria-label="Loading badge artwork"/>}><BadgeArtwork {...props}/></React.Suspense>}
 
+function safeReaderHtml(raw=''){
+ if(typeof DOMParser==='undefined')return String(raw||'').replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<style[\s\S]*?<\/style>/gi,'');
+ const doc=new DOMParser().parseFromString('<body>'+String(raw||'')+'</body>','text/html');
+ const allowed=new Set(['P','BR','STRONG','B','EM','I','U','H2','H3','BLOCKQUOTE','HR']);
+ [...doc.body.querySelectorAll('*')].forEach(el=>{
+  if(!allowed.has(el.tagName)){
+   const frag=doc.createDocumentFragment();
+   while(el.firstChild)frag.appendChild(el.firstChild);
+   el.replaceWith(frag);
+   return;
+  }
+  [...el.attributes].forEach(a=>el.removeAttribute(a.name));
+ });
+ return doc.body.innerHTML;
+}
+
 
 function PalaceDialog({open,title,eyebrow,children,onClose,actions}){
  if(!open)return null;
@@ -457,8 +473,37 @@ export function WorkLive({Frame}){const{slug}=useParams();const{session}=useAuth
 
 function WorkCommunity({work,community,session,reload,setError}){const[body,setBody]=useState('');const[spoiler,setSpoiler]=useState(false);const own=session?.user?.id===work.author_id;async function post(e){e.preventDefault();try{await addComment(session.user.id,work.id,null,body,'response',spoiler);setBody('');setSpoiler(false);reload()}catch(e){setError(e.message)}}async function mod(id,status){try{await moderateComment(id,status);reload()}catch(e){setError(e.message)}}const roots=community.comments.filter(c=>!c.parent_comment_id);return <section className="work-community"><div className="work-tags">{community.tags.map(x=><Link key={x.tags.id} to={"/tags?tag="+x.tags.id}>#{x.tags.name}</Link>)}</div><p className="eyebrow">READER RESPONSES</p>{roots.length?roots.map(c=><article className={"reader-comment "+(c.status==='pending'?'pending':'')} key={c.id}><div><strong>{c.profiles?.display_name||c.profiles?.username||'Palace reader'}</strong><small>{c.comment_type}{c.status==='pending'?' · awaiting moderation':''}</small></div><p className={c.spoiler?'spoiler-text':''}>{c.spoiler?'Spoiler · tap or select to reveal: ':''}{c.body}</p>{own&&c.status==='pending'&&<div className="moderation-actions"><button onClick={()=>mod(c.id,'approved')}>Approve</button><button onClick={()=>mod(c.id,'hidden')}>Decline</button></div>}</article>):<p className="quiet-copy">No reader responses yet.</p>}{session&&work.comment_policy!=='closed'&&<form className="comment-compose" onSubmit={post}><textarea value={body} onChange={e=>setBody(e.target.value)} placeholder="Leave a response for the writer…" required/><label><input type="checkbox" checked={spoiler} onChange={e=>setSpoiler(e.target.checked)}/> Contains spoilers</label><button>Send for moderation</button></form>}</section>}
 
-export function ChapterLive({Frame}){const{slug,chapterId}=useParams();const{session}=useAuth();const[data,setData]=useState(undefined);const[error,setError]=useState('');useEffect(()=>{getChapter(slug,chapterId).then(async d=>{setData(d);if(d&&session)try{await recordReadingProgress(session.user.id,d.work.id,d.chapter.id,5,false)}catch{}}).catch(e=>setError(e.message))},[slug,chapterId,session?.user?.id]);if(data===null)return <Frame><div className="live-state">This chapter is not available.</div></Frame>;const idx=data?.work.chapters.findIndex(c=>c.id===chapterId)??-1;const next=data?.work.chapters.slice(idx+1).find(c=>c.status==='published');const prev=data?.work.chapters.slice(0,idx).reverse().find(c=>c.status==='published');async function finish(){if(session)try{await recordReadingProgress(session.user.id,data.work.id,data.chapter.id,next?Math.min(95,((idx+1)/data.work.chapters.length)*100):100,!next)}catch(e){setError(e.message)}}return <Frame><State loading={data===undefined&&!error} error={error}>{data&&<article className="reader-page"><header><Link to={"/work/"+data.work.slug}>← {data.work.title}</Link><p>Chapter {data.chapter.position}</p><h1>{data.chapter.title}</h1><small>{data.chapter.word_count.toLocaleString()} words</small></header><section className="chapter-text">{(data.chapter.body_html||"").replace(/<br[^>]*>/gi," ").replace(/<[^>]+>/g," ")}</section><footer>{prev?<Link to={"/work/"+slug+"/chapter/"+prev.id}>← Previous</Link>:<span/>}{next?<Link onClick={finish} to={"/work/"+slug+"/chapter/"+next.id}>Next →</Link>:<button onClick={finish}>Mark finished ✦</button>}</footer></article>}</State></Frame>}
-
+export function ChapterLive({Frame}){
+ const{slug,chapterId}=useParams();const{session}=useAuth();const[data,setData]=useState(undefined);const[error,setError]=useState('');const[fontSize,setFontSize]=useState(()=>Number(localStorage.getItem('palace-reader-font')||20));const[measure,setMeasure]=useState(()=>localStorage.getItem('palace-reader-measure')||'standard');const[controlsOpen,setControlsOpen]=useState(false);
+ useEffect(()=>{getChapter(slug,chapterId).then(async d=>{setData(d);if(d&&session){try{const readable=d.work.chapters.filter(c=>c.status==='published');const index=Math.max(0,readable.findIndex(c=>c.id===d.chapter.id));const progress=Math.max(5,Math.min(95,Math.round((index/Math.max(1,readable.length))*100)));await recordReadingProgress(session.user.id,d.work.id,d.chapter.id,progress,false)}catch{}}}).catch(e=>setError(e.message))},[slug,chapterId,session?.user?.id]);
+ if(data===null)return <Frame><div className="live-state">This chapter is not available.</div></Frame>;
+ const readable=data?.work.chapters.filter(c=>c.status==='published'||session?.user?.id===data.work.author_id)||[];
+ const idx=readable.findIndex(c=>c.id===chapterId);
+ const next=readable.slice(idx+1).find(c=>c.status==='published'||session?.user?.id===data?.work.author_id);
+ const prev=readable.slice(0,idx).reverse().find(c=>c.status==='published'||session?.user?.id===data?.work.author_id);
+ const progress=readable.length?Math.round(((idx+1)/readable.length)*100):0;
+ const html=data?safeReaderHtml(data.chapter.body_html||''):'';
+ async function finish(done=false){if(session&&data)try{await recordReadingProgress(session.user.id,data.work.id,data.chapter.id,done?100:Math.max(5,Math.min(95,progress)),done)}catch(e){setError(e.message)}}
+ function changeFont(delta){setFontSize(v=>{const n=Math.max(16,Math.min(28,v+delta));localStorage.setItem('palace-reader-font',String(n));return n})}
+ function changeMeasure(nextMeasure){setMeasure(nextMeasure);localStorage.setItem('palace-reader-measure',nextMeasure)}
+ return <Frame><State loading={data===undefined&&!error} error={error}>{data&&<article className={"reader-page restored measure-"+measure}>
+  <header className="reader-chapter-head">
+   <div className="reader-back-row"><Link to={"/work/"+data.work.slug}>← {data.work.title}</Link><button className="quiet-button" onClick={()=>setControlsOpen(v=>!v)}>Aa Reader</button></div>
+   <p className="eyebrow">CHAPTER {data.chapter.position} OF {readable.length||data.work.chapters.length}</p>
+   <h1>{data.chapter.title}</h1>
+   <div className="reader-meta"><span>{data.chapter.word_count.toLocaleString()} words</span><span>About {Math.max(1,Math.ceil(data.chapter.word_count/220))} min</span><span>{progress}% through this work</span></div>
+   <div className="reader-progress-track"><i style={{width:progress+'%'}}/></div>
+  </header>
+  {controlsOpen&&<section className="reader-controls-panel">
+   <div><span>Text size</span><div><button onClick={()=>changeFont(-1)}>A−</button><strong>{fontSize}px</strong><button onClick={()=>changeFont(1)}>A＋</button></div></div>
+   <div><span>Reading width</span><div><button className={measure==='narrow'?'active':''} onClick={()=>changeMeasure('narrow')}>Narrow</button><button className={measure==='standard'?'active':''} onClick={()=>changeMeasure('standard')}>Standard</button><button className={measure==='wide'?'active':''} onClick={()=>changeMeasure('wide')}>Wide</button></div></div>
+   <small>These reader preferences stay on this device.</small>
+  </section>}
+  <section className="chapter-text restored" style={{fontSize:fontSize+'px'}} dangerouslySetInnerHTML={{__html:html}}/>
+  <section className="reader-chapter-list"><p className="eyebrow">THIS WORK</p><div>{readable.map(ch=><Link className={ch.id===chapterId?'active':''} key={ch.id} to={"/work/"+slug+"/chapter/"+ch.id}><span>{String(ch.position).padStart(2,'0')}</span><strong>{ch.title}</strong><small>{ch.word_count.toLocaleString()} words</small></Link>)}</div></section>
+  <footer className="reader-nav">{prev?<Link to={"/work/"+slug+"/chapter/"+prev.id}>← Previous chapter</Link>:<span/>}{next?<Link onClick={()=>finish(false)} to={"/work/"+slug+"/chapter/"+next.id}>Next chapter →</Link>:<button onClick={()=>finish(true)}>Mark work finished ✦</button>}</footer>
+ </article>}</State></Frame>
+}
 export function WorkStudioLive({Frame}){
  const{slug}=useParams();const{session}=useAuth();const[data,setData]=useState(undefined);const[access,setAccess]=useState(undefined);const[selected,setSelected]=useState(null);const[chapter,setChapter]=useState(null);const[tagOptions,setTagOptions]=useState([]);const[community,setCommunity]=useState({tags:[],comments:[]});const[error,setError]=useState('');const[saved,setSaved]=useState('');const[studioDialog,setStudioDialog]=useState(null);const[studioForm,setStudioForm]=useState({title:'',name:'',category:'additional'});const editorRef=useRef(null);const[goal,setGoal]=useState('1500');const[spellcheck,setSpellcheck]=useState(true);const[findText,setFindText]=useState('');const[replaceText,setReplaceText]=useState('');const[wordCount,setWordCount]=useState(0);
  const countWords=html=>(html||'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim().split(' ').filter(Boolean).length;
