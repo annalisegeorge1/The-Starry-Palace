@@ -63,6 +63,13 @@ describe('Starry Palace launch safety',()=>{
     expect(badge).toContain("import('./badgeFrames.emerald.json')");
   });
 
+  it('keeps deep routes inside their Palace parent room',()=>{
+    expect(main).toContain("'/club/'");
+    expect(main).toContain("'/work/'");
+    expect(main).toContain("'/comic/'");
+    expect(main).toContain("location.pathname.startsWith('/member/')");
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
