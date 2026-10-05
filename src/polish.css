@@ -2448,3 +2448,100 @@ img{max-width:100%}
   .reader-chapter-list a{grid-template-columns:34px minmax(0,1fr)}
   .reader-chapter-list a small{grid-column:2}
 }
+
+
+/* Work page remembers the reader */
+.work-page.restored{max-width:1180px;margin:0 auto;padding-bottom:4rem}
+.work-entry-hero{
+  display:grid;
+  grid-template-columns:minmax(190px,270px) minmax(0,1fr);
+  gap:clamp(1.4rem,4vw,3rem);
+  align-items:start;
+  padding:1.2rem 0 1.5rem;
+}
+.work-cover.restored{
+  aspect-ratio:2/3;
+  overflow:hidden;
+  border:1px solid var(--palace-border);
+  border-radius:20px;
+  background:rgba(10,14,30,.7);
+  box-shadow:var(--palace-shadow);
+}
+.work-cover.restored img{width:100%;height:100%;object-fit:cover}
+.work-entry-copy h1{
+  margin:.45rem 0 .55rem;
+  font:600 clamp(3rem,6vw,5.3rem)/.96 Georgia,'Times New Roman',serif;
+  letter-spacing:-.04em;
+  text-wrap:balance;
+}
+.work-entry-copy>.lede{max-width:720px}
+.work-actions.restored{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.5rem;
+  margin-top:1rem;
+}
+.work-actions.restored>a,.work-actions.restored>button{
+  min-height:43px;
+  border-radius:12px;
+}
+.work-actions.restored>button.active{
+  border-color:rgba(139,171,160,.38);
+  background:rgba(82,124,113,.1);
+  color:#b9d4cc;
+}
+.work-resume-strip{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  margin:.3rem 0 1rem;
+  padding:.85rem 1rem;
+  border:1px solid rgba(137,153,201,.24);
+  border-radius:17px;
+  background:linear-gradient(135deg,rgba(71,86,138,.13),rgba(89,68,142,.1));
+}
+.work-resume-strip>div{display:flex;align-items:center;gap:.8rem;min-width:0}
+.work-resume-strip>div>span{
+  width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;
+  border-radius:12px;border:1px solid var(--palace-border);
+  background:rgba(107,88,169,.09);font-size:1.15rem
+}
+.work-resume-strip>div>div{min-width:0}
+.work-resume-strip small{display:block;font-size:.54rem;letter-spacing:.12em;color:var(--palace-dim)}
+.work-resume-strip strong{
+  display:block;
+  margin:.16rem 0;
+  font:600 .95rem Georgia,'Times New Roman',serif;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.work-resume-strip p{margin:0;color:var(--palace-muted);font-size:.66rem}
+.work-resume-strip>a{flex:0 0 auto;font-size:.72rem;font-weight:700}
+.work-stat-strip{
+  border-color:var(--palace-border);
+  border-radius:17px;
+  overflow:hidden;
+}
+.work-rights-panel{
+  border-color:var(--palace-border);
+  border-radius:20px;
+  background:rgba(14,19,38,.65);
+}
+.chapter-doorways.restored>a{
+  border-color:var(--palace-border);
+  transition:transform var(--palace-motion),border-color var(--palace-motion),background var(--palace-motion);
+}
+.chapter-doorways.restored>a:hover{
+  transform:translateX(2px);
+  border-color:var(--palace-border-strong);
+  background:rgba(105,86,168,.06);
+}
+.daylight .work-rights-panel,.daylight .work-resume-strip{background:rgba(255,255,255,.86)}
+@media(max-width:760px){
+  .work-page.restored{padding-left:14px;padding-right:14px}
+  .work-entry-hero{grid-template-columns:1fr}
+  .work-cover.restored{width:min(230px,62vw);margin:0 auto}
+  .work-entry-copy{text-align:left}
+  .work-entry-copy h1{font-size:clamp(2.8rem,13vw,4rem)}
+  .work-resume-strip{align-items:flex-start}
+}
