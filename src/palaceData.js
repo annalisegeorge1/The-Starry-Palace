@@ -675,7 +675,7 @@ async function signedAsset(bucket,path,expiresIn=3600){
  try{const{data,error}=await needClient().storage.from(bucket).createSignedUrl(path,expiresIn);if(error)return null;return data?.signedUrl||data?.signedURL||null}catch{return null}
 }
 export async function getPublishedComics(){
- const{data,error}=await needClient().from('comics').select('id,creator_id,title,slug,summary,rating,completion_status,reading_direction,download_policy,required_credit_line,comment_policy,cover_path,last_published_at').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(30);
+ const{data,error}=await needClient().from('comics').select('id,creator_id,title,slug,summary,rating,completion_status,visibility,reading_direction,download_policy,required_credit_line,comment_policy,cover_path,last_published_at').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(30);
  if(error)throw error;const comics=data||[];const creators=[...new Set(comics.map(c=>c.creator_id).filter(Boolean))];let profiles=[];
  if(creators.length){const p=await needClient().from('profiles').select('id,username,display_name,avatar_url').in('id',creators);if(p.error)throw p.error;profiles=p.data||[]}
  return Promise.all(comics.map(async c=>({...c,creator:profiles.find(p=>p.id===c.creator_id)||null,cover_url:await signedAsset('comic-covers',c.cover_path)})));
