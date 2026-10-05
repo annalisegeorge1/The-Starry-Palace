@@ -8,19 +8,20 @@ export async function updateMyProfile(userId,patch){
  const supportUrl=patch.support_url?.trim()||null;
  if(patch.support_enabled&&!supportUrl)throw new Error('Add a secure support link before enabling creator support.');
  if(supportUrl&&!/^https:\/\//i.test(supportUrl))throw new Error('Creator support links must begin with https://');
+ const cleanList=(value,maxItems=8,maxLength=50)=>Array.isArray(value)?value.filter(Boolean).map(x=>String(x).trim().slice(0,maxLength)).filter(Boolean).slice(0,maxItems):[];
  const allowed={
-  display_name:patch.display_name?.trim(),
-  title:patch.title?.trim()||null,
-  bio:patch.bio?.trim()||'',
+  display_name:patch.display_name?.trim().slice(0,80),
+  title:patch.title?.trim().slice(0,80)||null,
+  bio:patch.bio?.trim().slice(0,1200)||'',
   visibility:patch.visibility,
   message_policy:patch.message_policy,
-  pronouns:patch.pronouns?.trim()||null,
-  status_line:patch.status_line?.trim()||null,
-  availability:patch.availability?.trim()||null,
-  roles:Array.isArray(patch.roles)?patch.roles.filter(Boolean).map(x=>String(x).trim()).filter(Boolean):[],
-  featured_genres:Array.isArray(patch.featured_genres)?patch.featured_genres.filter(Boolean).map(x=>String(x).trim()).filter(Boolean):[],
-  featured_fandoms:Array.isArray(patch.featured_fandoms)?patch.featured_fandoms.filter(Boolean).map(x=>String(x).trim()).filter(Boolean):[],
-  accent:patch.accent||'moon-violet',
+  pronouns:patch.pronouns?.trim().slice(0,60)||null,
+  status_line:patch.status_line?.trim().slice(0,140)||null,
+  availability:patch.availability?.trim().slice(0,80)||null,
+  roles:cleanList(patch.roles,6,32),
+  featured_genres:cleanList(patch.featured_genres,10,50),
+  featured_fandoms:cleanList(patch.featured_fandoms,10,60),
+  accent:['moon-violet','ink-blue','emerald-night','silver-mist'].includes(patch.accent)?patch.accent:'moon-violet',
   cover_position:Number.isFinite(Number(patch.cover_position))?Math.max(0,Math.min(100,Number(patch.cover_position))):48,
   support_enabled:!!patch.support_enabled,
   support_label:patch.support_label?.trim().slice(0,60)||null,
