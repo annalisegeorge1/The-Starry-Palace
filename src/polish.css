@@ -3151,3 +3151,30 @@ img{max-width:100%}
   .snapshot-list>article{grid-template-columns:1fr}
   .snapshot-list>article>div:last-child{justify-content:flex-start}
 }
+
+
+/* Creator ownership — portable backups and fast keyboard saving */
+.studio-head-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:.5rem;
+  flex-wrap:wrap;
+}
+.studio-head-actions>a,.studio-head-actions>button{
+  min-height:40px;
+  display:inline-flex;
+  align-items:center;
+  border-radius:11px;
+}
+.editor-shortcut-hint{
+  margin-left:auto;
+  align-self:center;
+  color:var(--palace-dim);
+  font-size:.57rem;
+  white-space:nowrap;
+}
+@media(max-width:720px){
+  .studio-head-actions{justify-content:flex-start}
+  .editor-shortcut-hint{width:100%;margin-left:0}
+}
