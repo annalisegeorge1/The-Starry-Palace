@@ -4365,3 +4365,55 @@ img{max-width:100%}
 .daylight .episode-health span.ready,.daylight .episode-health span.published{color:#35675b}
 .daylight .episode-health span.scheduled{color:#4b5f99}
 .daylight .episode-health span.needs-work{color:#815461}
+
+
+/* Comic Studio episode manager */
+.episode-manager-tools{
+  display:grid;
+  grid-template-columns:minmax(220px,1fr) minmax(160px,220px) auto;
+  gap:.55rem;
+  align-items:end;
+  margin:.75rem 0 .9rem;
+  padding:.68rem;
+  border:1px solid var(--palace-border);
+  border-radius:15px;
+  background:rgba(10,15,31,.48);
+}
+.episode-manager-tools label{
+  min-width:0;
+  display:grid;
+  gap:.28rem;
+}
+.episode-manager-tools label>span{
+  color:var(--palace-dim);
+  font-size:.56rem;
+  font-weight:700;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+.episode-manager-tools input,
+.episode-manager-tools select{
+  min-height:42px;
+  width:100%;
+}
+.episode-studio>.section-heading>small{
+  color:var(--palace-dim);
+  font-size:.58rem;
+}
+.episode-manager-empty{
+  min-height:170px;
+  margin-top:.3rem;
+  border:1px dashed var(--palace-border);
+  border-radius:16px;
+}
+.daylight .episode-manager-tools{
+  background:rgba(249,250,255,.85);
+}
+@media(max-width:760px){
+  .episode-manager-tools{grid-template-columns:1fr 1fr}
+  .episode-manager-tools .quiet-button{grid-column:1/-1}
+}
+@media(max-width:520px){
+  .episode-manager-tools{grid-template-columns:1fr}
+  .episode-manager-tools .quiet-button{grid-column:auto}
+}
