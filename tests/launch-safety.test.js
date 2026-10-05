@@ -325,6 +325,18 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.password-field');
   });
 
+  it('keeps Comics and Series discovery useful at scale',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('comicSort');
+    expect(live).toContain('comicStatus');
+    expect(live).toContain('comic-result-count');
+    expect(live).toContain('series-browser-tools');
+    expect(live).toContain('seriesView');
+    expect(live).toContain('Most works');
+    expect(polish).toContain('.comic-tools.refined');
+    expect(polish).toContain('.series-browser-tools');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
