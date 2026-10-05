@@ -4112,3 +4112,39 @@ img{max-width:100%}
   .comic-follow-frequency{width:100%;align-items:flex-start;flex-direction:column}
   .comic-follow-frequency select{width:100%}
 }
+
+
+/* New comic material after completion */
+.comic-reader-flags span.new{
+  border-color:rgba(147,169,213,.38);
+  background:linear-gradient(135deg,rgba(91,104,171,.18),rgba(112,89,165,.14));
+  color:#d8e1ff;
+}
+.comic-resume-strip.new-panels{
+  border-color:rgba(145,163,218,.3);
+  background:linear-gradient(135deg,rgba(69,83,148,.18),rgba(100,75,156,.14));
+  box-shadow:0 16px 40px rgba(8,12,31,.16);
+}
+.comic-resume-strip.new-panels>div>span{
+  border-color:rgba(145,163,218,.28);
+  background:rgba(101,85,166,.13);
+}
+.comic-episodes>article.new-for-reader{
+  border-color:rgba(145,163,218,.3);
+  background:linear-gradient(135deg,rgba(79,94,160,.1),rgba(105,83,157,.08));
+}
+.library-card.has-new-panels,
+.history-shelf>article.has-new-panels{
+  border-color:rgba(145,163,218,.3);
+  background:linear-gradient(135deg,rgba(71,86,148,.1),rgba(108,86,158,.07));
+}
+.daylight .comic-reader-flags span.new{
+  color:#44548b;
+  background:rgba(91,104,171,.08);
+}
+.daylight .comic-resume-strip.new-panels,
+.daylight .comic-episodes>article.new-for-reader,
+.daylight .library-card.has-new-panels,
+.daylight .history-shelf>article.has-new-panels{
+  background:rgba(244,246,255,.92);
+}
