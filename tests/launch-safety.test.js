@@ -473,6 +473,31 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.studio-head-actions');
   });
 
+  it('keeps Palace Forum replies persistent and threaded',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain("from('forum_replies')");
+    expect(data).toContain('replyForumThread');
+    expect(live).toContain('Reply to thread');
+    expect(live).toContain('forum-thread-room');
+    expect(live).toContain('reply_count');
+    expect(polish).toContain('.forum-ledger-thread');
+    expect(polish).toContain('.forum-reply-compose');
+  });
+
+  it('keeps open and request-to-join club doors functionally distinct',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('requestClubMembership');
+    expect(data).toContain('withdrawClubMembershipRequest');
+    expect(data).toContain('respondClubMembershipRequest');
+    expect(data).toContain(".in('privacy',['open','request_to_join'])");
+    expect(live).toContain('Request to join');
+    expect(live).toContain('STEWARD QUEUE');
+    expect(live).toContain('Doors you are waiting on.');
+    expect(polish).toContain('.club-door-queue');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
