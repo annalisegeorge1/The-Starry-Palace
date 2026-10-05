@@ -25,7 +25,7 @@ const fullPalaceRooms=[
   ['All works','/reading'],['Comics','/comics'],['Lost Works','/lost-works'],['Series',null],['Tags','/tags']
  ]},
  {id:'library',icon:'▧',label:'My Library',path:'/library',private:true,sections:[
-  ['Saved Stories','/library'],['Comics Shelf','/library?tab=comics'],['Collections & Readers’ Choice',null],['Reading lists',null],['History','/library?tab=history'],['Notes & Bookmarks',null],['Lost Works Shelf','/lost-works'],['Subscriptions','/library'],['Writers I Follow','/search']
+  ['Saved Stories','/library'],['Comics Shelf','/library?tab=comics'],['Collections & Readers’ Choice','/library?tab=collections'],['Reading lists','/library?tab=lists'],['History','/library?tab=history'],['Notes & Bookmarks','/library?tab=notes'],['Lost Works Shelf','/lost-works'],['Subscriptions','/library'],['Writers I Follow','/search']
  ]},
  {id:'writing',icon:'✎',label:'Writing Chamber',path:'/writing',private:true,sections:[
   ['Editor & drafts','/writing'],['Comic studio','/comics/studio'],['Co-writing','/writing?tab=collab'],['Comment review','/writing?tab=comments'],['Requests & permissions','/writing?tab=permissions']
@@ -34,7 +34,7 @@ const fullPalaceRooms=[
   ['Palace Tidings','/palace-life'],['Clubs','/palace-life'],['Forum & Chat','/palace-life'],['Members & Exile','/search'],['Introductions & highlights','/palace-life'],['Activities','/activity'],['Throne of Honour','/honour']
  ]},
  {id:'events',icon:'✧',label:'Events & Heritage',path:'/events',sections:[
-  ['Writing calendar','/events'],['Heritage calendar','/events'],['My calendar','/events'],['Event proposals','/events'],['Member ballots','/events']
+  ['Writing calendar','/events'],['Heritage calendar','/events'],['My calendar','/events?tab=calendar'],['Event proposals','/events?tab=proposals'],['Member ballots','/events?tab=ballots']
  ]},
  {id:'treasury',icon:'♛',label:'Royal Treasury',path:'/treasury',private:true,sections:[
   ['Badges & gifts','/treasury'],['Lucky draw & 520+ prizes','/treasury?tab=draw'],['Monthly rankings','/honour']
