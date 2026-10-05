@@ -290,6 +290,37 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('/* My Library — private, organised and calm */');
   });
 
+  it('keeps prose discovery continuity-aware without fake shelf labels',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('getWorkShelfState');
+    expect(data).toContain('first_published_at,last_published_at');
+    expect(live).toContain('Following Updates');
+    expect(live).toContain('Continue Reading');
+    expect(live).toContain('Quiet Shelves');
+    expect(live).not.toContain('Trending Now');
+    expect(live).not.toContain('Palace Picks');
+    expect(live).toContain('story-reader-flags');
+    expect(live).toContain("reopened=w=>!!stateFor(w).progress?.completed&&hasNew(w)");
+    expect(polish).toContain('/* Prose reader continuity */');
+    expect(polish).toContain('.story-reader-flags');
+  });
+
+  it('reopens completed prose only when new chapters arrive and preserves mid-story resume',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain("select('chapter_id,progress_percent,completed')");
+    expect(data).toContain('const sameChapter=current.data?.chapter_id===chapterId');
+    expect(data).toContain('const done=sameChapter?Boolean(current.data?.completed||completed):Boolean(completed)');
+    expect(data).toContain('last_published_at');
+    expect(live).toContain('storyReopened');
+    expect(live).toContain('CONTINUE · NEW CHAPTER AHEAD');
+    expect(live).toContain('reopenedAfterFinish');
+    expect(live).toContain('nextUnreadChapter');
+    expect(live).toContain('NEW CHAPTER AFTER YOU FINISHED');
+    expect(polish).toContain('/* Story landing update continuity */');
+  });
+
   it('keeps dual-layer writing recovery and Palace Life discovery wired',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
@@ -527,6 +558,12 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.activity-search');
   });
 
+  it('keeps Activity count Promise results aligned',()=>{
+    const data=read('src/palaceData.js');
+    expect(data).toContain('const [notices,unreadCount,savedCount,progress,works,clubs]=await Promise.all([');
+    expect(data).toContain(".eq('dismissed',false).eq('unread',true),\n  needClient().from('notifications').select('id',{count:'exact',head:true}).eq('user_id',userId).eq('dismissed',false).eq('saved',true)");
+  });
+
   it('keeps story and blocked-writing notices pointed at the exact destination',()=>{
     expect(live).toContain("item.metadata?.chapter_id?'/chapter/'");
     expect(live).toContain("item.route_name==='writing'&&item.route_param");
@@ -643,8 +680,8 @@ describe('Starry Palace launch safety',()=>{
     const polish=read('src/polish.css');
     expect(main).toContain('roomCssMatches');
     expect(main).toContain('palace-room-css-sync-reload');
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100511');
-    expect(polish).toContain('--palace-room-css-version:2026100511');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100512');
+    expect(polish).toContain('--palace-room-css-version:2026100512');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
