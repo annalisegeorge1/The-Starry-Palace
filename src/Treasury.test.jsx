@@ -26,9 +26,9 @@ it('previews any tier while preserving the highest owned tier default',async()=>
  fireEvent.click(screen.getByRole('button',{name:/Gift collection/i}));
  await screen.findByRole('heading',{name:'Moon cup'});
  expect(screen.getByText('Gift artwork: silver')).toBeTruthy();
- fireEvent.change(screen.getByLabelText('Artwork tier'),{target:{value:'emerald'}});
+ fireEvent.change(screen.getByLabelText('Collection rank'),{target:{value:'emerald'}});
  expect(screen.getByText('Gift artwork: emerald')).toBeTruthy();
- fireEvent.change(screen.getByLabelText('Artwork tier'),{target:{value:'owned'}});
+ fireEvent.change(screen.getByLabelText('Collection rank'),{target:{value:'owned'}});
  expect(screen.getByText('Gift artwork: silver')).toBeTruthy();
 });
 it('clears empty duplicate filters without treating different tiers as duplicates',async()=>{
@@ -59,4 +59,11 @@ it('opens a keyboard-dismissable in-page art preview with all five tiers',()=>{
  expect(screen.getByRole('dialog')).toBeTruthy();
  fireEvent.click(screen.getByRole('button',{name:'Close artwork preview'}));
  expect(screen.queryByRole('dialog')).toBeNull();
+});
+
+it('redirects the old 600-art gallery link into the live gift collection',async()=>{
+ window.history.replaceState(null,'','/?collection=original-treasures');
+ render(<Treasury Frame={({children})=><main>{children}</main>}/>);
+ expect(await screen.findByRole('heading',{name:'Moon cup'})).toBeTruthy();
+ expect(screen.queryByRole('button',{name:/Original painted treasures/})).toBeNull();
 });

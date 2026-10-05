@@ -1,5 +1,7 @@
 import { useId } from 'react';
 import './treasury.css';
+import {CollectibleArt} from './PalaceCollectibles';
+import {treasureForGift,treasureCourts} from './treasureCatalogue';
 import {PaintedGiftArtwork,paintedFamilyForKind} from './MoonlitTea';
 
 const tiers=['bronze','silver','gold','platinum','emerald'];
@@ -40,18 +42,21 @@ const kinds=[
 ];
 
 export function giftEdition(gift){
- const number=Number(gift?.catalogue_number||0);
+ const treasure=treasureForGift(gift);
+ if(treasure)return treasure.court?'court-treasures':'palace-keepsakes';
+ const storedNumber=Number(gift?.catalogue_number||0);
+ const number=storedNumber>10000&&storedNumber<=10520?storedNumber-10000:storedNumber;
  return editions.find(([,start,end])=>number>=start&&number<=end)?.[0]||'palace';
 }
 export function giftKind(gift){
  const text=`${gift?.name||''} ${gift?.description||''}`.toLowerCase();
  return kinds.find(([word])=>text.includes(word))?.[1]||'star';
 }
-export const giftEditions=editions.map(([slug])=>slug);
-export const giftCourts=courts;
+export const giftEditions=['court-treasures','palace-keepsakes'];
+export const giftCourts=treasureCourts;
 export function giftCourt(gift){
  const name=gift?.court_name||'';
- return courts.find(c=>c.name===name)||{name:name||'The Starry Palace',slug:'starry-palace',sigil:'✦',motto:'A Palace collection',accent:'#8993b8',glow:'#666f94'};
+ return [...treasureCourts,...courts].find(c=>c.name===name)||{name:name||'The Starry Palace',slug:'starry-palace',sigil:'✦',motto:'A Palace collection',accent:'#8993b8',glow:'#666f94'};
 }
 
 function CourtMotif({court}){
@@ -120,13 +125,16 @@ function ObjectDrawing({kind}){
 export default function PalaceGift({gift,tier='bronze',compact=false,locked=false}){
  const id=useId().replace(/:/g,'');
  const rank=tiers.includes(tier)?tier:'bronze';
- const number=Number(gift?.catalogue_number||0);
+ const storedNumber=Number(gift?.catalogue_number||0);
+ const number=storedNumber>10000&&storedNumber<=10520?storedNumber-10000:storedNumber;
  const seed=Math.abs(number)%12;
  const edition=giftEdition(gift);
  const kind=giftKind(gift);
  const name=gift?.name||'Palace collectible';
  const court=gift?.court_name||'The Starry Palace';
  const courtMeta=giftCourt(gift);
+ const treasure=treasureForGift(gift);
+ if(treasure)return <figure className={`palace-gift-art treasure-painting tier-${rank}${compact?' compact':''}`} aria-label={`${name}, ${rank} collection rank`}><CollectibleArt item={treasure}/>{!compact&&<figcaption><strong>{treasure.artEdition} artwork edition</strong><span>{rank} collection rank</span></figcaption>}</figure>;
  const painting=paintedFamilyForKind(kind);
  if(painting)return <figure className={`palace-gift-art painted-tea tier-${rank}${compact?' compact':''}${locked?' is-locked':''}`} aria-label={`${name}, ${rank} Palace collectible from ${courtMeta.name}`}><PaintedGiftArtwork key={painting.id+'-'+rank} family={painting.id} tier={rank} compact={compact}/>{!compact&&<figcaption><strong>{courtMeta.sigil} {court}</strong><span>{painting.name} watercolour · {rank}</span></figcaption>}</figure>;
  const filterId=`gift-brush-${id}`;
@@ -153,4 +161,5 @@ export default function PalaceGift({gift,tier='bronze',compact=false,locked=fals
   {!compact&&<figcaption><strong>{courtMeta.sigil} {court}</strong><span>{courtMeta.motto} · {rank}</span></figcaption>}
  </figure>;
 }
+
 

@@ -81,7 +81,7 @@ describe('Starry Palace launch safety',()=>{
     expect(data).toContain("from('virtual_gifts')");
     expect(data).toContain("eq('reward_eligible',true)");
     expect(main).toContain("/treasury/catalogue");
-    expect(main).toContain('520 gifts');
+    expect(main).toContain('600 treasures');
   });
 
   it('keeps gift artwork as painted editions rather than generic placeholders',()=>{
@@ -167,3 +167,4 @@ describe('Starry Palace launch safety',()=>{
     expect(main).not.toContain(',null]');
   });
 });
+

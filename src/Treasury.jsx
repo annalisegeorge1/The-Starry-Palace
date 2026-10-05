@@ -8,7 +8,6 @@ import { getGiftCatalogue, getTreasury } from './palaceData';
 import './treasury.css';
 import {buildInventory} from './treasuryCollection';
 
-const PalaceCollectibles=lazy(()=>import('./PalaceCollectibles'));
 const MoonlitTea=lazy(()=>import('./MoonlitTea'));
 const CourtsOfMoonlight=lazy(()=>import('./CourtsOfMoonlight'));
 const tiers=['bronze','silver','gold','platinum','emerald'];
@@ -16,7 +15,7 @@ const PAGE_SIZE=48;
 
 export default function Treasury({Frame}) {
  const {session}=useAuth();
- const [collection,setCollection]=useState(()=>{const requested=new URLSearchParams(window.location.search).get('collection');return ['original-treasures','moonlit-tea','courts-of-moonlight','expanded','gifts','originals'].includes(requested)?requested:'originals'});
+ const [collection,setCollection]=useState(()=>{const requested=new URLSearchParams(window.location.search).get('collection');if(requested==='original-treasures')return 'gifts';return ['original-treasures','moonlit-tea','courts-of-moonlight','expanded','gifts','originals'].includes(requested)?requested:'originals'});
  const [query,setQuery]=useState('');
  const [badgePage,setBadgePage]=useState(1);
  const [artPreview,setArtPreview]=useState(null);
@@ -50,7 +49,7 @@ export default function Treasury({Frame}) {
  const visibleBadges=source.filter(b=>(category==='all'||b.category===category)&&`${b.name} ${b.description} ${b.category}`.toLowerCase().includes(query.toLowerCase()));
  const courts=useMemo(()=>[...new Set(giftData.items.map(g=>g.court_name).filter(Boolean))].sort((a,b)=>a.localeCompare(b)),[giftData.items]);
  const inventory=useMemo(()=>buildInventory(ownedData.gifts),[ownedData.gifts]);
- const ownedDistinct=inventory.size;
+ const ownedDistinct=giftData.items.filter(g=>inventory.has(g.id)).length;
  const totalCopies=[...inventory.values()].reduce((n,x)=>n+x.copies,0);
  const duplicateDistinct=[...inventory.values()].filter(x=>x.hasDuplicates).length;
  const ascendableDistinct=[...inventory.values()].filter(x=>x.ascendable).length;
@@ -80,31 +79,31 @@ export default function Treasury({Frame}) {
   <section className="room-title treasury-catalogue-head">
    <p className="eyebrow">COLLECT · ACHIEVE · CELEBRATE</p>
    <h1>Royal Treasury Catalogue</h1>
-   <p className="lede">The original 175 Palace badges, the expanded achievement paths, the live gift collection, and the original painted court treasures live together here.</p>
+   <p className="lede">The original 175 Palace badges, the expanded achievement paths, and 600 painted treasures in the live gift collection live together here.</p>
    <p>Catalogue views are previews only. Earned badges, owned gifts, duplicate counts and showcase choices remain tied to verified Palace activity.</p>
   </section>
 
   <div className="badge-collection-switch treasury-collection-switch" role="group" aria-label="Treasury collection">
    <button aria-pressed={collection==='originals'} onClick={()=>choose('originals')}>Palace originals · 175 badges</button>
    <button aria-pressed={collection==='expanded'} onClick={()=>choose('expanded')}>Expanded paths · 100 families</button>
-   <button aria-pressed={collection==='original-treasures'} onClick={()=>choose('original-treasures')}>Original painted treasures · 600</button>
    <button aria-pressed={collection==='moonlit-tea'} onClick={()=>choose('moonlit-tea')}>New watercolours · 25 paintings</button>
    <button aria-pressed={collection==='courts-of-moonlight'} onClick={()=>choose('courts-of-moonlight')}>Courts of Moonlight · 60 portraits</button>
-   <button aria-pressed={collection==='gifts'} onClick={()=>choose('gifts')}>Gift collection · {giftData.count||520} prizes</button>
+   <button aria-pressed={collection==='gifts'} onClick={()=>choose('gifts')}>Gift collection · {giftData.count||600} treasures</button>
   </div>
 
-  {collection==='courts-of-moonlight'?<Suspense fallback={<p role="status">Opening the moonlit courts…</p>}><CourtsOfMoonlight/></Suspense>:collection==='original-treasures'?<Suspense fallback={<p role="status">Opening the painted treasury…</p>}><PalaceCollectibles/></Suspense>:collection==='moonlit-tea'?<Suspense fallback={<p role="status">Preparing Moonlit Tea…</p>}><MoonlitTea/></Suspense>:collection==='gifts'?<>
+  {collection==='courts-of-moonlight'?<Suspense fallback={<p role="status">Opening the moonlit courts…</p>}><CourtsOfMoonlight/></Suspense>:collection==='moonlit-tea'?<Suspense fallback={<p role="status">Preparing Moonlit Tea…</p>}><MoonlitTea/></Suspense>:collection==='gifts'?<>
    <div className="badge-controls gift-catalogue-controls">
     <label>Search gifts<input value={query} onChange={e=>setQuery(e.target.value)} type="search" placeholder="Name, court or catalogue number"/></label>
     <label>Court<select value={selectedCourt} onChange={e=>setGiftCourt(e.target.value)}><option value="all">All Palace courts</option>{courts.map(c=><option key={c} value={c}>{c}</option>)}</select></label>
-    <label>Painted edition<select value={giftEditionFilter} onChange={e=>setGiftEditionFilter(e.target.value)}><option value="all">All nine editions</option>{giftEditions.map(e=><option key={e} value={e}>{e.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</option>)}</select></label>
+    <label>Collection<select value={giftEditionFilter} onChange={e=>setGiftEditionFilter(e.target.value)}><option value="all">Both collections</option>{giftEditions.map(e=><option key={e} value={e}>{e.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</option>)}</select></label>
     <label>My collection<select value={giftOwnership} onChange={e=>setGiftOwnership(e.target.value)}><option value="all">All prizes</option><option value="owned">Owned</option><option value="missing">Not yet owned</option><option value="duplicates">Duplicates</option><option value="ascendable">Ready to ascend</option></select></label>
-    <label>Artwork tier<select value={giftPreviewTier} onChange={e=>setGiftPreviewTier(e.target.value)}><option value="owned">Highest owned tier · Bronze for previews</option>{tiers.map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label>
+    <label>Collection rank<select value={giftPreviewTier} onChange={e=>setGiftPreviewTier(e.target.value)}><option value="owned">Highest owned tier · Bronze for previews</option>{tiers.map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label>
    </div>
+   <p className="treasure-rank-note">Your earlier gifts remain in your cabinet and history. New rewards come from these 600 treasures. A collection rank records upgrades; it does not repaint an artwork’s original edition.</p>
    <div className="gift-edition-ribbon" aria-label="Painted gift editions">{giftEditions.map(e=><button key={e} aria-pressed={giftEditionFilter===e} className={giftEditionFilter===e?'active':''} onClick={()=>setGiftEditionFilter(giftEditionFilter===e?'all':e)}>{e.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</button>)}</div>
    <section className="gift-collection-summary" aria-label="My gift collection progress">
-    <article><strong>{ownedDistinct}</strong><span>of {giftData.count||520} collected</span></article>
-    <article><strong>{totalCopies}</strong><span>total copies</span></article>
+    <article><strong>{ownedDistinct}</strong><span>of {giftData.count||600} collected</span></article>
+    <article><strong>{totalCopies}</strong><span>copies, including legacy gifts</span></article>
     <article><strong>{duplicateDistinct}</strong><span>duplicate gifts</span></article>
     <article><strong>{ascendableDistinct}</strong><span>ready to ascend</span></article>
    </section>
@@ -113,7 +112,7 @@ export default function Treasury({Frame}) {
      <span className="court-atlas-sigil">{c.sigil}</span><span><strong>{c.name}</strong><small>{c.motto}</small><em>{progress.owned}/{progress.total} collected</em></span>
     </button>})}
    </div>
-      <div className="gift-catalogue-status"><p role="status">{visibleGifts.length} prizes found</p><span>Nine ink-wash editions · twenty Palace courts · Bronze through Emerald ascension.</span></div>
+      <div className="gift-catalogue-status"><p role="status">{visibleGifts.length} prizes found</p><span>500 court treasures + 100 keepsakes. Artwork editions stay original; collection ranks ascend from Bronze to Emerald.</span></div>
    {giftLoading&&<p className="catalogue-message">Gathering the collection beneath the stars…</p>}
    {giftError&&<p className="catalogue-message error-state">{giftError}</p>}
    {!giftLoading&&!giftError&&<>
@@ -164,7 +163,7 @@ function BadgePreview({family,tier,close}){
   <button autoFocus className="badge-dialog-close" onClick={close} aria-label="Close artwork preview">Close ×</button>
   <h2>{family.name}</h2><p>{family.description}</p>
   <PalaceBadge family={family} tier={rank}/>
-  <label>Artwork tier<select value={rank} onChange={e=>setRank(e.target.value)}>{tiers.map(t=><option key={t} value={t}>{t}</option>)}</select></label>
+  <label>Collection rank<select value={rank} onChange={e=>setRank(e.target.value)}>{tiers.map(t=><option key={t} value={t}>{t}</option>)}</select></label>
   <p>{family.tiers.find(t=>t.slug===rank)?.threshold.toLocaleString()} · {family.unit||family.metric.replaceAll('_',' ')}</p>
  </dialog>;
 }

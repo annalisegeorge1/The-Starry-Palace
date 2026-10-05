@@ -50,7 +50,7 @@ const fullPalaceRooms=[
   ['Writing calendar','/events?tab=writing'],['Heritage calendar','/events?tab=heritage'],['My calendar','/events?tab=calendar'],['Event proposals','/events?tab=proposals'],['Member ballots','/events?tab=ballots']
  ]},
  {id:'treasury',icon:'♛',label:'Royal Treasury',path:'/treasury',private:true,sections:[
-  ['Badges & gifts','/treasury'],['Full catalogue · 175 badges + 520 gifts','/treasury/catalogue'],['Lucky draw & 520 prizes','/treasury?tab=draw'],['Monthly rankings','/treasury?tab=rankings']
+  ['Badges & gifts','/treasury'],['Full catalogue · 175 badges + 600 treasures','/treasury/catalogue'],['Lucky draw & 600 treasures','/treasury?tab=draw'],['Monthly rankings','/treasury?tab=rankings']
  ]},
  {id:'settings',icon:'⚙',label:'Settings & Safety',path:'/settings',private:true,sections:[
   ['Notifications & comfort','/settings?tab=notifications'],['Storage & uploads','/settings?tab=storage'],['Quiet corners','/settings?tab=quiet'],['Privacy','/settings?tab=privacy'],['Account & downloads','/settings?tab=account'],['System status','/settings?tab=system'],['Welcome guide','/settings?tab=guide'],['Testing room','/settings?tab=testing']
@@ -150,4 +150,5 @@ function App(){return <AuthProvider><React.Suspense fallback={<div className="ro
  </Routes></React.Suspense></AuthProvider>}
 
 createRoot(document.getElementById('root')).render(<React.StrictMode><BrowserRouter><App/></BrowserRouter></React.StrictMode>);
+
 
