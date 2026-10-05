@@ -1054,3 +1054,14 @@ linear-gradient(145deg,#2d245f,#151c3c 58%,#0c1225);box-shadow:inset 0 0 0 1px r
  .creator-support-link{width:100%}
  .chamber-support-toggle{grid-template-columns:auto 1fr!important}
 }
+
+
+/* Granular Council report controls */
+.reader-comment-actions{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.reader-comment-actions>.quiet-button{font-size:11px;padding:6px 9px}
+.chamber-report-button{border-color:#654d63!important;color:#d8bcc8!important}
+.work-actions.restored .danger-action{border-color:#654d63;color:#d8bcc8;background:rgba(80,42,59,.10)}
+@media(max-width:620px){
+ .reader-comment-actions{align-items:flex-start;flex-direction:column}
+ .reader-comment-actions>.quiet-button{align-self:flex-start}
+}
