@@ -615,6 +615,20 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.comic-episode-nav');
   });
 
+  it('keeps Comic Studio settings aligned and creator library manageable',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('setComicArchived');
+    expect(data).toContain("['ltr','rtl','vertical']");
+    expect(data).toContain("['open','moderated','closed']");
+    expect(live).toContain('Search my comics');
+    expect(live).toContain('Active comics');
+    expect(live).toContain('Archived comics');
+    expect(live).toContain('Restore as private draft');
+    expect(live).toContain('<option value="closed">Closed</option>');
+    expect(polish).toContain('.comic-library-tools');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
