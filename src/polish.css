@@ -3734,3 +3734,91 @@ img{max-width:100%}
   .series-stack>article{grid-template-columns:34px minmax(0,1fr)}
   .series-order-actions{grid-column:2;justify-content:flex-start}
 }
+
+
+/* Comics Studio — sequence is part of the artwork */
+.episode-reorder-controls{
+  display:flex;
+  gap:.3rem;
+  margin-left:auto;
+  padding-left:.5rem;
+  border-left:1px solid var(--palace-border);
+}
+.episode-reorder-controls button{
+  min-height:36px;
+  padding:.4rem .52rem;
+  border:1px solid var(--palace-border);
+  border-radius:9px;
+  background:transparent;
+  color:var(--palace-muted);
+  font-size:.61rem;
+}
+.episode-reorder-controls button:hover:not(:disabled){
+  border-color:var(--palace-border-strong);
+  background:rgba(106,87,169,.08);
+  color:var(--palace-text);
+}
+.episode-reorder-controls button:disabled{opacity:.3}
+.page-strip>article{
+  grid-template-columns:34px minmax(0,1fr) auto;
+  gap:.65rem;
+  align-items:center;
+}
+.comic-page-order-actions{
+  display:flex;
+  gap:.28rem;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.comic-page-order-actions button{
+  min-width:34px;
+  min-height:34px;
+  padding:.35rem .45rem;
+  border:1px solid var(--palace-border);
+  border-radius:9px;
+  background:transparent;
+  color:var(--palace-muted);
+  font-size:.62rem;
+}
+.comic-page-order-actions button:hover:not(:disabled){
+  border-color:var(--palace-border-strong);
+  background:rgba(105,86,168,.08);
+  color:var(--palace-text);
+}
+.comic-page-order-actions button:disabled{opacity:.3}
+.episode-studio-card{
+  border-color:var(--palace-border);
+  border-radius:18px;
+  background:rgba(14,19,38,.68);
+  box-shadow:var(--palace-shadow-soft);
+}
+.episode-studio-card>form{
+  gap:.65rem;
+}
+.episode-actions{
+  align-items:center;
+  flex-wrap:wrap;
+}
+.page-strip{
+  display:grid;
+  gap:.38rem;
+}
+.page-strip>article{
+  border-color:var(--palace-border);
+  background:rgba(105,86,168,.04);
+}
+.daylight .episode-studio-card,.daylight .page-strip>article{
+  background:rgba(255,255,255,.88);
+}
+@media(max-width:760px){
+  .episode-reorder-controls{
+    width:100%;
+    margin-left:0;
+    padding-left:0;
+    padding-top:.45rem;
+    border-left:0;
+    border-top:1px solid var(--palace-border);
+  }
+  .page-strip>article{grid-template-columns:30px minmax(0,1fr)}
+  .comic-page-order-actions{grid-column:2;justify-content:flex-start}
+}
