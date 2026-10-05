@@ -212,6 +212,17 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('/* Member chamber — profile identity should read clearly before decoration. */');
   });
 
+  it('keeps Reading Rooms and My Library polished and functional',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('summary,work_type,rating');
+    expect(live).toContain("origin==='fandom'?w.work_type==='fanwork':w.work_type!=='fanwork'");
+    expect(live).toContain('discovery-explainer');
+    expect(live).toContain('Search the current Reading Room');
+    expect(polish).toContain('/* Reading Rooms — quieter discovery, stronger bookshop hierarchy */');
+    expect(polish).toContain('/* My Library — private, organised and calm */');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
