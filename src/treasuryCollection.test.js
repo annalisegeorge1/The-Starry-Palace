@@ -5,7 +5,7 @@ const row=(tier,copies)=>({tier,copies,virtual_gifts:{id:'gift',upgrade_copies:3
 describe('gift collection ownership',()=>{
  it('does not call different tiers duplicates',()=>{
   const value=buildInventory([row('silver',1),row('bronze',1)]).get('gift');
-  expect(value).toEqual({copies:2,tiers:['bronze','silver'],hasDuplicates:false,ascendable:false});
+  expect(value).toEqual({copies:2,tiers:['bronze','silver'],hasDuplicates:false,ascendable:false,counts:{silver:1,bronze:1},upgradeCopies:3});
  });
  it('combines copies of the same tier for duplicate and upgrade eligibility',()=>{
   expect(buildInventory([row('bronze',1),row('bronze',2)]).get('gift')).toMatchObject({hasDuplicates:true,ascendable:true});
