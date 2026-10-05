@@ -248,7 +248,7 @@ export function MemberProfileLive({Frame}){
     <div className="legacy-cover-shade"/>
     {own&&<button className="legacy-edit-cover" onClick={openEdit}>✎ Edit cover</button>}
    </div>
-   <div className="legacy-profile-avatar">{p.avatar_url?<img src={p.avatar_url} alt=""/>:(p.display_name||p.username).slice(0,1).toUpperCase()}</div>
+   <div className={"legacy-profile-avatar "+(!p.avatar_url?'sigil-fallback':'')}>{p.avatar_url?<img src={p.avatar_url} alt=""/>:<span aria-hidden="true">☾<b>✦</b></span>}</div>
    <div className="legacy-profile-copy">
     <p className="eyebrow">{(p.title||'PALACE MEMBER').toUpperCase()}</p>
     <h1>{p.display_name||p.username}</h1>
@@ -281,7 +281,7 @@ export function MemberProfileLive({Frame}){
  </>}</State>
  <PalaceDialog open={letterOpen} title="Send a Palace Letter request" eyebrow="PRIVATE CORRESPONDENCE" onClose={()=>setLetterOpen(false)} actions={<><button className="quiet-button" onClick={()=>setLetterOpen(false)}>Cancel</button><button onClick={submitLetter}>Send request</button></>}><label>Introduction<textarea rows="4" maxLength="600" value={letterIntro} onChange={e=>setLetterIntro(e.target.value)} placeholder="Introduce yourself or say why you’d like to write."/></label><small>{letterIntro.length}/600</small></PalaceDialog>
  <PalaceDialog open={editOpen&&!!editForm} title="Shape your chamber" eyebrow="YOUR PRIVATE DRESSING ROOM" onClose={()=>setEditOpen(false)} actions={<><button className="quiet-button" onClick={()=>setEditOpen(false)}>Cancel</button><button onClick={saveEdit}>Save chamber</button></>}>{editForm&&<>
-  <div className="chamber-media-editor"><div className="chamber-media-preview" style={p.cover_url?{backgroundImage:`url("${p.cover_url}")`,backgroundPosition:`center ${editForm.cover_position}%`}:undefined}><div className="mini-chamber-avatar">{p.avatar_url?<img src={p.avatar_url} alt=""/>:(p.display_name||p.username).slice(0,1)}</div></div><div className="chamber-media-actions"><label className="secondary-btn">Profile picture<input hidden type="file" accept="image/*" onChange={e=>uploadMedia(e.target.files?.[0],'avatar')}/></label><label className="secondary-btn">Cover image<input hidden type="file" accept="image/*" onChange={e=>uploadMedia(e.target.files?.[0],'cover')}/></label>{mediaBusy&&<span>Uploading {mediaBusy}…</span>}</div></div>
+  <div className="chamber-media-editor"><div className="chamber-media-preview" style={p.cover_url?{backgroundImage:`url("${p.cover_url}")`,backgroundPosition:`center ${editForm.cover_position}%`}:undefined}><div className={"mini-chamber-avatar "+(!p.avatar_url?'sigil-fallback':'')}>{p.avatar_url?<img src={p.avatar_url} alt=""/>:<span aria-hidden="true">☾<b>✦</b></span>}</div></div><div className="chamber-media-actions"><label className="secondary-btn">Profile picture<input hidden type="file" accept="image/*" onChange={e=>uploadMedia(e.target.files?.[0],'avatar')}/></label><label className="secondary-btn">Cover image<input hidden type="file" accept="image/*" onChange={e=>uploadMedia(e.target.files?.[0],'cover')}/></label>{mediaBusy&&<span>Uploading {mediaBusy}…</span>}</div></div>
   <div className="chamber-edit-grid">
    <label>Display name<input value={editForm.display_name} onChange={e=>setEditForm(v=>({...v,display_name:e.target.value}))}/></label>
    <label>Palace handle<input value={editForm.username} onChange={e=>setEditForm(v=>({...v,username:e.target.value}))}/></label>
