@@ -663,6 +663,18 @@ describe('Starry Palace launch safety',()=>{
     expect(sql).toContain('Scheduled comic release needs attention');
   });
 
+  it('keeps scheduled comic releases easy to review and reschedule',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain("neq('status','published').select().maybeSingle()");
+    expect(live).toContain('upcomingComicReleases');
+    expect(live).toContain('UPCOMING RELEASES');
+    expect(live).toContain('The Palace checks this queue every minute.');
+    expect(live).toContain("episode.scheduled_for?'Reschedule':'Schedule'");
+    expect(live).toContain("window.addEventListener('hashchange',sync)");
+    expect(polish).toContain('.comic-release-queue');
+  });
+
   it('keeps comic doorways aware of saved following and reading state',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
