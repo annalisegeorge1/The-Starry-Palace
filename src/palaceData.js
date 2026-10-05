@@ -393,3 +393,28 @@ export async function addWorkToSeries(userId,seriesId,workId){
  const{data,error}=await needClient().from('series_works').insert({series_id:seriesId,work_id:workId,position:(pos.data?.[0]?.position||0)+1}).select().single();if(error?.code==='23505')throw new Error('That work is already in the series.');if(error)throw error;return data
 }
 export async function removeWorkFromSeries(userId,seriesId,workId){const{error}=await needClient().from('series_works').delete().eq('series_id',seriesId).eq('work_id',workId);if(error)throw error;return true}
+
+export async function setAchievementShowcase(userId,achievementId,displayTier,show){
+ if(show){
+  const pos=await needClient().from('profile_achievement_showcase').select('position').eq('user_id',userId).order('position',{ascending:false}).limit(1);
+  if(pos.error)throw pos.error;
+  const{error}=await needClient().from('profile_achievement_showcase').upsert({user_id:userId,achievement_id:achievementId,display_tier:displayTier,position:(pos.data?.[0]?.position||0)+1},{onConflict:'user_id,achievement_id'});
+  if(error)throw error;
+ }else{
+  const{error}=await needClient().from('profile_achievement_showcase').delete().eq('user_id',userId).eq('achievement_id',achievementId);
+  if(error)throw error;
+ }
+ return true
+}
+export async function setGiftShowcase(userId,giftId,displayTier,show){
+ if(show){
+  const pos=await needClient().from('profile_gift_showcase').select('position').eq('user_id',userId).order('position',{ascending:false}).limit(1);
+  if(pos.error)throw pos.error;
+  const{error}=await needClient().from('profile_gift_showcase').upsert({user_id:userId,gift_id:giftId,display_tier:displayTier,position:(pos.data?.[0]?.position||0)+1},{onConflict:'user_id,gift_id'});
+  if(error)throw error;
+ }else{
+  const{error}=await needClient().from('profile_gift_showcase').delete().eq('user_id',userId).eq('gift_id',giftId);
+  if(error)throw error;
+ }
+ return true
+}
