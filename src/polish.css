@@ -1779,3 +1779,57 @@ img{max-width:100%}
   .chamber-completion{justify-items:start;text-align:left}
   .chamber-completion>i{width:min(220px,100%)}
 }
+
+
+/* Settings presets — quick choices without hiding granular control */
+.settings-preset-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:1rem;
+  margin-bottom:.85rem;
+}
+.settings-preset-head h2{margin:0 0 .25rem}
+.settings-preset-head p{margin:0;color:var(--palace-muted);font-size:.78rem;line-height:1.5}
+.settings-preset-head>span{
+  flex:0 0 auto;
+  padding:.36rem .5rem;
+  border:1px solid var(--palace-border);
+  border-radius:999px;
+  color:var(--palace-dim);
+  font-size:.52rem;
+  letter-spacing:.11em;
+}
+.settings-presets{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.6rem;
+  margin-bottom:1rem;
+}
+.settings-presets button{
+  min-height:104px;
+  display:grid;
+  align-content:center;
+  gap:.28rem;
+  text-align:left;
+  padding:.9rem;
+  border:1px solid var(--palace-border);
+  border-radius:15px;
+  background:linear-gradient(145deg,rgba(17,22,43,.76),rgba(10,15,31,.76));
+  color:var(--palace-text);
+  transition:transform var(--palace-motion),border-color var(--palace-motion),background var(--palace-motion);
+}
+.settings-presets button:hover{
+  transform:translateY(-1px);
+  border-color:var(--palace-border-strong);
+  background:linear-gradient(145deg,rgba(28,31,57,.88),rgba(14,19,38,.88));
+}
+.settings-presets strong{font:600 .9rem Georgia,'Times New Roman',serif}
+.settings-presets small{color:var(--palace-muted);font-size:.66rem;line-height:1.45}
+.notification-presets button:nth-child(2){border-color:rgba(137,153,202,.28)}
+.daylight .settings-presets button{background:rgba(255,255,255,.9)}
+@media(max-width:720px){
+  .settings-preset-head{flex-direction:column}
+  .settings-presets{grid-template-columns:1fr}
+  .settings-presets button{min-height:88px}
+}
