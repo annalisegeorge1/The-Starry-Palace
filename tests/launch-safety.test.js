@@ -369,6 +369,20 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.work-resume-strip');
   });
 
+  it('keeps moderated reader responses private until approved',()=>{
+    expect(live).toContain("c.status==='approved'||c.author_id===session?.user?.id");
+    expect(live).toContain('visibleComments');
+  });
+
+  it('keeps Tag Constellation searches reusable and device-private',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('palace-saved-constellations');
+    expect(live).toContain('Save constellation');
+    expect(live).toContain('saved-constellations');
+    expect(live).toContain('applyConstellation');
+    expect(polish).toContain('.saved-constellations');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
