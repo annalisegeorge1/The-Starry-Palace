@@ -1,3 +1,4 @@
+:root{--palace-room-css-version:2026100502}
 /* The Starry Palace — final professional polish layer
    Keep this file intentionally small and authoritative. New global visual
    refinements belong here instead of adding another override to style.css. */
@@ -3398,4 +3399,43 @@ img{max-width:100%}
   .forum-ledger-thread>.chat-avatar{display:none}
   .forum-ledger-thread>.forum-actions,.forum-thread-room{grid-column:auto}
   .forum-replies>article{grid-template-columns:30px minmax(0,1fr)}
+}
+
+
+/* Shell reliability during mobile edge-to-edge rendering */
+.full-topbar{
+  overflow:visible;
+}
+.full-topbar-row,
+.full-brand,
+.full-top-actions{
+  min-width:0;
+}
+.top-icon-link,
+.write-action,
+.nav-toggle,
+.command-trigger{
+  flex:0 0 auto;
+  overflow:visible;
+}
+@media(max-width:720px){
+  .full-topbar{
+    min-height:calc(62px + env(safe-area-inset-top));
+    padding-top:max(10px,env(safe-area-inset-top));
+    padding-bottom:10px;
+  }
+  .full-topbar-row{
+    min-height:42px;
+    overflow:visible;
+  }
+  .full-brand,
+  .full-top-actions{
+    overflow:visible;
+  }
+  .top-icon-link,
+  .write-action,
+  .nav-toggle{
+    min-width:40px;
+    min-height:40px;
+  }
 }
