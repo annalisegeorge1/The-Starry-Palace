@@ -462,6 +462,17 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.snapshot-list');
   });
 
+  it('keeps creator backups portable and keyboard saving available',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('getWorkExport');
+    expect(live).toContain('Export work backup');
+    expect(live).toContain("e.key.toLowerCase()==='s'");
+    expect(live).toContain('Portable work backup exported.');
+    expect(live).toContain('Ctrl/⌘ S · save chapter');
+    expect(polish).toContain('.studio-head-actions');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
