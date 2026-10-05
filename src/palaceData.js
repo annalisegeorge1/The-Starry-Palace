@@ -315,7 +315,40 @@ export async function getMemberProfile(username,viewerId){
  }
 }
 export async function setFollow(viewerId,memberId,follow){if(follow){const{error}=await needClient().from('member_follows').insert({follower_id:viewerId,followed_id:memberId});if(error)throw error}else{const{error}=await needClient().from('member_follows').delete().eq('follower_id',viewerId).eq('followed_id',memberId);if(error)throw error}}
-export async function searchMembers(term){const q=term.trim();if(!q)return[];const{data,error}=await needClient().from('profiles').select('id,username,display_name,title,avatar_url,visibility').or(`username.ilike.%${q}%,display_name.ilike.%${q}%`).neq('visibility','hidden').limit(20);if(error)throw error;return data||[]}
+export async function searchMembers(term){
+ const q=term.trim();if(!q)return[];
+ const{data,error}=await needClient().from('profiles').select('id,username,display_name,title,avatar_url,visibility').or(`username.ilike.%${q}%,display_name.ilike.%${q}%`).neq('visibility','hidden').limit(20);
+ if(error)throw error;return data||[]
+}
+export async function searchPalace(term){
+ const q=term.trim();if(!q)return{works:[],comics:[],members:[],tags:[],clubs:[],archive:[]};
+ const safe=q.replace(/[%_,]/g,' ');
+ const [works,comics,members,tags,clubs,archive]=await Promise.all([
+  needClient().from('works').select('id,title,slug,summary,rating,completion_status,cover_url,author_id,profiles!works_author_id_fkey(username,display_name,avatar_url)').eq('publication_status','published').or(`title.ilike.%${safe}%,summary.ilike.%${safe}%`).order('last_published_at',{ascending:false}).limit(18),
+  needClient().from('comics').select('id,creator_id,title,slug,summary,rating,completion_status,cover_path,last_published_at').eq('publication_status','published').or(`title.ilike.%${safe}%,summary.ilike.%${safe}%`).order('last_published_at',{ascending:false}).limit(18),
+  needClient().from('profiles').select('id,username,display_name,title,avatar_url,visibility').or(`username.ilike.%${safe}%,display_name.ilike.%${safe}%`).neq('visibility','hidden').limit(18),
+  needClient().from('tags').select('id,name,category,status').eq('status','canonical').ilike('name',`%${safe}%`).order('name').limit(24),
+  needClient().from('clubs').select('id,name,slug,club_type,privacy,description').or(`name.ilike.%${safe}%,description.ilike.%${safe}%`).neq('privacy','private').order('name').limit(18),
+  needClient().from('archive_records').select('id,slug,title,creator_name,category,summary,rights_status,host_mode').eq('publication_status','published').or(`title.ilike.%${safe}%,creator_name.ilike.%${safe}%,summary.ilike.%${safe}%`).order('updated_at',{ascending:false}).limit(18)
+ ]);
+ for(const r of[works,comics,members,tags,clubs,archive])if(r.error)throw r.error;
+ const comicRows=comics.data||[];
+ const creatorIds=[...new Set(comicRows.map(c=>c.creator_id).filter(Boolean))];
+ let creatorRows=[];
+ if(creatorIds.length){
+  const p=await needClient().from('profiles').select('id,username,display_name,avatar_url').in('id',creatorIds);
+  if(p.error)throw p.error;creatorRows=p.data||[];
+ }
+ const creatorMap=Object.fromEntries(creatorRows.map(p=>[p.id,p]));
+ return{
+  works:works.data||[],
+  comics:await Promise.all(comicRows.map(async c=>({...c,creator:creatorMap[c.creator_id]||null,cover_url:await signedAsset('comic-covers',c.cover_path)}))),
+  members:members.data||[],
+  tags:tags.data||[],
+  clubs:clubs.data||[],
+  archive:archive.data||[]
+ }
+}
 
 export async function getWorkBySlug(slug){const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,language,completion_status,publication_status,visibility,comment_policy,constructive_criticism,translation_policy,download_policy,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(username,display_name,avatar_url),chapters(id,title,position,status,word_count,published_at)').eq('slug',slug).maybeSingle();if(error)throw error;if(!data)return null;data.chapters=(data.chapters||[]).sort((a,b)=>a.position-b.position);return data}
 export async function getChapter(workSlug,chapterId){const work=await getWorkBySlug(workSlug);if(!work)return null;const{data,error}=await needClient().from('chapters').select('id,work_id,title,position,body_html,status,revision,revision_note,published_at,word_count,updated_at').eq('id',chapterId).eq('work_id',work.id).maybeSingle();if(error)throw error;return data?{work,chapter:data}:null}
