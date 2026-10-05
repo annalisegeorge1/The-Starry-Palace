@@ -136,6 +136,7 @@ export async function getActivity(userId){
  const [notices,unreadCount,savedCount,progress,works,clubs]=await Promise.all([
   needClient().from('notifications').select('id,title,body,notice_type,route_name,route_param,metadata,action_label,unread,saved,created_at').eq('user_id',userId).eq('dismissed',false).order('created_at',{ascending:false}).limit(100),
   needClient().from('notifications').select('id',{count:'exact',head:true}).eq('user_id',userId).eq('dismissed',false).eq('unread',true),
+  needClient().from('notifications').select('id',{count:'exact',head:true}).eq('user_id',userId).eq('dismissed',false).eq('saved',true),
   needClient().from('reading_progress').select('work_id,chapter_id,completed,updated_at').eq('user_id',userId).order('updated_at',{ascending:false}).limit(100),
   needClient().from('works').select('id,publication_status').eq('author_id',userId),
   needClient().from('club_members').select('club_id,status').eq('user_id',userId).eq('status','active')
@@ -159,9 +160,9 @@ export async function setNoticeSaved(userId,id,saved){const{data,error}=await ne
 export async function dismissNotice(userId,id){const{error}=await needClient().from('notifications').update({dismissed:true,unread:false,read_at:new Date().toISOString()}).eq('id',id).eq('user_id',userId);if(error)throw error;return true}
 
 export async function getLibrary(userId){const [saved,progress,subs,savedComics,comicProgress,comicSubs,follows]=await Promise.all([
- needClient().from('saved_works').select('saved_at,works(id,title,slug,summary,cover_url,completion_status,profiles!works_author_id_fkey(username,display_name))').eq('user_id',userId).order('saved_at',{ascending:false}),
- needClient().from('reading_progress').select('work_id,chapter_id,progress_percent,completed,updated_at,works(id,title,slug,cover_url)').eq('user_id',userId).order('updated_at',{ascending:false}),
- needClient().from('story_subscriptions').select('work_id,enabled,frequency,works(id,title,slug)').eq('user_id',userId).eq('enabled',true),
+ needClient().from('saved_works').select('saved_at,works(id,title,slug,summary,cover_url,completion_status,last_published_at,profiles!works_author_id_fkey(username,display_name))').eq('user_id',userId).order('saved_at',{ascending:false}),
+ needClient().from('reading_progress').select('work_id,chapter_id,progress_percent,completed,updated_at,works(id,title,slug,cover_url,last_published_at)').eq('user_id',userId).order('updated_at',{ascending:false}),
+ needClient().from('story_subscriptions').select('work_id,enabled,frequency,works(id,title,slug,last_published_at)').eq('user_id',userId).eq('enabled',true),
  needClient().from('saved_comics').select('saved_at,comics(id,title,slug,summary,completion_status,cover_path)').eq('user_id',userId).order('saved_at',{ascending:false}),
  needClient().from('comic_reading_progress').select('comic_id,episode_id,page_id,completed,updated_at,comics(id,title,slug,cover_path,last_published_at)').eq('user_id',userId).order('updated_at',{ascending:false}),
  needClient().from('comic_subscriptions').select('comic_id,enabled,frequency,comics(id,title,slug,last_published_at)').eq('user_id',userId).eq('enabled',true),
@@ -690,6 +691,20 @@ export async function getWorkReaderState(userId,workId){
  for(const r of[saved,sub,progress])if(r.error)throw r.error;
  return{saved:!!saved.data,following:!!sub.data?.enabled,frequency:sub.data?.frequency||'all',progress:progress.data||null}
 }
+export async function getWorkShelfState(userId){
+ if(!userId)return{};
+ const[saved,subs,progress]=await Promise.all([
+  needClient().from('saved_works').select('work_id').eq('user_id',userId),
+  needClient().from('story_subscriptions').select('work_id,enabled,frequency').eq('user_id',userId).eq('enabled',true),
+  needClient().from('reading_progress').select('work_id,chapter_id,progress_percent,completed,updated_at').eq('user_id',userId)
+ ]);
+ for(const r of[saved,subs,progress])if(r.error)throw r.error;
+ const state={};
+ for(const row of saved.data||[])state[row.work_id]={...(state[row.work_id]||{}),saved:true};
+ for(const row of subs.data||[])state[row.work_id]={...(state[row.work_id]||{}),following:true,frequency:row.frequency||'all'};
+ for(const row of progress.data||[])state[row.work_id]={...(state[row.work_id]||{}),progress:row};
+ return state
+}
 export async function setWorkSaved(userId,workId,enabled){
  if(enabled){const{error}=await needClient().from('saved_works').upsert({user_id:userId,work_id:workId},{onConflict:'user_id,work_id'});if(error)throw error}
  else{const{error}=await needClient().from('saved_works').delete().eq('user_id',userId).eq('work_id',workId);if(error)throw error}
@@ -698,7 +713,7 @@ export async function setWorkSaved(userId,workId,enabled){
 export async function setWorkFollowing(userId,workId,enabled){
  const{error}=await needClient().from('story_subscriptions').upsert({user_id:userId,work_id:workId,enabled,updated_at:new Date().toISOString()},{onConflict:'user_id,work_id'});if(error)throw error;return enabled
 }
-export async function recordReadingProgress(userId,workId,chapterId,percent=0,completed=false){const next=Math.max(0,Math.min(100,percent));const current=await needClient().from('reading_progress').select('progress_percent,completed').eq('user_id',userId).eq('work_id',workId).maybeSingle();if(current.error)throw current.error;const progress=Math.max(Number(current.data?.progress_percent||0),next);const done=Boolean(current.data?.completed||completed);const{error}=await needClient().from('reading_progress').upsert({user_id:userId,work_id:workId,chapter_id:chapterId,progress_percent:progress,completed:done,updated_at:new Date().toISOString()},{onConflict:'user_id,work_id'});if(error)throw error}
+export async function recordReadingProgress(userId,workId,chapterId,percent=0,completed=false){const next=Math.max(0,Math.min(100,percent));const current=await needClient().from('reading_progress').select('chapter_id,progress_percent,completed').eq('user_id',userId).eq('work_id',workId).maybeSingle();if(current.error)throw current.error;const sameChapter=current.data?.chapter_id===chapterId;const progress=sameChapter?Math.max(Number(current.data?.progress_percent||0),next):next;const done=sameChapter?Boolean(current.data?.completed||completed):Boolean(completed);const{error}=await needClient().from('reading_progress').upsert({user_id:userId,work_id:workId,chapter_id:chapterId,progress_percent:progress,completed:done,updated_at:new Date().toISOString()},{onConflict:'user_id,work_id'});if(error)throw error}
 
 export async function getWorkCommunity(workId){const [tags,comments]=await Promise.all([needClient().from('work_tags').select('position,tags(id,name,category,status)').eq('work_id',workId).order('position'),needClient().from('comments').select('id,work_id,chapter_id,author_id,parent_comment_id,comment_type,body,spoiler,status,created_at,profiles!comments_author_id_fkey(username,display_name,avatar_url)').eq('work_id',workId).order('created_at')]);if(tags.error)throw tags.error;if(comments.error)throw comments.error;return{tags:(tags.data||[]).filter(x=>x.tags?.status==='canonical'),comments:comments.data||[]}}
 export async function addWorkTag(userId,workId,tagId){const{error}=await needClient().from('work_tags').insert({work_id:workId,tag_id:tagId});if(error&&error.code!=='23505')throw error}
