@@ -644,3 +644,20 @@ linear-gradient(145deg,#2d245f,#151c3c 58%,#0c1225);box-shadow:inset 0 0 0 1px r
  .legacy-profile-avatar{top:188px}
  .legacy-profile-copy{padding-top:68px}
 }
+
+
+/* My Palace tablet density repair */
+@media(min-width:700px) and (max-width:980px){
+ .legacy-home-dashboard{padding-top:18px}
+ .legacy-home-tabs{margin-bottom:30px;gap:26px}
+ .legacy-home-hero{min-height:235px;padding-top:12px;padding-bottom:18px}
+ .legacy-home-hero h1{font-size:clamp(48px,7.9vw,66px);margin-bottom:18px}
+ .legacy-home-hero>p:last-child{font-size:17px;max-width:720px}
+ .legacy-home-actions{margin-top:2px;margin-bottom:24px;gap:10px}
+ .legacy-home-actions a{min-height:54px}
+ .legacy-home-stats{gap:10px}
+ .legacy-home-stats a{min-height:112px;padding:15px 18px}
+ .legacy-home-stats strong{font-size:36px}
+ .legacy-home-stats span{margin-top:6px}
+ .legacy-home-lower{margin-top:18px;padding-top:18px}
+}
