@@ -127,3 +127,62 @@ export async function requestComicDownload(userId,comicId,requested_scope='image
 export async function setConversationPreference(userId,conversationId,patch){
  const{data,error}=await needClient().from('conversation_preferences').upsert({user_id:userId,conversation_id:conversationId,...patch,updated_at:new Date().toISOString()},{onConflict:'user_id,conversation_id'}).select().single();if(error)throw error;return data
 }
+
+export async function getMyComics(userId){
+ const{data,error}=await needClient().from('comics').select('*,comic_episodes(id,title,position,status,revision,published_at,comic_pages(id,position,caption,alt_text,decorative,reader_path,width,height))').eq('creator_id',userId).order('updated_at',{ascending:false});if(error)throw error;
+ return Promise.all((data||[]).map(async c=>({...c,cover_url:await signedAsset('comic-covers',c.cover_path),comic_episodes:(c.comic_episodes||[]).sort((a,b)=>a.position-b.position).map(e=>({...e,comic_pages:(e.comic_pages||[]).sort((a,b)=>a.position-b.position)}))})));
+}
+function comicSlug(title){const base=title.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,60)||'comic';return base+'-'+crypto.randomUUID().slice(0,8)}
+export async function createComicDraft(userId,title){
+ const clean=title.trim();if(!clean)throw new Error('Give your comic a title first.');
+ const{data,error}=await needClient().from('comics').insert({creator_id:userId,title:clean,slug:comicSlug(clean),summary:'',publication_status:'draft',visibility:'public',rating:'general',completion_status:'in_progress',reading_direction:'ltr',download_policy:'off',comment_policy:'moderated'}).select().single();if(error)throw error;return data
+}
+export async function saveComicStudio(userId,comicId,patch){
+ const allowed={title:patch.title?.trim(),summary:patch.summary??'',rating:patch.rating,completion_status:patch.completion_status,visibility:patch.visibility,reading_direction:patch.reading_direction,download_policy:patch.download_policy,required_credit_line:patch.required_credit_line??'',comment_policy:patch.comment_policy,updated_at:new Date().toISOString()};
+ const{data,error}=await needClient().from('comics').update(allowed).eq('id',comicId).eq('creator_id',userId).select().single();if(error)throw error;return data
+}
+export async function createComicEpisode(userId,comicId,title){
+ const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
+ const pos=await needClient().from('comic_episodes').select('position').eq('comic_id',comicId).order('position',{ascending:false}).limit(1);if(pos.error)throw pos.error;
+ const{data,error}=await needClient().from('comic_episodes').insert({comic_id:comicId,title:title.trim()||'Untitled episode',position:(pos.data?.[0]?.position||0)+1,status:'draft'}).select().single();if(error)throw error;return data
+}
+export async function saveComicEpisode(userId,comicId,episodeId,patch){
+ const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
+ const{data,error}=await needClient().from('comic_episodes').update({title:patch.title?.trim(),revision_note:patch.revision_note??'',scheduled_for:patch.scheduled_for||null,updated_at:new Date().toISOString()}).eq('id',episodeId).eq('comic_id',comicId).select().single();if(error)throw error;return data
+}
+export async function publishComicEpisode(userId,comicId,episodeId){
+ const own=await needClient().from('comics').select('first_published_at').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
+ const now=new Date().toISOString();const ep=await needClient().from('comic_episodes').update({status:'published',published_at:now,updated_at:now}).eq('id',episodeId).eq('comic_id',comicId).select().single();if(ep.error)throw ep.error;
+ const patch={publication_status:'published',last_published_at:now,updated_at:now};if(!own.data.first_published_at)patch.first_published_at=now;
+ const c=await needClient().from('comics').update(patch).eq('id',comicId).eq('creator_id',userId);if(c.error)throw c.error;return ep.data
+}
+function safeAssetName(name){return(name||'image').replace(/[^a-zA-Z0-9._-]+/g,'-').slice(-120)}
+export async function uploadComicPage(userId,comicId,episodeId,file,meta={}){
+ const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
+ const pos=await needClient().from('comic_pages').select('position').eq('episode_id',episodeId).order('position',{ascending:false}).limit(1);if(pos.error)throw pos.error;
+ const path=`${userId}/${comicId}/${episodeId}/${crypto.randomUUID()}-${safeAssetName(file.name)}`;
+ const up=await needClient().storage.from('comic-pages').upload(path,file,{cacheControl:'3600',upsert:false,contentType:file.type||undefined});if(up.error)throw up.error;
+ const{data,error}=await needClient().from('comic_pages').insert({episode_id:episodeId,position:(pos.data?.[0]?.position||0)+1,caption:meta.caption?.trim()||'',alt_text:meta.alt_text?.trim()||'',decorative:!!meta.decorative,reader_path:path}).select().single();if(error){await needClient().storage.from('comic-pages').remove([path]).catch(()=>{});throw error}return data
+}
+export async function uploadComicCover(userId,comicId,file){
+ const path=`${userId}/${comicId}/cover-${crypto.randomUUID()}-${safeAssetName(file.name)}`;const up=await needClient().storage.from('comic-covers').upload(path,file,{cacheControl:'3600',upsert:false,contentType:file.type||undefined});if(up.error)throw up.error;
+ const{data,error}=await needClient().from('comics').update({cover_path:path,updated_at:new Date().toISOString()}).eq('id',comicId).eq('creator_id',userId).select().single();if(error)throw error;return data
+}
+export async function deleteComicPage(userId,comicId,page){
+ const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
+ const del=await needClient().from('comic_pages').delete().eq('id',page.id);if(del.error)throw del.error;if(page.reader_path)await needClient().storage.from('comic-pages').remove([page.reader_path]);return true
+}
+export async function getMemberBoundary(userId,otherUserId){
+ if(!userId||!otherUserId||userId===otherUserId)return{muted:false,blocked:false};
+ const{data,error}=await needClient().from('user_member_boundaries').select('muted,blocked').eq('user_id',userId).eq('other_user_id',otherUserId).maybeSingle();if(error)throw error;return data||{muted:false,blocked:false}
+}
+export async function setMemberBoundary(userId,otherUserId,patch){
+ const row={user_id:userId,other_user_id:otherUserId,muted:!!patch.muted,blocked:!!patch.blocked,updated_at:new Date().toISOString()};
+ const{data,error}=await needClient().from('user_member_boundaries').upsert(row,{onConflict:'user_id,other_user_id'}).select().single();if(error)throw error;
+ if(row.blocked)await needClient().from('member_follows').delete().eq('follower_id',userId).eq('followed_id',otherUserId);
+ return data
+}
+export async function sendMessageRequest(userId,recipientId,introText){
+ const text=introText.trim();if(!text)throw new Error('Write a short introduction first.');
+ const{data,error}=await needClient().from('message_requests').insert({sender_id:userId,recipient_id:recipientId,intro_text:text,status:'pending'}).select().single();if(error)throw error;return data
+}
