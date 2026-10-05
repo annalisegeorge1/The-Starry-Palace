@@ -366,3 +366,43 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   .activity-empty-state{grid-template-columns:1fr;justify-items:center;text-align:center}
   .activity-empty-state nav{justify-content:center}
 }
+
+
+/* Shared room states */
+.palace-state{
+  min-height:148px;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:1rem;
+  align-items:center;
+  padding:1.1rem 1.2rem;
+  border-style:solid;
+  background:linear-gradient(135deg,rgba(17,22,43,.88),rgba(10,14,31,.74));
+  box-shadow:var(--palace-shadow-soft);
+}
+.palace-state-sigil{
+  position:relative;
+  display:grid;
+  place-items:center;
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  border:1px solid rgba(166,151,219,.24);
+  background:radial-gradient(circle at 35% 30%,rgba(116,92,189,.48),rgba(28,35,69,.88) 72%);
+  color:#e7e1ff;
+  font:1.7rem Georgia,'Times New Roman',serif;
+}
+.palace-state-sigil b{position:absolute;right:8px;top:7px;font-size:.58rem}
+.palace-state>div{display:grid;gap:.35rem}
+.palace-state strong{font:600 1.05rem Georgia,'Times New Roman',serif}
+.palace-state small{color:var(--palace-muted);line-height:1.5}
+.palace-state .outline-button{justify-self:start;margin-top:.35rem;padding:.55rem .75rem}
+.palace-state-loading .palace-state-sigil{animation:palaceProfessionalPulse 1.8s ease-in-out infinite}
+.palace-state-error .palace-state-sigil{border-color:rgba(205,126,152,.35);background:rgba(98,43,62,.28);font-family:inherit;font-weight:800}
+@keyframes palaceProfessionalPulse{0%,100%{transform:scale(.96);opacity:.76}50%{transform:scale(1.035);opacity:1}}
+.daylight .palace-state{background:linear-gradient(135deg,#fff,#f5f6fa)}
+.daylight .palace-state-sigil{background:radial-gradient(circle at 35% 30%,#d8cff4,#8c80bd 72%);color:white}
+@media(max-width:560px){
+ .palace-state{grid-template-columns:1fr;justify-items:center;text-align:center}
+ .palace-state .outline-button{justify-self:center}
+}
