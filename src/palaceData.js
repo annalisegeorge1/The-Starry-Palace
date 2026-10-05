@@ -704,6 +704,24 @@ export async function saveComic(userId,comicId){
 export async function subscribeComic(userId,comicId,frequency='instant'){
  const{error}=await needClient().from('comic_subscriptions').upsert({user_id:userId,comic_id:comicId,frequency,enabled:true,updated_at:new Date().toISOString()},{onConflict:'user_id,comic_id'});if(error)throw error
 }
+export async function getComicReaderState(userId,comicId){
+ if(!userId)return{saved:false,following:false,progress:null};
+ const[saved,sub,progress]=await Promise.all([
+  needClient().from('saved_comics').select('comic_id').eq('user_id',userId).eq('comic_id',comicId).maybeSingle(),
+  needClient().from('comic_subscriptions').select('enabled,frequency').eq('user_id',userId).eq('comic_id',comicId).maybeSingle(),
+  needClient().from('comic_reading_progress').select('*').eq('user_id',userId).eq('comic_id',comicId).maybeSingle()
+ ]);
+ for(const r of[saved,sub,progress])if(r.error)throw r.error;
+ return{saved:!!saved.data,following:!!sub.data?.enabled,frequency:sub.data?.frequency||'instant',progress:progress.data||null}
+}
+export async function setComicSaved(userId,comicId,enabled){
+ if(enabled){const{error}=await needClient().from('saved_comics').upsert({user_id:userId,comic_id:comicId},{onConflict:'user_id,comic_id'});if(error)throw error}
+ else{const{error}=await needClient().from('saved_comics').delete().eq('user_id',userId).eq('comic_id',comicId);if(error)throw error}
+ return enabled
+}
+export async function setComicFollowing(userId,comicId,enabled,frequency='instant'){
+ const{error}=await needClient().from('comic_subscriptions').upsert({user_id:userId,comic_id:comicId,frequency,enabled,updated_at:new Date().toISOString()},{onConflict:'user_id,comic_id'});if(error)throw error;return enabled
+}
 export async function requestComicDownload(userId,comicId,requested_scope='images',note=''){
  const{data,error}=await needClient().from('comic_download_requests').insert({comic_id:comicId,requester_id:userId,requested_scope,note:note.trim(),status:'pending'}).select().single();if(error)throw error;return data
 }
