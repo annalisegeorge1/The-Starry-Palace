@@ -73,6 +73,17 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('<RoomBundleWarmup/>');
   });
 
+  it('keeps full Palace content search reachable from the compact command panel',()=>{
+    const polish=read('src/polish.css');
+    expect(main).toContain('function searchCommand()');
+    expect(main).toContain("navigate('/search?q='+encodeURIComponent(q))");
+    expect(main).toContain('Search all Palace content');
+    expect(main).toContain('Search Palace rooms or content');
+    expect(main).toContain("commandMatches[0]?chooseCommand(commandMatches[0].path):searchCommand()");
+    expect(main).toContain('Stories, comics, writers, tags, fandoms and clubs');
+    expect(polish).toContain('.command-search-all');
+  });
+
   it('keeps badge artwork metadata tier-split',()=>{
     const badge=read('src/PalaceBadge.jsx');
     expect(badge).not.toContain("import frames from './originalBadgeArt.json'");
