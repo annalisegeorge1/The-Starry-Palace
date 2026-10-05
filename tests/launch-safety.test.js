@@ -405,6 +405,25 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.library-search-live>button');
   });
 
+  it('keeps Lost Works provenance-first and personally saveable',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('setArchiveRecordSaved');
+    expect(live).toContain('archive-advanced-filters');
+    expect(live).toContain('Recently verified/updated');
+    expect(live).toContain('Saved ✓');
+    expect(polish).toContain('.archive-advanced-filters');
+  });
+
+  it('keeps Palace Council queues searchable without broadening permissions',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('council-queue-tools');
+    expect(live).toContain('Search current Council queue');
+    expect(live).toContain('openCouncilCount');
+    expect(live).toContain('future appeal');
+    expect(polish).toContain('.council-queue-tools');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
