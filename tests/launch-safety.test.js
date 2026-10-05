@@ -576,6 +576,20 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.showcase-slot');
   });
 
+  it('keeps Series ownership safe while allowing metadata and reading-order management',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('updateSeries');
+    expect(data).toContain('deleteSeries');
+    expect(data).toContain('reorderSeriesWorks');
+    expect(live).toContain('Edit series');
+    expect(live).toContain('Delete this series?');
+    expect(live).toContain('series-order-actions');
+    expect(live).toContain('series-completion');
+    expect(polish).toContain('.series-owner-actions');
+    expect(polish).toContain('.series-order-actions');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
