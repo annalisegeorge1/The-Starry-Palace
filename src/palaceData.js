@@ -1,8 +1,44 @@
 import { supabase } from './supabase';
 
 function needClient(){if(!supabase) throw new Error('The Palace data connection is not configured.');return supabase}
-export async function getMyProfile(userId){const{data,error}=await needClient().from('profiles').select('id,username,display_name,title,bio,avatar_url,cover_url,visibility,message_policy').eq('id',userId).single();if(error)throw error;return data}
-export async function updateMyProfile(userId,patch){const username=patch.username?.trim().toLowerCase().replace(/^@/,'');if(username&&!/^[a-z0-9_]{3,30}$/.test(username))throw new Error('Your Palace handle may use 3–30 lowercase letters, numbers and underscores.');const allowed={display_name:patch.display_name?.trim(),title:patch.title?.trim()||null,bio:patch.bio?.trim()||'',visibility:patch.visibility,message_policy:patch.message_policy};if(username)allowed.username=username;const{data,error}=await needClient().from('profiles').update(allowed).eq('id',userId).select().single();if(error?.code==='23505')throw new Error('That Palace handle is already taken.');if(error)throw error;return data}
+export async function getMyProfile(userId){const{data,error}=await needClient().from('profiles').select('id,username,display_name,title,bio,avatar_url,cover_url,visibility,message_policy,pronouns,status_line,availability,roles,featured_genres,featured_fandoms,accent,cover_position').eq('id',userId).single();if(error)throw error;return data}
+export async function updateMyProfile(userId,patch){
+ const username=patch.username?.trim().toLowerCase().replace(/^@/,'');
+ if(username&&!/^[a-z0-9_]{3,30}$/.test(username))throw new Error('Your Palace handle may use 3–30 lowercase letters, numbers and underscores.');
+ const allowed={
+  display_name:patch.display_name?.trim(),
+  title:patch.title?.trim()||null,
+  bio:patch.bio?.trim()||'',
+  visibility:patch.visibility,
+  message_policy:patch.message_policy,
+  pronouns:patch.pronouns?.trim()||null,
+  status_line:patch.status_line?.trim()||null,
+  availability:patch.availability?.trim()||null,
+  roles:Array.isArray(patch.roles)?patch.roles.filter(Boolean).map(x=>String(x).trim()).filter(Boolean):[],
+  featured_genres:Array.isArray(patch.featured_genres)?patch.featured_genres.filter(Boolean).map(x=>String(x).trim()).filter(Boolean):[],
+  featured_fandoms:Array.isArray(patch.featured_fandoms)?patch.featured_fandoms.filter(Boolean).map(x=>String(x).trim()).filter(Boolean):[],
+  accent:patch.accent||'moon-violet',
+  cover_position:Number.isFinite(Number(patch.cover_position))?Math.max(0,Math.min(100,Number(patch.cover_position))):48
+ };
+ if(username)allowed.username=username;
+ const{data,error}=await needClient().from('profiles').update(allowed).eq('id',userId).select().single();
+ if(error?.code==='23505')throw new Error('That Palace handle is already taken.');
+ if(error)throw error;return data
+}
+export async function uploadProfileMedia(userId,file,kind='avatar'){
+ if(!file)throw new Error('Choose an image first.');
+ if(file.size>6291456)throw new Error('Profile images must be 6 MB or smaller.');
+ const ext=(file.name?.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+ const path=userId+'/'+kind+'-'+Date.now()+'.'+ext;
+ const{error}=await needClient().storage.from('profile-media').upload(path,file,{upsert:false,contentType:file.type||undefined});
+ if(error)throw error;
+ const{data}=needClient().storage.from('profile-media').getPublicUrl(path);
+ const url=data?.publicUrl;if(!url)throw new Error('Profile image URL could not be created.');
+ const column=kind==='cover'?'cover_url':'avatar_url';
+ const{data:profile,error:profileError}=await needClient().from('profiles').update({[column]:url}).eq('id',userId).select().single();
+ if(profileError)throw profileError;
+ return profile
+}
 export async function getMyPrivacy(userId){const{data,error}=await needClient().from('privacy_preferences').select('*').eq('user_id',userId).maybeSingle();if(error)throw error;return data}
 export async function ensureMyPrivacy(userId){const current=await getMyPrivacy(userId);if(current)return current;const{data,error}=await needClient().from('privacy_preferences').insert({user_id:userId}).select().single();if(error)throw error;return data}
 export async function getChamberSnapshot(userId){
