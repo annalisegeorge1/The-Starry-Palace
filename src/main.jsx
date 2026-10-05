@@ -25,7 +25,7 @@ const fullPalaceRooms=[
   ['All works','/reading'],['Comics','/comics'],['Lost Works','/lost-works'],['Series',null],['Tags','/tags']
  ]},
  {id:'library',icon:'▧',label:'My Library',path:'/library',private:true,sections:[
-  ['Saved Stories','/library'],['Comics Shelf',null],['Collections & Readers’ Choice',null],['Reading lists',null],['History',null],['Notes & Bookmarks',null],['Lost Works Shelf','/lost-works'],['Subscriptions','/library'],['Writers I Follow','/search']
+  ['Saved Stories','/library'],['Comics Shelf','/library?tab=comics'],['Collections & Readers’ Choice',null],['Reading lists',null],['History','/library?tab=history'],['Notes & Bookmarks',null],['Lost Works Shelf','/lost-works'],['Subscriptions','/library'],['Writers I Follow','/search']
  ]},
  {id:'writing',icon:'✎',label:'Writing Chamber',path:'/writing',private:true,sections:[
   ['Editor & drafts','/writing'],['Comic studio','/comics/studio'],['Co-writing',null],['Comment review',null],['Requests & permissions',null]
@@ -37,10 +37,10 @@ const fullPalaceRooms=[
   ['Writing calendar','/events'],['Heritage calendar','/events'],['My calendar','/events'],['Event proposals','/events'],['Member ballots','/events']
  ]},
  {id:'treasury',icon:'♛',label:'Royal Treasury',path:'/treasury',private:true,sections:[
-  ['Badges & gifts','/treasury'],['Lucky draw & 520+ prizes',null],['Monthly rankings','/honour']
+  ['Badges & gifts','/treasury'],['Lucky draw & 520+ prizes','/treasury?tab=draw'],['Monthly rankings','/honour']
  ]},
  {id:'settings',icon:'⚙',label:'Settings & Safety',path:'/settings',private:true,sections:[
-  ['Comfort','/settings'],['Storage & uploads','/settings'],['Quiet corners','/settings'],['Privacy','/settings'],['Account & downloads','/settings'],['System status',null],['Welcome guide',null],['Testing room',null]
+  ['Comfort','/settings'],['Storage & uploads','/settings'],['Quiet corners','/settings'],['Privacy','/settings'],['Account & downloads','/settings'],['System status','/settings?tab=system'],['Welcome guide','/settings?tab=guide'],['Testing room','/settings?tab=testing']
  ]}
 ];
 
