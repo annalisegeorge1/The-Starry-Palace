@@ -84,6 +84,14 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.command-search-all');
   });
 
+  it('shows unread Activity count in the persistent Palace header',()=>{
+    expect(main).toContain('const [activityBadge,setActivityBadge]=useState(0)');
+    expect(main).toContain("from('notifications').select('id',{count:'exact',head:true})");
+    expect(main).toContain(".eq('unread',true).eq('dismissed',false)");
+    expect(main).toContain("activityBadge+' unread notifications'");
+    expect(main).toContain("activityBadge>99?'99+':activityBadge");
+  });
+
   it('keeps badge artwork metadata tier-split',()=>{
     const badge=read('src/PalaceBadge.jsx');
     expect(badge).not.toContain("import frames from './originalBadgeArt.json'");
