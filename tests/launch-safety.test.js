@@ -70,6 +70,15 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain("location.pathname.startsWith('/member/')");
   });
 
+  it('keeps badge artwork split by tier',()=>{
+    const badge=read('src/PalaceBadge.jsx');
+    expect(badge).not.toContain('originalBadgeArt.json');
+    expect(badge).not.toContain('badgeArt.json');
+    for(const tier of ['bronze','silver','gold','platinum','emerald']){
+      expect(badge).toContain(`badgeFrames.${tier}.json`);
+    }
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
