@@ -18,19 +18,28 @@ const rooms=[
 
 function Frame({children,privateArea=false}){
  const {session}=useAuth();
- return <div className="palace-shell">
-  <aside className="sidebar">
-   <Link className="crest" to="/"><span className="moon">☾</span><strong>The Starry Palace</strong><small>INKVERSE</small></Link>
-   <nav className="room-nav" aria-label="Palace rooms">
-    {session&&<NavLink to="/chamber">✦ <span>My Chamber</span></NavLink>}
-    {rooms.map(([name,path])=><NavLink key={path} to={path}>◇ <span>{name}</span></NavLink>)}
-    {session&&<><NavLink to="/library">☾ <span>My Library</span></NavLink><NavLink to="/letters">✉ <span>Palace Letters</span></NavLink></>}
-    <NavLink to="/tags">✧ <span>Tag Constellation</span></NavLink>
-   </nav>
-   <div className="sidebar-foot">{session?<Link to="/settings">Settings & privacy</Link>:<Link to="/login">Enter the Palace</Link>}</div>
+ const [navOpen,setNavOpen]=useState(false);
+ const location=useLocation();
+ React.useEffect(()=>setNavOpen(false),[location.pathname]);
+ const nav=[
+  ...(session?[['✦','My Chamber','/chamber']]:[]),
+  ['◈','Reading Rooms','/reading'],
+  ...(session?[['✎','Writing Chamber','/writing'],['☾','My Library','/library']]:[]),
+  ['♢','Palace Life','/palace-life'],['✧','Events & Heritage','/events'],
+  ...(session?[['♛','Royal Treasury','/treasury']]:[]),
+  ['⌁','Lost Works','/lost-works'],['✦','Tag Constellation','/tags'],
+  ...(session?[['✉','Palace Letters','/letters'],['◌','Moonlight Activity','/activity']]:[])
+ ];
+ return <div className={"palace-shell "+(navOpen?'nav-open':'')}>
+  <aside className="sidebar" aria-label="Palace navigation">
+   <div className="sidebar-brand"><Link className="crest" to="/"><span className="moon">☾</span><strong>The Starry Palace</strong><small>INKVERSE</small></Link><button className="nav-close" onClick={()=>setNavOpen(false)} aria-label="Close Palace navigation">×</button></div>
+   <p className="nav-section-label">PALACE ROOMS</p>
+   <nav className="room-nav">{nav.map(([icon,name,path])=><NavLink key={path} to={path}><i aria-hidden="true">{icon}</i><span>{name}</span></NavLink>)}</nav>
+   <div className="sidebar-foot">{session?<><NavLink to="/settings">⚙ <span>Settings & privacy</span></NavLink><Link to="/search">⌕ <span>Search the Palace</span></Link></>:<Link to="/login">Enter the Palace</Link>}</div>
   </aside>
+  <button className="nav-scrim" aria-label="Close navigation" onClick={()=>setNavOpen(false)}/>
   <div className="palace-stage">
-   <header className="topbar"><div><p className="top-kicker">{privateArea?'YOUR PALACE':'GATHER · READ · CREATE'}</p></div><div className="top-actions"><Link to="/search">Search the Palace</Link>{session?<Link className="avatar-link" to="/chamber">{(session.user.email||'P').slice(0,1).toUpperCase()}</Link>:<Link className="pill" to="/login">Sign in</Link>}</div></header>
+   <header className="topbar"><div className="topbar-left"><button className="nav-toggle" onClick={()=>setNavOpen(true)} aria-label="Open Palace navigation">☰</button><div><p className="top-kicker">{privateArea?'YOUR PALACE':'GATHER · READ · CREATE'}</p><Link className="mobile-palace-name" to="/">The Starry Palace</Link></div></div><div className="top-actions"><Link to="/search">Search the Palace</Link>{session&&<Link className="activity-link" to="/activity" aria-label="Moonlight Activity">✦</Link>}{session?<Link className="avatar-link" to="/chamber">{(session.user.email||'P').slice(0,1).toUpperCase()}</Link>:<Link className="pill" to="/login">Sign in</Link>}</div></header>
    <main>{children}</main>
   </div>
  </div>
