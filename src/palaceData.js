@@ -293,6 +293,29 @@ export async function getTreasury(userId){const [ach,gifts,showA,showG,pref]=awa
 export async function getArchive(){const{data,error}=await needClient().from('archive_records').select('id,accession_number,slug,title,creator_name,record_nature,category,summary,original_language,languages,surviving_extent,known_gaps,provenance_summary,rights_status,hosting_basis,host_mode,continuation_status,verified_at').eq('publication_status','published').order('updated_at',{ascending:false}).limit(100);if(error)throw error;return data||[]}
 export async function saveArchiveRecord(userId,recordId){const{error}=await needClient().from('user_archive_records').upsert({user_id:userId,record_id:recordId,saved:true,visited_at:new Date().toISOString(),updated_at:new Date().toISOString()},{onConflict:'user_id,record_id'});if(error)throw error}
 
+export async function getProfilePosts(authorId){
+ const{data,error}=await needClient().from('profile_posts').select('id,author_id,body,visibility,status,created_at,updated_at').eq('author_id',authorId).eq('status','active').order('created_at',{ascending:false}).limit(24);
+ if(error)throw error;return data||[]
+}
+export async function createProfilePost(userId,body,visibility='followers'){
+ const text=String(body||'').trim();
+ if(!text)throw new Error('Write something before posting.');
+ const{data,error}=await needClient().from('profile_posts').insert({author_id:userId,body:text,visibility}).select().single();
+ if(error)throw error;return data
+}
+export async function deleteProfilePost(userId,id){
+ const{error}=await needClient().from('profile_posts').delete().eq('id',id).eq('author_id',userId);
+ if(error)throw error
+}
+export async function getFollowingProfilePosts(userId){
+ const follows=await needClient().from('member_follows').select('followed_id').eq('follower_id',userId);
+ if(follows.error)throw follows.error;
+ const ids=(follows.data||[]).map(x=>x.followed_id);
+ if(!ids.length)return[];
+ const posts=await needClient().from('profile_posts').select('id,author_id,body,visibility,created_at,updated_at,profiles!profile_posts_author_id_fkey(id,username,display_name,title,avatar_url)').in('author_id',ids).eq('status','active').order('created_at',{ascending:false}).limit(30);
+ if(posts.error)throw posts.error;return posts.data||[]
+}
+
 export async function getMemberProfile(username,viewerId){
  const{data:profile,error}=await needClient().from('profiles').select('id,username,display_name,title,bio,avatar_url,cover_url,visibility,message_policy,pronouns,status_line,availability,roles,featured_genres,featured_fandoms,accent,cover_position').eq('username',username).maybeSingle();
  if(error)throw error;if(!profile)return null;
