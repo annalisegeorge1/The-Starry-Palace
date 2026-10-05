@@ -5,7 +5,7 @@ import { AuthProvider, ProtectedRoute, useAuth } from './auth';
 import { configured, supabase } from './supabase';
 import './style.css';
 import TreasuryCatalogue from './Treasury';
-import { ChamberLive, ReadingLive, WritingLive, SettingsLive, ActivityLive, LibraryLive, TagsLive, PalaceLifeLive, LettersLive, EventsLive, TreasuryLive, LostWorksLive, MemberProfileLive, SearchLive, WorkLive, ChapterLive, WorkStudioLive, TagSearchLive, HonourLive, CouncilLive, CodeLive, ComicsLive, ComicLive, ComicEpisodeLive, ComicStudioLive } from './liveRooms';
+import { ChamberLive, ReadingLive, WritingLive, SettingsLive, ActivityLive, LibraryLive, TagsLive, PalaceLifeLive, LettersLive, EventsLive, TreasuryLive, LostWorksLive, MemberProfileLive, SearchLive, WorkLive, ChapterLive, WorkStudioLive, TagSearchLive, HonourLive, CouncilLive, CodeLive, ComicsLive, ComicLive, ComicEpisodeLive, ComicStudioLive, SeriesLive } from './liveRooms';
 
 const rooms=[
   ['Reading Rooms','/reading','Read, discover and return to the stories waiting for you.'],
@@ -22,7 +22,7 @@ const fullPalaceRooms=[
   ['My chamber','/chamber'],['Notifications','/activity'],['Messages','/letters'],['Invitations','/events']
  ]},
  {id:'reading',icon:'◈',label:'Reading Rooms',path:'/reading',sections:[
-  ['All works','/reading'],['Comics','/comics'],['Lost Works','/lost-works'],['Series',null],['Tags','/tags']
+  ['All works','/reading'],['Comics','/comics'],['Lost Works','/lost-works'],['Series','/series'],['Tags','/tags']
  ]},
  {id:'library',icon:'▧',label:'My Library',path:'/library',private:true,sections:[
   ['Saved Stories','/library'],['Comics Shelf','/library?tab=comics'],['Collections & Readers’ Choice','/library?tab=collections'],['Reading lists','/library?tab=lists'],['History','/library?tab=history'],['Notes & Bookmarks','/library?tab=notes'],['Lost Works Shelf','/lost-works'],['Subscriptions','/library'],['Writers I Follow','/search']
@@ -103,7 +103,7 @@ function Callback(){const{session,loading,error}=useAuth();const p=new URLSearch
 function App(){return <AuthProvider><Routes>
  <Route path="/" element={<Home/>}/><Route path="/login" element={<Login/>}/><Route path="/auth/callback" element={<Callback/>}/>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
- <Route path="/reading" element={<ReadingLive Frame={Frame}/>}/>
+ <Route path="/reading" element={<ReadingLive Frame={Frame}/>}/><Route path="/series" element={<SeriesLive Frame={Frame}/>}/>
  <Route path="/comics" element={<ComicsLive Frame={Frame}/>}/>
  <Route path="/comics/studio" element={<ProtectedRoute><ComicStudioLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/comic/:slug" element={<ComicLive Frame={Frame}/>}/>
