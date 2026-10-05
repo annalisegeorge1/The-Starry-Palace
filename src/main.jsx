@@ -29,7 +29,7 @@ function Frame({children,privateArea=false}){
   ...(session?[['✎','Writing Chamber','/writing'],['☾','My Library','/library']]:[]),
   ['♢','Palace Life','/palace-life'],['✧','Events & Heritage','/events'],
   ...(session?[['♛','Royal Treasury','/treasury']]:[]),
-  ['⌁','Lost Works','/lost-works'],['✦','Tag Constellation','/tags'],
+  ['⌁','Lost Works','/lost-works'],['✦','Tag Constellation','/tags'],['♜','Throne of Honour','/honour'],['⚖','Palace Council','/council'],['§','The Palace Code','/code'],
   ...(session?[['✉','Palace Letters','/letters'],['◌','Moonlight Activity','/activity']]:[])
  ];
  return <div className={"palace-shell "+(navOpen?'nav-open ':'')+(daylight?'daylight':'nightfall')}>
@@ -93,7 +93,7 @@ function App(){return <AuthProvider><Routes>
  <Route path="/library" element={<ProtectedRoute><LibraryLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/letters" element={<ProtectedRoute><LettersLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/tags" element={<TagSearchLive Frame={Frame}/>}/>
- <Route path="/search" element={<SearchLive Frame={Frame}/>}/>
+ <Route path="/search" element={<SearchLive Frame={Frame}/>}/><Route path="/honour" element={<Room title="Throne of Honour" eyebrow="COURT HONOURS" description="A ceremonial hall for monthly recognition, achievements and community contributions—never a measure of artistic worth."/>}/><Route path="/council" element={<Room title="Palace Council" eyebrow="CARE · REVIEW · APPEAL" description="The governance chamber for moderation, appeals, event review, tag disputes and accountable Palace decisions." protectedRoom/>}/><Route path="/code" element={<Room title="The Palace Code" eyebrow="RIGHTS · SAFETY · CONDUCT" description="The Palace rules for safety, dignity, privacy, creative rights, moderation and appeals."/>}/>
  <Route path="/member/:username" element={<MemberProfileLive Frame={Frame}/>}/>
  <Route path="*" element={<Frame><section className="room-title"><p className="eyebrow">BEYOND THE GATES</p><h1>You left palace grounds.</h1><Link className="button" to="/">Return to the Palace</Link></section></Frame>}/>
  </Routes></AuthProvider>}
