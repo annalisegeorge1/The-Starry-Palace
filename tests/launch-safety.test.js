@@ -283,6 +283,27 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.personal-agenda');
   });
 
+  it('keeps the chamber editor preview and profile limits wired',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(live).toContain('chamber-live-preview');
+    expect(live).toContain('chamber profile complete');
+    expect(live).toContain('maxLength="1200"');
+    expect(live).toContain('maxLength="140"');
+    expect(data).toContain('cleanList=(value,maxItems=8,maxLength=50)');
+    expect(polish).toContain('.chamber-live-preview');
+  });
+
+  it('keeps privacy and notification presets available without removing granular controls',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain("applyPrivacyPreset('open')");
+    expect(live).toContain("applyPrivacyPreset('members')");
+    expect(live).toContain("applyPrivacyPreset('private')");
+    expect(live).toContain("applyNotificationPreset('focused')");
+    expect(live).toContain('PRESETS SAVE IMMEDIATELY');
+    expect(polish).toContain('.settings-presets');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
