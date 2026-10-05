@@ -40,6 +40,14 @@ describe('Starry Palace launch safety',()=>{
     expect(data).toContain("from('member_ballot_options').select('id,ballot_id,label,description,position')");
   });
 
+  it('keeps restored sidebar sections fully wired',()=>{
+    expect(main).not.toContain('RESTORING');
+    expect(main).not.toContain('restoring-section');
+    expect(main).toContain("['Monthly rankings','/treasury?tab=rankings']");
+    expect(main).toContain("['Storage & uploads','/settings?tab=storage']");
+    expect(main).toContain("['Clubs','/palace-life?room=clubs']");
+  });
+
   it('keeps Tag Constellation links on the live route',()=>{
     expect(live).not.toContain('/tag-search');
     expect(main).toContain('<Route path="/tags"');
