@@ -4243,3 +4243,31 @@ img{max-width:100%}
   .comic-readiness-head{align-items:stretch}
   .comic-readiness-head>b{min-width:46px;min-height:46px}
 }
+
+
+/* Comic Studio timed releases */
+.episode-schedule-note{
+  display:block;
+  width:max-content;
+  max-width:100%;
+  margin-top:.34rem;
+  padding:.28rem .52rem;
+  border:1px solid rgba(128,149,205,.24);
+  border-radius:999px;
+  background:rgba(78,93,155,.1);
+  color:#c2cceb;
+  font-size:.58rem;
+  line-height:1.35;
+}
+.episode-studio-card:has(.episode-schedule-note){
+  border-color:rgba(128,149,205,.28);
+  box-shadow:0 14px 34px rgba(5,10,27,.12);
+}
+.daylight .episode-schedule-note{
+  background:rgba(78,93,155,.07);
+  color:#4b5d91;
+}
+@media(max-width:620px){
+  .episode-schedule-note{width:100%;border-radius:10px}
+  .episode-actions .outline-button,.episode-actions .quiet-button{min-height:40px}
+}
