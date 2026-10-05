@@ -6,6 +6,7 @@ import PalaceBadge from './PalaceBadge';
 import PalaceGift, { giftCourt, giftCourts, giftEdition, giftEditions } from './PalaceGift';
 import { getGiftCatalogue, getTreasury } from './palaceData';
 import './treasury.css';
+import {buildInventory} from './treasuryCollection';
 
 const tiers=['bronze','silver','gold','platinum','emerald'];
 const PAGE_SIZE=48;
@@ -19,7 +20,7 @@ export default function Treasury({Frame}) {
  const [selected,setSelected]=useState(null);
  const [giftData,setGiftData]=useState({items:[],count:0});
  const [ownedData,setOwnedData]=useState({gifts:[]});
- const [giftCourt,setGiftCourt]=useState('all');
+ const [selectedCourt,setGiftCourt]=useState('all');
  const [giftEditionFilter,setGiftEditionFilter]=useState('all');
  const [giftOwnership,setGiftOwnership]=useState('all');
  const [giftPage,setGiftPage]=useState(1);
@@ -35,25 +36,15 @@ export default function Treasury({Frame}) {
   return()=>{live=false};
  },[session.user.id]);
 
- useEffect(()=>setGiftPage(1),[query,giftCourt,giftEditionFilter,giftOwnership,collection]);
+ useEffect(()=>setGiftPage(1),[query,selectedCourt,giftEditionFilter,giftOwnership,collection]);
 
  const source=collection==='originals'?originals:badges;
  const visibleBadges=source.filter(b=>(category==='all'||b.category===category)&&`${b.name} ${b.description} ${b.category}`.toLowerCase().includes(query.toLowerCase()));
  const courts=useMemo(()=>[...new Set(giftData.items.map(g=>g.court_name).filter(Boolean))].sort((a,b)=>a.localeCompare(b)),[giftData.items]);
- const inventory=useMemo(()=>{
-  const map=new Map();
-  for(const row of ownedData.gifts||[]){
-   const id=row.virtual_gifts?.id;if(!id)continue;
-   const existing=map.get(id)||{copies:0,tiers:[],ascendable:false};
-   existing.copies+=Number(row.copies||0);existing.tiers.push(row.tier);
-   if(row.tier!=='emerald'&&Number(row.copies||0)>=Number(row.virtual_gifts?.upgrade_copies||3))existing.ascendable=true;
-   map.set(id,existing);
-  }
-  return map;
- },[ownedData.gifts]);
+ const inventory=useMemo(()=>buildInventory(ownedData.gifts),[ownedData.gifts]);
  const ownedDistinct=inventory.size;
  const totalCopies=[...inventory.values()].reduce((n,x)=>n+x.copies,0);
- const duplicateDistinct=[...inventory.values()].filter(x=>x.copies>1).length;
+ const duplicateDistinct=[...inventory.values()].filter(x=>x.hasDuplicates).length;
  const ascendableDistinct=[...inventory.values()].filter(x=>x.ascendable).length;
  const courtProgress=useMemo(()=>{
   const map=new Map(giftCourts.map(c=>[c.name,{owned:0,total:0}]));
@@ -66,10 +57,10 @@ export default function Treasury({Frame}) {
   const term=query.trim().toLowerCase();
   return giftData.items.filter(g=>{
    const owned=inventory.get(g.id);
-   const ownershipMatch=giftOwnership==='all'||(giftOwnership==='owned'&&owned)||(giftOwnership==='missing'&&!owned)||(giftOwnership==='duplicates'&&owned?.copies>1)||(giftOwnership==='ascendable'&&owned?.ascendable);
-   return (giftCourt==='all'||g.court_name===giftCourt)&&(giftEditionFilter==='all'||giftEdition(g)===giftEditionFilter)&&ownershipMatch&&(!term||`${g.name} ${g.description} ${g.court_name} ${g.catalogue_number} ${giftEdition(g)}`.toLowerCase().includes(term));
+   const ownershipMatch=giftOwnership==='all'||(giftOwnership==='owned'&&owned)||(giftOwnership==='missing'&&!owned)||(giftOwnership==='duplicates'&&owned?.hasDuplicates)||(giftOwnership==='ascendable'&&owned?.ascendable);
+   return (selectedCourt==='all'||g.court_name===selectedCourt)&&(giftEditionFilter==='all'||giftEdition(g)===giftEditionFilter)&&ownershipMatch&&(!term||`${g.name} ${g.description} ${g.court_name} ${g.catalogue_number} ${giftEdition(g)}`.toLowerCase().includes(term));
   });
- },[giftData.items,giftCourt,giftEditionFilter,giftOwnership,inventory,query]);
+ },[giftData.items,selectedCourt,giftEditionFilter,giftOwnership,inventory,query]);
  const giftPages=Math.max(1,Math.ceil(visibleGifts.length/PAGE_SIZE));
  const pagedGifts=visibleGifts.slice((giftPage-1)*PAGE_SIZE,giftPage*PAGE_SIZE);
 
@@ -94,7 +85,7 @@ export default function Treasury({Frame}) {
   {collection==='gifts'?<>
    <div className="badge-controls gift-catalogue-controls">
     <label>Search gifts<input value={query} onChange={e=>setQuery(e.target.value)} type="search" placeholder="Name, court or catalogue number"/></label>
-    <label>Court<select value={giftCourt} onChange={e=>setGiftCourt(e.target.value)}><option value="all">All Palace courts</option>{courts.map(c=><option key={c} value={c}>{c}</option>)}</select></label>
+    <label>Court<select value={selectedCourt} onChange={e=>setGiftCourt(e.target.value)}><option value="all">All Palace courts</option>{courts.map(c=><option key={c} value={c}>{c}</option>)}</select></label>
     <label>Painted edition<select value={giftEditionFilter} onChange={e=>setGiftEditionFilter(e.target.value)}><option value="all">All nine editions</option>{giftEditions.map(e=><option key={e} value={e}>{e.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</option>)}</select></label>
     <label>My collection<select value={giftOwnership} onChange={e=>setGiftOwnership(e.target.value)}><option value="all">All prizes</option><option value="owned">Owned</option><option value="missing">Not yet owned</option><option value="duplicates">Duplicates</option><option value="ascendable">Ready to ascend</option></select></label>
     <label>Preview tier<select value={tier} onChange={e=>setTier(e.target.value)}>{tiers.map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label>
@@ -107,7 +98,7 @@ export default function Treasury({Frame}) {
     <article><strong>{ascendableDistinct}</strong><span>ready to ascend</span></article>
    </section>
    <div className="gift-court-atlas" aria-label="Palace court atlas">
-    {giftCourts.map(c=>{const progress=courtProgress.get(c.name)||{owned:0,total:0};return <button key={c.slug} className={giftCourt===c.name?'active':''} style={{'--court-accent':c.accent,'--court-glow':c.glow}} onClick={()=>setGiftCourt(giftCourt===c.name?'all':c.name)}>
+    {giftCourts.map(c=>{const progress=courtProgress.get(c.name)||{owned:0,total:0};return <button key={c.slug} className={selectedCourt===c.name?'active':''} style={{'--court-accent':c.accent,'--court-glow':c.glow}} onClick={()=>setGiftCourt(selectedCourt===c.name?'all':c.name)}>
      <span className="court-atlas-sigil">{c.sigil}</span><span><strong>{c.name}</strong><small>{c.motto}</small><em>{progress.owned}/{progress.total} collected</em></span>
     </button>})}
    </div>

@@ -1,4 +1,5 @@
 import {useEffect,useId,useState} from 'react';
+import {resolveBadgeFrame} from './badgeArtwork';
 import originals from './originalBadges.json';
 
 const ranks=['bronze','silver','gold','platinum','emerald'];
@@ -15,7 +16,7 @@ const frameLoaders={
 };
 const frameCache=new Map();
 function loadFrames(rank){
- if(!frameCache.has(rank))frameCache.set(rank,frameLoaders[rank]().then(m=>m.default||m));
+ if(!frameCache.has(rank))frameCache.set(rank,frameLoaders[rank]().then(m=>m.default||m).catch(error=>{frameCache.delete(rank);throw error}));
  return frameCache.get(rank);
 }
 function SheetArt({frame,id,mount=false}){
@@ -27,21 +28,23 @@ export default function PalaceBadge({family,tier='bronze',locked=false}){
  const id=useId();
  const rank=ranks.includes(tier)?tier:'bronze';
  const key=normal(family?.name);
- const originalId=family?.id||catalogue.get(key)||aliases[key];
+ const originalId=family?.id;
+ const namedId=catalogue.get(key)||aliases[key];
  const[frame,setFrame]=useState(null);
+ const[loading,setLoading]=useState(true);
 
  useEffect(()=>{
   let alive=true;
-  setFrame(null);
-  if(!originalId)return()=>{alive=false};
-  loadFrames(rank).then(frames=>{if(alive)setFrame(frames[originalId]||null)}).catch(()=>{if(alive)setFrame(null)});
+  setFrame(null);setLoading(true);
+  if(!originalId&&!namedId){setLoading(false);return()=>{alive=false}}
+  loadFrames(rank).then(frames=>{if(alive){setFrame(resolveBadgeFrame(frames,originalId,namedId));setLoading(false)}}).catch(()=>{if(alive){setFrame(null);setLoading(false)}});
   return()=>{alive=false};
- },[rank,originalId]);
+ },[rank,originalId,namedId]);
 
  const name=family?.name||'Palace achievement';
- const fallback='/assets/badge_art/court_readers_'+rank+'.png';
+ 
  return <figure className={'palace-watercolour-badge tier-'+rank+(locked?' is-locked':'')}>
-  {frame?<span className={'original-badge-stage'+(frame.character?' is-character':'')} role="img" aria-label={name+' · '+rank+' artwork'+(locked?' (preview)':'')}><SheetArt frame={frame} id={id}/>{frame.mount&&<SheetArt frame={frame.mount} id={id+'-mount'} mount/>}</span>:<img src={fallback} alt={name+' · '+rank+' artwork'+(locked?' (preview)':'')} loading="lazy" decoding="async"/>}
+  {frame?<span className={'original-badge-stage'+(frame.character?' is-character':'')} role="img" aria-label={name+' · '+rank+' artwork'+(locked?' (preview)':'')}><SheetArt frame={frame} id={id}/>{frame.mount&&<SheetArt frame={frame.mount} id={id+'-mount'} mount/>}</span>:<span className="original-badge-stage" role="status">{loading?'Artwork loading…':'Artwork unavailable'}</span>}
   <figcaption>{rank}{locked?' · Preview':''}</figcaption>
  </figure>;
 }
