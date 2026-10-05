@@ -270,6 +270,20 @@ export async function reportConversation(userId,conversationId,reportedUserId,re
  const text=reason.trim();if(!text)throw new Error('Tell the Council what happened first.');const{data,error}=await needClient().from('conversation_reports').insert({reporter_id:userId,conversation_id:conversationId,reported_user_id:reportedUserId,reason:text,status:'open'}).select().single();if(error)throw error;return data
 }
 
+export async function submitCommunityReport(userId,targetKind,targetId,reason,evidence={}){
+ const text=String(reason||'').trim();
+ if(!text)throw new Error('Tell the Council what happened first.');
+ const{data,error}=await needClient().from('community_reports').insert({
+  reporter_id:userId,
+  target_kind:String(targetKind),
+  target_id:String(targetId),
+  reason:text,
+  evidence:evidence&&typeof evidence==='object'?evidence:{},
+  status:'submitted'
+ }).select().single();
+ if(error)throw error;return data
+}
+
 
 
 export async function getEventsHeritage(userId){const [events,heritage,rsvps,saved]=await Promise.all([needClient().from('events').select('id,title,slug,event_type,summary,starts_at,ends_at,timezone,access_level,participation,accessibility_notes').eq('publication_status','published').order('starts_at',{ascending:true}).limit(30),needClient().from('heritage_observances').select('id,title,slug,summary,why_in_palace,observance_type,community_key,country_code,region_key,month,day,end_month,end_day,recurring,year,context_notes').eq('editorial_status','verified').order('month').order('day').limit(100),userId?needClient().from('event_rsvps').select('event_id,status').eq('user_id',userId):Promise.resolve({data:[],error:null}),userId?needClient().from('user_heritage_calendar').select('observance_id,saved,reminder_enabled').eq('user_id',userId).eq('saved',true):Promise.resolve({data:[],error:null})]);for(const r of[events,heritage,rsvps,saved])if(r.error)throw r.error;return{events:events.data||[],heritage:heritage.data||[],rsvps:rsvps.data||[],saved:saved.data||[]}}
