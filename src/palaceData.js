@@ -246,7 +246,7 @@ export async function castClubPollVote(userId,pollId,optionId){
 }
 
 export async function getPalaceLife(userId){
- const [clubs,threads,chat,intros,clubInvites,clubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions]=await Promise.all([
+ const [clubs,threads,chat,intros,clubInvites,clubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions,discovery]=await Promise.all([
   needClient().from('clubs').select('id,name,slug,club_type,privacy,description,club_members!inner(user_id,status,role)').eq('club_members.user_id',userId).eq('club_members.status','active').limit(24),
   needClient().from('forum_threads').select('id,author_id,title,body,room,created_at,updated_at,profiles!forum_threads_author_id_fkey(username,display_name,avatar_url)').eq('status','active').order('updated_at',{ascending:false}).limit(30),
   needClient().from('public_chat_messages').select('id,author_id,body,created_at,profiles!public_chat_messages_author_id_fkey(username,display_name,avatar_url)').eq('status','active').order('created_at',{ascending:false}).limit(30),
@@ -259,11 +259,14 @@ export async function getPalaceLife(userId){
   needClient().from('community_highlights').select('id,member_id,created_by,reason,status,created_at,profiles!community_highlights_member_id_fkey(username,display_name,avatar_url,title)').in('status',['nominated','approved','featured']).order('created_at',{ascending:false}).limit(20),
   needClient().from('community_highlight_champions').select('highlight_id,user_id'),
   needClient().from('community_introductions').select('id,member_id,title,body,tags,visibility,created_at,profiles!community_introductions_member_id_fkey(username,display_name,avatar_url,title)').in('visibility',['public','members']).order('created_at',{ascending:false}).limit(20),
-  needClient().from('community_introduction_reactions').select('introduction_id,user_id,reaction')
+  needClient().from('community_introduction_reactions').select('introduction_id,user_id,reaction'),
+  needClient().from('clubs').select('id,name,slug,club_type,privacy,description,owner_id,created_at').eq('discoverable',true).eq('privacy','open').order('created_at',{ascending:false}).limit(24)
  ]);
- for(const r of[clubs,threads,chat,intros,clubInvites,clubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions])if(r.error)throw r.error;
+ for(const r of[clubs,threads,chat,intros,clubInvites,clubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions,discovery])if(r.error)throw r.error;
 
  const joined=clubs.data||[];
+ const joinedIds=new Set(joined.map(c=>c.id));
+ const discoverableClubs=(discovery.data||[]).filter(c=>!joinedIds.has(c.id));
  const stewardClubIds=joined.filter(c=>(c.club_members||[]).some(m=>m.role==='steward'||m.role==='owner')).map(c=>c.id);
  const stewardRequests=(clubRequests.data||[]).filter(r=>stewardClubIds.includes(r.club_id));
  const subSet=new Set((subscriptions.data||[]).map(x=>x.thread_id));
@@ -274,6 +277,7 @@ export async function getPalaceLife(userId){
 
  return{
   clubs:joined,
+  discoverableClubs,
   threads:(threads.data||[]).map(x=>({...x,subscribed:subSet.has(x.id),muted:muteSet.has(x.id),saved:saveSet.has(x.id)})),
   chat:(chat.data||[]).reverse(),
   introductions:intros.data||[],
