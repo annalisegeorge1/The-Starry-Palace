@@ -721,8 +721,24 @@ export async function createComicDraft(userId,title){
  const{data,error}=await needClient().from('comics').insert({creator_id:userId,title:clean,slug:comicSlug(clean),summary:'',publication_status:'draft',visibility:'public',rating:'general',completion_status:'in_progress',reading_direction:'ltr',download_policy:'off',comment_policy:'moderated'}).select().single();if(error)throw error;return data
 }
 export async function saveComicStudio(userId,comicId,patch){
- const allowed={title:patch.title?.trim(),summary:patch.summary??'',rating:patch.rating,completion_status:patch.completion_status,visibility:patch.visibility,reading_direction:patch.reading_direction,download_policy:patch.download_policy,required_credit_line:patch.required_credit_line??'',comment_policy:patch.comment_policy,updated_at:new Date().toISOString()};
+ const title=String(patch.title||'').trim();if(!title)throw new Error('Give your comic a title.');
+ const allowed={
+  title:title.slice(0,180),
+  summary:String(patch.summary||'').trim().slice(0,2000),
+  rating:['general','teen','mature','explicit','not_rated'].includes(patch.rating)?patch.rating:'general',
+  completion_status:['in_progress','complete','hiatus','abandoned'].includes(patch.completion_status)?patch.completion_status:'in_progress',
+  visibility:['public','members','private'].includes(patch.visibility)?patch.visibility:'private',
+  reading_direction:['ltr','rtl','vertical'].includes(patch.reading_direction)?patch.reading_direction:'ltr',
+  download_policy:['off','ask','credit'].includes(patch.download_policy)?patch.download_policy:'off',
+  required_credit_line:String(patch.required_credit_line||'').trim().slice(0,500),
+  comment_policy:['open','moderated','closed'].includes(patch.comment_policy)?patch.comment_policy:'moderated',
+  updated_at:new Date().toISOString()
+ };
  const{data,error}=await needClient().from('comics').update(allowed).eq('id',comicId).eq('creator_id',userId).select().single();if(error)throw error;return data
+}
+export async function setComicArchived(userId,comicId,archived=true){
+ const patch=archived?{publication_status:'archived',visibility:'private',updated_at:new Date().toISOString()}:{publication_status:'draft',visibility:'private',updated_at:new Date().toISOString()};
+ const{data,error}=await needClient().from('comics').update(patch).eq('id',comicId).eq('creator_id',userId).select().single();if(error)throw error;return data
 }
 export async function createComicEpisode(userId,comicId,title){
  const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
