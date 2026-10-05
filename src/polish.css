@@ -2084,3 +2084,110 @@ img{max-width:100%}
   .gate-copy h1{font-size:clamp(2.8rem,14vw,4rem)}
   .auth-panel{padding:1rem;border-radius:20px}
 }
+
+
+/* Comics + Series — discovery controls at the same standard as prose */
+.comic-tools.refined{
+  display:grid;
+  grid-template-columns:minmax(240px,1fr) repeat(4,minmax(130px,160px)) auto;
+  gap:.55rem;
+  align-items:end;
+  padding:.7rem;
+  border:1px solid var(--palace-border);
+  border-radius:17px;
+  background:rgba(12,17,34,.64);
+}
+.comic-tools.refined label{display:grid;gap:.28rem}
+.comic-tools.refined label>span{font-size:.58rem;letter-spacing:.08em;color:var(--palace-dim);text-transform:uppercase}
+.comic-tools.refined input,.comic-tools.refined select{min-height:42px}
+.comic-result-count{
+  display:flex;
+  align-items:baseline;
+  gap:.4rem;
+  margin:.5rem 0 .8rem;
+  color:var(--palace-muted);
+  font-size:.68rem;
+}
+.comic-result-count strong{font:600 1rem Georgia,'Times New Roman',serif;color:var(--palace-text)}
+.comic-gallery{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.8rem;
+}
+.comic-card{border-radius:19px;overflow:hidden}
+.comic-card .comic-cover{aspect-ratio:3/4;border-radius:0;border:0;border-bottom:1px solid var(--palace-border)}
+.comic-card>div:last-child{padding:1rem}
+.comic-card h2{font-size:1.2rem}
+.comic-card p{color:var(--palace-muted);line-height:1.55}
+.comic-card footer{padding-top:.7rem;border-top:1px solid var(--palace-border)}
+
+.series-browser-tools{
+  display:grid;
+  grid-template-columns:minmax(260px,1fr) 170px 180px;
+  gap:.65rem;
+  margin:.85rem 0 1rem;
+  padding:.65rem;
+  border:1px solid var(--palace-border);
+  border-radius:16px;
+  background:rgba(12,17,34,.64);
+}
+.series-search{
+  min-width:0;
+  min-height:42px;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:.55rem;
+  align-items:center;
+  padding:0 .75rem;
+  border:1px solid var(--palace-border);
+  border-radius:12px;
+  background:rgba(7,11,27,.48);
+}
+.series-search span{opacity:.5}
+.series-search input{
+  min-width:0;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  padding:.55rem 0!important;
+}
+.series-grid.restored{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:.8rem;
+}
+.series-grid.restored>article{
+  border-color:var(--palace-border);
+  border-radius:20px;
+  background:rgba(14,19,38,.72);
+  box-shadow:var(--palace-shadow-soft);
+  transition:transform var(--palace-motion),border-color var(--palace-motion),box-shadow var(--palace-motion);
+}
+.series-grid.restored>article:hover{transform:translateY(-2px);border-color:var(--palace-border-strong);box-shadow:var(--palace-shadow)}
+.series-grid.restored>article>header{padding:1rem}
+.series-grid.restored h2{font-size:1.35rem}
+.series-grid.restored header p{color:var(--palace-muted);line-height:1.55}
+.series-stack{border-top:1px solid var(--palace-border)}
+.series-stack>article{border-bottom:1px solid var(--palace-border)}
+.daylight .comic-tools.refined,.daylight .series-browser-tools,.daylight .series-search,
+.daylight .series-grid.restored>article{background:rgba(255,255,255,.86)}
+
+@media(max-width:1120px){
+  .comic-tools.refined{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .comic-tools.refined .comic-search{grid-column:1/-1}
+  .comic-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+  .comic-tools.refined{grid-template-columns:1fr 1fr}
+  .comic-tools.refined .comic-search{grid-column:1/-1}
+  .series-browser-tools{grid-template-columns:1fr 1fr}
+  .series-search{grid-column:1/-1}
+  .series-grid.restored{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .comic-tools.refined{grid-template-columns:1fr}
+  .comic-tools.refined .comic-search{grid-column:auto}
+  .comic-gallery{grid-template-columns:1fr}
+  .series-browser-tools{grid-template-columns:1fr}
+  .series-search{grid-column:auto}
+}
