@@ -97,6 +97,18 @@ describe('Starry Palace launch safety',()=>{
     expect(treasury).toContain('gift-edition-ribbon');
   });
 
+  it('keeps all twenty Palace court gift identities distinct',()=>{
+    const gift=read('src/PalaceGift.jsx');
+    const treasury=read('src/Treasury.jsx');
+    for(const court of ['Moon Garden','Celestial Library','Lantern Court','Sapphire Observatory','Ink Pavilion','Jade Conservatory','Silver Archive','Starfall Salon','Lotus Chamber','Midnight Gallery','Dreaming Terrace','Crescent Atelier','Cloud Pavilion',"Poet's Alcove",'Aurora Hall','Tea Moon Court','Astral Music Room','Compass Court',"Storyteller's Garden",'Royal Post']){
+      expect(gift).toContain(court);
+    }
+    expect(gift).toContain('CourtMotif');
+    expect(gift).toContain('giftCourt');
+    expect(treasury).toContain('giftCourts');
+    expect(treasury).toContain('gift-court-atlas');
+  });
+
   it('keeps badge artwork split by tier',()=>{
     const badge=read('src/PalaceBadge.jsx');
     expect(badge).not.toContain('originalBadgeArt.json');
