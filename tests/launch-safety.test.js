@@ -565,6 +565,17 @@ describe('Starry Palace launch safety',()=>{
     expect(css).toContain('.badge-showcase-actions');
   });
 
+  it('keeps chamber honours split into achievement and treasure galleries',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('ACHIEVEMENT WALL');
+    expect(live).toContain('TREASURE CABINET');
+    expect(live).toContain('Arrange achievements →');
+    expect(live).toContain('Arrange treasures →');
+    expect(live).toContain('showcase-slot');
+    expect(polish).toContain('.chamber-honour-groups');
+    expect(polish).toContain('.showcase-slot');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
