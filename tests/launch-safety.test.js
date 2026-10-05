@@ -185,6 +185,15 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.library-tabs,.treasury-tabs,.life-tabs');
   });
 
+  it('keeps professional search semantics and the Palace footer wired',()=>{
+    const polish=read('src/polish.css');
+    expect(main).toContain('role="search"');
+    expect(main).toContain('Search The Starry Palace');
+    expect(main).toContain('palace-footer');
+    expect(main).toContain('Gather. Have a cup of tea. Write and read with me.');
+    expect(polish).toContain('.palace-footer');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
