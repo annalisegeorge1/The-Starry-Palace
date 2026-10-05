@@ -5,20 +5,35 @@ import { AuthProvider, ProtectedRoute, useAuth } from './auth';
 import { configured, supabase } from './supabase';
 import './style.css';
 
+const chunkErrorPattern=/dynamically imported module|importing a module script failed|failed to fetch|chunkloaderror|loading chunk/i;
+function reloadForStaleChunk(error){
+ const message=String(error?.message||error||'');
+ if(typeof window==='undefined'||!chunkErrorPattern.test(message))throw error;
+ const key='palace-chunk-auto-reload';
+ const last=Number(sessionStorage.getItem(key)||0);
+ if(Date.now()-last>12000){
+  sessionStorage.setItem(key,String(Date.now()));
+  window.setTimeout(()=>window.location.reload(),40);
+  return new Promise(()=>{});
+ }
+ throw error;
+}
+function importWithRecovery(importer){return importer().catch(reloadForStaleChunk)}
+
 if(typeof window!=='undefined'){
  window.addEventListener('vite:preloadError',event=>{
   event.preventDefault();
   const key='palace-preload-reload';
   const last=Number(sessionStorage.getItem(key)||0);
-  if(Date.now()-last>15000){
+  if(Date.now()-last>12000){
    sessionStorage.setItem(key,String(Date.now()));
-   window.location.reload();
+   window.setTimeout(()=>window.location.reload(),40);
   }
  });
 }
-const lazyRoom=name=>React.lazy(()=>import('./liveRooms').then(mod=>({default:mod[name]})));
+const lazyRoom=name=>React.lazy(()=>importWithRecovery(()=>import('./liveRooms')).then(mod=>({default:mod[name]})));
 const ChamberLive=lazyRoom('ChamberLive'),ReadingLive=lazyRoom('ReadingLive'),ClubLive=lazyRoom('ClubLive'),WritingLive=lazyRoom('WritingLive'),SettingsLive=lazyRoom('SettingsLive'),ActivityLive=lazyRoom('ActivityLive'),LibraryLive=lazyRoom('LibraryLive'),PalaceLifeLive=lazyRoom('PalaceLifeLive'),LettersLive=lazyRoom('LettersLive'),EventsLive=lazyRoom('EventsLive'),TreasuryLive=lazyRoom('TreasuryLive'),LostWorksLive=lazyRoom('LostWorksLive'),MemberProfileLive=lazyRoom('MemberProfileLive'),SearchLive=lazyRoom('SearchLive'),WorkLive=lazyRoom('WorkLive'),ChapterLive=lazyRoom('ChapterLive'),WorkStudioLive=lazyRoom('WorkStudioLive'),TagSearchLive=lazyRoom('TagSearchLive'),HonourLive=lazyRoom('HonourLive'),CouncilLive=lazyRoom('CouncilLive'),CodeLive=lazyRoom('CodeLive'),ComicsLive=lazyRoom('ComicsLive'),ComicLive=lazyRoom('ComicLive'),ComicEpisodeLive=lazyRoom('ComicEpisodeLive'),ComicStudioLive=lazyRoom('ComicStudioLive'),SeriesLive=lazyRoom('SeriesLive');
-const TreasuryCatalogue=React.lazy(()=>import('./Treasury'));
+const TreasuryCatalogue=React.lazy(()=>importWithRecovery(()=>import('./Treasury')));
 
 const rooms=[
   ['Reading Rooms','/reading','Read, discover and return to the stories waiting for you.'],
@@ -121,7 +136,36 @@ function Room({title,eyebrow,description,protectedRoom=false}){
 
 function Callback(){const{session,loading,error}=useAuth();const p=new URLSearchParams(window.location.search);if(p.has('error')||error)return <Frame><section className="room-title"><h1>Sign-in could not finish</h1><p role="alert">{p.get('error_description')||error||'Please try again.'}</p><Link to="/login">Return to the Palace gates</Link></section></Frame>;if(loading)return <p role="status">Completing sign-in…</p>;return <Navigate to={session?'/chamber':'/login'} replace/>}
 
-function App(){return <AuthProvider><React.Suspense fallback={<div className="route-loading">Opening this Palace room…</div>}><Routes>
+
+function NavigationReset(){
+ const location=useLocation();
+ React.useEffect(()=>{
+  const reset=()=>{window.scrollTo({top:0,left:0,behavior:'auto'});document.documentElement.scrollTop=0;document.body.scrollTop=0};
+  const frame=requestAnimationFrame(reset);
+  return()=>cancelAnimationFrame(frame);
+ },[location.pathname,location.search]);
+ return null;
+}
+function RouteLoading(){
+ const[slow,setSlow]=useState(false);
+ React.useEffect(()=>{const timer=window.setTimeout(()=>setSlow(true),2200);return()=>window.clearTimeout(timer)},[]);
+ return <div className="route-loading" role="status" aria-live="polite"><div className="route-loading-card"><span className="route-loading-mark" aria-hidden="true">☾<b>✦</b></span><strong>Opening this Palace room…</strong><small>{slow?'This is taking longer than usual. You can safely reload the room.':'Gathering the room beneath the stars.'}</small>{slow&&<button onClick={()=>window.location.reload()}>Reload room</button>}</div></div>
+}
+class RouteErrorBoundary extends React.Component{
+ constructor(props){super(props);this.state={error:null}}
+ static getDerivedStateFromError(error){return{error}}
+ componentDidCatch(error){console.error('Palace route failed to render',error)}
+ render(){
+  if(this.state.error)return <div className="route-recovery" role="alert"><div><span aria-hidden="true">☾<b>✦</b></span><h1>This room did not finish opening.</h1><p>Your place is safe. Reload the room to restore the newest Palace files.</p><button onClick={()=>window.location.reload()}>Reload this room</button></div></div>;
+  return this.props.children
+ }
+}
+function RouteGuard({children}){
+ const location=useLocation();
+ return <RouteErrorBoundary key={location.pathname+location.search}>{children}</RouteErrorBoundary>
+}
+
+function App(){return <AuthProvider><NavigationReset/><RouteGuard><React.Suspense fallback={<RouteLoading/>}><Routes>
  <Route path="/" element={<Home/>}/><Route path="/login" element={<Login/>}/><Route path="/auth/callback" element={<Callback/>}/>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/reading" element={<ReadingLive Frame={Frame}/>}/><Route path="/series" element={<SeriesLive Frame={Frame}/>}/>
@@ -147,7 +191,7 @@ function App(){return <AuthProvider><React.Suspense fallback={<div className="ro
  <Route path="/search" element={<SearchLive Frame={Frame}/>}/><Route path="/honour" element={<HonourLive Frame={Frame}/>}/><Route path="/council" element={<ProtectedRoute><CouncilLive Frame={Frame}/></ProtectedRoute>}/><Route path="/code" element={<CodeLive Frame={Frame}/>}/>
  <Route path="/member/:username" element={<MemberProfileLive Frame={Frame}/>}/>
  <Route path="*" element={<Frame><section className="lost-gates-page"><div className="lost-gates-orbit"><span>☾</span><i>✦</i></div><p className="eyebrow">BEYOND THE GATES</p><h1>You left palace grounds.</h1><p>The path thinned, the lamps disappeared, and somehow you wandered beyond the Palace walls.</p><div className="lost-gates-actions"><Link className="button" to="/">Return to the Palace</Link><Link to="/search">Search for a room →</Link></div></section></Frame>}/>
- </Routes></React.Suspense></AuthProvider>}
+ </Routes></React.Suspense></RouteGuard></AuthProvider>}
 
 createRoot(document.getElementById('root')).render(<React.StrictMode><BrowserRouter><App/></BrowserRouter></React.StrictMode>);
 
