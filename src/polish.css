@@ -1,0 +1,322 @@
+/* The Starry Palace — final professional polish layer
+   Keep this file intentionally small and authoritative. New global visual
+   refinements belong here instead of adding another override to style.css. */
+
+:root{
+  --palace-bg:#080b18;
+  --palace-bg-deep:#060814;
+  --palace-panel:#11162a;
+  --palace-panel-raised:#151b32;
+  --palace-panel-soft:rgba(19,25,48,.78);
+  --palace-border:rgba(151,160,202,.18);
+  --palace-border-strong:rgba(164,151,224,.34);
+  --palace-text:#f2f3fb;
+  --palace-muted:#a9b0c8;
+  --palace-dim:#7f88a7;
+  --palace-violet:#9b83dc;
+  --palace-blue:#7f9bc9;
+  --palace-radius-sm:12px;
+  --palace-radius:18px;
+  --palace-radius-lg:26px;
+  --palace-shadow:0 18px 55px rgba(2,5,17,.22);
+  --palace-shadow-soft:0 8px 26px rgba(2,5,17,.14);
+  --palace-content:min(1280px,100%);
+  --palace-reading:760px;
+  --palace-motion:160ms cubic-bezier(.2,.8,.2,1);
+  --bg:var(--palace-bg);
+  --surface:var(--palace-panel);
+  --text:var(--palace-text);
+  --muted:var(--palace-muted);
+  --line:var(--palace-border);
+}
+
+html{
+  scroll-behavior:smooth;
+  scrollbar-gutter:stable;
+  background:var(--palace-bg-deep);
+}
+body{
+  min-width:320px;
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+  background:
+    radial-gradient(circle at 83% -7%,rgba(77,70,132,.22),transparent 31rem),
+    radial-gradient(circle at 20% 102%,rgba(43,72,120,.16),transparent 34rem),
+    var(--palace-bg);
+}
+body:before{opacity:.065;background-size:92px 92px}
+::selection{background:rgba(155,131,220,.34);color:#fff}
+
+.skip-to-content{
+  position:fixed;
+  z-index:9999;
+  left:16px;
+  top:12px;
+  transform:translateY(-160%);
+  border:1px solid var(--palace-border-strong);
+  border-radius:999px;
+  padding:.72rem 1rem;
+  background:#171a33;
+  color:white;
+  font-weight:700;
+  box-shadow:var(--palace-shadow);
+  transition:transform var(--palace-motion);
+}
+.skip-to-content:focus{transform:translateY(0)}
+
+.full-palace-shell{min-height:100dvh}
+.full-stage{min-width:0}
+.full-stage>main{
+  width:var(--palace-content);
+  min-height:calc(100dvh - 74px);
+}
+.full-stage>main,
+.legacy-home-dashboard,
+.legacy-profile-page{
+  isolation:isolate;
+}
+
+/* Typography: elegant, readable, and less prototype-like. */
+h1,h2,h3,p{overflow-wrap:break-word}
+.room-title>h1,
+.chamber-head h1,
+.legacy-home-hero h1,
+.legacy-profile-copy h1{
+  text-wrap:balance;
+  letter-spacing:-.035em;
+}
+.room-title>h1,.chamber-head h1{
+  font-size:clamp(2.85rem,5.4vw,5.25rem);
+  line-height:.98;
+}
+.room-title .lede,.chamber-head .lede{
+  max-width:var(--palace-reading);
+  color:var(--palace-muted);
+}
+.eyebrow{
+  color:#aaa3df;
+  font-weight:700;
+  letter-spacing:.22em;
+}
+.quiet-copy,.lede,[class*="description"]{line-height:1.65}
+
+/* Shell / header */
+.full-topbar{
+  border-bottom:1px solid var(--palace-border);
+  background:rgba(8,11,25,.83);
+  -webkit-backdrop-filter:blur(18px) saturate(125%);
+  backdrop-filter:blur(18px) saturate(125%);
+  box-shadow:0 8px 30px rgba(2,4,14,.11);
+}
+.full-brand strong{letter-spacing:-.015em}
+.brandmark{
+  border:1px solid rgba(208,198,255,.18);
+  box-shadow:0 0 22px rgba(123,96,218,.18);
+}
+.global-search-live{
+  border-color:rgba(135,144,190,.34);
+  background:rgba(18,23,46,.72);
+  transition:border-color var(--palace-motion),background var(--palace-motion),box-shadow var(--palace-motion);
+}
+.global-search-live:focus-within{
+  border-color:rgba(172,153,231,.68);
+  background:rgba(20,25,50,.94);
+  box-shadow:0 0 0 3px rgba(155,131,220,.09);
+}
+.global-search-live input::placeholder{color:#858eab;opacity:1}
+.global-search-live button{
+  min-height:36px;
+  border-color:rgba(184,164,235,.52);
+  background:linear-gradient(135deg,#4e416f,#342d56);
+  transition:transform var(--palace-motion),background var(--palace-motion);
+}
+.global-search-live button:hover{transform:translateY(-1px);background:linear-gradient(135deg,#5c4d7e,#3c3360)}
+.top-icon-link,.write-action,.nav-toggle{
+  transition:transform var(--palace-motion),border-color var(--palace-motion),background var(--palace-motion),box-shadow var(--palace-motion);
+}
+.top-icon-link:hover,.nav-toggle:hover{
+  transform:translateY(-1px);
+  border-color:rgba(174,158,226,.4);
+  background:rgba(119,96,185,.1);
+}
+.write-action:hover{
+  transform:translateY(-1px);
+  box-shadow:0 8px 20px rgba(97,62,170,.2);
+}
+
+/* Drawer: reduce noise, strengthen hierarchy. */
+.full-sidebar{
+  border-color:var(--palace-border);
+  background:linear-gradient(180deg,#10162a,#090d1b 74%);
+}
+.nav-section-label{
+  color:#717b9c;
+  letter-spacing:.17em;
+  font-weight:700;
+}
+.full-nav-room>a{
+  border:1px solid transparent;
+  transition:background var(--palace-motion),border-color var(--palace-motion),transform var(--palace-motion);
+}
+.full-nav-room>a:hover{
+  border-color:rgba(137,145,190,.12);
+  transform:translateX(2px);
+}
+.full-nav-room>a.active{
+  border-color:rgba(157,139,215,.18);
+  background:linear-gradient(90deg,rgba(121,95,190,.18),rgba(77,89,145,.07));
+}
+.full-subnav a{transition:background var(--palace-motion),color var(--palace-motion)}
+.identity-card-live{box-shadow:var(--palace-shadow-soft)}
+
+/* Shared surface language. */
+.room-card,.chamber-card,.command-card,
+.live-state,.coming,.settings-form>section,
+.library-columns>section,.life-section,.life-side>section,
+.letters-layout,.heritage-grid article,.treasury-summary article,
+.badge-card,.gift-card,.comic-card,.series-grid>article,
+.club-card-live,.commons-thread,.forum-thread-list>article,
+.calendar-shell,.proposal-form,.studio-meta,.episode-studio,
+.legacy-showcase-wall .showcase-honour{
+  border-color:var(--palace-border);
+}
+.command-card,.room-card,.chamber-card,.comic-card,.club-card-live{
+  box-shadow:0 1px 0 rgba(255,255,255,.018),var(--palace-shadow-soft);
+  transition:transform var(--palace-motion),border-color var(--palace-motion),box-shadow var(--palace-motion);
+}
+.command-card:hover,.room-card:hover,.comic-card:hover,.club-card-live:hover{
+  transform:translateY(-2px);
+  border-color:rgba(164,151,224,.3);
+  box-shadow:var(--palace-shadow);
+}
+
+/* Controls */
+button,input,textarea,select{font:inherit}
+button,a,input,textarea,select{-webkit-tap-highlight-color:transparent}
+button{cursor:pointer}
+button:disabled{cursor:not-allowed}
+.button,.outline-button,.quiet-button,
+.thread-compose button,.proposal-form button,
+.settings-form button,.palace-dialog button{
+  min-height:42px;
+}
+input,textarea,select,
+.auth-panel input,.studio-meta input,.studio-meta textarea,.studio-meta select,
+.settings-form input,.settings-form textarea,.settings-form select,
+.palace-dialog input,.palace-dialog textarea,.palace-dialog select{
+  border-radius:var(--palace-radius-sm);
+  border-color:rgba(132,143,188,.34);
+  background:rgba(7,11,27,.72);
+  color:var(--palace-text);
+  transition:border-color var(--palace-motion),box-shadow var(--palace-motion),background var(--palace-motion);
+}
+input:hover,textarea:hover,select:hover{border-color:rgba(151,158,205,.46)}
+input:focus,textarea:focus,select:focus{
+  border-color:rgba(174,155,231,.72);
+  box-shadow:0 0 0 3px rgba(155,131,220,.1);
+}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
+  outline:2px solid #c6b8f4;
+  outline-offset:3px;
+}
+
+/* Empty/loading/error states should feel intentional, not unfinished. */
+.life-empty,.legacy-showcase-empty,.catalogue-message,.live-state{
+  border-radius:var(--palace-radius);
+}
+.life-empty,.legacy-showcase-empty{
+  background:linear-gradient(135deg,rgba(20,26,50,.62),rgba(10,14,31,.58));
+}
+.error-state{border-color:rgba(196,111,139,.35)}
+
+/* Floating actions: quieter and less dominant. */
+.restored-floating-controls{gap:10px}
+.restored-floating-controls .float-btn{
+  width:54px;
+  height:54px;
+  border-color:rgba(160,145,208,.34);
+  box-shadow:0 10px 30px rgba(0,0,0,.22);
+}
+.restored-floating-controls .palace-float-sigil{width:54px;height:54px}
+.restored-floating-controls .float-btn:hover{transform:translateY(-2px)}
+
+/* Daylight should read as a real alternate theme, not inverted night mode. */
+.daylight{
+  --palace-bg:#eef1f6;
+  --palace-bg-deep:#e8ebf2;
+  --palace-panel:#fbfbfd;
+  --palace-panel-raised:#fff;
+  --palace-panel-soft:rgba(255,255,255,.82);
+  --palace-border:rgba(58,69,108,.16);
+  --palace-border-strong:rgba(95,83,154,.3);
+  --palace-text:#18213d;
+  --palace-muted:#606b86;
+  --palace-dim:#7a849b;
+  --bg:var(--palace-bg);
+  --surface:var(--palace-panel);
+  --text:var(--palace-text);
+  --muted:var(--palace-muted);
+  --line:var(--palace-border);
+  color-scheme:light;
+}
+.daylight body,.daylight{background:var(--palace-bg)}
+.daylight .full-topbar{background:rgba(244,246,250,.88)}
+.daylight .global-search-live{background:rgba(255,255,255,.86);border-color:rgba(67,78,119,.24)}
+.daylight .global-search-live:focus-within{background:white;border-color:rgba(93,78,154,.44)}
+.daylight input,.daylight textarea,.daylight select{background:#fff;color:#1b2440}
+.daylight .life-empty,.daylight .legacy-showcase-empty{background:linear-gradient(135deg,#fff,#f5f6fa)}
+.daylight .full-nav-room>a.active{background:linear-gradient(90deg,rgba(108,90,172,.12),rgba(91,113,158,.05))}
+
+/* Tablet: deliberate two-row app bar, not a squeezed desktop header. */
+@media(min-width:721px) and (max-width:1120px){
+  .full-topbar{
+    position:sticky;
+    top:0;
+    padding:12px 18px 14px;
+  }
+  .full-topbar-row{max-width:none}
+  .global-search-live{height:46px}
+  .full-brand strong{font-size:19px}
+  .brandmark{width:40px;height:40px;font-size:22px}
+  .top-icon-link,.write-action,.nav-toggle{width:40px;height:40px;min-width:40px;min-height:40px}
+  .full-stage>main{min-height:calc(100dvh - 118px)}
+  .room-title{padding-top:22px}
+  .room-title>h1,.chamber-head h1{font-size:clamp(3rem,7vw,4.75rem)}
+  .restored-floating-controls{right:18px;bottom:18px}
+}
+
+/* Phone: prioritise content and touch targets. */
+@media(max-width:720px){
+  html{scrollbar-gutter:auto}
+  body:before{opacity:.04;background-size:72px 72px}
+  .full-topbar{padding-inline:max(12px,env(safe-area-inset-left)) max(12px,env(safe-area-inset-right))}
+  .full-stage>main{min-height:calc(100dvh - 62px)}
+  .palace-stage main{padding:28px 16px calc(92px + env(safe-area-inset-bottom))}
+  .room-title{padding-top:16px}
+  .room-title>h1,.chamber-head h1{font-size:clamp(2.55rem,12vw,3.65rem);line-height:1}
+  .lede{font-size:1rem;line-height:1.65}
+  .eyebrow{font-size:.62rem;letter-spacing:.18em}
+  .command-card,.room-card,.chamber-card{border-radius:18px}
+  .restored-floating-controls{right:12px;bottom:calc(12px + env(safe-area-inset-bottom))}
+  .restored-floating-controls .float-btn,
+  .restored-floating-controls .palace-float-sigil{width:50px;height:50px}
+}
+
+/* Small phones: no hidden horizontal overflow from decorative systems. */
+@media(max-width:460px){
+  .full-brand>a{gap:6px}
+  .brandmark{width:38px;height:38px}
+  .nav-toggle{width:38px;height:38px}
+  .full-top-actions{gap:5px}
+}
+
+/* Motion/accessibility */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+@media(prefers-contrast:more){
+  :root{--palace-border:rgba(202,207,232,.38)}
+  .daylight{--palace-border:rgba(45,55,90,.34)}
+  .global-search-live,.room-card,.command-card,.chamber-card{border-width:2px}
+}
