@@ -159,6 +159,23 @@ describe('Starry Palace launch safety',()=>{
     expect(css).toContain('overflow:visible!important');
   });
 
+  it('keeps the professional polish layer and accessible main landmark wired',()=>{
+    const polish=read('src/polish.css');
+    expect(main).toContain("import './polish.css'");
+    expect(main).toContain('skip-to-content');
+    expect(main).toContain('id="palace-content"');
+    expect(polish).toContain('--palace-content');
+    expect(polish).toContain('@media(prefers-reduced-motion:reduce)');
+    expect(polish).toContain('@media(prefers-contrast:more)');
+  });
+
+  it('keeps quiet activity rooms useful rather than visually empty',()=>{
+    expect(live).toContain('activity-empty-state');
+    expect(live).toContain('Open My Library');
+    expect(live).toContain('Continue writing');
+    expect(live).toContain('Visit Palace Life');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
