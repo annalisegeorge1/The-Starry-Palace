@@ -127,6 +127,12 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('DISPLAYED HONOURS');
   });
 
+  it('shows per-court collection progress in the Treasury atlas',()=>{
+    const treasury=read('src/Treasury.jsx');
+    expect(treasury).toContain('courtProgress');
+    expect(treasury).toContain('collected</em>');
+  });
+
   it('keeps badge artwork split by tier',()=>{
     const badge=read('src/PalaceBadge.jsx');
     expect(badge).not.toContain('originalBadgeArt.json');
