@@ -662,6 +662,18 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.comic-reader-flags');
   });
 
+  it('keeps comic follow cadence aligned with the database constraint',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain("frequency='immediate'");
+    expect(data).toContain("['immediate','weekly'].includes(frequency)");
+    expect(data).not.toContain("setComicFollowing(userId,comicId,enabled,frequency='instant'");
+    expect(live).toContain('comic-follow-frequency');
+    expect(live).toContain('<option value="immediate">As soon as published</option>');
+    expect(live).toContain('<option value="weekly">Weekly digest</option>');
+    expect(polish).toContain('.comic-follow-frequency');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
