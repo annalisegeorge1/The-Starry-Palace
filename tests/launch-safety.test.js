@@ -629,6 +629,19 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.comic-library-tools');
   });
 
+  it('keeps Comic Studio publication-ready and accessibility-safe',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain("from('comic_pages').select('id,alt_text,decorative')");
+    expect(data).toContain('Add at least one comic page before publishing this episode.');
+    expect(data).toContain('Add image descriptions to every non-decorative page before publishing.');
+    expect(live).toContain('PUBLISH READINESS');
+    expect(live).toContain('comic-readiness-checks');
+    expect(live).toContain('missingDescriptions');
+    expect(polish).toContain('.comic-readiness');
+    expect(polish).toContain('.comic-readiness-track');
+  });
+
   it('keeps comic doorways aware of saved following and reading state',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
