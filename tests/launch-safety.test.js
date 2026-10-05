@@ -424,6 +424,19 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.council-queue-tools');
   });
 
+  it('keeps Throne of Honour recommendations persistent and reviewable',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('createHonourRecommendation');
+    expect(data).toContain('withdrawHonourRecommendation');
+    expect(data).toContain('reviewHonourRecommendation');
+    expect(live).toContain('Recommend an author');
+    expect(live).toContain('honour-my-recommendations');
+    expect(live).toContain('Honour recommendations');
+    expect(live).toContain('Publish tribute');
+    expect(polish).toContain('.honour-monthly-courts');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
