@@ -1935,3 +1935,152 @@ img{max-width:100%}
 .daylight .palace-search.restored,.daylight .recent-searches button,.daylight .search-summary,
 .daylight .search-result-card,.daylight .search-club-grid>article,.daylight .search-tag-cloud a,
 .daylight .people-results.restored>a,.daylight .search-archive-list article{background:rgba(255,255,255,.86)}
+
+
+/* Public Home — show real creative life, not only navigation */
+.home-live-worlds{
+  max-width:1220px;
+  margin:1.25rem auto 0;
+  padding:1.25rem clamp(18px,3vw,42px);
+  border-top:1px solid var(--palace-border);
+}
+.home-world-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:.75rem;
+}
+.home-world-grid>a{
+  min-width:0;
+  overflow:hidden;
+  border:1px solid var(--palace-border);
+  border-radius:19px;
+  background:rgba(14,19,38,.72);
+  box-shadow:var(--palace-shadow-soft);
+  color:inherit;
+  transition:transform var(--palace-motion),border-color var(--palace-motion),box-shadow var(--palace-motion);
+}
+.home-world-grid>a:hover{
+  transform:translateY(-2px);
+  border-color:var(--palace-border-strong);
+  box-shadow:var(--palace-shadow);
+}
+.home-world-cover{
+  aspect-ratio:16/10;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-bottom:1px solid var(--palace-border);
+  background:
+    radial-gradient(circle at 50% 35%,rgba(118,99,178,.16),transparent 46%),
+    rgba(9,13,29,.72);
+}
+.home-world-cover img{width:100%;height:100%;object-fit:cover}
+.home-world-cover>span{
+  position:relative;
+  font:2.25rem Georgia,'Times New Roman',serif;
+  color:#c9bfe9;
+}
+.home-world-cover>span b{position:absolute;right:-8px;top:-2px;font-size:.65rem}
+.home-world-grid>a>div:last-child{padding:.9rem}
+.home-world-grid small{font-size:.56rem;letter-spacing:.1em;color:var(--palace-dim);text-transform:uppercase}
+.home-world-grid h3{margin:.3rem 0 .4rem;font:600 1.05rem Georgia,'Times New Roman',serif}
+.home-world-grid p{
+  min-height:3.7em;
+  margin:0 0 .65rem;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  color:var(--palace-muted);
+  font-size:.73rem;
+  line-height:1.55;
+}
+.home-world-grid b{font-size:.68rem;font-weight:600;color:#c1b6e5}
+
+/* Palace Gates — remove dead-door feeling */
+.gate{
+  max-width:980px;
+  margin:0 auto;
+  padding:clamp(2rem,6vw,5rem) clamp(16px,4vw,42px) 4rem;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(340px,430px);
+  gap:clamp(2rem,5vw,4rem);
+  align-items:start;
+}
+.gate-copy{
+  padding-top:1.2rem;
+}
+.gate-copy h1{
+  margin:.45rem 0 .9rem;
+  font:600 clamp(3rem,6vw,5.3rem)/.96 Georgia,'Times New Roman',serif;
+  letter-spacing:-.04em;
+  text-wrap:balance;
+}
+.gate-copy>p:last-child{
+  max-width:560px;
+  color:var(--palace-muted);
+  font-size:1rem;
+  line-height:1.7;
+}
+.auth-panel{
+  padding:1.25rem;
+  border:1px solid var(--palace-border);
+  border-radius:24px;
+  background:linear-gradient(155deg,rgba(18,24,46,.94),rgba(9,14,30,.96));
+  box-shadow:var(--palace-shadow);
+}
+.auth-panel>label,.auth-panel form label{display:grid;gap:.35rem}
+.auth-panel input{min-height:46px}
+.magic-button{
+  width:100%;
+  min-height:46px;
+  margin-top:.55rem;
+  border-radius:13px;
+  border:1px solid rgba(166,149,220,.38);
+  background:linear-gradient(135deg,rgba(104,82,170,.36),rgba(58,69,122,.34));
+  color:var(--palace-text);
+  font-weight:700;
+}
+.password-field{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:.4rem;
+  align-items:center;
+}
+.password-field input{width:100%}
+.password-field button{
+  min-height:46px;
+  padding:0 .7rem;
+  border:1px solid var(--palace-border);
+  border-radius:11px;
+  background:rgba(255,255,255,.04);
+  color:var(--palace-muted);
+}
+.password-note{
+  display:block;
+  margin:.35rem 0 .6rem;
+  color:var(--palace-dim);
+  font-size:.62rem;
+  line-height:1.45;
+}
+.auth-divider{
+  margin:.9rem 0;
+  color:var(--palace-dim);
+}
+.auth-panel form>button:last-child{min-height:46px}
+.auth-panel .secondary{margin-top:.65rem}
+.daylight .home-world-grid>a,.daylight .auth-panel{
+  background:rgba(255,255,255,.9);
+}
+@media(max-width:920px){
+  .home-world-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gate{grid-template-columns:1fr;max-width:680px}
+  .gate-copy{padding-top:0}
+}
+@media(max-width:560px){
+  .home-live-worlds{padding-left:14px;padding-right:14px}
+  .home-world-grid{grid-template-columns:1fr}
+  .gate{padding-left:14px;padding-right:14px}
+  .gate-copy h1{font-size:clamp(2.8rem,14vw,4rem)}
+  .auth-panel{padding:1rem;border-radius:20px}
+}
