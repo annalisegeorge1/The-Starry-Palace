@@ -498,6 +498,16 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.club-door-queue');
   });
 
+  it('self-heals stale lazy-room styling and protects mobile top controls',()=>{
+    const polish=read('src/polish.css');
+    expect(main).toContain('roomCssMatches');
+    expect(main).toContain('palace-room-css-sync-reload');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100502');
+    expect(polish).toContain('--palace-room-css-version:2026100502');
+    expect(polish).toContain('env(safe-area-inset-top)');
+    expect(polish).toContain('.top-icon-link');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
