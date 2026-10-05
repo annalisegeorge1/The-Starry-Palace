@@ -357,9 +357,19 @@ export async function getEventMemberRooms(userId){
  const [invitations,reminders,ballots,votes]=await Promise.all([
   needClient().from('event_invitations').select('id,event_id,sender_id,recipient_id,note,status,created_at,resolved_at,events(id,title,slug,starts_at,event_type),profiles!event_invitations_sender_id_fkey(id,username,display_name,avatar_url)').eq('recipient_id',userId).order('created_at',{ascending:false}),
   needClient().from('event_reminders').select('event_id,user_id,remind_at,channel,delivered_at,events(id,title,slug,starts_at)').eq('user_id',userId).order('remind_at',{ascending:true}),
-  needClient().from('member_ballots').select('id,title,description,ballot_scope,event_id,opens_at,closes_at,status,max_selections,results_visibility,member_ballot_options(id,label,description,position)').in('status',['open','closed']).order('opens_at',{ascending:false}),
+  needClient().from('member_ballots').select('id,title,description,ballot_scope,event_id,opens_at,closes_at,status,max_selections,results_visibility').in('status',['open','closed']).order('opens_at',{ascending:false}),
   needClient().from('member_ballot_votes').select('ballot_id,option_id,user_id,created_at').eq('user_id',userId)
- ]);for(const r of[invitations,reminders,ballots,votes])if(r.error)throw r.error;return{invitations:invitations.data||[],reminders:reminders.data||[],ballots:ballots.data||[],votes:votes.data||[]}
+ ]);
+ for(const r of[invitations,reminders,ballots,votes])if(r.error)throw r.error;
+ const ballotRows=ballots.data||[];
+ let optionRows=[];
+ if(ballotRows.length){
+  const options=await needClient().from('member_ballot_options').select('id,ballot_id,label,description,position').in('ballot_id',ballotRows.map(b=>b.id)).order('position',{ascending:true});
+  if(options.error)throw options.error;
+  optionRows=options.data||[];
+ }
+ const ballotsWithOptions=ballotRows.map(b=>({...b,member_ballot_options:optionRows.filter(o=>o.ballot_id===b.id)}));
+ return{invitations:invitations.data||[],reminders:reminders.data||[],ballots:ballotsWithOptions,votes:votes.data||[]}
 }
 export async function respondEventInvitation(userId,id,status){
  if(!['accepted','declined'].includes(status))throw new Error('Unknown invitation response.');
