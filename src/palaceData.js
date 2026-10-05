@@ -714,6 +714,20 @@ export async function getComicReaderState(userId,comicId){
  for(const r of[saved,sub,progress])if(r.error)throw r.error;
  return{saved:!!saved.data,following:!!sub.data?.enabled,frequency:sub.data?.frequency||'instant',progress:progress.data||null}
 }
+export async function getComicShelfState(userId){
+ if(!userId)return{};
+ const[saved,subs,progress]=await Promise.all([
+  needClient().from('saved_comics').select('comic_id').eq('user_id',userId),
+  needClient().from('comic_subscriptions').select('comic_id,enabled,frequency').eq('user_id',userId).eq('enabled',true),
+  needClient().from('comic_reading_progress').select('comic_id,episode_id,page_id,completed,updated_at').eq('user_id',userId)
+ ]);
+ for(const r of[saved,subs,progress])if(r.error)throw r.error;
+ const state={};
+ for(const row of saved.data||[])state[row.comic_id]={...(state[row.comic_id]||{}),saved:true};
+ for(const row of subs.data||[])state[row.comic_id]={...(state[row.comic_id]||{}),following:true,frequency:row.frequency||'instant'};
+ for(const row of progress.data||[])state[row.comic_id]={...(state[row.comic_id]||{}),progress:row};
+ return state
+}
 export async function setComicSaved(userId,comicId,enabled){
  if(enabled){const{error}=await needClient().from('saved_comics').upsert({user_id:userId,comic_id:comicId},{onConflict:'user_id,comic_id'});if(error)throw error}
  else{const{error}=await needClient().from('saved_comics').delete().eq('user_id',userId).eq('comic_id',comicId);if(error)throw error}
