@@ -1102,3 +1102,13 @@ linear-gradient(145deg,#2d245f,#151c3c 58%,#0c1225);box-shadow:inset 0 0 0 1px r
 .draw-history-live article>.palace-gift-art{width:54px;min-height:54px;height:54px;border-radius:14px}
 @media(max-width:1050px){.draw-preview-cabinet>div{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){.draw-preview-cabinet>header{align-items:start;flex-direction:column}.draw-preview-cabinet>div{grid-template-columns:1fr}.draw-history-live article{grid-template-columns:54px 1fr}.draw-history-live article>strong,.draw-history-live article>small{grid-column:2}}
+
+
+/* Painted honours on public/member chamber walls */
+.showcase-honour.gift{padding:0;overflow:hidden}
+.showcase-honour.gift>.palace-gift-art{min-height:178px;border-radius:0;border-bottom:1px solid var(--line)}
+.showcase-honour.gift>small,.showcase-honour.gift>h3,.showcase-honour.gift>p{margin-left:18px;margin-right:18px}
+.showcase-honour.gift>small{margin-top:14px}
+.showcase-honour.gift>p{margin-bottom:18px}
+.showcase-honour.gift .gift-court-sigil{width:27px;height:27px}
+.showcase-honour.gift .gift-painted-object{width:74%;height:74%}
