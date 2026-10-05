@@ -783,6 +783,9 @@ export async function saveComicEpisode(userId,comicId,episodeId,patch){
 }
 export async function publishComicEpisode(userId,comicId,episodeId){
  const own=await needClient().from('comics').select('first_published_at').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
+ const pages=await needClient().from('comic_pages').select('id,alt_text,decorative').eq('episode_id',episodeId).order('position');if(pages.error)throw pages.error;
+ if(!pages.data?.length)throw new Error('Add at least one comic page before publishing this episode.');
+ const missing=(pages.data||[]).filter(p=>!p.decorative&&!String(p.alt_text||'').trim());if(missing.length)throw new Error('Add image descriptions to every non-decorative page before publishing.');
  const now=new Date().toISOString();const ep=await needClient().from('comic_episodes').update({status:'published',published_at:now,updated_at:now}).eq('id',episodeId).eq('comic_id',comicId).select().single();if(ep.error)throw ep.error;
  const patch={publication_status:'published',last_published_at:now,updated_at:now};if(!own.data.first_published_at)patch.first_published_at=now;
  const c=await needClient().from('comics').update(patch).eq('id',comicId).eq('creator_id',userId);if(c.error)throw c.error;return ep.data
