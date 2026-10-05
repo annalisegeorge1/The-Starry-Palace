@@ -794,7 +794,7 @@ async function assertComicEpisodeReady(userId,comicId,episodeId){
 export async function scheduleComicEpisode(userId,comicId,episodeId,scheduledFor){
  await assertComicEpisodeReady(userId,comicId,episodeId);
  const when=new Date(scheduledFor);if(Number.isNaN(when.getTime()))throw new Error('Choose a valid publication date and time.');if(when.getTime()<Date.now()+60000)throw new Error('Choose a publication time at least one minute from now.');
- const{data,error}=await needClient().from('comic_episodes').update({scheduled_for:when.toISOString(),status:'draft',updated_at:new Date().toISOString()}).eq('id',episodeId).eq('comic_id',comicId).select().single();if(error)throw error;return data
+ const{data,error}=await needClient().from('comic_episodes').update({scheduled_for:when.toISOString(),status:'draft',updated_at:new Date().toISOString()}).eq('id',episodeId).eq('comic_id',comicId).neq('status','published').select().maybeSingle();if(error)throw error;if(!data)throw new Error('Published episodes cannot be scheduled again.');return data
 }
 export async function cancelComicEpisodeSchedule(userId,comicId,episodeId){
  const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
