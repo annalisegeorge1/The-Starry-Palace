@@ -256,6 +256,33 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.writing-library-tools');
   });
 
+  it('keeps Palace Letters searchable, unread-aware and draft-safe',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('latest_message:latest');
+    expect(data).toContain('unread}');
+    expect(live).toContain('palace-letter-draft:');
+    expect(live).toContain('Search Palace Letters');
+    expect(live).toContain("['unread','Unread']");
+    expect(live).toContain('draft saved on this device');
+    expect(polish).toContain('.letters-search');
+    expect(polish).toContain('.letter-unread-dot');
+  });
+
+  it('keeps Events searchable with RSVP states, agenda and reminder presets',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('event-browser-tools');
+    expect(live).toContain("['going','Going']");
+    expect(live).toContain("['interested','Interested']");
+    expect(live).toContain("['declined','Not going']");
+    expect(live).toContain('personal-agenda');
+    expect(live).toContain('1 hour before');
+    expect(live).toContain('1 day before');
+    expect(live).toContain('1 week before');
+    expect(polish).toContain('.event-rsvp-group');
+    expect(polish).toContain('.personal-agenda');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
