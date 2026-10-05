@@ -1,4 +1,4 @@
-:root{--palace-room-css-version:2026100503}
+:root{--palace-room-css-version:2026100504}
 /* The Starry Palace — final professional polish layer
    Keep this file intentionally small and authoritative. New global visual
    refinements belong here instead of adding another override to style.css. */
@@ -303,10 +303,26 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 
 /* Phone: prioritise content and touch targets. */
 @media(max-width:720px){
-  html{scrollbar-gutter:auto}
+  html{scrollbar-gutter:auto;scroll-padding-top:calc(64px + env(safe-area-inset-top))}
   body:before{opacity:.04;background-size:72px 72px}
-  .full-topbar{padding-inline:max(12px,env(safe-area-inset-left)) max(12px,env(safe-area-inset-right))}
-  .full-stage>main{min-height:calc(100dvh - 62px)}
+  .full-topbar{
+    height:auto;
+    min-height:calc(62px + env(safe-area-inset-top));
+    padding-top:calc(10px + env(safe-area-inset-top));
+    padding-bottom:10px;
+    padding-left:max(12px,env(safe-area-inset-left));
+    padding-right:max(12px,env(safe-area-inset-right));
+    overflow:visible;
+  }
+  .full-topbar-row{min-height:42px;overflow:visible}
+  .full-brand,.full-brand>a,.full-top-actions{min-width:0;overflow:visible}
+  .full-top-actions{flex:0 0 auto}
+  .nav-toggle,.brandmark,.top-icon-link,.write-action,.command-trigger{
+    flex:0 0 auto;
+    line-height:1;
+    overflow:visible;
+  }
+  .full-stage>main{min-height:calc(100dvh - 62px - env(safe-area-inset-top))}
   .palace-stage main{padding:28px 16px calc(92px + env(safe-area-inset-bottom))}
   .room-title{padding-top:16px}
   .room-title>h1,.chamber-head h1{font-size:clamp(2.55rem,12vw,3.65rem);line-height:1}
@@ -320,10 +336,12 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 
 /* Small phones: no hidden horizontal overflow from decorative systems. */
 @media(max-width:460px){
-  .full-brand>a{gap:6px}
-  .brandmark{width:38px;height:38px}
-  .nav-toggle{width:38px;height:38px}
-  .full-top-actions{gap:5px}
+  .full-topbar{padding-left:max(8px,env(safe-area-inset-left));padding-right:max(8px,env(safe-area-inset-right))}
+  .full-topbar-row{gap:6px}
+  .full-brand{gap:6px}
+  .full-brand>a{gap:5px}
+  .brandmark,.nav-toggle,.top-icon-link,.write-action,.command-trigger{width:38px;height:38px;min-width:38px;min-height:38px}
+  .full-top-actions{gap:4px}
 }
 
 /* Motion/accessibility */
