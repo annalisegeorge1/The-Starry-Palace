@@ -25,7 +25,7 @@ describe('Starry Palace launch safety',()=>{
   });
 
   it('keeps Palace route rooms lazy-loaded',()=>{
-    expect(main).toContain("React.lazy(()=>import('./liveRooms')");
+    expect(main).toContain("React.lazy(()=>importWithRecovery(()=>import('./liveRooms'))");
     expect(main).toContain('<React.Suspense');
   });
 
