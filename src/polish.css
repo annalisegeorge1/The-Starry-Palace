@@ -3022,3 +3022,63 @@ img{max-width:100%}
   .legacy-throne-gallery{grid-template-columns:1fr}
   .honour-my-recommendations article{grid-template-columns:1fr}
 }
+
+
+/* Library organizers are editable, not permanent boxes */
+.organizer-card-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:.75rem;
+  margin-bottom:.4rem;
+}
+.organizer-card-head>div:first-child{min-width:0}
+.organizer-card-head h3{margin:.2rem 0 0}
+.organizer-card-head>div:last-child{display:flex;gap:.3rem;flex:0 0 auto}
+.organizer-card-head button{
+  min-height:34px;
+  padding:.38rem .52rem;
+  border-radius:9px;
+  font-size:.62rem;
+}
+.organizer-item-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 34px;
+  align-items:center;
+  gap:.3rem;
+  overflow:hidden;
+  border:1px solid var(--palace-border);
+  border-radius:10px;
+  background:rgba(103,85,164,.055);
+}
+.organizer-item-row>a{
+  min-width:0;
+  padding:.5rem .58rem;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  border:0!important;
+  background:transparent!important;
+}
+.organizer-item-row>button{
+  align-self:stretch;
+  border:0;
+  border-left:1px solid var(--palace-border);
+  background:transparent;
+  color:var(--palace-dim);
+  font-size:1rem;
+}
+.organizer-item-row>button:hover{
+  background:rgba(147,82,106,.1);
+  color:#ddb6c2;
+}
+.organizer-items{
+  display:grid;
+  gap:.3rem;
+  margin:.65rem 0;
+}
+.daylight .organizer-item-row{background:rgba(91,78,146,.035)}
+@media(max-width:560px){
+  .organizer-card-head{align-items:stretch;flex-direction:column}
+  .organizer-card-head>div:last-child{align-self:flex-start}
+}
