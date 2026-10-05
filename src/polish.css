@@ -5153,3 +5153,12 @@ img{max-width:100%}
   .writing-release-queue a>b{grid-column:2}
   .studio-buttons .outline-button,.studio-buttons .quiet-button{min-height:40px}
 }
+
+
+.release-desk-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.7rem;
+  margin-top:.65rem;
+}
+.release-desk-links .release-desk-link{margin-top:0}
