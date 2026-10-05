@@ -255,3 +255,58 @@ export async function respondComicDownloadRequest(userId,requestId,status){
 export async function getWorkCollaborationAccess(userId,workId){
  const{data,error}=await needClient().from('work_collaborators').select('work_id,user_id,role,status,invited_by').eq('work_id',workId).eq('user_id',userId).maybeSingle();if(error)throw error;return data
 }
+
+export async function getLibraryOrganizers(userId){
+ const [collections,lists,notes]=await Promise.all([
+  needClient().from('library_collections').select('id,name,description,is_public,created_at,updated_at,library_collection_items(id,work_id,comic_id,note,added_at,works(id,title,slug,cover_url),comics(id,title,slug,cover_path))').eq('user_id',userId).order('updated_at',{ascending:false}),
+  needClient().from('reading_lists').select('id,name,description,created_at,updated_at,reading_list_items(id,work_id,comic_id,position,added_at,works(id,title,slug,cover_url),comics(id,title,slug,cover_path))').eq('user_id',userId).order('updated_at',{ascending:false}),
+  needClient().from('reader_notes').select('id,work_id,chapter_id,comic_id,episode_id,page_id,note_text,bookmark_label,created_at,updated_at,works(id,title,slug),comics(id,title,slug)').eq('user_id',userId).order('updated_at',{ascending:false})
+ ]);for(const r of[collections,lists,notes])if(r.error)throw r.error;
+ async function signRows(rows,key){return Promise.all((rows||[]).map(async row=>({...row,[key]:await Promise.all((row[key]||[]).map(async item=>({...item,comic_cover_url:await signedAsset('comic-covers',item.comics?.cover_path)})))})))}
+ return{collections:await signRows(collections.data,'library_collection_items'),lists:await signRows(lists.data,'reading_list_items'),notes:notes.data||[]}
+}
+export async function createLibraryCollection(userId,name,description=''){
+ const clean=name.trim();if(!clean)throw new Error('Give the collection a name.');
+ const{data,error}=await needClient().from('library_collections').insert({user_id:userId,name:clean,description:description.trim()}).select().single();if(error)throw error;return data
+}
+export async function createReadingList(userId,name,description=''){
+ const clean=name.trim();if(!clean)throw new Error('Give the reading list a name.');
+ const{data,error}=await needClient().from('reading_lists').insert({user_id:userId,name:clean,description:description.trim()}).select().single();if(error)throw error;return data
+}
+export async function addToLibraryOrganizer(kind,containerId,item){
+ const table=kind==='collection'?'library_collection_items':'reading_list_items';
+ const key=kind==='collection'?'collection_id':'reading_list_id';
+ const row={[key]:containerId,work_id:item.type==='work'?item.id:null,comic_id:item.type==='comic'?item.id:null};
+ const{data,error}=await needClient().from(table).insert(row).select().single();if(error?.code==='23505')throw new Error('That item is already in this shelf.');if(error)throw error;return data
+}
+export async function addReaderNote(userId,item,noteText,label=''){
+ const text=noteText.trim();if(!text)throw new Error('Write a note first.');
+ const row={user_id:userId,note_text:text,bookmark_label:label.trim(),work_id:item.type==='work'?item.id:null,comic_id:item.type==='comic'?item.id:null};
+ const{data,error}=await needClient().from('reader_notes').insert(row).select().single();if(error)throw error;return data
+}
+export async function deleteReaderNote(userId,id){const{error}=await needClient().from('reader_notes').delete().eq('id',id).eq('user_id',userId);if(error)throw error;return true}
+
+export async function getEventMemberRooms(userId){
+ const [invitations,reminders,ballots,votes]=await Promise.all([
+  needClient().from('event_invitations').select('id,event_id,sender_id,recipient_id,note,status,created_at,resolved_at,events(id,title,slug,starts_at,event_type),profiles!event_invitations_sender_id_fkey(id,username,display_name,avatar_url)').eq('recipient_id',userId).order('created_at',{ascending:false}),
+  needClient().from('event_reminders').select('event_id,user_id,remind_at,channel,delivered_at,events(id,title,slug,starts_at)').eq('user_id',userId).order('remind_at',{ascending:true}),
+  needClient().from('member_ballots').select('id,title,description,ballot_scope,event_id,opens_at,closes_at,status,max_selections,results_visibility,member_ballot_options(id,label,description,position)').in('status',['open','closed']).order('opens_at',{ascending:false}),
+  needClient().from('member_ballot_votes').select('ballot_id,option_id,user_id,created_at').eq('user_id',userId)
+ ]);for(const r of[invitations,reminders,ballots,votes])if(r.error)throw r.error;return{invitations:invitations.data||[],reminders:reminders.data||[],ballots:ballots.data||[],votes:votes.data||[]}
+}
+export async function respondEventInvitation(userId,id,status){
+ if(!['accepted','declined'].includes(status))throw new Error('Unknown invitation response.');
+ const{data,error}=await needClient().from('event_invitations').update({status,resolved_at:new Date().toISOString()}).eq('id',id).eq('recipient_id',userId).select().single();if(error)throw error;return data
+}
+export async function setEventReminder(userId,eventId,remindAt){
+ if(!remindAt){const{error}=await needClient().from('event_reminders').delete().eq('event_id',eventId).eq('user_id',userId);if(error)throw error;return null}
+ const{data,error}=await needClient().from('event_reminders').upsert({event_id:eventId,user_id:userId,remind_at:remindAt,channel:'in_app'},{onConflict:'event_id,user_id'}).select().single();if(error)throw error;return data
+}
+export async function castMemberBallotVote(userId,ballotId,optionId){
+ const ballot=await needClient().from('member_ballots').select('id,status,opens_at,closes_at,max_selections').eq('id',ballotId).single();if(ballot.error)throw ballot.error;
+ if(ballot.data.status!=='open'||new Date(ballot.data.opens_at)>new Date()||new Date(ballot.data.closes_at)<new Date())throw new Error('This ballot is not open.');
+ const existing=await needClient().from('member_ballot_votes').select('option_id').eq('ballot_id',ballotId).eq('user_id',userId);if(existing.error)throw existing.error;
+ if((existing.data||[]).some(v=>v.option_id===optionId)){const{error}=await needClient().from('member_ballot_votes').delete().eq('ballot_id',ballotId).eq('option_id',optionId).eq('user_id',userId);if(error)throw error;return false}
+ if((existing.data||[]).length>=Number(ballot.data.max_selections||1))throw new Error('You have reached this ballot’s selection limit.');
+ const{error}=await needClient().from('member_ballot_votes').insert({ballot_id:ballotId,option_id:optionId,user_id:userId});if(error)throw error;return true
+}
