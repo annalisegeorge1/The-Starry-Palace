@@ -92,6 +92,24 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain("activityBadge>99?'99+':activityBadge");
   });
 
+  it('keeps My Palace focused on continuity, attention and upcoming work',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('scheduledComicEpisodes');
+    expect(data).toContain('collaborationInvites');
+    expect(data).toContain('downloadRequests');
+    expect(data).toContain('eventInvitations');
+    expect(data).toContain('upcomingEvents');
+    expect(live).toContain('palace-resume-grid');
+    expect(live).toContain('NEEDS YOUR ATTENTION');
+    expect(live).toContain('CREATOR RELEASE DESK');
+    expect(live).toContain('palace-home-pulse');
+    expect(live).toContain('comicHasNew');
+    expect(polish).toContain('.palace-command-centre');
+    expect(polish).toContain('.palace-attention-grid');
+    expect(polish).toContain('.palace-coming-grid');
+  });
+
   it('keeps badge artwork metadata tier-split',()=>{
     const badge=read('src/PalaceBadge.jsx');
     expect(badge).not.toContain("import frames from './originalBadgeArt.json'");
@@ -530,8 +548,8 @@ describe('Starry Palace launch safety',()=>{
     const polish=read('src/polish.css');
     expect(main).toContain('roomCssMatches');
     expect(main).toContain('palace-room-css-sync-reload');
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100505');
-    expect(polish).toContain('--palace-room-css-version:2026100505');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100506');
+    expect(polish).toContain('--palace-room-css-version:2026100506');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
