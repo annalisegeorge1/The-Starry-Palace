@@ -418,8 +418,18 @@ export async function getGiftCatalogue(){
  const{data,error,count}=await needClient().from('virtual_gifts').select('id,gift_key,catalogue_number,name,description,court_name,collection_type,art_status,upgrade_copies',{count:'exact'}).eq('catalogue_status','catalogued').eq('reward_eligible',true).order('catalogue_number');
  if(error)throw error;return{items:data||[],count:count||data?.length||0}
 }
-export async function getArchive(){const{data,error}=await needClient().from('archive_records').select('id,accession_number,slug,title,creator_name,record_nature,category,summary,original_language,languages,surviving_extent,known_gaps,provenance_summary,rights_status,hosting_basis,host_mode,continuation_status,verified_at').eq('publication_status','published').order('updated_at',{ascending:false}).limit(100);if(error)throw error;return data||[]}
+export async function getArchive(userId=null){
+ const{data,error}=await needClient().from('archive_records').select('id,accession_number,slug,title,creator_name,record_nature,category,summary,original_language,languages,surviving_extent,known_gaps,provenance_summary,rights_status,hosting_basis,host_mode,continuation_status,verified_at,updated_at').eq('publication_status','published').order('updated_at',{ascending:false}).limit(100);
+ if(error)throw error;const rows=data||[];if(!userId||!rows.length)return rows;
+ const saved=await needClient().from('user_archive_records').select('record_id,saved,visited_at').eq('user_id',userId).eq('saved',true);
+ if(saved.error)throw saved.error;const byId=new Map((saved.data||[]).map(x=>[x.record_id,x]));
+ return rows.map(r=>({...r,saved:byId.has(r.id),visited_at:byId.get(r.id)?.visited_at||null}))
+}
 export async function saveArchiveRecord(userId,recordId){const{error}=await needClient().from('user_archive_records').upsert({user_id:userId,record_id:recordId,saved:true,visited_at:new Date().toISOString(),updated_at:new Date().toISOString()},{onConflict:'user_id,record_id'});if(error)throw error}
+export async function setArchiveRecordSaved(userId,recordId,saved){
+ const{data,error}=await needClient().from('user_archive_records').upsert({user_id:userId,record_id:recordId,saved:!!saved,visited_at:new Date().toISOString(),updated_at:new Date().toISOString()},{onConflict:'user_id,record_id'}).select('record_id,saved,visited_at').single();
+ if(error)throw error;return data
+}
 
 export async function getProfilePosts(authorId){
  const{data,error}=await needClient().from('profile_posts').select('id,author_id,body,visibility,status,created_at,updated_at').eq('author_id',authorId).eq('status','active').order('created_at',{ascending:false}).limit(24);
