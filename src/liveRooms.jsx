@@ -156,7 +156,7 @@ export function SettingsLive({Frame}){
   </div>
  </div>
  <div className="storage-rights-grid">
-  <article><span>PROFILE</span><h3>Chamber media</h3><p>Profile and cover images remain tied to your own profile-media folder.</p><Link to={data?.profile?.username?"/member/"+data.profile.username:"/chamber"}>Review chamber →</Link></article>
+  <article><span>PROFILE</span><h3>Chamber media</h3><p>Profile and cover images remain tied to your own profile-media folder.</p><Link to="/chamber">Review chamber →</Link></article>
   <article><span>PROSE</span><h3>Story artwork</h3><p>Story covers stay separate from your manuscript and never transfer ownership.</p><Link to="/writing">Open Writing Chamber →</Link></article>
   <article><span>COMICS</span><h3>Original art stays protected</h3><p>Reader copies and original comic assets use separate storage paths and creator-controlled download rules.</p><Link to="/comics/studio">Open Comics Studio →</Link></article>
  </div>
