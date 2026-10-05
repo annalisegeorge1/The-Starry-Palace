@@ -1,10 +1,13 @@
 import { supabase } from './supabase';
 
 function needClient(){if(!supabase) throw new Error('The Palace data connection is not configured.');return supabase}
-export async function getMyProfile(userId){const{data,error}=await needClient().from('profiles').select('id,username,display_name,title,bio,avatar_url,cover_url,visibility,message_policy,pronouns,status_line,availability,roles,featured_genres,featured_fandoms,accent,cover_position').eq('id',userId).single();if(error)throw error;return data}
+export async function getMyProfile(userId){const{data,error}=await needClient().from('profiles').select('id,username,display_name,title,bio,avatar_url,cover_url,visibility,message_policy,pronouns,status_line,availability,roles,featured_genres,featured_fandoms,accent,cover_position,support_enabled,support_label,support_url').eq('id',userId).single();if(error)throw error;return data}
 export async function updateMyProfile(userId,patch){
  const username=patch.username?.trim().toLowerCase().replace(/^@/,'');
  if(username&&!/^[a-z0-9_]{3,30}$/.test(username))throw new Error('Your Palace handle may use 3–30 lowercase letters, numbers and underscores.');
+ const supportUrl=patch.support_url?.trim()||null;
+ if(patch.support_enabled&&!supportUrl)throw new Error('Add a secure support link before enabling creator support.');
+ if(supportUrl&&!/^https:\/\//i.test(supportUrl))throw new Error('Creator support links must begin with https://');
  const allowed={
   display_name:patch.display_name?.trim(),
   title:patch.title?.trim()||null,
@@ -18,7 +21,10 @@ export async function updateMyProfile(userId,patch){
   featured_genres:Array.isArray(patch.featured_genres)?patch.featured_genres.filter(Boolean).map(x=>String(x).trim()).filter(Boolean):[],
   featured_fandoms:Array.isArray(patch.featured_fandoms)?patch.featured_fandoms.filter(Boolean).map(x=>String(x).trim()).filter(Boolean):[],
   accent:patch.accent||'moon-violet',
-  cover_position:Number.isFinite(Number(patch.cover_position))?Math.max(0,Math.min(100,Number(patch.cover_position))):48
+  cover_position:Number.isFinite(Number(patch.cover_position))?Math.max(0,Math.min(100,Number(patch.cover_position))):48,
+  support_enabled:!!patch.support_enabled,
+  support_label:patch.support_label?.trim().slice(0,60)||null,
+  support_url:supportUrl
  };
  if(username)allowed.username=username;
  const{data,error}=await needClient().from('profiles').update(allowed).eq('id',userId).select().single();
@@ -317,7 +323,7 @@ export async function getFollowingProfilePosts(userId){
 }
 
 export async function getMemberProfile(username,viewerId){
- const{data:profile,error}=await needClient().from('profiles').select('id,username,display_name,title,bio,avatar_url,cover_url,visibility,message_policy,pronouns,status_line,availability,roles,featured_genres,featured_fandoms,accent,cover_position').eq('username',username).maybeSingle();
+ const{data:profile,error}=await needClient().from('profiles').select('id,username,display_name,title,bio,avatar_url,cover_url,visibility,message_policy,pronouns,status_line,availability,roles,featured_genres,featured_fandoms,accent,cover_position,support_enabled,support_label,support_url').eq('username',username).maybeSingle();
  if(error)throw error;if(!profile)return null;
  const own=viewerId===profile.id;
  const [privacy,works,follow,counting,seriesCount,clubCount,showA,showG]=await Promise.all([
