@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import badges from './badges.json';
 import originals from './originalBadges.json';
 import PalaceBadge from './PalaceBadge';
-import PalaceGift from './PalaceGift';
+import PalaceGift, { giftEdition, giftEditions } from './PalaceGift';
 import { getGiftCatalogue } from './palaceData';
 import './treasury.css';
 
@@ -17,6 +17,7 @@ export default function Treasury({Frame}) {
  const [selected,setSelected]=useState(null);
  const [giftData,setGiftData]=useState({items:[],count:0});
  const [giftCourt,setGiftCourt]=useState('all');
+ const [giftEditionFilter,setGiftEditionFilter]=useState('all');
  const [giftPage,setGiftPage]=useState(1);
  const [giftError,setGiftError]=useState('');
  const [giftLoading,setGiftLoading]=useState(true);
@@ -27,20 +28,20 @@ export default function Treasury({Frame}) {
   return()=>{live=false};
  },[]);
 
- useEffect(()=>setGiftPage(1),[query,giftCourt,collection]);
+ useEffect(()=>setGiftPage(1),[query,giftCourt,giftEditionFilter,collection]);
 
  const source=collection==='originals'?originals:badges;
  const visibleBadges=source.filter(b=>(category==='all'||b.category===category)&&`${b.name} ${b.description} ${b.category}`.toLowerCase().includes(query.toLowerCase()));
  const courts=useMemo(()=>[...new Set(giftData.items.map(g=>g.court_name).filter(Boolean))].sort((a,b)=>a.localeCompare(b)),[giftData.items]);
  const visibleGifts=useMemo(()=>{
   const term=query.trim().toLowerCase();
-  return giftData.items.filter(g=>(giftCourt==='all'||g.court_name===giftCourt)&&(!term||`${g.name} ${g.description} ${g.court_name} ${g.catalogue_number}`.toLowerCase().includes(term)));
- },[giftData.items,giftCourt,query]);
+  return giftData.items.filter(g=>(giftCourt==='all'||g.court_name===giftCourt)&&(giftEditionFilter==='all'||giftEdition(g)===giftEditionFilter)&&(!term||`${g.name} ${g.description} ${g.court_name} ${g.catalogue_number} ${giftEdition(g)}`.toLowerCase().includes(term)));
+ },[giftData.items,giftCourt,giftEditionFilter,query]);
  const giftPages=Math.max(1,Math.ceil(visibleGifts.length/PAGE_SIZE));
  const pagedGifts=visibleGifts.slice((giftPage-1)*PAGE_SIZE,giftPage*PAGE_SIZE);
 
  function choose(next){
-  setCollection(next);setCategory('all');setGiftCourt('all');setSelected(null);
+  setCollection(next);setCategory('all');setGiftCourt('all');setGiftEditionFilter('all');setSelected(null);
  }
 
  return <Frame privateArea>
@@ -61,16 +62,18 @@ export default function Treasury({Frame}) {
    <div className="badge-controls gift-catalogue-controls">
     <label>Search gifts<input value={query} onChange={e=>setQuery(e.target.value)} type="search" placeholder="Name, court or catalogue number"/></label>
     <label>Court<select value={giftCourt} onChange={e=>setGiftCourt(e.target.value)}><option value="all">All Palace courts</option>{courts.map(c=><option key={c} value={c}>{c}</option>)}</select></label>
+    <label>Painted edition<select value={giftEditionFilter} onChange={e=>setGiftEditionFilter(e.target.value)}><option value="all">All nine editions</option>{giftEditions.map(e=><option key={e} value={e}>{e.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</option>)}</select></label>
     <label>Preview tier<select value={tier} onChange={e=>setTier(e.target.value)}>{tiers.map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label>
    </div>
-   <div className="gift-catalogue-status"><p role="status">{visibleGifts.length} prizes found</p><span>Three duplicate copies may ascend a collectible one tier. Lucky Draw chances remain free.</span></div>
+   <div className="gift-edition-ribbon" aria-label="Painted gift editions">{giftEditions.map(e=><button key={e} className={giftEditionFilter===e?'active':''} onClick={()=>setGiftEditionFilter(giftEditionFilter===e?'all':e)}>{e.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</button>)}</div>
+   <div className="gift-catalogue-status"><p role="status">{visibleGifts.length} prizes found</p><span>Nine ink-wash editions · twenty Palace courts · Bronze through Emerald ascension.</span></div>
    {giftLoading&&<p className="catalogue-message">Gathering the collection beneath the stars…</p>}
    {giftError&&<p className="catalogue-message error-state">{giftError}</p>}
    {!giftLoading&&!giftError&&<>
     <div className="gift-catalogue-grid">{pagedGifts.map(g=><article className="gift-catalogue-card" key={g.id}>
      <PalaceGift gift={g} tier={tier}/>
      <div className="gift-catalogue-copy">
-      <small>CATALOGUE {String(g.catalogue_number).padStart(3,'0')} · {g.court_name}</small>
+      <small>CATALOGUE {String(g.catalogue_number).padStart(3,'0')} · {g.court_name} · {giftEdition(g).replace('-',' ')}</small>
       <h2>{g.name}</h2>
       <p>{g.description}</p>
       <footer><span>{g.collection_type||'Palace collectible'}</span><b>{g.upgrade_copies||3} copies to ascend</b></footer>
