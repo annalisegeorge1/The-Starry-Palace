@@ -654,7 +654,8 @@ function WorkCommunity({work,community,session,reload,setError}){
  async function mod(id,status){try{await moderateComment(id,status);reload()}catch(e){setError(e.message)}}
  function openCommentReport(comment){setReporting(comment);setReportReason('')}
  async function submitCommentReport(){if(!session||!reporting||!reportReason.trim())return;try{await submitCommunityReport(session.user.id,'comment',reporting.id,reportReason,{work_id:work.id,work_slug:work.slug,comment_author_id:reporting.author_id||null});setReporting(null);setReportReason('');setNotice('Comment report sent to Palace Council for review.')}catch(e){setError(e.message)}}
- const roots=community.comments.filter(c=>!c.parent_comment_id);
+ const visibleComments=community.comments.filter(c=>own||c.status==='approved'||c.author_id===session?.user?.id);
+ const roots=visibleComments.filter(c=>!c.parent_comment_id);
  return <section className="work-community">
   <div className="work-tags">{community.tags.map(x=><Link key={x.tags.id} to={"/tags?q="+encodeURIComponent(x.tags.name)}>#{x.tags.name}</Link>)}</div>
   <p className="eyebrow">READER RESPONSES</p>
