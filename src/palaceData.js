@@ -50,7 +50,7 @@ export async function getMyPrivacy(userId){const{data,error}=await needClient().
 export async function ensureMyPrivacy(userId){const current=await getMyPrivacy(userId);if(current)return current;const{data,error}=await needClient().from('privacy_preferences').insert({user_id:userId}).select().single();if(error)throw error;return data}
 export async function getChamberSnapshot(userId){
  const now=new Date().toISOString();
- const [profile,privacy,works,progress,comicProgress,notices,unreadNotices,letterRequests,savedCount,giftCount,eventCount,comicCount,subscriptions,followedWriters,savedComics,recentStops,scheduledComicEpisodes,collaborationInvites,downloadRequests,eventInvitations,myUpcomingEvents]=await Promise.all([
+ const [profile,privacy,works,progress,comicProgress,notices,unreadNotices,savedNotices,letterRequests,savedCount,giftCount,eventCount,comicCount,subscriptions,followedWriters,savedComics,recentStops,scheduledComicEpisodes,scheduledChapters,collaborationInvites,downloadRequests,eventInvitations,myUpcomingEvents]=await Promise.all([
   getMyProfile(userId),ensureMyPrivacy(userId),
   needClient().from('works').select('id,title,slug,publication_status,completion_status,updated_at,chapters(id,status,word_count)').eq('author_id',userId).order('updated_at',{ascending:false}).limit(8),
   needClient().from('reading_progress').select('work_id,chapter_id,progress_percent,completed,updated_at,works(id,title,slug,cover_url)').eq('user_id',userId).eq('completed',false).order('updated_at',{ascending:false}).limit(4),
@@ -68,20 +68,21 @@ export async function getChamberSnapshot(userId){
   needClient().from('saved_comics').select('comic_id',{count:'exact',head:true}).eq('user_id',userId),
   needClient().from('reading_progress').select('work_id',{count:'exact',head:true}).eq('user_id',userId),
   needClient().from('comic_episodes').select('id,title,scheduled_for,comic_id,comics!inner(id,title,slug,creator_id)').eq('comics.creator_id',userId).neq('status','published').not('scheduled_for','is',null).gte('scheduled_for',now).order('scheduled_for',{ascending:true}).limit(5),
+  needClient().from('chapters').select('id,title,scheduled_for,work_id,works!inner(id,title,slug,author_id)').eq('works.author_id',userId).neq('status','published').not('scheduled_for','is',null).gte('scheduled_for',now).order('scheduled_for',{ascending:true}).limit(5),
   needClient().from('work_collaborators').select('work_id,role,status,created_at,works(id,title,slug)').eq('user_id',userId).eq('status','invited').order('created_at',{ascending:false}).limit(5),
   needClient().from('comic_download_requests').select('id,comic_id,status,created_at,comics!inner(id,title,slug,creator_id)').eq('comics.creator_id',userId).eq('status','pending').order('created_at',{ascending:false}).limit(5),
   needClient().from('event_invitations').select('id,event_id,status,created_at,events(id,title,slug,starts_at,event_type)').eq('recipient_id',userId).eq('status','pending').order('created_at',{ascending:false}).limit(5),
   needClient().from('event_rsvps').select('event_id,status,events!inner(id,title,slug,starts_at,event_type)').eq('user_id',userId).in('status',['going','interested']).gte('events.starts_at',now).order('events(starts_at)',{ascending:true}).limit(5)
  ]);
- for(const r of[works,progress,comicProgress,notices,unreadNotices,letterRequests,savedCount,giftCount,eventCount,comicCount,subscriptions,followedWriters,savedComics,recentStops,scheduledComicEpisodes,collaborationInvites,downloadRequests,eventInvitations,myUpcomingEvents])if(r.error)throw r.error;
+ for(const r of[works,progress,comicProgress,notices,unreadNotices,savedNotices,letterRequests,savedCount,giftCount,eventCount,comicCount,subscriptions,followedWriters,savedComics,recentStops,scheduledComicEpisodes,scheduledChapters,collaborationInvites,downloadRequests,eventInvitations,myUpcomingEvents])if(r.error)throw r.error;
  const signedComicProgress=await Promise.all((comicProgress.data||[]).map(async x=>({...x,cover_url:await signedAsset('comic-covers',x.comics?.cover_path)})));
  return{
   profile,privacy,works:works.data||[],progress:progress.data||[],comicProgress:signedComicProgress,notices:notices.data||[],
-  scheduledComicEpisodes:scheduledComicEpisodes.data||[],collaborationInvites:collaborationInvites.data||[],downloadRequests:downloadRequests.data||[],eventInvitations:eventInvitations.data||[],upcomingEvents:(myUpcomingEvents.data||[]).map(x=>({...x,event:x.events})),
+  scheduledComicEpisodes:scheduledComicEpisodes.data||[],scheduledChapters:scheduledChapters.data||[],collaborationInvites:collaborationInvites.data||[],downloadRequests:downloadRequests.data||[],eventInvitations:eventInvitations.data||[],upcomingEvents:(myUpcomingEvents.data||[]).map(x=>({...x,event:x.events})),
   counts:{
    letterRequests:letterRequests.count||0,saved:savedCount.count||0,gifts:giftCount.count||0,events:eventCount.count||0,comics:comicCount.count||0,
    subscriptions:subscriptions.count||0,followedWriters:followedWriters.count||0,savedComics:savedComics.count||0,recentStops:recentStops.count||0,
-   scheduledComics:scheduledComicEpisodes.data?.length||0,collaborationInvites:collaborationInvites.data?.length||0,downloadRequests:downloadRequests.data?.length||0,eventInvitations:eventInvitations.data?.length||0,unreadNotices:unreadNotices.count||0
+   scheduledComics:scheduledComicEpisodes.data?.length||0,scheduledChapters:scheduledChapters.data?.length||0,collaborationInvites:collaborationInvites.data?.length||0,downloadRequests:downloadRequests.data?.length||0,eventInvitations:eventInvitations.data?.length||0,unreadNotices:unreadNotices.count||0,savedNotices:savedNotices.count||0
   }
  }
 }
