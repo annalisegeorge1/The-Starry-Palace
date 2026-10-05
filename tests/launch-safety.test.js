@@ -704,6 +704,16 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.followed-list>a.has-new-panels');
   });
 
+  it('lets signed-in readers filter Comics Gallery by their own shelf state',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain("const[readerView,setReaderView]=useState('all')");
+    expect(live).toContain('<span>My shelf</span>');
+    for(const value of ['new','reading','saved','following','finished'])expect(live).toContain('<option value="'+value+'">');
+    expect(live).toContain("readerView==='new'&&hasNew");
+    expect(live).toContain("readerView==='finished'&&!!keep.progress?.completed&&!hasNew");
+    expect(polish).toContain('repeat(5,minmax(115px,150px))');
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
