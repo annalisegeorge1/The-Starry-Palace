@@ -130,8 +130,8 @@ export function CodeLive({Frame}){
 }
 
 
-export function ComicsLive({Frame}){
- const{session}=useAuth();const[items,setItems]=useState(null);const[mine,setMine]=useState(null);const[error,setError]=useState('');const[q,setQ]=useState('');const[direction,setDirection]=useState('all');const[mode,setMode]=useState('gallery');const[newTitle,setNewTitle]=useState('');
+export function ComicsLive({Frame,initialMode='gallery'}){
+ const{session}=useAuth();const[items,setItems]=useState(null);const[mine,setMine]=useState(null);const[error,setError]=useState('');const[q,setQ]=useState('');const[direction,setDirection]=useState('all');const[mode,setMode]=useState(initialMode);const[newTitle,setNewTitle]=useState('');
  const load=()=>{getPublishedComics().then(setItems).catch(e=>setError(e.message));if(session)getMyComics(session.user.id).then(setMine).catch(e=>setError(e.message))};useEffect(load,[session?.user?.id]);
  const shown=(items||[]).filter(c=>(direction==='all'||c.reading_direction===direction)&&(!q.trim()||[c.title,c.summary,c.creator?.display_name,c.creator?.username].filter(Boolean).join(' ').toLowerCase().includes(q.toLowerCase())));
  async function create(e){e.preventDefault();try{const c=await createComicDraft(session.user.id,newTitle);setNewTitle('');await load();setMode('studio');location.hash='comic-'+c.id}catch(e){setError(e.message)}}
@@ -154,6 +154,8 @@ function ComicEpisodeStudio({comic,episode,session,reload}){
  async function remove(page){if(!window.confirm('Remove this page?'))return;try{await deleteComicPage(session.user.id,comic.id,page);setNotice('Page removed.');reload()}catch(e){setError(e.message)}}
  return <article className="episode-studio-card"><form onSubmit={save}><div><small>EPISODE {episode.position} · {episode.status.toUpperCase()}</small><input name="title" defaultValue={episode.title}/></div><label>Revision note<input name="revision_note" defaultValue={episode.revision_note}/></label><div className="episode-actions"><button>Save</button>{episode.status!=='published'&&<button type="button" onClick={publish}>Publish episode</button>}<label className="outline-button">Upload page<input type="file" accept="image/*" hidden onChange={e=>upload(e.target.files?.[0])}/></label></div></form>{error&&<div className="live-state error-state">{error}</div>}{notice&&<small role="status">{notice}</small>}<div className="page-strip">{episode.comic_pages.map(p=><article key={p.id}><span>{String(p.position).padStart(2,'0')}</span><div><strong>{p.alt_text||p.caption||'Comic page'}</strong><small>{p.decorative?'decorative':'described'}</small></div><button className="quiet-button" onClick={()=>remove(p)}>Remove</button></article>)}</div></article>
 }
+
+export function ComicStudioLive({Frame}){return <ComicsLive Frame={Frame} initialMode="studio"/>}
 
 export function ComicLive({Frame}){
  const{slug}=useParams();const{session}=useAuth();const[data,setData]=useState(undefined);const[progress,setProgress]=useState(null);const[error,setError]=useState('');const[notice,setNotice]=useState('');
