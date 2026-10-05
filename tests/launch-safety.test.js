@@ -714,6 +714,15 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('repeat(5,minmax(115px,150px))');
   });
 
+  it('shows comic access level and counts new panels for the signed-in reader',()=>{
+    const data=read('src/palaceData.js');
+    expect(data).toContain('completion_status,visibility,reading_direction');
+    expect(live).toContain('const newForReaderCount=');
+    expect(live).toContain("newForReaderCount+' new for you'");
+    expect(live).toContain("c.visibility==='members'?' · members only'");
+    expect(live).toContain("data.visibility==='private'?' · PRIVATE PREVIEW'");
+  });
+
   it('keeps restored sidebar sections fully wired',()=>{
     expect(main).not.toContain('RESTORING');
     expect(main).not.toContain('restoring-section');
