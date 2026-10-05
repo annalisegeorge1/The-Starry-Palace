@@ -449,6 +449,21 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.activity-notice-actions');
   });
 
+  it('keeps Activity grouped, metadata-aware and exact about unread notices',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('metadata,action_label,unread,saved,created_at');
+    expect(data).toContain("select('id',{count:'exact',head:true}).eq('user_id',userId).eq('dismissed',false).eq('unread',true)");
+    expect(live).toContain("const[noticeGroup,setNoticeGroup]=useState('all')");
+    expect(live).toContain('activity-category-tabs');
+    expect(live).toContain("const bucketOrder=['Today','Yesterday','This week','Earlier']");
+    expect(live).toContain("n.action_label||'Open →'");
+    expect(live).toContain('type="button" className="activity-notice-copy"');
+    expect(polish).toContain('/* Activity notification centre grouping */');
+    expect(polish).toContain('.activity-time-group');
+    expect(polish).toContain('.activity-notice-copy:focus-visible');
+  });
+
   it('keeps My Library search honest across shelves and resumes exact reading places',()=>{
     const polish=read('src/polish.css');
     expect(live).toContain('Search the current Library shelf');
@@ -557,8 +572,8 @@ describe('Starry Palace launch safety',()=>{
     const polish=read('src/polish.css');
     expect(main).toContain('roomCssMatches');
     expect(main).toContain('palace-room-css-sync-reload');
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100507');
-    expect(polish).toContain('--palace-room-css-version:2026100507');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100508');
+    expect(polish).toContain('--palace-room-css-version:2026100508');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
