@@ -5,7 +5,7 @@ import { AuthProvider, ProtectedRoute, useAuth } from './auth';
 import { configured, supabase } from './supabase';
 import './style.css';
 import TreasuryCatalogue from './Treasury';
-import { ChamberLive, ReadingLive, WritingLive, SettingsLive, ActivityLive, LibraryLive, TagsLive, PalaceLifeLive, LettersLive, EventsLive, TreasuryLive, LostWorksLive, MemberProfileLive, SearchLive, WorkLive, ChapterLive, WorkStudioLive, TagSearchLive, HonourLive, CouncilLive, CodeLive, ComicsLive, ComicLive, ComicEpisodeLive } from './liveRooms';
+import { ChamberLive, ReadingLive, WritingLive, SettingsLive, ActivityLive, LibraryLive, TagsLive, PalaceLifeLive, LettersLive, EventsLive, TreasuryLive, LostWorksLive, MemberProfileLive, SearchLive, WorkLive, ChapterLive, WorkStudioLive, TagSearchLive, HonourLive, CouncilLive, CodeLive, ComicsLive, ComicLive, ComicEpisodeLive, ComicStudioLive } from './liveRooms';
 
 const rooms=[
   ['Reading Rooms','/reading','Read, discover and return to the stories waiting for you.'],
@@ -27,7 +27,7 @@ function Frame({children,privateArea=false}){
  const nav=[
   ...(session?[['✦','My Chamber','/chamber']]:[]),
   ['◈','Reading Rooms','/reading'],['▤','Comics Gallery','/comics'],
-  ...(session?[['✎','Writing Chamber','/writing'],['☾','My Library','/library']]:[]),
+  ...(session?[['✎','Writing Chamber','/writing'],['▧','Comics Studio','/comics/studio'],['☾','My Library','/library']]:[]),
   ['♢','Palace Life','/palace-life'],['✧','Events & Heritage','/events'],
   ...(session?[['♛','Royal Treasury','/treasury']]:[]),
   ['⌁','Lost Works','/lost-works'],['✦','Tag Constellation','/tags'],['♜','Throne of Honour','/honour'],['⚖','Palace Council','/council'],['§','The Palace Code','/code'],
@@ -80,6 +80,7 @@ function App(){return <AuthProvider><Routes>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/reading" element={<ReadingLive Frame={Frame}/>}/>
  <Route path="/comics" element={<ComicsLive Frame={Frame}/>}/>
+ <Route path="/comics/studio" element={<ProtectedRoute><ComicStudioLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/comic/:slug" element={<ComicLive Frame={Frame}/>}/>
  <Route path="/comic/:slug/episode/:episodeId" element={<ComicEpisodeLive Frame={Frame}/>}/>
  <Route path="/writing" element={<ProtectedRoute><WritingLive Frame={Frame}/></ProtectedRoute>}/>
