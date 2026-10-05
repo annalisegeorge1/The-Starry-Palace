@@ -64,6 +64,15 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain("palace-preload-reload");
   });
 
+  it('warms the main Palace room bundle without wasting constrained connections',()=>{
+    expect(main).toContain('function RoomBundleWarmup()');
+    expect(main).toContain("connection?.saveData");
+    expect(main).toContain("/2g/.test(connection?.effectiveType||'')");
+    expect(main).toContain("requestIdleCallback");
+    expect(main).toContain("importWithRecovery(()=>import('./liveRooms'))");
+    expect(main).toContain('<RoomBundleWarmup/>');
+  });
+
   it('keeps badge artwork metadata tier-split',()=>{
     const badge=read('src/PalaceBadge.jsx');
     expect(badge).not.toContain("import frames from './originalBadgeArt.json'");
