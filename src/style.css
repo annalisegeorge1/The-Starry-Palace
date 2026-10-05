@@ -617,3 +617,30 @@ linear-gradient(145deg,#2d245f,#151c3c 58%,#0c1225);box-shadow:inset 0 0 0 1px r
  .legacy-profile-copy h1{font-size:clamp(38px,11vw,52px)}
  .legacy-profile-meta{font-size:16px}
 }
+
+
+/* Chamber fallback media polish */
+.legacy-profile-cover:not([style*="background-image"]){
+ background:
+  radial-gradient(circle at 72% 24%,rgba(196,188,255,.22) 0 2px,transparent 3px),
+  radial-gradient(circle at 18% 30%,rgba(255,255,255,.16) 0 1px,transparent 2px),
+  radial-gradient(circle at 48% 16%,rgba(255,255,255,.11) 0 1px,transparent 2px),
+  radial-gradient(circle at 36% 72%,rgba(255,255,255,.08) 0 1px,transparent 2px),
+  radial-gradient(circle at 78% 70%,rgba(255,255,255,.08) 0 1px,transparent 2px),
+  linear-gradient(155deg,#415a90 0%,#263762 45%,#11182e 100%);
+}
+.legacy-profile-cover:not([style*="background-image"]):before{content:"☾";position:absolute;right:10%;top:8%;font:220px/1 Georgia,'Times New Roman',serif;color:rgba(220,216,255,.07);transform:rotate(-14deg)}
+.legacy-profile-avatar.sigil-fallback,.mini-chamber-avatar.sigil-fallback{background:radial-gradient(circle at 34% 28%,#ddd4ff 0%,#9d83ea 36%,#5a3f9a 70%,#201d47 100%);color:white}
+.legacy-profile-avatar.sigil-fallback span,.mini-chamber-avatar.sigil-fallback span{position:relative;display:inline-block;font-family:Georgia,'Times New Roman',serif;line-height:1}
+.legacy-profile-avatar.sigil-fallback span{font-size:54px}.legacy-profile-avatar.sigil-fallback span b{position:absolute;font-size:16px;right:-8px;top:4px}
+.mini-chamber-avatar.sigil-fallback span{font-size:30px}.mini-chamber-avatar.sigil-fallback span b{position:absolute;font-size:10px;right:-5px;top:1px}
+@media(max-width:980px){
+ .legacy-profile-cover{height:270px}
+ .legacy-profile-avatar{top:205px}
+ .legacy-profile-copy{padding-top:70px}
+}
+@media(max-width:720px){
+ .legacy-profile-cover{height:245px}
+ .legacy-profile-avatar{top:188px}
+ .legacy-profile-copy{padding-top:68px}
+}
