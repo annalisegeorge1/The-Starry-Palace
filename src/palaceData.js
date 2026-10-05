@@ -217,7 +217,44 @@ export async function setIntroductionReaction(userId,introductionId,enabled){
 }
 export async function postMoonlight(userId,body){const text=body.trim();if(!text)throw new Error('Write something before sending it into the room.');const{data,error}=await needClient().from('public_chat_messages').insert({author_id:userId,body:text}).select().single();if(error)throw error;return data}
 export async function createForumThread(userId,title,body){const{data,error}=await needClient().from('forum_threads').insert({author_id:userId,title:title.trim(),body:body.trim(),room:'Palace Commons'}).select().single();if(error)throw error;return data}
-export async function getLetters(userId){const [members,requests,prefs]=await Promise.all([needClient().from('conversation_members').select('conversation_id,joined_at,conversations(id,kind,status,last_message_at,direct_user_a,direct_user_b)').eq('user_id',userId).is('left_at',null),needClient().from('message_requests').select('id,sender_id,recipient_id,intro_text,status,created_at,profiles!message_requests_sender_id_fkey(username,display_name)').eq('recipient_id',userId).eq('status','pending').order('created_at',{ascending:false}),needClient().from('conversation_preferences').select('*').eq('user_id',userId)]);for(const r of[members,requests,prefs])if(r.error)throw r.error;const conversations=members.data||[];const ids=conversations.map(x=>x.conversation_id);let messages=[];if(ids.length){const r=await needClient().from('messages').select('id,conversation_id,sender_id,body,created_at,status').in('conversation_id',ids).eq('status','active').order('created_at',{ascending:false}).limit(100);if(r.error)throw r.error;messages=r.data||[]}const prefMap=Object.fromEntries((prefs.data||[]).map(p=>[p.conversation_id,p]));return{conversations:conversations.map(c=>({...c,preference:prefMap[c.conversation_id]||{starred:false,archived:false,muted:false}})),requests:requests.data||[],messages}}
+export async function getLetters(userId){
+ const [members,requests,prefs]=await Promise.all([
+  needClient().from('conversation_members').select('conversation_id,joined_at,conversations(id,kind,status,last_message_at,direct_user_a,direct_user_b)').eq('user_id',userId).is('left_at',null),
+  needClient().from('message_requests').select('id,sender_id,recipient_id,intro_text,status,created_at,profiles!message_requests_sender_id_fkey(username,display_name,avatar_url,title)').eq('recipient_id',userId).eq('status','pending').order('created_at',{ascending:false}),
+  needClient().from('conversation_preferences').select('*').eq('user_id',userId)
+ ]);
+ for(const r of[members,requests,prefs])if(r.error)throw r.error;
+ const conversations=members.data||[];
+ const ids=conversations.map(x=>x.conversation_id);
+ let messages=[];
+ if(ids.length){
+  const r=await needClient().from('messages').select('id,conversation_id,sender_id,body,created_at,status').in('conversation_id',ids).eq('status','active').order('created_at',{ascending:false}).limit(100);
+  if(r.error)throw r.error;
+  messages=r.data||[];
+ }
+ const otherIds=[...new Set(conversations.map(c=>{
+  const conv=c.conversations;
+  if(conv?.kind!=='direct')return null;
+  return conv.direct_user_a===userId?conv.direct_user_b:conv.direct_user_a;
+ }).filter(Boolean))];
+ let people=[];
+ if(otherIds.length){
+  const p=await needClient().from('profiles').select('id,username,display_name,title,avatar_url,message_policy').in('id',otherIds);
+  if(p.error)throw p.error;
+  people=p.data||[];
+ }
+ const personMap=Object.fromEntries(people.map(p=>[p.id,p]));
+ const prefMap=Object.fromEntries((prefs.data||[]).map(p=>[p.conversation_id,p]));
+ return{
+  conversations:conversations.map(c=>{
+   const conv=c.conversations;
+   const otherId=conv?.kind==='direct'?(conv.direct_user_a===userId?conv.direct_user_b:conv.direct_user_a):null;
+   return{...c,correspondent:otherId?personMap[otherId]||null:null,preference:prefMap[c.conversation_id]||{starred:false,archived:false,muted:false}}
+  }),
+  requests:requests.data||[],
+  messages
+ }
+}
 export async function sendLetter(userId,conversationId,body){const text=body.trim();if(!text)throw new Error('Your letter is empty.');const{data,error}=await needClient().from('messages').insert({conversation_id:conversationId,sender_id:userId,body:text}).select().single();if(error)throw error;return data}
 export async function respondToLetterRequest(userId,requestId,status){if(!['accepted','declined'].includes(status))throw new Error('Unknown request response.');const{error}=await needClient().from('message_requests').update({status,resolved_at:new Date().toISOString()}).eq('id',requestId).eq('recipient_id',userId).eq('status','pending');if(error)throw error}
 export async function requestPalaceLetter(userId,recipientId,introText=''){
