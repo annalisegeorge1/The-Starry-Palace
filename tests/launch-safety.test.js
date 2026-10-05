@@ -687,6 +687,17 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.comic-follow-frequency');
   });
 
+  it('backs comic notification cadence with real database behavior',()=>{
+    const sql=read('database/comic-notification-cadence.sql');
+    expect(sql).toContain("s.frequency='immediate'");
+    expect(sql).toContain("s.frequency='weekly'");
+    expect(sql).toContain('private.send_weekly_comic_digest()');
+    expect(sql).toContain("'palace-weekly-comic-digest'");
+    expect(sql).toContain("'0 12 * * 0'");
+    expect(live).toContain("item.route_name==='comic'");
+    expect(live).toContain("item.metadata?.tab");
+  });
+
   it('reopens finished comics when newer panels are published',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
