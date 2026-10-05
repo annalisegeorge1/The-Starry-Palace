@@ -3082,3 +3082,72 @@ img{max-width:100%}
   .organizer-card-head{align-items:stretch;flex-direction:column}
   .organizer-card-head>div:last-child{align-self:flex-start}
 }
+
+
+/* Writing snapshots — deliberate revision history beside autosave */
+.editor-stat-actions{
+  display:flex;
+  gap:.4rem;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.editor-stat-actions .secondary-btn{
+  min-height:38px;
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+}
+.editor-stat-actions .secondary-btn span{
+  min-width:20px;
+  height:20px;
+  display:grid;
+  place-items:center;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+  font-size:.58rem;
+}
+.snapshot-create{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(180px,240px) auto;
+  gap:.65rem;
+  align-items:end;
+  margin-bottom:.9rem;
+  padding:.8rem;
+  border:1px solid var(--palace-border);
+  border-radius:15px;
+  background:rgba(100,82,160,.06);
+}
+.snapshot-create>div{display:grid;gap:.15rem}
+.snapshot-create strong{font:600 .9rem Georgia,'Times New Roman',serif}
+.snapshot-create small{color:var(--palace-muted);font-size:.62rem;line-height:1.45}
+.snapshot-create input{min-height:41px}
+.snapshot-create>button{min-height:41px;border-radius:11px}
+.snapshot-list{display:grid;gap:.5rem}
+.snapshot-list>article{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:.75rem;
+  align-items:center;
+  padding:.75rem .85rem;
+  border:1px solid var(--palace-border);
+  border-radius:14px;
+  background:rgba(14,19,38,.62);
+}
+.snapshot-list>article>div:first-child{display:grid;gap:.12rem;min-width:0}
+.snapshot-list small{font-size:.56rem;color:var(--palace-dim)}
+.snapshot-list strong{
+  font:600 .82rem Georgia,'Times New Roman',serif;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.snapshot-list span{font-size:.62rem;color:var(--palace-muted)}
+.snapshot-list>article>div:last-child{display:flex;gap:.35rem;flex-wrap:wrap;justify-content:flex-end}
+.snapshot-list button{min-height:36px;border-radius:10px;padding:.4rem .58rem;font-size:.64rem}
+.daylight .snapshot-create,.daylight .snapshot-list>article{background:rgba(255,255,255,.88)}
+@media(max-width:720px){
+  .editor-stat-actions{justify-content:flex-start}
+  .snapshot-create{grid-template-columns:1fr}
+  .snapshot-list>article{grid-template-columns:1fr}
+  .snapshot-list>article>div:last-child{justify-content:flex-start}
+}
