@@ -2934,3 +2934,91 @@ img{max-width:100%}
   .council-list>article{grid-template-columns:1fr}
   .council-actions{justify-content:flex-start}
 }
+
+
+/* Throne of Honour — reviewed community recognition */
+.legacy-throne-page{max-width:1180px;margin:0 auto;padding-bottom:4rem}
+.legacy-throne-gallery{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.8rem;
+}
+.legacy-throne-gallery>article{
+  min-height:310px;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:1rem;
+  align-items:start;
+  padding:1.1rem;
+  border:1px solid var(--palace-border);
+  border-radius:21px;
+  background:linear-gradient(150deg,rgba(17,22,43,.82),rgba(10,15,31,.82));
+  box-shadow:var(--palace-shadow-soft);
+}
+.legacy-throne-medallion{
+  width:58px;height:58px;display:grid;place-items:center;position:relative;
+  border:1px solid rgba(177,154,218,.28);border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,rgba(117,91,177,.22),rgba(27,33,65,.65));
+}
+.legacy-throne-medallion span{font:1.45rem Georgia,'Times New Roman',serif;color:#d3c7ee}
+.legacy-throne-medallion small{position:absolute;right:-2px;bottom:-4px;padding:.14rem .3rem;border-radius:999px;background:#11162b;border:1px solid var(--palace-border);font-size:.48rem}
+.legacy-throne-gallery h2{margin:.3rem 0 .1rem;font:600 1.55rem Georgia,'Times New Roman',serif;letter-spacing:-.02em}
+.legacy-throne-gallery h3{margin:0 0 .65rem;color:#b9b2d1;font:500 .88rem Georgia,'Times New Roman',serif}
+.legacy-throne-gallery p:last-child{color:var(--palace-muted);line-height:1.65;font-size:.8rem}
+.legacy-throne-nomination.real{
+  margin:1.2rem 0;
+  padding:1.1rem;
+  border:1px solid var(--palace-border);
+  border-radius:20px;
+  background:linear-gradient(135deg,rgba(88,69,143,.15),rgba(41,61,98,.09));
+  box-shadow:var(--palace-shadow-soft);
+}
+.honour-my-recommendations,.honour-monthly-courts{
+  margin-top:1.3rem;
+  padding-top:1.2rem;
+  border-top:1px solid var(--palace-border);
+}
+.honour-my-recommendations>div:last-child{display:grid;gap:.6rem}
+.honour-my-recommendations article{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:.8rem;
+  align-items:start;
+  padding:.9rem 1rem;
+  border:1px solid var(--palace-border);
+  border-radius:16px;
+  background:rgba(14,19,38,.68);
+}
+.honour-my-recommendations article>div{display:grid;gap:.16rem}
+.honour-my-recommendations small{font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--palace-dim)}
+.honour-my-recommendations strong{font:600 1.02rem Georgia,'Times New Roman',serif}
+.honour-my-recommendations span{color:var(--palace-muted);font-size:.7rem}
+.honour-my-recommendations p{margin:.35rem 0 0;color:var(--palace-muted);line-height:1.5;font-size:.75rem}
+.honour-my-recommendations blockquote{margin:.5rem 0 0;padding:.5rem .65rem;border-left:2px solid rgba(154,139,207,.32);color:var(--palace-muted)}
+.honour-monthly-courts>div:last-child{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:.7rem;
+}
+.honour-monthly-courts article{
+  padding:.9rem;
+  border:1px solid var(--palace-border);
+  border-radius:17px;
+  background:rgba(14,19,38,.66);
+}
+.honour-monthly-courts article header{display:flex;justify-content:space-between;gap:.7rem;padding-bottom:.55rem;border-bottom:1px solid var(--palace-border)}
+.honour-monthly-courts article header span{font-size:.7rem;color:var(--palace-muted)}
+.honour-monthly-courts article header strong{font-size:.67rem;text-transform:uppercase;letter-spacing:.08em}
+.honour-monthly-courts ol{display:grid;gap:.35rem;margin:.65rem 0 0;padding:0;list-style:none}
+.honour-monthly-courts li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:.5rem;align-items:center;min-height:34px}
+.honour-monthly-courts li>span{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:rgba(105,86,167,.1);font:600 .72rem Georgia,'Times New Roman',serif}
+.honour-monthly-courts li a,.honour-monthly-courts li strong{font-size:.75rem}
+.honour-review-list h3{margin:.1rem 0 .45rem;color:var(--palace-muted);font:500 .88rem Georgia,'Times New Roman',serif}
+.honour-review-list article>div>span{display:block;margin-top:.45rem;color:var(--palace-dim);font-size:.62rem}
+.daylight .legacy-throne-gallery>article,.daylight .honour-my-recommendations article,.daylight .honour-monthly-courts article{background:rgba(255,255,255,.88)}
+@media(max-width:900px){.legacy-throne-gallery{grid-template-columns:1fr 1fr}.honour-monthly-courts>div:last-child{grid-template-columns:1fr}}
+@media(max-width:620px){
+  .legacy-throne-page{padding-left:14px;padding-right:14px}
+  .legacy-throne-gallery{grid-template-columns:1fr}
+  .honour-my-recommendations article{grid-template-columns:1fr}
+}
