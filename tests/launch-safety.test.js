@@ -40,6 +40,13 @@ describe('Starry Palace launch safety',()=>{
     expect(data).toContain("from('member_ballot_options').select('id,ballot_id,label,description,position')");
   });
 
+  it('keeps creator support external and secure',()=>{
+    const data=read('src/palaceData.js');
+    expect(data).toContain("Creator support links must begin with https://");
+    expect(live).toContain('rel="noopener noreferrer"');
+    expect(live).toContain('support_enabled');
+  });
+
   it('keeps production chunks split and recoverable',()=>{
     const vite=read('vite.config.js');
     expect(vite).toContain("name: 'react-vendor'");
