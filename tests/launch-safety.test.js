@@ -24,9 +24,11 @@ describe('Starry Palace launch safety',()=>{
     expect(pkg.scripts.build).toContain('cp dist/index.html dist/404.html');
   });
 
-  it('keeps Palace route rooms lazy-loaded',()=>{
-    expect(main).toContain("React.lazy(()=>importWithRecovery(()=>import('./liveRooms'))");
-    expect(main).toContain('<React.Suspense');
+  it('loads core Palace rooms eagerly so navigation cannot strand on a room chunk',()=>{
+    expect(main).toContain("from './liveRooms'");
+    expect(main).toContain("import TreasuryCatalogue from './Treasury'");
+    expect(main).not.toContain("const ChamberLive=lazyRoom('ChamberLive')");
+    expect(main).not.toContain('<RoomBundleWarmup/>');
   });
 
   it('lets signed-in members change their Palace password without asking for an email inbox password',()=>{
@@ -72,13 +74,10 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain("palace-preload-reload");
   });
 
-  it('warms the main Palace room bundle without wasting constrained connections',()=>{
+  it('keeps the old room warmup helper unmounted after moving core rooms into the main app',()=>{
     expect(main).toContain('function RoomBundleWarmup()');
-    expect(main).toContain("connection?.saveData");
-    expect(main).toContain("/2g/.test(connection?.effectiveType||'')");
-    expect(main).toContain("requestIdleCallback");
-    expect(main).toContain("importWithRecovery(()=>import('./liveRooms'))");
-    expect(main).toContain('<RoomBundleWarmup/>');
+    expect(main).not.toContain('<RoomBundleWarmup/>');
+    expect(main).toContain("from './liveRooms'");
   });
 
   it('keeps full Palace content search reachable from the compact command panel',()=>{
@@ -937,6 +936,18 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('transform:scale(.62)!important');
   });
 
+  it('uses real-device QA guards for desktop width and Chromium painting',()=>{
+    const polish=read('src/polish.css');
+    expect(polish).toContain('Desktop QA correction · October 6 2026');
+    expect(polish).toContain('content-visibility:visible!important');
+    expect(polish).toContain('.chamber-shelf-tools{');
+    expect(polish).toContain('.creator-worlds-room{');
+    expect(polish).toContain('.legacy-life-head h1{');
+    expect(polish).toContain('.chic-writing-head h1{');
+    expect(polish).toContain('.heritage-grid.enriched .heritage-card{');
+    expect(polish).toContain('grid-template-columns:minmax(0,1fr) minmax(250px,300px)!important');
+  });
+
   it('keeps Commons composing visible and the cultural calendar rich but searchable',()=>{
     const polish=read('src/polish.css');
     const calendar=read('src/PalaceCalendar.jsx');
@@ -1259,8 +1270,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain("new Error('Palace room load timeout')");
     expect(main).toContain("schedulePalaceReload('palace-script-error-reload'");
     expect(main).not.toContain('return new Promise(()=>{})');
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100605');
-    expect(polish).toContain('--palace-room-css-version:2026100605');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100606');
+    expect(polish).toContain('--palace-room-css-version:2026100606');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
