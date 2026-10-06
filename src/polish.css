@@ -5739,3 +5739,9 @@ img{max-width:100%}
 .special-title-note{display:inline-flex;align-items:center;width:max-content;margin-top:4px;padding:.28rem .5rem;border-radius:999px;background:rgba(157,138,241,.12);border:1px solid rgba(186,171,251,.24);font-size:.68rem;font-weight:700;letter-spacing:.04em}
 .daylight .chamber-title-mark{background:rgba(81,68,154,.055);border-color:rgba(76,64,139,.12)}
 .daylight .special-title-note{background:rgba(94,79,171,.07);border-color:rgba(76,64,139,.12)}
+
+.welcome-identity-fields{display:grid!important;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+.welcome-identity-fields label{min-width:0}
+.welcome-identity-fields select{width:100%;min-height:45px}
+.welcome-identity-fields small{font-weight:400}
+@media(max-width:760px){.welcome-identity-fields{grid-template-columns:1fr}}
