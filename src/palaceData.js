@@ -20,7 +20,7 @@ export async function getOnboardingState(userId){
   discoveryVisibility:settings.data?.discovery_visibility!==false
  }
 }
-export async function saveOnboardingState(userId,{displayName,interests=[],fandoms=[],intentions=[],recommendationLearning=true,discoveryVisibility=true}={}){
+export async function saveOnboardingState(userId,{displayName,title,interests=[],fandoms=[],intentions=[],recommendationLearning=true,discoveryVisibility=true}={}){
  const clean=(list,max=10,len=60)=>Array.isArray(list)?list.map(x=>String(x||'').trim().slice(0,len)).filter(Boolean).slice(0,max):[];
  const current=await needClient().from('user_settings').select('settings').eq('user_id',userId).maybeSingle();
  if(current.error)throw current.error;
@@ -28,7 +28,8 @@ export async function saveOnboardingState(userId,{displayName,interests=[],fando
  const updates=await needClient().from('user_settings').upsert({user_id:userId,settings,recommendation_learning:!!recommendationLearning,discovery_visibility:!!discoveryVisibility,updated_at:new Date().toISOString()},{onConflict:'user_id'}).select('settings').single();
  if(updates.error)throw updates.error;
  if(displayName?.trim()){
-  const profile=await needClient().from('profiles').update({display_name:displayName.trim().slice(0,80),featured_genres:clean(interests),featured_fandoms:clean(fandoms)}).eq('id',userId).select('id').single();
+  const profilePatch={display_name:displayName.trim().slice(0,80),featured_genres:clean(interests),featured_fandoms:clean(fandoms)};if(title?.trim())profilePatch.title=title.trim();
+  const profile=await needClient().from('profiles').update(profilePatch).eq('id',userId).select('id').single();
   if(profile.error)throw profile.error;
  }
  return updates.data
