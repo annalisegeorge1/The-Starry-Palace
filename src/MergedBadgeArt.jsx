@@ -51,15 +51,18 @@ export function MergedBadgeArt({art,name}){
   const src='/assets/palace-collectibles/'+art.asset+'-'+art.tier+'.png';
   return <img className="merged-badge-object" src={src} alt={(name||art.name)+' · '+art.tier+' watercolour'} loading="lazy" decoding="async"/>;
  }
- const x=art.column*25;
- const y=art.row*(100/3);
+ // The court sheets are 5 columns × 4 rows. Pull back slightly from each
+ // cell so the painted wreaths, pendants and lower ornaments are not clipped.
+ // The adjusted positions keep the outer columns/rows centred after the pull-back.
+ const x=[-1.4,24.3,50,75.7,101.4][art.column]??50;
+ const y=[-1.9,32.7,67.3,101.9][art.row]??50;
  return <span
   className="merged-court-portrait"
   role="img"
   aria-label={(name||art.name)+' · '+art.tier+' · '+art.court+' court watercolour'}
   style={{
-   backgroundImage:'url(/assets/palace-courts/'+art.sheet+'.png?v=badge-merge-1)',
-   backgroundSize:'500% 400%',
+   backgroundImage:'url(/assets/palace-courts/'+art.sheet+'.png?v=badge-merge-2)',
+   backgroundSize:'450% 360%',
    backgroundPosition:x+'% '+y+'%',
    backgroundRepeat:'no-repeat'
   }}
