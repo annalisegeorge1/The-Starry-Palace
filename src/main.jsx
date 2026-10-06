@@ -65,6 +65,47 @@ function roomCssMatches(mod){
  // palace-room-css-nonblocking: never strand a route on a permanently pending lazy promise.
  return true;
 }
+function loadedPalaceAssetPath(){
+ if(typeof document==='undefined')return'';
+ const script=[...document.querySelectorAll('script[type="module"][src]')].find(node=>/\/assets\/index-[^/]+\.js(?:\?|$)/.test(node.getAttribute('src')||node.src||''));
+ return script?.getAttribute('src')||script?.src||''
+}
+async function newestPalaceAssetPath(){
+ try{
+  const response=await fetch('/index.html?palace-fresh='+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
+  if(!response.ok)return'';
+  const html=await response.text();
+  const match=html.match(/<script[^>]+src=["']([^"']*\/assets\/index-[^"']+\.js)["'][^>]*>/i);
+  return match?.[1]||''
+ }catch{return''}
+}
+function PalaceBuildFreshnessWatch(){
+ const location=useLocation();
+ React.useEffect(()=>{
+  let alive=true;
+  const check=async()=>{
+   if(document.visibilityState==='hidden')return;
+   const focused=document.activeElement;
+   if(focused&&(focused.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(focused.tagName)))return;
+   const last=Number(sessionStorage.getItem('palace-build-last-check')||0);
+   if(Date.now()-last<20000)return;
+   sessionStorage.setItem('palace-build-last-check',String(Date.now()));
+   const current=loadedPalaceAssetPath();const newest=await newestPalaceAssetPath();
+   if(!alive||!current||!newest)return;
+   const currentPath=new URL(current,window.location.origin).pathname;
+   const newestPath=new URL(newest,window.location.origin).pathname;
+   if(currentPath!==newestPath)schedulePalaceReload('palace-new-build-reload',80);
+  };
+  const routeTimer=window.setTimeout(check,900);
+  const onVisible=()=>{if(document.visibilityState==='visible')window.setTimeout(check,250)};
+  const interval=window.setInterval(check,180000);
+  document.addEventListener('visibilitychange',onVisible);
+  window.addEventListener('pageshow',onVisible);
+  return()=>{alive=false;window.clearTimeout(routeTimer);window.clearInterval(interval);document.removeEventListener('visibilitychange',onVisible);window.removeEventListener('pageshow',onVisible)}
+ },[location.pathname,location.search]);
+ return null
+}
+
 const lazyRoom=name=>React.lazy(()=>importWithRecovery(()=>import('./liveRooms')).then(mod=>{
  roomCssMatches(mod);
  if(!mod?.[name])throw new Error('Palace room '+name+' is unavailable in this build.');
@@ -339,7 +380,7 @@ function RouteGuard({children}){
  return <RouteErrorBoundary key={location.pathname+location.search}>{children}</RouteErrorBoundary>
 }
 
-function App(){return <AuthProvider><NavigationReset/><BlankScreenWatchdog/><RouteGuard><Routes>
+function App(){return <AuthProvider><PalaceBuildFreshnessWatch/><NavigationReset/><BlankScreenWatchdog/><RouteGuard><Routes>
  <Route path="/" element={<Home/>}/><Route path="/login" element={<Login/>}/><Route path="/auth/callback" element={<Callback/>}/>
  <Route path="/welcome" element={<ProtectedRoute><OnboardingLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
