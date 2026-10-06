@@ -10707,3 +10707,356 @@ body{overflow-x:clip}
   }
   .chic-reading-intro::after{display:none!important}
 }
+
+
+/* =========================================================
+   Editorial room development pass · Series, Archive, Events,
+   calendar and the lower My Palace dashboard.
+   ========================================================= */
+
+/* Shared page rhythm */
+.chic-series-page,.chic-lost-page{max-width:1180px;margin:0 auto;padding-bottom:4rem}
+.chic-series-head,.chic-lost-head,.chic-events-head{
+  max-width:860px;
+  padding:1rem 0 .55rem!important;
+}
+.chic-series-head h1,.chic-lost-head h1,.chic-events-head h1{
+  margin:.12rem 0 .32rem!important;
+  font-size:clamp(2.55rem,5vw,4.35rem)!important;
+  letter-spacing:-.045em;
+  line-height:.96!important;
+}
+.chic-series-head .lede,.chic-lost-head .lede,.chic-events-head .lede{
+  max-width:760px!important;
+  margin:0!important;
+  color:#aaa3b8!important;
+  font-size:.8rem!important;
+  line-height:1.58!important;
+}
+
+/* Compact overview ribbons replace empty breathing space with context. */
+.series-pulse,.archive-pulse,.events-pulse{
+  display:flex;
+  gap:.42rem;
+  overflow-x:auto;
+  scrollbar-width:none;
+  margin:.45rem 0 .7rem;
+}
+.series-pulse::-webkit-scrollbar,.archive-pulse::-webkit-scrollbar,.events-pulse::-webkit-scrollbar{display:none}
+.series-pulse>span,.archive-pulse>span,.events-pulse>span{
+  flex:1 0 150px;
+  min-height:62px;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  align-items:center;
+  gap:.42rem;
+  padding:.55rem .68rem;
+  border:1px solid rgba(201,178,232,.12);
+  border-radius:14px;
+  background:
+    linear-gradient(145deg,rgba(49,36,95,.3),rgba(20,17,45,.58));
+}
+.series-pulse strong,.archive-pulse strong,.events-pulse strong{
+  color:#eeeaf6;
+  font:700 1.08rem Georgia,'Times New Roman',serif;
+}
+.series-pulse small,.archive-pulse small,.events-pulse small{
+  color:#958ea4;
+  font-size:.53rem;
+  line-height:1.25;
+}
+
+/* Series: editorial shelf, not three explanatory billboards. */
+.chic-series-principles{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:.55rem!important;
+  margin:.65rem 0!important;
+}
+.chic-series-principles>article{
+  min-height:118px!important;
+  padding:.75rem!important;
+  border-color:rgba(201,178,232,.11)!important;
+  border-radius:16px!important;
+  background:
+    radial-gradient(circle at 92% 8%,rgba(219,157,204,.055),transparent 9rem),
+    rgba(255,255,255,.012)!important;
+}
+.chic-series-principles>article>span{
+  width:30px!important;height:30px!important;
+  display:grid!important;place-items:center;
+  margin-bottom:.45rem!important;
+  border:1px solid rgba(204,179,232,.16);
+  border-radius:50%;
+  color:#c6b1e3!important;
+  font-size:.52rem!important;
+}
+.chic-series-principles strong{font-size:.76rem!important}
+.chic-series-principles small{
+  margin-top:.28rem!important;
+  color:#9e97a9!important;
+  font-size:.59rem!important;
+  line-height:1.48!important;
+}
+.series-create-row{
+  min-height:46px!important;
+  margin:.45rem 0!important;
+  padding:.38rem .48rem!important;
+  border:1px solid rgba(201,178,232,.1)!important;
+  border-radius:14px!important;
+  background:rgba(28,21,60,.28)!important;
+}
+.series-create-row button{border-radius:999px!important;min-height:36px!important}
+.series-create-row span{color:#918a9e!important;font-size:.56rem!important}
+.series-browser-tools{
+  position:sticky;
+  top:72px;
+  z-index:8;
+  margin:.55rem 0 .7rem!important;
+  padding:.48rem!important;
+  border-color:rgba(201,178,232,.12)!important;
+  background:rgba(27,21,58,.78)!important;
+  -webkit-backdrop-filter:blur(16px);
+  backdrop-filter:blur(16px);
+}
+.series-grid.restored{gap:.65rem!important}
+.series-grid.restored>article{
+  overflow:hidden;
+  border-color:rgba(201,178,232,.12)!important;
+  background:
+    radial-gradient(circle at 96% 2%,rgba(219,157,204,.045),transparent 14rem),
+    linear-gradient(145deg,rgba(47,35,92,.34),rgba(20,17,45,.68))!important;
+}
+.series-grid.restored>article>header{padding:.85rem!important}
+.series-grid.restored h2{margin:.18rem 0 .3rem!important;font-size:1.16rem!important}
+.series-grid.restored header p{font-size:.64rem!important;line-height:1.5!important}
+.series-stack>article{padding:.58rem .8rem!important;background:transparent!important}
+.series-stack>article:hover{background:rgba(111,89,175,.035)!important}
+
+/* Lost Works: archive feels curated, not bureaucratic. */
+.chic-archive-principle{
+  min-height:68px!important;
+  margin:.45rem 0 .65rem!important;
+  padding:.62rem .75rem!important;
+  border-color:rgba(202,179,232,.13)!important;
+  border-radius:16px!important;
+  background:
+    linear-gradient(90deg,rgba(111,88,178,.11),rgba(219,156,203,.035) 55%,rgba(20,17,45,.54))!important;
+}
+.chic-archive-principle .archive-seal{
+  width:38px!important;height:38px!important;
+  display:grid!important;place-items:center;
+  border-radius:50%;
+  background:rgba(113,91,181,.08);
+  color:#d3c2e9!important;
+}
+.chic-archive-principle strong{font-size:.72rem!important}
+.chic-archive-principle p{font-size:.59rem!important;line-height:1.45!important}
+.lost-work-toolbar.restored.refined{
+  margin:.55rem 0 .55rem!important;
+  padding:.55rem!important;
+  border-color:rgba(201,178,232,.12)!important;
+  background:rgba(27,21,58,.66)!important;
+  border-radius:17px!important;
+}
+.archive-filter-pills{
+  display:flex!important;
+  gap:.25rem!important;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.archive-filter-pills::-webkit-scrollbar{display:none}
+.archive-filter-pills button{
+  flex:0 0 auto;
+  min-height:34px!important;
+  padding:.32rem .55rem!important;
+  border-radius:999px!important;
+  font-size:.55rem!important;
+}
+.archive-advanced-filters label{font-size:.49rem!important}
+.archive-advanced-filters select{min-height:38px!important}
+.archive-result-count{margin:.25rem 0 .55rem!important}
+.lost-work-grid.restored{gap:.65rem!important}
+.lost-work-card{
+  padding:.9rem!important;
+  border-color:rgba(201,178,232,.12)!important;
+  background:
+    radial-gradient(circle at 94% 5%,rgba(219,157,204,.045),transparent 13rem),
+    linear-gradient(150deg,rgba(45,34,89,.32),rgba(18,16,41,.7))!important;
+}
+.lost-work-card h2{font-size:1.18rem!important}
+.lost-work-card>p{font-size:.63rem!important;line-height:1.5!important}
+.archive-meta{gap:.25rem!important}
+.archive-meta>div{padding:.45rem!important}
+.archive-meta span{font-size:.46rem!important}
+.archive-meta strong{font-size:.58rem!important}
+
+/* Events: one elegant planner surface. */
+.chic-events-head{max-width:1180px;margin:0 auto}
+.events-pulse{max-width:1180px;margin:.4rem auto .55rem}
+.chic-events-tabs{
+  position:sticky;
+  top:72px;
+  z-index:10;
+  max-width:1180px;
+  margin:.35rem auto .7rem!important;
+  padding:.28rem!important;
+  display:flex!important;
+  gap:.18rem!important;
+  overflow-x:auto;
+  scrollbar-width:none;
+  border:1px solid rgba(201,178,232,.12)!important;
+  border-radius:16px!important;
+  background:rgba(28,21,62,.8)!important;
+  -webkit-backdrop-filter:blur(18px);
+  backdrop-filter:blur(18px);
+}
+.chic-events-tabs::-webkit-scrollbar{display:none}
+.chic-events-tabs button{
+  flex:0 0 auto!important;
+  min-height:39px!important;
+  padding:.4rem .68rem!important;
+  border:0!important;
+  border-radius:11px!important;
+  background:transparent!important;
+  color:#9790a5!important;
+  font-size:.59rem!important;
+}
+.chic-events-tabs button.active{
+  background:linear-gradient(135deg,rgba(117,97,188,.24),rgba(217,151,203,.08))!important;
+  color:#eee8f7!important;
+}
+.palace-month-calendar{
+  max-width:1100px!important;
+  margin:.65rem auto 1.2rem!important;
+  padding:1rem!important;
+  border-color:rgba(201,178,232,.13)!important;
+  border-radius:20px!important;
+  background:
+    radial-gradient(circle at 92% 5%,rgba(220,158,205,.05),transparent 16rem),
+    linear-gradient(145deg,rgba(45,34,88,.38),rgba(18,16,41,.7))!important;
+  box-shadow:0 18px 44px rgba(8,6,24,.08);
+}
+.palace-month-calendar>header{gap:.75rem!important}
+.palace-month-calendar h2{
+  margin:.12rem 0 .35rem!important;
+  font-size:1.55rem!important;
+}
+.calendar-month-controls button{
+  min-width:38px!important;
+  min-height:38px!important;
+  border-radius:10px!important;
+}
+.calendar-weekdays{
+  padding:.55rem 0 .35rem!important;
+  font-size:.55rem!important;
+  letter-spacing:.05em;
+}
+.palace-calendar-days{gap:4px!important}
+.palace-calendar-days>button{
+  min-height:58px!important;
+  border-color:rgba(201,178,232,.11)!important;
+  border-radius:10px!important;
+  background:rgba(255,255,255,.018)!important;
+  transition:background .15s ease,border-color .15s ease,transform .15s ease;
+}
+.palace-calendar-days>button:hover{
+  transform:translateY(-1px);
+  border-color:rgba(215,181,232,.25)!important;
+  background:rgba(112,90,177,.06)!important;
+}
+.palace-calendar-days>button[aria-pressed="true"]{
+  background:linear-gradient(145deg,#705bb8,#584797)!important;
+  border-color:rgba(226,198,241,.52)!important;
+  box-shadow:0 8px 18px rgba(64,43,128,.18);
+}
+.palace-calendar-days>button[aria-current="date"]{
+  box-shadow:inset 0 0 0 1px rgba(217,160,207,.24);
+}
+.calendar-selection{
+  margin-top:.75rem!important;
+  padding-top:.75rem!important;
+  border-top-color:rgba(201,178,232,.1)!important;
+}
+.calendar-selection h3{font-size:1.05rem!important;margin:0 0 .45rem!important}
+.calendar-selection p{font-size:.64rem!important;line-height:1.5!important}
+.event-browser-tools{
+  margin:.55rem 0!important;
+  padding:.48rem!important;
+  border-color:rgba(201,178,232,.12)!important;
+  background:rgba(27,21,58,.68)!important;
+}
+.event-list{gap:.55rem!important}
+.event-list>article{
+  padding:.8rem!important;
+  border-color:rgba(201,178,232,.12)!important;
+  background:linear-gradient(145deg,rgba(46,34,90,.31),rgba(19,16,43,.68))!important;
+}
+.event-list>article>time{padding:.52rem!important}
+.event-list h2{font-size:1.05rem!important}
+.event-list p{font-size:.63rem!important;line-height:1.5!important}
+
+/* My Palace lower dashboard: stronger visual rhythm. */
+.chic-home-stats{
+  gap:.45rem!important;
+  margin-top:.7rem!important;
+}
+.chic-home-stats>a{
+  min-height:84px!important;
+  padding:.72rem!important;
+  border-color:rgba(201,178,232,.12)!important;
+  border-radius:15px!important;
+  background:
+    radial-gradient(circle at 88% 8%,rgba(218,156,203,.04),transparent 8rem),
+    linear-gradient(145deg,rgba(47,35,92,.3),rgba(20,17,45,.62))!important;
+  transition:transform .16s ease,border-color .16s ease;
+}
+.chic-home-stats>a:hover{
+  transform:translateY(-3px);
+  border-color:rgba(219,182,232,.28)!important;
+}
+.chic-home-stats strong{font-size:1.45rem!important}
+.chic-home-stats span{font-size:.63rem!important}
+.chic-home-stats small{font-size:.49rem!important}
+.chic-home-footer-panels{
+  gap:.65rem!important;
+  margin-top:.75rem!important;
+}
+.chic-home-footer-panels>article{
+  min-height:150px!important;
+  padding:1rem!important;
+  border-color:rgba(201,178,232,.12)!important;
+  border-radius:19px!important;
+  background:
+    radial-gradient(circle at 92% 8%,rgba(218,156,203,.055),transparent 12rem),
+    linear-gradient(145deg,rgba(48,35,94,.36),rgba(20,17,45,.68))!important;
+}
+.chic-home-footer-panels h2{font-size:1.25rem!important}
+.chic-home-footer-panels p{font-size:.65rem!important;line-height:1.52!important}
+
+/* Daylight counterparts */
+.daylight .series-pulse>span,.daylight .archive-pulse>span,.daylight .events-pulse>span,
+.daylight .chic-series-principles>article,.daylight .series-browser-tools,
+.daylight .chic-archive-principle,.daylight .lost-work-toolbar.restored.refined,
+.daylight .lost-work-card,.daylight .chic-events-tabs,.daylight .palace-month-calendar,
+.daylight .event-browser-tools,.daylight .event-list>article,
+.daylight .chic-home-stats>a,.daylight .chic-home-footer-panels>article{
+  background:linear-gradient(145deg,rgba(255,255,255,.95),rgba(244,240,248,.91))!important;
+  border-color:rgba(96,77,142,.11)!important;
+}
+.daylight .series-pulse strong,.daylight .archive-pulse strong,.daylight .events-pulse strong{color:#322c4b}
+
+@media(max-width:820px){
+  .chic-series-principles{grid-template-columns:1fr!important}
+  .series-browser-tools{top:106px}
+  .chic-events-tabs{top:106px}
+}
+@media(max-width:620px){
+  .chic-series-page,.chic-lost-page,.chic-events-head,.events-pulse{
+    padding-left:14px!important;padding-right:14px!important;
+  }
+  .series-pulse,.archive-pulse,.events-pulse{margin-left:0;margin-right:0}
+  .palace-month-calendar{margin-left:14px!important;margin-right:14px!important}
+  .palace-calendar-days>button{min-height:50px!important}
+  .chic-home-footer-panels{grid-template-columns:1fr!important}
+}
