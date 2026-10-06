@@ -13701,3 +13701,161 @@ input:focus,textarea:focus,select:focus{
   }
 }
 .daylight .global-search-live{background:rgba(255,255,255,.82)!important}
+
+
+/* =========================================================
+   Room atmosphere without generated cover art
+   The reference image informs mood and depth only. These are
+   native CSS atmospheres so no generated hero/cover is needed.
+   ========================================================= */
+:where(
+  .legacy-reading-page,
+  .legacy-library-page,
+  .legacy-editor-page,
+  .legacy-life-page,
+  .legacy-series-page,
+  .legacy-lost-page,
+  .legacy-treasury-page,
+  .legacy-activity-page,
+  .legacy-search-page,
+  .legacy-tags-page,
+  .legacy-council-page,
+  .chic-events-head
+){
+  position:relative;
+  isolation:isolate;
+}
+:where(
+  .legacy-reading-page,
+  .legacy-library-page,
+  .legacy-editor-page,
+  .legacy-life-page,
+  .legacy-series-page,
+  .legacy-lost-page,
+  .legacy-treasury-page,
+  .legacy-activity-page,
+  .legacy-search-page,
+  .legacy-tags-page,
+  .legacy-council-page
+)::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  pointer-events:none;
+  width:min(820px,72vw);
+  height:420px;
+  top:-90px;
+  right:-110px;
+  border-radius:50%;
+  filter:blur(.2px);
+  opacity:.9;
+}
+
+/* Reading: dusky periwinkle, like entering a quiet library at night. */
+.legacy-reading-page::before,
+.legacy-library-page::before{
+  background:
+    radial-gradient(ellipse at 58% 36%,rgba(129,116,195,.12),transparent 45%),
+    radial-gradient(ellipse at 80% 22%,rgba(91,125,178,.08),transparent 48%);
+}
+
+/* Writing: more concentrated light around the work surface. */
+.legacy-editor-page::before{
+  background:
+    radial-gradient(ellipse at 58% 30%,rgba(114,91,181,.13),transparent 42%),
+    radial-gradient(ellipse at 82% 42%,rgba(76,115,157,.08),transparent 48%);
+}
+
+/* Palace Life: social dusk, slightly warmer but still cool. */
+.legacy-life-page::before{
+  background:
+    radial-gradient(ellipse at 62% 30%,rgba(139,105,183,.13),transparent 44%),
+    radial-gradient(ellipse at 82% 48%,rgba(194,133,177,.055),transparent 48%);
+}
+
+/* Series: shelf-light rather than another dashboard background. */
+.legacy-series-page::before{
+  background:
+    radial-gradient(ellipse at 62% 35%,rgba(104,91,167,.11),transparent 44%),
+    radial-gradient(ellipse at 82% 18%,rgba(109,139,185,.06),transparent 48%);
+}
+
+/* Lost Works: quieter slate-violet archive. */
+.legacy-lost-page::before{
+  background:
+    radial-gradient(ellipse at 62% 28%,rgba(86,90,142,.09),transparent 45%),
+    radial-gradient(ellipse at 84% 34%,rgba(118,101,157,.055),transparent 50%);
+}
+
+/* Treasury: ceremonial moonlight, not bright yellow. */
+.legacy-treasury-page::before{
+  background:
+    radial-gradient(ellipse at 62% 28%,rgba(138,115,176,.11),transparent 43%),
+    radial-gradient(ellipse at 82% 36%,rgba(152,133,101,.045),transparent 48%);
+}
+
+/* Utility / stewardship rooms stay understated. */
+.legacy-activity-page::before,
+.legacy-search-page::before,
+.legacy-tags-page::before,
+.legacy-council-page::before{
+  background:
+    radial-gradient(ellipse at 64% 30%,rgba(92,100,158,.08),transparent 46%),
+    radial-gradient(ellipse at 82% 46%,rgba(104,84,166,.045),transparent 50%);
+}
+
+.daylight :where(
+  .legacy-reading-page,
+  .legacy-library-page,
+  .legacy-editor-page,
+  .legacy-life-page,
+  .legacy-series-page,
+  .legacy-lost-page,
+  .legacy-treasury-page,
+  .legacy-activity-page,
+  .legacy-search-page,
+  .legacy-tags-page,
+  .legacy-council-page
+)::before{
+  opacity:.5;
+}
+
+/* The empty Series shelf becomes a slim editorial invitation on desktop. */
+@media(min-width:1121px){
+  .chic-series-principles{
+    min-height:0!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:0!important;
+    margin:.65rem 0!important;
+    overflow:hidden;
+    border:1px solid rgba(197,176,229,.12);
+    border-radius:16px;
+    background:rgba(21,17,46,.34);
+  }
+  .chic-series-principles>article{
+    min-height:92px!important;
+    display:grid!important;
+    grid-template-columns:30px minmax(0,1fr)!important;
+    grid-template-rows:auto auto!important;
+    column-gap:.65rem!important;
+    align-content:center!important;
+    margin:0!important;
+    padding:.72rem .85rem!important;
+    border:0!important;
+    border-right:1px solid rgba(197,176,229,.1)!important;
+    border-radius:0!important;
+    background:transparent!important;
+  }
+  .chic-series-principles>article:last-child{border-right:0!important}
+  .chic-series-principles>article>span{
+    grid-row:1/3;
+    align-self:center;
+    margin:0!important;
+  }
+  .chic-series-principles strong{font-size:.8rem!important}
+  .chic-series-principles small{font-size:.64rem!important}
+}
+.daylight .chic-series-principles{
+  background:rgba(255,255,255,.64);
+  border-color:rgba(89,72,135,.1);
+}
