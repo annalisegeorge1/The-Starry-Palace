@@ -3,6 +3,7 @@ import {resolveBadgeFrame} from './badgeArtwork';
 import originals from './originalBadges.json';
 import ApprovedBadgeArt,{approvedBadgeFrame} from './ApprovedBadgeArt';
 import {MergedBadgeArt,mergedBadgeArtwork} from './MergedBadgeArt';
+import './treasury.css';
 
 const ranks=['bronze','silver','gold','platinum','emerald'];
 const normal=value=>String(value||'').toLowerCase().replace(/[^a-z0-9]/g,'');
