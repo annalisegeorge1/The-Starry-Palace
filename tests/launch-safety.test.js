@@ -1066,7 +1066,8 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('jumpChapterMap');
     expect(live).toContain('Chapter map');
     expect(live).toContain('add headings to navigate');
-    expect(live).toContain("querySelectorAll('h2,h3')");
+    expect(live).toContain("querySelectorAll('h2,h3,p')");
+    expect(live).toContain("Scene break '+scene");
     expect(live).toContain('Nothing extra is inserted into your draft.');
     expect(next).toContain("Writer's Desk Chapter Map — structural navigation for long drafts.");
     expect(next).toContain('.writer-document-map');
