@@ -13600,3 +13600,104 @@ input:focus,textarea:focus,select:focus{
   .profile-tabs button.active,
   .club-room-tabs button.active
 ){color:#2f2946!important}
+
+
+/* =========================================================
+   Production Prep shell proportion pass
+   Preserve the beloved Palace sidebar/GIF, but use the
+   mockup's calmer proportions and stronger desktop hierarchy.
+   ========================================================= */
+@media(min-width:1121px){
+  .full-sidebar{
+    width:288px!important;
+    padding:14px 15px 16px!important;
+  }
+  .palace-cover-live{
+    height:136px!important;
+    min-height:136px!important;
+    border-radius:18px!important;
+  }
+  .identity-card-live{
+    margin:11px 0 16px!important;
+    min-height:62px;
+    padding:9px 10px!important;
+    border-radius:15px!important;
+    background:linear-gradient(100deg,rgba(84,61,132,.28),rgba(48,42,86,.1))!important;
+    box-shadow:none!important;
+  }
+  .identity-avatar{
+    width:42px!important;
+    height:42px!important;
+  }
+  .identity-card-live strong{font-size:1rem!important}
+  .identity-card-live span{font-size:.65rem!important}
+  .nav-section-label{
+    margin:.8rem .55rem .42rem!important;
+    font-size:.52rem!important;
+  }
+  .full-nav-room>a{
+    min-height:43px;
+    padding:6px 9px!important;
+    border-radius:12px!important;
+    font-size:.78rem!important;
+  }
+  .full-nav-room>a i{
+    width:30px!important;
+    height:30px!important;
+    font-size:.82rem;
+  }
+  .full-subnav{
+    margin:.16rem 0 .42rem 1.15rem!important;
+  }
+  .full-subnav>a,.full-subnav>span{
+    min-height:30px;
+    display:flex;
+    align-items:center;
+    font-size:.64rem!important;
+  }
+
+  .full-topbar{
+    min-height:72px;
+    padding:12px var(--palace-page-gutter)!important;
+  }
+  .full-topbar-row{
+    grid-template-columns:minmax(285px,auto) minmax(340px,620px) auto!important;
+    gap:1.15rem!important;
+  }
+  .full-brand strong{font-size:1.28rem!important}
+  .top-room-context{
+    max-width:210px!important;
+    font-size:.62rem!important;
+  }
+  .global-search-live{
+    width:100%;
+    height:46px!important;
+    justify-self:center;
+    border-radius:999px!important;
+    padding-left:1rem!important;
+    background:rgba(22,18,49,.52)!important;
+  }
+  .global-search-live button{
+    min-height:36px!important;
+    border-radius:999px!important;
+    padding:.45rem .9rem!important;
+  }
+  .command-trigger,.top-icon-link{
+    width:40px!important;
+    height:40px!important;
+    min-width:40px!important;
+    min-height:40px!important;
+    border-radius:50%!important;
+    background:rgba(255,255,255,.018)!important;
+  }
+  .write-action{
+    min-height:42px!important;
+    padding:.55rem 1rem!important;
+    border-radius:999px!important;
+  }
+  .palace-footer{
+    padding-left:var(--palace-page-gutter)!important;
+    padding-right:var(--palace-page-gutter)!important;
+  }
+}
+.daylight .global-search-live{background:rgba(255,255,255,.82)!important}
