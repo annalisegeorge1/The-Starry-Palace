@@ -62,7 +62,7 @@ export function OnboardingLive({Frame}){
  </section></Frame>
 }
 export function ChamberLive({Frame}){
- const{session}=useAuth();const navigate=useNavigate();const[data,setData]=useState(null);const[followingPosts,setFollowingPosts]=useState([]);const[nightstand,setNightstand]=useState([]);const[discoveryProfile,setDiscoveryProfile]=useState(null);const[error,setError]=useState('');
+ const{session}=useAuth();const navigate=useNavigate();const[data,setData]=useState(null);const[followingPosts,setFollowingPosts]=useState([]);const[nightstand,setNightstand]=useState([]);const[discoveryProfile,setDiscoveryProfile]=useState(null);const[promptShift,setPromptShift]=useState(0);const[error,setError]=useState('');
  const load=()=>{setError('');Promise.all([getChamberSnapshot(session.user.id),getFollowingProfilePosts(session.user.id),getOnboardingState(session.user.id),getPublishedWorks(),getWorkShelfState(session.user.id)]).then(([snapshot,posts,onboarding,published,shelfState])=>{if(!onboarding.completed){navigate('/welcome',{replace:true});return}const interests=[...(onboarding.interests||[]),...(onboarding.fandoms||[])].map(x=>String(x).trim().toLowerCase()).filter(Boolean);const matching=(published||[]).filter(w=>w.author_id!==session.user.id&&interests.some(term=>[w.title,w.summary,...((w.work_tags||[]).map(x=>x.tags?.name))].filter(Boolean).join(' ').toLowerCase().includes(term)));const unstarted=onboarding.recommendationLearning===false?matching:matching.filter(w=>!shelfState?.[w.id]?.progress&&!shelfState?.[w.id]?.saved&&!shelfState?.[w.id]?.following);const pool=unstarted.length>=3?unstarted:matching;const dayKey=new Date().toISOString().slice(0,10);const score=id=>[...String(dayKey)+String(id)].reduce((n,ch)=>((n*31)+ch.charCodeAt(0))>>>0,7);setNightstand([...pool].sort((a,b)=>score(a.id)-score(b.id)).slice(0,3));setDiscoveryProfile(onboarding);setData(snapshot);setFollowingPosts(posts)}).catch(e=>setError(e.message))};useEffect(load,[session.user.id]);
  const p=data?.profile;const counts=data?.counts||{};const unread=counts.unreadNotices||0;
  const latest=data?.works?.[0];const nextDraft=(data?.works||[]).find(w=>w.publication_status!=='published')||latest;
@@ -82,6 +82,22 @@ export function ChamberLive({Frame}){
  const scheduled=[...(data?.scheduledChapters||[]).map(ch=>({id:'writing-'+ch.id,type:'writing',title:ch.title,scheduled_for:ch.scheduled_for,parent:ch.works?.title,href:ch.works?.slug?'/writing/'+ch.works.slug:'/writing'})),...(data?.scheduledComicEpisodes||[]).map(ep=>({id:'comic-'+ep.id,type:'comic',title:ep.title,scheduled_for:ep.scheduled_for,parent:ep.comics?.title,href:'/comics/studio#comic-'+ep.comic_id}))].sort((a,b)=>new Date(a.scheduled_for)-new Date(b.scheduled_for)).slice(0,4);
  const draftChapters=nextDraft?.chapters||[];const draftWords=draftChapters.reduce((n,ch)=>n+(Number(ch.word_count)||0),0);const draftPublished=draftChapters.filter(ch=>ch.status==='published').length;
  const focus=attention[0]?{icon:attention[0].icon,kicker:'NEEDS YOU',title:attention[0].title,copy:attention[0].copy,to:attention[0].to,action:'Review now'}:scheduled[0]?{icon:scheduled[0].type==='comic'?'◈':'✎',kicker:'UPCOMING RELEASE',title:scheduled[0].title,copy:'Your next scheduled '+(scheduled[0].type==='comic'?'comic episode':'chapter')+' is set for '+new Date(scheduled[0].scheduled_for).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+'.',to:scheduled[0].href,action:'Open release desk'}:nextDraft?{icon:'✎',kicker:'CREATIVE THREAD',title:nextDraft.title,copy:draftWords.toLocaleString()+' words across '+draftChapters.length+' chapter'+(draftChapters.length===1?'':'s')+'. Return without losing your place.',to:nextDraft.slug?'/writing/'+nextDraft.slug:'/writing',action:'Continue writing'}:currentRead?{icon:'▤',kicker:'READING THREAD',title:currentRead.title,copy:'Your private reading place is saved at '+currentStoryPercent+'% of the story.',to:currentStory?.chapter_id?'/work/'+currentRead.slug+'/chapter/'+currentStory.chapter_id:'/work/'+currentRead.slug,action:'Continue reading'}:currentComic?.comics?{icon:'◈',kicker:comicHasNew?'NEW PANELS':'COMIC THREAD',title:currentComic.comics.title,copy:comicHasNew?'A newer episode is waiting beyond your last panel.':'Your last panel is still waiting for you.',to:comicHref,action:comicHasNew?'Read new panels':'Continue comic'}:nightstand[0]?{icon:'☾',kicker:'NIGHTSTAND',title:nightstand[0].title,copy:'A world chosen from the interests you told the Palace to remember.',to:'/work/'+nightstand[0].slug,action:'Open this world'}:{icon:'✦',kicker:'A QUIET PALACE',title:'Wander where curiosity leads.',copy:'Nothing needs your attention. Read, write or explore without a queue.',to:'/reading',action:'Enter the Reading Rooms'};
+ const moonPrompts=[
+  'Write about a room that remembers everyone who ever left it.',
+  'Two people meet beneath a sky neither of them recognises.',
+  'A treasured object returns with one impossible detail changed.',
+  'Someone receives a letter dated ten years from tomorrow.',
+  'Describe a celebration where one guest knows the ending.',
+  'A city keeps one secret only children are allowed to hear.',
+  'Begin with a promise that should never have been made.',
+  'Write a scene where silence changes the balance of power.',
+  'A character finds their name in a book they have never seen.',
+  'The moon disappears for one night, and only one person notices.',
+  'Two rivals are forced to protect the same fragile thing.',
+  'Someone opens a door that has appeared only in dreams.'
+ ];
+ const promptSeed=[...new Date().toISOString().slice(0,10)].reduce((n,ch)=>n+ch.charCodeAt(0),0);
+ const moonPrompt=moonPrompts[(promptSeed+promptShift)%moonPrompts.length];
  return <Frame privateArea><State loading={!data&&!error} error={error}>{p&&<section className="legacy-home-dashboard palace-command-centre">
    <nav className="legacy-home-tabs">
     <Link className="active" aria-current="page" to="/chamber">Home</Link>
@@ -108,6 +124,12 @@ export function ChamberLive({Frame}){
     <Link to="/treasury"><span>♛</span><small>Treasury</small></Link>
     <Link to="/search"><span>⌕</span><small>Search</small></Link>
    </nav>
+
+   <section className="palace-moon-prompt" aria-label="Moon prompt">
+    <div className="moon-prompt-mark" aria-hidden="true">☾<b>✦</b></div>
+    <div><small>MOON PROMPT · A SMALL CREATIVE SPARK</small><h2>{moonPrompt}</h2><p>No streak. No score. Keep it, ignore it, or shuffle the thought away.</p></div>
+    <div className="moon-prompt-actions"><button type="button" onClick={()=>setPromptShift(n=>n+1)}>Shuffle ✦</button><Link to="/writing">Write from this →</Link></div>
+   </section>
 
    <section className="palace-next-door" aria-label="Your next Palace door">
     <div className="palace-next-door-mark" aria-hidden="true">{focus.icon}</div>
