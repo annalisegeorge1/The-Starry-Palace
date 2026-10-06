@@ -108,29 +108,52 @@ function Frame({children,privateArea=false}){
  const [search,setSearch]=useState('');
  const [commandOpen,setCommandOpen]=useState(false);
  const [commandQuery,setCommandQuery]=useState('');
+ const [commandIndex,setCommandIndex]=useState(0);
+ const [recentPalaceRoutes,setRecentPalaceRoutes]=useState(()=>{try{const rows=JSON.parse(localStorage.getItem('palace-recent-routes')||'[]');return Array.isArray(rows)?rows.slice(0,5):[]}catch{return[]}});
  const [shellProfile,setShellProfile]=useState(null);
  const [letterBadge,setLetterBadge]=useState(0);
  const [activityBadge,setActivityBadge]=useState(0);
  const location=useLocation();const navigate=useNavigate();
  React.useEffect(()=>setNavOpen(false),[location.pathname]);
- React.useEffect(()=>{setCommandOpen(false);setCommandQuery('')},[location.pathname,location.search]);
+ React.useEffect(()=>{setCommandOpen(false);setCommandQuery('');setCommandIndex(0)},[location.pathname,location.search]);
  React.useEffect(()=>localStorage.setItem('palace-theme',daylight?'daylight':'night'),[daylight]);
  React.useEffect(()=>{const onKey=e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();setCommandOpen(v=>!v)}else if(e.key==='Escape')setCommandOpen(false)};window.addEventListener('keydown',onKey);return()=>window.removeEventListener('keydown',onKey)},[]);
  React.useEffect(()=>{let alive=true;if(!session){setShellProfile(null);setLetterBadge(0);setActivityBadge(0);return;}Promise.all([supabase.from('profiles').select('username,display_name,title,avatar_url,cover_url').eq('id',session.user.id).maybeSingle(),supabase.from('message_requests').select('id',{count:'exact',head:true}).eq('recipient_id',session.user.id).eq('status','pending'),supabase.from('notifications').select('id',{count:'exact',head:true}).eq('user_id',session.user.id).eq('unread',true).eq('dismissed',false)]).then(([profileReq,letterReq,activityReq])=>{if(!alive)return;setShellProfile(profileReq.data||null);setLetterBadge(letterReq.count||0);setActivityBadge(activityReq.count||0)});return()=>{alive=false}},[session?.user?.id,location.pathname]);
  const visibleRooms=fullPalaceRooms.filter(r=>!r.private||session);
- const commandItems=[
-  ...visibleRooms.map(r=>({label:r.label,path:r.path,icon:r.icon,detail:r.sections?.[0]?.[0]||'Palace room'})),
-  {label:'Search the Palace',path:'/search',icon:'⌕',detail:'Works, writers, tags and clubs'},
-  {label:'The Palace Code',path:'/code',icon:'§',detail:'Rights, safety and community rules'},
-  {label:'Palace Council',path:'/council',icon:'⚖',detail:'Stewardship and review'}
+ const resolveRoomPath=p=>p==='/member'?(shellProfile?.username?'/member/'+shellProfile.username:'/chamber'):p;
+ const quickDoors=[
+  {label:'Surprise me with a story',path:'/reading?surprise=1',icon:'✦',detail:'Open a random published world · no popularity ranking',kind:'spark'},
+  ...(session?[
+    {label:'Start a private draft',path:'/writing',icon:'✎',detail:'Go straight to your Writing Chamber',kind:'quick'},
+    {label:'Continue from My Library',path:'/library',icon:'▧',detail:'Saved worlds, reading places and notes',kind:'quick'},
+    {label:'Try the Lucky Draw',path:'/treasury?tab=draw',icon:'♛',detail:'Open the Royal Treasury draw',kind:'quick'}
+  ]:[])
  ];
- const commandMatches=commandItems.filter(item=>!commandQuery.trim()||[item.label,item.detail].join(' ').toLowerCase().includes(commandQuery.trim().toLowerCase())).slice(0,12);
- const activeRoom=visibleRooms.find(r=>location.pathname===r.path||r.sections.some(([,p])=>{const target=p==='/member'&&shellProfile?.username?'/member/'+shellProfile.username:p;return target&&location.pathname===target})||(r.id==='reading'&&['/comics','/comic/','/work/','/lost-works','/tags','/series'].some(p=>location.pathname.startsWith(p)))||(r.id==='writing'&&location.pathname.startsWith('/writing'))||(r.id==='life'&&['/palace-life','/club/','/search','/honour','/activity'].some(p=>location.pathname.startsWith(p))||(r.id==='life'&&location.pathname.startsWith('/member/')&&location.pathname!==('/member/'+(shellProfile?.username||''))))||(r.id==='events'&&location.pathname.startsWith('/events'))||(r.id==='treasury'&&location.pathname.startsWith('/treasury'))||(r.id==='settings'&&location.pathname.startsWith('/settings')));
+ const roomCommandItems=visibleRooms.flatMap(r=>[
+  {label:r.label,path:r.path,icon:r.icon,detail:'Palace room',kind:'room'},
+  ...r.sections.map(([label,path])=>({label,path:resolveRoomPath(path),icon:r.icon,detail:r.label+' · section',kind:'section'}))
+ ]);
+ const commandItems=[
+  ...quickDoors,
+  ...roomCommandItems,
+  {label:'Search the Palace',path:'/search',icon:'⌕',detail:'Works, writers, tags and clubs',kind:'utility'},
+  {label:'The Palace Code',path:'/code',icon:'§',detail:'Rights, safety and community rules',kind:'utility'},
+  ...(session?[{label:'Palace Council',path:'/council',icon:'⚖',detail:'Stewardship and review',kind:'utility'}]:[])
+ ];
+ const commandNeedle=commandQuery.trim().toLowerCase();
+ const commandMatches=commandItems.filter(item=>commandNeedle&&[item.label,item.detail].join(' ').toLowerCase().includes(commandNeedle)).slice(0,12);
+ const activeRoom=visibleRooms.find(r=>location.pathname===r.path||r.sections.some(([,p])=>{const target=resolveRoomPath(p);return target&&location.pathname===target.split('?')[0]})||(r.id==='reading'&&['/comics','/comic/','/work/','/lost-works','/tags','/series'].some(p=>location.pathname.startsWith(p)))||(r.id==='writing'&&location.pathname.startsWith('/writing'))||(r.id==='life'&&['/palace-life','/club/','/search','/honour','/activity'].some(p=>location.pathname.startsWith(p))||(r.id==='life'&&location.pathname.startsWith('/member/')&&location.pathname!==('/member/'+(shellProfile?.username||''))))||(r.id==='events'&&location.pathname.startsWith('/events'))||(r.id==='treasury'&&location.pathname.startsWith('/treasury'))||(r.id==='settings'&&location.pathname.startsWith('/settings')));
  const currentHref=location.pathname+location.search;
+ const activeSection=activeRoom?.sections.find(([,path])=>resolveRoomPath(path)===currentHref);
+ const recentCommandItems=recentPalaceRoutes.filter(row=>row?.path&&row.path!==currentHref).slice(0,4);
+ const defaultCommandItems=[...recentCommandItems,...quickDoors.filter(q=>!recentCommandItems.some(r=>r.path===q.path))].slice(0,8);
+ const visibleCommandItems=commandNeedle?commandMatches:defaultCommandItems;
+ React.useEffect(()=>{if(!activeRoom)return;const label=activeSection?.[0]||activeRoom.label;const item={label,path:currentHref,icon:activeRoom.icon,detail:activeSection?activeRoom.label+' · recently visited':'Recently visited',kind:'recent'};setRecentPalaceRoutes(prev=>{const next=[item,...prev.filter(x=>x.path!==item.path)].slice(0,5);try{localStorage.setItem('palace-recent-routes',JSON.stringify(next))}catch{}return next})},[currentHref,activeRoom?.id,activeSection?.[0]]);
+ React.useEffect(()=>setCommandIndex(0),[commandQuery,commandOpen]);
  const profileInitial=(shellProfile?.display_name||shellProfile?.username||session?.user?.email||'P').slice(0,1).toUpperCase();
  function submitSearch(e){e.preventDefault();if(search.trim())navigate('/search?q='+encodeURIComponent(search.trim()))}
- function chooseCommand(path){setCommandOpen(false);setCommandQuery('');navigate(path)}
- function searchCommand(){const q=commandQuery.trim();if(!q)return;setCommandOpen(false);setCommandQuery('');navigate('/search?q='+encodeURIComponent(q))}
+ function chooseCommand(path){setCommandOpen(false);setCommandQuery('');setCommandIndex(0);navigate(path)}
+ function searchCommand(){const q=commandQuery.trim();if(!q)return;setCommandOpen(false);setCommandQuery('');setCommandIndex(0);navigate('/search?q='+encodeURIComponent(q))}
  return <div className={"palace-shell full-palace-shell "+(navOpen?'nav-open ':'')+(daylight?'daylight':'nightfall')}>
   <a className="skip-to-content" href="#palace-content">Skip to main content</a>
   <aside className="sidebar full-sidebar" aria-label="Palace navigation">
@@ -144,7 +167,7 @@ function Frame({children,privateArea=false}){
   </aside>
   <button className="nav-scrim" aria-label="Close navigation" onClick={()=>setNavOpen(false)}/>
   <div className="palace-stage full-stage">
-   <header className="topbar full-topbar"><div className="full-topbar-row"><div className="full-brand"><button className="nav-toggle" onClick={()=>setNavOpen(true)} aria-label="Open Palace navigation">☰</button><Link to="/"><span className="brandmark">☾<b>✦</b></span><strong>The Starry Palace</strong></Link><small>BETA</small>{activeRoom&&<span className="top-room-context" aria-label={'Current room: '+activeRoom.label}>{activeRoom.icon} {activeRoom.label}</span>}</div><form className="global-search-live" role="search" aria-label="Search The Starry Palace" onSubmit={submitSearch}><span aria-hidden="true">⌕</span><input aria-label="Search works, writers, tags and fandoms" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search works, writers, tags, fandoms…"/><button type="submit">Search</button></form><div className="full-top-actions"><button className="command-trigger" type="button" onClick={()=>setCommandOpen(true)} aria-label="Open Palace quick navigation" title="Quick navigation · Ctrl or Command K"><span>⌕</span><kbd>⌘K</kbd></button>{session&&<Link className="top-icon-link" to="/letters" aria-label="Palace Letters">✉</Link>}{session&&<Link className="top-icon-link" style={{position:'relative'}} to="/activity" aria-label={activityBadge?activityBadge+' unread notifications':'Notifications'}>✦{activityBadge>0&&<span className="float-unread-badge">{activityBadge>99?'99+':activityBadge}</span>}</Link>}<Link className="write-action" to={session?'/writing':'/login'}>✎ <span>Write</span></Link></div></div></header>
+   <header className="topbar full-topbar"><div className="full-topbar-row"><div className="full-brand"><button className="nav-toggle" onClick={()=>setNavOpen(true)} aria-label="Open Palace navigation">☰</button><Link to="/"><span className="brandmark">☾<b>✦</b></span><strong>The Starry Palace</strong></Link><small>BETA</small>{activeRoom&&<span className="top-room-context" aria-label={'Current room: '+activeRoom.label+(activeSection?' · '+activeSection[0]:'')}>{activeRoom.icon} {activeRoom.label}{activeSection&&<><b aria-hidden="true">/</b><em>{activeSection[0]}</em></>}</span>}</div><form className="global-search-live" role="search" aria-label="Search The Starry Palace" onSubmit={submitSearch}><span aria-hidden="true">⌕</span><input aria-label="Search works, writers, tags and fandoms" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search works, writers, tags, fandoms…"/><button type="submit">Search</button></form><div className="full-top-actions"><button className="command-trigger" type="button" onClick={()=>setCommandOpen(true)} aria-label="Open Palace quick navigation" title="Quick navigation · Ctrl or Command K"><span>⌕</span><kbd>⌘K</kbd></button>{session&&<Link className="top-icon-link" to="/letters" aria-label="Palace Letters">✉</Link>}{session&&<Link className="top-icon-link" style={{position:'relative'}} to="/activity" aria-label={activityBadge?activityBadge+' unread notifications':'Notifications'}>✦{activityBadge>0&&<span className="float-unread-badge">{activityBadge>99?'99+':activityBadge}</span>}</Link>}<Link className="write-action" to={session?'/writing':'/login'}>✎ <span>Write</span></Link></div></div></header>
    <main id="palace-content" className="palace-main-stage" tabIndex="-1">{children}</main>
    <footer className="palace-footer">
     <div><span className="palace-footer-mark" aria-hidden="true">☾<b>✦</b></span><div><strong>The Starry Palace</strong><small>Gather. Have a cup of tea. Write and read with me.</small></div></div>
@@ -153,9 +176,9 @@ function Frame({children,privateArea=false}){
   </div>
   {commandOpen&&<div className="palace-command-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setCommandOpen(false)}}>
     <section className="palace-command" role="dialog" aria-modal="true" aria-label="Palace quick navigation and search">
-      <header><span aria-hidden="true">⌕</span><input autoFocus value={commandQuery} onChange={e=>setCommandQuery(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'){e.preventDefault();commandMatches[0]?chooseCommand(commandMatches[0].path):searchCommand()}}} placeholder="Go to a room or search the Palace…" aria-label="Search Palace rooms or content"/><kbd>ESC</kbd></header>
-      <div className="palace-command-results">{commandQuery.trim()&&<button className="command-search-all" onClick={searchCommand}><span className="command-icon">⌕</span><span><strong>Search all Palace content</strong><small>Stories, comics, writers, tags, fandoms and clubs for “{commandQuery.trim()}”</small></span><em>Search</em></button>}{commandMatches.length?commandMatches.map((item,i)=><button key={item.path} onClick={()=>chooseCommand(item.path)}><span className="command-icon">{item.icon}</span><span><strong>{item.label}</strong><small>{item.detail}</small></span>{i===0&&<em>Enter</em>}</button>):!commandQuery.trim()&&<div className="command-empty"><span>☾</span><p>Begin typing to find a Palace room or search across its content.</p></div>}</div>
-      <footer><span>Ctrl/⌘ K to open</span><span>Rooms first · full search available</span><span>Esc to close</span></footer>
+      <header><span aria-hidden="true">⌕</span><input autoFocus value={commandQuery} onChange={e=>setCommandQuery(e.target.value)} onKeyDown={e=>{if(e.key==='ArrowDown'){e.preventDefault();setCommandIndex(i=>Math.min(Math.max(visibleCommandItems.length-1,0),i+1))}else if(e.key==='ArrowUp'){e.preventDefault();setCommandIndex(i=>Math.max(0,i-1))}else if(e.key==='Enter'){e.preventDefault();visibleCommandItems[commandIndex]?chooseCommand(visibleCommandItems[commandIndex].path):searchCommand()}}} placeholder="Jump to a room, section, or search…" aria-label="Search Palace rooms, sections or content"/><kbd>ESC</kbd></header>
+      <div className="palace-command-results">{commandNeedle&&<button className="command-search-all" onClick={searchCommand}><span className="command-icon">⌕</span><span><strong>Search all Palace content</strong><small>Stories, comics, writers, tags, fandoms and clubs for “{commandQuery.trim()}”</small></span><em>Search</em></button>}{!commandNeedle&&recentCommandItems.length>0&&<p className="command-group-title">RECENT DOORS</p>}{!commandNeedle&&recentCommandItems.length===0&&<p className="command-group-title">QUICK DOORS</p>}{visibleCommandItems.length?visibleCommandItems.map((item,i)=><button key={item.path+'-'+item.label} className={(i===commandIndex?'selected ':'')+(item.kind==='spark'?'command-spark ':'')+(item.kind==='recent'?'command-recent ':'')} onMouseEnter={()=>setCommandIndex(i)} onClick={()=>chooseCommand(item.path)}><span className="command-icon">{item.icon}</span><span><strong>{item.label}</strong><small>{item.detail}</small></span>{i===commandIndex&&<em>Enter</em>}</button>):commandNeedle?<div className="command-empty"><span>⌕</span><p>No room or section matches that phrase. Search all Palace content instead.</p></div>:<div className="command-empty"><span>☾</span><p>Your recently visited Palace doors will gather here.</p></div>}</div>
+      <footer><span>↑ ↓ to move · Enter to open</span><span>Ctrl/⌘ K anywhere</span><span>Esc to close</span></footer>
     </section>
    </div>}
   {session&&<div className="floating-controls restored-floating-controls">
