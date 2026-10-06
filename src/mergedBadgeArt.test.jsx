@@ -43,6 +43,18 @@ describe('merged 100-path badge artwork',()=>{
   expect(screen.getByRole('img',{name:'Infinite Inkwell · gold watercolour'}).getAttribute('src')).toContain('moonlit-inkwell-gold.png');
   cleanup();
   render(<MergedBadgeArt art={portrait} name="Cross-Court Visitor"/>);
-  expect(screen.getByRole('img',{name:/Cross-Court Visitor · silver · Greek court watercolour/})).toBeTruthy();
+  const portraitNode=screen.getByRole('img',{name:/Cross-Court Visitor · silver · Greek court watercolour/});
+  expect(portraitNode).toBeTruthy();
+  expect(portraitNode.style.backgroundSize).toBe('450% 360%');
+ });
+ it('keeps object badges transparent and gives them tier-matched ornamental frames',()=>{
+  const css=fs.readFileSync('src/treasury.css','utf8');
+  const component=fs.readFileSync('src/PalaceBadge.jsx','utf8');
+  expect(css).toContain('.approved-badge-stage{background:transparent');
+  expect(css).toContain('.merged-badge-stage.is-object{');
+  expect(css).toContain('.badge-tier-frame::before');
+  expect(css).toContain('.tier-emerald .badge-tier-frame');
+  expect(component).toContain('approved-badge-stage is-object badge-tier-frame');
+  expect(component).toContain("is-object badge-tier-frame");
  });
 });
