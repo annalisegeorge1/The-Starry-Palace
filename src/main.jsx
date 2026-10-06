@@ -5,6 +5,13 @@ import { AuthProvider, ProtectedRoute, useAuth } from './auth';
 import { configured, supabase } from './supabase';
 import './style.css';
 import './polish.css';
+import {
+ ChamberLive,OnboardingLive,ReadingLive,ClubLive,WritingLive,SettingsLive,ActivityLive,LibraryLive,
+ PalaceLifeLive,LettersLive,EventsLive,TreasuryLive,LostWorksLive,MemberProfileLive,SearchLive,
+ WorkLive,ChapterLive,WorkStudioLive,TagSearchLive,HonourLive,CouncilLive,CodeLive,ComicsLive,
+ ComicLive,ComicEpisodeLive,ComicStudioLive,SeriesLive
+} from './liveRooms';
+import TreasuryCatalogue from './Treasury';
 
 const chunkErrorPattern=/dynamically imported module|importing a module script failed|failed to fetch|chunkloaderror|loading chunk|room load timeout|networkerror/i;
 const ROOM_IMPORT_TIMEOUT_MS=12000;
@@ -63,8 +70,8 @@ const lazyRoom=name=>React.lazy(()=>importWithRecovery(()=>import('./liveRooms')
  if(!mod?.[name])throw new Error('Palace room '+name+' is unavailable in this build.');
  return{default:mod[name]};
 }));
-const ChamberLive=lazyRoom('ChamberLive'),OnboardingLive=lazyRoom('OnboardingLive'),ReadingLive=lazyRoom('ReadingLive'),ClubLive=lazyRoom('ClubLive'),WritingLive=lazyRoom('WritingLive'),SettingsLive=lazyRoom('SettingsLive'),ActivityLive=lazyRoom('ActivityLive'),LibraryLive=lazyRoom('LibraryLive'),PalaceLifeLive=lazyRoom('PalaceLifeLive'),LettersLive=lazyRoom('LettersLive'),EventsLive=lazyRoom('EventsLive'),TreasuryLive=lazyRoom('TreasuryLive'),LostWorksLive=lazyRoom('LostWorksLive'),MemberProfileLive=lazyRoom('MemberProfileLive'),SearchLive=lazyRoom('SearchLive'),WorkLive=lazyRoom('WorkLive'),ChapterLive=lazyRoom('ChapterLive'),WorkStudioLive=lazyRoom('WorkStudioLive'),TagSearchLive=lazyRoom('TagSearchLive'),HonourLive=lazyRoom('HonourLive'),CouncilLive=lazyRoom('CouncilLive'),CodeLive=lazyRoom('CodeLive'),ComicsLive=lazyRoom('ComicsLive'),ComicLive=lazyRoom('ComicLive'),ComicEpisodeLive=lazyRoom('ComicEpisodeLive'),ComicStudioLive=lazyRoom('ComicStudioLive'),SeriesLive=lazyRoom('SeriesLive');
-const TreasuryCatalogue=React.lazy(()=>importWithRecovery(()=>import('./Treasury')));
+// Core Palace rooms are imported eagerly for navigation reliability.
+// The older recovery helpers remain for stale-module detection during an in-flight deploy.
 
 const rooms=[
   ['Reading Rooms','/reading','Read, discover and return to the stories waiting for you.'],
@@ -332,7 +339,7 @@ function RouteGuard({children}){
  return <RouteErrorBoundary key={location.pathname+location.search}>{children}</RouteErrorBoundary>
 }
 
-function App(){return <AuthProvider><NavigationReset/><BlankScreenWatchdog/><RoomBundleWarmup/><RouteGuard><React.Suspense fallback={<RouteLoading/>}><Routes>
+function App(){return <AuthProvider><NavigationReset/><BlankScreenWatchdog/><RouteGuard><Routes>
  <Route path="/" element={<Home/>}/><Route path="/login" element={<Login/>}/><Route path="/auth/callback" element={<Callback/>}/>
  <Route path="/welcome" element={<ProtectedRoute><OnboardingLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
@@ -359,7 +366,7 @@ function App(){return <AuthProvider><NavigationReset/><BlankScreenWatchdog/><Roo
  <Route path="/search" element={<SearchLive Frame={Frame}/>}/><Route path="/honour" element={<HonourLive Frame={Frame}/>}/><Route path="/council" element={<ProtectedRoute><CouncilLive Frame={Frame}/></ProtectedRoute>}/><Route path="/code" element={<CodeLive Frame={Frame}/>}/>
  <Route path="/member/:username" element={<MemberProfileLive Frame={Frame}/>}/>
  <Route path="*" element={<Frame><section className="lost-gates-page"><div className="lost-gates-orbit"><span>☾</span><i>✦</i></div><p className="eyebrow">BEYOND THE GATES</p><h1>You left palace grounds.</h1><p>The path thinned, the lamps disappeared, and somehow you wandered beyond the Palace walls.</p><div className="lost-gates-actions"><Link className="button" to="/">Return to the Palace</Link><Link to="/search">Search for a room →</Link></div></section></Frame>}/>
- </Routes></React.Suspense></RouteGuard></AuthProvider>}
+ </Routes></RouteGuard></AuthProvider>}
 
 createRoot(document.getElementById('root')).render(<React.StrictMode><BrowserRouter><App/></BrowserRouter></React.StrictMode>);
 
