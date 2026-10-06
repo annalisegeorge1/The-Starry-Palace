@@ -512,6 +512,16 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.surprise-story');
   });
 
+  it('keeps nested Palace Life main content from inheriting outer-page padding',()=>{
+    const style=read('src/style.css');
+    const polish=read('src/polish.css');
+    expect(style).toContain('.palace-stage>main{max-width:1280px');
+    expect(style).not.toContain('.palace-stage main{max-width:1280px');
+    expect(polish).toContain('Desktop monitor composition correction · real-device QA');
+    expect(polish).toContain('.palace-stage .palace-social-column');
+    expect(polish).toContain('padding:0!important');
+  });
+
   it('keeps fun discovery controls optional and non-ranking',()=>{
     const polish=read('src/polish.css');
     expect(live).toContain('reading-compass');
