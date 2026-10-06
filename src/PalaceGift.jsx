@@ -3,6 +3,7 @@ import './treasury.css';
 import {CollectibleArt} from './PalaceCollectibles';
 import {treasureForGift,treasureCourts} from './treasureCatalogue';
 import {PaintedGiftArtwork,paintedFamilyForKind} from './MoonlitTea';
+const protectArt={onContextMenu:e=>e.preventDefault(),onDragStart:e=>e.preventDefault(),onCopy:e=>e.preventDefault(),onCut:e=>e.preventDefault()};
 
 const tiers=['bronze','silver','gold','platinum','emerald'];
 const editions=[
@@ -134,11 +135,11 @@ export default function PalaceGift({gift,tier='bronze',compact=false,locked=fals
  const court=gift?.court_name||'The Starry Palace';
  const courtMeta=giftCourt(gift);
  const treasure=treasureForGift(gift);
- if(treasure)return <figure className={`palace-gift-art treasure-painting tier-${rank}${compact?' compact':''}`} aria-label={`${name}, ${rank} collection rank`}><CollectibleArt item={treasure}/>{!compact&&<figcaption><strong>{treasure.artEdition} artwork edition</strong><span>{rank} collection rank</span></figcaption>}</figure>;
+ if(treasure)return <figure {...protectArt} className={`palace-gift-art protected-palace-art treasure-painting tier-${rank}${compact?' compact':''}`} aria-label={`${name}, ${rank} collection rank`}><CollectibleArt item={treasure}/>{!compact&&<figcaption><strong>{treasure.artEdition} artwork edition</strong><span>{rank} collection rank</span></figcaption>}</figure>;
  const painting=paintedFamilyForKind(kind);
- if(painting)return <figure className={`palace-gift-art painted-tea tier-${rank}${compact?' compact':''}${locked?' is-locked':''}`} aria-label={`${name}, ${rank} Palace collectible from ${courtMeta.name}`}><PaintedGiftArtwork key={painting.id+'-'+rank} family={painting.id} tier={rank} compact={compact}/>{!compact&&<figcaption><strong>{courtMeta.sigil} {court}</strong><span>{painting.name} watercolour · {rank}</span></figcaption>}</figure>;
+ if(painting)return <figure {...protectArt} className={`palace-gift-art protected-palace-art painted-tea tier-${rank}${compact?' compact':''}${locked?' is-locked':''}`} aria-label={`${name}, ${rank} Palace collectible from ${courtMeta.name}`}><PaintedGiftArtwork key={painting.id+'-'+rank} family={painting.id} tier={rank} compact={compact}/>{!compact&&<figcaption><strong>{courtMeta.sigil} {court}</strong><span>{painting.name} watercolour · {rank}</span></figcaption>}</figure>;
  const filterId=`gift-brush-${id}`;
- return <figure className={`palace-gift-art tier-${rank} edition-${edition} court-${courtMeta.slug} seed-${seed}${compact?' compact':''}${locked?' is-locked':''}`} style={{'--court-accent':courtMeta.accent,'--court-glow':courtMeta.glow}} aria-label={`${name}, ${rank} Palace collectible from ${courtMeta.name}`}>
+ return <figure {...protectArt} className={`palace-gift-art protected-palace-art tier-${rank} edition-${edition} court-${courtMeta.slug} seed-${seed}${compact?' compact':''}${locked?' is-locked':''}`} style={{'--court-accent':courtMeta.accent,'--court-glow':courtMeta.glow}} aria-label={`${name}, ${rank} Palace collectible from ${courtMeta.name}`}>
   <svg className="gift-painted-object" viewBox="0 0 220 160" aria-hidden="true" focusable="false">
    <defs>
     <filter id={filterId} x="-12%" y="-12%" width="124%" height="124%">
