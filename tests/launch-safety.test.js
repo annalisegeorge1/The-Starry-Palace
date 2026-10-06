@@ -845,15 +845,14 @@ describe('Starry Palace launch safety',()=>{
   });
 
   it('keeps earned special titles grouped into Celestial constellations',()=>{
-    const treasury=read('src/Treasury.jsx');
-    const css=read('src/treasury.css');
-    expect(treasury).toContain("name:'First Light'");
-    expect(treasury).toContain("name:'Moon Court'");
-    expect(treasury).toContain("name:'Eclipse Court'");
-    expect(treasury).toContain("name:'Astral Throne'");
-    expect(treasury).toContain("name:'Crown Constellation'");
-    expect(treasury).toContain('title-constellation-grid');
-    expect(css).toContain('Celestial title constellation layout');
+    const polish=read('src/polish.css');
+    expect(live).toContain("name:'First Light'");
+    expect(live).toContain("name:'Moon Court'");
+    expect(live).toContain("name:'Eclipse Court'");
+    expect(live).toContain("name:'Astral Throne'");
+    expect(live).toContain("name:'Crown Constellation'");
+    expect(live).toContain('title-constellation-grid');
+    expect(polish).toContain('Royal Treasury Celestial Titles chamber');
   });
 
   it('keeps the Events calendar and secondary controls in moonstone language',()=>{
@@ -867,15 +866,17 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.palace-month-calendar::after');
   });
 
-  it('keeps Celestial Point balance and title ladder visible in Treasury',()=>{
+  it('keeps Celestial Point balance and title ladder in the Royal Treasury, not the catalogue',()=>{
     const treasury=read('src/Treasury.jsx');
-    const css=read('src/treasury.css');
-    expect(treasury).toContain('Your light across the Palace.');
-    expect(treasury).toContain('lifetime Celestial Points');
-    expect(treasury).toContain('How my points were earned');
-    expect(treasury).toContain('celestial_points_required');
-    expect(css).toContain('Celestial Points chamber');
-    expect(css).toContain('.celestial-title-ladder');
+    const polish=read('src/polish.css');
+    expect(live).toContain('CELESTIAL HONOURS');
+    expect(live).toContain('Names written in the Palace sky.');
+    expect(live).toContain('lifetime points');
+    expect(live).toContain('How my points were earned');
+    expect(live).toContain('celestial_points_required');
+    expect(treasury).toContain('Special titles now live in the Royal Treasury.');
+    expect(treasury).not.toContain('celestial-balance-room');
+    expect(polish).toContain('grid-template-columns:minmax(0,1fr)!important');
   });
 
   it('keeps Celestial praise and special-title progress wired',()=>{
