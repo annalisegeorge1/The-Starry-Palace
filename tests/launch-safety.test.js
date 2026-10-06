@@ -783,6 +783,29 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.password-field');
   });
 
+  it('keeps earned special titles grouped into Celestial constellations',()=>{
+    const treasury=read('src/Treasury.jsx');
+    const css=read('src/treasury.css');
+    expect(treasury).toContain("name:'First Light'");
+    expect(treasury).toContain("name:'Moon Court'");
+    expect(treasury).toContain("name:'Eclipse Court'");
+    expect(treasury).toContain("name:'Astral Throne'");
+    expect(treasury).toContain("name:'Crown Constellation'");
+    expect(treasury).toContain('title-constellation-grid');
+    expect(css).toContain('Celestial title constellation layout');
+  });
+
+  it('keeps the Events calendar and secondary controls in moonstone language',()=>{
+    const polish=read('src/polish.css');
+    expect(polish).toContain('Moonstone controls + celestial observatory calendar');
+    expect(polish).toContain('--moonstone-line');
+    expect(polish).toContain('.button-moonstone');
+    expect(polish).toContain('.button-twilight');
+    expect(polish).toContain('.button-starlight');
+    expect(polish).toContain('.button-relic');
+    expect(polish).toContain('.palace-month-calendar::after');
+  });
+
   it('keeps Celestial Point balance and title ladder visible in Treasury',()=>{
     const treasury=read('src/Treasury.jsx');
     const css=read('src/treasury.css');
