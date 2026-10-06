@@ -419,6 +419,17 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('/* Reading Room canonical tag hints */');
   });
 
+  it('uses real-member Salon prompts instead of fabricated social activity',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('THE SALON TABLE');
+    expect(live).toContain('They are prompts, not fake activity');
+    expect(live).toContain('Bring to the Commons →');
+    expect(live).toContain('useSalonPrompt');
+    expect(live).toContain('threadComposeRef');
+    expect(polish).toContain('.salon-prompt-room');
+    expect(polish).toContain('.salon-prompt-grid');
+  });
+
   it('keeps Palace Life social without turning it into an endless feed',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
@@ -857,8 +868,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('palace-room-css-sync-reload');
     expect(main).toContain('palace-room-css-nonblocking');
     expect(main).toContain("Palace room '+name+' is unavailable in this build.");
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100525');
-    expect(polish).toContain('--palace-room-css-version:2026100525');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100526');
+    expect(polish).toContain('--palace-room-css-version:2026100526');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
