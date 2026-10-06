@@ -21,7 +21,7 @@
   --palace-radius-lg:26px;
   --palace-shadow:0 18px 55px rgba(2,5,17,.22);
   --palace-shadow-soft:0 8px 26px rgba(2,5,17,.14);
-  --palace-content:min(1280px,100%);
+  --palace-content:min(1460px,100%);
   --palace-reading:760px;
   --palace-motion:160ms cubic-bezier(.2,.8,.2,1);
   --bg:var(--palace-bg);
@@ -13210,3 +13210,393 @@ input:focus,textarea:focus,select:focus{
   .editor-tool-actions{border-right:0}
   .writing-page-stage .legacy-writing-canvas{padding:30px 18px 50px!important}
 }
+
+
+/* =========================================================
+   Production Prep composition system · site-wide
+   Uses the approved mockup as a structural guide, not as an
+   image asset: generous desktop canvas, editorial hierarchy,
+   quieter chrome, and distinct rooms inside one Palace.
+   ========================================================= */
+:root{
+  --palace-content-wide:1460px;
+  --palace-page-gutter:clamp(28px,3.2vw,58px);
+  --palace-section-gap:clamp(1.65rem,3vw,2.8rem);
+}
+
+/* One generous desktop canvas across the Palace. */
+@media(min-width:1121px){
+  .full-topbar-row,
+  .palace-footer{
+    width:min(var(--palace-content-wide),100%);
+    max-width:var(--palace-content-wide)!important;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .full-stage>main{
+    width:min(var(--palace-content-wide),100%)!important;
+    max-width:var(--palace-content-wide)!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    padding:38px var(--palace-page-gutter) 84px!important;
+  }
+
+  :where(
+    .legacy-home-dashboard,
+    .legacy-reading-page,
+    .legacy-library-page,
+    .legacy-series-page,
+    .legacy-life-page,
+    .legacy-lost-page,
+    .legacy-search-page,
+    .legacy-tags-page,
+    .legacy-throne-page,
+    .legacy-council-page,
+    .legacy-treasury-page,
+    .legacy-activity-page,
+    .legacy-profile-page,
+    .legacy-editor-page,
+    .comic-page,
+    .comic-studio-home,
+    .chic-library-page,
+    .chic-reading-page,
+    .chic-series-page,
+    .chic-lost-page
+  ){
+    width:100%;
+    max-width:none!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    box-sizing:border-box;
+  }
+}
+
+/* Editorial opening rhythm: the mockup's strongest idea. */
+.room-title,
+.legacy-reading-intro,
+.legacy-throne-intro,
+.legacy-treasury-head,
+.library-head,
+.writing-head,
+.settings-head{
+  position:relative;
+  padding-top:.35rem;
+  padding-bottom:1.15rem;
+}
+.room-title>h1,
+.legacy-reading-intro h1,
+.legacy-throne-intro h1,
+.legacy-treasury-head h1{
+  max-width:980px;
+  margin:.22rem 0 .62rem!important;
+  font-size:clamp(3.2rem,5.5vw,5.7rem)!important;
+  line-height:.94!important;
+  letter-spacing:-.045em!important;
+  text-wrap:balance;
+}
+.room-title .lede,
+.legacy-reading-intro>p:last-child,
+.legacy-throne-intro>p:last-child,
+.legacy-treasury-head>p:last-child{
+  max-width:820px!important;
+  margin:0!important;
+  color:var(--palace-muted)!important;
+  font-size:clamp(.92rem,1.05vw,1.05rem)!important;
+  line-height:1.68!important;
+}
+.room-title::after,
+.legacy-reading-intro::after,
+.legacy-throne-intro::after,
+.legacy-treasury-head::after{
+  content:"";
+  display:block;
+  width:min(220px,28vw);
+  height:1px;
+  margin-top:1rem;
+  background:linear-gradient(90deg,rgba(190,169,233,.66),rgba(216,155,201,.18),transparent);
+}
+
+/* Section headings read as chapters rather than dashboard labels. */
+.section-heading{
+  align-items:flex-end!important;
+  gap:1.25rem!important;
+  margin-bottom:1rem!important;
+}
+.section-heading h2{
+  margin:.16rem 0 .3rem!important;
+  font:600 clamp(1.55rem,2.5vw,2.25rem)/1.06 Georgia,'Times New Roman',serif!important;
+  letter-spacing:-.025em;
+}
+.section-heading p:not(.eyebrow){
+  max-width:720px;
+  color:var(--palace-muted);
+  font-size:.82rem;
+  line-height:1.58;
+}
+.section-heading>a{
+  flex:0 0 auto;
+  color:#c9d4f1;
+  font-size:.72rem;
+  font-weight:700;
+  text-decoration:none;
+}
+
+/* Give rooms breathing space without scattering the interface. */
+:where(
+  .palace-dashboard-section,
+  .legacy-discovery-court,
+  .library-room,
+  .treasury-room,
+  .events-browser,
+  .calendar-room,
+  .club-discovery-room,
+  .club-interior-page,
+  .comic-studio-card,
+  .studio-meta,
+  .episode-studio,
+  .settings-panel
+){
+  scroll-margin-top:96px;
+}
+.palace-dashboard-section,
+.room-section{
+  margin-top:var(--palace-section-gap);
+}
+
+/* Tabs take cues from the mockup: clear navigation, less button clutter. */
+@media(min-width:821px){
+  :where(
+    .legacy-home-tabs,
+    .library-tabs,
+    .writing-tabs,
+    .comic-tabs,
+    .settings-tabs,
+    .profile-tabs,
+    .club-room-tabs
+  ){
+    display:flex!important;
+    align-items:center;
+    gap:1.1rem!important;
+    overflow-x:auto;
+    padding:.15rem 0 .55rem!important;
+    margin-bottom:1.3rem!important;
+    border:0!important;
+    border-bottom:1px solid rgba(194,174,231,.13)!important;
+    border-radius:0!important;
+    background:transparent!important;
+    scrollbar-width:none;
+  }
+  :where(
+    .legacy-home-tabs,
+    .library-tabs,
+    .writing-tabs,
+    .comic-tabs,
+    .settings-tabs,
+    .profile-tabs,
+    .club-room-tabs
+  )::-webkit-scrollbar{display:none}
+
+  :where(
+    .legacy-home-tabs a,
+    .legacy-home-tabs button,
+    .library-tabs button,
+    .writing-tabs button,
+    .comic-tabs button,
+    .settings-tabs button,
+    .profile-tabs button,
+    .club-room-tabs button
+  ){
+    position:relative;
+    flex:0 0 auto;
+    min-height:40px!important;
+    padding:.45rem .12rem!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    color:#9c96aa!important;
+    font-size:.72rem!important;
+    font-weight:700;
+    text-decoration:none;
+  }
+  :where(
+    .legacy-home-tabs a.active,
+    .legacy-home-tabs button.active,
+    .library-tabs button.active,
+    .writing-tabs button.active,
+    .comic-tabs button.active,
+    .settings-tabs button.active,
+    .profile-tabs button.active,
+    .club-room-tabs button.active
+  ){
+    color:#eee9f6!important;
+  }
+  :where(
+    .legacy-home-tabs a.active,
+    .legacy-home-tabs button.active,
+    .library-tabs button.active,
+    .writing-tabs button.active,
+    .comic-tabs button.active,
+    .settings-tabs button.active,
+    .profile-tabs button.active,
+    .club-room-tabs button.active
+  )::after{
+    content:"";
+    position:absolute;
+    left:8%;right:8%;bottom:-.58rem;
+    height:2px;
+    border-radius:999px;
+    background:linear-gradient(90deg,#a693df,#d89bc9);
+    box-shadow:0 0 10px rgba(176,145,218,.16);
+  }
+}
+
+/* Search/filter bars feel like one deliberate instrument. */
+:where(
+  .legacy-reading-tools,
+  .series-browser-tools,
+  .event-browser-tools,
+  .lost-work-toolbar.restored.refined,
+  .library-search-live,
+  .writing-library-tools,
+  .club-member-tools
+){
+  border-color:rgba(196,174,229,.14)!important;
+  background:rgba(17,14,39,.55)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.018);
+}
+:where(
+  .legacy-reading-tools input,
+  .legacy-reading-tools select,
+  .series-browser-tools input,
+  .series-browser-tools select,
+  .event-browser-tools input,
+  .event-browser-tools select,
+  .lost-work-toolbar input,
+  .lost-work-toolbar select,
+  .library-search-live input,
+  .writing-library-tools input
+){
+  font-size:.76rem!important;
+}
+
+/* Cards: quieter edge, stronger content. */
+:where(
+  .story-shelf.refined .story-row,
+  .library-card,
+  .series-grid.restored>article,
+  .lost-work-card,
+  .event-list>article,
+  .comic-card,
+  .club-discovery-grid>article,
+  .member-series-grid>article,
+  .member-comics-grid>article,
+  .search-result-card,
+  .tag-story-grid>article
+){
+  border-color:rgba(194,174,229,.13)!important;
+  box-shadow:0 14px 38px rgba(5,4,18,.075)!important;
+}
+:where(
+  .story-shelf.refined .story-row,
+  .library-card,
+  .series-grid.restored>article,
+  .lost-work-card,
+  .event-list>article,
+  .comic-card,
+  .club-discovery-grid>article,
+  .search-result-card
+):hover{
+  transform:translateY(-2px);
+  border-color:rgba(207,181,234,.26)!important;
+}
+
+/* Reading / Library use the wider mockup proportions instead of narrow dashboard columns. */
+@media(min-width:1121px){
+  .legacy-reading-page,
+  .legacy-library-page{
+    display:block;
+  }
+  .legacy-constellation-list{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:1rem!important;
+  }
+  .legacy-reading-tools{
+    grid-template-columns:minmax(360px,1fr) 190px 190px!important;
+    gap:.75rem!important;
+    padding:.7rem!important;
+  }
+  .story-shelf.refined{
+    gap:.9rem!important;
+  }
+  .story-shelf.refined .story-row{
+    min-height:220px!important;
+  }
+  .library-pulse{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:.8rem!important;
+  }
+  .library-card-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:.9rem!important;
+  }
+}
+
+/* Writing keeps a broad editor and a useful rail like the Production Prep room. */
+@media(min-width:1121px){
+  .writing-studio-grid,
+  .editor-layout{
+    grid-template-columns:minmax(0,1fr) minmax(250px,300px)!important;
+    gap:1.1rem!important;
+  }
+  .legacy-writing-canvas{
+    min-height:560px!important;
+    padding:clamp(2rem,3vw,3.2rem)!important;
+    font-size:clamp(1.15rem,1.35vw,1.3rem)!important;
+    line-height:1.82!important;
+  }
+  .writing-studio-rail,
+  .work-rail{
+    position:sticky;
+    top:96px;
+    align-self:start;
+  }
+}
+
+/* Utility rooms stay elegant, not miniature admin panels. */
+@media(min-width:1121px){
+  .settings-grid{
+    grid-template-columns:minmax(220px,280px) minmax(0,1fr)!important;
+    gap:1.15rem!important;
+  }
+  .legacy-treasury-page,
+  .legacy-activity-page,
+  .legacy-search-page,
+  .legacy-tags-page,
+  .legacy-council-page{
+    font-size:1rem;
+  }
+}
+
+/* Daylight mirrors the same editorial system. */
+.daylight :where(
+  .legacy-reading-tools,
+  .series-browser-tools,
+  .event-browser-tools,
+  .lost-work-toolbar.restored.refined,
+  .library-search-live,
+  .writing-library-tools,
+  .club-member-tools
+){
+  background:rgba(255,255,255,.82)!important;
+  border-color:rgba(84,69,130,.11)!important;
+}
+.daylight .section-heading>a{color:#4f5f8d}
+.daylight :where(
+  .legacy-home-tabs a.active,
+  .library-tabs button.active,
+  .writing-tabs button.active,
+  .comic-tabs button.active,
+  .settings-tabs button.active,
+  .profile-tabs button.active,
+  .club-room-tabs button.active
+){color:#2f2946!important}
