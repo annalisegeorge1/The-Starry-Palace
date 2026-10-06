@@ -986,7 +986,9 @@ export async function setConversationPreference(userId,conversationId,patch){
 
 export async function getMyComics(userId){
  const{data,error}=await needClient().from('comics').select('*,comic_episodes(id,title,position,status,revision,revision_note,scheduled_for,published_at,comic_pages(id,position,caption,alt_text,decorative,reader_path,width,height))').eq('creator_id',userId).order('updated_at',{ascending:false});if(error)throw error;
- return Promise.all((data||[]).map(async c=>({...c,cover_url:await signedAsset('comic-covers',c.cover_path),comic_episodes:(c.comic_episodes||[]).sort((a,b)=>a.position-b.position).map(e=>({...e,comic_pages:(e.comic_pages||[]).sort((a,b)=>a.position-b.position)}))})));
+ const comics=data||[];const ids=comics.map(x=>x.id);let tagRows=[];
+ if(ids.length){const tags=await needClient().from('comic_tags').select('comic_id,position,tags(id,name,category,status)').in('comic_id',ids).order('position');if(tags.error)throw tags.error;tagRows=tags.data||[]}
+ return Promise.all(comics.map(async c=>({...c,tags:tagRows.filter(x=>x.comic_id===c.id&&['canonical','community'].includes(x.tags?.status)),cover_url:await signedAsset('comic-covers',c.cover_path),comic_episodes:(c.comic_episodes||[]).sort((a,b)=>a.position-b.position).map(e=>({...e,comic_pages:(e.comic_pages||[]).sort((a,b)=>a.position-b.position)}))})));
 }
 function comicSlug(title){const base=title.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,60)||'comic';return base+'-'+crypto.randomUUID().slice(0,8)}
 export async function createComicDraft(userId,title){
@@ -1008,6 +1010,15 @@ export async function saveComicStudio(userId,comicId,patch){
   updated_at:new Date().toISOString()
  };
  const{data,error}=await needClient().from('comics').update(allowed).eq('id',comicId).eq('creator_id',userId).select().single();if(error)throw error;return data
+}
+export async function addComicTag(userId,comicId,tagId){
+ const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
+ const pos=await needClient().from('comic_tags').select('position').eq('comic_id',comicId).order('position',{ascending:false}).limit(1);if(pos.error)throw pos.error;
+ const{error}=await needClient().from('comic_tags').insert({comic_id:comicId,tag_id:tagId,position:(pos.data?.[0]?.position||0)+1});if(error&&error.code!=='23505')throw error;return true
+}
+export async function removeComicTag(userId,comicId,tagId){
+ const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
+ const{error}=await needClient().from('comic_tags').delete().eq('comic_id',comicId).eq('tag_id',tagId);if(error)throw error;return true
 }
 export async function setComicArchived(userId,comicId,archived=true){
  const patch=archived?{publication_status:'archived',visibility:'private',updated_at:new Date().toISOString()}:{publication_status:'draft',visibility:'private',updated_at:new Date().toISOString()};
