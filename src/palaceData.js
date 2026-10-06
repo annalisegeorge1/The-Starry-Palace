@@ -321,7 +321,7 @@ export async function castClubPollVote(userId,pollId,optionId){
 }
 
 export async function getPalaceLife(userId){
- const [clubs,threads,replies,chat,intros,clubInvites,clubRequests,myClubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions,discovery,boundaries]=await Promise.all([
+ const [clubs,threads,replies,chat,intros,clubInvites,clubRequests,myClubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions,discovery,boundaries,follows]=await Promise.all([
   needClient().from('clubs').select('id,name,slug,club_type,privacy,description,club_members!inner(user_id,status,role)').eq('club_members.user_id',userId).eq('club_members.status','active').limit(24),
   needClient().from('forum_threads').select('id,author_id,title,body,room,created_at,updated_at,profiles!forum_threads_author_id_fkey(username,display_name,avatar_url)').eq('status','active').order('updated_at',{ascending:false}).limit(30),
   needClient().from('forum_replies').select('id,thread_id,author_id,body,status,created_at,updated_at,profiles!forum_replies_author_id_fkey(username,display_name,avatar_url)').eq('status','active').order('created_at',{ascending:true}).limit(240),
@@ -338,9 +338,10 @@ export async function getPalaceLife(userId){
   needClient().from('community_introductions').select('id,member_id,title,body,tags,visibility,created_at,profiles!community_introductions_member_id_fkey(username,display_name,avatar_url,title)').in('visibility',['public','members']).order('created_at',{ascending:false}).limit(20),
   needClient().from('community_introduction_reactions').select('introduction_id,user_id,reaction'),
   needClient().from('clubs').select('id,name,slug,club_type,privacy,description,owner_id,created_at').eq('discoverable',true).in('privacy',['open','request_to_join']).order('created_at',{ascending:false}).limit(24),
-  needClient().from('user_member_boundaries').select('other_user_id,muted,blocked').eq('user_id',userId)
+  needClient().from('user_member_boundaries').select('other_user_id,muted,blocked').eq('user_id',userId),
+  needClient().from('member_follows').select('followed_id').eq('follower_id',userId)
  ]);
- for(const r of[clubs,threads,replies,chat,intros,clubInvites,clubRequests,myClubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions,discovery,boundaries])if(r.error)throw r.error;
+ for(const r of[clubs,threads,replies,chat,intros,clubInvites,clubRequests,myClubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions,discovery,boundaries,follows])if(r.error)throw r.error;
 
  const quietMemberIds=new Set((boundaries.data||[]).filter(x=>x.muted||x.blocked).map(x=>x.other_user_id));
  const visibleThreads=(threads.data||[]).filter(x=>!quietMemberIds.has(x.author_id));
@@ -359,6 +360,7 @@ export async function getPalaceLife(userId){
  const saveSet=new Set((savedThreads.data||[]).map(x=>x.thread_id));
  const championRows=highlightChampions.data||[];
  const reactionRows=introReactions.data||[];
+ const followingIds=new Set((follows.data||[]).map(x=>x.followed_id));
 
  return{
   clubs:joined,
@@ -369,8 +371,8 @@ export async function getPalaceLife(userId){
   clubInvites:clubInvites.data||[],
   myClubRequests:myClubRequests.data||[],
   stewardRequests,
-  highlights:visibleHighlights.map(h=>({...h,champion_count:championRows.filter(x=>x.highlight_id===h.id).length,championed:championRows.some(x=>x.highlight_id===h.id&&x.user_id===userId)})),
-  communityIntroductions:visibleCommunityIntros.map(i=>({...i,reaction_count:reactionRows.filter(x=>x.introduction_id===i.id).length,reacted:reactionRows.some(x=>x.introduction_id===i.id&&x.user_id===userId)}))
+  highlights:visibleHighlights.map(h=>({...h,following:followingIds.has(h.member_id),champion_count:championRows.filter(x=>x.highlight_id===h.id).length,championed:championRows.some(x=>x.highlight_id===h.id&&x.user_id===userId)})),
+  communityIntroductions:visibleCommunityIntros.map(i=>({...i,following:followingIds.has(i.member_id),reaction_count:reactionRows.filter(x=>x.introduction_id===i.id).length,reacted:reactionRows.some(x=>x.introduction_id===i.id&&x.user_id===userId)}))
  }
 }
 export async function respondClubInvitation(userId,id,status){
@@ -398,6 +400,26 @@ export async function setCommunityHighlightChampion(userId,highlightId,enabled){
  if(enabled){const{error}=await needClient().from('community_highlight_champions').upsert({highlight_id:highlightId,user_id:userId},{onConflict:'highlight_id,user_id'});if(error)throw error}
  else{const{error}=await needClient().from('community_highlight_champions').delete().eq('highlight_id',highlightId).eq('user_id',userId);if(error)throw error}
  return enabled
+}
+export async function saveCommunityIntroduction(userId,{title,body,tags=[],visibility='members'}={}){
+ const cleanTitle=String(title||'').trim();const cleanBody=String(body||'').trim();
+ if(cleanTitle.length<3)throw new Error('Give your introduction a short title.');
+ if(cleanBody.length<20)throw new Error('Tell the Palace a little more before sharing your introduction.');
+ const cleanTags=(Array.isArray(tags)?tags:String(tags||'').split(',')).map(x=>String(x||'').trim()).filter(Boolean).slice(0,8).map(x=>x.slice(0,36));
+ const cleanVisibility=['public','members'].includes(visibility)?visibility:'members';
+ const existing=await needClient().from('community_introductions').select('id').eq('member_id',userId).order('created_at',{ascending:false}).limit(1).maybeSingle();
+ if(existing.error)throw existing.error;
+ const payload={member_id:userId,title:cleanTitle.slice(0,120),body:cleanBody.slice(0,1800),tags:cleanTags,visibility:cleanVisibility,updated_at:new Date().toISOString()};
+ if(existing.data?.id){
+  const{data,error}=await needClient().from('community_introductions').update(payload).eq('id',existing.data.id).eq('member_id',userId).select().single();
+  if(error)throw error;return data
+ }
+ const{data,error}=await needClient().from('community_introductions').insert(payload).select().single();
+ if(error)throw error;return data
+}
+export async function deleteCommunityIntroduction(userId,introductionId){
+ const{error}=await needClient().from('community_introductions').delete().eq('id',introductionId).eq('member_id',userId);
+ if(error)throw error;return true
 }
 export async function setIntroductionReaction(userId,introductionId,enabled){
  if(enabled){const{error}=await needClient().from('community_introduction_reactions').upsert({introduction_id:introductionId,user_id:userId,reaction:'star'},{onConflict:'introduction_id,user_id'});if(error)throw error}
