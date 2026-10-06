@@ -40,12 +40,16 @@ function roomCssMatches(mod){
  const last=Number(sessionStorage.getItem(key)||0);
  if(Date.now()-last>12000){
   sessionStorage.setItem(key,String(Date.now()));
-  window.setTimeout(()=>window.location.reload(),40);
-  return false;
+  window.setTimeout(()=>window.location.reload(),80);
  }
+ // palace-room-css-nonblocking: never strand a route on a permanently pending lazy promise.
  return true;
 }
-const lazyRoom=name=>React.lazy(()=>importWithRecovery(()=>import('./liveRooms')).then(mod=>roomCssMatches(mod)?{default:mod[name]}:new Promise(()=>{})));
+const lazyRoom=name=>React.lazy(()=>importWithRecovery(()=>import('./liveRooms')).then(mod=>{
+ roomCssMatches(mod);
+ if(!mod?.[name])throw new Error('Palace room '+name+' is unavailable in this build.');
+ return{default:mod[name]};
+}));
 const ChamberLive=lazyRoom('ChamberLive'),OnboardingLive=lazyRoom('OnboardingLive'),ReadingLive=lazyRoom('ReadingLive'),ClubLive=lazyRoom('ClubLive'),WritingLive=lazyRoom('WritingLive'),SettingsLive=lazyRoom('SettingsLive'),ActivityLive=lazyRoom('ActivityLive'),LibraryLive=lazyRoom('LibraryLive'),PalaceLifeLive=lazyRoom('PalaceLifeLive'),LettersLive=lazyRoom('LettersLive'),EventsLive=lazyRoom('EventsLive'),TreasuryLive=lazyRoom('TreasuryLive'),LostWorksLive=lazyRoom('LostWorksLive'),MemberProfileLive=lazyRoom('MemberProfileLive'),SearchLive=lazyRoom('SearchLive'),WorkLive=lazyRoom('WorkLive'),ChapterLive=lazyRoom('ChapterLive'),WorkStudioLive=lazyRoom('WorkStudioLive'),TagSearchLive=lazyRoom('TagSearchLive'),HonourLive=lazyRoom('HonourLive'),CouncilLive=lazyRoom('CouncilLive'),CodeLive=lazyRoom('CodeLive'),ComicsLive=lazyRoom('ComicsLive'),ComicLive=lazyRoom('ComicLive'),ComicEpisodeLive=lazyRoom('ComicEpisodeLive'),ComicStudioLive=lazyRoom('ComicStudioLive'),SeriesLive=lazyRoom('SeriesLive');
 const TreasuryCatalogue=React.lazy(()=>importWithRecovery(()=>import('./Treasury')));
 
