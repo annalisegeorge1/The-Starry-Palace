@@ -14033,3 +14033,90 @@ input:focus,textarea:focus,select:focus{
 @media(prefers-reduced-motion:reduce){
   .prompt-reels article{animation:none!important}
 }
+
+
+/* =========================================================
+   Celestial praise row · Heart Star Moon Crown
+   Palace-native appreciation with Crown as highest praise.
+   ========================================================= */
+.work-praise-row{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:.45rem;
+  margin:.9rem 0 .75rem;
+  padding:.7rem .75rem;
+  border:1px solid rgba(202,180,232,.13);
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(37,28,72,.42),rgba(17,14,38,.58));
+}
+.praise-label{
+  min-width:168px;
+  display:grid;
+  gap:.08rem;
+  margin-right:auto;
+}
+.praise-label small{
+  color:#958da4;
+  font-size:.5rem;
+  font-weight:800;
+  letter-spacing:.13em;
+}
+.praise-label b{
+  color:#e9e3f0;
+  font:600 .78rem/1.2 Georgia,'Times New Roman',serif;
+}
+.work-praise-row>button{
+  min-height:39px;
+  display:inline-flex;
+  align-items:center;
+  gap:.28rem;
+  padding:.4rem .58rem;
+  border:1px solid rgba(199,177,230,.14);
+  border-radius:999px;
+  background:rgba(255,255,255,.018);
+  color:#c7c0d2;
+  font-size:.72rem;
+  transition:transform .16s ease,border-color .16s ease,background .16s ease,box-shadow .16s ease;
+}
+.work-praise-row>button:hover:not(:disabled){
+  transform:translateY(-1px);
+  border-color:rgba(214,190,237,.28);
+}
+.work-praise-row>button>span{font-weight:700}
+.work-praise-row>button>em{
+  min-width:1.2em;
+  color:#8f879b;
+  font-size:.62rem;
+  font-style:normal;
+}
+.work-praise-row>button.active{
+  color:#f5edf9;
+  border-color:rgba(217,190,238,.38);
+  background:rgba(123,92,180,.16);
+  box-shadow:0 0 18px rgba(139,102,188,.08);
+}
+.work-praise-row .praise-heart.active{background:rgba(163,91,142,.13)}
+.work-praise-row .praise-star.active{background:rgba(123,112,183,.16)}
+.work-praise-row .praise-moon.active{background:rgba(97,107,180,.18)}
+.work-praise-row .praise-crown.active{
+  border-color:rgba(207,180,222,.42);
+  background:linear-gradient(135deg,rgba(119,91,164,.24),rgba(165,113,151,.12));
+  box-shadow:0 0 22px rgba(167,127,194,.1);
+}
+.work-praise-row .share-light{
+  margin-left:.1rem;
+  border-style:dashed;
+}
+.daylight .work-praise-row{
+  background:rgba(255,255,255,.72);
+  border-color:rgba(86,69,128,.11);
+}
+.daylight .praise-label b{color:#302945}
+.daylight .work-praise-row>button{color:#554c63;background:rgba(83,66,124,.035);border-color:rgba(84,67,128,.1)}
+.daylight .work-praise-row>button.active{color:#312942}
+@media(max-width:680px){
+  .work-praise-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .praise-label{grid-column:1/-1;margin:0 0 .2rem}
+  .work-praise-row>button{justify-content:center}
+}
