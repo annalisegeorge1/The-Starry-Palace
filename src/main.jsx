@@ -94,7 +94,7 @@ const fullPalaceRooms=[
   ['Home','/chamber'],['My chamber','/member'],['Notifications','/activity'],['Messages','/letters'],['Invitations','/events?tab=calendar']
  ]},
  {id:'reading',icon:'◈',label:'Reading Rooms',path:'/reading',sections:[
-  ['All works','/reading'],['Comics','/comics'],['Lost Works','/lost-works'],['Series','/series'],['Tags','/tags']
+  ['All works','/reading'],['Advanced search','/reading?view=search'],['Comics','/comics'],['Lost Works','/lost-works'],['Series','/series'],['Tags room','/tags']
  ]},
  {id:'library',icon:'▧',label:'My Library',path:'/library',private:true,sections:[
   ['Saved Stories','/library'],['Comics Shelf','/library?tab=comics'],['Collections & Readers’ Choice','/library?tab=collections'],['Reading lists','/library?tab=lists'],['History','/library?tab=history'],['Notes & Bookmarks','/library?tab=notes'],['Lost Works Shelf','/lost-works'],['Subscriptions','/library?tab=following'],['Writers I Follow','/library?tab=writers']
