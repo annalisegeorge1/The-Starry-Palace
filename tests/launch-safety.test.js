@@ -938,7 +938,7 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain("e.key==='Escape'&&focusMode");
     expect(live).toContain('writing-page-stage');
     expect(live).toContain('PRIVATE REVISION NOTE');
-    expect(polish).toContain('/* Writing Studio v2');
+    expect(polish).toContain('.chic-work-studio-head');
     expect(polish).toContain('.writing-studio-grid');
     expect(polish).toContain('.writing-page-stage .legacy-writing-canvas');
     expect(polish).toContain('.chic-studio-buttons');
