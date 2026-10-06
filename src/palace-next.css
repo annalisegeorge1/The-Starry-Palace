@@ -606,3 +606,40 @@
 .story-author-chip:hover strong{color:#f1eaf8}
 .daylight .story-author-chip strong{color:#443a58}
 .daylight .story-author-chip em{color:#74677f}
+
+
+/* Chamber accent now affects the actual public room, not only the editor preview. */
+.chic-member-profile{
+  --chamber-glow:rgba(139,108,210,.18);
+  --chamber-glow-soft:rgba(111,84,181,.08);
+  border-color:color-mix(in srgb,var(--chamber-glow) 72%,rgba(204,184,232,.12))!important;
+  box-shadow:0 22px 62px rgba(5,4,18,.15),0 0 52px var(--chamber-glow-soft)!important;
+}
+.chic-member-profile .legacy-cover-shade{
+  background:
+    linear-gradient(180deg,rgba(8,8,22,.06),rgba(9,8,26,.66)),
+    radial-gradient(circle at 82% 12%,var(--chamber-glow),transparent 38%)!important;
+}
+.chic-member-profile.accent-moon-violet{
+  --chamber-glow:rgba(155,119,223,.22);
+  --chamber-glow-soft:rgba(120,87,192,.1);
+}
+.chic-member-profile.accent-ink-blue{
+  --chamber-glow:rgba(92,139,207,.22);
+  --chamber-glow-soft:rgba(61,105,176,.1);
+}
+.chic-member-profile.accent-emerald-night{
+  --chamber-glow:rgba(77,164,142,.2);
+  --chamber-glow-soft:rgba(48,122,107,.09);
+}
+.chic-member-profile.accent-silver-mist{
+  --chamber-glow:rgba(173,183,210,.18);
+  --chamber-glow-soft:rgba(132,145,180,.08);
+}
+.chic-member-profile .chamber-title-mark,
+.chic-member-profile .legacy-availability{
+  text-shadow:0 0 18px var(--chamber-glow);
+}
+.daylight .chic-member-profile{
+  box-shadow:0 18px 45px rgba(51,40,78,.08),0 0 42px var(--chamber-glow-soft)!important;
+}
