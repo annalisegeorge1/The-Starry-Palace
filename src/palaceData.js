@@ -517,6 +517,10 @@ export async function replyForumThread(userId,threadId,body){
  const text=String(body||'').trim();if(!text)throw new Error('Write a reply first.');if(text.length>2400)throw new Error('Forum replies are limited to 2,400 characters.');
  const{data,error}=await needClient().from('forum_replies').insert({thread_id:threadId,author_id:userId,body:text,status:'active'}).select().single();if(error)throw error;return data
 }
+export async function deleteOwnForumThread(userId,threadId){
+ const{error}=await needClient().from('forum_threads').delete().eq('id',threadId).eq('author_id',userId);
+ if(error)throw error;return true
+}
 export async function createForumPoll(userId,threadId,question,options=[]){
  const cleanQuestion=String(question||'').trim();
  const cleanOptions=(Array.isArray(options)?options:[]).map(x=>String(x||'').trim()).filter(Boolean).slice(0,6);
