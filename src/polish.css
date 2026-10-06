@@ -6860,3 +6860,220 @@ body{overflow-x:clip}
 @media(prefers-reduced-motion:reduce){
   .palace-main-stage>section,.palace-main-stage>.live-state,.palace-main-stage>.room-shell{animation:none}
 }
+
+
+/* My Palace identity + quiet next-door focus */
+.palace-home-welcome{position:relative;z-index:2;min-width:0;max-width:760px}
+.palace-command-hero .palace-home-welcome h1{
+  max-width:760px;
+  margin:.32rem 0 .8rem;
+  font-size:clamp(2.35rem,5.2vw,4.75rem);
+  line-height:.96;
+  letter-spacing:-.035em;
+}
+.palace-command-hero .palace-home-welcome h1>span{
+  display:inline-block;
+  max-width:100%;
+  overflow-wrap:anywhere;
+  color:#d7d0f4;
+}
+.palace-home-intro{
+  max-width:650px;
+  margin:.85rem 0 0!important;
+  color:var(--palace-muted)!important;
+}
+.palace-home-identity{
+  width:min(100%,620px);
+  display:grid;
+  grid-template-columns:52px minmax(0,1fr) auto;
+  gap:.75rem;
+  align-items:center;
+  padding:.62rem .72rem;
+  border:1px solid rgba(169,154,221,.2);
+  border-radius:16px;
+  background:rgba(9,13,29,.52);
+  backdrop-filter:blur(12px);
+}
+.palace-home-avatar{
+  position:relative;
+  width:52px;height:52px;
+  overflow:hidden;
+  display:grid;place-items:center;
+  border:1px solid rgba(186,170,235,.28);
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 28%,rgba(116,91,184,.9),rgba(31,35,69,.96));
+  color:#e3ddfb;
+  text-decoration:none;
+}
+.palace-home-avatar img{width:100%;height:100%;object-fit:cover}
+.palace-home-avatar>span{position:relative;font:1.65rem Georgia,'Times New Roman',serif}
+.palace-home-avatar b{position:absolute;right:-3px;top:-3px;font-size:.52rem}
+.palace-home-identity>div{min-width:0;display:grid;gap:.08rem}
+.palace-home-identity small{
+  color:var(--palace-dim);
+  font-size:.49rem;
+  letter-spacing:.13em;
+}
+.palace-home-identity strong{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#e2dcf7;
+  font:600 .96rem Georgia,'Times New Roman',serif;
+}
+.palace-home-identity em{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:var(--palace-muted);
+  font-size:.58rem;
+  font-style:normal;
+}
+.palace-home-identity>a:last-child{
+  min-height:34px;
+  display:flex;
+  align-items:center;
+  padding:.36rem .55rem;
+  border:1px solid rgba(151,160,203,.15);
+  border-radius:999px;
+  color:#cbd4ef;
+  text-decoration:none;
+  font-size:.58rem;
+  white-space:nowrap;
+}
+.palace-home-identity>a:last-child:hover{
+  border-color:rgba(175,160,224,.3);
+  background:rgba(103,83,166,.08);
+}
+
+.palace-next-door{
+  position:relative;
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:58px minmax(0,1fr) auto;
+  gap:.9rem;
+  align-items:center;
+  min-height:104px;
+  padding:.85rem 1rem;
+  border:1px solid rgba(168,151,219,.22);
+  border-radius:19px;
+  background:
+    radial-gradient(circle at 6% 50%,rgba(111,88,180,.14),transparent 13rem),
+    linear-gradient(135deg,rgba(27,31,61,.86),rgba(13,19,39,.82));
+  box-shadow:var(--palace-shadow-soft);
+}
+.palace-next-door::after{
+  content:"☾";
+  position:absolute;
+  right:17%;
+  top:50%;
+  transform:translateY(-52%);
+  color:rgba(211,204,240,.025);
+  font:7rem Georgia,'Times New Roman',serif;
+  pointer-events:none;
+}
+.palace-next-door-mark{
+  position:relative;
+  z-index:1;
+  width:58px;height:58px;
+  display:grid;place-items:center;
+  border:1px solid rgba(177,163,229,.24);
+  border-radius:17px;
+  background:radial-gradient(circle at 35% 25%,rgba(121,99,193,.32),rgba(30,36,69,.55));
+  color:#d9d4f2;
+  font:1.35rem Georgia,'Times New Roman',serif;
+}
+.palace-next-door>div:nth-child(2){position:relative;z-index:1;min-width:0}
+.palace-next-door small{
+  color:#aaa3cf;
+  font-size:.52rem;
+  letter-spacing:.13em;
+}
+.palace-next-door h2{
+  margin:.12rem 0 .25rem;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font:600 1.15rem Georgia,'Times New Roman',serif;
+}
+.palace-next-door p{
+  margin:0;
+  max-width:720px;
+  color:var(--palace-muted);
+  font-size:.67rem;
+  line-height:1.48;
+}
+.palace-next-door>a{
+  position:relative;
+  z-index:1;
+  min-height:40px;
+  display:flex;
+  align-items:center;
+  gap:.42rem;
+  padding:.5rem .72rem;
+  border:1px solid rgba(171,155,224,.28);
+  border-radius:999px;
+  background:rgba(106,85,170,.12);
+  color:#e0dbf5;
+  text-decoration:none;
+  font-size:.64rem;
+  font-weight:700;
+  white-space:nowrap;
+}
+.palace-next-door>a:hover{
+  border-color:rgba(191,176,235,.42);
+  background:rgba(112,90,180,.18);
+}
+.palace-next-door>a span{font-size:.82rem}
+
+.daylight .palace-home-identity{
+  background:rgba(255,255,255,.76);
+  border-color:rgba(76,80,126,.13);
+}
+.daylight .palace-home-identity strong{color:#283154}
+.daylight .palace-home-identity>a:last-child{color:#4e5f91}
+.daylight .palace-command-hero .palace-home-welcome h1>span{color:#514d82}
+.daylight .palace-next-door{
+  background:
+    radial-gradient(circle at 6% 50%,rgba(104,88,165,.08),transparent 13rem),
+    linear-gradient(135deg,rgba(255,255,255,.94),rgba(243,244,250,.9));
+  border-color:rgba(75,79,125,.13);
+}
+.daylight .palace-next-door-mark{
+  background:radial-gradient(circle at 35% 25%,#eeebfb,#dfe2f2);
+  color:#5b5a8e;
+}
+.daylight .palace-next-door>a{color:#405383;background:rgba(91,75,143,.055)}
+
+@media(max-width:760px){
+  .palace-command-hero .palace-home-welcome h1{
+    font-size:clamp(2.15rem,10vw,3.45rem);
+    line-height:.98;
+  }
+  .palace-home-identity{
+    grid-template-columns:46px minmax(0,1fr);
+  }
+  .palace-home-avatar{width:46px;height:46px}
+  .palace-home-identity>a:last-child{
+    grid-column:2;
+    justify-self:start;
+  }
+  .palace-next-door{
+    grid-template-columns:50px minmax(0,1fr);
+    gap:.7rem;
+    padding:.78rem;
+  }
+  .palace-next-door-mark{width:50px;height:50px;border-radius:15px}
+  .palace-next-door>a{
+    grid-column:2;
+    justify-self:start;
+  }
+}
+@media(max-width:460px){
+  .palace-command-hero .palace-home-welcome h1{font-size:2.3rem}
+  .palace-home-identity{padding:.58rem}
+  .palace-home-identity strong{font-size:.86rem}
+  .palace-next-door{grid-template-columns:42px minmax(0,1fr)}
+  .palace-next-door-mark{width:42px;height:42px;border-radius:13px}
+  .palace-next-door h2{font-size:1rem}
+}
