@@ -512,6 +512,15 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.surprise-story');
   });
 
+  it('keeps room atmosphere CSS-native rather than cover-image dependent',()=>{
+    const polish=read('src/polish.css');
+    expect(polish).toContain('Room atmosphere without generated cover art');
+    expect(polish).toContain('.legacy-reading-page::before');
+    expect(polish).toContain('.legacy-life-page::before');
+    expect(polish).toContain('.legacy-treasury-page::before');
+    expect(polish).toContain('.legacy-lost-page::before');
+  });
+
   it('keeps the Production Prep shell proportions without replacing the Palace sidebar',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Production Prep shell proportion pass');
