@@ -894,9 +894,9 @@ describe('Starry Palace launch safety',()=>{
 
   it('keeps the Prompt Orrery playful and zero-stakes',()=>{
     const polish=read('src/polish.css');
-    expect(live).toContain('PROMPT ORRERY · THREE REELS · ZERO STAKES');
+    expect(live).toContain('PROMPT ORRERY · 1,012 CONSTELLATIONS · ZERO STAKES');
     expect(live).toContain('Pull the lever');
-    expect(live).toContain('No coins, no points, no paid rerolls and no streaks');
+    expect(live).toContain('More than one thousand curated prompt constellations');
     expect(live).toContain('GENRE / VIBE');
     expect(live).toContain('RANDOM OBJECT');
     expect(live).toContain('TWIST');
@@ -1122,7 +1122,7 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('Export work backup');
     expect(live).toContain("e.key.toLowerCase()==='s'");
     expect(live).toContain('Portable work backup exported.');
-    expect(live).toContain('Ctrl/⌘ S · save chapter');
+    expect(live).toContain('Ctrl/⌘ S · save · Ctrl/⌘ Z · undo');
     expect(polish).toContain('.studio-head-actions');
   });
 
