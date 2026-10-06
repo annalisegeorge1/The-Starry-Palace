@@ -563,6 +563,20 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.personal-agenda');
   });
 
+  it('keeps Palace Life social without becoming an endless feed',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('saveCommunityIntroduction');
+    expect(data).toContain('deleteCommunityIntroduction');
+    expect(data).toContain('followingIds');
+    expect(live).toContain('FROM CHAMBERS YOU CHOSE');
+    expect(live).toContain('One introduction, edited whenever you like.');
+    expect(live).toContain('Follow chamber');
+    expect(live).toContain('Introduce myself ✦');
+    expect(polish).toContain('.my-introduction-desk');
+    expect(polish).toContain('.following-chamber-shelf');
+  });
+
   it('shows exact private chapter place and clearer end-of-chapter navigation',()=>{
     const polish=read('src/polish.css');
     expect(live).toContain('YOUR PLACE IN THIS CHAPTER');
