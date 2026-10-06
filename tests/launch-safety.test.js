@@ -419,6 +419,21 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('/* Reading Room canonical tag hints */');
   });
 
+  it('keeps Palace Life social without turning it into an endless feed',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('saveCommunityIntroduction');
+    expect(data).toContain('deleteCommunityIntroduction');
+    expect(data).toContain("needClient().from('member_follows').select('followed_id')");
+    expect(live).toContain('FROM CHAMBERS YOU CHOSE');
+    expect(live).toContain('This is a small continuity shelf from people you follow—not an endless social feed.');
+    expect(live).toContain('MY INTRODUCTION');
+    expect(live).toContain('Introduce myself ✦');
+    expect(live).toContain('Follow chamber');
+    expect(polish).toContain('.following-chamber-shelf');
+    expect(polish).toContain('.my-introduction-desk');
+  });
+
   it('keeps dual-layer writing recovery and Palace Life discovery wired',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
@@ -835,8 +850,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('palace-room-css-sync-reload');
     expect(main).toContain('palace-room-css-nonblocking');
     expect(main).toContain("Palace room '+name+' is unavailable in this build.");
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100523');
-    expect(polish).toContain('--palace-room-css-version:2026100523');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100524');
+    expect(polish).toContain('--palace-room-css-version:2026100524');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
