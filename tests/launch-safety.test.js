@@ -783,6 +783,17 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.password-field');
   });
 
+  it('keeps Celestial Point balance and title ladder visible in Treasury',()=>{
+    const treasury=read('src/Treasury.jsx');
+    const css=read('src/treasury.css');
+    expect(treasury).toContain('Your light across the Palace.');
+    expect(treasury).toContain('lifetime Celestial Points');
+    expect(treasury).toContain('How my points were earned');
+    expect(treasury).toContain('celestial_points_required');
+    expect(css).toContain('Celestial Points chamber');
+    expect(css).toContain('.celestial-title-ladder');
+  });
+
   it('keeps Celestial praise and special-title progress wired',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
