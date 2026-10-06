@@ -11465,3 +11465,190 @@ input:focus,textarea:focus,select:focus{
     padding-right:14px!important;
   }
 }
+
+
+/* =========================================================
+   Usability + delight pass · quick navigation, recent doors,
+   orientation and playful discovery without feed pressure.
+   ========================================================= */
+.top-room-context{
+  display:inline-flex!important;
+  align-items:center;
+  gap:.32rem!important;
+  min-width:0;
+  max-width:260px;
+}
+.top-room-context b{
+  color:rgba(208,187,234,.36);
+  font-weight:400;
+}
+.top-room-context em{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#aaa1bb;
+  font-style:normal;
+  font-size:.82em;
+}
+
+.palace-command{
+  overflow:hidden;
+  border-color:rgba(215,188,235,.25)!important;
+  background:
+    radial-gradient(circle at 86% 4%,rgba(219,155,204,.09),transparent 18rem),
+    radial-gradient(circle at 8% 100%,rgba(113,99,193,.09),transparent 20rem),
+    linear-gradient(160deg,rgba(28,22,63,.99),rgba(12,11,31,.995))!important;
+}
+.palace-command>header{
+  background:rgba(8,7,24,.24);
+}
+.palace-command>header input{
+  font-size:.83rem!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.palace-command-results{
+  padding:.45rem!important;
+  display:grid;
+  gap:.12rem;
+}
+.command-group-title{
+  margin:.18rem .55rem .28rem!important;
+  color:#827b91!important;
+  font-size:.48rem!important;
+  font-weight:800;
+  letter-spacing:.16em;
+}
+.palace-command-results>button{
+  position:relative;
+  min-height:58px!important;
+  border:1px solid transparent!important;
+  border-radius:13px!important;
+  transition:background .12s ease,border-color .12s ease,transform .12s ease!important;
+}
+.palace-command-results>button:hover,
+.palace-command-results>button.selected{
+  transform:none!important;
+  border-color:rgba(207,181,233,.14)!important;
+  background:
+    linear-gradient(90deg,rgba(112,94,184,.16),rgba(217,154,202,.04))!important;
+}
+.palace-command-results>button.selected::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:14px;
+  bottom:14px;
+  width:2px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#b5a1e7,#dc9dcb);
+  box-shadow:0 0 12px rgba(194,157,226,.32);
+}
+.palace-command-results .command-icon{
+  display:grid;
+  place-items:center;
+  width:34px!important;
+  height:34px!important;
+  border-radius:10px;
+  background:rgba(111,92,181,.08);
+}
+.palace-command-results button strong{font-size:.69rem!important}
+.palace-command-results button small{
+  margin-top:.13rem;
+  color:#8f889b!important;
+  font-size:.53rem!important;
+}
+.palace-command-results button em{
+  padding:.17rem .32rem!important;
+  border:1px solid rgba(201,178,232,.13);
+  border-radius:6px;
+  color:#9d95aa!important;
+  font-size:.46rem!important;
+}
+.palace-command-results .command-spark .command-icon{
+  background:
+    radial-gradient(circle at 35% 30%,rgba(219,155,204,.22),rgba(112,92,183,.18) 55%,rgba(29,23,65,.4));
+  color:#eadcf0;
+  box-shadow:0 0 18px rgba(204,154,218,.08);
+}
+.palace-command-results .command-recent .command-icon{
+  color:#bbb0d8;
+}
+.palace-command>footer{
+  background:rgba(8,7,24,.22);
+}
+.command-search-all{
+  margin-bottom:.18rem;
+  border-color:rgba(201,178,232,.10)!important;
+  background:rgba(255,255,255,.015)!important;
+}
+
+/* The existing Surprise Me control should feel like a playful Palace door. */
+.surprise-story{
+  position:relative;
+  overflow:hidden;
+  border-color:rgba(217,178,226,.24)!important;
+  background:
+    linear-gradient(135deg,rgba(111,91,184,.20),rgba(216,155,201,.07))!important;
+  box-shadow:0 8px 22px rgba(8,6,24,.08);
+}
+.surprise-story::after{
+  content:"";
+  position:absolute;
+  width:42px;height:42px;
+  right:-22px;top:-24px;
+  border:1px solid rgba(225,190,231,.12);
+  border-radius:50%;
+  transition:transform .18s ease;
+}
+.surprise-story:hover::after{transform:scale(1.5)}
+.surprise-story:hover{
+  border-color:rgba(224,187,232,.36)!important;
+  transform:translateY(-1px);
+}
+
+/* Fun remains restrained: tiny celestial feedback on interactive Palace doors. */
+.room-card .room-glyph,
+.palace-home-shortcuts>a span,
+.full-nav-room>a>i{
+  transition:transform .18s ease,filter .18s ease!important;
+}
+.room-card:hover .room-glyph,
+.palace-home-shortcuts>a:hover span{
+  transform:translateY(-2px) rotate(-4deg);
+  filter:drop-shadow(0 0 9px rgba(190,157,224,.18));
+}
+
+.daylight .palace-command{
+  background:
+    radial-gradient(circle at 86% 4%,rgba(184,137,176,.08),transparent 18rem),
+    linear-gradient(160deg,rgba(255,255,255,.99),rgba(244,241,248,.99))!important;
+}
+.daylight .palace-command>header,
+.daylight .palace-command>footer{background:rgba(245,242,249,.72)}
+.daylight .palace-command-results>button:hover,
+.daylight .palace-command-results>button.selected{
+  background:linear-gradient(90deg,rgba(112,94,184,.08),rgba(184,137,176,.035))!important;
+}
+.daylight .top-room-context em{color:#71697d}
+
+@media(max-width:720px){
+  .top-room-context em,.top-room-context b{display:none}
+  .palace-command-backdrop{
+    padding:calc(68px + env(safe-area-inset-top)) 8px 8px!important;
+    align-items:start!important;
+  }
+  .palace-command{
+    width:100%!important;
+    max-height:calc(100dvh - 82px - env(safe-area-inset-top))!important;
+    border-radius:18px!important;
+  }
+  .palace-command-results>button{min-height:62px!important}
+  .palace-command>footer{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:.25rem!important;
+  }
+  .palace-command>footer span:nth-child(2){display:none}
+}
