@@ -478,8 +478,8 @@
 .painted-tier-stage{
  position:relative!important;
  display:block!important;
- width:112px!important;
- height:154px!important;
+ width:96px!important;
+ height:132px!important;
  margin-inline:auto;
  padding:0!important;
  overflow:visible!important;
@@ -556,8 +556,8 @@
 .tier-emerald .painted-tier-mount{filter:drop-shadow(0 7px 13px rgba(71,135,128,.27))}
 .daylight .painted-tier-mount{filter:drop-shadow(0 5px 9px rgba(49,67,86,.13))}
 .badge-art-dialog .painted-tier-stage{
- width:min(230px,58vw)!important;
- height:min(316px,80vw)!important;
+ width:min(200px,52vw)!important;
+ height:min(275px,72vw)!important;
 }
 .badge-art-dialog .painted-tier-stage .painted-badge-inner>.approved-badge-art,
 .badge-art-dialog .painted-tier-stage .painted-badge-inner>.merged-badge-object,
@@ -565,8 +565,8 @@
  width:100%!important;
  height:100%!important;
 }
-.badge-card .painted-tier-stage{width:124px!important;height:170px!important}
+.badge-card .painted-tier-stage{width:104px!important;height:143px!important}
 @media(max-width:620px){
- .painted-tier-stage{width:88px!important;height:121px!important}
- .badge-card .painted-tier-stage{width:112px!important;height:154px!important}
+ .painted-tier-stage{width:78px!important;height:107px!important}
+ .badge-card .painted-tier-stage{width:94px!important;height:129px!important}
 }
