@@ -4,6 +4,7 @@ import originals from './originalBadges.json';
 import ApprovedBadgeArt,{approvedBadgeFrame} from './ApprovedBadgeArt';
 import {MergedBadgeArt,mergedBadgeArtwork} from './MergedBadgeArt';
 import './treasury.css';
+const protectArt={onContextMenu:e=>e.preventDefault(),onDragStart:e=>e.preventDefault(),onCopy:e=>e.preventDefault(),onCut:e=>e.preventDefault()};
 
 const ranks=['bronze','silver','gold','platinum','emerald'];
 const normal=value=>String(value||'').toLowerCase().replace(/[^a-z0-9]/g,'');
@@ -24,7 +25,7 @@ function loadFrames(rank){
 }
 function SheetArt({frame,id,mount=false,className=''}) {
  const base=mount?'original-badge-mount':'original-badge-picture';
- return <svg className={base+(className?' '+className:'')} viewBox={frame.box.join(' ')} preserveAspectRatio={mount?'xMidYMid meet':'xMidYMid meet'} focusable="false" aria-hidden="true"><defs><clipPath id={id} clipPathUnits="userSpaceOnUse"><path d={frame.clip} transform={`translate(${frame.box[0]} ${frame.box[1]})`} fillRule={mount?'evenodd':undefined} clipRule={mount?'evenodd':undefined}/></clipPath></defs><image href={'/assets/palace-originals/'+frame.asset} width={frame.width} height={frame.height} clipPath={`url(#${id})`}/></svg>;
+ return <svg {...protectArt} className={base+(className?' '+className:'')} viewBox={frame.box.join(' ')} preserveAspectRatio={mount?'xMidYMid meet':'xMidYMid meet'} focusable="false" aria-hidden="true"><defs><clipPath id={id} clipPathUnits="userSpaceOnUse"><path d={frame.clip} transform={`translate(${frame.box[0]} ${frame.box[1]})`} fillRule={mount?'evenodd':undefined} clipRule={mount?'evenodd':undefined}/></clipPath></defs><image href={'/assets/palace-originals/'+frame.asset} width={frame.width} height={frame.height} clipPath={`url(#${id})`}/></svg>;
 }
 
 const tierMounts={
@@ -61,7 +62,7 @@ export default function PalaceBadge({family,tier='bronze',locked=false}){
 
  const name=family?.name||'Palace achievement';
  
- return <figure className={'palace-watercolour-badge tier-'+rank+(locked?' is-locked':'')}>
+ return <figure {...protectArt} className={'palace-watercolour-badge protected-palace-art tier-'+rank+(locked?' is-locked':'')}>
   {merged?<span className={'original-badge-stage painted-tier-stage merged-badge-stage '+(merged.type==='court'?'is-character':'is-object')}><span className="painted-badge-inner"><MergedBadgeArt art={merged} name={name}/></span><PaintedTierMount rank={rank} id={id+'-painted-tier'}/></span>:approved?<span className="original-badge-stage painted-tier-stage approved-badge-stage is-object"><span className="painted-badge-inner"><ApprovedBadgeArt frame={approved} name={name} tier={rank}/></span><PaintedTierMount rank={rank} id={id+'-painted-tier'}/></span>:frame?<span className={'original-badge-stage'+(frame.character?' is-character':'')} role="img" aria-label={name+' · '+rank+' artwork'+(locked?' (preview)':'')}><SheetArt frame={frame} id={id}/>{frame.mount&&<SheetArt frame={frame.mount} id={id+'-mount'} mount/>}</span>:<span className="original-badge-stage" role="status">{loading?'Artwork loading…':'Artwork unavailable'}</span>}
   <figcaption>{rank}{locked?' · Preview':''}</figcaption>
  </figure>;
