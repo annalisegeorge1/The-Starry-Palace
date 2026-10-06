@@ -10,7 +10,7 @@ const loaders={
  6:()=>import('./collectibleFrames.6.json')
 };
 const repainted={'palace-prize-majapahit-3':'prize-majapahit-3','palace-prize-majapahit-8':'prize-majapahit-8','palace-prize-majapahit-9':'prize-majapahit-9','palace-prize-achaemenid-17':'prize-achaemenid-17'};
-const repaintedScale={'palace-prize-majapahit-3':.72,'palace-prize-majapahit-8':.70,'palace-prize-majapahit-9':.72};
+const repaintedScale={'palace-prize-majapahit-3':.52,'palace-prize-majapahit-8':.50,'palace-prize-majapahit-9':.52};
 const cache=new Map();
 function loadSheet(sheet){
  if(!cache.has(sheet))cache.set(sheet,loaders[sheet]().then(m=>m.default||m).catch(error=>{cache.delete(sheet);throw error}));
