@@ -1104,6 +1104,18 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain("localStorage.removeItem('palace-forum-reply:'+threadId)");
   });
 
+  it('keeps chapter reordering owner-only complete and collision-safe',()=>{
+    const data=read('src/palaceData.js');
+    const next=read('src/palace-next.css');
+    expect(data).toContain("rpc('reorder_work_chapters'");
+    expect(live).toContain('async function moveChapter(chapterId,delta)');
+    expect(live).toContain("const full=[...(data?.chapters||[])].sort((a,b)=>a.position-b.position)");
+    expect(live).toContain('await reorderWorkChapters(data.id,next.map(x=>x.id))');
+    expect(live).toContain('access.owner&&<div className="chapter-order-controls"');
+    expect(live).toContain("Reordering chapters…");
+    expect(next).toContain('Owner-only chapter order controls — full-book order remains authoritative.');
+  });
+
   it('keeps tablet room navigation swipeable without covering content',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
