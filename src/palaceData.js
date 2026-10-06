@@ -1,6 +1,26 @@
 import { supabase } from './supabase';
 
 function needClient(){if(!supabase) throw new Error('The Palace data connection is not configured.');return supabase}
+const identityMarkCache=new Map();
+async function getIdentityMarks(userIds=[]){
+ const ids=[...new Set((userIds||[]).filter(Boolean))];if(!ids.length)return{};
+ const now=Date.now();const fresh={};const missing=[];
+ for(const id of ids){const hit=identityMarkCache.get(id);if(hit&&now-hit.at<120000)fresh[id]=hit.value;else missing.push(id)}
+ if(missing.length){
+  const[ach,gifts]=await Promise.all([
+   needClient().from('profile_achievement_showcase').select('user_id,display_tier,position,achievement_families(id,name,catalogue_number)').in('user_id',missing).order('position',{ascending:true}),
+   needClient().from('profile_gift_showcase').select('user_id,display_tier,position,virtual_gifts(id,name,court_name,catalogue_number)').in('user_id',missing).order('position',{ascending:true})
+  ]);
+  if(ach.error)throw ach.error;if(gifts.error)throw gifts.error;
+  for(const id of missing){
+   const achievement=(ach.data||[]).filter(x=>x.user_id===id).sort((a,b)=>a.position-b.position)[0]||null;
+   const gift=(gifts.data||[]).filter(x=>x.user_id===id).sort((a,b)=>a.position-b.position)[0]||null;
+   const value={achievement,gift};identityMarkCache.set(id,{at:now,value});fresh[id]=value;
+  }
+ }
+ return fresh
+}
+function withIdentity(profile,userId,marks){return profile?{...profile,identity:marks?.[userId]||null}:profile}
 export async function getMyProfile(userId){const{data,error}=await needClient().from('profiles').select('id,username,display_name,title,bio,avatar_url,cover_url,visibility,message_policy,pronouns,status_line,availability,roles,featured_genres,featured_fandoms,accent,cover_position,support_enabled,support_label,support_url').eq('id',userId).single();if(error)throw error;return data}
 export async function getOnboardingState(userId){
  const [profile,settings]=await Promise.all([
@@ -160,7 +180,7 @@ export async function getChamberSnapshot(userId){
   }
  }
 }
-export async function getPublishedWorks(){const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,language,completion_status,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(username,display_name,avatar_url,title),work_tags(tags(id,name,category,status))').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(24);if(error)throw error;return data||[]}
+export async function getPublishedWorks(){const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,language,completion_status,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(username,display_name,avatar_url,title),work_tags(tags(id,name,category,status))').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(24);if(error)throw error;const rows=data||[];const marks=await getIdentityMarks(rows.map(x=>x.author_id));return rows.map(x=>({...x,profiles:withIdentity(x.profiles,x.author_id,marks)}))}
 export async function getMyWorks(userId){const{data,error}=await needClient().from('works').select('id,title,slug,summary,publication_status,completion_status,visibility,updated_at,chapters(id,title,position,status,word_count,scheduled_for,published_at)').eq('author_id',userId).order('updated_at',{ascending:false});if(error)throw error;return(data||[]).map(w=>({...w,chapters:(w.chapters||[]).sort((a,b)=>a.position-b.position)}))}
 export async function createDraft(userId,title){const clean=title.trim();if(!clean)throw new Error('Give your work a title first.');const slug=(clean.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,70)||'untitled')+'-'+Date.now().toString(36);const{data,error}=await needClient().from('works').insert({author_id:userId,title:clean,slug,publication_status:'draft',visibility:'private'}).select().single();if(error)throw error;return data}
 
@@ -954,9 +974,9 @@ async function signedAsset(bucket,path,expiresIn=3600){
 export async function getPublishedComics(){
  const{data,error}=await needClient().from('comics').select('id,creator_id,title,slug,summary,rating,completion_status,visibility,reading_direction,download_policy,required_credit_line,comment_policy,cover_path,last_published_at').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(30);
  if(error)throw error;const comics=data||[];const creators=[...new Set(comics.map(c=>c.creator_id).filter(Boolean))];const comicIds=comics.map(c=>c.id);let profiles=[];let tagRows=[];
- if(creators.length){const p=await needClient().from('profiles').select('id,username,display_name,avatar_url').in('id',creators);if(p.error)throw p.error;profiles=p.data||[]}
+ if(creators.length){const p=await needClient().from('profiles').select('id,username,display_name,avatar_url,title').in('id',creators);if(p.error)throw p.error;profiles=p.data||[]}
  if(comicIds.length){const t=await needClient().from('comic_tags').select('comic_id,position,tags(id,name,category,status)').in('comic_id',comicIds).order('position');if(t.error)throw t.error;tagRows=t.data||[]}
- return Promise.all(comics.map(async c=>({...c,creator:profiles.find(p=>p.id===c.creator_id)||null,tags:tagRows.filter(x=>x.comic_id===c.id&&['canonical','community'].includes(x.tags?.status)),cover_url:await signedAsset('comic-covers',c.cover_path)})));
+ const identity=await getIdentityMarks(creators);return Promise.all(comics.map(async c=>({...c,creator:withIdentity(profiles.find(p=>p.id===c.creator_id)||null,c.creator_id,identity),tags:tagRows.filter(x=>x.comic_id===c.id&&['canonical','community'].includes(x.tags?.status)),cover_url:await signedAsset('comic-covers',c.cover_path)})));
 }
 export async function getComicBySlug(slug){
  const{data:comic,error}=await needClient().from('comics').select('*').eq('slug',slug).maybeSingle();if(error)throw error;if(!comic)return null;
