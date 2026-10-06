@@ -178,6 +178,11 @@
 /* Approved object paintings stay transparent; tier ornament belongs to the badge frame, not a dark tile. */
 .approved-badge-stage{background:transparent;border-radius:50%;overflow:visible;isolation:isolate}
 .palace-watercolour-badge:has(.approved-badge-stage){filter:none}
+.approved-badge-stage .approved-badge-art{display:block;width:100%;height:100%;margin:0!important;object-fit:contain;background:transparent}
+.approved-badge-cutout{position:relative;z-index:1}
+.approved-badge-cutout-loading{min-width:1px;min-height:1px;background:transparent}
+.approved-badge-fallback{background:transparent}
+
 .court-watercolour-gallery{min-width:0;max-width:100%}
 .court-watercolour-gallery figure{margin:1.25rem 0;padding:clamp(.6rem,2vw,1.5rem);background:#101a2b;border:1px solid #394761;border-radius:20px;overflow:hidden}
 .court-watercolour-gallery figcaption{color:#d6def5;line-height:1.6;margin-bottom:1rem}
