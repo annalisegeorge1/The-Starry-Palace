@@ -11,6 +11,7 @@ const loaders={
 };
 const repainted={'palace-prize-majapahit-3':'prize-majapahit-3','palace-prize-majapahit-8':'prize-majapahit-8','palace-prize-majapahit-9':'prize-majapahit-9','palace-prize-achaemenid-17':'prize-achaemenid-17'};
 const repaintedScale={'palace-prize-majapahit-3':.52,'palace-prize-majapahit-8':.50,'palace-prize-majapahit-9':.52};
+const repaintedPosition={'palace-prize-majapahit-3':['0%','2%'],'palace-prize-majapahit-8':['1.5%','1%'],'palace-prize-majapahit-9':['-1.5%','1.5%']};
 const cache=new Map();
 function loadSheet(sheet){
  if(!cache.has(sheet))cache.set(sheet,loaders[sheet]().then(m=>m.default||m).catch(error=>{cache.delete(sheet);throw error}));
@@ -24,7 +25,7 @@ export function CollectibleArt({item}){
   loadSheet(item.artSheet).then(frames=>{if(active){setFrame(frames[item.id]||null);setFailed(!frames[item.id])}}).catch(()=>{if(active)setFailed(true)});
   return()=>{active=false};
  },[item.id,item.artSheet]);
- if(repainted[item.id]){const scale=repaintedScale[item.id]||.9;return <span className={'original-collectible-stage repainted-collectible-stage '+(repaintedScale[item.id]?'majapahit-repainted-fix':'')} style={{'--repaint-scale':scale}}><img src={'/assets/palace-courts/'+repainted[item.id]+'.png'} alt={item.name} loading="lazy" decoding="async" style={{objectFit:'contain'}}/></span>};
+ if(repainted[item.id]){const scale=repaintedScale[item.id]||.86;const [x,y]=repaintedPosition[item.id]||['0%','0%'];return <span className={'original-collectible-stage repainted-collectible-stage '+(repaintedScale[item.id]?'majapahit-repainted-fix':'')} style={{'--repaint-scale':scale,'--repaint-x':x,'--repaint-y':y}}><img src={'/assets/palace-courts/'+repainted[item.id]+'.png'} alt={item.name} loading="lazy" decoding="async" style={{objectFit:'contain'}}/></span>};
  if(!frame)return <span className="original-collectible-stage" role="status">{failed?'Artwork unavailable':'Loading watercolour…'}</span>;
  const [x,y,w,h]=frame.box,pad=Math.max(w,h)*.08;
  return <span className="original-collectible-stage"><svg className="original-collectible-art" role="img" aria-label={item.name} viewBox={[x-pad,y-pad,w+pad*2,h+pad*2].join(' ')} preserveAspectRatio="xMidYMid meet" focusable="false"><defs><clipPath id={id} clipPathUnits="userSpaceOnUse"><path d={frame.clip} transform={`translate(${x} ${y})`}/></clipPath></defs><image href={'/assets/palace-collectibles/'+frame.asset} width={frame.width} height={frame.height} clipPath={`url(#${id})`}/></svg></span>;
