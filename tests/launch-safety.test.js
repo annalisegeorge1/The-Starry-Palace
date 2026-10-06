@@ -1014,6 +1014,17 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.palace-presence-list');
   });
 
+  it('keeps the Commons almanac grounded in real calendar data',()=>{
+    const polish=read('src/palace-next.css');
+    expect(live).toContain('getEventsHeritage(session.user.id)');
+    expect(live).toContain('PALACE ALMANAC');
+    expect(live).toContain('Real Palace events and verified heritage observances—not invented activity.');
+    expect(live).toContain('upcomingPalaceEvents');
+    expect(live).toContain('todaysHeritage');
+    expect(polish).toContain('Palace Almanac — real events and heritage in the social rail.');
+    expect(polish).toContain('.palace-almanac-list');
+  });
+
   it('keeps tablet room navigation swipeable without covering content',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
