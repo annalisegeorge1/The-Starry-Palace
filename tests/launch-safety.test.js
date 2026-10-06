@@ -1198,6 +1198,14 @@ describe('Starry Palace launch safety',()=>{
     expect(next).toContain('env(safe-area-inset-bottom)');
   });
 
+  it('retires the old oversized mobile header override',()=>{
+    const style=read('src/style.css');
+    const next=read('src/palace-next.css');
+    expect(style).toContain('Legacy oversized 980/720px header overrides retired by Palace Refinement.');
+    expect(style).not.toContain('.brandmark{width:54px!important;height:54px!important;font-size:29px!important}');
+    expect(next).toContain('Mobile shell convergence — one final rule-set after legacy responsive layers.');
+  });
+
   it('keeps tablet room navigation swipeable without covering content',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
