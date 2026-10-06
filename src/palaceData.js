@@ -842,10 +842,12 @@ export async function searchPalace(term){
   if(p.error)throw p.error;creatorRows=p.data||[];
  }
  const creatorMap=Object.fromEntries(creatorRows.map(p=>[p.id,p]));
+ const identityIds=[...new Set([...(works.data||[]).map(x=>x.author_id),...comicRows.map(x=>x.creator_id),...(members.data||[]).map(x=>x.id)].filter(Boolean))];
+ const marks=await getIdentityMarks(identityIds);
  return{
-  works:works.data||[],
-  comics:await Promise.all(comicRows.map(async c=>({...c,creator:creatorMap[c.creator_id]||null,cover_url:await signedAsset('comic-covers',c.cover_path)}))),
-  members:members.data||[],
+  works:(works.data||[]).map(x=>({...x,profiles:withIdentity(x.profiles,x.author_id,marks)})),
+  comics:await Promise.all(comicRows.map(async c=>({...c,creator:withIdentity(creatorMap[c.creator_id]||null,c.creator_id,marks),cover_url:await signedAsset('comic-covers',c.cover_path)}))),
+  members:(members.data||[]).map(x=>withIdentity(x,x.id,marks)),
   tags:tags.data||[],
   clubs:clubs.data||[],
   archive:archive.data||[]
