@@ -86,8 +86,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('function searchCommand()');
     expect(main).toContain("navigate('/search?q='+encodeURIComponent(q))");
     expect(main).toContain('Search all Palace content');
-    expect(main).toContain('Search Palace rooms or content');
-    expect(main).toContain("commandMatches[0]?chooseCommand(commandMatches[0].path):searchCommand()");
+    expect(main).toContain('Search Palace rooms, sections or content');
+    expect(main).toContain("visibleCommandItems[commandIndex]?chooseCommand(visibleCommandItems[commandIndex].path):searchCommand()");
     expect(main).toContain('Stories, comics, writers, tags, fandoms and clubs');
     expect(polish).toContain('.command-search-all');
   });
