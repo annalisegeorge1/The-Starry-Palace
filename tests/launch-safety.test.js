@@ -752,6 +752,14 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.password-field');
   });
 
+  it('keeps empty Series shelves actionable instead of dead-ended',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('series-empty-state');
+    expect(live).toContain('Create the first series ✦');
+    expect(live).toContain('Browse the Reading Rooms →');
+    expect(polish).toContain('.series-empty-actions');
+  });
+
   it('keeps Comics and Series discovery useful at scale',()=>{
     const polish=read('src/polish.css');
     expect(live).toContain('comicSort');
