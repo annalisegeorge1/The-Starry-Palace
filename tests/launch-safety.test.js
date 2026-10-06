@@ -466,6 +466,22 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('/* Identity follows members into social rooms */');
   });
 
+  it('gives clubs useful pulse and quiet member discovery without follower-count pressure',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('clubPulseIds');
+    expect(data).toContain('member_count:clubMemberRows');
+    expect(data).toContain('clubFollowingIds');
+    expect(live).toContain('ROOM PULSE');
+    expect(live).toContain('club-interior-pulse');
+    expect(live).toContain('Search club members');
+    expect(live).toContain("['following','Following']");
+    expect(live).toContain('Follow chamber');
+    expect(live).not.toContain('followers in this circle');
+    expect(polish).toContain('/* Club pulse + quiet member discovery */');
+    expect(polish).toContain('.club-member-grid.enriched');
+  });
+
   it('keeps dual-layer writing recovery and Palace Life discovery wired',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
@@ -896,8 +912,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('palace-room-css-sync-reload');
     expect(main).toContain('palace-room-css-nonblocking');
     expect(main).toContain("Palace room '+name+' is unavailable in this build.");
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100527');
-    expect(polish).toContain('--palace-room-css-version:2026100527');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100528');
+    expect(polish).toContain('--palace-room-css-version:2026100528');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
