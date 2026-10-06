@@ -3,7 +3,7 @@ import {describe,it,expect} from 'vitest';
 import {render,screen,cleanup} from '@testing-library/react';
 import fs from 'node:fs';
 import badges from './badges.json';
-import {MergedBadgeArt,mergedBadgeArtwork,mergedBadgePathCount,mergedCourtPaths,mergedObjectPaths} from './MergedBadgeArt';
+import {MergedBadgeArt,courtPortraitCellRect,mergedBadgeArtwork,mergedBadgePathCount,mergedCourtPaths,mergedObjectPaths} from './MergedBadgeArt';
 
 describe('merged 100-path badge artwork',()=>{
  it('absorbs exactly 25 object paintings and 60 court portraits into 17 existing paths',()=>{
@@ -45,7 +45,15 @@ describe('merged 100-path badge artwork',()=>{
   render(<MergedBadgeArt art={portrait} name="Cross-Court Visitor"/>);
   const portraitNode=screen.getByRole('img',{name:/Cross-Court Visitor · silver · Greek court watercolour/});
   expect(portraitNode).toBeTruthy();
-  expect(portraitNode.style.backgroundSize).toBe('450% 360%');
+  expect(portraitNode.getAttribute('data-court-cell')).toBe('1:2');
+ });
+ it('uses exact non-overlapping court portrait cells so frames are never clipped by CSS sprite math',()=>{
+  const first=courtPortraitCellRect(1000,800,{column:0,row:0});
+  const last=courtPortraitCellRect(1000,800,{column:4,row:3});
+  expect(first).toEqual({x:0,y:0,width:200,height:200});
+  expect(last).toEqual({x:800,y:600,width:200,height:200});
+  expect(last.x+last.width).toBe(1000);
+  expect(last.y+last.height).toBe(800);
  });
  it('keeps object badges transparent and gives them tier-matched ornamental frames',()=>{
   const css=fs.readFileSync('src/treasury.css','utf8');
