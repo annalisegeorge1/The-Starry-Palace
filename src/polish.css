@@ -1,4 +1,4 @@
-:root{--palace-room-css-version:2026100607}
+:root{--palace-room-css-version:2026100608}
 /* The Starry Palace — final professional polish layer
    Keep this file intentionally small and authoritative. New global visual
    refinements belong here instead of adding another override to style.css. */
@@ -17123,4 +17123,390 @@ button.quiet-button:not(.danger-action):hover,
 }
 .daylight .following-chamber-empty button:hover{
   background:linear-gradient(135deg,rgba(176,137,214,.34),rgba(244,172,153,.20))!important;
+}
+
+
+/* =========================================================
+   Palace Life social depth pass · October 6 2026
+   Composer modes, Salon-origin conversations, room discovery,
+   poll starters, and richer social states.
+   ========================================================= */
+
+.commons-compose-modes{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.42rem;
+  margin:0 0 .72rem;
+}
+.commons-compose-modes button{
+  min-height:34px;
+  padding:.4rem .68rem;
+  border:1px solid rgba(174,155,214,.15);
+  border-radius:999px;
+  background:rgba(255,255,255,.018);
+  color:#aaa3ba;
+  font-size:.64rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:.18s ease;
+}
+.commons-compose-modes button>span{
+  margin-right:.32rem;
+  color:#c9b8e1;
+}
+.commons-compose-modes button:hover{
+  color:#f3edf8;
+  border-color:rgba(200,174,230,.3);
+  background:rgba(108,69,153,.12);
+}
+.commons-compose-modes button.active{
+  color:#fff;
+  border-color:rgba(216,177,235,.35);
+  background:linear-gradient(135deg,rgba(117,72,169,.42),rgba(72,87,145,.22));
+  box-shadow:0 8px 20px rgba(16,8,34,.09),inset 0 1px 0 rgba(255,255,255,.06);
+}
+.commons-compose-modes .salon-shuffle{
+  margin-left:auto;
+  border-style:dashed;
+  color:#d5bada;
+  background:linear-gradient(135deg,rgba(132,76,151,.13),rgba(104,84,163,.08));
+}
+.composer-source-chip{
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+  margin:0 0 .66rem;
+  padding:.5rem .68rem;
+  border:1px solid rgba(201,155,203,.2);
+  border-radius:12px;
+  background:linear-gradient(135deg,rgba(128,72,143,.13),rgba(85,70,142,.1));
+}
+.composer-source-chip span{
+  font-size:.5rem;
+  letter-spacing:.13em;
+  color:#a993b6;
+}
+.composer-source-chip strong{
+  min-width:0;
+  color:#e3d8e8;
+  font-size:.66rem;
+  overflow-wrap:anywhere;
+}
+.composer-source-chip button{
+  margin-left:auto;
+  border:0;
+  background:transparent;
+  color:#aa9cb3;
+  cursor:pointer;
+  font-size:1rem;
+}
+.commons-compose-footer{
+  display:flex!important;
+  align-items:center;
+  justify-content:space-between;
+  gap:.65rem;
+  flex-wrap:wrap;
+}
+.commons-compose-footer>div{
+  display:flex;
+  align-items:center;
+  gap:.45rem;
+  flex-wrap:wrap;
+}
+.composer-kind-question{
+  background:
+    radial-gradient(circle at 95% 5%,rgba(86,139,191,.10),transparent 12rem),
+    linear-gradient(145deg,rgba(31,27,67,.38),rgba(17,17,39,.32))!important;
+}
+.composer-kind-recommendation{
+  background:
+    radial-gradient(circle at 95% 5%,rgba(110,166,145,.10),transparent 12rem),
+    linear-gradient(145deg,rgba(29,50,60,.32),rgba(18,18,39,.32))!important;
+}
+.composer-kind-salon{
+  background:
+    radial-gradient(circle at 92% 4%,rgba(198,118,175,.13),transparent 13rem),
+    radial-gradient(circle at 10% 100%,rgba(113,84,181,.12),transparent 14rem),
+    linear-gradient(145deg,rgba(50,29,64,.42),rgba(20,17,42,.33))!important;
+}
+
+/* Thread type identity without turning Commons into a rainbow feed. */
+.social-thread[class*="thread-room-question"]{
+  border-left:2px solid rgba(101,158,205,.5)!important;
+}
+.social-thread[class*="thread-room-recommendation"]{
+  border-left:2px solid rgba(105,172,148,.46)!important;
+}
+.social-thread[class*="thread-room-salon"]{
+  border-left:2px solid rgba(197,125,178,.52)!important;
+  background:
+    radial-gradient(circle at 95% 4%,rgba(187,105,169,.07),transparent 13rem),
+    linear-gradient(145deg,rgba(26,22,53,.70),rgba(17,17,38,.64))!important;
+}
+.social-thread-room{
+  width:max-content;
+  max-width:100%;
+  padding:.27rem .48rem;
+  border:1px solid rgba(171,156,205,.12);
+  border-radius:999px;
+  background:rgba(255,255,255,.018);
+  color:#8f88a0!important;
+  overflow-wrap:anywhere;
+}
+
+/* Room discovery behaves like a compact social explorer. */
+.club-discovery-control-deck{
+  display:grid;
+  gap:.65rem;
+  margin:.25rem 0 1rem;
+  padding:.72rem;
+  border:1px solid rgba(174,158,207,.12);
+  border-radius:17px;
+  background:
+    radial-gradient(circle at 94% 8%,rgba(96,122,181,.08),transparent 13rem),
+    linear-gradient(145deg,rgba(19,19,44,.68),rgba(13,15,34,.55));
+}
+.club-discovery-filters{
+  display:flex;
+  gap:.36rem;
+  flex-wrap:wrap;
+}
+.club-discovery-filters button{
+  min-height:34px;
+  padding:.4rem .65rem;
+  border:1px solid rgba(175,160,208,.12);
+  border-radius:999px;
+  background:rgba(255,255,255,.015);
+  color:#928ba2;
+  font-size:.62rem;
+  font-weight:700;
+  cursor:pointer;
+}
+.club-discovery-filters button.active{
+  color:#eee8f7;
+  border-color:rgba(196,173,224,.28);
+  background:linear-gradient(135deg,rgba(101,72,157,.3),rgba(68,84,141,.16));
+}
+.club-discovery-meta-filters{
+  display:flex;
+  align-items:end;
+  gap:.55rem;
+  flex-wrap:wrap;
+}
+.club-discovery-meta-filters label{
+  display:grid;
+  gap:.25rem;
+  color:#7f788d;
+  font-size:.52rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.club-discovery-meta-filters select{
+  min-height:36px;
+  padding:.42rem 2rem .42rem .62rem;
+  border:1px solid rgba(173,158,207,.13);
+  border-radius:10px;
+  background:#11132b;
+  color:#c9c2d3;
+  font:inherit;
+  text-transform:none;
+  letter-spacing:0;
+}
+.club-discovery-meta-filters>span{
+  margin-left:auto;
+  color:#827b8f;
+  font-size:.6rem;
+}
+.club-surprise{
+  white-space:nowrap;
+}
+.club-discovery-grid>article{
+  position:relative;
+  overflow:hidden;
+}
+.club-discovery-grid>article::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:2px;
+  background:linear-gradient(180deg,rgba(190,132,211,.6),rgba(94,135,187,.3));
+  opacity:.6;
+}
+.club-discovery-grid>article:hover{
+  transform:translateY(-2px);
+}
+.club-discovery-grid>article footer{
+  position:relative;
+  z-index:1;
+}
+
+/* Rooms: polls and post types are first-class social actions. */
+.club-post-compose>div:first-child{
+  display:grid!important;
+  grid-template-columns:minmax(130px,.34fr) minmax(0,1fr)!important;
+  gap:.48rem!important;
+}
+.club-post-compose select,
+.club-post-compose input,
+.club-post-compose textarea{
+  border-color:rgba(175,158,207,.14)!important;
+}
+.club-post-compose select{
+  background:#11132b!important;
+  color:#d0c9db!important;
+}
+.club-compose-actions .quiet-button{
+  border-color:rgba(194,164,221,.2)!important;
+  background:rgba(106,71,152,.1)!important;
+  color:#d4c5df!important;
+}
+.club-room-tabs button{
+  position:relative;
+}
+.club-poll-grid>article{
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 95% 5%,rgba(125,91,180,.09),transparent 14rem),
+    linear-gradient(145deg,rgba(23,22,49,.76),rgba(15,16,36,.68))!important;
+}
+.club-poll-grid>article>div>button{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+}
+.club-poll-grid>article>div>button>i{
+  position:absolute;
+  inset:0 auto 0 0;
+  z-index:-1;
+  background:linear-gradient(90deg,rgba(110,81,174,.28),rgba(86,132,176,.16))!important;
+  border-radius:inherit;
+}
+.club-poll-grid>article>div>button.selected{
+  border-color:rgba(210,180,235,.38)!important;
+  color:#f3ecf8!important;
+}
+.poll-starter-deck{
+  display:grid;
+  gap:.45rem;
+  margin:0 0 .75rem;
+  padding:.7rem;
+  border:1px solid rgba(177,159,209,.13);
+  border-radius:14px;
+  background:linear-gradient(145deg,rgba(34,27,65,.42),rgba(18,18,40,.36));
+}
+.poll-starter-deck>span{
+  color:#8e829d;
+  font-size:.52rem;
+  letter-spacing:.12em;
+}
+.poll-starter-deck>div{
+  display:flex;
+  gap:.4rem;
+  flex-wrap:wrap;
+}
+.poll-starter-deck button{
+  min-height:34px;
+  padding:.4rem .6rem;
+  border:1px solid rgba(179,160,211,.13);
+  border-radius:999px;
+  background:rgba(255,255,255,.015);
+  color:#aca3b7;
+  font-size:.59rem;
+  cursor:pointer;
+}
+.poll-starter-deck button:hover{
+  color:#f0e9f5;
+  border-color:rgba(205,174,228,.27);
+  background:rgba(106,74,151,.12);
+}
+
+/* Daylight carries the same structure with lilac morning surfaces. */
+.daylight .commons-compose-modes button{
+  color:#665870;
+  border-color:rgba(100,71,137,.13);
+  background:rgba(255,255,255,.48);
+}
+.daylight .commons-compose-modes button.active{
+  color:#4a315d;
+  border-color:rgba(103,70,143,.23);
+  background:linear-gradient(135deg,rgba(177,140,214,.30),rgba(244,179,158,.13));
+}
+.daylight .commons-compose-modes .salon-shuffle{
+  color:#704a72;
+  background:linear-gradient(135deg,rgba(211,160,199,.18),rgba(179,151,221,.14));
+}
+.daylight .composer-source-chip{
+  border-color:rgba(106,74,139,.13);
+  background:linear-gradient(135deg,rgba(214,173,208,.20),rgba(190,168,227,.14));
+}
+.daylight .composer-source-chip strong{color:#533f61}
+.daylight .social-thread[class*="thread-room-salon"]{
+  background:
+    radial-gradient(circle at 95% 4%,rgba(218,151,197,.11),transparent 13rem),
+    linear-gradient(145deg,rgba(252,248,253,.95),rgba(239,231,246,.9))!important;
+}
+.daylight .club-discovery-control-deck{
+  background:
+    radial-gradient(circle at 94% 8%,rgba(154,177,221,.10),transparent 13rem),
+    linear-gradient(145deg,rgba(249,244,252,.93),rgba(239,231,247,.86));
+  border-color:rgba(105,77,139,.12);
+}
+.daylight .club-discovery-filters button{
+  color:#6a5c73;
+  border-color:rgba(103,75,137,.12);
+  background:rgba(255,255,255,.55);
+}
+.daylight .club-discovery-filters button.active{
+  color:#4b365b;
+  background:linear-gradient(135deg,rgba(181,145,216,.28),rgba(245,183,163,.12));
+}
+.daylight .club-discovery-meta-filters select,
+.daylight .club-post-compose select{
+  background:rgba(255,255,255,.76)!important;
+  color:#463a50!important;
+}
+.daylight .club-poll-grid>article{
+  background:
+    radial-gradient(circle at 95% 5%,rgba(186,146,221,.11),transparent 14rem),
+    linear-gradient(145deg,rgba(252,249,253,.95),rgba(239,232,247,.9))!important;
+}
+.daylight .poll-starter-deck{
+  background:linear-gradient(145deg,rgba(248,242,251,.94),rgba(238,230,246,.9));
+  border-color:rgba(103,75,137,.12);
+}
+.daylight .poll-starter-deck button{
+  color:#66576f;
+  background:rgba(255,255,255,.54);
+  border-color:rgba(103,75,137,.12);
+}
+
+@media(max-width:760px){
+  .commons-compose-modes{
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    scrollbar-width:none;
+    padding-bottom:.15rem;
+  }
+  .commons-compose-modes::-webkit-scrollbar{display:none}
+  .commons-compose-modes button{
+    flex:0 0 auto;
+    white-space:nowrap;
+  }
+  .commons-compose-modes .salon-shuffle{margin-left:0}
+  .club-discovery-meta-filters{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+  .club-discovery-meta-filters>span{
+    grid-column:1/-1;
+    margin-left:0;
+  }
+  .club-discovery-meta-filters select{width:100%}
+  .club-post-compose>div:first-child{
+    grid-template-columns:1fr!important;
+  }
+  .poll-starter-deck>div{
+    display:grid;
+  }
 }
