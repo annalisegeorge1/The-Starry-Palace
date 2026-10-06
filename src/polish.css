@@ -11652,3 +11652,132 @@ input:focus,textarea:focus,select:focus{
   }
   .palace-command>footer span:nth-child(2){display:none}
 }
+
+
+/* =========================================================
+   Mobile Palace dock · one-handed navigation
+   A social-app-like persistent dock without flattening the
+   Palace into a generic feed.
+   ========================================================= */
+.mobile-palace-dock{display:none}
+@media(max-width:720px){
+  .mobile-palace-dock{
+    position:fixed;
+    z-index:96;
+    left:max(8px,env(safe-area-inset-left));
+    right:max(8px,env(safe-area-inset-right));
+    bottom:max(8px,env(safe-area-inset-bottom));
+    height:64px;
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    align-items:center;
+    gap:2px;
+    padding:5px 7px;
+    border:1px solid rgba(209,184,233,.17);
+    border-radius:20px;
+    background:
+      radial-gradient(circle at 50% -45%,rgba(216,155,201,.12),transparent 15rem),
+      linear-gradient(180deg,rgba(31,24,67,.94),rgba(14,12,35,.97));
+    -webkit-backdrop-filter:blur(22px) saturate(1.08);
+    backdrop-filter:blur(22px) saturate(1.08);
+    box-shadow:
+      0 14px 42px rgba(5,4,19,.32),
+      inset 0 1px 0 rgba(255,255,255,.025);
+  }
+  .mobile-palace-dock>a{
+    position:relative;
+    min-width:0;
+    height:52px;
+    display:grid;
+    place-items:center;
+    align-content:center;
+    gap:2px;
+    border-radius:14px;
+    color:#8f889f;
+    text-decoration:none;
+    -webkit-tap-highlight-color:transparent;
+    transition:background .14s ease,color .14s ease,transform .14s ease;
+  }
+  .mobile-palace-dock>a>span{
+    display:grid;
+    place-items:center;
+    min-width:25px;
+    min-height:25px;
+    font-size:1rem;
+    line-height:1;
+  }
+  .mobile-palace-dock>a>small{
+    max-width:100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:.45rem;
+    font-weight:760;
+    letter-spacing:.015em;
+  }
+  .mobile-palace-dock>a.active{
+    color:#eee8f7;
+    background:linear-gradient(145deg,rgba(112,92,184,.16),rgba(216,155,201,.045));
+  }
+  .mobile-palace-dock>a.active::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:2px;
+    width:16px;
+    height:2px;
+    transform:translateX(-50%);
+    border-radius:999px;
+    background:linear-gradient(90deg,#9a8bda,#d99cc9);
+    box-shadow:0 0 10px rgba(193,151,218,.24);
+  }
+  .mobile-palace-dock>a:active{transform:scale(.95)}
+  .mobile-palace-dock .mobile-dock-write{
+    width:58px;
+    height:58px;
+    justify-self:center;
+    margin-top:-18px;
+    border:1px solid rgba(220,187,236,.27);
+    border-radius:19px;
+    color:#f6f0fb;
+    background:
+      radial-gradient(circle at 35% 26%,rgba(226,173,214,.26),transparent 36%),
+      linear-gradient(145deg,#7259bb,#5a4aa1 62%,#455b9d);
+    box-shadow:
+      0 10px 24px rgba(52,39,113,.3),
+      0 0 0 5px rgba(17,14,40,.72);
+  }
+  .mobile-palace-dock .mobile-dock-write>span{font-size:1.12rem}
+  .mobile-palace-dock .mobile-dock-write>small{color:#eee7f8}
+  .mobile-palace-dock .mobile-dock-write.active::after{bottom:-1px;background:#e1b4d8}
+  .palace-stage main{
+    padding-bottom:calc(118px + env(safe-area-inset-bottom))!important;
+  }
+  .palace-footer{
+    padding-bottom:calc(88px + env(safe-area-inset-bottom))!important;
+  }
+  .restored-floating-controls{
+    right:12px!important;
+    bottom:calc(82px + env(safe-area-inset-bottom))!important;
+  }
+  .full-top-actions .write-action{display:none!important}
+}
+.daylight .mobile-palace-dock{
+  border-color:rgba(96,77,142,.14);
+  background:
+    radial-gradient(circle at 50% -45%,rgba(184,137,176,.08),transparent 15rem),
+    linear-gradient(180deg,rgba(255,255,255,.94),rgba(244,241,248,.97));
+  box-shadow:0 14px 36px rgba(54,43,90,.12),inset 0 1px 0 rgba(255,255,255,.8);
+}
+.daylight .mobile-palace-dock>a{color:#736d7e}
+.daylight .mobile-palace-dock>a.active{
+  color:#40375f;
+  background:linear-gradient(145deg,rgba(112,92,184,.09),rgba(184,137,176,.04));
+}
+.daylight .mobile-palace-dock .mobile-dock-write{
+  color:white;
+  box-shadow:0 9px 22px rgba(79,61,142,.2),0 0 0 5px rgba(246,243,250,.92);
+}
+@media(prefers-reduced-motion:reduce){
+  .mobile-palace-dock>a{transition:none!important}
+}
