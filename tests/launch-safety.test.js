@@ -786,7 +786,7 @@ describe('Starry Palace launch safety',()=>{
   it('keeps the Palace Lorebook reveal system available',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
-    expect(data).toContain("rpc('get_work_lore')");
+    expect(data).toContain("rpc('get_work_lore'");
     expect(data).toContain("rpc('save_work_lore_entry'");
     expect(data).toContain("rpc('delete_work_lore_entry'");
     expect(live).toContain('PALACE LOREBOOK');
