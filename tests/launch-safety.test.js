@@ -431,7 +431,14 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('Introduce myself ✦');
     expect(live).toContain('Follow chamber');
     expect(polish).toContain('.following-chamber-shelf');
-    expect(polish).toContain('.my-introduction-desk');
+    expect(live).toContain('new-stars-lens');
+    expect(live).toContain('New to me');
+    expect(live).toContain('My introduction');
+    expect(live).toContain("post.profiles?.title||'Palace Member'");
+    expect(live).toContain("msg.profiles?.title||'Palace Member'");
+    expect(live).toContain("member.profiles?.title||'Palace Member'");
+    expect(polish).toContain('.new-stars-lens');
+    expect(polish).toContain('/* Identity follows members into social rooms */');
   });
 
   it('keeps dual-layer writing recovery and Palace Life discovery wired',()=>{
@@ -850,8 +857,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('palace-room-css-sync-reload');
     expect(main).toContain('palace-room-css-nonblocking');
     expect(main).toContain("Palace room '+name+' is unavailable in this build.");
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100524');
-    expect(polish).toContain('--palace-room-css-version:2026100524');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100525');
+    expect(polish).toContain('--palace-room-css-version:2026100525');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
