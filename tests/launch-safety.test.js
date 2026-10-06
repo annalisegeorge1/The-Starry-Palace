@@ -783,6 +783,30 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.password-field');
   });
 
+  it('keeps Relay Audience Balcony host-controlled and choice-based',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain("rpc('set_relay_audience'");
+    expect(data).toContain("rpc('create_relay_poll'");
+    expect(data).toContain("rpc('vote_relay_poll'");
+    expect(live).toContain('Open Audience Balcony');
+    expect(live).toContain('Ask the audience');
+    expect(live).toContain('Writers in the relay cannot vote');
+    expect(polish).toContain('Audience Balcony + Ink Duels');
+  });
+
+  it('keeps Ink Duels timed, blind and participation-focused',()=>{
+    const data=read('src/palaceData.js');
+    expect(data).toContain("rpc('get_micro_duels')");
+    expect(data).toContain("rpc('create_micro_duel'");
+    expect(data).toContain("rpc('submit_micro_duel_entry'");
+    expect(data).toContain("rpc('vote_micro_duel'");
+    expect(live).toContain('MICRO-FICTION DUELS');
+    expect(live).toContain('Fifteen minutes. One strange prompt.');
+    expect(live).toContain('Cast blind vote');
+    expect(live).toContain('winning never changes discovery ranking');
+  });
+
   it('keeps chapter praise unified with Heart Star Moon Crown',()=>{
     const polish=read('src/polish.css');
     expect(live).toContain('LEAVE A LITTLE LIGHT ON THIS CHAPTER');
