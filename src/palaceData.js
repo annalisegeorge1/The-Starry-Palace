@@ -2,6 +2,37 @@ import { supabase } from './supabase';
 
 function needClient(){if(!supabase) throw new Error('The Palace data connection is not configured.');return supabase}
 export async function getMyProfile(userId){const{data,error}=await needClient().from('profiles').select('id,username,display_name,title,bio,avatar_url,cover_url,visibility,message_policy,pronouns,status_line,availability,roles,featured_genres,featured_fandoms,accent,cover_position,support_enabled,support_label,support_url').eq('id',userId).single();if(error)throw error;return data}
+export async function getOnboardingState(userId){
+ const [profile,settings]=await Promise.all([
+  getMyProfile(userId),
+  needClient().from('user_settings').select('settings,recommendation_learning,discovery_visibility').eq('user_id',userId).maybeSingle()
+ ]);
+ if(settings.error)throw settings.error;
+ const prefs=settings.data?.settings||{};
+ return{
+  completed:!!prefs.onboarding_completed,
+  version:Number(prefs.onboarding_version||0),
+  profile,
+  interests:Array.isArray(prefs.discovery_interests)?prefs.discovery_interests:[],
+  fandoms:Array.isArray(prefs.discovery_fandoms)?prefs.discovery_fandoms:[],
+  intentions:Array.isArray(prefs.palace_intentions)?prefs.palace_intentions:[],
+  recommendationLearning:settings.data?.recommendation_learning!==false,
+  discoveryVisibility:settings.data?.discovery_visibility!==false
+ }
+}
+export async function saveOnboardingState(userId,{displayName,interests=[],fandoms=[],intentions=[],recommendationLearning=true,discoveryVisibility=true}={}){
+ const clean=(list,max=10,len=60)=>Array.isArray(list)?list.map(x=>String(x||'').trim().slice(0,len)).filter(Boolean).slice(0,max):[];
+ const current=await needClient().from('user_settings').select('settings').eq('user_id',userId).maybeSingle();
+ if(current.error)throw current.error;
+ const settings={...(current.data?.settings||{}),onboarding_completed:true,onboarding_version:1,onboarding_completed_at:new Date().toISOString(),discovery_interests:clean(interests),discovery_fandoms:clean(fandoms),palace_intentions:clean(intentions,6,32)};
+ const updates=await needClient().from('user_settings').upsert({user_id:userId,settings,recommendation_learning:!!recommendationLearning,discovery_visibility:!!discoveryVisibility,updated_at:new Date().toISOString()},{onConflict:'user_id'}).select('settings').single();
+ if(updates.error)throw updates.error;
+ if(displayName?.trim()){
+  const profile=await needClient().from('profiles').update({display_name:displayName.trim().slice(0,80),featured_genres:clean(interests),featured_fandoms:clean(fandoms)}).eq('id',userId).select('id').single();
+  if(profile.error)throw profile.error;
+ }
+ return updates.data
+}
 export async function updateMyProfile(userId,patch){
  const username=patch.username?.trim().toLowerCase().replace(/^@/,'');
  if(username&&!/^[a-z0-9_]{3,30}$/.test(username))throw new Error('Your Palace handle may use 3–30 lowercase letters, numbers and underscores.');
@@ -704,7 +735,7 @@ export async function getWorkReaderState(userId,workId){
  const[saved,sub,progress]=await Promise.all([
   needClient().from('saved_works').select('work_id').eq('user_id',userId).eq('work_id',workId).maybeSingle(),
   needClient().from('story_subscriptions').select('enabled,frequency').eq('user_id',userId).eq('work_id',workId).maybeSingle(),
-  needClient().from('reading_progress').select('chapter_id,progress_percent,completed,updated_at').eq('user_id',userId).eq('work_id',workId).maybeSingle()
+  needClient().from('reading_progress').select('chapter_id,progress_percent,chapter_progress_percent,completed,updated_at').eq('user_id',userId).eq('work_id',workId).maybeSingle()
  ]);
  for(const r of[saved,sub,progress])if(r.error)throw r.error;
  return{saved:!!saved.data,following:!!sub.data?.enabled,frequency:sub.data?.frequency||'all',progress:progress.data||null}
@@ -714,7 +745,7 @@ export async function getWorkShelfState(userId){
  const[saved,subs,progress]=await Promise.all([
   needClient().from('saved_works').select('work_id').eq('user_id',userId),
   needClient().from('story_subscriptions').select('work_id,enabled,frequency').eq('user_id',userId).eq('enabled',true),
-  needClient().from('reading_progress').select('work_id,chapter_id,progress_percent,completed,updated_at').eq('user_id',userId)
+  needClient().from('reading_progress').select('work_id,chapter_id,progress_percent,chapter_progress_percent,completed,updated_at').eq('user_id',userId)
  ]);
  for(const r of[saved,subs,progress])if(r.error)throw r.error;
  const state={};
@@ -731,7 +762,7 @@ export async function setWorkSaved(userId,workId,enabled){
 export async function setWorkFollowing(userId,workId,enabled){
  const{error}=await needClient().from('story_subscriptions').upsert({user_id:userId,work_id:workId,enabled,updated_at:new Date().toISOString()},{onConflict:'user_id,work_id'});if(error)throw error;return enabled
 }
-export async function recordReadingProgress(userId,workId,chapterId,percent=0,completed=false){const next=Math.max(0,Math.min(100,percent));const current=await needClient().from('reading_progress').select('chapter_id,progress_percent,completed').eq('user_id',userId).eq('work_id',workId).maybeSingle();if(current.error)throw current.error;const sameChapter=current.data?.chapter_id===chapterId;const progress=sameChapter?Math.max(Number(current.data?.progress_percent||0),next):next;const done=sameChapter?Boolean(current.data?.completed||completed):Boolean(completed);const{error}=await needClient().from('reading_progress').upsert({user_id:userId,work_id:workId,chapter_id:chapterId,progress_percent:progress,completed:done,updated_at:new Date().toISOString()},{onConflict:'user_id,work_id'});if(error)throw error}
+export async function recordReadingProgress(userId,workId,chapterId,percent=0,completed=false,chapterPercent=0){const next=Math.max(0,Math.min(100,Number(percent)||0));const chapterNext=Math.max(0,Math.min(100,Number(chapterPercent)||0));const current=await needClient().from('reading_progress').select('chapter_id,progress_percent,chapter_progress_percent,completed').eq('user_id',userId).eq('work_id',workId).maybeSingle();if(current.error)throw current.error;const sameChapter=current.data?.chapter_id===chapterId;const progress=sameChapter?Math.max(Number(current.data?.progress_percent||0),next):next;const done=sameChapter?Boolean(current.data?.completed||completed):Boolean(completed);const precise=completed?100:chapterNext;const{error}=await needClient().from('reading_progress').upsert({user_id:userId,work_id:workId,chapter_id:chapterId,progress_percent:progress,chapter_progress_percent:precise,completed:done,updated_at:new Date().toISOString()},{onConflict:'user_id,work_id'});if(error)throw error}
 
 export async function getWorkCommunity(workId){const [tags,comments]=await Promise.all([needClient().from('work_tags').select('position,tags(id,name,category,status)').eq('work_id',workId).order('position'),needClient().from('comments').select('id,work_id,chapter_id,author_id,parent_comment_id,comment_type,body,spoiler,status,created_at,profiles!comments_author_id_fkey(username,display_name,avatar_url)').eq('work_id',workId).order('created_at')]);if(tags.error)throw tags.error;if(comments.error)throw comments.error;return{tags:(tags.data||[]).filter(x=>x.tags?.status==='canonical'),comments:comments.data||[]}}
 export async function addWorkTag(userId,workId,tagId){const{error}=await needClient().from('work_tags').insert({work_id:workId,tag_id:tagId});if(error&&error.code!=='23505')throw error}
