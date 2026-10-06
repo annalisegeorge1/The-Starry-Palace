@@ -783,6 +783,23 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.password-field');
   });
 
+  it('keeps the Prompt Orrery playful and zero-stakes',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('PROMPT ORRERY · THREE REELS · ZERO STAKES');
+    expect(live).toContain('Pull the lever');
+    expect(live).toContain('no coins, no points, no paid rerolls and no streaks');
+    expect(live).toContain('GENRE / VIBE');
+    expect(live).toContain('RANDOM OBJECT');
+    expect(live).toContain('TWIST');
+    expect(polish).toContain('Prompt Orrery · creative three-reel generator');
+  });
+
+  it('uses the live ranking preference column for public opt-out',()=>{
+    expect(live).toContain("{opted_out:!rankings?.preferences?.opted_out}");
+    expect(live).toContain("checked={!!rankings.preferences?.opted_out}");
+    expect(live).not.toContain('public_opt_out');
+  });
+
   it('keeps empty Series shelves actionable instead of dead-ended',()=>{
     const polish=read('src/polish.css');
     expect(live).toContain('series-empty-state');
