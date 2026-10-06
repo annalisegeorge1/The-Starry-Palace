@@ -1136,6 +1136,7 @@ describe('Starry Palace launch safety',()=>{
 
   it('keeps the Prompt Orrery playful rich and zero-stakes',()=>{
     const polish=read('src/polish.css');
+    const next=read('src/palace-next.css');
     const orrery=read('src/promptOrreryData.js');
     expect(live).toContain('PROMPT ORRERY · 2,012 CONSTELLATIONS · ZERO STAKES');
     expect(live).toContain('Pull the lever');
@@ -1153,7 +1154,7 @@ describe('Starry Palace launch safety',()=>{
     expect(orrery).toContain('ORRERY_CONFLICTS');
     expect(orrery).toContain('ORRERY_DIFFICULTIES');
     expect(polish).toContain('Prompt Orrery · creative three-reel generator');
-    expect(polish).toContain('Prompt Orrery 2,012 — richer constellations without a heavier default desk.');
+    expect(next).toContain('Prompt Orrery 2,012 — richer constellations without a heavier default desk.');
   });
 
   it('uses the live ranking preference column for public opt-out',()=>{
