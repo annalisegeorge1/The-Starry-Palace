@@ -877,6 +877,11 @@ export async function setChapterStar(userId,chapterId,starred){
 }
 export async function saveWork(userId,workId,patch){const allowed={title:patch.title?.trim(),summary:patch.summary??'',rating:patch.rating,language:patch.language?.trim()||'en',completion_status:patch.completion_status,visibility:patch.visibility,comment_policy:patch.comment_policy,constructive_criticism:!!patch.constructive_criticism,translation_policy:patch.translation_policy,download_policy:patch.download_policy,updated_at:new Date().toISOString()};const{data,error}=await needClient().from('works').update(allowed).eq('id',workId).eq('author_id',userId).select().single();if(error)throw error;return data}
 export async function createChapter(userId,workId,title){const clean=title.trim();if(!clean)throw new Error('Give the chapter a title first.');const pos=await needClient().from('chapters').select('position').eq('work_id',workId).order('position',{ascending:false}).limit(1);if(pos.error)throw pos.error;const position=(pos.data?.[0]?.position||0)+1;const{data,error}=await needClient().from('chapters').insert({work_id:workId,title:clean,position,status:'draft'}).select().single();if(error)throw error;return data}
+export async function reorderWorkChapters(workId,chapterIds){
+ const ids=[...new Set((chapterIds||[]).filter(Boolean))];
+ const{data,error}=await needClient().rpc('reorder_work_chapters',{p_work_id:workId,p_chapter_ids:ids});
+ if(error)throw error;return data
+}
 function plainWordCount(text){return text.replace(/<[^>]*>/g,' ').trim().split(/\s+/).filter(Boolean).length}
 export async function saveChapter(userId,chapterId,patch){const body=patch.body_html??'';const{data,error}=await needClient().from('chapters').update({title:patch.title?.trim(),body_html:body,word_count:plainWordCount(body),revision_note:patch.revision_note??'',updated_at:new Date().toISOString()}).eq('id',chapterId).select().single();if(error)throw error;return data}
 export async function getChapterSnapshots(chapterId){
