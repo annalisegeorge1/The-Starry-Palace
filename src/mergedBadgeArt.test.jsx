@@ -72,8 +72,13 @@ describe('merged 100-path badge artwork',()=>{
   expect(css).toContain('.approved-badge-stage{background:transparent');
   expect(css).toContain('.merged-badge-stage.is-object{');
   expect(css).toContain('.badge-tier-frame::before');
+  expect(css).toContain('.badge-tier-ornament');
+  expect(css).toContain('.tier-gold .badge-tier-ornament');
+  expect(css).toContain('.tier-platinum .badge-tier-ornament');
+  expect(css).toContain('.tier-emerald .badge-tier-ornament');
   expect(css).toContain('.tier-emerald .badge-tier-frame');
   expect(component).toContain('approved-badge-stage is-object badge-tier-frame');
   expect(component).toContain("is-object badge-tier-frame");
+  expect(component).toContain('badge-tier-ornament');
  });
 });
