@@ -916,9 +916,10 @@ async function signedAsset(bucket,path,expiresIn=3600){
 }
 export async function getPublishedComics(){
  const{data,error}=await needClient().from('comics').select('id,creator_id,title,slug,summary,rating,completion_status,visibility,reading_direction,download_policy,required_credit_line,comment_policy,cover_path,last_published_at').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(30);
- if(error)throw error;const comics=data||[];const creators=[...new Set(comics.map(c=>c.creator_id).filter(Boolean))];let profiles=[];
+ if(error)throw error;const comics=data||[];const creators=[...new Set(comics.map(c=>c.creator_id).filter(Boolean))];const comicIds=comics.map(c=>c.id);let profiles=[];let tagRows=[];
  if(creators.length){const p=await needClient().from('profiles').select('id,username,display_name,avatar_url').in('id',creators);if(p.error)throw p.error;profiles=p.data||[]}
- return Promise.all(comics.map(async c=>({...c,creator:profiles.find(p=>p.id===c.creator_id)||null,cover_url:await signedAsset('comic-covers',c.cover_path)})));
+ if(comicIds.length){const t=await needClient().from('comic_tags').select('comic_id,position,tags(id,name,category,status)').in('comic_id',comicIds).order('position');if(t.error)throw t.error;tagRows=t.data||[]}
+ return Promise.all(comics.map(async c=>({...c,creator:profiles.find(p=>p.id===c.creator_id)||null,tags:tagRows.filter(x=>x.comic_id===c.id&&['canonical','community'].includes(x.tags?.status)),cover_url:await signedAsset('comic-covers',c.cover_path)})));
 }
 export async function getComicBySlug(slug){
  const{data:comic,error}=await needClient().from('comics').select('*').eq('slug',slug).maybeSingle();if(error)throw error;if(!comic)return null;
