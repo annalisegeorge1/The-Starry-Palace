@@ -48,6 +48,9 @@ export async function getMyCelestialPoints(){
  const{data,error}=await needClient().rpc('get_my_celestial_points');if(error)throw error;
  return data?.[0]||{lifetime_points:0,giving_points:0,receiving_points:0,participation_points:0}
 }
+export async function getMyCelestialPointLedger(limit=20){
+ const{data,error}=await needClient().rpc('get_my_celestial_point_ledger',{p_limit:limit});if(error)throw error;return data||[]
+}
 export async function getPalacePraiseState(targetKind,targetId){
  const{data,error}=await needClient().rpc('get_palace_praise_state',{p_target_kind:targetKind,p_target_id:targetId});if(error)throw error;
  return data||{praise:null,counts:{heart:0,star:0,moon:0,crown:0}}
