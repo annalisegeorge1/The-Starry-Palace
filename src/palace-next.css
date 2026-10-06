@@ -1553,3 +1553,12 @@
   background:rgba(111,84,165,.045);
   border-color:rgba(96,77,142,.09);
 }
+
+.writer-document-map nav button.scene{
+  margin-left:34px;
+  opacity:.88;
+}
+.writer-document-map nav button.scene>span{
+  border-style:dashed;
+  color:#b49bcf;
+}
