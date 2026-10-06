@@ -172,7 +172,7 @@ function Frame({children,privateArea=false}){
  function submitSearch(e){e.preventDefault();if(search.trim())navigate('/search?q='+encodeURIComponent(search.trim()))}
  function chooseCommand(path){setCommandOpen(false);setCommandQuery('');setCommandIndex(0);navigate(path)}
  function searchCommand(){const q=commandQuery.trim();if(!q)return;setCommandOpen(false);setCommandQuery('');setCommandIndex(0);navigate('/search?q='+encodeURIComponent(q))}
- return <div className={"palace-shell full-palace-shell "+(navOpen?'nav-open ':'')+(daylight?'daylight':'nightfall')}>
+ return <div data-palace-frame="ready" className={"palace-shell full-palace-shell "+(navOpen?'nav-open ':'')+(daylight?'daylight':'nightfall')}>
   <a className="skip-to-content" href="#palace-content">Skip to main content</a>
   <aside className="sidebar full-sidebar" aria-label="Palace navigation">
    <div className="palace-cover-live restored-cover dusk-gif-cover"><img src="/assets/palace/palace-belonging.gif" alt="" aria-hidden="true"/><div className="dusk-cover-glass" aria-hidden="true"/><button className="nav-close" onClick={()=>setNavOpen(false)} aria-label="Close Palace navigation">×</button></div>
@@ -266,6 +266,39 @@ function NavigationReset(){
  },[location.pathname,location.search]);
  return null;
 }
+function BlankScreenWatchdog(){
+ const location=useLocation();
+ React.useEffect(()=>{
+  let firstTimer,secondTimer;
+  const inspect=()=>{
+   const root=document.getElementById('root');
+   if(!root)return;
+   const shell=root.querySelector('[data-palace-frame="ready"]');
+   const loader=root.querySelector('.route-loading');
+   const recovery=root.querySelector('.route-recovery');
+   const content=root.querySelector('#palace-content');
+   const rootText=(root.textContent||'').trim();
+   const contentText=(content?.textContent||'').trim();
+   const blankRoot=root.childElementCount===0||rootText.length<3||root.getBoundingClientRect().height<40;
+   const blankRoom=!!shell&&!!content&&content.childElementCount===0&&contentText.length<3;
+   if((blankRoot||blankRoom)&&!loader&&!recovery){
+    const refreshed=schedulePalaceReload('palace-blank-screen-reload:'+location.pathname,80);
+    if(!refreshed&&root){
+     root.innerHTML='<div class="route-recovery blank-screen-recovery" role="alert"><div><span aria-hidden="true">☾<b>✦</b></span><h1>This room lost its moonlight.</h1><p>The Palace caught an incomplete screen instead of leaving it blank.</p><button onclick="window.location.reload()">Restore this room</button></div></div>';
+    }
+   }
+  };
+  firstTimer=window.setTimeout(inspect,3200);
+  secondTimer=window.setTimeout(inspect,7600);
+  const onPageShow=event=>{if(event.persisted)window.setTimeout(inspect,180)};
+  const onVisible=()=>{if(document.visibilityState==='visible')window.setTimeout(inspect,220)};
+  window.addEventListener('pageshow',onPageShow);
+  document.addEventListener('visibilitychange',onVisible);
+  return()=>{window.clearTimeout(firstTimer);window.clearTimeout(secondTimer);window.removeEventListener('pageshow',onPageShow);document.removeEventListener('visibilitychange',onVisible)};
+ },[location.pathname,location.search]);
+ return null;
+}
+
 function RouteLoading(){
  const[slow,setSlow]=useState(false);
  React.useEffect(()=>{const timer=window.setTimeout(()=>setSlow(true),2200);return()=>window.clearTimeout(timer)},[]);
@@ -299,7 +332,7 @@ function RouteGuard({children}){
  return <RouteErrorBoundary key={location.pathname+location.search}>{children}</RouteErrorBoundary>
 }
 
-function App(){return <AuthProvider><NavigationReset/><RoomBundleWarmup/><RouteGuard><React.Suspense fallback={<RouteLoading/>}><Routes>
+function App(){return <AuthProvider><NavigationReset/><BlankScreenWatchdog/><RoomBundleWarmup/><RouteGuard><React.Suspense fallback={<RouteLoading/>}><Routes>
  <Route path="/" element={<Home/>}/><Route path="/login" element={<Login/>}/><Route path="/auth/callback" element={<Callback/>}/>
  <Route path="/welcome" element={<ProtectedRoute><OnboardingLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
