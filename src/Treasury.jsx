@@ -71,6 +71,22 @@ export default function Treasury({Frame}) {
  const totalCopies=[...inventory.values()].reduce((n,x)=>n+x.copies,0);
  const duplicateDistinct=[...inventory.values()].filter(x=>x.hasDuplicates).length;
  const ascendableDistinct=[...inventory.values()].filter(x=>x.ascendable).length;
+ const titleConstellations=useMemo(()=>{
+  const meta={
+   250:{name:'First Light',sigil:'✧',copy:'The first celestial names appear when your light begins to travel.'},
+   500:{name:'Moon Court',sigil:'☾',copy:'Lunar, spectral and oracle titles for a presence growing unmistakable.'},
+   1000:{name:'Eclipse Court',sigil:'◐',copy:'Mythic sovereign names, including Celestial Monarch, begin here.'},
+   2500:{name:'Astral Throne',sigil:'♢',copy:'High-court titles for sustained creation, generosity and stewardship.'},
+   5000:{name:'Crown Constellation',sigil:'♕',copy:'Exalted names reserved for a light carried across the Palace for a long time.'}
+  };
+  const groups=new Map();
+  for(const title of specialTitles){
+   const need=Number(title.celestial_points_required||0);
+   if(!groups.has(need))groups.set(need,{need,...(meta[need]||{name:'Celestial Court',sigil:'✦',copy:'A constellation of earned Palace titles.'}),titles:[]});
+   groups.get(need).titles.push(title);
+  }
+  return[...groups.values()].sort((a,b)=>a.need-b.need);
+ },[specialTitles]);
  const duplicateRows=(ownedData.gifts||[]).filter(x=>Number(x.copies)>=2);
  const pendingIncoming=trades.filter(x=>x.recipient_id===session.user.id&&x.status==='pending');
  const pendingOutgoing=trades.filter(x=>x.offerer_id===session.user.id&&x.status==='pending');
@@ -162,7 +178,7 @@ export default function Treasury({Frame}) {
     <span><strong>{Number(celestial.participation_points||0).toLocaleString()}</strong><small>from participation</small></span>
    </div>
    <div className="celestial-title-ladder">
-    {specialTitles.map(t=>{const need=Number(t.celestial_points_required||0);const have=Number(celestial.lifetime_points||0);const unlocked=t.entitled||have>=need;const pct=Math.max(0,Math.min(100,need?have/need*100:100));return <article key={t.title} className={unlocked?'unlocked':''}><div><small>{unlocked?'UNLOCKED':'SPECIAL TITLE'}</small><strong>{t.title}</strong><p>{t.description}</p></div><div className="celestial-title-progress"><span><i style={{width:pct+'%'}}/></span><b>{unlocked?'Yours':have.toLocaleString()+' / '+need.toLocaleString()}</b></div></article>})}
+    {titleConstellations.map(group=>{const have=Number(celestial.lifetime_points||0);const groupUnlocked=have>=group.need;const pct=Math.max(0,Math.min(100,group.need?have/group.need*100:100));return <section className={"title-constellation "+(groupUnlocked?'unlocked':'')} key={group.need}><header><span>{group.sigil}</span><div><small>{group.need.toLocaleString()} CELESTIAL POINTS</small><h3>{group.name}</h3><p>{group.copy}</p></div><div className="title-constellation-progress"><i><b style={{width:pct+'%'}}/></i><strong>{groupUnlocked?'Constellation unlocked':have.toLocaleString()+' / '+group.need.toLocaleString()}</strong></div></header><div className="title-constellation-grid">{group.titles.map(t=>{const unlocked=t.entitled||have>=group.need;return <article key={t.title} className={unlocked?'unlocked':''}><small>{unlocked?'YOURS TO WEAR':'VEILED TITLE'}</small><strong>{t.title}</strong><p>{t.description}</p></article>})}</div></section>})}
    </div>
    <details className="celestial-ledger"><summary>How my points were earned</summary>{celestialLedger.length?<div>{celestialLedger.map((row,i)=><article key={row.created_at+'-'+i}><span className={"celestial-ledger-mark "+row.channel}>{row.channel==='giving'?'✧':row.channel==='receiving'?'☾':row.channel==='legacy'?'♛':'✦'}</span><div><strong>{String(row.reason||'Palace activity').replaceAll('_',' ')}</strong><small>{new Date(row.created_at).toLocaleString(undefined,{month:'short',day:'numeric',year:'numeric'})} · {row.channel}</small></div><b>+{row.points}</b></article>)}</div>:<p>No Celestial Point entries yet.</p>}</details>
   </section>
