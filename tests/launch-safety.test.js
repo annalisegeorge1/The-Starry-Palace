@@ -951,6 +951,20 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.writing-pad-primary');
   });
 
+  it('refreshes stale open tabs and protects the tablet writing desk',()=>{
+    const polish=read('src/polish.css');
+    expect(main).toContain('function PalaceBuildFreshnessWatch()');
+    expect(main).toContain("fetch('/index.html?palace-fresh='");
+    expect(main).toContain("schedulePalaceReload('palace-new-build-reload'");
+    expect(main).toContain('<PalaceBuildFreshnessWatch/>');
+    expect(live).toContain("document.body.classList.add('writing-desk-open')");
+    expect(live).toContain('className="heritage-month"');
+    expect(polish).toContain('Tablet screenshot correction pass · October 6 2026');
+    expect(polish).toContain('body.writing-desk-open .chic-studio-buttons');
+    expect(polish).toContain('bottom:calc(84px + env(safe-area-inset-bottom))');
+    expect(polish).toContain('.heritage-date .heritage-month');
+  });
+
   it('makes Palace Life conversations, discovery and Room polls feel connected',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
@@ -1316,8 +1330,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain("new Error('Palace room load timeout')");
     expect(main).toContain("schedulePalaceReload('palace-script-error-reload'");
     expect(main).not.toContain('return new Promise(()=>{})');
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100609');
-    expect(polish).toContain('--palace-room-css-version:2026100609');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100610');
+    expect(polish).toContain('--palace-room-css-version:2026100610');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
