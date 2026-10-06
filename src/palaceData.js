@@ -396,6 +396,17 @@ export async function setForumThreadPreference(userId,threadId,type,enabled){
  }
  return enabled
 }
+export async function nominateCommunityHighlight(userId,memberId,reason){
+ const text=String(reason||'').trim();
+ if(!memberId)throw new Error('Choose a Palace member to recognise.');
+ if(memberId===userId)throw new Error('Community Highlights are for recognising another member.');
+ if(text.length<20)throw new Error('Tell the Palace a little more about why this member deserves recognition.');
+ const existing=await needClient().from('community_highlights').select('id,status').eq('created_by',userId).eq('member_id',memberId).eq('status','nominated').maybeSingle();
+ if(existing.error)throw existing.error;
+ if(existing.data)throw new Error('You already have an open nomination for this member.');
+ const{data,error}=await needClient().from('community_highlights').insert({member_id:memberId,created_by:userId,reason:text.slice(0,1000),status:'nominated'}).select().single();
+ if(error)throw error;return data
+}
 export async function setCommunityHighlightChampion(userId,highlightId,enabled){
  if(enabled){const{error}=await needClient().from('community_highlight_champions').upsert({highlight_id:highlightId,user_id:userId},{onConflict:'highlight_id,user_id'});if(error)throw error}
  else{const{error}=await needClient().from('community_highlight_champions').delete().eq('highlight_id',highlightId).eq('user_id',userId);if(error)throw error}
