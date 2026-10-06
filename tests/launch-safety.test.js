@@ -783,6 +783,19 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.password-field');
   });
 
+  it('keeps Celestial praise and special-title progress wired',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain("rpc('get_my_celestial_points')");
+    expect(data).toContain("rpc('give_palace_praise'");
+    expect(data).toContain("rpc('record_palace_share'");
+    expect(live).toContain('LEAVE A LITTLE LIGHT');
+    expect(live).toContain("['heart','♡','Heart']");
+    expect(live).toContain("['crown','♕','Crown']");
+    expect(live).toContain('Celestial Points');
+    expect(polish).toContain('Celestial praise row · Heart Star Moon Crown');
+  });
+
   it('keeps the Prompt Orrery playful and zero-stakes',()=>{
     const polish=read('src/polish.css');
     expect(live).toContain('PROMPT ORRERY · THREE REELS · ZERO STAKES');
