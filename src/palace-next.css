@@ -1684,3 +1684,42 @@
     scroll-snap-align:start;
   }
 }
+
+
+/* Safer Writer find/replace controls. */
+.writer-find-replace>summary{
+  display:flex;
+  align-items:center;
+  gap:.4rem;
+}
+.writer-find-replace>summary small{
+  margin-left:auto;
+  color:#8d8598;
+  font-size:.44rem;
+  font-weight:500;
+}
+.writer-find-replace>div{
+  grid-template-columns:minmax(130px,1fr) minmax(130px,1fr) auto;
+}
+.writer-find-replace>div>label{
+  display:flex;
+  align-items:center;
+  gap:.32rem;
+  color:#91899c;
+  font-size:.47rem;
+  white-space:nowrap;
+}
+.writer-find-replace>div>label input{
+  width:auto;
+  min-height:0;
+  margin:0;
+}
+.writer-find-replace>div>span[role="status"]{
+  grid-column:1/-1;
+  color:#a99bb8;
+  font-size:.47rem;
+}
+@media(max-width:720px){
+  .writer-find-replace>div{grid-template-columns:1fr}
+  .writer-find-replace>div>span[role="status"]{grid-column:auto}
+}
