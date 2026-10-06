@@ -1134,15 +1134,26 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('Prism personality + expanded writer desk + Palace sigils');
   });
 
-  it('keeps the Prompt Orrery playful and zero-stakes',()=>{
+  it('keeps the Prompt Orrery playful rich and zero-stakes',()=>{
     const polish=read('src/polish.css');
-    expect(live).toContain('PROMPT ORRERY · 1,012 CONSTELLATIONS · ZERO STAKES');
+    const orrery=read('src/promptOrreryData.js');
+    expect(live).toContain('PROMPT ORRERY · 2,012 CONSTELLATIONS · ZERO STAKES');
     expect(live).toContain('Pull the lever');
-    expect(live).toContain('More than one thousand curated prompt constellations');
+    expect(live).toContain('Shape the orbit');
+    expect(live).toContain('promptFilterKeys');
+    expect(live).toContain('Copy full prompt');
     expect(live).toContain('GENRE / VIBE');
     expect(live).toContain('RANDOM OBJECT');
     expect(live).toContain('TWIST');
+    expect(orrery).toContain('length:2012');
+    expect(orrery).toContain('ORRERY_MOODS');
+    expect(orrery).toContain('ORRERY_CHARACTERS');
+    expect(orrery).toContain('ORRERY_RELATIONSHIPS');
+    expect(orrery).toContain('ORRERY_SETTINGS');
+    expect(orrery).toContain('ORRERY_CONFLICTS');
+    expect(orrery).toContain('ORRERY_DIFFICULTIES');
     expect(polish).toContain('Prompt Orrery · creative three-reel generator');
+    expect(polish).toContain('Prompt Orrery 2,012 — richer constellations without a heavier default desk.');
   });
 
   it('uses the live ranking preference column for public opt-out',()=>{
