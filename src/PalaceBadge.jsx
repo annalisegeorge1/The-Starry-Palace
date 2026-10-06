@@ -22,8 +22,21 @@ function loadFrames(rank){
  if(!frameCache.has(rank))frameCache.set(rank,frameLoaders[rank]().then(m=>m.default||m).catch(error=>{frameCache.delete(rank);throw error}));
  return frameCache.get(rank);
 }
-function SheetArt({frame,id,mount=false}){
- return <svg className={mount?'original-badge-mount':'original-badge-picture'} viewBox={frame.box.join(' ')} preserveAspectRatio={mount?'none':'xMidYMid meet'} focusable="false" aria-hidden="true"><defs><clipPath id={id} clipPathUnits="userSpaceOnUse"><path d={frame.clip} transform={`translate(${frame.box[0]} ${frame.box[1]})`} fillRule={mount?'evenodd':undefined} clipRule={mount?'evenodd':undefined}/></clipPath></defs><image href={'/assets/palace-originals/'+frame.asset} width={frame.width} height={frame.height} clipPath={`url(#${id})`}/></svg>;
+function SheetArt({frame,id,mount=false,className=''}) {
+ const base=mount?'original-badge-mount':'original-badge-picture';
+ return <svg className={base+(className?' '+className:'')} viewBox={frame.box.join(' ')} preserveAspectRatio={mount?'xMidYMid meet':'xMidYMid meet'} focusable="false" aria-hidden="true"><defs><clipPath id={id} clipPathUnits="userSpaceOnUse"><path d={frame.clip} transform={`translate(${frame.box[0]} ${frame.box[1]})`} fillRule={mount?'evenodd':undefined} clipRule={mount?'evenodd':undefined}/></clipPath></defs><image href={'/assets/palace-originals/'+frame.asset} width={frame.width} height={frame.height} clipPath={`url(#${id})`}/></svg>;
+}
+
+const tierMounts={
+ bronze:{box:[0,50,434,595],clip:'M0 0H434V595H0Z M106 146H328V390H106Z',width:2172,height:724,asset:'palace-watercolour-tier-mounts.png'},
+ silver:{box:[434,50,435,595],clip:'M0 0H435V595H0Z M107 146H328V390H107Z',width:2172,height:724,asset:'palace-watercolour-tier-mounts.png'},
+ gold:{box:[869,50,434,595],clip:'M0 0H434V595H0Z M106 146H328V390H106Z',width:2172,height:724,asset:'palace-watercolour-tier-mounts.png'},
+ platinum:{box:[1303,50,435,595],clip:'M0 0H435V595H0Z M107 146H328V390H107Z',width:2172,height:724,asset:'palace-watercolour-tier-mounts.png'},
+ emerald:{box:[1738,50,434,595],clip:'M0 0H434V595H0Z M106 146H328V390H106Z',width:2172,height:724,asset:'palace-watercolour-tier-mounts.png'}
+};
+
+function PaintedTierMount({rank,id}){
+ return <SheetArt frame={tierMounts[rank]||tierMounts.bronze} id={id} mount className="painted-tier-mount"/>;
 }
 
 // Art never grants achievements: unlock records remain authoritative.
@@ -49,7 +62,7 @@ export default function PalaceBadge({family,tier='bronze',locked=false}){
  const name=family?.name||'Palace achievement';
  
  return <figure className={'palace-watercolour-badge tier-'+rank+(locked?' is-locked':'')}>
-  {merged?<span className={'original-badge-stage merged-badge-stage '+(merged.type==='court'?'is-character':'is-object badge-tier-frame')}><MergedBadgeArt art={merged} name={name}/>{merged.type==='object'&&<span className="badge-tier-ornament" aria-hidden="true"><i/><i/><i/></span>}</span>:approved?<span className="original-badge-stage approved-badge-stage is-object badge-tier-frame"><ApprovedBadgeArt frame={approved} name={name} tier={rank}/><span className="badge-tier-ornament" aria-hidden="true"><i/><i/><i/></span></span>:frame?<span className={'original-badge-stage'+(frame.character?' is-character':'')} role="img" aria-label={name+' · '+rank+' artwork'+(locked?' (preview)':'')}><SheetArt frame={frame} id={id}/>{frame.mount&&<SheetArt frame={frame.mount} id={id+'-mount'} mount/>}</span>:<span className="original-badge-stage" role="status">{loading?'Artwork loading…':'Artwork unavailable'}</span>}
+  {merged?<span className={'original-badge-stage painted-tier-stage merged-badge-stage '+(merged.type==='court'?'is-character':'is-object')}><span className="painted-badge-inner"><MergedBadgeArt art={merged} name={name}/></span><PaintedTierMount rank={rank} id={id+'-painted-tier'}/></span>:approved?<span className="original-badge-stage painted-tier-stage approved-badge-stage is-object"><span className="painted-badge-inner"><ApprovedBadgeArt frame={approved} name={name} tier={rank}/></span><PaintedTierMount rank={rank} id={id+'-painted-tier'}/></span>:frame?<span className={'original-badge-stage'+(frame.character?' is-character':'')} role="img" aria-label={name+' · '+rank+' artwork'+(locked?' (preview)':'')}><SheetArt frame={frame} id={id}/>{frame.mount&&<SheetArt frame={frame.mount} id={id+'-mount'} mount/>}</span>:<span className="original-badge-stage" role="status">{loading?'Artwork loading…':'Artwork unavailable'}</span>}
   <figcaption>{rank}{locked?' · Preview':''}</figcaption>
  </figure>;
 }
