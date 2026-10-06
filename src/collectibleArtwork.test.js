@@ -26,8 +26,8 @@ describe('restored original artwork',()=>{
   expect(positions.size).toBe(600);
  });
  it('keeps the three Majapahit repaint corrections smaller and uncropped',()=>{
-  const component=readFileSync(new URL('./PalaceCollectibles.jsx',import.meta.url),'utf8');
-  const css=readFileSync(new URL('./treasury.css',import.meta.url),'utf8');
+  const component=readFileSync('src/PalaceCollectibles.jsx','utf8');
+  const css=readFileSync('src/treasury.css','utf8');
   expect(component).toContain("'palace-prize-majapahit-3':.72");
   expect(component).toContain("'palace-prize-majapahit-8':.70");
   expect(component).toContain("'palace-prize-majapahit-9':.72");
