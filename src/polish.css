@@ -1,4 +1,4 @@
-:root{--palace-room-css-version:2026100604}
+:root{--palace-room-css-version:2026100605}
 /* The Starry Palace — final professional polish layer
    Keep this file intentionally small and authoritative. New global visual
    refinements belong here instead of adding another override to style.css. */
@@ -16117,4 +16117,306 @@ button.quiet-button:not(.danger-action):hover,
   .heritage-filter-bar{grid-template-columns:1fr}
   .heritage-search{grid-column:auto}
   .calendar-heritage-legend{gap:6px 9px}
+}
+
+
+/* =========================================================
+   Moonlit lilac daylight + jewel-dark navigation refinement
+   ========================================================= */
+
+/* Nightfall gains the deep-purple accents the shell was missing. */
+.nightfall .full-sidebar{
+  border-right-color:rgba(145,105,203,.22)!important;
+  background:
+    radial-gradient(circle at 15% 5%,rgba(118,61,172,.20),transparent 16rem),
+    radial-gradient(circle at 95% 45%,rgba(65,38,112,.16),transparent 18rem),
+    linear-gradient(180deg,#160e2d 0%,#100b24 44%,#090b19 100%)!important;
+}
+.nightfall .full-sidebar::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(111,53,169,.08),transparent 24%),
+    radial-gradient(circle at 68% 18%,rgba(190,128,219,.07),transparent 12rem);
+}
+.nightfall .full-nav-room>a{
+  position:relative;
+  color:#bbb3c8;
+}
+.nightfall .full-nav-room>a:hover{
+  border-color:rgba(181,123,220,.20)!important;
+  background:linear-gradient(90deg,rgba(92,43,145,.18),rgba(33,25,67,.08))!important;
+  color:#eee7f7;
+}
+.nightfall .full-nav-room>a.active{
+  border-color:rgba(207,151,235,.30)!important;
+  color:#f5edf9!important;
+  background:
+    linear-gradient(90deg,rgba(98,43,153,.31),rgba(65,37,111,.18) 58%,rgba(19,20,47,.05))!important;
+  box-shadow:
+    inset 2px 0 0 rgba(211,154,236,.68),
+    0 8px 24px rgba(13,5,31,.12);
+}
+.nightfall .full-subnav{
+  border-left-color:rgba(155,101,199,.22)!important;
+}
+.nightfall .full-subnav>a.active{
+  color:#eadbf3!important;
+  background:rgba(104,54,153,.13)!important;
+}
+
+/* Sidebar sigils become jewel-like instead of greyed out. */
+.full-nav-room>a .room-sigil{
+  border-color:rgba(195,151,229,.22)!important;
+  background:
+    radial-gradient(circle at 28% 20%,rgba(255,255,255,.18),transparent 33%),
+    radial-gradient(circle at 76% 80%,rgba(197,114,215,.13),transparent 54%),
+    linear-gradient(145deg,rgba(108,58,157,.38),rgba(48,35,94,.25))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 5px 16px rgba(22,9,45,.15)!important;
+}
+.full-nav-room>a .room-sigil svg{
+  width:20px!important;
+  height:20px!important;
+  stroke-width:1.95!important;
+  filter:drop-shadow(0 0 7px rgba(190,145,232,.22));
+}
+.full-nav-room>a.active .room-sigil{
+  border-color:rgba(231,180,244,.48)!important;
+  background:
+    radial-gradient(circle at 30% 22%,rgba(255,255,255,.24),transparent 34%),
+    linear-gradient(145deg,rgba(142,72,190,.60),rgba(67,45,119,.47))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.13),
+    0 0 20px rgba(160,88,207,.22)!important;
+}
+.room-sigil-reading{color:#a8c9ff!important}
+.room-sigil-library{color:#d7b9ff!important}
+.room-sigil-writing{color:#ecaee8!important}
+.room-sigil-life{color:#91ded4!important}
+.room-sigil-events{color:#d6c0ff!important}
+.room-sigil-treasury{color:#efc99f!important}
+.room-sigil-settings{color:#c6b9d9!important}
+.room-sigil-council{color:#dab9e8!important}
+.top-room-sigil{
+  color:#d4b8ee!important;
+  filter:drop-shadow(0 0 7px rgba(178,119,218,.2));
+}
+.nav-toggle,.brandmark,.top-icon-link,.command-trigger{
+  border-color:rgba(188,137,221,.25)!important;
+  background:
+    radial-gradient(circle at 30% 22%,rgba(255,255,255,.08),transparent 34%),
+    rgba(75,41,118,.13)!important;
+}
+.brandmark{
+  color:#ead5f6!important;
+  box-shadow:0 0 24px rgba(144,75,196,.20)!important;
+}
+.nightfall .mobile-palace-dock{
+  border-color:rgba(205,152,231,.24)!important;
+  background:
+    radial-gradient(circle at 50% -55%,rgba(171,91,202,.20),transparent 15rem),
+    linear-gradient(180deg,rgba(37,18,67,.96),rgba(15,11,36,.98))!important;
+}
+.nightfall .mobile-palace-dock>a{color:#b9a9ca!important}
+.nightfall .mobile-palace-dock>a.active{
+  color:#fff2ff!important;
+  background:linear-gradient(145deg,rgba(129,59,175,.30),rgba(213,125,199,.08))!important;
+}
+
+/* Daylight is now lunar morning: lilac moonlight with sunrise/sunset warmth. */
+.full-palace-shell.daylight{
+  --palace-bg:#e9e1f5;
+  --palace-bg-deep:#ddd2ee;
+  --palace-panel:#f5effa;
+  --palace-panel-raised:#fbf7fd;
+  --palace-panel-soft:rgba(247,240,252,.84);
+  --palace-border:rgba(102,76,137,.18);
+  --palace-border-strong:rgba(111,74,158,.34);
+  --palace-text:#31263f;
+  --palace-muted:#70647c;
+  --palace-dim:#8b7e96;
+  --bg:var(--palace-bg);
+  --surface:var(--palace-panel);
+  --text:var(--palace-text);
+  --muted:var(--palace-muted);
+  --line:var(--palace-border);
+  color-scheme:light;
+  background:#e9e1f5;
+}
+.daylight .palace-stage,.daylight .full-stage{
+  background:
+    radial-gradient(circle at 84% 7%,rgba(255,196,165,.27),transparent 23rem),
+    radial-gradient(circle at 11% 13%,rgba(193,169,236,.40),transparent 28rem),
+    radial-gradient(circle at 72% 74%,rgba(238,174,198,.18),transparent 29rem),
+    radial-gradient(circle at 18% 83%,rgba(167,188,230,.22),transparent 27rem),
+    linear-gradient(180deg,#eee6f8 0%,#e6dcf2 48%,#eadff0 100%)!important;
+}
+.daylight .palace-stage::after,.daylight .full-stage::after{
+  opacity:.42!important;
+  filter:blur(48px)!important;
+  background:
+    radial-gradient(circle at 34% 32%,rgba(151,116,205,.24),transparent 39%),
+    radial-gradient(circle at 66% 58%,rgba(247,175,144,.18),transparent 43%),
+    radial-gradient(circle at 52% 78%,rgba(220,141,185,.12),transparent 48%)!important;
+}
+.daylight .palace-stage::before,.daylight .full-stage::before{
+  opacity:.30!important;
+  background:
+    radial-gradient(circle at 14% 16%,rgba(103,78,145,.22) 0 1px,transparent 1.45px),
+    radial-gradient(circle at 42% 35%,rgba(136,111,181,.17) 0 1px,transparent 1.35px),
+    radial-gradient(circle at 78% 20%,rgba(107,86,156,.18) 0 1px,transparent 1.45px),
+    radial-gradient(circle at 88% 64%,rgba(198,123,156,.16) 0 1px,transparent 1.35px),
+    radial-gradient(circle at 31% 79%,rgba(120,146,190,.15) 0 1px,transparent 1.45px)!important;
+  background-size:260px 230px,340px 310px,430px 370px,380px 340px,510px 420px!important;
+}
+.daylight .full-sidebar{
+  border-right-color:rgba(111,79,152,.18)!important;
+  background:
+    radial-gradient(circle at 22% 6%,rgba(192,159,230,.26),transparent 16rem),
+    radial-gradient(circle at 90% 52%,rgba(244,179,155,.15),transparent 17rem),
+    linear-gradient(180deg,#eee5f7 0%,#e5d9f0 62%,#ddd1ea 100%)!important;
+}
+.daylight .full-topbar{
+  border-bottom-color:rgba(105,76,143,.15)!important;
+  background:
+    linear-gradient(90deg,rgba(239,230,249,.92),rgba(246,235,245,.88) 64%,rgba(248,229,218,.86))!important;
+  box-shadow:0 8px 30px rgba(71,46,92,.08)!important;
+}
+.daylight .palace-cover-live{
+  border-color:rgba(118,82,162,.25)!important;
+  box-shadow:0 14px 28px rgba(73,48,101,.12)!important;
+}
+.daylight .identity-card-live{
+  border-color:rgba(119,81,159,.22)!important;
+  background:
+    linear-gradient(105deg,rgba(174,138,215,.20),rgba(247,185,163,.10))!important;
+}
+.daylight .nav-section-label{color:#7c668d!important}
+.daylight .full-nav-room>a{color:#5e5269!important}
+.daylight .full-nav-room>a:hover{
+  color:#352641!important;
+  border-color:rgba(119,81,161,.17)!important;
+  background:linear-gradient(90deg,rgba(164,121,202,.14),rgba(245,176,151,.06))!important;
+}
+.daylight .full-nav-room>a.active{
+  color:#33223f!important;
+  border-color:rgba(119,77,163,.24)!important;
+  background:
+    linear-gradient(90deg,rgba(163,119,203,.23),rgba(233,168,190,.10) 60%,rgba(249,190,158,.07))!important;
+  box-shadow:inset 2px 0 0 rgba(124,77,169,.46)!important;
+}
+.daylight .full-nav-room>a .room-sigil{
+  border-color:rgba(111,75,154,.20)!important;
+  background:
+    radial-gradient(circle at 30% 22%,rgba(255,255,255,.58),transparent 38%),
+    linear-gradient(145deg,rgba(184,147,222,.34),rgba(246,190,170,.16))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.68),0 5px 14px rgba(84,58,107,.08)!important;
+}
+.daylight .full-nav-room>a.active .room-sigil{
+  border-color:rgba(110,72,154,.34)!important;
+  background:
+    radial-gradient(circle at 31% 22%,rgba(255,255,255,.70),transparent 38%),
+    linear-gradient(145deg,rgba(171,128,211,.48),rgba(240,170,164,.20))!important;
+}
+.daylight .global-search-live{
+  background:rgba(248,241,251,.78)!important;
+  border-color:rgba(111,80,151,.20)!important;
+}
+.daylight .global-search-live:focus-within{
+  background:rgba(252,248,253,.94)!important;
+  border-color:rgba(119,76,164,.42)!important;
+  box-shadow:0 0 0 3px rgba(138,93,179,.08)!important;
+}
+.daylight .global-search-live input,
+.daylight input,.daylight textarea,.daylight select{
+  color:#34283f!important;
+  background:rgba(250,245,252,.80);
+}
+.daylight .brandmark,
+.daylight .nav-toggle,
+.daylight .top-icon-link,
+.daylight .command-trigger{
+  color:#5d3975!important;
+  border-color:rgba(117,77,158,.19)!important;
+  background:rgba(179,139,216,.12)!important;
+}
+.daylight .mobile-palace-dock{
+  border-color:rgba(112,76,154,.18)!important;
+  background:
+    radial-gradient(circle at 50% -55%,rgba(200,155,222,.22),transparent 14rem),
+    linear-gradient(180deg,rgba(239,229,248,.94),rgba(222,209,237,.97))!important;
+  box-shadow:0 14px 38px rgba(74,49,96,.14),inset 0 1px 0 rgba(255,255,255,.65)!important;
+}
+.daylight .mobile-palace-dock>a{color:#74637f!important}
+.daylight .mobile-palace-dock>a.active{
+  color:#4b2d5f!important;
+  background:linear-gradient(145deg,rgba(158,112,199,.20),rgba(244,172,153,.10))!important;
+}
+.daylight .room-card,
+.daylight .chamber-card,
+.daylight .command-card,
+.daylight .life-section,
+.daylight .life-side>section,
+.daylight .comic-card,
+.daylight .series-grid>article,
+.daylight .heritage-card,
+.daylight .calendar-shell,
+.daylight .studio-meta,
+.daylight .episode-studio{
+  background:
+    radial-gradient(circle at 94% 5%,rgba(246,181,153,.08),transparent 11rem),
+    radial-gradient(circle at 8% 100%,rgba(175,134,216,.09),transparent 13rem),
+    linear-gradient(150deg,rgba(250,246,252,.91),rgba(238,229,246,.88))!important;
+  border-color:rgba(107,78,143,.15)!important;
+  box-shadow:0 12px 30px rgba(73,48,94,.06)!important;
+}
+.daylight .button,
+.daylight .write-action,
+.daylight .thread-compose button:not(.quiet-button),
+.daylight .proposal-form>button{
+  color:#fff!important;
+  border-color:rgba(115,74,159,.33)!important;
+  background:
+    linear-gradient(135deg,#8259ad 0%,#a8669c 58%,#cb7f75 100%)!important;
+  box-shadow:0 8px 20px rgba(105,63,126,.15)!important;
+}
+
+/* Smaller painted frames: art remains readable while ornament hugs it more tightly. */
+.painted-tier-mount{
+  transform:scale(.62)!important;
+  transform-origin:50% 45%!important;
+}
+.badge-art-dialog .painted-tier-mount{
+  transform:scale(.62)!important;
+}
+
+/* Recovery should always paint a visible surface, even before room CSS catches up. */
+.blank-screen-recovery,
+.route-recovery,
+.route-loading{
+  min-height:100dvh!important;
+  background:
+    radial-gradient(circle at 50% 22%,rgba(115,69,168,.18),transparent 23rem),
+    linear-gradient(180deg,#130c2a,#090b19)!important;
+}
+.daylight .blank-screen-recovery,
+.daylight .route-recovery,
+.daylight .route-loading{
+  background:
+    radial-gradient(circle at 18% 15%,rgba(185,145,222,.28),transparent 23rem),
+    radial-gradient(circle at 82% 10%,rgba(247,184,155,.22),transparent 22rem),
+    linear-gradient(180deg,#eee5f7,#e4d8ef)!important;
+}
+
+@media(max-width:720px){
+  .full-nav-room>a .room-sigil svg{width:21px!important;height:21px!important}
+  .nightfall .full-sidebar{
+    background:
+      radial-gradient(circle at 14% 4%,rgba(118,61,172,.24),transparent 14rem),
+      linear-gradient(180deg,#160d2d,#0b0b1b 80%)!important;
+  }
 }
