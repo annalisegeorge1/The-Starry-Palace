@@ -14484,3 +14484,182 @@ button.quiet-button:not(.danger-action):hover,
   .button-moonstone,
   button.quiet-button:not(.danger-action){transition:none!important}
 }
+
+
+/* =========================================================
+   Relay Writing Rooms
+   ========================================================= */
+.relay-room-page{display:grid;gap:1rem}
+.relay-room-page>.section-heading{align-items:flex-start!important}
+.relay-room-list{display:grid;gap:.9rem}
+.relay-room-card{
+  overflow:hidden;
+  border:1px solid rgba(198,176,229,.13);
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 92% 0%,rgba(199,158,211,.06),transparent 14rem),
+    linear-gradient(145deg,rgba(36,28,72,.54),rgba(16,14,36,.72));
+}
+.relay-room-card.my-turn{
+  border-color:rgba(220,194,237,.3);
+  box-shadow:0 16px 42px rgba(61,45,111,.08);
+}
+.relay-room-card>header{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:1rem;
+  align-items:start;
+  padding:1rem;
+  border-bottom:1px solid rgba(198,176,229,.09);
+}
+.relay-room-card>header small{
+  color:#91899d;
+  font-size:.52rem;
+  font-weight:800;
+  letter-spacing:.12em;
+}
+.relay-room-card>header h3{
+  margin:.18rem 0 .35rem;
+  font:600 1.22rem/1.08 Georgia,'Times New Roman',serif;
+}
+.relay-room-card>header p{
+  max-width:760px;
+  margin:0;
+  color:#9690a0;
+  font-size:.68rem;
+  line-height:1.48;
+}
+.relay-quill-state{
+  align-self:center;
+  min-width:120px;
+  padding:.45rem .65rem;
+  border:1px solid rgba(206,185,232,.14);
+  border-radius:999px;
+  background:rgba(255,255,255,.018);
+  color:#c8bfd1;
+  font-size:.62rem;
+  font-weight:700;
+  text-align:center;
+}
+.relay-room-card.my-turn .relay-quill-state{
+  color:#f0e8f4;
+  border-color:rgba(217,190,236,.3);
+  background:linear-gradient(135deg,rgba(112,88,173,.22),rgba(196,146,184,.08));
+}
+.relay-invite-state{
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  align-items:center;
+  padding:.85rem 1rem;
+}
+.relay-invite-state p{margin:0;color:#a19aa9;font-size:.7rem}
+.relay-invite-state>div{display:flex;gap:.45rem}
+.relay-cast{
+  display:flex;
+  gap:.35rem;
+  flex-wrap:wrap;
+  padding:.7rem 1rem;
+  border-bottom:1px solid rgba(198,176,229,.07);
+}
+.relay-cast>span{
+  display:inline-grid;
+  grid-template-columns:auto auto;
+  gap:.22rem .38rem;
+  align-items:center;
+  padding:.38rem .5rem;
+  border:1px solid rgba(198,176,229,.09);
+  border-radius:999px;
+  background:rgba(255,255,255,.012);
+  color:#aaa3b4;
+  font-size:.61rem;
+}
+.relay-cast>span.active{color:#ddd5e5;border-color:rgba(210,186,234,.18)}
+.relay-cast b{font-size:.5rem;color:#8e8798}
+.relay-cast small{grid-column:2;font-size:.45rem;color:#756f7d}
+.relay-manuscript{display:grid}
+.relay-manuscript>article{
+  padding:.95rem 1rem 1rem;
+  border-bottom:1px solid rgba(198,176,229,.075);
+}
+.relay-manuscript>article:last-child{border-bottom:0}
+.relay-manuscript header{
+  display:flex;
+  gap:.6rem;
+  align-items:center;
+  margin-bottom:.45rem;
+}
+.relay-manuscript header span,
+.relay-manuscript header small{
+  color:#847d8d;
+  font-size:.51rem;
+}
+.relay-manuscript header strong{font-size:.67rem}
+.relay-manuscript header small{margin-left:auto}
+.relay-manuscript p{
+  margin:0;
+  color:#d3cdd9;
+  font:400 .88rem/1.65 Georgia,'Times New Roman',serif;
+  white-space:pre-wrap;
+}
+.relay-empty{
+  min-height:140px;
+  display:grid;
+  place-items:center;
+  align-content:center;
+  gap:.25rem;
+  padding:1rem;
+  text-align:center;
+}
+.relay-empty>span{color:#a894c5;font-size:1.1rem}
+.relay-empty strong{font:600 .92rem Georgia,'Times New Roman',serif}
+.relay-empty p{margin:0;color:#8e8797;font-size:.62rem}
+.relay-turn-compose{
+  display:grid;
+  gap:.55rem;
+  padding:1rem;
+  border-top:1px solid rgba(198,176,229,.08);
+  background:rgba(8,7,22,.18);
+}
+.relay-turn-compose textarea{
+  width:100%;
+  min-height:160px;
+  resize:vertical;
+  padding:.85rem;
+  border:1px solid rgba(199,177,230,.13);
+  border-radius:14px;
+  background:rgba(8,7,22,.36);
+  color:#eee8f3;
+  font:400 .86rem/1.6 Georgia,'Times New Roman',serif;
+}
+.relay-turn-compose footer{
+  display:flex;
+  justify-content:space-between;
+  gap:.7rem;
+  align-items:center;
+}
+.relay-turn-compose footer span{color:#8d8696;font-size:.58rem}
+.relay-host-tools{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.45rem;
+  padding:.75rem 1rem;
+  border-top:1px solid rgba(198,176,229,.07);
+}
+.daylight .relay-room-card{
+  background:linear-gradient(145deg,rgba(255,255,255,.93),rgba(244,241,248,.91));
+  border-color:rgba(91,73,136,.1);
+}
+.daylight .relay-manuscript p{color:#4a4355}
+.daylight .relay-turn-compose textarea{
+  background:rgba(255,255,255,.82);
+  color:#312a43;
+  border-color:rgba(91,73,136,.12);
+}
+@media(max-width:700px){
+  .relay-room-card>header{grid-template-columns:1fr}
+  .relay-quill-state{justify-self:start}
+  .relay-invite-state{align-items:flex-start;flex-direction:column}
+  .relay-turn-compose footer{align-items:stretch;flex-direction:column}
+  .relay-turn-compose footer button{width:100%}
+}
