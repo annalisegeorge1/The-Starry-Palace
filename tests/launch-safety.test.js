@@ -1051,6 +1051,21 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.writing-page-stage.typewriter-mode');
   });
 
+  it('uses a shared LGBTQ prism treatment for calendar dates stories and comics',()=>{
+    const polish=read('src/polish.css');
+    const calendar=read('src/PalaceCalendar.jsx');
+    expect(live).toContain('prism-glass prism-story');
+    expect(live).toContain('prism-glass prism-comic');
+    expect(live).toContain('bisexual|bi\\b|lesbian|gay\\b|asexual|aromantic|aroace|intersex|genderfluid');
+    expect(calendar).toContain("prism?'has-prism':'");
+    expect(polish).toContain('LGBTQ+ prism glass system · October 6 2026');
+    expect(polish).toContain('.heritage-card.heritage-prism');
+    expect(polish).toContain('button.has-prism');
+    expect(polish).toContain('.story-row.prism-story');
+    expect(polish).toContain('.comic-card.prism-comic');
+    expect(polish).toContain('@keyframes palace-prism-glow');
+  });
+
   it('keeps prism glass selective and Palace navigation iconography custom',()=>{
     const polish=read('src/polish.css');
     expect(main).toContain('function PalaceRoomIcon');
@@ -1330,8 +1345,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain("new Error('Palace room load timeout')");
     expect(main).toContain("schedulePalaceReload('palace-script-error-reload'");
     expect(main).not.toContain('return new Promise(()=>{})');
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100610');
-    expect(polish).toContain('--palace-room-css-version:2026100610');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100611');
+    expect(polish).toContain('--palace-room-css-version:2026100611');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
