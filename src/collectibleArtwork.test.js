@@ -28,12 +28,12 @@ describe('restored original artwork',()=>{
  it('keeps the three Majapahit repaint corrections smaller and uncropped',()=>{
   const component=readFileSync('src/PalaceCollectibles.jsx','utf8');
   const css=readFileSync('src/treasury.css','utf8');
-  expect(component).toContain("'palace-prize-majapahit-3':.72");
-  expect(component).toContain("'palace-prize-majapahit-8':.70");
-  expect(component).toContain("'palace-prize-majapahit-9':.72");
+  expect(component).toContain("'palace-prize-majapahit-3':.52");
+  expect(component).toContain("'palace-prize-majapahit-8':.50");
+  expect(component).toContain("'palace-prize-majapahit-9':.52");
   expect(component).toContain('majapahit-repainted-fix');
   expect(css).toContain('.repainted-collectible-stage>img');
-  expect(css).toContain('transform:scale(var(--repaint-scale,.9))');
+  expect(css).toContain('translate(var(--repaint-x,0%),var(--repaint-y,0%)) scale(var(--repaint-scale,.86))');
   expect(css).toContain('.treasure-painting.compact .majapahit-repainted-fix>img');
  });
  it('ships each individually painted Moonlit Tea tier',()=>{
