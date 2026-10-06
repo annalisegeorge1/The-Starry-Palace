@@ -1427,3 +1427,17 @@
   .treasury-wardrobe>header{align-items:flex-start;flex-direction:column}
   .treasury-wardrobe>footer{align-items:flex-start;flex-direction:column}
 }
+
+
+/* Public Chamber slot one is the travelling worn mark. */
+.showcase-slot.worn{
+  border-color:rgba(211,184,240,.27);
+  background:linear-gradient(135deg,rgba(91,66,148,.72),rgba(45,53,103,.72));
+  color:#ddd0eb;
+  box-shadow:0 0 18px rgba(129,94,190,.1);
+}
+.daylight .showcase-slot.worn{
+  border-color:rgba(102,78,151,.16);
+  background:linear-gradient(135deg,rgba(228,218,241,.94),rgba(222,228,244,.94));
+  color:#544368;
+}
