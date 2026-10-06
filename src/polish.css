@@ -11903,3 +11903,164 @@ input:focus,textarea:focus,select:focus{
   .moon-prompt-mark{width:44px;height:44px}
   .moon-prompt-actions{grid-column:1}
 }
+
+
+/* =========================================================
+   Fun without friction · Reading Compass, Palace wandering,
+   and a ceremonial Treasury reveal.
+   ========================================================= */
+
+/* Reading Compass: quick intent-first doors before filters. */
+.reading-compass{
+  display:grid;
+  grid-template-columns:minmax(190px,1.2fr) repeat(4,minmax(135px,.8fr));
+  gap:.42rem;
+  margin:0 0 .72rem;
+}
+.reading-compass>div,
+.reading-compass>button{
+  min-width:0;
+  min-height:72px;
+  border:1px solid rgba(201,178,232,.12);
+  border-radius:15px;
+  background:
+    radial-gradient(circle at 90% 8%,rgba(216,155,201,.045),transparent 8rem),
+    linear-gradient(145deg,rgba(47,35,92,.30),rgba(20,17,45,.58));
+}
+.reading-compass>div{
+  display:grid;
+  align-content:center;
+  gap:.18rem;
+  padding:.62rem .72rem;
+}
+.reading-compass>div small{
+  color:#9d8fc0;
+  font-size:.45rem;
+  font-weight:800;
+  letter-spacing:.13em;
+}
+.reading-compass>div strong{
+  color:#e8e2f1;
+  font:600 .77rem/1.32 Georgia,'Times New Roman',serif;
+}
+.reading-compass>button{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  grid-template-rows:auto auto;
+  align-content:center;
+  gap:.08rem .4rem;
+  padding:.55rem .62rem;
+  color:#ddd6e8;
+  text-align:left;
+  transition:transform .15s ease,border-color .15s ease,background .15s ease;
+}
+.reading-compass>button>span{
+  grid-row:1/3;
+  width:30px;height:30px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  background:rgba(112,92,180,.08);
+  color:#c8b6e4;
+}
+.reading-compass>button>b{font-size:.61rem}
+.reading-compass>button>small{color:#888294;font-size:.48rem}
+.reading-compass>button:hover:not(:disabled){
+  transform:translateY(-2px);
+  border-color:rgba(220,184,233,.26);
+  background:linear-gradient(145deg,rgba(63,46,116,.38),rgba(22,18,48,.64));
+}
+.reading-compass>button:disabled{opacity:.45}
+.reading-compass-wander{
+  border-color:rgba(215,180,228,.18)!important;
+  background:
+    radial-gradient(circle at 80% 10%,rgba(216,155,201,.075),transparent 8rem),
+    linear-gradient(145deg,rgba(82,61,141,.34),rgba(25,19,54,.64))!important;
+}
+
+/* Palace Life gets one optional playful door among its explicit room tabs. */
+.life-tabs.restored .life-wander{
+  margin-left:auto;
+  border-color:rgba(215,180,228,.16)!important;
+  background:
+    linear-gradient(135deg,rgba(112,91,181,.14),rgba(216,155,201,.045))!important;
+  color:#d7cee7!important;
+}
+.life-tabs.restored .life-wander:hover{
+  border-color:rgba(223,188,235,.28)!important;
+  background:
+    linear-gradient(135deg,rgba(117,96,188,.21),rgba(216,155,201,.075))!important;
+}
+
+/* Treasury reveal: only the result from a fresh user-triggered draw animates. */
+.draw-result-card{
+  position:relative;
+  overflow:hidden;
+}
+.draw-reveal-stars{display:none}
+.draw-result-card.just-revealed{
+  border-color:rgba(222,187,235,.34)!important;
+  background:
+    radial-gradient(circle at 17% 50%,rgba(142,163,223,.14),transparent 12rem),
+    radial-gradient(circle at 84% 18%,rgba(216,155,201,.12),transparent 14rem),
+    linear-gradient(125deg,rgba(83,60,143,.34),rgba(30,35,72,.24))!important;
+  animation:palaceTreasureReveal .72s cubic-bezier(.2,.8,.2,1) both;
+  box-shadow:0 18px 48px rgba(8,6,24,.16),0 0 34px rgba(174,137,211,.08);
+}
+.draw-result-card.just-revealed .draw-reveal-stars{
+  position:absolute;
+  inset:0;
+  z-index:4;
+  display:block;
+  pointer-events:none;
+}
+.draw-reveal-stars i{
+  position:absolute;
+  color:#e8d5eb;
+  font-style:normal;
+  text-shadow:0 0 10px rgba(216,155,201,.28);
+  animation:palaceTreasureStar 1.55s ease-out both;
+}
+.draw-reveal-stars i:nth-child(1){left:8%;top:18%;font-size:1rem}
+.draw-reveal-stars i:nth-child(2){left:32%;top:8%;font-size:.7rem;animation-delay:.08s}
+.draw-reveal-stars i:nth-child(3){right:18%;top:22%;font-size:.9rem;animation-delay:.14s}
+.draw-reveal-stars i:nth-child(4){right:8%;bottom:18%;font-size:1.15rem;animation-delay:.2s}
+.draw-reveal-stars i:nth-child(5){left:48%;bottom:8%;font-size:.75rem;animation-delay:.26s}
+@keyframes palaceTreasureReveal{
+  0%{opacity:.35;transform:translateY(8px) scale(.985)}
+  55%{opacity:1;transform:translateY(-2px) scale(1.008)}
+  100%{opacity:1;transform:none}
+}
+@keyframes palaceTreasureStar{
+  0%{opacity:0;transform:translateY(8px) scale(.45) rotate(-10deg)}
+  40%{opacity:1}
+  100%{opacity:0;transform:translateY(-16px) scale(1.18) rotate(9deg)}
+}
+.daylight .reading-compass>div,
+.daylight .reading-compass>button{
+  background:linear-gradient(145deg,rgba(255,255,255,.95),rgba(244,240,248,.91));
+  border-color:rgba(96,77,142,.11);
+}
+.daylight .reading-compass>div strong{color:#352f4c}
+.daylight .reading-compass>button{color:#4b4363}
+.daylight .life-tabs.restored .life-wander{color:#554b70!important}
+@media(max-width:980px){
+  .reading-compass{
+    display:flex;
+    overflow-x:auto;
+    scrollbar-width:none;
+    padding-bottom:.08rem;
+  }
+  .reading-compass::-webkit-scrollbar{display:none}
+  .reading-compass>div,.reading-compass>button{flex:0 0 175px}
+  .reading-compass>div{flex-basis:210px}
+}
+@media(max-width:680px){
+  .reading-compass{margin-left:14px;margin-right:14px}
+  .life-tabs.restored .life-wander{margin-left:0}
+}
+@media(prefers-reduced-motion:reduce){
+  .draw-result-card.just-revealed{animation:none!important}
+  .draw-reveal-stars i{animation:none!important;display:none!important}
+  .reading-compass>button{transition:none!important}
+}
