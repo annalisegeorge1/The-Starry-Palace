@@ -512,6 +512,17 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.surprise-story');
   });
 
+  it('keeps the Production Prep composition system as a site-wide guide',()=>{
+    const polish=read('src/polish.css');
+    expect(polish).toContain('--palace-content:min(1460px,100%)');
+    expect(polish).toContain('Production Prep composition system · site-wide');
+    expect(polish).toContain('--palace-content-wide:1460px');
+    expect(polish).toContain('.legacy-reading-page');
+    expect(polish).toContain('.legacy-library-page');
+    expect(polish).toContain('.writing-studio-grid');
+    expect(polish).toContain('.legacy-treasury-page');
+  });
+
   it('keeps nested Palace Life main content from inheriting outer-page padding',()=>{
     const style=read('src/style.css');
     const polish=read('src/polish.css');
