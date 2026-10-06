@@ -542,7 +542,7 @@
  z-index:3!important;
  pointer-events:none!important;
  overflow:visible!important;
- transform:scale(.81);
+ transform:scale(.77);
  transform-origin:50% 45%;
  filter:drop-shadow(0 6px 10px rgba(2,5,16,.22));
 }
