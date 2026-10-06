@@ -8258,3 +8258,11 @@ body{overflow-x:clip}
   .palace-social-rail{grid-template-columns:1fr}
   .palace-social-rail .palace-pulse-card{grid-column:auto}
 }
+
+.chic-rail-note{
+  margin:.2rem 0 0!important;
+  color:#948da8!important;
+  font-size:.58rem!important;
+  line-height:1.42!important;
+}
+.daylight .chic-rail-note{color:#716a82!important}
