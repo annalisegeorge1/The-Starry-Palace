@@ -245,7 +245,9 @@ export async function getLibrary(userId){const [saved,progress,subs,savedComics,
  const comics=await Promise.all((savedComics.data||[]).map(async x=>({...x,cover_url:await signedAsset('comic-covers',x.comics?.cover_path)})));
  const comicHistory=await Promise.all((comicProgress.data||[]).map(async x=>({...x,cover_url:await signedAsset('comic-covers',x.comics?.cover_path)})));
  return{saved:saved.data||[],progress:progress.data||[],subscriptions:subs.data||[],savedComics:comics,comicProgress:comicHistory,comicSubscriptions:comicSubs.data||[],followedWriters:follows.data||[]}}
-export async function getTagConstellation(){const{data,error}=await needClient().from('tags').select('id,name,category,status,canonical_tag_id').eq('status','canonical').order('name').limit(250);if(error)throw error;return data||[]}
+export async function getTagConstellation(){const{data,error}=await needClient().rpc('search_palace_tags',{p_query:'',p_category:null,p_limit:120});if(error)throw error;return data||[]}
+export async function searchPalaceTags(query='',category='all',limit=100){const{data,error}=await needClient().rpc('search_palace_tags',{p_query:String(query||''),p_category:category==='all'?null:category,p_limit:limit});if(error)throw error;return data||[]}
+export async function createCommunityTag(name,category='additional'){const{data,error}=await needClient().rpc('create_community_tag',{p_name:String(name||''),p_category:category});if(error)throw error;return data}
 export async function getWorksForTag(tagId){const{data,error}=await needClient().from('work_tags').select('position,works(id,title,slug,summary,rating,completion_status,cover_url,publication_status,profiles!works_author_id_fkey(username,display_name))').eq('tag_id',tagId).order('position').limit(50);if(error)throw error;return(data||[]).filter(x=>x.works?.publication_status==='published')}
 
 export async function createClub(userId,{name,clubType='reading',privacy='open',description='',guidelines=''}) {
