@@ -543,10 +543,17 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('mobile-palace-dock');
     expect(main).toContain('aria-label="Quick Palace navigation"');
     expect(main).toContain('mobile-dock-write');
+    expect(main).toContain('mobile-palace-more');
+    expect(main).toContain('mobile-palace-more-sheet');
+    expect(main).toContain('More of your Palace'.toUpperCase());
+    expect(main).toContain('Everything stays one tap away without crowding the dock.');
     expect(main).toContain("activeRoom?.id==='reading'");
-    expect(main).toContain("activeRoom?.id==='treasury'");
+    expect(main).toContain("['library','events','treasury','settings'].includes(activeRoom?.id)");
+    expect(main).toContain('activityBadge+letterBadge');
     expect(polish).toContain('.mobile-palace-dock');
     expect(polish).toContain('grid-template-columns:repeat(5');
+    expect(polish).toContain('.mobile-more-backdrop');
+    expect(polish).toContain('.mobile-more-grid');
     expect(polish).toContain('.full-top-actions .write-action{display:none!important}');
   });
 
