@@ -1059,6 +1059,19 @@ describe('Starry Palace launch safety',()=>{
     expect(next).toContain('.treasury-wardrobe');
   });
 
+  it('keeps long-form chapters navigable with a live heading map',()=>{
+    const next=read('src/palace-next.css');
+    expect(live).toContain('mapFromHtml');
+    expect(live).toContain('syncChapterMap');
+    expect(live).toContain('jumpChapterMap');
+    expect(live).toContain('Chapter map');
+    expect(live).toContain('add headings to navigate');
+    expect(live).toContain("querySelectorAll('h2,h3')");
+    expect(live).toContain('Nothing extra is inserted into your draft.');
+    expect(next).toContain("Writer's Desk Chapter Map — structural navigation for long drafts.");
+    expect(next).toContain('.writer-document-map');
+  });
+
   it('keeps tablet room navigation swipeable without covering content',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
