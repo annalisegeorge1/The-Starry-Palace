@@ -1073,6 +1073,18 @@ describe('Starry Palace launch safety',()=>{
     expect(next).toContain('.writer-document-map');
   });
 
+  it('keeps snapshot comparison non-destructive until explicit restore',()=>{
+    const next=read('src/palace-next.css');
+    expect(live).toContain('openSnapshotCompare');
+    expect(live).toContain("studioDialog==='snapshot-compare'");
+    expect(live).toContain('Compare revision');
+    expect(live).toContain('NON-DESTRUCTIVE REVIEW');
+    expect(live).toContain('Comparison never changes the draft.');
+    expect(live).toContain('Restore this snapshot');
+    expect(next).toContain('Snapshot comparison — inspect before restoring.');
+    expect(next).toContain('.snapshot-compare-columns');
+  });
+
   it('keeps tablet room navigation swipeable without covering content',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
