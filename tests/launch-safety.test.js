@@ -1052,7 +1052,7 @@ describe('Starry Palace launch safety',()=>{
     expect(data).toContain('identityMarkCache.delete(userId)');
     expect(live).toContain("WHAT I’M WEARING");
     expect(live).toContain('Your travelling Palace signature.');
-    expect(live).toContain('p_position:position');
+    expect(data).toContain('p_position:position');
     expect(live).toContain('wearAchievementValue');
     expect(live).toContain('wearGiftValue');
     expect(next).toContain('Treasury wardrobe — one travelling title, achievement and treasure.');
