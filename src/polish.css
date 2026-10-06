@@ -14663,3 +14663,75 @@ button.quiet-button:not(.danger-action):hover,
   .relay-turn-compose footer{align-items:stretch;flex-direction:column}
   .relay-turn-compose footer button{width:100%}
 }
+
+
+/* =========================================================
+   Chapter praise room
+   ========================================================= */
+.chapter-praise-room{
+  display:grid;
+  gap:.55rem;
+  margin:.8rem 0 .95rem;
+  padding:.7rem .8rem;
+  border:1px solid rgba(200,179,230,.12);
+  border-radius:16px;
+  background:linear-gradient(145deg,rgba(34,27,68,.42),rgba(15,13,34,.5));
+}
+.chapter-praise-room>div:first-child{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:.8rem;
+  flex-wrap:wrap;
+}
+.chapter-praise-room>div:first-child small{
+  color:#90899a;
+  font-size:.48rem;
+  font-weight:800;
+  letter-spacing:.12em;
+}
+.chapter-praise-room>div:first-child strong{
+  color:#cbc3d1;
+  font:600 .72rem Georgia,'Times New Roman',serif;
+}
+.chapter-praise-actions{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:.36rem;
+}
+.chapter-praise-actions button{
+  min-height:36px;
+  display:inline-flex;
+  align-items:center;
+  gap:.28rem;
+  padding:.35rem .52rem;
+  border:1px solid rgba(199,178,229,.12);
+  border-radius:999px;
+  background:rgba(255,255,255,.016);
+  color:#bbb4c5;
+  font-size:.66rem;
+}
+.chapter-praise-actions button>span{font-weight:700}
+.chapter-praise-actions button>em{color:#827b8c;font-size:.56rem;font-style:normal}
+.chapter-praise-actions button.active{
+  border-color:rgba(216,190,236,.31);
+  color:#efe9f4;
+  background:linear-gradient(135deg,rgba(114,89,174,.2),rgba(191,142,182,.07));
+}
+.chapter-praise-actions .share-light{border-style:dashed}
+.chapter-praise-room>p{
+  margin:0;
+  color:#9e96a8;
+  font-size:.58rem;
+}
+.daylight .chapter-praise-room{
+  background:rgba(255,255,255,.69);
+  border-color:rgba(91,73,136,.1);
+}
+.daylight .chapter-praise-actions button{color:#554d61;border-color:rgba(91,73,136,.1)}
+.daylight .chapter-praise-actions button.active{color:#322a45}
+@media(max-width:620px){
+  .chapter-praise-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .chapter-praise-actions button{justify-content:center}
+}
