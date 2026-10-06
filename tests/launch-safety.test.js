@@ -783,6 +783,20 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.password-field');
   });
 
+  it('keeps Relay Writing Rooms invite-only and turn-based',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain("rpc('get_my_relay_rooms')");
+    expect(data).toContain("rpc('create_relay_room'");
+    expect(data).toContain("rpc('invite_relay_writer'");
+    expect(data).toContain("rpc('submit_relay_turn'");
+    expect(live).toContain('RELAY WRITING ROOMS');
+    expect(live).toContain('Pass the quill, not the ownership.');
+    expect(live).toContain('Open a Relay Room ✦');
+    expect(live).toContain('Pass the quill →');
+    expect(polish).toContain('Relay Writing Rooms');
+  });
+
   it('keeps earned special titles grouped into Celestial constellations',()=>{
     const treasury=read('src/Treasury.jsx');
     const css=read('src/treasury.css');
