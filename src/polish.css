@@ -5685,3 +5685,15 @@ img{max-width:100%}
  .welcome-actions{align-items:stretch;flex-direction:column-reverse}
  .welcome-actions button{width:100%}
 }
+
+/* Account password control */
+.account-control-room{display:grid;gap:18px}
+.account-security-card,.account-data-card{padding:22px;border:1px solid rgba(177,186,235,.16);border-radius:20px;background:rgba(18,23,48,.6)}
+.password-change-form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px;align-items:end}
+.password-change-form label{display:grid;gap:7px;font-weight:650}
+.password-change-form label small{font-weight:400;color:var(--muted)}
+.password-change-form input{min-width:0;padding:12px 13px;border:1px solid rgba(177,186,235,.18);border-radius:12px;background:rgba(5,9,26,.5);color:inherit;font:inherit}
+.password-change-form button{min-height:46px}
+.daylight .account-security-card,.daylight .account-data-card{background:rgba(255,255,255,.84);border-color:rgba(46,51,92,.12)}
+.daylight .password-change-form input{background:#fff;border-color:rgba(46,51,92,.14)}
+@media(max-width:820px){.password-change-form{grid-template-columns:1fr}}
