@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useAuth } from './auth';
 import badges from './badges.json';
 import originals from './originalBadges.json';
@@ -8,14 +8,12 @@ import { ascendPalaceGift, createGiftTradeOffer, getGiftCatalogue, getGiftTrades
 import './treasury.css';
 import {buildInventory} from './treasuryCollection';
 
-const MoonlitTea=lazy(()=>import('./MoonlitTea'));
-const CourtsOfMoonlight=lazy(()=>import('./CourtsOfMoonlight'));
 const tiers=['bronze','silver','gold','platinum','emerald'];
 const PAGE_SIZE=48;
 
 export default function Treasury({Frame}) {
  const {session}=useAuth();
- const [collection,setCollection]=useState(()=>{const requested=new URLSearchParams(window.location.search).get('collection');if(requested==='original-treasures')return 'gifts';return ['original-treasures','moonlit-tea','courts-of-moonlight','expanded','gifts','originals'].includes(requested)?requested:'originals'});
+ const [collection,setCollection]=useState(()=>{const requested=new URLSearchParams(window.location.search).get('collection');if(requested==='original-treasures')return 'gifts';if(requested==='moonlit-tea'||requested==='courts-of-moonlight')return 'expanded';return ['expanded','gifts','originals'].includes(requested)?requested:'originals'});
  const [query,setQuery]=useState('');
  const [badgePage,setBadgePage]=useState(1);
  const [artPreview,setArtPreview]=useState(null);
@@ -149,13 +147,11 @@ export default function Treasury({Frame}) {
 
   <div className="badge-collection-switch treasury-collection-switch" role="group" aria-label="Treasury collection">
    <button aria-pressed={collection==='originals'} onClick={()=>choose('originals')}>Palace originals · 175 badges</button>
-   <button aria-pressed={collection==='expanded'} onClick={()=>choose('expanded')}>Expanded paths · 100 families</button>
-   <button aria-pressed={collection==='moonlit-tea'} onClick={()=>choose('moonlit-tea')}>New watercolours · 25 paintings</button>
-   <button aria-pressed={collection==='courts-of-moonlight'} onClick={()=>choose('courts-of-moonlight')}>Courts of Moonlight · 60 portraits</button>
+   <button aria-pressed={collection==='expanded'} onClick={()=>choose('expanded')}>Expanded paths · 100 families · merged watercolours</button>
    <button aria-pressed={collection==='gifts'} onClick={()=>choose('gifts')}>Gift collection · {giftData.count||600} treasures</button>
   </div>
 
-  {collection==='courts-of-moonlight'?<Suspense fallback={<p role="status">Opening the moonlit courts…</p>}><CourtsOfMoonlight/></Suspense>:collection==='moonlit-tea'?<Suspense fallback={<p role="status">Preparing Moonlit Tea…</p>}><MoonlitTea/></Suspense>:collection==='gifts'?<>
+  {collection==='gifts'?<>
    <div className="badge-controls gift-catalogue-controls">
     <label>Search gifts<input value={query} onChange={e=>setQuery(e.target.value)} type="search" placeholder="Name, court or catalogue number"/></label>
     <label>Court<select value={selectedCourt} onChange={e=>setGiftCourt(e.target.value)}><option value="all">All Palace courts</option>{courts.map(c=><option key={c} value={c}>{c}</option>)}</select></label>
@@ -206,7 +202,7 @@ export default function Treasury({Frame}) {
     <label>Category<select value={category} onChange={e=>setCategory(e.target.value)}><option value="all">All categories</option>{[...new Set(source.map(b=>b.category))].map(c=><option key={c}>{c}</option>)}</select></label>
     <label>Preview tier<select value={tier} onChange={e=>setTier(e.target.value)}>{tiers.map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label>
    </div>
-   <p role="status">{visibleBadges.length} badge families</p>
+   <p role="status">{visibleBadges.length} badge families · the 25 object watercolours and 60 court portraits now live inside these paths.</p>
    <div className="badge-grid">{visibleBadges.slice((badgePage-1)*24,badgePage*24).map(b=>{const progress=collection==='expanded'?achievementProgress.get(b.number):null;const unlocked=unlockedTiers(progress);const achievementId=progress?.achievement_families?.id;const showcased=achievementId?achievementShowcaseMap.get(achievementId):null;return <article className={"badge-card"+(unlocked.length?' is-earned':'')+(showcased?' is-showcased':'')} key={b.id}>
     <button className="badge-art-preview-button" aria-label={"Enlarge "+b.name+" artwork"} onClick={()=>setArtPreview(b)}><PalaceBadge family={b} tier={tier}/></button>
     <small>{b.category} · {b.difficulty}</small><h2>{b.name}</h2><p>{b.description}</p>
