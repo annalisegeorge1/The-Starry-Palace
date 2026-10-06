@@ -1,4 +1,4 @@
-:root{--palace-room-css-version:2026100603}
+:root{--palace-room-css-version:2026100604}
 /* The Starry Palace — final professional polish layer
    Keep this file intentionally small and authoritative. New global visual
    refinements belong here instead of adding another override to style.css. */
@@ -15795,3 +15795,326 @@ button.quiet-button:not(.danger-action):hover,
 .daylight .advanced-tag-suggestions strong{color:#343855}
 @media(max-width:900px){.advanced-tag-suggestions{grid-template-columns:repeat(2,minmax(0,1fr))}.advanced-filter-ribbon{grid-template-columns:1fr 1fr}.advanced-filter-ribbon label:last-child{grid-column:1/-1}.advanced-search-command{align-items:start;flex-direction:column}.advanced-search-command>a{white-space:normal}}
 @media(max-width:620px){.reading-mode-tabs{width:100%;display:grid;grid-template-columns:1fr 1fr 1fr;border-radius:17px}.reading-mode-tabs a{text-align:center;padding:10px 7px;font-size:10px}.advanced-search-bar{grid-template-columns:auto 1fr}.advanced-search-bar button{grid-column:1/-1;width:100%}.advanced-filter-ribbon{grid-template-columns:1fr}.advanced-filter-ribbon label:last-child{grid-column:auto}.advanced-tag-search{grid-template-columns:1fr}.advanced-tag-suggestions{grid-template-columns:1fr}.advanced-tag-suggestions article{grid-template-columns:1fr}.advanced-search-submit>span{width:100%;margin-left:0}.advanced-result-grid>article{grid-template-columns:68px minmax(0,1fr);gap:13px;padding:13px}.advanced-result-cover{width:68px}.advanced-result-grid h3{font-size:21px}.advanced-result-grid footer{align-items:flex-start;flex-direction:column}}
+
+
+/* =========================================================
+   Cultural colour + Commons clipping + room-load recovery pass
+   ========================================================= */
+
+/* The Palace Life rails sit below the persistent app bar.
+   Keep the compose box in normal flow and never clip its top edge. */
+.palace-social-column{
+  overflow:visible!important;
+}
+.life-tabs.restored{
+  top:74px!important;
+  z-index:24!important;
+  box-shadow:0 10px 30px rgba(6,5,20,.08);
+}
+.chic-feed-tabs{
+  top:126px!important;
+  z-index:22!important;
+  border-radius:18px 18px 0 0!important;
+  box-shadow:0 9px 22px rgba(6,5,20,.08);
+}
+.chic-composer{
+  position:relative;
+  z-index:1;
+  scroll-margin-top:200px;
+  padding-top:1.12rem!important;
+  background:
+    radial-gradient(circle at 3% 8%,rgba(139,118,204,.08),transparent 9rem),
+    linear-gradient(145deg,rgba(36,27,75,.34),rgba(18,17,42,.28))!important;
+}
+.chic-composer::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto 0;
+  height:1px;
+  background:linear-gradient(90deg,rgba(147,130,213,.42),rgba(197,142,193,.16),transparent 72%);
+  pointer-events:none;
+}
+.chic-composer input::placeholder,
+.chic-composer textarea::placeholder{color:#88829b!important;opacity:1}
+.daylight .chic-composer{
+  background:
+    radial-gradient(circle at 3% 8%,rgba(119,101,181,.07),transparent 9rem),
+    linear-gradient(145deg,rgba(255,255,255,.82),rgba(244,240,249,.72))!important;
+}
+@media(min-width:721px) and (max-width:1120px){
+  .life-tabs.restored{top:118px!important}
+  .chic-feed-tabs{top:170px!important}
+  .chic-composer{scroll-margin-top:232px}
+}
+@media(max-width:720px){
+  .life-tabs.restored{top:calc(108px + env(safe-area-inset-top))!important}
+  .chic-feed-tabs{top:calc(160px + env(safe-area-inset-top))!important}
+  .chic-composer{scroll-margin-top:244px}
+}
+@media(max-width:460px){
+  .chic-feed-tabs{top:calc(158px + env(safe-area-inset-top))!important}
+  .chic-composer{scroll-margin-top:238px}
+}
+
+/* A little more colour in high-information areas, while keeping the dusk palette. */
+.community-pulse-row.restored.social-pulse>button:nth-child(4n+1){
+  background:radial-gradient(circle at 92% 8%,rgba(142,118,211,.16),transparent 7rem),linear-gradient(145deg,rgba(41,37,82,.78),rgba(19,22,47,.65))!important;
+}
+.community-pulse-row.restored.social-pulse>button:nth-child(4n+2){
+  background:radial-gradient(circle at 92% 8%,rgba(88,144,190,.13),transparent 7rem),linear-gradient(145deg,rgba(31,45,78,.76),rgba(18,21,45,.65))!important;
+}
+.community-pulse-row.restored.social-pulse>button:nth-child(4n+3){
+  background:radial-gradient(circle at 92% 8%,rgba(94,166,157,.11),transparent 7rem),linear-gradient(145deg,rgba(28,54,70,.72),rgba(17,21,43,.66))!important;
+}
+.community-pulse-row.restored.social-pulse>button:nth-child(4n){
+  background:radial-gradient(circle at 92% 8%,rgba(192,127,176,.11),transparent 7rem),linear-gradient(145deg,rgba(57,36,73,.7),rgba(19,18,43,.67))!important;
+}
+.daylight .community-pulse-row.restored.social-pulse>button{
+  background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(241,239,248,.9))!important;
+}
+
+/* Heritage discovery controls make the larger calendar searchable rather than a wall. */
+.heritage-discovery{
+  max-width:1100px;
+  margin:0 auto 16px;
+  padding:18px;
+  border:1px solid rgba(190,180,216,.14);
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 92% 10%,rgba(120,153,203,.08),transparent 16rem),
+    radial-gradient(circle at 12% 110%,rgba(183,117,173,.07),transparent 17rem),
+    linear-gradient(145deg,rgba(27,25,53,.82),rgba(15,17,37,.76));
+}
+.heritage-discovery-head{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  align-items:end;
+  margin-bottom:14px;
+}
+.heritage-discovery-head h2{
+  margin:.18rem 0 .35rem;
+  font:500 clamp(1.6rem,3vw,2.35rem)/1.05 Georgia,'Times New Roman',serif;
+  color:#eeeaf5;
+}
+.heritage-discovery-head p:not(.eyebrow){
+  max-width:720px;
+  margin:0;
+  color:#9894a8;
+  font-size:.72rem;
+  line-height:1.6;
+}
+.heritage-discovery-head>strong{
+  flex:0 0 auto;
+  padding:.45rem .65rem;
+  border:1px solid rgba(190,180,216,.14);
+  border-radius:999px;
+  color:#aaa5bc;
+  font-size:.62rem;
+  font-weight:600;
+}
+.heritage-filter-bar{
+  display:grid;
+  grid-template-columns:minmax(240px,1.4fr) repeat(3,minmax(130px,.65fr));
+  gap:8px;
+}
+.heritage-filter-bar>label,
+.heritage-filter-bar>select{
+  min-width:0;
+  min-height:43px;
+  border:1px solid rgba(180,176,205,.15)!important;
+  border-radius:13px!important;
+  background:rgba(9,11,27,.42)!important;
+  color:#d9d5e2!important;
+}
+.heritage-search{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:0 12px;
+}
+.heritage-search>span{color:#9b93b6}
+.heritage-search input{
+  min-width:0;
+  width:100%;
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#ece8f3!important;
+  padding:0!important;
+}
+.heritage-filter-bar>select{padding:0 11px}
+.heritage-grid.enriched{
+  max-width:1100px;
+  margin-left:auto;
+  margin-right:auto;
+  gap:10px!important;
+}
+.heritage-grid.enriched .heritage-card{
+  position:relative;
+  overflow:hidden;
+  border-color:rgba(190,181,211,.12)!important;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.heritage-grid.enriched .heritage-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(202,190,224,.23)!important;
+  box-shadow:0 18px 42px rgba(5,5,18,.11);
+}
+.heritage-grid.enriched .heritage-card::after{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:2px;
+  background:var(--heritage-accent,rgba(171,155,207,.42));
+  opacity:.82;
+}
+.heritage-date b{
+  display:block;
+  margin-top:3px;
+  color:#8c8798;
+  font-size:.48rem;
+  font-weight:700;
+  letter-spacing:.05em;
+}
+.heritage-context{
+  display:block;
+  margin:.5rem 0 0;
+  color:#9690a2;
+  font-size:.62rem;
+  font-style:normal;
+  line-height:1.5;
+}
+
+/* Distinct cultural-calendar families: richer, but never neon. */
+.heritage-type-festival{--heritage-accent:#c47eae}
+.heritage-type-heritage{--heritage-accent:#6ea6a7}
+.heritage-type-history{--heritage-accent:#b18c72}
+.heritage-type-language{--heritage-accent:#709dc0}
+.heritage-type-awareness{--heritage-accent:#7da987}
+.heritage-type-commemoration{--heritage-accent:#938ab5}
+.heritage-card.heritage-type-festival{
+  background:
+    radial-gradient(circle at 95% 6%,rgba(199,112,171,.12),transparent 13rem),
+    radial-gradient(circle at 5% 110%,rgba(104,103,188,.09),transparent 13rem),
+    linear-gradient(145deg,rgba(50,31,65,.5),rgba(20,18,40,.66))!important;
+}
+.heritage-card.heritage-type-heritage{
+  background:radial-gradient(circle at 95% 0%,rgba(72,154,157,.10),transparent 13rem),linear-gradient(145deg,rgba(27,48,58,.48),rgba(18,19,38,.64))!important;
+}
+.heritage-card.heritage-type-history{
+  background:radial-gradient(circle at 95% 0%,rgba(177,132,93,.09),transparent 13rem),linear-gradient(145deg,rgba(53,41,50,.47),rgba(19,19,38,.64))!important;
+}
+.heritage-card.heritage-type-language{
+  background:radial-gradient(circle at 95% 0%,rgba(82,144,191,.11),transparent 13rem),linear-gradient(145deg,rgba(29,43,63,.5),rgba(18,19,39,.64))!important;
+}
+.heritage-card.heritage-type-awareness{
+  background:radial-gradient(circle at 95% 0%,rgba(91,157,115,.09),transparent 13rem),linear-gradient(145deg,rgba(31,48,50,.46),rgba(18,19,38,.64))!important;
+}
+.heritage-card.heritage-type-commemoration{
+  background:radial-gradient(circle at 95% 0%,rgba(140,126,176,.1),transparent 13rem),linear-gradient(145deg,rgba(39,35,57,.5),rgba(18,18,38,.64))!important;
+}
+.heritage-card.heritage-festive .heritage-date{
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--heritage-accent) 34%,transparent),0 8px 22px rgba(8,5,20,.08);
+}
+
+/* Calendar cells carry tiny type lights so mixed dates remain legible. */
+.calendar-heritage-legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px 12px;
+  margin:-4px 0 10px;
+  padding:7px 0 11px;
+  border-bottom:1px solid rgba(190,184,207,.09);
+}
+.calendar-heritage-legend>span{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  color:#918d9d;
+  font-size:.56rem;
+}
+.calendar-heritage-legend i,
+.calendar-kind-dots i{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--heritage-accent,#938ab5);
+  box-shadow:0 0 10px color-mix(in srgb,var(--heritage-accent) 44%,transparent);
+}
+.legend-festival,.dot-festival{--heritage-accent:#c47eae}
+.legend-heritage,.dot-heritage{--heritage-accent:#6ea6a7}
+.legend-history,.dot-history{--heritage-accent:#b18c72}
+.legend-language,.dot-language{--heritage-accent:#709dc0}
+.legend-awareness,.dot-awareness{--heritage-accent:#7da987}
+.legend-commemoration,.dot-commemoration{--heritage-accent:#938ab5}
+.calendar-kind-dots{
+  min-height:7px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  font-style:normal;
+}
+.palace-month-calendar.heritage .palace-calendar-days>button.has-festival{
+  background:linear-gradient(160deg,rgba(91,55,91,.34),rgba(31,29,55,.72))!important;
+}
+.palace-month-calendar.heritage .palace-calendar-days>button.has-heritage:not(.has-festival){
+  background:linear-gradient(160deg,rgba(40,70,73,.3),rgba(29,30,53,.72))!important;
+}
+.palace-month-calendar.heritage .palace-calendar-days>button.has-history:not(.has-festival):not(.has-heritage){
+  background:linear-gradient(160deg,rgba(72,57,52,.3),rgba(29,29,52,.72))!important;
+}
+.palace-month-calendar.heritage .calendar-selection li{
+  border-left-color:var(--heritage-accent,#938ab5)!important;
+}
+.palace-month-calendar.heritage .calendar-selection li.heritage-type-festival{--heritage-accent:#c47eae}
+.palace-month-calendar.heritage .calendar-selection li.heritage-type-heritage{--heritage-accent:#6ea6a7}
+.palace-month-calendar.heritage .calendar-selection li.heritage-type-history{--heritage-accent:#b18c72}
+.palace-month-calendar.heritage .calendar-selection li.heritage-type-language{--heritage-accent:#709dc0}
+.palace-month-calendar.heritage .calendar-selection li.heritage-type-awareness{--heritage-accent:#7da987}
+.palace-month-calendar.heritage .calendar-selection li.heritage-type-commemoration{--heritage-accent:#938ab5}
+
+/* Daylight retains the cultural distinction with softer inks. */
+.daylight .heritage-discovery{
+  background:
+    radial-gradient(circle at 92% 10%,rgba(100,132,180,.07),transparent 16rem),
+    radial-gradient(circle at 12% 110%,rgba(177,111,165,.06),transparent 17rem),
+    linear-gradient(145deg,rgba(255,255,255,.96),rgba(242,240,247,.94));
+  border-color:rgba(94,83,126,.13);
+}
+.daylight .heritage-discovery-head h2{color:#302b43}
+.daylight .heritage-discovery-head p:not(.eyebrow),
+.daylight .heritage-context{color:#696477}
+.daylight .heritage-filter-bar>label,
+.daylight .heritage-filter-bar>select{
+  background:rgba(255,255,255,.84)!important;
+  color:#363248!important;
+  border-color:rgba(94,83,126,.14)!important;
+}
+.daylight .heritage-search input{color:#302d43!important}
+.daylight .heritage-grid.enriched .heritage-card{
+  background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(243,241,247,.92))!important;
+}
+.daylight .palace-month-calendar.heritage .palace-calendar-days>button.has-festival{
+  background:linear-gradient(155deg,rgba(249,236,246,.95),rgba(229,222,239,.78))!important;
+}
+.daylight .palace-month-calendar.heritage .palace-calendar-days>button.has-heritage:not(.has-festival){
+  background:linear-gradient(155deg,rgba(232,245,244,.94),rgba(224,231,240,.8))!important;
+}
+.daylight .palace-month-calendar.heritage .palace-calendar-days>button.has-history:not(.has-festival):not(.has-heritage){
+  background:linear-gradient(155deg,rgba(245,239,232,.94),rgba(229,227,237,.8))!important;
+}
+
+@media(max-width:900px){
+  .heritage-filter-bar{grid-template-columns:1fr 1fr}
+  .heritage-search{grid-column:1/-1}
+}
+@media(max-width:620px){
+  .heritage-discovery{margin:0 14px 14px;padding:14px}
+  .heritage-discovery-head{align-items:flex-start;flex-direction:column;gap:9px}
+  .heritage-filter-bar{grid-template-columns:1fr}
+  .heritage-search{grid-column:auto}
+  .calendar-heritage-legend{gap:6px 9px}
+}
