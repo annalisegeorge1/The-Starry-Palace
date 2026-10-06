@@ -1116,6 +1116,18 @@ describe('Starry Palace launch safety',()=>{
     expect(next).toContain('Owner-only chapter order controls — full-book order remains authoritative.');
   });
 
+  it('keeps long manuscripts reorderable and readable at a glance',()=>{
+    const next=read('src/palace-next.css');
+    expect(live).toContain('async function moveChapterTo(chapterId,position)');
+    expect(live).toContain('await persistChapterOrder(next)');
+    expect(live).toContain('Move chapter to position');
+    expect(live).toContain('MANUSCRIPT AT A GLANCE');
+    expect(live).toContain('manuscriptPublicationPercent');
+    expect(next).toContain('Manuscript overview — quiet project health inside the chapter rail.');
+    expect(next).toContain('.manuscript-overview');
+    expect(next).toContain('.chapter-order-controls select');
+  });
+
   it('keeps tablet room navigation swipeable without covering content',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
