@@ -1128,6 +1128,16 @@ describe('Starry Palace launch safety',()=>{
     expect(next).toContain('.chapter-order-controls select');
   });
 
+  it('duplicates chapters as private drafts without altering the source',()=>{
+    expect(live).toContain('async function duplicateCurrentChapter()');
+    expect(live).toContain("Chapter duplicated as a private draft.");
+    expect(live).toContain("(source.title||'Untitled chapter')+' — Copy'");
+    expect(live).toContain("body_html:source.body_html||''");
+    expect(live).toContain("revision_note:source.revision_note||''");
+    expect(live).toContain('ids.splice(Math.max(0,sourceIndex+1),0,copy.id)');
+    expect(live).toContain('Duplicate chapter');
+  });
+
   it('keeps tablet room navigation swipeable without covering content',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
