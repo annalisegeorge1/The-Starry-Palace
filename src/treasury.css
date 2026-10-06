@@ -1127,3 +1127,23 @@
 }
 @media(max-width:980px){.title-constellation-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.title-constellation-grid{grid-template-columns:1fr}}
+
+
+/* Palace artwork is display-only in the normal UI: no context menu, drag-out,
+   text/image selection, or iOS long-press asset actions. */
+.protected-palace-art,
+.protected-palace-art *{
+  -webkit-user-select:none!important;
+  user-select:none!important;
+  -webkit-touch-callout:none!important;
+}
+.protected-palace-art img,
+.protected-palace-art svg,
+.protected-palace-art image,
+.protected-palace-art canvas{
+  -webkit-user-drag:none!important;
+  user-drag:none!important;
+}
+.protected-palace-art img{
+  pointer-events:none;
+}
