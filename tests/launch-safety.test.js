@@ -892,6 +892,22 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('Celestial praise row · Heart Star Moon Crown');
   });
 
+  it('keeps Tags as a room while giving Read its own deep search and member polls',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(main).toContain("['Advanced search','/reading?view=search']");
+    expect(main).toContain("['Tags room','/tags']");
+    expect(live).toContain('DEEP SEARCH · READER CONTROLLED');
+    expect(live).toContain('Include what you crave. Exclude what you do not.');
+    expect(live).toContain('Open the Tags room →');
+    expect(live).toContain('Any member of the circle can ask a question.');
+    expect(live).toContain('◇ Poll');
+    expect(live).toContain('Voting closes');
+    expect(data).toContain('p_closes_at:closesAt');
+    expect(polish).toContain('.reading-mode-tabs');
+    expect(polish).toContain('.advanced-tag-builder');
+  });
+
   it('keeps 3,000-tag discovery member-extensible and searchable',()=>{
     const data=read('src/palaceData.js');
     expect(data).toContain("rpc('search_palace_tags'");
@@ -1191,8 +1207,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('palace-room-css-sync-reload');
     expect(main).toContain('palace-room-css-nonblocking');
     expect(main).toContain("Palace room '+name+' is unavailable in this build.");
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100602');
-    expect(polish).toContain('--palace-room-css-version:2026100602');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100603');
+    expect(polish).toContain('--palace-room-css-version:2026100603');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
