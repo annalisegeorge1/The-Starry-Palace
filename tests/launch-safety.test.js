@@ -927,6 +927,24 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.organizer-item-row');
   });
 
+  it('keeps the Writing Studio comfortable for long-form work',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('writing-studio-grid');
+    expect(live).toContain('writing-studio-rail');
+    expect(live).toContain('writing-editor-workspace');
+    expect(live).toContain('Work settings');
+    expect(live).toContain('writing-goal-ring');
+    expect(live).toContain('Quick word goals');
+    expect(live).toContain("e.key==='Escape'&&focusMode");
+    expect(live).toContain('writing-page-stage');
+    expect(live).toContain('PRIVATE REVISION NOTE');
+    expect(polish).toContain('/* Writing Studio v2');
+    expect(polish).toContain('.writing-studio-grid');
+    expect(polish).toContain('.writing-page-stage .legacy-writing-canvas');
+    expect(polish).toContain('.chic-studio-buttons');
+    expect(polish).toContain('.focus-editor .writing-studio-rail');
+  });
+
   it('keeps Writing Chamber revision snapshots separate from autosave',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
