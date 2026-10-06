@@ -5877,3 +5877,38 @@ img{max-width:100%}
   .publication-glance strong{font-size:.7rem}
   .comic-cover.large{width:min(220px,68vw)}
 }
+
+/* Mobile public reading actions */
+@media(max-width:620px){
+  .work-actions.restored,.comic-work-actions{
+    display:grid!important;
+    grid-template-columns:1fr 1fr;
+    gap:.5rem;
+    width:100%;
+  }
+  .work-actions.restored>a,.work-actions.restored>button,
+  .comic-work-actions>a,.comic-work-actions>button{
+    width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    text-align:center;
+    justify-content:center;
+  }
+  .work-actions.restored>.primary-read-action,
+  .comic-work-actions>a:first-child{grid-column:1/-1}
+  .work-actions.restored>.danger-action{grid-column:1/-1}
+  .work-resume-strip,.comic-resume-strip{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:.7rem;
+  }
+  .work-resume-strip>div,.comic-resume-strip>div{align-items:flex-start}
+  .work-resume-strip>a,.comic-resume-strip>a{align-self:center}
+}
+@media(max-width:420px){
+  .work-actions.restored,.comic-work-actions{grid-template-columns:1fr}
+  .work-actions.restored>.primary-read-action,
+  .comic-work-actions>a:first-child,.work-actions.restored>.danger-action{grid-column:auto}
+  .work-resume-strip,.comic-resume-strip{grid-template-columns:1fr}
+  .work-resume-strip>a,.comic-resume-strip>a{justify-self:start}
+}
