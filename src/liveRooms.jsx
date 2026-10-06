@@ -61,8 +61,8 @@ export function OnboardingLive({Frame}){
  </section></Frame>
 }
 export function ChamberLive({Frame}){
- const{session}=useAuth();const navigate=useNavigate();const[data,setData]=useState(null);const[followingPosts,setFollowingPosts]=useState([]);const[error,setError]=useState('');
- const load=()=>{setError('');Promise.all([getChamberSnapshot(session.user.id),getFollowingProfilePosts(session.user.id),getOnboardingState(session.user.id)]).then(([snapshot,posts,onboarding])=>{if(!onboarding.completed){navigate('/welcome',{replace:true});return}setData(snapshot);setFollowingPosts(posts)}).catch(e=>setError(e.message))};useEffect(load,[session.user.id]);
+ const{session}=useAuth();const navigate=useNavigate();const[data,setData]=useState(null);const[followingPosts,setFollowingPosts]=useState([]);const[nightstand,setNightstand]=useState([]);const[discoveryProfile,setDiscoveryProfile]=useState(null);const[error,setError]=useState('');
+ const load=()=>{setError('');Promise.all([getChamberSnapshot(session.user.id),getFollowingProfilePosts(session.user.id),getOnboardingState(session.user.id),getPublishedWorks(),getWorkShelfState(session.user.id)]).then(([snapshot,posts,onboarding,published,shelfState])=>{if(!onboarding.completed){navigate('/welcome',{replace:true});return}const interests=[...(onboarding.interests||[]),...(onboarding.fandoms||[])].map(x=>String(x).trim().toLowerCase()).filter(Boolean);const matching=(published||[]).filter(w=>w.author_id!==session.user.id&&interests.some(term=>[w.title,w.summary,...((w.work_tags||[]).map(x=>x.tags?.name))].filter(Boolean).join(' ').toLowerCase().includes(term)));const unstarted=matching.filter(w=>!shelfState?.[w.id]?.progress&&!shelfState?.[w.id]?.saved&&!shelfState?.[w.id]?.following);const pool=unstarted.length>=3?unstarted:matching;const dayKey=new Date().toISOString().slice(0,10);const score=id=>[...String(dayKey)+String(id)].reduce((n,ch)=>((n*31)+ch.charCodeAt(0))>>>0,7);setNightstand([...pool].sort((a,b)=>score(a.id)-score(b.id)).slice(0,3));setDiscoveryProfile(onboarding);setData(snapshot);setFollowingPosts(posts)}).catch(e=>setError(e.message))};useEffect(load,[session.user.id]);
  const p=data?.profile;const counts=data?.counts||{};const unread=counts.unreadNotices||0;
  const latest=data?.works?.[0];const nextDraft=(data?.works||[]).find(w=>w.publication_status!=='published')||latest;
  const currentStory=data?.progress?.[0]||null;const currentRead=currentStory?.works;
@@ -120,6 +120,11 @@ export function ChamberLive({Frame}){
         <span className="resume-icon">◈</span><div><small>{comicHasNew?'NEW PANELS':'COMIC READING'}</small><h3>{currentComic?.comics?.title||'Enter the Comics Gallery'}</h3><p>{comicHasNew?'A newer episode arrived after your last reading place.':currentComic?'Your last panel is waiting for you.':'Illustrated worlds are gathered in the Gallery.'}</p></div><b>{comicHasNew?'Read new →':currentComic?'Continue comic →':'Browse comics →'}</b>
       </Link>
     </div>
+   </section>
+
+   <section className="palace-dashboard-section palace-nightstand-home">
+    <div className="section-heading"><div><p className="eyebrow">FOR YOUR NIGHTSTAND</p><h2>{nightstand.length?'Three worlds chosen from your own interests.':'Teach the Palace your reading tastes.'}</h2><p>{nightstand.length?'This shelf rotates quietly and uses only the interests you chose. It is not a popularity chart.':'Add genres or fandoms you enjoy and the Palace can prepare a private discovery shelf for you.'}</p></div><Link to="/welcome">{nightstand.length?'Tune interests →':'Set preferences →'}</Link></div>
+    {nightstand.length?<div className="palace-nightstand-grid">{nightstand.map(w=><Link key={w.id} to={"/work/"+w.slug}><div className="nightstand-cover">{w.cover_url?<img loading="lazy" decoding="async" src={w.cover_url} alt=""/>:<span>☾</span>}</div><div><small>{w.work_type==='fanwork'?'FANWORK':'ORIGINAL WORK'} · {w.rating}</small><h3>{w.title}</h3><p>{w.summary||'A published world waiting at your bedside.'}</p><b>{w.profiles?.display_name||w.profiles?.username||'Palace writer'} →</b></div></Link>)}</div>:<div className="palace-clear-state nightstand-empty"><span>✦</span><div><strong>Your Nightstand is private.</strong><p>Nothing appears here until you choose what kinds of stories or fandoms you want the Palace to remember.</p></div><Link to="/welcome">Choose interests →</Link></div>}
    </section>
 
    <section className="palace-dashboard-section palace-attention-section">
