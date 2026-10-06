@@ -317,6 +317,11 @@ export async function getClubRoom(slug,userId){
  const postRows=posts.data||[],replyRows=replies.data||[],pollRows=polls.data||[],optionRows=options.data||[],voteRows=votes.data||[];
  const membership=(members.data||[]).find(m=>m.user_id===userId)||null;
  const memberIds=(members.data||[]).map(m=>m.user_id).filter(id=>id&&id!==userId);
+ const identityIds=[...new Set([
+  ...(members.data||[]).map(x=>x.user_id),...postRows.map(x=>x.author_id),...replyRows.map(x=>x.author_id),...(chat.data||[]).map(x=>x.author_id)
+ ].filter(Boolean))];
+ const identityMarks=await getIdentityMarks(identityIds);
+ const wear=(profile,id)=>withIdentity(profile,id,identityMarks);
  let clubFollowingIds=new Set();
  if(memberIds.length){
   const followRows=await needClient().from('member_follows').select('followed_id').eq('follower_id',userId).in('followed_id',memberIds);
@@ -334,14 +339,14 @@ export async function getClubRoom(slug,userId){
   club,
   membership,
   membershipRequest:membershipRequest.data||null,
-  members:(members.data||[]).map(m=>({...m,following:clubFollowingIds.has(m.user_id)})),
+  members:(members.data||[]).map(m=>({...m,profiles:wear(m.profiles,m.user_id),following:clubFollowingIds.has(m.user_id)})),
   pulse:clubPulse,
-  posts:postRows.map(p=>({...p,replies:replyRows.filter(r=>r.post_id===p.id)})),
+  posts:postRows.map(p=>({...p,profiles:wear(p.profiles,p.author_id),replies:replyRows.filter(r=>r.post_id===p.id).map(reply=>({...reply,profiles:wear(reply.profiles,reply.author_id)}))})),
   polls:pollRows.map(p=>{
    const opts=optionRows.filter(o=>o.poll_id===p.id).map(o=>({...o,vote_count:voteRows.filter(v=>v.poll_id===p.id&&v.option_id===o.id).length}));
    return{...p,options:opts,my_vote:voteRows.find(v=>v.poll_id===p.id&&v.user_id===userId)?.option_id||null,total_votes:voteRows.filter(v=>v.poll_id===p.id).length}
   }),
-  chat:(chat.data||[]).reverse()
+  chat:(chat.data||[]).reverse().map(x=>({...x,profiles:wear(x.profiles,x.author_id)}))
  }
 }
 export async function joinOpenClub(userId,clubId){
@@ -361,7 +366,7 @@ export async function replyToClubPost(userId,postId,body){
 }
 export async function getClubChatMessages(clubId,limit=80){
  const{data,error}=await needClient().from('club_chat_messages').select('id,club_id,author_id,body,status,created_at,profiles!club_chat_messages_author_id_fkey(id,username,display_name,title,avatar_url)').eq('club_id',clubId).eq('status','active').order('created_at',{ascending:false}).limit(Math.max(1,Math.min(120,Number(limit)||80)));
- if(error)throw error;return(data||[]).reverse()
+ if(error)throw error;const rows=(data||[]).reverse();const marks=await getIdentityMarks(rows.map(x=>x.author_id));return rows.map(x=>({...x,profiles:withIdentity(x.profiles,x.author_id,marks)}))
 }
 export async function postClubChat(userId,clubId,body){
  const text=String(body||'').trim();if(!text)throw new Error('Write a message first.');
