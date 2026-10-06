@@ -4,7 +4,7 @@ import badges from './badges.json';
 import originals from './originalBadges.json';
 import PalaceBadge from './PalaceBadge';
 import PalaceGift, { giftCourt, giftCourts, giftEdition, giftEditions } from './PalaceGift';
-import { ascendPalaceGift, createGiftTradeOffer, getGiftCatalogue, getGiftTrades, getTreasury, getMyCelestialPoints, getMyCelestialPointLedger, getPalaceTitleOptions, removeProfileAchievementShowcase, removeProfileGiftShowcase, respondGiftTradeOffer, searchMembers, setProfileAchievementShowcase, setProfileGiftShowcase } from './palaceData';
+import { ascendPalaceGift, createGiftTradeOffer, getGiftCatalogue, getGiftTrades, getTreasury, getMyCelestialPoints, getMyCelestialPointLedger, getCelestialTitleLadder, removeProfileAchievementShowcase, removeProfileGiftShowcase, respondGiftTradeOffer, searchMembers, setProfileAchievementShowcase, setProfileGiftShowcase } from './palaceData';
 import './treasury.css';
 import {buildInventory} from './treasuryCollection';
 
@@ -52,7 +52,7 @@ export default function Treasury({Frame}) {
  useEffect(()=>{
   let live=true;
   setGiftLoading(true);setGiftError('');
-  Promise.all([getGiftCatalogue(),getTreasury(session.user.id),getGiftTrades(session.user.id),getMyCelestialPoints(),getMyCelestialPointLedger(12),getPalaceTitleOptions(session.user.id)]).then(([catalogue,owned,tradeRows,points,ledger,titles])=>{
+  Promise.all([getGiftCatalogue(),getTreasury(session.user.id),getGiftTrades(session.user.id),getMyCelestialPoints(),getMyCelestialPointLedger(12),getCelestialTitleLadder(session.user.id)]).then(([catalogue,owned,tradeRows,points,ledger,titles])=>{
    if(!live)return;setGiftData(catalogue);setOwnedData(owned);setTrades(tradeRows);setCelestial(points||{lifetime_points:0,giving_points:0,receiving_points:0,participation_points:0});setCelestialLedger(ledger||[]);setSpecialTitles((titles||[]).filter(t=>Number(t.celestial_points_required||0)>0).sort((a,b)=>Number(a.celestial_points_required)-Number(b.celestial_points_required)));
   }).catch(error=>{if(live)setGiftError(error.message)}).finally(()=>{if(live)setGiftLoading(false)});
   return()=>{live=false};
