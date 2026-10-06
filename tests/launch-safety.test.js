@@ -516,6 +516,13 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.personal-agenda');
   });
 
+  it('offers curated Palace titles during first-night setup and later preference tuning',()=>{
+    expect(live).toContain('Palace title<select');
+    expect(live).toContain('title:palaceTitle');
+    expect(live).toContain('Special titles appear here only when your account holds them.');
+    expect(live).toContain('titleChoices.find');
+  });
+
   it('uses curated Palace titles and protects special titles',()=>{
     const data=read('src/palaceData.js');
     const migration=read('database/palace-profile-title-catalogue.sql');
@@ -795,8 +802,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('palace-room-css-sync-reload');
     expect(main).toContain('palace-room-css-nonblocking');
     expect(main).toContain("Palace room '+name+' is unavailable in this build.");
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100519');
-    expect(polish).toContain('--palace-room-css-version:2026100519');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100520');
+    expect(polish).toContain('--palace-room-css-version:2026100520');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
