@@ -48,6 +48,15 @@ export async function getMyCelestialPoints(){
  const{data,error}=await needClient().rpc('get_my_celestial_points');if(error)throw error;
  return data?.[0]||{lifetime_points:0,giving_points:0,receiving_points:0,participation_points:0}
 }
+export async function getCelestialTitleLadder(userId){
+ const [titles,entitlements]=await Promise.all([
+  needClient().from('palace_titles').select('title,category,description,sort_order,celestial_points_required').gt('celestial_points_required',0).order('celestial_points_required',{ascending:true}),
+  needClient().from('profile_title_entitlements').select('title,source').eq('user_id',userId)
+ ]);
+ if(titles.error)throw titles.error;if(entitlements.error)throw entitlements.error;
+ const entitled=new Set((entitlements.data||[]).map(x=>x.title));
+ return (titles.data||[]).map(x=>({...x,entitled:entitled.has(x.title)}))
+}
 export async function getMyCelestialPointLedger(limit=20){
  const{data,error}=await needClient().rpc('get_my_celestial_point_ledger',{p_limit:limit});if(error)throw error;return data||[]
 }
