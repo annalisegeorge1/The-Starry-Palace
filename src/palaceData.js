@@ -657,7 +657,7 @@ export async function searchPalace(term){
  const q=term.trim();if(!q)return{works:[],comics:[],members:[],tags:[],clubs:[],archive:[]};
  const safe=q.replace(/[%_,]/g,' ');
  const [works,comics,members,tags,clubs,archive]=await Promise.all([
-  needClient().from('works').select('id,title,slug,summary,rating,completion_status,cover_url,author_id,profiles!works_author_id_fkey(username,display_name,avatar_url)').eq('publication_status','published').or(`title.ilike.%${safe}%,summary.ilike.%${safe}%`).order('last_published_at',{ascending:false}).limit(18),
+  needClient().from('works').select('id,title,slug,summary,rating,completion_status,cover_url,author_id,profiles!works_author_id_fkey(username,display_name,avatar_url,title)').eq('publication_status','published').or(`title.ilike.%${safe}%,summary.ilike.%${safe}%`).order('last_published_at',{ascending:false}).limit(18),
   needClient().from('comics').select('id,creator_id,title,slug,summary,rating,completion_status,cover_path,last_published_at').eq('publication_status','published').or(`title.ilike.%${safe}%,summary.ilike.%${safe}%`).order('last_published_at',{ascending:false}).limit(18),
   needClient().from('profiles').select('id,username,display_name,title,avatar_url,visibility').or(`username.ilike.%${safe}%,display_name.ilike.%${safe}%`).neq('visibility','hidden').limit(18),
   needClient().from('tags').select('id,name,category,status').eq('status','canonical').ilike('name',`%${safe}%`).order('name').limit(24),
@@ -804,7 +804,7 @@ export async function getComicBySlug(slug){
  const{data:comic,error}=await needClient().from('comics').select('*').eq('slug',slug).maybeSingle();if(error)throw error;if(!comic)return null;
  const[episodes,profile,tags]=await Promise.all([
   needClient().from('comic_episodes').select('*').eq('comic_id',comic.id).order('position'),
-  needClient().from('profiles').select('id,username,display_name,avatar_url').eq('id',comic.creator_id).maybeSingle(),
+  needClient().from('profiles').select('id,username,display_name,avatar_url,title').eq('id',comic.creator_id).maybeSingle(),
   needClient().from('comic_tags').select('position,tags(id,name,category,status)').eq('comic_id',comic.id).order('position')
  ]);for(const r of[episodes,profile,tags])if(r.error)throw r.error;
  const eps=episodes.data||[];const ids=eps.map(e=>e.id);let pages=[];
