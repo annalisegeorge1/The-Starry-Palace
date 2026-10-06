@@ -1073,3 +1073,77 @@
   border-color:rgba(96,77,142,.08);
   background:rgba(255,255,255,.54);
 }
+
+
+/* Worn Palace signatures — tiny ceremonial marks, never a ranking surface. */
+.palace-identity-marks{
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+  margin-left:.18rem;
+  vertical-align:middle;
+}
+.palace-identity-marks.inline{margin-left:.14rem}
+.palace-identity-marks .identity-mark{
+  width:15px;height:15px;
+  display:inline-grid;
+  place-items:center;
+  flex:0 0 auto;
+  border-radius:50%;
+  border:1px solid rgba(210,187,236,.14);
+  background:rgba(93,73,143,.07);
+  color:#a798bb;
+  font-size:.42rem;
+  line-height:1;
+  font-style:normal;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.012);
+}
+.palace-identity-marks .identity-mark.achievement{font-size:.43rem}
+.palace-identity-marks .identity-mark.treasure{font-size:.47rem}
+.palace-identity-marks .tier-bronze{
+  border-color:rgba(174,124,91,.18);
+  color:#aa8d78;
+  background:rgba(127,83,58,.055);
+}
+.palace-identity-marks .tier-silver{
+  border-color:rgba(176,184,204,.18);
+  color:#a9b0c2;
+  background:rgba(126,136,163,.05);
+}
+.palace-identity-marks .tier-gold{
+  border-color:rgba(204,177,113,.19);
+  color:#baa675;
+  background:rgba(159,128,62,.05);
+}
+.palace-identity-marks .tier-platinum{
+  border-color:rgba(199,197,218,.2);
+  color:#c0bbcf;
+  background:rgba(152,145,179,.055);
+}
+.palace-identity-marks .tier-emerald{
+  border-color:rgba(106,177,151,.19);
+  color:#8db8aa;
+  background:rgba(65,133,111,.052);
+}
+.story-author-chip .palace-identity-marks{
+  margin:.08rem 0 0;
+}
+.story-author-chip .palace-identity-marks .identity-mark{
+  width:14px;height:14px;
+}
+.chat-name small .palace-identity-marks,
+.club-chat-stream small .palace-identity-marks,
+.highlight-member-title .palace-identity-marks{
+  transform:translateY(-1px);
+}
+.people-results .palace-identity-marks,
+.search-result-card .palace-identity-marks{
+  white-space:nowrap;
+}
+.daylight .palace-identity-marks .identity-mark{
+  background:rgba(87,69,126,.035);
+  box-shadow:inset 0 0 0 1px rgba(42,31,64,.012);
+}
+@media(max-width:620px){
+  .palace-identity-marks .identity-mark{width:14px;height:14px}
+}
