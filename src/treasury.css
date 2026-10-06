@@ -1041,3 +1041,55 @@
   .title-constellation-grid>article{border-right:0;border-bottom:1px solid rgba(198,176,229,.08)}
   .title-constellation-grid>article:last-child{border-bottom:0}
 }
+
+
+/* Catalogue Celestial doorway */
+.catalogue-celestial-doorway{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  margin:1rem 0 1.2rem;
+  padding:.85rem 1rem;
+  border:1px solid rgba(198,176,229,.11);
+  border-radius:17px;
+  background:linear-gradient(145deg,rgba(34,27,68,.34),rgba(14,12,32,.5));
+}
+.catalogue-celestial-doorway h2{
+  margin:.12rem 0 .25rem;
+  font:600 1rem/1.1 Georgia,'Times New Roman',serif;
+}
+.catalogue-celestial-doorway p:not(.eyebrow){
+  max-width:740px;
+  margin:0;
+  color:#8f8898;
+  font-size:.62rem;
+  line-height:1.45;
+}
+.catalogue-celestial-doorway a{
+  flex:0 0 auto;
+  text-decoration:none;
+}
+.daylight .catalogue-celestial-doorway{
+  background:linear-gradient(145deg,rgba(255,255,255,.9),rgba(242,239,247,.85));
+  border-color:rgba(91,73,136,.09);
+}
+@media(max-width:720px){
+  .catalogue-celestial-doorway{align-items:flex-start;flex-direction:column}
+}
+
+/* Defensive fix if constellation layout is ever reused on this route. */
+.celestial-title-ladder{grid-template-columns:minmax(0,1fr)!important;width:100%;min-width:0}
+.title-constellation{width:100%;min-width:0}
+.title-constellation-grid{grid-template-columns:repeat(4,minmax(180px,1fr))}
+.title-constellation-grid>article,
+.title-constellation-grid>article strong,
+.title-constellation-grid>article p,
+.title-constellation>header h3,
+.title-constellation>header p{
+  word-break:normal!important;
+  overflow-wrap:break-word!important;
+  hyphens:none;
+}
+@media(max-width:980px){.title-constellation-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.title-constellation-grid{grid-template-columns:1fr}}
