@@ -474,240 +474,99 @@
 .badge-art-dialog .merged-badge-stage.is-character{width:min(300px,70vw);height:min(300px,70vw);padding:0}
 .palace-watercolour-badge:has(.merged-badge-stage){filter:none}
 
-/* Object badge hierarchy: each tier adds visible structure, jewels and court ornament. */
-.badge-tier-frame{
- position:relative;
- background:transparent!important;
+/* Painted tier mounts are the standard Bronze → Emerald badge frame language. */
+.painted-tier-stage{
+ position:relative!important;
+ display:block!important;
+ width:112px!important;
+ height:154px!important;
+ margin-inline:auto;
+ padding:0!important;
  overflow:visible!important;
- --item-frame:#9b7656;
- --item-frame-soft:rgba(155,118,86,.24);
- --item-frame-bright:#c39a72;
- --item-jewel:#c59c74;
+ isolation:isolate;
+ background:transparent!important;
+ border-radius:0!important;
 }
-.badge-tier-frame>.approved-badge-art,.badge-tier-frame>.merged-badge-object{position:relative;z-index:1}
-.badge-tier-frame::before{
- content:"";
+.painted-tier-stage .painted-badge-inner{
  position:absolute;
- inset:3%;
- border-radius:50%;
- pointer-events:none;
- z-index:3;
- border:2px solid var(--item-frame);
- box-shadow:0 0 0 1px var(--item-frame-soft),inset 0 0 14px var(--item-frame-soft);
+ left:24.4%;
+ top:24.5%;
+ width:51.2%;
+ height:41%;
+ z-index:1;
+ display:grid;
+ place-items:center;
+ overflow:visible;
+ background:transparent;
 }
-.badge-tier-frame::after{
- content:"";
- position:absolute;
- left:50%;
- bottom:-1%;
- transform:translate(-50%,45%) rotate(45deg);
- width:.58rem;
- height:.58rem;
- pointer-events:none;
- z-index:5;
- border:1.5px solid var(--item-frame);
- background:radial-gradient(circle at 38% 34%,rgba(255,255,255,.72) 0 8%,var(--item-jewel) 10% 42%,var(--item-frame) 45% 100%);
- box-shadow:0 0 8px var(--item-frame-soft);
+.painted-tier-stage .painted-badge-inner>.approved-badge-art,
+.painted-tier-stage .painted-badge-inner>.merged-badge-object,
+.painted-tier-stage .painted-badge-inner>.merged-court-portrait,
+.painted-tier-stage .painted-badge-inner>.merged-court-portrait-placeholder{
+ display:block!important;
+ width:100%!important;
+ height:100%!important;
+ max-width:none!important;
+ max-height:none!important;
+ margin:0!important;
+ object-fit:contain!important;
+ object-position:center!important;
+ background:transparent!important;
+ filter:none!important;
 }
-.badge-tier-ornament{
- position:absolute;
- inset:0;
- z-index:4;
- pointer-events:none;
- color:var(--item-frame);
- opacity:0;
- transition:opacity .2s ease;
+.painted-tier-stage.is-object .painted-badge-inner{
+ left:22.5%;
+ top:22.8%;
+ width:55%;
+ height:45%;
 }
-.badge-tier-ornament::before{
- content:"";
- position:absolute;
- left:50%;
- top:-3.5%;
- width:34%;
- height:14%;
- transform:translateX(-50%);
- border-top:2px solid currentColor;
- border-radius:50% 50% 20% 20%;
- background:
-  radial-gradient(circle at 50% 32%,var(--item-jewel) 0 5%,transparent 6%),
-  radial-gradient(circle at 28% 58%,var(--item-frame-bright) 0 3%,transparent 4%),
-  radial-gradient(circle at 72% 58%,var(--item-frame-bright) 0 3%,transparent 4%);
- filter:drop-shadow(0 0 5px var(--item-frame-soft));
+.painted-tier-stage.is-object .painted-badge-inner>.approved-badge-art,
+.painted-tier-stage.is-object .painted-badge-inner>.merged-badge-object{
+ transform:scale(.94);
+ transform-origin:center;
 }
-.badge-tier-ornament::after{
- content:"";
- position:absolute;
- left:50%;
- top:1.7%;
- width:12%;
- height:8%;
- transform:translateX(-50%);
- border-left:1.5px solid currentColor;
- border-right:1.5px solid currentColor;
- border-radius:0 0 50% 50%;
+.painted-tier-stage.is-character .painted-badge-inner{
+ left:24.4%;
+ top:24.5%;
+ width:51.2%;
+ height:41%;
 }
-.badge-tier-ornament i{position:absolute;display:block}
-.badge-tier-ornament i:nth-child(1),
-.badge-tier-ornament i:nth-child(2){
- top:47%;
- width:12%;
- height:26%;
- border-top:1.5px solid currentColor;
- border-bottom:1.5px solid currentColor;
- opacity:0;
+.painted-tier-stage.is-character .merged-court-portrait{
+ object-fit:contain!important;
 }
-.badge-tier-ornament i:nth-child(1){
- left:-1%;
- border-left:2px solid currentColor;
- border-radius:80% 10% 10% 80%;
- transform:rotate(-9deg);
+.painted-tier-mount{
+ position:absolute!important;
+ inset:0!important;
+ width:100%!important;
+ height:100%!important;
+ z-index:3!important;
+ pointer-events:none!important;
+ overflow:visible!important;
+ filter:drop-shadow(0 6px 10px rgba(2,5,16,.22));
 }
-.badge-tier-ornament i:nth-child(2){
- right:-1%;
- border-right:2px solid currentColor;
- border-radius:10% 80% 80% 10%;
- transform:rotate(9deg);
+.painted-tier-stage::before,.painted-tier-stage::after,
+.painted-tier-stage .badge-tier-ornament{display:none!important}
+.palace-watercolour-badge:has(.painted-tier-stage){filter:none}
+.palace-watercolour-badge.is-locked .painted-tier-stage{filter:saturate(.62) brightness(.78)}
+.palace-watercolour-badge.is-locked .painted-tier-mount{opacity:.78}
+.tier-bronze .painted-tier-mount{filter:drop-shadow(0 5px 9px rgba(86,55,35,.20))}
+.tier-silver .painted-tier-mount{filter:drop-shadow(0 5px 10px rgba(130,149,190,.22))}
+.tier-gold .painted-tier-mount{filter:drop-shadow(0 6px 11px rgba(164,126,55,.23))}
+.tier-platinum .painted-tier-mount{filter:drop-shadow(0 6px 12px rgba(142,150,214,.25))}
+.tier-emerald .painted-tier-mount{filter:drop-shadow(0 7px 13px rgba(71,135,128,.27))}
+.daylight .painted-tier-mount{filter:drop-shadow(0 5px 9px rgba(49,67,86,.13))}
+.badge-art-dialog .painted-tier-stage{
+ width:min(230px,58vw)!important;
+ height:min(316px,80vw)!important;
 }
-.badge-tier-ornament i:nth-child(1)::after,
-.badge-tier-ornament i:nth-child(2)::after{
- content:"";
- position:absolute;
- top:50%;
- width:.34rem;
- height:.34rem;
- border-radius:50%;
- background:var(--item-jewel);
- box-shadow:0 0 8px var(--item-frame-soft);
+.badge-art-dialog .painted-tier-stage .painted-badge-inner>.approved-badge-art,
+.badge-art-dialog .painted-tier-stage .painted-badge-inner>.merged-badge-object,
+.badge-art-dialog .painted-tier-stage .painted-badge-inner>.merged-court-portrait{
+ width:100%!important;
+ height:100%!important;
 }
-.badge-tier-ornament i:nth-child(1)::after{left:-.18rem}
-.badge-tier-ornament i:nth-child(2)::after{right:-.18rem}
-.badge-tier-ornament i:nth-child(3){
- inset:10%;
- border-radius:50%;
- opacity:0;
- border:1px solid transparent;
+.badge-card .painted-tier-stage{width:124px!important;height:170px!important}
+@media(max-width:620px){
+ .painted-tier-stage{width:88px!important;height:121px!important}
+ .badge-card .painted-tier-stage{width:112px!important;height:154px!important}
 }
-
-/* Bronze — restrained single court ring. */
-.tier-bronze .badge-tier-frame{
- --item-frame:#9b7656;
- --item-frame-soft:rgba(155,118,86,.24);
- --item-frame-bright:#c39a72;
- --item-jewel:#ad805e;
-}
-.tier-bronze .badge-tier-frame::before{border-width:2px}
-.tier-bronze .badge-tier-frame::after{width:.52rem;height:.52rem}
-
-/* Silver — a brighter double ring and a small coronet. */
-.tier-silver .badge-tier-frame{
- --item-frame:#b8c3d2;
- --item-frame-soft:rgba(184,195,210,.29);
- --item-frame-bright:#e3e9f1;
- --item-jewel:#d7e0ec;
-}
-.tier-silver .badge-tier-frame::before{
- border-width:2.5px;
- box-shadow:0 0 0 1px rgba(229,235,243,.22),0 0 0 5px rgba(184,195,210,.055),inset 0 0 18px var(--item-frame-soft);
-}
-.tier-silver .badge-tier-ornament{opacity:.5}
-.tier-silver .badge-tier-ornament::before{width:27%;height:11%;top:-2%}
-.tier-silver .badge-tier-ornament::after{display:none}
-.tier-silver .badge-tier-frame::after{width:.62rem;height:.62rem}
-
-/* Gold — triple-ring regalia, crown crest and side flourishes. */
-.tier-gold .badge-tier-frame{
- --item-frame:#bca56d;
- --item-frame-soft:rgba(188,165,109,.34);
- --item-frame-bright:#e3ca8b;
- --item-jewel:#d8b86f;
-}
-.tier-gold .badge-tier-frame::before{
- border-width:3px;
- box-shadow:
-  0 0 0 1px rgba(230,204,143,.26),
-  0 0 0 5px rgba(188,165,109,.10),
-  0 0 0 8px rgba(188,165,109,.035),
-  0 0 16px rgba(188,165,109,.13),
-  inset 0 0 22px var(--item-frame-soft);
-}
-.tier-gold .badge-tier-ornament{opacity:.82}
-.tier-gold .badge-tier-ornament i:nth-child(1),
-.tier-gold .badge-tier-ornament i:nth-child(2){opacity:.55}
-.tier-gold .badge-tier-frame::after{width:.72rem;height:.72rem;border-width:2px}
-
-/* Platinum — layered luminous court metal with a jeweled inner halo. */
-.tier-platinum .badge-tier-frame{
- --item-frame:#d5def0;
- --item-frame-soft:rgba(174,193,224,.38);
- --item-frame-bright:#f4f7ff;
- --item-jewel:#c6d8f3;
-}
-.tier-platinum .badge-tier-frame::before{
- border-width:3px;
- box-shadow:
-  0 0 0 2px rgba(238,244,255,.20),
-  0 0 0 6px rgba(213,222,240,.10),
-  0 0 0 10px rgba(174,193,224,.045),
-  0 0 22px rgba(174,193,224,.22),
-  inset 0 0 26px var(--item-frame-soft);
-}
-.tier-platinum .badge-tier-ornament{opacity:.95}
-.tier-platinum .badge-tier-ornament i:nth-child(1),
-.tier-platinum .badge-tier-ornament i:nth-child(2){opacity:.82}
-.tier-platinum .badge-tier-ornament i:nth-child(3){
- opacity:.8;
- border-color:rgba(213,222,240,.42);
- box-shadow:inset 0 0 14px rgba(174,193,224,.10),0 0 12px rgba(174,193,224,.08);
-}
-.tier-platinum .badge-tier-frame::after{width:.8rem;height:.8rem;border-width:2px}
-
-/* Emerald — full royal frame: crown, side jewels, four rings and emerald radiance. */
-.tier-emerald .badge-tier-frame{
- --item-frame:#6faaa0;
- --item-frame-soft:rgba(91,157,146,.44);
- --item-frame-bright:#b8ded6;
- --item-jewel:#74c7b5;
-}
-.tier-emerald .badge-tier-frame::before{
- border-width:3.5px;
- box-shadow:
-  0 0 0 1px rgba(184,222,214,.28),
-  0 0 0 5px rgba(111,170,160,.14),
-  0 0 0 9px rgba(91,157,146,.075),
-  0 0 0 13px rgba(91,157,146,.03),
-  0 0 28px rgba(91,157,146,.28),
-  inset 0 0 30px rgba(91,157,146,.32);
-}
-.tier-emerald .badge-tier-ornament{opacity:1}
-.tier-emerald .badge-tier-ornament::before{
- top:-5%;
- width:41%;
- height:17%;
- border-top-width:3px;
- background:
-  radial-gradient(circle at 50% 24%,#d7fff6 0 3%,var(--item-jewel) 4% 8%,transparent 9%),
-  radial-gradient(circle at 27% 57%,var(--item-frame-bright) 0 4%,transparent 5%),
-  radial-gradient(circle at 73% 57%,var(--item-frame-bright) 0 4%,transparent 5%),
-  radial-gradient(circle at 14% 72%,var(--item-jewel) 0 3%,transparent 4%),
-  radial-gradient(circle at 86% 72%,var(--item-jewel) 0 3%,transparent 4%);
-}
-.tier-emerald .badge-tier-ornament i:nth-child(1),
-.tier-emerald .badge-tier-ornament i:nth-child(2){
- opacity:1;
- width:14%;
- height:31%;
- border-width:2px;
-}
-.tier-emerald .badge-tier-ornament i:nth-child(3){
- inset:8%;
- opacity:1;
- border-color:rgba(184,222,214,.50);
- box-shadow:inset 0 0 18px rgba(91,157,146,.14),0 0 16px rgba(91,157,146,.12);
-}
-.tier-emerald .badge-tier-frame::after{
- width:.92rem;
- height:.92rem;
- border-width:2px;
- box-shadow:0 0 8px rgba(184,222,214,.28),0 0 18px rgba(91,157,146,.30);
-}
-.daylight .badge-tier-frame{filter:drop-shadow(0 4px 8px rgba(49,67,86,.08))}
