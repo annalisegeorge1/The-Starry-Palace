@@ -235,7 +235,7 @@ function Frame({children,privateArea=false}){
   <button className="nav-scrim" aria-label="Close navigation" onClick={()=>setNavOpen(false)}/>
   <div className="palace-stage full-stage">
    <header className="topbar full-topbar"><div className="full-topbar-row"><div className="full-brand"><button className="nav-toggle" onClick={()=>setNavOpen(true)} aria-label="Open Palace navigation">☰</button><Link to="/"><span className="brandmark">☾<b>✦</b></span><strong>The Starry Palace</strong></Link><small>BETA</small>{activeRoom&&<span className="top-room-context" aria-label={'Current room: '+activeRoom.label+(activeSection?' · '+activeSection[0]:'')}><span className={"top-room-sigil top-room-sigil-"+activeRoom.id}><PalaceRoomIcon name={activeRoom.id}/></span> {activeRoom.label}{activeSection&&<><b aria-hidden="true">/</b><em>{activeSection[0]}</em></>}</span>}</div><form className="global-search-live" role="search" aria-label="Search The Starry Palace" onSubmit={submitSearch}><span aria-hidden="true">⌕</span><input aria-label="Search works, writers, tags and fandoms" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search works, writers, tags, fandoms…"/><button type="submit">Search</button></form><div className="full-top-actions"><button className="command-trigger" type="button" onClick={()=>setCommandOpen(true)} aria-label="Open Palace quick navigation" title="Quick navigation · Ctrl or Command K"><span>⌕</span><kbd>⌘K</kbd></button>{session&&<Link className="top-icon-link" to="/letters" aria-label="Palace Letters">✉</Link>}{session&&<Link className="top-icon-link" style={{position:'relative'}} to="/activity" aria-label={activityBadge?activityBadge+' unread notifications':'Notifications'}>✦{activityBadge>0&&<span className="float-unread-badge">{activityBadge>99?'99+':activityBadge}</span>}</Link>}<Link className="write-action" to={session?'/writing':'/login'}>✎ <span>Write</span></Link></div></div></header>
-   <main id="palace-content" className="palace-main-stage" tabIndex="-1">{children}</main>
+   <main id="palace-content" data-palace-route={currentHref} className="palace-main-stage" tabIndex="-1">{children}</main>
    <footer className="palace-footer">
     <div><span className="palace-footer-mark" aria-hidden="true">☾<b>✦</b></span><div><strong>The Starry Palace</strong><small>Gather. Have a cup of tea. Write and read with me.</small></div></div>
     <nav aria-label="Palace footer"><Link to="/code">Palace Code</Link><Link to="/council">Council</Link><Link to="/search">Search</Link>{session&&<Link to="/settings">Settings & Safety</Link>}</nav>
@@ -318,32 +318,58 @@ function NavigationReset(){
 function BlankScreenWatchdog(){
  const location=useLocation();
  React.useEffect(()=>{
-  let firstTimer,secondTimer;
+  let firstTimer,secondTimer,rescueTimer;
+  const removeRecovery=()=>document.querySelector('[data-palace-blank-recovery]')?.remove();
+  const showRecovery=()=>{
+   if(document.querySelector('[data-palace-blank-recovery]'))return;
+   const layer=document.createElement('div');
+   layer.className='route-recovery blank-screen-recovery';
+   layer.dataset.palaceBlankRecovery='true';
+   layer.setAttribute('role','alert');
+   layer.innerHTML='<div><span aria-hidden="true">☾<b>✦</b></span><h1>This room lost its moonlight.</h1><p>The Palace caught an incomplete screen without discarding your live app state.</p><button type="button">Restore this room</button></div>';
+   layer.querySelector('button')?.addEventListener('click',()=>window.location.reload());
+   document.body.appendChild(layer);
+  };
+  const looksInvisible=node=>{
+   if(!node)return false;
+   const style=getComputedStyle(node);const rect=node.getBoundingClientRect();
+   return style.display==='none'||style.visibility==='hidden'||Number(style.opacity||1)<.03||rect.width<20||rect.height<24;
+  };
   const inspect=()=>{
    const root=document.getElementById('root');
    if(!root)return;
    const shell=root.querySelector('[data-palace-frame="ready"]');
    const loader=root.querySelector('.route-loading');
-   const recovery=root.querySelector('.route-recovery');
+   const routeRecovery=root.querySelector('.route-recovery');
    const content=root.querySelector('#palace-content');
    const rootText=(root.textContent||'').trim();
    const contentText=(content?.textContent||'').trim();
+   const firstRoom=content?.firstElementChild||null;
    const blankRoot=root.childElementCount===0||rootText.length<3||root.getBoundingClientRect().height<40;
    const blankRoom=!!shell&&!!content&&content.childElementCount===0&&contentText.length<3;
-   if((blankRoot||blankRoom)&&!loader&&!recovery){
-    const refreshed=schedulePalaceReload('palace-blank-screen-reload:'+location.pathname,80);
-    if(!refreshed&&root){
-     root.innerHTML='<div class="route-recovery blank-screen-recovery" role="alert"><div><span aria-hidden="true">☾<b>✦</b></span><h1>This room lost its moonlight.</h1><p>The Palace caught an incomplete screen instead of leaving it blank.</p><button onclick="window.location.reload()">Restore this room</button></div></div>';
-    }
+   const visuallyBlank=!!shell&&!!content&&!blankRoom&&(looksInvisible(content)||looksInvisible(firstRoom));
+   if(!(blankRoot||blankRoom||visuallyBlank)||loader||routeRecovery){if(!blankRoot&&!blankRoom&&!visuallyBlank)removeRecovery();return}
+   if(visuallyBlank&&content){
+    content.classList.add('palace-visibility-rescue');
+    window.clearTimeout(rescueTimer);
+    rescueTimer=window.setTimeout(()=>{
+     const stillBlank=looksInvisible(content)||looksInvisible(content.firstElementChild);
+     if(!stillBlank){removeRecovery();return}
+     showRecovery();
+     schedulePalaceReload('palace-blank-screen-reload:'+location.pathname,180);
+    },180);
+    return
    }
+   showRecovery();
+   schedulePalaceReload('palace-blank-screen-reload:'+location.pathname,180);
   };
-  firstTimer=window.setTimeout(inspect,3200);
-  secondTimer=window.setTimeout(inspect,7600);
-  const onPageShow=event=>{if(event.persisted)window.setTimeout(inspect,180)};
-  const onVisible=()=>{if(document.visibilityState==='visible')window.setTimeout(inspect,220)};
+  firstTimer=window.setTimeout(inspect,1800);
+  secondTimer=window.setTimeout(inspect,5200);
+  const onPageShow=event=>window.setTimeout(inspect,event.persisted?120:260);
+  const onVisible=()=>{if(document.visibilityState==='visible')window.setTimeout(inspect,180)};
   window.addEventListener('pageshow',onPageShow);
   document.addEventListener('visibilitychange',onVisible);
-  return()=>{window.clearTimeout(firstTimer);window.clearTimeout(secondTimer);window.removeEventListener('pageshow',onPageShow);document.removeEventListener('visibilitychange',onVisible)};
+  return()=>{window.clearTimeout(firstTimer);window.clearTimeout(secondTimer);window.clearTimeout(rescueTimer);removeRecovery();window.removeEventListener('pageshow',onPageShow);document.removeEventListener('visibilitychange',onVisible)};
  },[location.pathname,location.search]);
  return null;
 }
