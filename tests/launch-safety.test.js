@@ -516,6 +516,18 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.personal-agenda');
   });
 
+  it('keeps public chambers and story/comic doorways consistent on small screens',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('publication-glance');
+    expect(live).toContain('comic-publication-glance');
+    expect(live).toContain('chapter_progress_percent');
+    expect(live).toContain('FROM THE CHAMBER OF');
+    expect(polish).toContain('.chamber-section-nav');
+    expect(polish).toContain('scroll-margin-top:135px');
+    expect(polish).toContain('/* Mobile public reading actions */');
+    expect(polish).toContain('.comic-page{max-width:1180px');
+  });
+
   it('carries Palace titles from creator chambers onto public story and comic doorways',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
@@ -813,8 +825,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('palace-room-css-sync-reload');
     expect(main).toContain('palace-room-css-nonblocking');
     expect(main).toContain("Palace room '+name+' is unavailable in this build.");
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100521');
-    expect(polish).toContain('--palace-room-css-version:2026100521');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100522');
+    expect(polish).toContain('--palace-room-css-version:2026100522');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
