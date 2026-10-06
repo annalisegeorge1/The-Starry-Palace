@@ -908,6 +908,18 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.advanced-tag-builder');
   });
 
+  it('recovers blank routes and keeps both Palace themes intentionally rich',()=>{
+    const polish=read('src/polish.css');
+    expect(main).toContain('function BlankScreenWatchdog()');
+    expect(main).toContain('data-palace-frame="ready"');
+    expect(main).toContain("palace-blank-screen-reload:");
+    expect(main).toContain('blank-screen-recovery');
+    expect(polish).toContain('.nightfall .full-sidebar');
+    expect(polish).toContain('.full-palace-shell.daylight');
+    expect(polish).toContain('linear-gradient(135deg,#8259ad 0%,#a8669c 58%,#cb7f75 100%)');
+    expect(polish).toContain('transform:scale(.62)!important');
+  });
+
   it('keeps Commons composing visible and the cultural calendar rich but searchable',()=>{
     const polish=read('src/polish.css');
     const calendar=read('src/PalaceCalendar.jsx');
@@ -1230,8 +1242,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain("new Error('Palace room load timeout')");
     expect(main).toContain("schedulePalaceReload('palace-script-error-reload'");
     expect(main).not.toContain('return new Promise(()=>{})');
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100604');
-    expect(polish).toContain('--palace-room-css-version:2026100604');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100605');
+    expect(polish).toContain('--palace-room-css-version:2026100605');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
