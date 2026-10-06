@@ -419,6 +419,20 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('/* Reading Room canonical tag hints */');
   });
 
+  it('lets members nominate another Chamber for recognition without creating a popularity system',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain('nominateCommunityHighlight');
+    expect(data).toContain('Community Highlights are for recognising another member.');
+    expect(data).toContain('You already have an open nomination for this member.');
+    expect(live).toContain('Nominate a Community Highlight');
+    expect(live).toContain('✦ Nominate someone');
+    expect(live).toContain('Highlights never raise a work in discovery or ranking.');
+    expect(live).toContain('nominations are recognition, not popularity votes');
+    expect(polish).toContain('.highlight-head-actions');
+    expect(polish).toContain('.highlight-member-results');
+  });
+
   it('uses real-member Salon prompts instead of fabricated social activity',()=>{
     const polish=read('src/polish.css');
     expect(live).toContain('THE SALON TABLE');
@@ -868,8 +882,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('palace-room-css-sync-reload');
     expect(main).toContain('palace-room-css-nonblocking');
     expect(main).toContain("Palace room '+name+' is unavailable in this build.");
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100526');
-    expect(polish).toContain('--palace-room-css-version:2026100526');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100527');
+    expect(polish).toContain('--palace-room-css-version:2026100527');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
