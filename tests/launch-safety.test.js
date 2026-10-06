@@ -29,6 +29,14 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('<React.Suspense');
   });
 
+  it('lets signed-in members change their Palace password without asking for an email inbox password',()=>{
+    expect(live).toContain('Change Palace password');
+    expect(live).toContain('Current Palace password');
+    expect(live).toContain('supabase.auth.updateUser(update)');
+    expect(live).toContain('current_password');
+    expect(live).toContain('The new passwords do not match.');
+  });
+
   it('never asks members for the password to their email inbox',()=>{
     expect(main).toContain('never enter the password for your email inbox');
     expect(main).not.toContain('Your email password is never required by the Palace.');
@@ -745,8 +753,10 @@ describe('Starry Palace launch safety',()=>{
     const polish=read('src/polish.css');
     expect(main).toContain('roomCssMatches');
     expect(main).toContain('palace-room-css-sync-reload');
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100515');
-    expect(polish).toContain('--palace-room-css-version:2026100515');
+    expect(main).toContain('palace-room-css-nonblocking');
+    expect(main).toContain("Palace room '+name+' is unavailable in this build.");
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100516');
+    expect(polish).toContain('--palace-room-css-version:2026100516');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
