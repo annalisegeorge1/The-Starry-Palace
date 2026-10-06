@@ -195,7 +195,9 @@ export function ReadingLive({Frame}){
  };
  const constellation=shelves[shelf]||[];
  const shelfModes=[['first','First Worlds'],['quiet','Quiet Shelves'],['updated','Newly Updated'],...(session?[['following','Following Updates'],['continue','Continue Reading'],...(privateInterests.length?[['nightstand','For Your Nightstand']]:[])]:[])];
+ const location=useLocation();const surpriseHandled=useRef(false);
  function surpriseMe(){const pool=filtered.length?filtered:roomWorks;if(!pool.length)return;const choice=pool[Math.floor(Math.random()*pool.length)];if(choice)navigate(storyHref(choice))}
+ useEffect(()=>{if(surpriseHandled.current||!works||new URLSearchParams(location.search).get('surprise')!=='1')return;surpriseHandled.current=true;const pool=works||[];if(!pool.length){navigate('/reading',{replace:true});return}const choice=pool[Math.floor(Math.random()*pool.length)];if(choice)navigate(storyHref(choice),{replace:true})},[works,readerState,location.search]);
  function flags(w){const s=stateFor(w);const rows=[];if(hasNew(w))rows.push(['new','New chapter']);if(s.progress&&!s.progress.completed)rows.push(['reading','Reading']);else if(finished(w))rows.push(['finished','Finished']);if(s.saved)rows.push(['saved','Saved']);if(s.following)rows.push(['following','Following']);return rows}
  return <Frame><section className="legacy-reading-page chic-reading-page">
   <section className="legacy-reading-intro chic-reading-intro"><p className="eyebrow">FIND YOUR NEXT WORLD</p><h1>Stories first. Filters when you need them.</h1><p>Fandom and Original Work remain separate reading rooms, with archive-style refinement and your private reading continuity layered quietly on top.</p></section>
