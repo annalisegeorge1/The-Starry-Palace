@@ -787,7 +787,7 @@ describe('Starry Palace launch safety',()=>{
     const polish=read('src/polish.css');
     expect(live).toContain('PROMPT ORRERY · THREE REELS · ZERO STAKES');
     expect(live).toContain('Pull the lever');
-    expect(live).toContain('no coins, no points, no paid rerolls and no streaks');
+    expect(live).toContain('No coins, no points, no paid rerolls and no streaks');
     expect(live).toContain('GENRE / VIBE');
     expect(live).toContain('RANDOM OBJECT');
     expect(live).toContain('TWIST');
