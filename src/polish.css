@@ -14735,3 +14735,21 @@ button.quiet-button:not(.danger-action):hover,
   .chapter-praise-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   .chapter-praise-actions button{justify-content:center}
 }
+
+
+/* Audience Balcony + Ink Duels */
+.relay-audience-preview{margin:.7rem 1rem 1rem;padding:.8rem;border:1px solid rgba(198,176,229,.1);border-radius:14px;background:rgba(11,9,28,.2)}
+.relay-audience-preview h4{margin:.12rem 0 .55rem;font:600 .95rem/1.2 Georgia,'Times New Roman',serif}
+.relay-audience-preview>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.4rem}
+.relay-audience-preview>div>span{display:flex;justify-content:space-between;gap:.6rem;padding:.5rem .58rem;border:1px solid rgba(198,176,229,.08);border-radius:10px;color:#b9b1c2;font-size:.62rem}
+.relay-audience-preview small{color:#80798a}.relay-poll-options{display:grid;gap:.55rem}
+.duel-room-page{display:grid;gap:1rem}.duel-list{display:grid;gap:.9rem}
+.duel-card{overflow:hidden;border:1px solid rgba(198,176,229,.13);border-radius:20px;background:radial-gradient(circle at 92% 0%,rgba(197,151,203,.055),transparent 14rem),linear-gradient(145deg,rgba(35,27,70,.54),rgba(16,14,35,.72))}
+.duel-card>header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;align-items:start;padding:1rem;border-bottom:1px solid rgba(198,176,229,.08)}
+.duel-card>header small{color:#91899d;font-size:.51rem;font-weight:800;letter-spacing:.12em}.duel-card>header h3{margin:.18rem 0 .35rem;font:600 1.22rem/1.08 Georgia,'Times New Roman',serif}.duel-card>header p{max-width:760px;margin:0;color:#9891a2;font-size:.68rem;line-height:1.5}
+.duel-card>header>span{min-width:96px;padding:.42rem .6rem;border:1px solid rgba(203,182,232,.13);border-radius:999px;color:#beb6c8;font-size:.6rem;text-align:center}
+.duel-submitted{display:flex;gap:.65rem;align-items:center;padding:.75rem 1rem;border-bottom:1px solid rgba(198,176,229,.07)}.duel-submitted>span{width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:rgba(114,91,174,.14)}.duel-submitted strong{font-size:.68rem}.duel-submitted p{margin:.12rem 0 0;color:#888190;font-size:.57rem}
+.duel-compose{display:grid;gap:.55rem;padding:1rem}.duel-compose textarea{width:100%;min-height:190px;resize:vertical;padding:.9rem;border:1px solid rgba(199,177,230,.13);border-radius:14px;background:rgba(8,7,22,.35);color:#eee8f3;font:400 .86rem/1.62 Georgia,'Times New Roman',serif}.duel-compose footer{display:flex;align-items:center;justify-content:space-between;gap:.7rem}.duel-compose footer span{color:#8e8797;font-size:.58rem}
+.duel-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem;padding:1rem}.duel-gallery>article{display:grid;align-content:space-between;min-height:210px;padding:.85rem;border:1px solid rgba(198,176,229,.09);border-radius:15px;background:rgba(255,255,255,.014)}.duel-gallery>article>header{display:flex;justify-content:space-between;gap:.5rem}.duel-gallery>article>header small,.duel-gallery>article>header b{color:#847d8d;font-size:.51rem}.duel-gallery>article>p{margin:.8rem 0;color:#d3ccd9;font:400 .82rem/1.62 Georgia,'Times New Roman',serif;white-space:pre-wrap}.duel-gallery>article>footer{display:flex;justify-content:space-between;align-items:center;gap:.6rem}.duel-gallery>article>footer span{color:#817a8a;font-size:.55rem}
+.daylight .duel-card,.daylight .relay-audience-preview{background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(244,241,248,.9));border-color:rgba(91,73,136,.1)}.daylight .duel-gallery>article>p{color:#494253}.daylight .duel-compose textarea{background:rgba(255,255,255,.84);color:#302943;border-color:rgba(91,73,136,.12)}
+@media(max-width:760px){.relay-audience-preview>div,.duel-gallery{grid-template-columns:1fr}.duel-card>header{grid-template-columns:1fr}.duel-card>header>span{justify-self:start}.duel-compose footer{align-items:stretch;flex-direction:column}.duel-compose footer button{width:100%}}
