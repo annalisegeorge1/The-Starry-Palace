@@ -906,3 +906,138 @@
   .celestial-source-grid{grid-template-columns:1fr}
   .celestial-title-ladder{grid-template-columns:1fr}
 }
+
+
+/* =========================================================
+   Celestial title constellation layout
+   ========================================================= */
+.celestial-title-ladder{
+  grid-column:1/-1;
+  display:grid;
+  gap:.7rem;
+}
+.title-constellation{
+  overflow:hidden;
+  border:1px solid rgba(198,176,229,.11);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 94% -8%,rgba(183,162,218,.06),transparent 12rem),
+    rgba(13,11,31,.28);
+}
+.title-constellation>header{
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr) minmax(150px,220px);
+  gap:.7rem;
+  align-items:center;
+  padding:.8rem .9rem;
+  border-bottom:1px solid rgba(198,176,229,.09);
+}
+.title-constellation>header>span{
+  width:42px;height:42px;
+  display:grid;place-items:center;
+  border:1px solid rgba(213,190,236,.17);
+  border-radius:50%;
+  background:rgba(129,101,179,.09);
+  color:#d7c8e7;
+  font-size:1rem;
+}
+.title-constellation>header small{
+  color:#918a9b;
+  font-size:.49rem;
+  font-weight:800;
+  letter-spacing:.12em;
+}
+.title-constellation>header h3{
+  margin:.14rem 0 .2rem;
+  font:600 1.02rem/1.05 Georgia,'Times New Roman',serif;
+}
+.title-constellation>header p{
+  margin:0;
+  color:#918a9b;
+  font-size:.6rem;
+  line-height:1.42;
+}
+.title-constellation-progress{
+  display:grid;
+  gap:.32rem;
+}
+.title-constellation-progress>i{
+  height:4px;
+  overflow:hidden;
+  border-radius:999px;
+  background:rgba(255,255,255,.05);
+}
+.title-constellation-progress>i>b{
+  display:block;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,#9080c9,#c49ac9,#d9c4da);
+}
+.title-constellation-progress>strong{
+  color:#aaa2b4;
+  font-size:.55rem;
+  text-align:right;
+}
+.title-constellation-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+.title-constellation-grid>article{
+  min-height:128px;
+  display:grid;
+  align-content:center;
+  gap:.25rem;
+  padding:.8rem;
+  border-right:1px solid rgba(198,176,229,.08);
+  background:transparent;
+}
+.title-constellation-grid>article:last-child{border-right:0}
+.title-constellation-grid>article small{
+  color:#817b8a;
+  font-size:.46rem;
+  font-weight:800;
+  letter-spacing:.11em;
+}
+.title-constellation-grid>article strong{
+  color:#c9c2d0;
+  font:600 .9rem/1.2 Georgia,'Times New Roman',serif;
+}
+.title-constellation-grid>article p{
+  margin:0;
+  color:#7f7988;
+  font-size:.57rem;
+  line-height:1.4;
+}
+.title-constellation.unlocked{
+  border-color:rgba(214,187,232,.26);
+  background:
+    radial-gradient(circle at 94% -8%,rgba(210,169,209,.09),transparent 12rem),
+    linear-gradient(145deg,rgba(87,67,128,.12),rgba(13,11,31,.3));
+}
+.title-constellation.unlocked>header>span{
+  background:linear-gradient(145deg,rgba(118,91,170,.18),rgba(202,156,195,.08));
+  box-shadow:0 0 20px rgba(151,115,190,.08);
+}
+.title-constellation-grid>article.unlocked strong{color:#f0e9f4}
+.title-constellation-grid>article.unlocked small{color:#bca8c8}
+.daylight .title-constellation{
+  background:rgba(255,255,255,.63);
+  border-color:rgba(90,72,135,.09);
+}
+.daylight .title-constellation>header{border-bottom-color:rgba(90,72,135,.08)}
+.daylight .title-constellation-grid>article{border-right-color:rgba(90,72,135,.07)}
+.daylight .title-constellation-grid>article strong{color:#5b5365}
+.daylight .title-constellation-grid>article.unlocked strong{color:#2d2642}
+@media(max-width:1000px){
+  .title-constellation-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .title-constellation-grid>article:nth-child(2){border-right:0}
+  .title-constellation-grid>article:nth-child(-n+2){border-bottom:1px solid rgba(198,176,229,.08)}
+}
+@media(max-width:680px){
+  .title-constellation>header{grid-template-columns:38px minmax(0,1fr)}
+  .title-constellation-progress{grid-column:1/-1}
+  .title-constellation-progress>strong{text-align:left}
+  .title-constellation-grid{grid-template-columns:1fr}
+  .title-constellation-grid>article{border-right:0;border-bottom:1px solid rgba(198,176,229,.08)}
+  .title-constellation-grid>article:last-child{border-bottom:0}
+}
