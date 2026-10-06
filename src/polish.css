@@ -1,4 +1,4 @@
-:root{--palace-room-css-version:2026100605}
+:root{--palace-room-css-version:2026100606}
 /* The Starry Palace — final professional polish layer
    Keep this file intentionally small and authoritative. New global visual
    refinements belong here instead of adding another override to style.css. */
@@ -16418,5 +16418,546 @@ button.quiet-button:not(.danger-action):hover,
     background:
       radial-gradient(circle at 14% 4%,rgba(118,61,172,.24),transparent 14rem),
       linear-gradient(180deg,#160d2d,#0b0b1b 80%)!important;
+  }
+}
+
+
+/* =========================================================
+   Desktop QA correction · October 6 2026
+   Based on real-device screenshots: stop horizontal collisions,
+   remove Chrome paint optimisations that can leave stale blank
+   regions, and rebalance the large editorial surfaces.
+   ========================================================= */
+
+/* Reliability over micro-optimisation: these cards were using
+   content-visibility:auto, which can leave Chromium with delayed
+   or stale unpainted regions during fast SPA navigation. */
+.story-row,
+.library-card,
+.comic-card,
+.gift-catalogue-card,
+.badge-card,
+.club-card-live,
+.commons-thread.expanded,
+.activity-list.restored>article{
+  content-visibility:visible!important;
+  contain:none!important;
+  contain-intrinsic-size:none!important;
+}
+
+/* Every routed room must fit inside the shell instead of creating
+   a hidden horizontal canvas beyond the visible monitor. */
+.palace-main-stage,
+.palace-main-stage>*,
+.full-stage>main,
+.full-stage>main>*{
+  min-width:0!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+}
+.full-stage,
+.full-stage>main,
+.palace-main-stage{
+  overflow-x:clip!important;
+}
+.room-title h1,
+.section-heading h2,
+.life-room-intro h2,
+.creator-worlds-room h2,
+.chic-member-profile h1{
+  overflow-wrap:anywhere;
+  word-break:normal;
+  text-wrap:balance;
+}
+
+/* MY PALACE — keep the editorial identity, stop the dashboard
+   from stretching wider than the visible workspace. */
+.palace-command-centre,
+.legacy-home-dashboard{
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+}
+.palace-command-hero{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+}
+.palace-command-hero .palace-home-welcome h1{
+  font-size:clamp(2.7rem,4.35vw,4.2rem)!important;
+  line-height:.98!important;
+  max-width:680px!important;
+}
+.palace-home-shortcuts{
+  width:100%;
+  min-width:0;
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  overflow:visible!important;
+}
+.palace-home-shortcuts>a{
+  width:100%;
+  min-width:0!important;
+}
+.palace-home-shortcuts small{
+  white-space:normal!important;
+  text-overflow:clip!important;
+  line-height:1.25;
+}
+.daylight .palace-command-hero{
+  background:
+    linear-gradient(100deg,rgba(247,241,252,.96) 0 52%,rgba(235,220,247,.82) 70%,rgba(249,219,205,.72) 100%)!important;
+}
+.daylight .palace-command-hero .palace-home-welcome h1>span{
+  color:#332642!important;
+}
+.daylight .palace-home-identity{
+  background:rgba(250,246,253,.76)!important;
+  border-color:rgba(110,78,153,.16)!important;
+}
+.daylight .palace-home-identity strong{color:#3c2d4a!important}
+
+/* PUBLIC CHAMBER — large names should read as identity, not
+   escape the card. */
+.chic-member-profile{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+}
+.chic-member-profile .legacy-profile-cover{
+  height:220px!important;
+}
+.chic-member-profile .legacy-profile-avatar{
+  top:164px!important;
+  width:108px!important;
+  height:108px!important;
+}
+.chic-member-profile .legacy-profile-copy{
+  min-width:0!important;
+  padding:3.55rem 2rem 1.15rem!important;
+}
+.chic-member-profile .legacy-profile-copy h1{
+  max-width:100%!important;
+  font-size:clamp(2.45rem,3.65vw,3.45rem)!important;
+  line-height:1!important;
+}
+.chic-member-profile .legacy-profile-stats{
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  min-width:0!important;
+}
+.chic-member-profile .legacy-profile-stats>div{
+  min-width:0!important;
+}
+.chic-member-profile .legacy-profile-stats span{
+  white-space:normal!important;
+  overflow-wrap:anywhere;
+}
+.daylight .chic-member-profile{
+  background:
+    linear-gradient(180deg,rgba(226,210,241,.78),rgba(246,238,249,.94) 48%,rgba(239,229,244,.96))!important;
+}
+.daylight .chic-member-profile .legacy-cover-shade{
+  background:linear-gradient(180deg,rgba(39,24,57,.04),rgba(54,31,73,.32))!important;
+}
+.daylight .chic-member-profile .legacy-profile-copy h1{
+  color:#2f2340!important;
+}
+.daylight .chic-member-profile .legacy-profile-copy blockquote,
+.daylight .chic-member-profile .legacy-profile-meta{
+  color:#5f536a!important;
+}
+
+/* CREATIVE SHELVES — replace native-looking controls and stop
+   the heading/search row running beyond the right edge. */
+.creator-worlds-room{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  overflow:hidden;
+}
+.creator-worlds-room>.section-heading{
+  min-width:0;
+}
+.creator-worlds-room>.section-heading>div{
+  min-width:0;
+  max-width:920px;
+}
+.creator-worlds-room>.section-heading h2{
+  max-width:100%;
+  font-size:clamp(2rem,3.15vw,3.1rem)!important;
+  line-height:1.04!important;
+}
+.creator-worlds-room>.section-heading p{
+  max-width:820px;
+}
+.chamber-shelf-tools{
+  display:flex!important;
+  align-items:center!important;
+  flex-wrap:wrap!important;
+  gap:.55rem!important;
+  width:100%!important;
+  min-width:0!important;
+  padding:.55rem!important;
+  margin:.85rem 0 .7rem!important;
+  border:1px solid var(--palace-border)!important;
+  border-radius:17px!important;
+  background:rgba(16,17,39,.56)!important;
+}
+.chamber-shelf-search{
+  flex:1 1 320px!important;
+  min-width:220px!important;
+  min-height:44px!important;
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:.45rem!important;
+  padding:0 .7rem!important;
+  border:1px solid rgba(177,160,214,.16)!important;
+  border-radius:12px!important;
+  background:rgba(6,8,23,.34)!important;
+}
+.chamber-shelf-search>span{color:var(--palace-dim)!important}
+.chamber-shelf-search input{
+  width:100%!important;
+  min-width:0!important;
+  min-height:42px!important;
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  color:var(--palace-text)!important;
+  font:inherit!important;
+  font-size:.78rem!important;
+  box-shadow:none!important;
+}
+.chamber-shelf-filters{
+  display:flex!important;
+  align-items:center!important;
+  flex-wrap:wrap!important;
+  gap:.32rem!important;
+}
+.chamber-shelf-filters button{
+  min-height:38px!important;
+  padding:.42rem .72rem!important;
+  border:1px solid rgba(178,159,215,.15)!important;
+  border-radius:999px!important;
+  background:rgba(255,255,255,.018)!important;
+  color:var(--palace-muted)!important;
+  font:inherit!important;
+  font-size:.7rem!important;
+}
+.chamber-shelf-filters button.active,
+.chamber-shelf-filters button[aria-pressed="true"]{
+  border-color:rgba(201,177,232,.34)!important;
+  background:linear-gradient(135deg,rgba(102,70,157,.32),rgba(68,78,137,.18))!important;
+  color:#f4eefb!important;
+}
+.creator-shelf-block{
+  min-width:0!important;
+  max-width:100%!important;
+  overflow:hidden;
+}
+.daylight .chamber-shelf-tools{
+  background:rgba(247,239,250,.78)!important;
+  border-color:rgba(105,76,143,.15)!important;
+}
+.daylight .chamber-shelf-search{
+  background:rgba(255,255,255,.72)!important;
+  border-color:rgba(105,76,143,.15)!important;
+}
+.daylight .chamber-shelf-search input{color:#352a43!important}
+.daylight .chamber-shelf-filters button{
+  background:rgba(255,255,255,.54)!important;
+  color:#65566f!important;
+  border-color:rgba(105,76,143,.13)!important;
+}
+.daylight .chamber-shelf-filters button.active{
+  color:#452e5d!important;
+  background:linear-gradient(135deg,rgba(177,139,214,.30),rgba(244,179,158,.13))!important;
+}
+
+/* WRITING CHAMBER — retain the literary scale, but keep the
+   prompt orrery and creator controls inside one monitor. */
+.chic-writing-head{
+  padding-top:1.15rem!important;
+  padding-bottom:.9rem!important;
+}
+.chic-writing-head h1{
+  font-size:clamp(3rem,4.6vw,4.6rem)!important;
+  line-height:.98!important;
+  max-width:900px!important;
+}
+.chic-writing-head .lede{
+  max-width:840px!important;
+}
+.chic-writing-summary{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  width:100%!important;
+  max-width:900px!important;
+}
+.chic-writing-tabs{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  overflow:visible!important;
+}
+.chic-writing-tabs button{
+  flex:1 1 150px!important;
+  min-width:130px!important;
+}
+.prompt-orrery{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  grid-template-columns:minmax(260px,.72fr) minmax(0,1.28fr)!important;
+  overflow:hidden!important;
+}
+.prompt-orrery-copy,
+.prompt-reels,
+.prompt-orrery-actions{
+  min-width:0!important;
+}
+.prompt-reels{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+.prompt-reels>article{
+  min-width:0!important;
+  overflow:hidden!important;
+}
+.prompt-reels strong{
+  max-width:100%;
+  overflow-wrap:anywhere;
+}
+.prompt-orrery-actions{
+  grid-column:1/-1!important;
+  display:flex!important;
+  flex-wrap:wrap!important;
+  justify-content:flex-end!important;
+}
+.chic-writing-library-tools{
+  max-width:100%!important;
+}
+
+/* PALACE LIFE — eliminate the clipped composer and right-rail
+   collisions visible in the real monitor photos. */
+.legacy-life-page{
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+}
+.legacy-life-head{
+  max-width:980px!important;
+  padding:1.1rem 0 .85rem!important;
+}
+.legacy-life-head h1{
+  max-width:900px!important;
+  font-size:clamp(3rem,4.5vw,4.55rem)!important;
+  line-height:.98!important;
+}
+.community-pulse-row.restored.social-pulse{
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  min-width:0!important;
+}
+.life-tabs.restored{
+  flex-wrap:wrap!important;
+  overflow:visible!important;
+}
+.life-tabs.restored>*{
+  flex:0 1 auto!important;
+}
+.life-tabs.restored .life-wander{
+  margin-left:auto!important;
+}
+.palace-social-layout{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  grid-template-columns:minmax(0,1fr) minmax(250px,300px)!important;
+  gap:.85rem!important;
+}
+.palace-social-column{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  overflow:visible!important;
+}
+.chic-feed-tabs{
+  position:relative!important;
+  top:auto!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+}
+.chic-composer{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  grid-template-columns:42px minmax(0,1fr)!important;
+  align-items:start!important;
+  overflow:visible!important;
+}
+.chic-composer-fields{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+}
+.chic-composer-fields label,
+.chic-composer-fields input,
+.chic-composer-fields textarea{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+}
+.chic-composer input{
+  font-size:clamp(.95rem,1.4vw,1.08rem)!important;
+}
+.chic-composer textarea{
+  min-height:92px!important;
+}
+.palace-social-rail{
+  width:100%!important;
+  min-width:0!important;
+  max-width:300px!important;
+  position:static!important;
+}
+.chic-rail-card,
+.chic-rail-card *,
+.salon-prompt-grid article,
+.following-chamber-shelf{
+  min-width:0;
+  max-width:100%;
+}
+.chic-rail-card h3,
+.chic-rail-card h4,
+.chic-rail-card p,
+.chic-rail-card a,
+.chic-rail-card button{
+  overflow-wrap:anywhere;
+}
+.salon-prompt-grid article{
+  overflow:hidden;
+}
+
+/* HERITAGE — the cards stay two-column, but become tighter,
+   clearer, and visibly coloured in daylight. */
+.heritage-grid.enriched{
+  width:100%!important;
+  max-width:none!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:.72rem!important;
+}
+.heritage-grid.enriched .heritage-card{
+  min-width:0!important;
+  grid-template-columns:58px minmax(0,1fr) auto!important;
+  gap:.8rem!important;
+  padding:1rem!important;
+  border-left:3px solid var(--heritage-accent,rgba(171,155,207,.42))!important;
+}
+.heritage-grid.enriched .heritage-card>div:nth-child(2){
+  min-width:0!important;
+}
+.heritage-grid.enriched .heritage-card h2{
+  margin:.18rem 0 .42rem!important;
+  font-size:clamp(1.25rem,1.7vw,1.55rem)!important;
+  line-height:1.12!important;
+}
+.heritage-grid.enriched .heritage-card p{
+  font-size:.73rem!important;
+  line-height:1.52!important;
+}
+.heritage-grid.enriched .heritage-card blockquote{
+  font-size:.65rem!important;
+  line-height:1.48!important;
+}
+.heritage-grid.enriched .heritage-card>button{
+  min-width:58px!important;
+  min-height:34px!important;
+  padding:.35rem .65rem!important;
+  border-radius:999px!important;
+  align-self:start!important;
+}
+.daylight .heritage-grid.enriched .heritage-card{
+  background:
+    radial-gradient(circle at 94% 4%,color-mix(in srgb,var(--heritage-accent,#9b88b8) 15%,transparent),transparent 13rem),
+    linear-gradient(145deg,rgba(255,252,255,.96),rgba(241,233,247,.92))!important;
+}
+.daylight .heritage-grid.enriched .heritage-card>button{
+  color:#513c64!important;
+  border-color:rgba(97,65,132,.25)!important;
+  background:rgba(255,255,255,.70)!important;
+}
+.daylight .heritage-grid.enriched .heritage-card>button:hover{
+  background:linear-gradient(135deg,rgba(180,143,216,.26),rgba(246,183,164,.13))!important;
+}
+
+/* Wide desktop tightening based on the photographed monitor. */
+@media(min-width:1121px){
+  .full-stage>main{
+    padding:28px clamp(24px,2.3vw,36px) 68px!important;
+  }
+  .palace-command-hero{
+    min-height:315px!important;
+    grid-template-columns:minmax(0,1.12fr) minmax(260px,.88fr)!important;
+    gap:1.3rem!important;
+  }
+  .palace-belonging-art{
+    object-position:72% center!important;
+    opacity:.27!important;
+  }
+}
+
+/* Mid-size desktop/tablet: collapse the layouts before they
+   start clipping instead of after. */
+@media(max-width:1180px){
+  .palace-social-layout{
+    grid-template-columns:minmax(0,1fr) 260px!important;
+  }
+  .community-pulse-row.restored.social-pulse{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+  .prompt-orrery{
+    grid-template-columns:1fr!important;
+  }
+  .prompt-orrery-actions{grid-column:auto!important}
+}
+@media(max-width:980px){
+  .palace-social-layout{grid-template-columns:1fr!important}
+  .palace-social-rail{
+    max-width:none!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  .palace-social-rail .palace-pulse-card{grid-column:1/-1}
+  .chic-member-profile .legacy-profile-stats{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+  .heritage-grid.enriched{
+    grid-template-columns:1fr!important;
+  }
+}
+@media(max-width:720px){
+  .palace-command-hero .palace-home-welcome h1,
+  .legacy-life-head h1,
+  .chic-writing-head h1{
+    font-size:clamp(2.45rem,10vw,3.25rem)!important;
+  }
+  .palace-home-shortcuts{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    overflow:visible!important;
+  }
+  .chic-member-profile .legacy-profile-cover{height:190px!important}
+  .chic-member-profile .legacy-profile-avatar{top:142px!important;width:94px!important;height:94px!important}
+  .chic-member-profile .legacy-profile-copy{padding:3.3rem 1rem 1rem!important}
+  .chic-member-profile .legacy-profile-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .chamber-shelf-search{flex-basis:100%!important}
+  .prompt-reels{grid-template-columns:1fr!important}
+  .community-pulse-row.restored.social-pulse{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .life-tabs.restored{flex-wrap:nowrap!important;overflow-x:auto!important}
+  .life-tabs.restored .life-wander{margin-left:0!important}
+  .palace-social-rail{grid-template-columns:1fr!important}
+  .chic-composer{grid-template-columns:34px minmax(0,1fr)!important}
+  .heritage-grid.enriched .heritage-card{
+    grid-template-columns:48px minmax(0,1fr)!important;
+  }
+  .heritage-grid.enriched .heritage-card>button{
+    grid-column:2!important;
+    justify-self:start!important;
   }
 }
