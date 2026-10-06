@@ -783,6 +783,15 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.password-field');
   });
 
+  it('keeps chapter praise unified with Heart Star Moon Crown',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('LEAVE A LITTLE LIGHT ON THIS CHAPTER');
+    expect(live).toContain("givePalacePraise('chapter'");
+    expect(live).toContain("recordPalaceShare(data.work.id)");
+    expect(live).not.toContain('chapter-star-button');
+    expect(polish).toContain('Chapter praise room');
+  });
+
   it('keeps Relay Writing Rooms invite-only and turn-based',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
