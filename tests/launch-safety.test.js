@@ -1188,6 +1188,16 @@ describe('Starry Palace launch safety',()=>{
     expect(next).toContain('.tag-category-grid.density-compact');
   });
 
+  it('keeps the mobile shell centred unclipped and safe-area aware',()=>{
+    const next=read('src/palace-next.css');
+    expect(next).toContain('Mobile shell convergence — one final rule-set after legacy responsive layers.');
+    expect(next).toContain('width:min(calc(100vw - 16px),520px)!important');
+    expect(next).toContain('transform:translateX(-50%)!important');
+    expect(next).toContain('grid-template-columns:repeat(5,minmax(0,1fr))!important');
+    expect(next).toContain('overflow:visible!important');
+    expect(next).toContain('env(safe-area-inset-bottom)');
+  });
+
   it('keeps tablet room navigation swipeable without covering content',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
