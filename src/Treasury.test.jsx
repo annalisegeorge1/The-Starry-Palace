@@ -21,7 +21,10 @@ vi.mock('./palaceData',()=>({
  removeProfileAchievementShowcase:async()=>null,
  createGiftTradeOffer:async()=>null,
  respondGiftTradeOffer:async()=>null,
- searchMembers:async()=>[]
+ searchMembers:async()=>[],
+ getMyCelestialPoints:async()=>({lifetime_points:0,giving_points:0,receiving_points:0,participation_points:0}),
+ getMyCelestialPointLedger:async()=>[],
+ getCelestialTitleLadder:async()=>[]
 }));
 afterEach(cleanup);
 it('opens the gift collection without confusing the selected court with its artwork helper',async()=>{
