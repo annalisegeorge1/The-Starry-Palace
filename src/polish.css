@@ -1,4 +1,4 @@
-:root{--palace-room-css-version:2026100606}
+:root{--palace-room-css-version:2026100607}
 /* The Starry Palace — final professional polish layer
    Keep this file intentionally small and authoritative. New global visual
    refinements belong here instead of adding another override to style.css. */
@@ -16960,4 +16960,167 @@ button.quiet-button:not(.danger-action):hover,
     grid-column:2!important;
     justify-self:start!important;
   }
+}
+
+
+/* =========================================================
+   Tablet navigation rail correction · October 6 2026
+   Real-device QA: stop Life / Events controls compressing into
+   multi-line blocks and prevent sticky rails covering content.
+   ========================================================= */
+
+@media(max-width:1020px){
+  /* Palace Life and Events become intentional swipe rails. */
+  .life-tabs.restored,
+  .chic-events-tabs{
+    position:relative!important;
+    top:auto!important;
+    left:auto!important;
+    right:auto!important;
+    z-index:3!important;
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    gap:.42rem!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    overscroll-behavior-inline:contain;
+    scroll-snap-type:x proximity;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+    padding:.44rem .5rem .5rem!important;
+    margin:.35rem 0 .8rem!important;
+    border-radius:17px!important;
+  }
+  .life-tabs.restored::-webkit-scrollbar,
+  .chic-events-tabs::-webkit-scrollbar{display:none}
+
+  .life-tabs.restored>*,
+  .chic-events-tabs>*{
+    flex:0 0 auto!important;
+    scroll-snap-align:start;
+  }
+
+  .life-tabs.restored button,
+  .life-tabs.restored a,
+  .chic-events-tabs button{
+    width:auto!important;
+    min-width:max-content!important;
+    min-height:42px!important;
+    padding:.52rem .78rem!important;
+    border-radius:12px!important;
+    white-space:nowrap!important;
+    line-height:1.1!important;
+    font-size:.69rem!important;
+  }
+
+  .life-tabs.restored .life-wander{
+    margin-left:0!important;
+  }
+
+  /* The room below should never sit beneath the rail. */
+  .life-room-shell.restored,
+  .events-browser,
+  .heritage-discovery,
+  .palace-month-calendar{
+    scroll-margin-top:1rem!important;
+  }
+
+  /* Commons: main conversation always reads before side material. */
+  .palace-social-layout{
+    grid-template-columns:1fr!important;
+  }
+  .palace-social-column{order:1!important}
+  .palace-social-rail{
+    order:2!important;
+    width:100%!important;
+    max-width:none!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  .palace-social-rail .palace-pulse-card{
+    grid-column:1/-1!important;
+  }
+
+  /* Keep the rail cards from feeling like giant utility panels. */
+  .following-chamber-empty{
+    justify-items:start!important;
+  }
+  .following-chamber-empty button{
+    width:auto!important;
+    min-width:0!important;
+    min-height:38px!important;
+    padding:.46rem .78rem!important;
+    border:1px solid rgba(203,177,232,.20)!important;
+    border-radius:999px!important;
+    background:linear-gradient(135deg,rgba(108,78,169,.34),rgba(73,83,142,.20))!important;
+    color:#eee8f8!important;
+    font-size:.68rem!important;
+    font-weight:750!important;
+    box-shadow:none!important;
+  }
+  .following-chamber-empty button:hover{
+    border-color:rgba(215,190,239,.34)!important;
+    background:linear-gradient(135deg,rgba(126,92,190,.42),rgba(82,94,155,.26))!important;
+  }
+
+  /* Heritage card actions should not read like primary page CTAs. */
+  .heritage-grid.enriched .heritage-card>button{
+    width:auto!important;
+    min-width:58px!important;
+    min-height:34px!important;
+    padding:.36rem .68rem!important;
+    border-radius:999px!important;
+    font-size:.68rem!important;
+    line-height:1!important;
+  }
+}
+
+@media(max-width:760px){
+  .life-tabs.restored,
+  .chic-events-tabs{
+    margin-left:-.15rem!important;
+    margin-right:-.15rem!important;
+    padding-left:.35rem!important;
+    padding-right:.35rem!important;
+  }
+  .life-tabs.restored button,
+  .life-tabs.restored a,
+  .chic-events-tabs button{
+    min-height:40px!important;
+    padding:.48rem .7rem!important;
+    font-size:.66rem!important;
+  }
+
+  .palace-social-rail{
+    grid-template-columns:1fr!important;
+  }
+
+  /* Keep the card hierarchy compact on the portrait tablet/mobile width. */
+  .heritage-grid.enriched .heritage-card{
+    gap:.68rem!important;
+    padding:.9rem!important;
+  }
+  .heritage-grid.enriched .heritage-card h2{
+    font-size:clamp(1.18rem,4.5vw,1.48rem)!important;
+  }
+  .heritage-grid.enriched .heritage-card p{
+    font-size:.7rem!important;
+  }
+  .heritage-grid.enriched .heritage-card blockquote,
+  .heritage-context{
+    font-size:.62rem!important;
+  }
+}
+
+/* Daylight equivalents for the compact actions. */
+.daylight .following-chamber-empty button{
+  color:#4f3760!important;
+  border-color:rgba(102,72,137,.16)!important;
+  background:linear-gradient(135deg,rgba(185,151,218,.28),rgba(247,184,164,.14))!important;
+}
+.daylight .following-chamber-empty button:hover{
+  background:linear-gradient(135deg,rgba(176,137,214,.34),rgba(244,172,153,.20))!important;
 }
