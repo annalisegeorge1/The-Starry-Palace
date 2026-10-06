@@ -512,6 +512,17 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.surprise-story');
   });
 
+  it('keeps the Production Prep shell proportions without replacing the Palace sidebar',()=>{
+    const polish=read('src/polish.css');
+    expect(polish).toContain('Production Prep shell proportion pass');
+    expect(polish).toContain('.full-sidebar');
+    expect(polish).toContain('width:288px!important');
+    expect(polish).toContain('.palace-cover-live');
+    expect(polish).toContain('height:136px!important');
+    expect(polish).toContain('.global-search-live');
+    expect(polish).toContain('border-radius:999px!important');
+  });
+
   it('keeps the Production Prep composition system as a site-wide guide',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('--palace-content:min(1460px,100%)');
