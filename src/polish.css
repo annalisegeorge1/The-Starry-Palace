@@ -14925,3 +14925,245 @@ button.quiet-button:not(.danger-action):hover,
   .lore-form-grid .wide{grid-column:auto}
   .reader-lore-grid{grid-template-columns:1fr}
 }
+
+
+/* =========================================================
+   Royal Treasury Celestial Titles chamber
+   ========================================================= */
+.treasury-celestial-chamber{
+  display:grid;
+  gap:.9rem;
+}
+.treasury-celestial-hero{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 190px;
+  gap:1rem;
+  align-items:stretch;
+  padding:1rem;
+  border:1px solid rgba(198,176,229,.12);
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 90% 0%,rgba(208,170,217,.07),transparent 13rem),
+    linear-gradient(145deg,rgba(34,27,69,.48),rgba(15,13,34,.6));
+}
+.treasury-celestial-hero h2{
+  margin:.16rem 0 .35rem;
+  font:600 clamp(1.45rem,2.2vw,2rem)/1.05 Georgia,'Times New Roman',serif;
+}
+.treasury-celestial-hero p:not(.eyebrow){
+  max-width:720px;
+  margin:0;
+  color:#948d9d;
+  font-size:.7rem;
+  line-height:1.55;
+}
+.treasury-celestial-total{
+  display:grid;
+  place-items:center;
+  align-content:center;
+  min-height:128px;
+  border:1px solid rgba(213,190,236,.14);
+  border-radius:17px;
+  background:rgba(9,8,24,.25);
+}
+.treasury-celestial-total>span{color:#c8b6d9;font-size:1.1rem}
+.treasury-celestial-total>strong{
+  color:#f1eaf5;
+  font:600 1.9rem/1 Georgia,'Times New Roman',serif;
+}
+.treasury-celestial-total>small{margin-top:.28rem;color:#898292;font-size:.55rem}
+
+.celestial-source-grid.treasury{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.55rem;
+}
+.celestial-source-grid.treasury>span{
+  display:grid;
+  gap:.12rem;
+  padding:.7rem .8rem;
+  border:1px solid rgba(198,176,229,.09);
+  border-radius:13px;
+  background:rgba(255,255,255,.012);
+}
+.celestial-source-grid.treasury strong{font-size:1rem}
+.celestial-source-grid.treasury small{color:#8d8696;font-size:.56rem}
+
+.celestial-title-ladder.treasury{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:.8rem!important;
+  width:100%;
+  min-width:0;
+}
+.treasury .title-constellation,
+.celestial-title-ladder.treasury>.title-constellation{
+  width:100%;
+  min-width:0;
+  overflow:hidden;
+  border:1px solid rgba(198,176,229,.11);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 95% -10%,rgba(194,157,207,.06),transparent 12rem),
+    linear-gradient(145deg,rgba(27,22,57,.4),rgba(12,10,28,.45));
+}
+.celestial-title-ladder.treasury>.title-constellation.unlocked{
+  border-color:rgba(215,188,233,.25);
+  background:
+    radial-gradient(circle at 95% -10%,rgba(210,168,211,.08),transparent 12rem),
+    linear-gradient(145deg,rgba(83,64,125,.13),rgba(13,11,31,.38));
+}
+.celestial-title-ladder.treasury .title-constellation>header{
+  display:grid;
+  grid-template-columns:46px minmax(0,1fr) minmax(170px,230px);
+  gap:.8rem;
+  align-items:center;
+  padding:.85rem .95rem;
+  border-bottom:1px solid rgba(198,176,229,.08);
+}
+.celestial-title-ladder.treasury .title-constellation>header>span{
+  width:46px;height:46px;
+  display:grid;place-items:center;
+  border:1px solid rgba(213,190,236,.16);
+  border-radius:50%;
+  background:rgba(116,91,168,.1);
+  color:#d5c6e4;
+  font-size:1rem;
+}
+.celestial-title-ladder.treasury .title-constellation>header small{
+  color:#8f8798;
+  font-size:.5rem;
+  font-weight:800;
+  letter-spacing:.12em;
+}
+.celestial-title-ladder.treasury .title-constellation>header h3{
+  margin:.14rem 0 .2rem;
+  color:#e7e0ec;
+  font:600 1.02rem/1.08 Georgia,'Times New Roman',serif;
+  word-break:normal!important;
+  overflow-wrap:normal!important;
+  hyphens:none;
+}
+.celestial-title-ladder.treasury .title-constellation>header p{
+  max-width:680px;
+  margin:0;
+  color:#8f8898;
+  font-size:.59rem;
+  line-height:1.42;
+  word-break:normal!important;
+  overflow-wrap:break-word!important;
+}
+.celestial-title-ladder.treasury .title-constellation-progress{
+  display:grid;
+  gap:.32rem;
+}
+.celestial-title-ladder.treasury .title-constellation-progress>i{
+  height:4px;
+  overflow:hidden;
+  border-radius:999px;
+  background:rgba(255,255,255,.05);
+}
+.celestial-title-ladder.treasury .title-constellation-progress>i>b{
+  display:block;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,#8d7cc5,#bd96c3,#d2bfd5);
+}
+.celestial-title-ladder.treasury .title-constellation-progress>strong{
+  color:#9d95a6;
+  font-size:.54rem;
+  text-align:right;
+}
+.celestial-title-ladder.treasury .title-constellation-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(190px,1fr));
+  width:100%;
+  min-width:0;
+}
+.celestial-title-ladder.treasury .title-constellation-grid>article{
+  min-width:0;
+  min-height:138px;
+  display:grid;
+  align-content:center;
+  gap:.28rem;
+  padding:.85rem;
+  border-right:1px solid rgba(198,176,229,.07);
+  background:transparent;
+}
+.celestial-title-ladder.treasury .title-constellation-grid>article:last-child{border-right:0}
+.celestial-title-ladder.treasury .title-constellation-grid>article small{
+  color:#817a89;
+  font-size:.46rem;
+  font-weight:800;
+  letter-spacing:.1em;
+  word-break:normal!important;
+}
+.celestial-title-ladder.treasury .title-constellation-grid>article strong{
+  color:#cfc7d6;
+  font:600 .93rem/1.18 Georgia,'Times New Roman',serif;
+  word-break:normal!important;
+  overflow-wrap:normal!important;
+  hyphens:none;
+}
+.celestial-title-ladder.treasury .title-constellation-grid>article p{
+  margin:0;
+  color:#827b8a;
+  font-size:.57rem;
+  line-height:1.42;
+  word-break:normal!important;
+  overflow-wrap:break-word!important;
+  hyphens:none;
+}
+.celestial-title-ladder.treasury .title-constellation-grid>article.unlocked strong{color:#f0e8f4}
+.celestial-title-ladder.treasury .title-constellation-grid>article.unlocked small{color:#b6a4c2}
+
+.celestial-ledger.treasury-ledger{
+  padding:.8rem .9rem;
+  border:1px solid rgba(198,176,229,.09);
+  border-radius:14px;
+  background:rgba(255,255,255,.01);
+}
+.celestial-ledger.treasury-ledger summary{
+  cursor:pointer;
+  color:#c4bccd;
+  font-size:.66rem;
+  font-weight:700;
+}
+.celestial-ledger.treasury-ledger>div{display:grid;gap:.4rem;margin-top:.65rem}
+.celestial-ledger.treasury-ledger article{
+  display:grid;
+  grid-template-columns:30px minmax(0,1fr) auto;
+  gap:.6rem;
+  align-items:center;
+  padding:.55rem .65rem;
+  border:1px solid rgba(198,176,229,.075);
+  border-radius:11px;
+}
+.celestial-ledger.treasury-ledger article strong{font-size:.65rem;text-transform:capitalize}
+.celestial-ledger.treasury-ledger article small{display:block;margin-top:.1rem;color:#827b8a;font-size:.52rem}
+.celestial-ledger.treasury-ledger article>b{color:#cdbedb;font-size:.7rem}
+
+.daylight .treasury-celestial-hero,
+.daylight .celestial-title-ladder.treasury>.title-constellation{
+  background:linear-gradient(145deg,rgba(255,255,255,.93),rgba(244,241,248,.9));
+  border-color:rgba(91,73,136,.09);
+}
+.daylight .treasury-celestial-total{background:rgba(255,255,255,.7);border-color:rgba(91,73,136,.09)}
+.daylight .treasury-celestial-total>strong{color:#302944}
+.daylight .celestial-title-ladder.treasury .title-constellation>header h3,
+.daylight .celestial-title-ladder.treasury .title-constellation-grid>article.unlocked strong{color:#332d42}
+.daylight .celestial-title-ladder.treasury .title-constellation-grid>article strong{color:#5b5464}
+
+@media(max-width:1040px){
+  .celestial-title-ladder.treasury .title-constellation-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:720px){
+  .treasury-celestial-hero{grid-template-columns:1fr}
+  .celestial-source-grid.treasury{grid-template-columns:1fr}
+  .celestial-title-ladder.treasury .title-constellation>header{grid-template-columns:42px minmax(0,1fr)}
+  .celestial-title-ladder.treasury .title-constellation-progress{grid-column:1/-1}
+  .celestial-title-ladder.treasury .title-constellation-progress>strong{text-align:left}
+  .celestial-title-ladder.treasury .title-constellation-grid{grid-template-columns:1fr}
+  .celestial-title-ladder.treasury .title-constellation-grid>article{border-right:0;border-bottom:1px solid rgba(198,176,229,.07)}
+  .celestial-title-ladder.treasury .title-constellation-grid>article:last-child{border-bottom:0}
+}
