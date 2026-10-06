@@ -878,6 +878,26 @@ export async function setWorkFollowing(userId,workId,enabled){
 }
 export async function recordReadingProgress(userId,workId,chapterId,percent=0,completed=false,chapterPercent=0){const next=Math.max(0,Math.min(100,Number(percent)||0));const chapterNext=Math.max(0,Math.min(100,Number(chapterPercent)||0));const current=await needClient().from('reading_progress').select('chapter_id,progress_percent,chapter_progress_percent,completed').eq('user_id',userId).eq('work_id',workId).maybeSingle();if(current.error)throw current.error;const sameChapter=current.data?.chapter_id===chapterId;const progress=sameChapter?Math.max(Number(current.data?.progress_percent||0),next):next;const done=sameChapter?Boolean(current.data?.completed||completed):Boolean(completed);const precise=completed?100:chapterNext;const{error}=await needClient().from('reading_progress').upsert({user_id:userId,work_id:workId,chapter_id:chapterId,progress_percent:progress,chapter_progress_percent:precise,completed:done,updated_at:new Date().toISOString()},{onConflict:'user_id,work_id'});if(error)throw error}
 
+export async function getWorkLore(workId){
+ const{data,error}=await needClient().rpc('get_work_lore',{p_work_id:workId});if(error)throw error;return data||[]
+}
+export async function saveWorkLoreEntry(workId,entry){
+ const{data,error}=await needClient().rpc('save_work_lore_entry',{
+  p_work_id:workId,
+  p_id:entry.id||null,
+  p_kind:entry.kind,
+  p_title:entry.title,
+  p_summary:entry.summary||'',
+  p_body:entry.body||'',
+  p_reveal_mode:entry.reveal_mode||'public',
+  p_unlock_chapter_id:entry.reveal_mode==='after_chapter'?(entry.unlock_chapter_id||null):null,
+  p_sort_order:Number(entry.sort_order||0)
+ });if(error)throw error;return data
+}
+export async function deleteWorkLoreEntry(id){
+ const{data,error}=await needClient().rpc('delete_work_lore_entry',{p_id:id});if(error)throw error;return data
+}
+
 export async function getWorkCommunity(workId){const [tags,comments]=await Promise.all([needClient().from('work_tags').select('position,tags(id,name,category,status)').eq('work_id',workId).order('position'),needClient().from('comments').select('id,work_id,chapter_id,author_id,parent_comment_id,comment_type,body,spoiler,status,created_at,profiles!comments_author_id_fkey(username,display_name,avatar_url)').eq('work_id',workId).order('created_at')]);if(tags.error)throw tags.error;if(comments.error)throw comments.error;return{tags:(tags.data||[]).filter(x=>x.tags?.status==='canonical'),comments:comments.data||[]}}
 export async function addWorkTag(userId,workId,tagId){const{error}=await needClient().from('work_tags').insert({work_id:workId,tag_id:tagId});if(error&&error.code!=='23505')throw error}
 export async function removeWorkTag(userId,workId,tagId){const{error}=await needClient().from('work_tags').delete().eq('work_id',workId).eq('tag_id',tagId);if(error)throw error}
