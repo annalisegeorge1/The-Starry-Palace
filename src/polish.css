@@ -8826,3 +8826,432 @@ body{overflow-x:clip}
   .chic-story-catalogue .story-cover{width:88px!important;min-width:88px!important;height:132px!important}
   .chic-story-catalogue .story-row footer{align-items:flex-start!important;flex-direction:column}
 }
+
+
+/* =========================================================
+   Writing Chamber — chic creator studio
+   A fast social-era workspace with literary calm.
+   ========================================================= */
+.chic-writing-head{
+  max-width:1220px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:1.25rem;
+  align-items:end;
+  padding:1.15rem 0 .85rem!important;
+}
+.chic-writing-head>p,.chic-writing-head>h1{grid-column:1}
+.chic-writing-head h1{
+  margin:.12rem 0 .32rem!important;
+  font-size:clamp(2.4rem,5vw,4.4rem)!important;
+  letter-spacing:-.045em;
+}
+.chic-writing-head>.lede{
+  max-width:680px!important;
+  margin:0!important;
+  color:#aca5b9!important;
+  font-size:.82rem!important;
+}
+.chic-writing-summary{
+  grid-column:2;
+  grid-row:1/5;
+  align-self:center;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(118px,1fr))!important;
+  gap:.38rem!important;
+  margin:0!important;
+}
+.chic-writing-summary>span{
+  min-height:64px;
+  display:grid!important;
+  align-content:center;
+  gap:.08rem;
+  padding:.58rem .72rem!important;
+  border:1px solid rgba(199,177,231,.13)!important;
+  border-radius:14px!important;
+  background:linear-gradient(145deg,rgba(49,36,95,.28),rgba(20,17,45,.58))!important;
+}
+.chic-writing-summary strong{
+  font:700 1.15rem Georgia,'Times New Roman',serif!important;
+  color:#ece7f5;
+}
+.chic-writing-summary small{
+  color:#938ca3;
+  font-size:.52rem;
+  letter-spacing:.04em;
+}
+
+/* Studio navigation = compact social-app tabs. */
+.chic-writing-tabs{
+  position:sticky;
+  top:72px;
+  z-index:12;
+  max-width:1220px;
+  margin:.4rem auto .75rem!important;
+  padding:.28rem!important;
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:.18rem!important;
+  border:1px solid rgba(199,177,231,.13)!important;
+  border-radius:16px!important;
+  background:rgba(28,21,62,.8)!important;
+  -webkit-backdrop-filter:blur(18px);
+  backdrop-filter:blur(18px);
+  box-shadow:0 10px 28px rgba(7,6,22,.08);
+}
+.chic-writing-tabs button{
+  min-height:39px!important;
+  padding:.42rem .55rem!important;
+  border:0!important;
+  border-radius:11px!important;
+  background:transparent!important;
+  color:#9690a6!important;
+  font-size:.62rem!important;
+}
+.chic-writing-tabs button.active{
+  background:linear-gradient(135deg,rgba(118,98,190,.24),rgba(215,150,203,.08))!important;
+  color:#eee8f7!important;
+  box-shadow:none!important;
+}
+
+/* One decision at a time: what needs the writer next. */
+.writing-focus-strip{
+  max-width:1220px;
+  min-height:78px;
+  margin:0 auto .72rem;
+  padding:.72rem .82rem;
+  display:grid;
+  grid-template-columns:46px minmax(0,1fr) auto;
+  gap:.72rem;
+  align-items:center;
+  border:1px solid rgba(203,180,233,.15);
+  border-radius:17px;
+  background:
+    radial-gradient(circle at 4% 50%,rgba(126,103,195,.12),transparent 9rem),
+    linear-gradient(135deg,rgba(45,33,91,.52),rgba(20,17,45,.72));
+  box-shadow:0 12px 30px rgba(8,6,24,.08);
+}
+.writing-focus-mark{
+  width:46px;height:46px;
+  display:grid;place-items:center;
+  border:1px solid rgba(213,187,237,.19);
+  border-radius:14px;
+  background:radial-gradient(circle at 35% 28%,rgba(223,159,207,.22),rgba(111,91,187,.22) 48%,rgba(34,27,75,.68));
+  color:#e4d9f5;
+  font:1rem Georgia,'Times New Roman',serif;
+}
+.writing-focus-strip>div:nth-child(2){min-width:0;display:grid;gap:.06rem}
+.writing-focus-strip small{
+  color:#b39ed7;
+  font-size:.49rem;
+  letter-spacing:.12em;
+}
+.writing-focus-strip strong{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#eeeaf6;
+  font:600 .92rem Georgia,'Times New Roman',serif;
+}
+.writing-focus-strip p{
+  margin:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#9992a8;
+  font-size:.6rem;
+}
+.writing-focus-strip>a,.writing-focus-strip>button{
+  min-height:36px;
+  display:flex;
+  align-items:center;
+  gap:.35rem;
+  padding:.42rem .66rem;
+  border:1px solid rgba(207,182,235,.2);
+  border-radius:999px;
+  background:rgba(112,90,177,.08);
+  color:#d6cae9;
+  font-size:.58rem;
+  font-weight:700;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.writing-focus-strip>a:hover,.writing-focus-strip>button:hover{
+  border-color:rgba(220,184,232,.34);
+  background:rgba(118,94,184,.13);
+}
+
+/* New draft = one light composer rather than a bulky form. */
+.chic-new-work{
+  max-width:1220px;
+  margin:0 auto .72rem!important;
+  padding:.7rem!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  gap:.55rem!important;
+  align-items:end;
+  border:1px solid rgba(201,178,232,.13)!important;
+  border-radius:17px!important;
+  background:rgba(28,21,59,.42)!important;
+}
+.chic-new-work label{min-width:0;display:grid;gap:.22rem}
+.chic-new-work label>span{
+  color:#a59caf!important;
+  font-size:.51rem!important;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.chic-new-work input{
+  min-height:43px!important;
+  border:0!important;
+  border-bottom:1px solid rgba(201,178,232,.12)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  padding:.5rem .1rem!important;
+  color:#f0ebf7!important;
+  font:600 .92rem Georgia,'Times New Roman',serif!important;
+}
+.chic-new-work button{
+  min-height:40px!important;
+  padding:.48rem .76rem!important;
+  border-radius:999px!important;
+}
+
+/* Search/filter bar matches Reading and Commons. */
+.chic-writing-library-tools{
+  position:sticky;
+  top:126px;
+  z-index:9;
+  max-width:1220px;
+  margin:.72rem auto!important;
+  padding:.5rem!important;
+  grid-template-columns:minmax(260px,1fr) 190px 170px!important;
+  border-color:rgba(201,178,232,.13)!important;
+  border-radius:16px!important;
+  background:rgba(27,21,59,.8)!important;
+  -webkit-backdrop-filter:blur(18px);
+  backdrop-filter:blur(18px);
+}
+.chic-writing-library-tools .writing-library-search,
+.chic-writing-library-tools select{
+  border-color:rgba(201,178,232,.12)!important;
+  border-radius:11px!important;
+  background:rgba(9,8,25,.24)!important;
+}
+
+/* Release queue behaves like a compact newsroom desk. */
+.chic-release-queue{
+  max-width:1220px;
+  margin:.72rem auto!important;
+  padding:.8rem!important;
+  border-color:rgba(201,178,232,.14)!important;
+  border-radius:18px!important;
+  background:
+    radial-gradient(ellipse at 91% 8%,rgba(220,157,205,.07),transparent 18rem),
+    linear-gradient(145deg,rgba(49,36,95,.4),rgba(20,17,45,.68))!important;
+}
+.chic-release-queue .section-heading{
+  margin-bottom:.55rem!important;
+  align-items:end!important;
+}
+.chic-release-queue .section-heading h2{
+  margin:.12rem 0!important;
+  font-size:1.1rem!important;
+}
+.chic-release-queue>div:last-child{
+  gap:.35rem!important;
+}
+.chic-release-queue a{
+  min-height:54px!important;
+  border-color:rgba(201,178,232,.1)!important;
+  border-radius:12px!important;
+  background:rgba(255,255,255,.012)!important;
+}
+.chic-release-queue a:hover{background:rgba(112,90,177,.055)!important}
+
+/* Draft library = creator timeline rather than thick dashboard cards. */
+.chic-draft-list{
+  max-width:1220px;
+  margin:0 auto!important;
+  display:grid!important;
+  gap:0!important;
+  overflow:hidden;
+  border:1px solid rgba(201,178,232,.13);
+  border-radius:20px;
+  background:rgba(27,21,58,.36);
+  box-shadow:0 16px 42px rgba(8,6,24,.08);
+}
+.chic-draft-list article{
+  min-height:86px!important;
+  margin:0!important;
+  padding:.8rem .9rem!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  gap:.8rem!important;
+  align-items:center!important;
+  border:0!important;
+  border-bottom:1px solid rgba(201,178,232,.1)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.chic-draft-list article:last-child{border-bottom:0!important}
+.chic-draft-list article:hover{
+  transform:none!important;
+  background:rgba(112,90,177,.045)!important;
+  box-shadow:none!important;
+}
+.chic-draft-list article.has-scheduled-release{
+  background:linear-gradient(90deg,rgba(94,80,162,.09),rgba(214,149,202,.025))!important;
+}
+.chic-draft-list small{
+  color:#a79ab7!important;
+  font-size:.49rem!important;
+  letter-spacing:.08em;
+}
+.chic-draft-list h2{
+  margin:.16rem 0!important;
+  font-size:1rem!important;
+}
+.chic-draft-list h2 a{color:#eeeaf5;text-decoration:none}
+.chic-draft-list h2 a:hover{text-decoration:underline}
+.chic-draft-list p{
+  margin:.1rem 0!important;
+  font-size:.6rem!important;
+}
+.chic-draft-list .draft-actions{
+  display:flex!important;
+  align-items:center!important;
+  gap:.38rem!important;
+}
+.chic-draft-list .draft-actions button{
+  min-height:34px!important;
+  padding:.38rem .58rem!important;
+  border-radius:999px!important;
+  font-size:.55rem!important;
+}
+.chic-draft-list .draft-actions span{
+  padding:.27rem .46rem;
+  border:1px solid rgba(201,178,232,.12);
+  border-radius:999px;
+  color:#928b9f;
+  font-size:.49rem;
+  white-space:nowrap;
+}
+
+/* Secondary creator desks keep the same clean social rhythm. */
+.chic-collab-room,.chic-review-desk,.chic-permission-desk{
+  max-width:1220px;
+  margin:0 auto;
+  padding:.9rem!important;
+  border:1px solid rgba(201,178,232,.13)!important;
+  border-radius:20px!important;
+  background:linear-gradient(145deg,rgba(48,35,94,.34),rgba(20,17,45,.68))!important;
+}
+.chic-collab-room .section-heading,
+.chic-review-desk .section-heading,
+.chic-permission-desk .section-heading{
+  padding-bottom:.75rem;
+  border-bottom:1px solid rgba(201,178,232,.1);
+}
+.chic-collab-room article,
+.chic-review-desk article,
+.chic-permission-desk article{
+  border-color:rgba(201,178,232,.11)!important;
+  background:rgba(255,255,255,.012)!important;
+  box-shadow:none!important;
+}
+.chic-review-desk .review-list,
+.chic-permission-desk .permission-list{
+  display:grid!important;
+  gap:.45rem!important;
+}
+.chic-review-desk .review-list article,
+.chic-permission-desk .permission-list article{
+  border-radius:14px!important;
+}
+
+/* Daylight studio = lavender stationery. */
+.daylight .chic-writing-summary>span,
+.daylight .chic-new-work,
+.daylight .chic-writing-library-tools,
+.daylight .chic-release-queue,
+.daylight .chic-draft-list,
+.daylight .chic-collab-room,
+.daylight .chic-review-desk,
+.daylight .chic-permission-desk{
+  background:linear-gradient(145deg,rgba(255,255,255,.95),rgba(244,240,248,.91))!important;
+  border-color:rgba(96,77,142,.11)!important;
+}
+.daylight .chic-writing-tabs{
+  background:rgba(248,244,251,.88)!important;
+  border-color:rgba(96,77,142,.12)!important;
+}
+.daylight .writing-focus-strip{
+  background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(244,240,248,.9));
+  border-color:rgba(96,77,142,.11);
+}
+.daylight .writing-focus-strip strong,
+.daylight .chic-draft-list h2 a{color:#332d4c!important}
+.daylight .chic-new-work input{color:#332d4c!important}
+.daylight .chic-draft-list article:hover{background:rgba(102,82,158,.035)!important}
+.daylight .chic-writing-library-tools .writing-library-search,
+.daylight .chic-writing-library-tools select{background:rgba(255,255,255,.74)!important}
+
+@media(max-width:900px){
+  .chic-writing-head{grid-template-columns:1fr}
+  .chic-writing-summary{
+    grid-column:1!important;
+    grid-row:auto!important;
+    grid-template-columns:repeat(4,minmax(105px,1fr))!important;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .chic-writing-summary::-webkit-scrollbar{display:none}
+  .chic-writing-library-tools{
+    grid-template-columns:1fr 1fr!important;
+  }
+  .chic-writing-library-tools .writing-library-search{grid-column:1/-1}
+}
+@media(max-width:720px){
+  .chic-writing-head{padding-left:14px!important;padding-right:14px!important}
+  .chic-writing-tabs{
+    top:106px;
+    display:flex!important;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .chic-writing-tabs::-webkit-scrollbar{display:none}
+  .chic-writing-tabs button{flex:1 0 130px}
+  .writing-focus-strip,
+  .chic-new-work,
+  .chic-writing-library-tools,
+  .chic-release-queue,
+  .chic-draft-list,
+  .chic-collab-room,.chic-review-desk,.chic-permission-desk{
+    width:calc(100% - 28px);
+    box-sizing:border-box;
+  }
+  .chic-writing-library-tools{top:157px}
+  .chic-draft-list article{
+    grid-template-columns:1fr!important;
+  }
+  .chic-draft-list .draft-actions{justify-content:flex-start}
+}
+@media(max-width:520px){
+  .chic-writing-summary{grid-template-columns:repeat(4,110px)!important}
+  .writing-focus-strip{
+    grid-template-columns:40px minmax(0,1fr);
+  }
+  .writing-focus-mark{width:40px;height:40px;border-radius:12px}
+  .writing-focus-strip>a,.writing-focus-strip>button{
+    grid-column:2;
+    justify-self:start;
+  }
+  .chic-new-work{grid-template-columns:1fr!important}
+  .chic-new-work button{justify-self:start}
+  .chic-writing-library-tools{grid-template-columns:1fr!important}
+  .chic-writing-library-tools .writing-library-search{grid-column:auto}
+}
