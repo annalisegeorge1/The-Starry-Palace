@@ -163,7 +163,7 @@
   max-height:100%;
   object-fit:contain;
   object-position:center;
-  transform:scale(var(--repaint-scale,.9));
+  transform:translate(var(--repaint-x,0%),var(--repaint-y,0%)) scale(var(--repaint-scale,.86));
   transform-origin:center;
 }
 .majapahit-repainted-fix{
@@ -177,13 +177,13 @@
   overflow:visible;
 }
 .treasure-painting .majapahit-repainted-fix>img{
-  transform:scale(var(--repaint-scale,.72));
+  transform:translate(var(--repaint-x,0%),var(--repaint-y,0%)) scale(var(--repaint-scale,.52));
 }
 .treasure-painting.compact .majapahit-repainted-fix{
   padding:7px;
 }
 .treasure-painting.compact .majapahit-repainted-fix>img{
-  transform:scale(.68);
+  transform:translate(var(--repaint-x,0%),var(--repaint-y,0%)) scale(.50);
 }
 .original-collectible-copy{padding:0 1.1rem 1.1rem}
 .original-collectible-copy small{text-transform:uppercase;letter-spacing:.1em;color:var(--muted,#bac5df)}
@@ -576,7 +576,7 @@
  z-index:3!important;
  pointer-events:none!important;
  overflow:visible!important;
- transform:scale(.72);
+ transform:scale(.62);
  transform-origin:50% 45%;
  filter:drop-shadow(0 6px 10px rgba(2,5,16,.22));
 }
