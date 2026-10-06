@@ -12331,3 +12331,168 @@ input:focus,textarea:focus,select:focus{
 @media(prefers-reduced-motion:reduce){
   .mobile-more-backdrop,.mobile-more-sheet,.mobile-palace-dock>button.mobile-palace-more{animation:none!important;transition:none!important}
 }
+
+
+/* =========================================================
+   Desktop monitor composition correction · real-device QA
+   Fix the Commons nested-main padding bug, use more of a
+   full monitor, and restore readable desktop control sizes.
+   ========================================================= */
+.palace-stage .palace-social-column{
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+}
+
+@media(min-width:1121px){
+  .full-stage>main{
+    box-sizing:border-box;
+    padding:34px clamp(28px,3vw,46px) 72px!important;
+  }
+
+  .legacy-life-page,
+  .chic-series-page,
+  .legacy-home-dashboard,
+  .legacy-lost-page{
+    width:100%;
+    max-width:none!important;
+    box-sizing:border-box;
+    padding-left:0!important;
+    padding-right:0!important;
+  }
+  .chic-events-head,
+  .events-pulse,
+  .chic-events-tabs,
+  .palace-month-calendar{
+    width:100%;
+    max-width:none!important;
+    box-sizing:border-box;
+  }
+
+  /* Palace Life: a real social workspace, not a page inside a page. */
+  .chic-commons{max-width:none!important}
+  .palace-social-layout{
+    grid-template-columns:minmax(0,1fr) minmax(290px,320px)!important;
+    gap:.85rem!important;
+  }
+  .palace-social-column{min-height:360px}
+  .chic-life-intro p{
+    max-width:790px!important;
+    font-size:.84rem!important;
+    line-height:1.58!important;
+  }
+  .chic-feed-tabs{
+    padding:.65rem .75rem!important;
+    grid-template-columns:minmax(220px,.8fr) minmax(0,1.2fr)!important;
+  }
+  .chic-feed-tabs .commons-search{min-height:44px!important}
+  .chic-feed-tabs .commons-search input{font-size:.78rem!important}
+  .chic-feed-tabs .commons-view-buttons button{
+    min-height:44px!important;
+    font-size:.72rem!important;
+  }
+  .chic-composer{
+    grid-template-columns:46px minmax(0,1fr)!important;
+    gap:.8rem!important;
+    padding:1rem 1.1rem!important;
+  }
+  .chic-composer-mark{width:46px!important;height:46px!important}
+  .chic-composer-fields{gap:.55rem!important}
+  .chic-composer-fields label>span{font-size:.61rem!important}
+  .chic-composer input{font-size:1.08rem!important}
+  .chic-composer textarea{
+    min-height:96px!important;
+    font-size:.86rem!important;
+    line-height:1.6!important;
+  }
+  .chic-composer-fields>div button{
+    min-height:40px!important;
+    padding:.5rem .92rem!important;
+    font-size:.72rem!important;
+  }
+  .social-thread{padding:1.05rem 1.1rem!important}
+  .social-thread-head a,.social-thread-head strong{font-size:.82rem!important}
+  .social-thread-head span{font-size:.64rem!important}
+  .social-thread h3{font-size:1.08rem!important}
+  .social-thread p{font-size:.82rem!important}
+  .social-thread-actions em,.social-thread-actions b{font-size:.64rem!important}
+  .chic-rail-note{font-size:.66rem!important}
+  .palace-social-rail .salon-prompt-grid h4{font-size:.9rem!important}
+  .palace-social-rail .salon-prompt-grid p{font-size:.68rem!important}
+  .palace-social-rail .following-chamber-notes p{font-size:.68rem!important}
+
+  /* Series: keep the editorial hierarchy but stop shrinking the useful copy. */
+  .series-pulse>span,.archive-pulse>span,.events-pulse>span{
+    min-height:68px;
+    padding:.62rem .75rem;
+  }
+  .series-pulse strong,.archive-pulse strong,.events-pulse strong{font-size:1.2rem!important}
+  .series-pulse small,.archive-pulse small,.events-pulse small{
+    font-size:.64rem!important;
+    line-height:1.35!important;
+  }
+  .chic-series-principles>article{
+    min-height:126px!important;
+    padding:.9rem!important;
+  }
+  .chic-series-principles strong{font-size:.86rem!important}
+  .chic-series-principles small{
+    font-size:.68rem!important;
+    line-height:1.52!important;
+  }
+  .series-create-row span{font-size:.66rem!important}
+  .series-browser-tools{padding:.55rem!important}
+  .series-browser-tools input,
+  .series-browser-tools select{font-size:.75rem!important}
+  .series-grid.restored h2{font-size:1.3rem!important}
+  .series-grid.restored header p{font-size:.72rem!important}
+  .series-grid.restored header span{font-size:.68rem!important}
+
+  /* Events: make the calendar feel like the main tool on a desktop monitor. */
+  .chic-events-tabs{padding:.34rem!important}
+  .chic-events-tabs button{
+    min-height:43px!important;
+    padding:.48rem .78rem!important;
+    font-size:.7rem!important;
+  }
+  .palace-month-calendar{
+    margin:.7rem auto 1.35rem!important;
+    padding:1.15rem!important;
+  }
+  .palace-month-calendar h2{font-size:1.7rem!important}
+  .calendar-weekdays{font-size:.64rem!important}
+  .palace-calendar-days>button{
+    min-height:66px!important;
+    font-size:.8rem!important;
+  }
+  .palace-calendar-days>button>span{font-size:.82rem!important}
+  .calendar-selection h3{font-size:1.16rem!important}
+  .calendar-selection p{font-size:.74rem!important}
+  .event-browser-tools input,.event-browser-tools select{font-size:.74rem!important}
+  .event-list h2{font-size:1.15rem!important}
+  .event-list p{font-size:.72rem!important}
+
+  /* Lost Works stays restrained, but not microscopic. */
+  .chic-archive-principle strong{font-size:.8rem!important}
+  .chic-archive-principle p{
+    font-size:.68rem!important;
+    line-height:1.52!important;
+  }
+  .archive-filter-pills button{font-size:.64rem!important}
+  .archive-advanced-filters label{font-size:.57rem!important}
+  .archive-advanced-filters select{font-size:.7rem!important}
+  .archive-result-count{font-size:.72rem!important}
+  .lost-work-card h2{font-size:1.3rem!important}
+  .lost-work-card>p{font-size:.72rem!important}
+  .archive-meta span{font-size:.52rem!important}
+  .archive-meta strong{font-size:.65rem!important}
+
+  /* New-member Palace dashboards should not read like tiny admin widgets. */
+  .chic-home-stats>a{min-height:94px!important;padding:.82rem!important}
+  .chic-home-stats strong{font-size:1.62rem!important}
+  .chic-home-stats span{font-size:.7rem!important}
+  .chic-home-stats small{font-size:.58rem!important}
+  .chic-home-footer-panels>article{min-height:165px!important;padding:1.1rem!important}
+  .chic-home-footer-panels h2{font-size:1.35rem!important}
+  .chic-home-footer-panels p{font-size:.76rem!important;line-height:1.55!important}
+}
