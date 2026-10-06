@@ -8266,3 +8266,563 @@ body{overflow-x:clip}
   line-height:1.42!important;
 }
 .daylight .chic-rail-note{color:#716a82!important}
+
+
+/* =========================================================
+   Chic creator + reading pass
+   Social-app clarity with editorial, literary Palace polish.
+   ========================================================= */
+
+/* Member Chamber: profile-first, elegant, less dashboard-heavy. */
+.chic-member-profile{
+  position:relative;
+  overflow:hidden;
+  border-color:rgba(204,181,235,.17)!important;
+  border-radius:24px!important;
+  background:
+    linear-gradient(180deg,rgba(47,35,94,.36),rgba(22,18,47,.92) 47%,rgba(17,15,38,.96))!important;
+  box-shadow:0 22px 64px rgba(8,6,24,.18)!important;
+}
+.chic-member-profile .legacy-profile-cover{
+  height:250px!important;
+  background-color:#30266f;
+  background-size:cover;
+  border-radius:0!important;
+}
+.chic-member-profile .legacy-cover-shade{
+  background:
+    linear-gradient(180deg,rgba(20,13,49,.02) 28%,rgba(19,14,43,.26) 72%,rgba(17,14,39,.88) 100%)!important;
+}
+.chic-member-profile .legacy-profile-avatar{
+  left:30px!important;
+  top:202px!important;
+  width:104px!important;
+  height:104px!important;
+  border:2px solid rgba(237,225,255,.8)!important;
+  box-shadow:
+    0 0 0 5px rgba(22,17,48,.96),
+    0 12px 32px rgba(6,5,20,.28)!important;
+}
+.chic-member-profile .legacy-profile-copy{
+  padding:1.45rem 1.6rem 1.05rem 156px!important;
+  min-height:132px!important;
+}
+.chic-member-profile .chamber-title-mark{
+  display:inline-flex;
+  align-items:center;
+  gap:.4rem;
+  width:auto;
+  margin:0 0 .28rem!important;
+  padding:.28rem .52rem;
+  border:1px solid rgba(215,186,236,.18);
+  border-radius:999px;
+  background:rgba(113,88,180,.08);
+  color:#c7b5e9!important;
+  font-size:.5rem!important;
+  letter-spacing:.13em!important;
+}
+.chic-member-profile .legacy-profile-copy h1{
+  max-width:780px;
+  margin:.2rem 0 .25rem!important;
+  font-size:clamp(2.1rem,4vw,3.4rem)!important;
+  line-height:1!important;
+  letter-spacing:-.035em;
+  overflow-wrap:anywhere;
+}
+.chic-member-profile .legacy-profile-meta{
+  margin:.34rem 0 .55rem!important;
+  color:#a9a1ba!important;
+  font-size:.75rem!important;
+}
+.chic-member-profile .legacy-profile-copy blockquote{
+  margin:.45rem 0 .62rem!important;
+  max-width:720px!important;
+  color:#d1cadb!important;
+  font-size:.86rem!important;
+  line-height:1.5!important;
+  font-style:normal;
+}
+.chic-member-profile .legacy-profile-tags{
+  gap:.3rem!important;
+  margin:.5rem 0!important;
+}
+.chic-member-profile .legacy-profile-tags span{
+  padding:.28rem .5rem!important;
+  border-color:rgba(201,177,230,.14)!important;
+  border-radius:999px!important;
+  background:rgba(255,255,255,.018)!important;
+  color:#a9a1ba!important;
+  font-size:.55rem!important;
+}
+.chic-member-profile .legacy-availability{
+  margin:.45rem 0!important;
+  color:#b7a9d3!important;
+  font-size:.65rem!important;
+}
+.chic-member-profile .legacy-profile-actions{
+  display:flex!important;
+  align-items:center;
+  gap:.38rem!important;
+  margin-top:.7rem!important;
+  flex-wrap:wrap;
+}
+.chic-member-profile .legacy-profile-actions a,
+.chic-member-profile .legacy-profile-actions button{
+  min-height:38px!important;
+  padding:.42rem .7rem!important;
+  border-radius:999px!important;
+  font-size:.63rem!important;
+}
+.chic-member-profile .primary-profile-action{
+  background:linear-gradient(135deg,#7362c0,#6650a4 60%,#86578d)!important;
+  border-color:rgba(221,187,235,.32)!important;
+}
+.chic-member-profile .secondary-profile-action{
+  background:transparent!important;
+  border-color:rgba(201,179,231,.18)!important;
+}
+.chic-member-profile .legacy-profile-stats{
+  display:flex!important;
+  align-items:stretch;
+  overflow-x:auto;
+  scrollbar-width:none;
+  border-top:1px solid rgba(202,180,232,.12)!important;
+  background:rgba(9,8,26,.16);
+}
+.chic-member-profile .legacy-profile-stats::-webkit-scrollbar{display:none}
+.chic-member-profile .legacy-profile-stats>div{
+  flex:1 0 118px;
+  min-height:66px!important;
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:.4rem!important;
+  padding:.55rem .75rem!important;
+  border-right:1px solid rgba(202,180,232,.09)!important;
+}
+.chic-member-profile .legacy-profile-stats strong{
+  font:700 1rem/1 Georgia,'Times New Roman',serif!important;
+}
+.chic-member-profile .legacy-profile-stats span{
+  font-size:.48rem!important;
+  letter-spacing:.09em!important;
+  color:#938da5!important;
+}
+
+/* Profile navigation behaves like a chic sticky social profile tab bar. */
+.chic-chamber-tabs{
+  position:sticky;
+  top:72px;
+  z-index:14;
+  max-width:1180px;
+  margin:.72rem auto!important;
+  padding:.28rem!important;
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:.18rem!important;
+  border:1px solid rgba(200,178,232,.13)!important;
+  border-radius:16px!important;
+  background:rgba(28,21,62,.76)!important;
+  -webkit-backdrop-filter:blur(18px);
+  backdrop-filter:blur(18px);
+  box-shadow:0 10px 28px rgba(7,6,22,.09);
+}
+.chic-chamber-tabs a{
+  min-height:38px!important;
+  display:flex!important;
+  align-items:center;
+  justify-content:center;
+  gap:.38rem!important;
+  padding:.4rem .55rem!important;
+  border:0!important;
+  border-radius:11px!important;
+  color:#9d97ae!important;
+  font-size:.62rem!important;
+  text-decoration:none!important;
+}
+.chic-chamber-tabs a:hover{
+  background:rgba(117,94,181,.075)!important;
+  color:#e7e0f3!important;
+}
+.chic-chamber-tabs a span{color:#b6a3dc}
+
+/* Chamber Notes now read like a polished creator timeline. */
+.chic-chamber-stream{
+  overflow:hidden;
+  padding:0!important;
+  border:1px solid rgba(201,179,231,.14)!important;
+  border-radius:22px!important;
+  background:rgba(27,21,58,.42)!important;
+  box-shadow:0 16px 42px rgba(8,6,24,.10)!important;
+}
+.chic-chamber-stream>.section-heading{
+  margin:0!important;
+  padding:1rem 1rem .8rem!important;
+  border-bottom:1px solid rgba(201,179,231,.11);
+}
+.chic-chamber-stream>.section-heading h2{
+  margin:.12rem 0 .24rem!important;
+  font-size:1.25rem!important;
+}
+.chic-chamber-stream .chamber-post-compose{
+  margin:0!important;
+  padding:.85rem 1rem!important;
+  border:0!important;
+  border-bottom:1px solid rgba(201,179,231,.11)!important;
+  border-radius:0!important;
+  background:rgba(255,255,255,.01)!important;
+}
+.chic-chamber-stream .chamber-post-compose textarea{
+  min-height:84px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  font-size:.8rem!important;
+}
+.chic-chamber-stream .chamber-post-compose>div{
+  padding-top:.5rem;
+  border-top:1px solid rgba(201,179,231,.08);
+}
+.chic-chamber-stream .chamber-post-compose button{border-radius:999px!important}
+.chic-chamber-stream .chamber-post-list{display:grid!important;gap:0!important}
+.chic-chamber-stream .chamber-post-list article{
+  margin:0!important;
+  padding:1rem!important;
+  border:0!important;
+  border-bottom:1px solid rgba(201,179,231,.1)!important;
+  border-radius:0!important;
+  background:transparent!important;
+}
+.chic-chamber-stream .chamber-post-list article:last-child{border-bottom:0!important}
+.chic-chamber-stream .chamber-post-list article:hover{background:rgba(112,90,175,.04)!important}
+.chic-chamber-stream .chamber-post-list header{
+  margin-bottom:.45rem!important;
+  color:#9790a6!important;
+  font-size:.56rem!important;
+}
+.chic-chamber-stream .chamber-post-list p{
+  margin:0!important;
+  max-width:760px;
+  color:#d1cad9!important;
+  font-size:.8rem!important;
+  line-height:1.62!important;
+}
+
+/* Creator shelves: more editorial and visual, less admin-card. */
+.creator-worlds-room{
+  border-top:1px solid rgba(201,179,231,.1);
+}
+.creator-worlds-room .creator-shelf-block{
+  border-color:rgba(201,179,231,.13)!important;
+  background:linear-gradient(145deg,rgba(49,36,95,.35),rgba(20,17,45,.68))!important;
+}
+.creator-worlds-room .member-works article,
+.creator-worlds-room .member-series-grid article,
+.creator-worlds-room .member-comics-grid>a{
+  border-color:rgba(201,179,231,.13)!important;
+  background:rgba(255,255,255,.015)!important;
+}
+.creator-worlds-room .member-works article:hover,
+.creator-worlds-room .member-comics-grid>a:hover{
+  border-color:rgba(221,183,231,.28)!important;
+  transform:translateY(-3px)!important;
+}
+
+/* Reading Room: less "form", more chic editorial discovery. */
+.chic-reading-page{max-width:1240px!important}
+.chic-reading-intro{
+  max-width:none!important;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(260px,.42fr);
+  gap:1.2rem;
+  align-items:end;
+  padding:1.2rem 0 1.4rem!important;
+}
+.chic-reading-intro::after{
+  content:"☾  ✦  ✧";
+  justify-self:end;
+  align-self:center;
+  padding-right:1rem;
+  color:rgba(217,180,228,.18);
+  font:clamp(2.4rem,7vw,5.5rem) Georgia,'Times New Roman',serif;
+  letter-spacing:.12em;
+  white-space:nowrap;
+}
+.chic-reading-intro h1{
+  max-width:760px;
+  font-size:clamp(2.55rem,5.3vw,4.55rem)!important;
+}
+.chic-reading-intro>p:last-of-type{
+  max-width:680px!important;
+  font-size:.86rem!important;
+}
+
+/* Original/Fandom = elegant segmented control, not giant cards. */
+.chic-reading-kind-tabs{
+  display:flex!important;
+  gap:.25rem!important;
+  width:min(100%,620px);
+  margin:0 0 .85rem!important;
+  padding:.28rem!important;
+  border:1px solid rgba(200,178,232,.13);
+  border-radius:15px;
+  background:rgba(30,23,65,.6);
+}
+.chic-reading-kind-tabs button{
+  flex:1;
+  min-height:48px!important;
+  padding:.48rem .68rem!important;
+  border:0!important;
+  border-radius:11px!important;
+  background:transparent!important;
+}
+.chic-reading-kind-tabs button.active{
+  background:linear-gradient(135deg,rgba(117,98,190,.24),rgba(216,150,204,.08))!important;
+  box-shadow:none!important;
+}
+.chic-reading-kind-tabs span{font-size:.8rem!important}
+.chic-reading-kind-tabs small{font-size:.54rem!important}
+
+/* Discovery becomes a premium editorial carousel. */
+.chic-discovery-court{
+  position:relative;
+  overflow:hidden;
+  padding:1rem!important;
+  border-color:rgba(202,180,232,.15)!important;
+  border-radius:22px!important;
+  background:
+    radial-gradient(ellipse at 91% 8%,rgba(222,159,207,.09),transparent 24rem),
+    linear-gradient(145deg,rgba(50,37,98,.55),rgba(20,17,45,.76))!important;
+}
+.chic-discovery-court .legacy-discovery-head{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:1rem!important;
+  align-items:end!important;
+}
+.chic-discovery-court .legacy-discovery-head h2{
+  font-size:clamp(1.35rem,2.6vw,1.9rem)!important;
+}
+.chic-discovery-court .legacy-discovery-head>div:first-child>p:last-child{
+  max-width:700px;
+  font-size:.68rem!important;
+}
+.chic-discovery-court .legacy-discovery-modes{
+  display:flex!important;
+  gap:.28rem!important;
+  overflow-x:auto;
+  scrollbar-width:none;
+  margin:.8rem 0!important;
+  padding-bottom:.1rem;
+}
+.chic-discovery-court .legacy-discovery-modes::-webkit-scrollbar{display:none}
+.chic-discovery-court .legacy-discovery-modes button{
+  flex:0 0 auto!important;
+  min-height:34px!important;
+  padding:.38rem .62rem!important;
+  border-radius:999px!important;
+  font-size:.58rem!important;
+}
+.chic-discovery-court .legacy-constellation-list{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:.62rem!important;
+}
+.chic-discovery-court .legacy-constellation-list article{
+  min-width:0;
+  min-height:210px!important;
+  border-color:rgba(201,179,231,.13)!important;
+  border-radius:16px!important;
+  background:rgba(255,255,255,.018)!important;
+  box-shadow:none!important;
+}
+.chic-discovery-court .legacy-constellation-list article:hover{
+  transform:translateY(-3px)!important;
+  border-color:rgba(220,183,231,.29)!important;
+}
+.chic-discovery-court .legacy-constellation-cover{
+  width:90px!important;
+  min-width:90px!important;
+  border-radius:11px!important;
+}
+
+/* Search/filter rail becomes one clean horizontal utility bar. */
+.chic-reading-tools{
+  position:sticky;
+  top:72px;
+  z-index:8;
+  display:grid!important;
+  grid-template-columns:minmax(260px,1fr) 170px 170px!important;
+  gap:.45rem!important;
+  margin:.8rem 0!important;
+  padding:.5rem!important;
+  border:1px solid rgba(201,179,231,.13)!important;
+  border-radius:16px!important;
+  background:rgba(27,21,59,.82)!important;
+  -webkit-backdrop-filter:blur(18px);
+  backdrop-filter:blur(18px);
+}
+.chic-reading-tools .reading-search,
+.chic-reading-tools select{
+  border-color:rgba(201,179,231,.12)!important;
+  border-radius:11px!important;
+  background:rgba(9,8,25,.25)!important;
+}
+.chic-reading-tools .reading-search input{font-size:.72rem!important}
+
+/* Main catalogue uses elegant two-up editorial cards. */
+.chic-story-catalogue{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:.72rem!important;
+}
+.chic-story-catalogue .story-row{
+  min-height:188px!important;
+  display:grid!important;
+  grid-template-columns:112px minmax(0,1fr)!important;
+  gap:.85rem!important;
+  padding:.8rem!important;
+  border-color:rgba(201,179,231,.13)!important;
+  border-radius:18px!important;
+  background:
+    linear-gradient(145deg,rgba(49,36,95,.26),rgba(20,17,45,.66))!important;
+  box-shadow:0 12px 30px rgba(8,6,24,.07)!important;
+}
+.chic-story-catalogue .story-row:hover{
+  transform:translateY(-3px)!important;
+  border-color:rgba(220,183,231,.29)!important;
+  box-shadow:0 18px 38px rgba(8,6,24,.12)!important;
+}
+.chic-story-catalogue .story-cover{
+  width:112px!important;
+  min-width:112px!important;
+  height:162px!important;
+  border-radius:12px!important;
+  overflow:hidden;
+}
+.chic-story-catalogue .story-row h2{
+  margin:.22rem 0 .32rem!important;
+  font-size:1.05rem!important;
+}
+.chic-story-catalogue .story-row>div:last-child>p:not(.story-meta){
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  margin:.2rem 0!important;
+  font-size:.68rem!important;
+  line-height:1.52!important;
+}
+.chic-story-catalogue .story-meta{
+  font-size:.52rem!important;
+  color:#9a93aa!important;
+}
+.chic-story-catalogue .reading-card-tags{margin:.38rem 0!important}
+.chic-story-catalogue .reading-card-tags span{font-size:.48rem!important}
+.chic-story-catalogue .story-row footer{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:.5rem!important;
+  margin-top:.55rem!important;
+}
+.story-creator-line{min-width:0}
+.story-creator-line>a,.story-creator-line small{
+  display:block;
+  max-width:150px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#a9a0ba!important;
+  font-size:.55rem!important;
+  text-decoration:none;
+}
+.story-creator-line>a:hover{color:#d4c7e9!important;text-decoration:underline}
+.chic-story-catalogue .story-row footer>a{
+  flex:0 0 auto;
+  color:#c8b6e6!important;
+  font-size:.58rem!important;
+}
+
+/* Daylight keeps the same chic rhythm in lavender-paper tones. */
+.daylight .chic-member-profile{
+  background:linear-gradient(180deg,#f8f3fb,#f7f6fa 45%,#f4f3f8)!important;
+  border-color:rgba(96,77,142,.13)!important;
+}
+.daylight .chic-member-profile .legacy-profile-avatar{
+  box-shadow:0 0 0 5px #f7f5fa,0 12px 28px rgba(69,50,103,.12)!important;
+}
+.daylight .chic-member-profile .legacy-profile-copy blockquote{color:#5b5368!important}
+.daylight .chic-member-profile .legacy-profile-stats{background:rgba(255,255,255,.3)}
+.daylight .chic-chamber-tabs,
+.daylight .chic-reading-kind-tabs,
+.daylight .chic-reading-tools{
+  background:rgba(248,244,251,.88)!important;
+  border-color:rgba(96,77,142,.12)!important;
+}
+.daylight .chic-chamber-stream,
+.daylight .creator-worlds-room .creator-shelf-block,
+.daylight .chic-discovery-court,
+.daylight .chic-story-catalogue .story-row{
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.96),rgba(244,240,248,.92))!important;
+  border-color:rgba(96,77,142,.11)!important;
+}
+.daylight .chic-chamber-stream .chamber-post-list p{color:#514b5f!important}
+.daylight .chic-reading-tools .reading-search,
+.daylight .chic-reading-tools select{background:rgba(255,255,255,.72)!important}
+
+/* Responsive creator + discovery rhythm. */
+@media(max-width:920px){
+  .chic-story-catalogue{grid-template-columns:1fr}
+  .chic-reading-intro{grid-template-columns:1fr}
+  .chic-reading-intro::after{display:none}
+  .chic-discovery-court .legacy-constellation-list{grid-template-columns:1fr 1fr!important}
+  .chic-discovery-court .legacy-constellation-list article:last-child{grid-column:1/-1}
+}
+@media(max-width:720px){
+  .chic-member-profile{border-radius:18px!important}
+  .chic-member-profile .legacy-profile-cover{height:205px!important}
+  .chic-member-profile .legacy-profile-avatar{
+    left:50%!important;top:158px!important;
+    width:94px!important;height:94px!important;
+    transform:translateX(-50%)!important;
+  }
+  .chic-member-profile .legacy-profile-copy{
+    padding:3.6rem .9rem 1rem!important;
+    text-align:center;
+  }
+  .chic-member-profile .legacy-profile-copy h1{font-size:clamp(2rem,11vw,2.8rem)!important}
+  .chic-member-profile .legacy-profile-actions,.chic-member-profile .legacy-profile-tags{justify-content:center}
+  .chic-member-profile .legacy-profile-stats>div{flex-basis:105px}
+  .chic-chamber-tabs{
+    top:106px;
+    display:flex!important;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .chic-chamber-tabs::-webkit-scrollbar{display:none}
+  .chic-chamber-tabs a{flex:1 0 110px}
+  .chic-reading-tools{
+    top:106px;
+    grid-template-columns:1fr 1fr!important;
+  }
+  .chic-reading-tools .reading-search{grid-column:1/-1}
+}
+@media(max-width:560px){
+  .chic-reading-kind-tabs{width:100%}
+  .chic-discovery-court .legacy-discovery-head{grid-template-columns:1fr!important}
+  .chic-discovery-court .discovery-head-actions{justify-content:flex-start!important}
+  .chic-discovery-court .legacy-constellation-list{grid-template-columns:1fr!important}
+  .chic-discovery-court .legacy-constellation-list article:last-child{grid-column:auto}
+  .chic-reading-tools{grid-template-columns:1fr!important}
+  .chic-reading-tools .reading-search{grid-column:auto}
+  .chic-story-catalogue .story-row{
+    grid-template-columns:88px minmax(0,1fr)!important;
+    gap:.68rem!important;
+  }
+  .chic-story-catalogue .story-cover{width:88px!important;min-width:88px!important;height:132px!important}
+  .chic-story-catalogue .story-row footer{align-items:flex-start!important;flex-direction:column}
+}
