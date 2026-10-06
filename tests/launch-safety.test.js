@@ -512,6 +512,18 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.surprise-story');
   });
 
+  it('keeps one-handed mobile Palace navigation available',()=>{
+    const polish=read('src/polish.css');
+    expect(main).toContain('mobile-palace-dock');
+    expect(main).toContain('aria-label="Quick Palace navigation"');
+    expect(main).toContain('mobile-dock-write');
+    expect(main).toContain("activeRoom?.id==='reading'");
+    expect(main).toContain("activeRoom?.id==='treasury'");
+    expect(polish).toContain('.mobile-palace-dock');
+    expect(polish).toContain('grid-template-columns:repeat(5');
+    expect(polish).toContain('.full-top-actions .write-action{display:none!important}');
+  });
+
   it('keeps Writing Chamber library controls useful at scale',()=>{
     const polish=read('src/polish.css');
     expect(live).toContain('writing-library-tools');
