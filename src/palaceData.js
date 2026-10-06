@@ -1101,6 +1101,34 @@ export async function submitRelayTurn(roomId,body){
  const{data,error}=await needClient().rpc('submit_relay_turn',{p_room_id:roomId,p_body:body});if(error)throw error;return data
 }
 
+export async function setRelayAudience(roomId,open){
+ const{data,error}=await needClient().rpc('set_relay_audience',{p_room_id:roomId,p_open:open});if(error)throw error;return data
+}
+export async function createRelayPoll(roomId,question,options){
+ const{data,error}=await needClient().rpc('create_relay_poll',{p_room_id:roomId,p_question:question,p_options:options});if(error)throw error;return data
+}
+export async function closeRelayPoll(pollId){
+ const{data,error}=await needClient().rpc('close_relay_poll',{p_poll_id:pollId});if(error)throw error;return data
+}
+export async function voteRelayPoll(pollId,optionId){
+ const{data,error}=await needClient().rpc('vote_relay_poll',{p_poll_id:pollId,p_option_id:optionId});if(error)throw error;return data
+}
+export async function getRelayBalcony(roomId){
+ const{data,error}=await needClient().rpc('get_relay_balcony',{p_room_id:roomId});if(error)throw error;return data
+}
+export async function getMicroDuels(){
+ const{data,error}=await needClient().rpc('get_micro_duels');if(error)throw error;return data||[]
+}
+export async function createMicroDuel(title,prompt,wordLimit=500){
+ const{data,error}=await needClient().rpc('create_micro_duel',{p_title:title,p_prompt:prompt,p_word_limit:wordLimit});if(error)throw error;return data
+}
+export async function submitMicroDuelEntry(duelId,body){
+ const{data,error}=await needClient().rpc('submit_micro_duel_entry',{p_duel_id:duelId,p_body:body});if(error)throw error;return data
+}
+export async function voteMicroDuel(duelId,entryId){
+ const{data,error}=await needClient().rpc('vote_micro_duel',{p_duel_id:duelId,p_entry_id:entryId});if(error)throw error;return data
+}
+
 export async function getWritingExtras(userId){
  const [incoming,outgoing,comments,downloads]=await Promise.all([
   needClient().from('work_collaborators').select('work_id,user_id,role,status,invited_by,created_at,responded_at,works(id,title,slug,author_id,publication_status)').eq('user_id',userId).order('created_at',{ascending:false}),
