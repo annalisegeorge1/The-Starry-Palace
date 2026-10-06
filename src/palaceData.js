@@ -365,10 +365,13 @@ export async function castClubPollVote(userId,pollId,optionId){
 }
 
 export async function getPalaceLife(userId){
- const [clubs,threads,replies,chat,intros,clubInvites,clubRequests,myClubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions,discovery,boundaries,follows]=await Promise.all([
+ const [clubs,threads,replies,forumPolls,forumPollOptions,forumPollVotes,chat,intros,clubInvites,clubRequests,myClubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions,discovery,boundaries,follows]=await Promise.all([
   needClient().from('clubs').select('id,name,slug,club_type,privacy,description,club_members!inner(user_id,status,role)').eq('club_members.user_id',userId).eq('club_members.status','active').limit(24),
-  needClient().from('forum_threads').select('id,author_id,title,body,room,created_at,updated_at,profiles!forum_threads_author_id_fkey(username,display_name,avatar_url)').eq('status','active').order('updated_at',{ascending:false}).limit(30),
-  needClient().from('forum_replies').select('id,thread_id,author_id,body,status,created_at,updated_at,profiles!forum_replies_author_id_fkey(username,display_name,avatar_url)').eq('status','active').order('created_at',{ascending:true}).limit(240),
+  needClient().from('forum_threads').select('id,author_id,title,body,room,created_at,updated_at,profiles!forum_threads_author_id_fkey(username,display_name,avatar_url,title)').eq('status','active').order('updated_at',{ascending:false}).limit(30),
+  needClient().from('forum_replies').select('id,thread_id,author_id,body,status,created_at,updated_at,profiles!forum_replies_author_id_fkey(username,display_name,avatar_url,title)').eq('status','active').order('created_at',{ascending:true}).limit(240),
+  needClient().from('forum_polls').select('id,thread_id,created_by,question,status,closes_at,created_at,closed_at').order('created_at',{ascending:false}).limit(60),
+  needClient().from('forum_poll_options').select('id,poll_id,label,position').order('position',{ascending:true}).limit(360),
+  needClient().from('forum_poll_votes').select('poll_id,option_id,user_id,created_at').limit(2000),
   needClient().from('public_chat_messages').select('id,author_id,body,created_at,profiles!public_chat_messages_author_id_fkey(username,display_name,avatar_url,title)').eq('status','active').order('created_at',{ascending:false}).limit(30),
   needClient().from('member_introductions').select('id,author_id,title,body,highlighted,created_at,profiles!member_introductions_author_id_fkey(username,display_name,avatar_url)').eq('status','active').order('created_at',{ascending:false}).limit(16),
   needClient().from('club_invitations').select('id,club_id,sender_id,recipient_id,note,status,created_at,clubs(id,name,slug,club_type,privacy),profiles!club_invitations_sender_id_fkey(username,display_name,avatar_url)').eq('recipient_id',userId).eq('status','pending').order('created_at',{ascending:false}).limit(12),
@@ -385,7 +388,7 @@ export async function getPalaceLife(userId){
   needClient().from('user_member_boundaries').select('other_user_id,muted,blocked').eq('user_id',userId),
   needClient().from('member_follows').select('followed_id').eq('follower_id',userId)
  ]);
- for(const r of[clubs,threads,replies,chat,intros,clubInvites,clubRequests,myClubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions,discovery,boundaries,follows])if(r.error)throw r.error;
+ for(const r of[clubs,threads,replies,forumPolls,forumPollOptions,forumPollVotes,chat,intros,clubInvites,clubRequests,myClubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions,discovery,boundaries,follows])if(r.error)throw r.error;
 
  const quietMemberIds=new Set((boundaries.data||[]).filter(x=>x.muted||x.blocked).map(x=>x.other_user_id));
  const visibleThreads=(threads.data||[]).filter(x=>!quietMemberIds.has(x.author_id));
@@ -432,7 +435,7 @@ export async function getPalaceLife(userId){
  return{
   clubs:joined.map(x=>({...x,pulse:clubPulse(x.id)})),
   discoverableClubs:discoverableClubs.map(x=>({...x,pulse:clubPulse(x.id)})),
-  threads:visibleThreads.map(x=>{const threadReplies=visibleReplies.filter(r=>r.thread_id===x.id);return{...x,subscribed:subSet.has(x.id),muted:muteSet.has(x.id),saved:saveSet.has(x.id),replies:threadReplies,reply_count:threadReplies.length}}),
+  threads:visibleThreads.map(x=>{const threadReplies=visibleReplies.filter(r=>r.thread_id===x.id);const poll=(forumPolls.data||[]).find(p=>p.thread_id===x.id)||null;const options=poll?(forumPollOptions.data||[]).filter(o=>o.poll_id===poll.id).sort((a,b)=>a.position-b.position).map(o=>({...o,votes:(forumPollVotes.data||[]).filter(v=>v.option_id===o.id).length})):[];const myVote=poll?(forumPollVotes.data||[]).find(v=>v.poll_id===poll.id&&v.user_id===userId)?.option_id||null:null;return{...x,subscribed:subSet.has(x.id),muted:muteSet.has(x.id),saved:saveSet.has(x.id),replies:threadReplies,reply_count:threadReplies.length,poll:poll?{...poll,options,my_vote:myVote,total_votes:(forumPollVotes.data||[]).filter(v=>v.poll_id===poll.id).length}:null}}),
   chat:visibleChat.reverse(),
   introductions:visibleIntros,
   clubInvites:clubInvites.data||[],
@@ -513,6 +516,36 @@ export async function createForumThread(userId,title,body,room='Palace Commons')
 export async function replyForumThread(userId,threadId,body){
  const text=String(body||'').trim();if(!text)throw new Error('Write a reply first.');if(text.length>2400)throw new Error('Forum replies are limited to 2,400 characters.');
  const{data,error}=await needClient().from('forum_replies').insert({thread_id:threadId,author_id:userId,body:text,status:'active'}).select().single();if(error)throw error;return data
+}
+export async function createForumPoll(userId,threadId,question,options=[]){
+ const cleanQuestion=String(question||'').trim();
+ const cleanOptions=(Array.isArray(options)?options:[]).map(x=>String(x||'').trim()).filter(Boolean).slice(0,6);
+ if(!cleanQuestion)throw new Error('Give the poll a question.');
+ if(cleanOptions.length<2)throw new Error('Add at least two poll choices.');
+ const{data:poll,error}=await needClient().from('forum_polls').insert({thread_id:threadId,created_by:userId,question:cleanQuestion.slice(0,240),status:'open'}).select().single();
+ if(error)throw error;
+ const rows=cleanOptions.map((label,i)=>({poll_id:poll.id,label:label.slice(0,120),position:i+1}));
+ const{error:optionsError}=await needClient().from('forum_poll_options').insert(rows);
+ if(optionsError){await needClient().from('forum_polls').delete().eq('id',poll.id).eq('created_by',userId);throw optionsError}
+ return poll
+}
+export async function castForumPollVote(userId,pollId,optionId){
+ const existing=await needClient().from('forum_poll_votes').select('option_id').eq('poll_id',pollId).eq('user_id',userId).maybeSingle();
+ if(existing.error)throw existing.error;
+ if(existing.data?.option_id===optionId){
+  const{error}=await needClient().from('forum_poll_votes').delete().eq('poll_id',pollId).eq('user_id',userId);
+  if(error)throw error;return null
+ }
+ if(existing.data){
+  const{data,error}=await needClient().from('forum_poll_votes').update({option_id:optionId}).eq('poll_id',pollId).eq('user_id',userId).select().single();
+  if(error)throw error;return data
+ }
+ const{data,error}=await needClient().from('forum_poll_votes').insert({poll_id:pollId,option_id:optionId,user_id:userId}).select().single();
+ if(error)throw error;return data
+}
+export async function closeForumPoll(userId,pollId){
+ const{data,error}=await needClient().from('forum_polls').update({status:'closed',closed_at:new Date().toISOString()}).eq('id',pollId).eq('created_by',userId).select().single();
+ if(error)throw error;return data
 }
 export async function requestClubMembership(userId,clubId,note=''){
  const existing=await needClient().from('club_membership_requests').select('id,status,created_at').eq('club_id',clubId).eq('requester_id',userId).eq('status','pending').maybeSingle();
