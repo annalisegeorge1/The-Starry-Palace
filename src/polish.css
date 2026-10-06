@@ -5697,3 +5697,28 @@ img{max-width:100%}
 .daylight .account-security-card,.daylight .account-data-card{background:rgba(255,255,255,.84);border-color:rgba(46,51,92,.12)}
 .daylight .password-change-form input{background:#fff;border-color:rgba(46,51,92,.14)}
 @media(max-width:820px){.password-change-form{grid-template-columns:1fr}}
+
+/* Personal Palace nightstand + precise reading continuity */
+.palace-nightstand-home{position:relative;overflow:hidden}
+.palace-nightstand-home:after{content:"☾";position:absolute;right:-18px;top:-52px;font-size:10rem;line-height:1;color:rgba(143,139,218,.035);pointer-events:none}
+.palace-nightstand-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.palace-nightstand-grid>a{display:grid;grid-template-columns:92px minmax(0,1fr);gap:14px;min-width:0;padding:14px;border:1px solid rgba(167,175,230,.15);border-radius:18px;background:linear-gradient(145deg,rgba(22,28,56,.78),rgba(12,17,38,.72));color:inherit;text-decoration:none;transition:transform .18s ease,border-color .18s ease,background .18s ease}
+.palace-nightstand-grid>a:hover{transform:translateY(-2px);border-color:rgba(167,156,238,.36);background:linear-gradient(145deg,rgba(31,36,72,.9),rgba(15,20,45,.84))}
+.nightstand-cover{width:92px;height:132px;border-radius:12px;overflow:hidden;background:radial-gradient(circle at 50% 35%,rgba(128,116,210,.2),rgba(9,13,31,.86));display:grid;place-items:center;box-shadow:0 10px 24px rgba(0,0,0,.18)}
+.nightstand-cover img{width:100%;height:100%;object-fit:cover}
+.nightstand-cover span{font-size:2rem;opacity:.55}
+.palace-nightstand-grid small{color:#aaa7f7;font-size:.68rem;letter-spacing:.06em}
+.palace-nightstand-grid h3{margin:.28rem 0 .4rem;font:600 1.05rem/1.25 Georgia,'Times New Roman',serif}
+.palace-nightstand-grid p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin:0 0 .55rem;color:var(--muted);font-size:.76rem;line-height:1.48}
+.palace-nightstand-grid b{font-size:.72rem;font-weight:650}
+.nightstand-empty{grid-template-columns:auto minmax(0,1fr) auto;align-items:center}
+.nightstand-empty>a{white-space:nowrap}
+.chapter-place{display:grid;grid-template-columns:auto minmax(70px,1fr) auto;align-items:center;gap:8px;margin:.45rem 0 0;color:var(--muted);font-size:.66rem}
+.chapter-place>i{display:block;height:5px;border-radius:99px;background:rgba(151,160,205,.16);overflow:hidden}
+.chapter-place>i>b{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,rgba(122,113,217,.72),rgba(146,175,216,.78))}
+.chapter-place em{font-style:normal;color:var(--text)}
+.actionable-empty>a{display:inline-flex;margin-top:.55rem;padding:.55rem .8rem;border:1px solid rgba(156,164,218,.2);border-radius:999px;text-decoration:none;color:inherit}
+.daylight .palace-nightstand-grid>a{background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(244,244,253,.88));border-color:rgba(63,66,117,.12)}
+.daylight .nightstand-cover{background:linear-gradient(145deg,#eeeefe,#e1e2f2)}
+@media(max-width:980px){.palace-nightstand-grid{grid-template-columns:1fr}.palace-nightstand-grid>a{grid-template-columns:82px minmax(0,1fr)}.nightstand-cover{width:82px;height:118px}}
+@media(max-width:560px){.palace-nightstand-grid>a{grid-template-columns:70px minmax(0,1fr);padding:11px}.nightstand-cover{width:70px;height:102px}.nightstand-empty{grid-template-columns:auto 1fr}.nightstand-empty>a{grid-column:1/-1;justify-self:start}}
