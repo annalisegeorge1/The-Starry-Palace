@@ -1155,6 +1155,20 @@ describe('Starry Palace launch safety',()=>{
     expect(next).toContain('@media(prefers-reduced-motion:reduce)');
   });
 
+  it('keeps long reading sessions navigable and intentionally quiet',()=>{
+    const next=read('src/palace-next.css');
+    expect(live).toContain('readerFocus');
+    expect(live).toContain('Quiet focus');
+    expect(live).toContain('Exit quiet focus');
+    expect(live).toContain('readerLandmarks');
+    expect(live).toContain('jumpReaderLandmark');
+    expect(live).toContain('Chapter map');
+    expect(live).toContain("Scene break '+scene");
+    expect(next).toContain('Reader refinement — chapter map + truly quiet focus mode.');
+    expect(next).toContain('body.reader-focus-mode .full-sidebar');
+    expect(next).toContain('.reader-landmark-map');
+  });
+
   it('keeps tablet room navigation swipeable without covering content',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
