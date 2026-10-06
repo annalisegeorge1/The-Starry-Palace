@@ -7544,3 +7544,267 @@ body{overflow-x:clip}
   .room-grid.expanded .room-card::after{font-size:4rem}
   .manifesto::before{letter-spacing:.35rem;font-size:.7rem}
 }
+
+
+/* =========================================================
+   Dusk GIF visual language
+   The uploaded wind-chime sky is the visual source of truth.
+   ========================================================= */
+:root{
+  --dusk-ink:#17132f;
+  --dusk-deep:#211947;
+  --dusk-violet:#4b3b91;
+  --dusk-periwinkle:#7567c3;
+  --dusk-lavender:#b59ce8;
+  --dusk-blush:#dfa0d0;
+  --dusk-cloud:#d9c0ef;
+  --dusk-mist:rgba(198,181,235,.16);
+}
+
+/* The sidebar cover now uses the exact GIF, with no site-name/tagline overlay. */
+.palace-cover-live.dusk-gif-cover{
+  position:relative;
+  height:auto!important;
+  min-height:0!important;
+  aspect-ratio:500/280;
+  overflow:hidden;
+  padding:0!important;
+  border:1px solid rgba(207,186,239,.22);
+  border-radius:18px;
+  background:#342a78!important;
+  box-shadow:
+    0 16px 34px rgba(7,6,23,.22),
+    inset 0 0 0 1px rgba(255,255,255,.025);
+}
+.palace-cover-live.dusk-gif-cover>img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:center;
+  opacity:1;
+  filter:saturate(.98) contrast(1.015);
+}
+.palace-cover-live.dusk-gif-cover::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(21,15,54,.02) 0%,rgba(23,17,57,.04) 58%,rgba(18,13,43,.16) 100%);
+}
+.palace-cover-live.dusk-gif-cover::after{display:none!important}
+.dusk-cover-glass{
+  position:absolute;
+  inset:auto 0 0 0;
+  z-index:2;
+  height:20%;
+  pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(25,18,57,.16));
+}
+.dusk-gif-cover .nav-close{
+  z-index:4;
+  background:rgba(31,22,72,.48);
+  border-color:rgba(237,222,255,.28);
+  color:#fff7ff;
+  backdrop-filter:blur(8px);
+}
+.dusk-gif-cover .palace-cover-stars,
+.dusk-gif-cover .cover-sigil,
+.dusk-gif-cover .cover-copy{display:none!important}
+
+/* Make the GIF itself more visible wherever it is already used. */
+.palace-belonging-art{
+  opacity:.56!important;
+  filter:saturate(1.02) contrast(1.015)!important;
+}
+.palace-belonging-panel:after{
+  background:
+    linear-gradient(90deg,rgba(22,16,55,.86) 0%,rgba(33,24,72,.63) 48%,rgba(41,29,82,.27) 100%)!important;
+}
+
+/* Nightfall borrows the GIF's violet dusk rather than generic navy. */
+.nightfall .palace-stage,
+.nightfall.full-stage,
+.nightfall .full-stage{
+  background:
+    radial-gradient(ellipse at 84% 3%,rgba(224,160,208,.12),transparent 25rem),
+    radial-gradient(ellipse at 18% 14%,rgba(117,103,195,.17),transparent 32rem),
+    radial-gradient(ellipse at 56% 74%,rgba(113,92,183,.08),transparent 30rem),
+    linear-gradient(180deg,#17132f 0%,#14112a 52%,#100e23 100%)!important;
+}
+.nightfall .full-sidebar{
+  background:
+    linear-gradient(180deg,rgba(31,24,68,.98),rgba(19,16,42,.995))!important;
+  border-right-color:rgba(191,168,227,.14)!important;
+}
+.nightfall .full-topbar{
+  background:linear-gradient(180deg,rgba(27,21,61,.92),rgba(22,18,48,.82))!important;
+  border-bottom-color:rgba(195,174,231,.13)!important;
+  box-shadow:0 10px 32px rgba(8,6,24,.12);
+}
+
+/* Soft cloud bands from the reference GIF. */
+.nightfall .palace-stage::after,
+.nightfall .full-stage::after{
+  width:68vw!important;
+  height:46vw!important;
+  right:-18vw!important;
+  top:8vh!important;
+  max-width:980px!important;
+  max-height:640px!important;
+  opacity:.5!important;
+  filter:blur(46px)!important;
+  border-radius:48% 52% 44% 56%;
+  background:
+    radial-gradient(ellipse at 38% 46%,rgba(226,165,211,.16),transparent 34%),
+    radial-gradient(ellipse at 63% 42%,rgba(168,144,223,.17),transparent 38%),
+    radial-gradient(ellipse at 52% 68%,rgba(102,91,181,.13),transparent 45%)!important;
+}
+
+/* Glass surfaces now carry lavender edges and soft dusk highlights. */
+.nightfall .palace-dashboard-section,
+.nightfall .palace-next-door,
+.nightfall .palace-resume-card,
+.nightfall .palace-home-shortcuts>a,
+.nightfall .command-card,
+.nightfall .chamber-card,
+.nightfall .comic-card,
+.nightfall .club-card-live,
+.nightfall .home-world-grid>a,
+.nightfall .search-result-card{
+  border-color:rgba(190,169,229,.16)!important;
+  background:
+    linear-gradient(150deg,rgba(55,42,105,.22),rgba(25,21,52,.76) 42%,rgba(17,16,39,.82))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025),
+    0 14px 36px rgba(8,6,24,.10)!important;
+}
+.nightfall .palace-dashboard-section:hover,
+.nightfall .palace-resume-card:hover,
+.nightfall .palace-home-shortcuts>a:hover,
+.nightfall .command-card:hover,
+.nightfall .chamber-card:hover,
+.nightfall .home-world-grid>a:hover{
+  border-color:rgba(218,180,230,.29)!important;
+}
+
+/* Buttons use the periwinkle → violet → blush dusk palette. */
+.nightfall .button,
+.nightfall .write-action,
+.nightfall .thread-compose button:not(.quiet-button),
+.nightfall .proposal-form>button,
+.nightfall .palace-dialog footer button:not(.quiet-button){
+  border-color:rgba(223,191,238,.36)!important;
+  background:
+    linear-gradient(135deg,#6f61bd 0%,#55469d 52%,#7f4f91 100%)!important;
+  box-shadow:
+    0 9px 24px rgba(56,41,119,.22),
+    inset 0 1px 0 rgba(255,255,255,.12)!important;
+}
+.nightfall .button:hover,
+.nightfall .write-action:hover{
+  box-shadow:
+    0 13px 30px rgba(56,41,119,.28),
+    0 0 22px rgba(219,161,210,.10)!important;
+}
+
+/* Navigation highlights feel like light passing through the GIF sky. */
+.nightfall .full-nav-room>a.active,
+.nightfall .full-subnav a.active{
+  background:
+    linear-gradient(90deg,rgba(117,103,195,.14),rgba(223,160,208,.045))!important;
+}
+.nightfall .full-nav-room>a.active::before{
+  background:linear-gradient(180deg,#b6a0e9,#df9fcc)!important;
+  box-shadow:0 0 12px rgba(191,156,226,.44)!important;
+}
+.nightfall .top-room-context,
+.nightfall .identity-card-live{
+  background:rgba(75,58,137,.08)!important;
+  border-color:rgba(188,166,227,.15)!important;
+}
+
+/* Public home: keep text readable while the atmosphere becomes softer and more illustrated. */
+.nightfall .home-hero.realised{
+  border-color:rgba(206,181,235,.25)!important;
+  background:
+    radial-gradient(ellipse at 78% 18%,rgba(225,160,208,.12),transparent 28rem),
+    radial-gradient(ellipse at 58% 70%,rgba(114,99,194,.14),transparent 34rem),
+    linear-gradient(125deg,rgba(31,23,73,.96),rgba(48,34,96,.88) 52%,rgba(31,29,79,.92))!important;
+}
+.nightfall .home-hero.realised::after{
+  background:
+    radial-gradient(circle at 34% 34%,rgba(238,195,230,.16),transparent 30%),
+    radial-gradient(circle at 55% 55%,rgba(123,105,196,.2),rgba(86,72,160,.06) 48%,transparent 70%)!important;
+}
+.nightfall .hero-orbit.palace-belonging-panel{
+  border-color:rgba(224,191,237,.26)!important;
+  background:
+    linear-gradient(180deg,rgba(50,36,105,.28),rgba(22,18,49,.60))!important;
+}
+.nightfall .home-intro-strip span{
+  border-color:rgba(199,176,231,.16)!important;
+  background:
+    linear-gradient(135deg,rgba(59,44,111,.48),rgba(29,24,62,.68))!important;
+}
+.nightfall .home-intro-strip span::before{color:#dca2d3!important}
+
+/* Room cards: lavender, periwinkle and blush rather than generic blue/teal. */
+.nightfall .room-grid.expanded .room-card:nth-child(1){--room-accent:116,108,201}
+.nightfall .room-grid.expanded .room-card:nth-child(2){--room-accent:151,124,211}
+.nightfall .room-grid.expanded .room-card:nth-child(3){--room-accent:207,137,194}
+.nightfall .room-grid.expanded .room-card:nth-child(4){--room-accent:121,116,194}
+.nightfall .room-grid.expanded .room-card:nth-child(5){--room-accent:176,143,218}
+.nightfall .room-grid.expanded .room-card:nth-child(6){--room-accent:135,115,198}
+.nightfall .room-grid.expanded .room-card:nth-child(7){--room-accent:111,103,171}
+.nightfall .room-grid.expanded .room-card{
+  background:
+    radial-gradient(ellipse at 88% 8%,rgba(var(--room-accent),.15),transparent 42%),
+    linear-gradient(150deg,rgba(50,38,94,.75),rgba(21,18,48,.88) 58%,rgba(16,15,37,.92))!important;
+}
+
+/* Headings and quiet accents get the reference GIF's soft pink-lavender light. */
+.nightfall .eyebrow{color:#b9a5e6}
+.nightfall .room-title::before{
+  background:
+    radial-gradient(ellipse,rgba(194,146,215,.13),rgba(109,95,184,.07) 48%,transparent 70%)!important;
+}
+.nightfall .palace-command-hero{
+  background:
+    radial-gradient(ellipse at 87% 9%,rgba(225,159,208,.11),transparent 22rem),
+    linear-gradient(116deg,rgba(33,25,76,.92),rgba(49,34,94,.79) 54%,rgba(27,26,68,.88))!important;
+}
+
+/* Daylight interprets the same GIF as lavender morning haze. */
+.daylight .dusk-gif-cover{
+  border-color:rgba(105,87,153,.19);
+  box-shadow:0 12px 28px rgba(64,48,102,.12);
+}
+.daylight .full-topbar{
+  background:rgba(247,244,252,.88)!important;
+  border-bottom-color:rgba(103,86,151,.13)!important;
+}
+.daylight .full-sidebar{
+  background:linear-gradient(180deg,#f7f3fb,#f0eef7)!important;
+}
+.daylight .palace-stage,
+.daylight .full-stage{
+  background:
+    radial-gradient(ellipse at 82% 4%,rgba(223,160,208,.10),transparent 28rem),
+    radial-gradient(ellipse at 18% 18%,rgba(127,112,197,.09),transparent 32rem),
+    linear-gradient(180deg,#f4f0f8 0%,#eeedf5 55%,#f2f0f6 100%)!important;
+}
+
+@media(max-width:900px){
+  .palace-cover-live.dusk-gif-cover{
+    width:100%;
+    border-radius:16px;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .palace-cover-live.dusk-gif-cover>img{display:block!important}
+}
