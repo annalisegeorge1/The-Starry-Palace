@@ -325,7 +325,7 @@ export async function getPalaceLife(userId){
   needClient().from('clubs').select('id,name,slug,club_type,privacy,description,club_members!inner(user_id,status,role)').eq('club_members.user_id',userId).eq('club_members.status','active').limit(24),
   needClient().from('forum_threads').select('id,author_id,title,body,room,created_at,updated_at,profiles!forum_threads_author_id_fkey(username,display_name,avatar_url)').eq('status','active').order('updated_at',{ascending:false}).limit(30),
   needClient().from('forum_replies').select('id,thread_id,author_id,body,status,created_at,updated_at,profiles!forum_replies_author_id_fkey(username,display_name,avatar_url)').eq('status','active').order('created_at',{ascending:true}).limit(240),
-  needClient().from('public_chat_messages').select('id,author_id,body,created_at,profiles!public_chat_messages_author_id_fkey(username,display_name,avatar_url)').eq('status','active').order('created_at',{ascending:false}).limit(30),
+  needClient().from('public_chat_messages').select('id,author_id,body,created_at,profiles!public_chat_messages_author_id_fkey(username,display_name,avatar_url,title)').eq('status','active').order('created_at',{ascending:false}).limit(30),
   needClient().from('member_introductions').select('id,author_id,title,body,highlighted,created_at,profiles!member_introductions_author_id_fkey(username,display_name,avatar_url)').eq('status','active').order('created_at',{ascending:false}).limit(16),
   needClient().from('club_invitations').select('id,club_id,sender_id,recipient_id,note,status,created_at,clubs(id,name,slug,club_type,privacy),profiles!club_invitations_sender_id_fkey(username,display_name,avatar_url)').eq('recipient_id',userId).eq('status','pending').order('created_at',{ascending:false}).limit(12),
   needClient().from('club_membership_requests').select('id,club_id,requester_id,note,status,created_at,clubs(id,name,slug),profiles!club_membership_requests_requester_id_fkey(username,display_name,avatar_url)').eq('status','pending').order('created_at',{ascending:false}).limit(30),
@@ -427,7 +427,7 @@ export async function setIntroductionReaction(userId,introductionId,enabled){
  return enabled
 }
 export async function getMoonlightMessages(limit=50){
- const{data,error}=await needClient().from('public_chat_messages').select('id,author_id,body,created_at,profiles!public_chat_messages_author_id_fkey(username,display_name,avatar_url)').eq('status','active').order('created_at',{ascending:false}).limit(Math.max(1,Math.min(100,Number(limit)||50)));
+ const{data,error}=await needClient().from('public_chat_messages').select('id,author_id,body,created_at,profiles!public_chat_messages_author_id_fkey(username,display_name,avatar_url,title)').eq('status','active').order('created_at',{ascending:false}).limit(Math.max(1,Math.min(100,Number(limit)||50)));
  if(error)throw error;return(data||[]).reverse()
 }
 export async function postMoonlight(userId,body){const text=body.trim();if(!text)throw new Error('Write something before sending it into the room.');if(text.length>500)throw new Error('Moonlight messages are limited to 500 characters.');const{data,error}=await needClient().from('public_chat_messages').insert({author_id:userId,body:text,status:'active'}).select().single();if(error)throw error;return data}
