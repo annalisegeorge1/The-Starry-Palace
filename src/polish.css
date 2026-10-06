@@ -13859,3 +13859,177 @@ input:focus,textarea:focus,select:focus{
   background:rgba(255,255,255,.64);
   border-color:rgba(89,72,135,.1);
 }
+
+
+/* =========================================================
+   Prompt Orrery · creative three-reel generator
+   Playful randomness without gambling or engagement pressure.
+   ========================================================= */
+.prompt-orrery{
+  position:relative;
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:minmax(220px,.78fr) minmax(0,1.22fr);
+  gap:1rem;
+  align-items:center;
+  margin:.3rem 0 1rem;
+  padding:1rem;
+  border:1px solid rgba(199,176,231,.16);
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 88% 0%,rgba(215,155,202,.08),transparent 15rem),
+    radial-gradient(circle at 12% 100%,rgba(109,96,181,.12),transparent 18rem),
+    linear-gradient(145deg,rgba(36,27,73,.68),rgba(16,14,36,.82));
+  box-shadow:0 18px 48px rgba(7,5,23,.08);
+}
+.prompt-orrery::after{
+  content:"✦  ·  ☾  ·  ✧";
+  position:absolute;
+  right:1rem;
+  top:.65rem;
+  color:rgba(226,210,242,.16);
+  font:1rem Georgia,'Times New Roman',serif;
+  letter-spacing:.35em;
+  pointer-events:none;
+}
+.prompt-orrery-copy{align-self:stretch;display:grid;align-content:center}
+.prompt-orrery-copy h2{
+  margin:.12rem 0 .4rem;
+  font:600 clamp(1.45rem,2.2vw,2rem)/1.05 Georgia,'Times New Roman',serif;
+  letter-spacing:-.025em;
+}
+.prompt-orrery-copy>p:last-child{
+  max-width:460px;
+  margin:0;
+  color:var(--palace-muted);
+  font-size:.74rem;
+  line-height:1.58;
+}
+.prompt-reels{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.5rem;
+}
+.prompt-reels article{
+  position:relative;
+  min-height:122px;
+  display:grid;
+  align-content:center;
+  gap:.42rem;
+  padding:.8rem;
+  overflow:hidden;
+  border:1px solid rgba(210,188,236,.16);
+  border-radius:16px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.035),transparent 22%,transparent 78%,rgba(255,255,255,.025)),
+    rgba(9,8,25,.48);
+  box-shadow:inset 0 0 18px rgba(5,4,18,.18);
+  animation:promptReelSettle .34s cubic-bezier(.2,.8,.2,1) both;
+}
+.prompt-reels article::before,
+.prompt-reels article::after{
+  content:"";
+  position:absolute;
+  left:0;right:0;
+  height:1px;
+  background:rgba(214,191,237,.08);
+}
+.prompt-reels article::before{top:26%}
+.prompt-reels article::after{bottom:26%}
+.prompt-reels small{
+  color:#9f98af;
+  font-size:.51rem;
+  font-weight:800;
+  letter-spacing:.12em;
+}
+.prompt-reels strong{
+  color:#f0eaf7;
+  font:600 .93rem/1.3 Georgia,'Times New Roman',serif;
+}
+.prompt-orrery-actions{
+  grid-column:1/-1;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:.45rem;
+  padding-top:.1rem;
+}
+.prompt-orrery-actions button{
+  min-height:40px;
+  border-radius:999px;
+  font-size:.7rem;
+}
+.prompt-lever{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  padding:.4rem .8rem .4rem .48rem;
+  border:1px solid rgba(213,181,234,.32);
+  background:linear-gradient(135deg,rgba(112,88,178,.34),rgba(82,64,133,.22));
+  color:#f1ebf7;
+}
+.prompt-lever>span{
+  position:relative;
+  width:28px;
+  height:28px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(222,200,240,.2);
+  border-radius:50%;
+  background:rgba(12,10,30,.5);
+}
+.prompt-lever>span::before{
+  content:"";
+  position:absolute;
+  width:2px;
+  height:16px;
+  bottom:13px;
+  background:#c5b2df;
+  transform:rotate(-25deg);
+  transform-origin:bottom center;
+}
+.prompt-lever>span i{
+  position:absolute;
+  width:8px;
+  height:8px;
+  left:3px;
+  top:0;
+  border-radius:50%;
+  background:#dbb4d4;
+  box-shadow:0 0 10px rgba(219,180,212,.28);
+}
+.prompt-lever:active>span::before{transform:rotate(22deg)}
+@keyframes promptReelSettle{
+  0%{opacity:.25;transform:translateY(-12px);filter:blur(2px)}
+  58%{opacity:1;transform:translateY(3px);filter:blur(0)}
+  100%{transform:none}
+}
+.daylight .prompt-orrery{
+  border-color:rgba(91,73,136,.12);
+  background:
+    radial-gradient(circle at 88% 0%,rgba(198,145,184,.07),transparent 15rem),
+    radial-gradient(circle at 12% 100%,rgba(105,88,164,.08),transparent 18rem),
+    linear-gradient(145deg,rgba(255,255,255,.94),rgba(245,242,249,.92));
+}
+.daylight .prompt-reels article{
+  border-color:rgba(91,73,136,.11);
+  background:rgba(255,255,255,.72);
+  box-shadow:inset 0 0 16px rgba(90,72,130,.035);
+}
+.daylight .prompt-reels strong{color:#302947}
+.daylight .prompt-reels small{color:#756d80}
+.daylight .prompt-lever{color:#352d4e;background:linear-gradient(135deg,rgba(111,88,175,.12),rgba(194,142,181,.06))}
+@media(max-width:900px){
+  .prompt-orrery{grid-template-columns:1fr}
+  .prompt-orrery-actions{grid-column:auto}
+}
+@media(max-width:650px){
+  .prompt-orrery{padding:.8rem;border-radius:18px}
+  .prompt-reels{grid-template-columns:1fr}
+  .prompt-reels article{min-height:84px}
+  .prompt-orrery-actions{display:grid;grid-template-columns:1fr 1fr}
+  .prompt-lever{grid-column:1/-1;justify-content:center}
+}
+@media(prefers-reduced-motion:reduce){
+  .prompt-reels article{animation:none!important}
+}
