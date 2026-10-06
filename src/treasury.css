@@ -572,3 +572,181 @@
  .painted-tier-stage{width:88px!important;height:121px!important}
  .badge-card .painted-tier-stage{width:112px!important;height:154px!important}
 }
+
+
+/* =========================================================
+   Royal Treasury catalogue refinement
+   Keep artwork dimensions intact; improve hierarchy around it.
+   ========================================================= */
+.treasury-catalogue-head{
+  max-width:900px!important;
+  margin:0 auto!important;
+  padding:1rem 0 .65rem!important;
+}
+.treasury-catalogue-head h1{
+  margin:.12rem 0 .38rem!important;
+  font-size:clamp(2.7rem,5vw,4.6rem)!important;
+  line-height:.95!important;
+  letter-spacing:-.045em;
+}
+.treasury-catalogue-head .lede{
+  max-width:780px;
+  margin-bottom:.5rem!important;
+  color:#aaa3b8;
+  font-size:.8rem!important;
+}
+.treasury-catalogue-head>p:last-child{
+  max-width:780px;
+  margin:.25rem 0 0;
+  color:#8f899b;
+  font-size:.6rem;
+  line-height:1.45;
+}
+.treasury-collection-switch{
+  position:sticky;
+  top:72px;
+  z-index:11;
+  max-width:1100px;
+  margin:0 auto .65rem!important;
+  padding:.3rem!important;
+  gap:.2rem!important;
+  flex-wrap:nowrap!important;
+  overflow-x:auto;
+  scrollbar-width:none;
+  border:1px solid rgba(201,178,232,.13);
+  border-radius:16px;
+  background:rgba(27,21,58,.82);
+  -webkit-backdrop-filter:blur(18px);
+  backdrop-filter:blur(18px);
+}
+.treasury-collection-switch::-webkit-scrollbar{display:none}
+.treasury-collection-switch button{
+  flex:1 0 auto;
+  min-height:40px!important;
+  padding:.42rem .68rem!important;
+  border:0!important;
+  border-radius:11px!important;
+  background:transparent!important;
+  color:#9891a5!important;
+  font-size:.59rem!important;
+}
+.treasury-collection-switch button[aria-pressed="true"]{
+  background:linear-gradient(135deg,rgba(117,97,188,.27),rgba(217,151,203,.09))!important;
+  color:#f0ebf8!important;
+  box-shadow:inset 0 0 0 1px rgba(215,183,235,.12);
+}
+.badge-controls{
+  max-width:1100px;
+  margin:.55rem auto .5rem!important;
+  padding:.5rem!important;
+  gap:.5rem!important;
+  border:1px solid rgba(201,178,232,.12);
+  border-radius:16px;
+  background:rgba(27,21,58,.66);
+}
+.badge-controls label{
+  gap:.28rem!important;
+  color:#9b94a8;
+  font-size:.53rem;
+  letter-spacing:.05em;
+}
+.badge-controls input,.badge-controls select{
+  min-height:42px;
+  padding:.55rem .65rem!important;
+  border-color:rgba(201,178,232,.12)!important;
+  border-radius:11px!important;
+  background:rgba(8,7,23,.23)!important;
+}
+.badge-controls+ p[role="status"]{
+  max-width:1100px;
+  margin:.15rem auto .55rem;
+  color:#9690a2;
+  font-size:.58rem;
+}
+.badge-grid{
+  max-width:1100px;
+  margin:0 auto;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))!important;
+  gap:.7rem!important;
+}
+.badge-card{
+  min-height:0!important;
+  padding:.78rem!important;
+  display:flex;
+  flex-direction:column;
+  border-color:rgba(201,178,232,.12)!important;
+  border-radius:18px!important;
+  background:
+    radial-gradient(circle at 88% 4%,rgba(219,157,204,.05),transparent 11rem),
+    linear-gradient(150deg,rgba(46,34,91,.33),rgba(18,16,42,.72))!important;
+  box-shadow:0 12px 30px rgba(7,5,22,.08);
+  transition:transform .17s ease,border-color .17s ease,box-shadow .17s ease;
+}
+.badge-card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(221,184,232,.28)!important;
+  box-shadow:0 18px 38px rgba(7,5,22,.14);
+}
+.badge-art-preview-button{
+  min-height:148px;
+  display:grid!important;
+  place-items:center;
+  width:100%;
+  margin:0 auto .35rem!important;
+  border-radius:14px!important;
+  background:
+    radial-gradient(circle at 50% 46%,rgba(107,89,173,.08),transparent 58%)!important;
+}
+.badge-card>small{
+  color:#a99ac4!important;
+  font-size:.49rem!important;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.badge-card h2{
+  margin:.16rem 0 .26rem!important;
+  font-size:1rem!important;
+}
+.badge-card>p:not(.badge-goal){
+  margin:.1rem 0 .4rem!important;
+  color:#aaa3b4;
+  font-size:.61rem!important;
+  line-height:1.48!important;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.badge-goal{
+  margin:auto 0 .45rem!important;
+  padding-top:.42rem;
+  border-top:1px solid rgba(201,178,232,.08);
+  color:#c6b6df!important;
+  font-size:.56rem!important;
+}
+.badge-earned-state{
+  padding:.42rem .5rem!important;
+  border-radius:11px!important;
+  background:rgba(107,87,171,.055)!important;
+  border:1px solid rgba(201,178,232,.09);
+}
+.badge-earned-state strong{font-size:.56rem!important}
+.badge-earned-state span{font-size:.49rem!important}
+.badge-card>button:not(.badge-art-preview-button){
+  min-height:34px!important;
+  padding:.35rem .52rem!important;
+  border-radius:999px!important;
+  font-size:.53rem!important;
+}
+.catalogue-pagination{margin:.8rem 0 1.5rem!important}
+.daylight .treasury-collection-switch,.daylight .badge-controls,.daylight .badge-card{
+  background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(244,240,248,.92))!important;
+  border-color:rgba(96,77,142,.11)!important;
+}
+.daylight .treasury-collection-switch button[aria-pressed="true"]{color:#3d345d!important}
+@media(max-width:720px){
+  .treasury-catalogue-head{padding-left:14px!important;padding-right:14px!important}
+  .treasury-collection-switch{top:106px;margin-left:14px!important;margin-right:14px!important}
+  .badge-controls{margin-left:14px!important;margin-right:14px!important}
+  .badge-grid{padding:0 14px}
+}
