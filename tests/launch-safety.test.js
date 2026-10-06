@@ -501,8 +501,15 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain("e.key.toLowerCase()==='k'");
     expect(main).toContain('palace-command');
     expect(main).toContain('Open Palace quick navigation');
+    expect(main).toContain('recentPalaceRoutes');
+    expect(main).toContain('Surprise me with a story');
+    expect(main).toContain("e.key==='ArrowDown'");
+    expect(main).toContain('activeSection');
+    expect(live).toContain("get('surprise')!=='1'");
     expect(polish).toContain('.palace-command-backdrop');
     expect(polish).toContain('.command-trigger');
+    expect(polish).toContain('.command-group-title');
+    expect(polish).toContain('.surprise-story');
   });
 
   it('keeps Writing Chamber library controls useful at scale',()=>{
