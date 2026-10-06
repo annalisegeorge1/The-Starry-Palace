@@ -4,7 +4,7 @@ import badges from './badges.json';
 import originals from './originalBadges.json';
 import PalaceBadge from './PalaceBadge';
 import PalaceGift, { giftCourt, giftCourts, giftEdition, giftEditions } from './PalaceGift';
-import { ascendPalaceGift, createGiftTradeOffer, getGiftCatalogue, getGiftTrades, getTreasury, getMyCelestialPoints, getMyCelestialPointLedger, getCelestialTitleLadder, removeProfileAchievementShowcase, removeProfileGiftShowcase, respondGiftTradeOffer, searchMembers, setProfileAchievementShowcase, setProfileGiftShowcase } from './palaceData';
+import { ascendPalaceGift, createGiftTradeOffer, getGiftCatalogue, getGiftTrades, getTreasury, removeProfileAchievementShowcase, removeProfileGiftShowcase, respondGiftTradeOffer, searchMembers, setProfileAchievementShowcase, setProfileGiftShowcase } from './palaceData';
 import './treasury.css';
 import {buildInventory} from './treasuryCollection';
 
@@ -44,16 +44,12 @@ export default function Treasury({Frame}) {
  const [badgeShowcase,setBadgeShowcase]=useState(null);
  const [badgeShowcaseTier,setBadgeShowcaseTier]=useState('bronze');
  const [badgeShowcasePosition,setBadgeShowcasePosition]=useState(1);
- const [celestial,setCelestial]=useState({lifetime_points:0,giving_points:0,receiving_points:0,participation_points:0});
- const [celestialLedger,setCelestialLedger]=useState([]);
- const [specialTitles,setSpecialTitles]=useState([]);
-
 
  useEffect(()=>{
   let live=true;
   setGiftLoading(true);setGiftError('');
-  Promise.all([getGiftCatalogue(),getTreasury(session.user.id),getGiftTrades(session.user.id),getMyCelestialPoints(),getMyCelestialPointLedger(12),getCelestialTitleLadder(session.user.id)]).then(([catalogue,owned,tradeRows,points,ledger,titles])=>{
-   if(!live)return;setGiftData(catalogue);setOwnedData(owned);setTrades(tradeRows);setCelestial(points||{lifetime_points:0,giving_points:0,receiving_points:0,participation_points:0});setCelestialLedger(ledger||[]);setSpecialTitles((titles||[]).filter(t=>Number(t.celestial_points_required||0)>0).sort((a,b)=>Number(a.celestial_points_required)-Number(b.celestial_points_required)));
+  Promise.all([getGiftCatalogue(),getTreasury(session.user.id),getGiftTrades(session.user.id)]).then(([catalogue,owned,tradeRows])=>{
+   if(!live)return;setGiftData(catalogue);setOwnedData(owned);setTrades(tradeRows);
   }).catch(error=>{if(live)setGiftError(error.message)}).finally(()=>{if(live)setGiftLoading(false)});
   return()=>{live=false};
  },[session.user.id]);
@@ -71,22 +67,6 @@ export default function Treasury({Frame}) {
  const totalCopies=[...inventory.values()].reduce((n,x)=>n+x.copies,0);
  const duplicateDistinct=[...inventory.values()].filter(x=>x.hasDuplicates).length;
  const ascendableDistinct=[...inventory.values()].filter(x=>x.ascendable).length;
- const titleConstellations=useMemo(()=>{
-  const meta={
-   250:{name:'First Light',sigil:'✧',copy:'The first celestial names appear when your light begins to travel.'},
-   500:{name:'Moon Court',sigil:'☾',copy:'Lunar, spectral and oracle titles for a presence growing unmistakable.'},
-   1000:{name:'Eclipse Court',sigil:'◐',copy:'Mythic sovereign names, including Celestial Monarch, begin here.'},
-   2500:{name:'Astral Throne',sigil:'♢',copy:'High-court titles for sustained creation, generosity and stewardship.'},
-   5000:{name:'Crown Constellation',sigil:'♕',copy:'Exalted names reserved for a light carried across the Palace for a long time.'}
-  };
-  const groups=new Map();
-  for(const title of specialTitles){
-   const need=Number(title.celestial_points_required||0);
-   if(!groups.has(need))groups.set(need,{need,...(meta[need]||{name:'Celestial Court',sigil:'✦',copy:'A constellation of earned Palace titles.'}),titles:[]});
-   groups.get(need).titles.push(title);
-  }
-  return[...groups.values()].sort((a,b)=>a.need-b.need);
- },[specialTitles]);
  const duplicateRows=(ownedData.gifts||[]).filter(x=>Number(x.copies)>=2);
  const pendingIncoming=trades.filter(x=>x.recipient_id===session.user.id&&x.status==='pending');
  const pendingOutgoing=trades.filter(x=>x.offerer_id===session.user.id&&x.status==='pending');
@@ -165,23 +145,7 @@ export default function Treasury({Frame}) {
    <p>Catalogue views are previews only. Earned badges, owned gifts, duplicate counts and showcase choices remain tied to verified Palace activity.</p>
   </section>
 
-  <section className="celestial-balance-room" aria-label="Celestial Points and special titles">
-   <div className="celestial-balance-copy">
-    <p className="eyebrow">CELESTIAL POINTS</p>
-    <h2>Your light across the Palace.</h2>
-    <p>Points come from meaningful participation, giving praise, receiving praise, thoughtful responses and sharing another creator’s work. They unlock ceremonial titles; they never buy discovery.</p>
-   </div>
-   <div className="celestial-balance-total"><span>☼</span><strong>{Number(celestial.lifetime_points||0).toLocaleString()}</strong><small>lifetime Celestial Points</small></div>
-   <div className="celestial-source-grid">
-    <span><strong>{Number(celestial.giving_points||0).toLocaleString()}</strong><small>from giving light</small></span>
-    <span><strong>{Number(celestial.receiving_points||0).toLocaleString()}</strong><small>from light received</small></span>
-    <span><strong>{Number(celestial.participation_points||0).toLocaleString()}</strong><small>from participation</small></span>
-   </div>
-   <div className="celestial-title-ladder">
-    {titleConstellations.map(group=>{const have=Number(celestial.lifetime_points||0);const groupUnlocked=have>=group.need;const pct=Math.max(0,Math.min(100,group.need?have/group.need*100:100));return <section className={"title-constellation "+(groupUnlocked?'unlocked':'')} key={group.need}><header><span>{group.sigil}</span><div><small>{group.need.toLocaleString()} CELESTIAL POINTS</small><h3>{group.name}</h3><p>{group.copy}</p></div><div className="title-constellation-progress"><i><b style={{width:pct+'%'}}/></i><strong>{groupUnlocked?'Constellation unlocked':have.toLocaleString()+' / '+group.need.toLocaleString()}</strong></div></header><div className="title-constellation-grid">{group.titles.map(t=>{const unlocked=t.entitled||have>=group.need;return <article key={t.title} className={unlocked?'unlocked':''}><small>{unlocked?'YOURS TO WEAR':'VEILED TITLE'}</small><strong>{t.title}</strong><p>{t.description}</p></article>})}</div></section>})}
-   </div>
-   <details className="celestial-ledger"><summary>How my points were earned</summary>{celestialLedger.length?<div>{celestialLedger.map((row,i)=><article key={row.created_at+'-'+i}><span className={"celestial-ledger-mark "+row.channel}>{row.channel==='giving'?'✧':row.channel==='receiving'?'☾':row.channel==='legacy'?'♛':'✦'}</span><div><strong>{String(row.reason||'Palace activity').replaceAll('_',' ')}</strong><small>{new Date(row.created_at).toLocaleString(undefined,{month:'short',day:'numeric',year:'numeric'})} · {row.channel}</small></div><b>+{row.points}</b></article>)}</div>:<p>No Celestial Point entries yet.</p>}</details>
-  </section>
+  <section className="catalogue-celestial-doorway"><div><p className="eyebrow">CELESTIAL HONOURS</p><h2>Special titles now live in the Royal Treasury.</h2><p>Your Celestial Points, earned title constellations and point history have their own chamber so the Full Catalogue can stay focused on badges and treasures.</p></div><a href="/treasury?tab=titles" className="button-moonstone">Open Celestial Titles →</a></section>
 
   <div className="badge-collection-switch treasury-collection-switch" role="group" aria-label="Treasury collection">
    <button aria-pressed={collection==='originals'} onClick={()=>choose('originals')}>Palace originals · 175 badges</button>
