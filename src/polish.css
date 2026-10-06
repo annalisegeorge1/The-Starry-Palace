@@ -6237,3 +6237,100 @@ img{max-width:100%}
 @media(max-width:620px){
   .community-pulse-row.restored.social-pulse{grid-template-columns:1fr 1fr}
 }
+
+/* Human-led Salon prompts */
+.salon-prompt-room{
+  margin:1rem 0;
+  padding:1rem;
+  border:1px solid rgba(156,145,210,.18);
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 88% 10%,rgba(112,89,178,.08),transparent 17rem),
+    linear-gradient(145deg,rgba(20,25,49,.7),rgba(10,15,31,.7));
+}
+.salon-prompt-room>.section-heading{margin-bottom:.75rem}
+.salon-prompt-room>.section-heading h3{
+  margin:.16rem 0 .3rem;
+  font:600 1.22rem Georgia,'Times New Roman',serif;
+}
+.salon-prompt-room>.section-heading p{
+  margin:0;
+  max-width:720px;
+  color:var(--palace-muted);
+  font-size:.7rem;
+  line-height:1.5;
+}
+.salon-prompt-room>.section-heading>span{
+  flex:0 0 auto;
+  color:var(--palace-dim);
+  font-size:.52rem;
+  letter-spacing:.11em;
+}
+.salon-prompt-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.65rem;
+}
+.salon-prompt-grid article{
+  position:relative;
+  min-width:0;
+  min-height:210px;
+  display:flex;
+  flex-direction:column;
+  padding:.9rem;
+  border:1px solid rgba(151,160,203,.13);
+  border-radius:16px;
+  background:rgba(255,255,255,.018);
+}
+.salon-prompt-grid article>span{
+  width:38px;height:38px;
+  display:grid;place-items:center;
+  margin-bottom:.7rem;
+  border:1px solid rgba(175,160,230,.18);
+  border-radius:12px;
+  color:#b9afe8;
+  background:rgba(103,84,165,.07);
+  font:1rem Georgia,'Times New Roman',serif;
+}
+.salon-prompt-grid small{
+  color:var(--palace-dim);
+  font-size:.5rem;
+  letter-spacing:.11em;
+}
+.salon-prompt-grid h4{
+  margin:.25rem 0 .45rem;
+  font:600 1rem/1.28 Georgia,'Times New Roman',serif;
+}
+.salon-prompt-grid p{
+  margin:0 0 .8rem;
+  color:var(--palace-muted);
+  font-size:.68rem;
+  line-height:1.52;
+}
+.salon-prompt-grid button{
+  margin-top:auto;
+  align-self:flex-start;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#cad6f1;
+  font-size:.64rem;
+  font-weight:700;
+  cursor:pointer;
+}
+.salon-prompt-grid button:hover{color:#e3ddfb}
+.daylight .salon-prompt-room{
+  background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(247,247,252,.88));
+  border-color:rgba(69,72,120,.12);
+}
+.daylight .salon-prompt-grid article{background:rgba(255,255,255,.75)}
+.daylight .salon-prompt-grid button{color:#50659b}
+@media(max-width:900px){
+  .salon-prompt-grid{grid-template-columns:1fr 1fr}
+  .salon-prompt-grid article:last-child{grid-column:1/-1}
+}
+@media(max-width:620px){
+  .salon-prompt-room{padding:.8rem}
+  .salon-prompt-grid{grid-template-columns:1fr}
+  .salon-prompt-grid article,.salon-prompt-grid article:last-child{grid-column:auto;min-height:0}
+}
