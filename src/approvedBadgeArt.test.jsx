@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {approvedBadgeFrame} from './ApprovedBadgeArt';
+import {approvedBadgeFrame,removeConnectedBadgeBackground} from './ApprovedBadgeArt';
 import sheets from './approvedBadgeSheets.json';
 import badges from './badges.json';
 import fs from 'node:fs';
@@ -36,4 +36,14 @@ it('keeps crop boundaries between rows instead of cutting by equal sheet divisio
  const shelf=approvedBadgeFrame({id:'collection-curator'},'emerald');
  expect(shelf.box[1]).toBeGreaterThan(1500);
  expect(shelf.box[1]+shelf.box[3]).toBeLessThanOrEqual(shelf.height);
+});
+
+it('removes edge-connected dark badge tiles without deleting the isolated painted object',()=>{
+ const width=7,height=7,data=new Uint8ClampedArray(width*height*4);
+ for(let p=0;p<width*height;p++){const i=p*4;data[i]=12;data[i+1]=20;data[i+2]=35;data[i+3]=255}
+ for(let y=2;y<=4;y++)for(let x=2;x<=4;x++){const i=(y*width+x)*4;data[i]=170;data[i+1]=120;data[i+2]=80;data[i+3]=255}
+ const image={data};
+ removeConnectedBadgeBackground(image,width,height,{threshold:40});
+ expect(data[3]).toBe(0);
+ expect(data[((3*width+3)*4)+3]).toBe(255);
 });
