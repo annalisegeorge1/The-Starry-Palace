@@ -1,5 +1,6 @@
 import {useEffect,useId,useState} from 'react';
 import catalogue from './originalCollectibles.json';
+const protectArt={onContextMenu:e=>e.preventDefault(),onDragStart:e=>e.preventDefault(),onCopy:e=>e.preventDefault(),onCut:e=>e.preventDefault()};
 const loaders={
  0:()=>import('./collectibleFrames.0.json'),
  1:()=>import('./collectibleFrames.1.json'),
@@ -25,10 +26,10 @@ export function CollectibleArt({item}){
   loadSheet(item.artSheet).then(frames=>{if(active){setFrame(frames[item.id]||null);setFailed(!frames[item.id])}}).catch(()=>{if(active)setFailed(true)});
   return()=>{active=false};
  },[item.id,item.artSheet]);
- if(repainted[item.id]){const scale=repaintedScale[item.id]||.86;const [x,y]=repaintedPosition[item.id]||['0%','0%'];return <span className={'original-collectible-stage repainted-collectible-stage '+(repaintedScale[item.id]?'majapahit-repainted-fix':'')} style={{'--repaint-scale':scale,'--repaint-x':x,'--repaint-y':y}}><img src={'/assets/palace-courts/'+repainted[item.id]+'.png'} alt={item.name} loading="lazy" decoding="async" style={{objectFit:'contain'}}/></span>};
- if(!frame)return <span className="original-collectible-stage" role="status">{failed?'Artwork unavailable':'Loading watercolour…'}</span>;
+ if(repainted[item.id]){const scale=repaintedScale[item.id]||.86;const [x,y]=repaintedPosition[item.id]||['0%','0%'];return <span className={'original-collectible-stage protected-palace-art repainted-collectible-stage '+(repaintedScale[item.id]?'majapahit-repainted-fix':'')} {...protectArt} style={{'--repaint-scale':scale,'--repaint-x':x,'--repaint-y':y}}><img src={'/assets/palace-courts/'+repainted[item.id]+'.png'} alt={item.name} loading="lazy" decoding="async" draggable="false" style={{objectFit:'contain'}}/></span>};
+ if(!frame)return <span className="original-collectible-stage protected-palace-art" {...protectArt} role="status">{failed?'Artwork unavailable':'Loading watercolour…'}</span>;
  const [x,y,w,h]=frame.box,pad=Math.max(w,h)*.08;
- return <span className="original-collectible-stage"><svg className="original-collectible-art" role="img" aria-label={item.name} viewBox={[x-pad,y-pad,w+pad*2,h+pad*2].join(' ')} preserveAspectRatio="xMidYMid meet" focusable="false"><defs><clipPath id={id} clipPathUnits="userSpaceOnUse"><path d={frame.clip} transform={`translate(${x} ${y})`}/></clipPath></defs><image href={'/assets/palace-collectibles/'+frame.asset} width={frame.width} height={frame.height} clipPath={`url(#${id})`}/></svg></span>;
+ return <span className="original-collectible-stage protected-palace-art" {...protectArt}><svg className="original-collectible-art" role="img" aria-label={item.name} viewBox={[x-pad,y-pad,w+pad*2,h+pad*2].join(' ')} preserveAspectRatio="xMidYMid meet" focusable="false"><defs><clipPath id={id} clipPathUnits="userSpaceOnUse"><path d={frame.clip} transform={`translate(${x} ${y})`}/></clipPath></defs><image href={'/assets/palace-collectibles/'+frame.asset} width={frame.width} height={frame.height} clipPath={`url(#${id})`}/></svg></span>;
 }
 export default function PalaceCollectibles(){
  const [kind,setKind]=useState('prizes'),[query,setQuery]=useState(''),[court,setCourt]=useState('all'),[tier,setTier]=useState('all'),[page,setPage]=useState(1),[selected,setSelected]=useState(null);
