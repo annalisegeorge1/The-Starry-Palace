@@ -1085,6 +1085,17 @@ describe('Starry Palace launch safety',()=>{
     expect(next).toContain('.snapshot-compare-columns');
   });
 
+  it('keeps Writer find and replace away from manuscript markup',()=>{
+    const next=read('src/palace-next.css');
+    expect(live).toContain('document.createTreeWalker(editorRef.current,NodeFilter.SHOW_TEXT)');
+    expect(live).toContain('findMatchCase');
+    expect(live).toContain('findWholeWord');
+    expect(live).toContain('made safely in draft text.');
+    expect(live).toContain('draft text only');
+    expect(live).not.toContain("editorRef.current.innerHTML.split(findText).join(replaceText)");
+    expect(next).toContain('Safer Writer find/replace controls.');
+  });
+
   it('keeps tablet room navigation swipeable without covering content',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
