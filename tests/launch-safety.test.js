@@ -1043,6 +1043,22 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).not.toContain('animation:identity');
   });
 
+  it('keeps the Treasury wardrobe connected to the worn cross-Palace signature',()=>{
+    const data=read('src/palaceData.js');
+    const next=read('src/palace-next.css');
+    expect(data).toContain("select('id,username,display_name,title')");
+    expect(data).toContain("setProfileAchievementShowcase(achievementId,displayTier,position,userId=null)");
+    expect(data).toContain("setProfileGiftShowcase(giftId,displayTier,position,userId=null)");
+    expect(data).toContain('identityMarkCache.delete(userId)');
+    expect(live).toContain("WHAT I’M WEARING");
+    expect(live).toContain('Your travelling Palace signature.');
+    expect(live).toContain('p_position:position');
+    expect(live).toContain('wearAchievementValue');
+    expect(live).toContain('wearGiftValue');
+    expect(next).toContain('Treasury wardrobe — one travelling title, achievement and treasure.');
+    expect(next).toContain('.treasury-wardrobe');
+  });
+
   it('keeps tablet room navigation swipeable without covering content',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
