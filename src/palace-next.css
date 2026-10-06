@@ -1868,3 +1868,156 @@
 }
 .daylight .manuscript-overview-ring strong,
 .daylight .manuscript-overview-copy>strong{color:#44384f}
+
+
+/* =========================================================
+   Palace Refinement foundation · October 6 2026
+   Reliability, shared surface language, and room identity.
+   ========================================================= */
+:root{
+  --palace-radius-xs:9px;
+  --palace-radius-sm:12px;
+  --palace-radius-md:16px;
+  --palace-radius-lg:20px;
+  --palace-radius-xl:26px;
+  --palace-edge:rgba(205,184,235,.12);
+  --palace-edge-hover:rgba(216,192,244,.24);
+  --palace-soft-glow:0 16px 42px rgba(7,6,23,.10);
+}
+
+/* A visual rescue never destroys the mounted React tree. */
+.blank-screen-recovery{
+  position:fixed!important;
+  inset:0!important;
+  z-index:12000!important;
+  min-height:100dvh!important;
+}
+.palace-main-stage.palace-visibility-rescue{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  min-height:160px!important;
+  transform:none!important;
+}
+.palace-main-stage.palace-visibility-rescue>.route-loading,
+.palace-main-stage.palace-visibility-rescue>.route-recovery,
+.palace-main-stage.palace-visibility-rescue>section,
+.palace-main-stage.palace-visibility-rescue>article,
+.palace-main-stage.palace-visibility-rescue>div{
+  visibility:visible!important;
+  opacity:1!important;
+  transform:none!important;
+}
+
+/* Shared geometry: old and new rooms should feel cut from the same Palace. */
+.room-card,
+.chamber-card,
+.command-card,
+.story-row,
+.comic-card,
+.chic-rail-card,
+.settings-panel,
+.palace-dialog,
+.legacy-writing-canvas,
+.reading-mood-doors,
+.treasury-wardrobe,
+.writer-sprint-orbit{
+  border-radius:var(--palace-radius-md);
+}
+.room-card,
+.chamber-card,
+.command-card,
+.story-row,
+.comic-card,
+.chic-rail-card,
+.settings-panel{
+  border-color:var(--palace-edge);
+}
+.room-card:hover,
+.chamber-card:hover,
+.command-card:hover,
+.story-row:hover,
+.comic-card:hover{
+  border-color:var(--palace-edge-hover);
+}
+.palace-main-stage h1,
+.palace-main-stage h2,
+.palace-main-stage h3{
+  text-wrap:balance;
+}
+.palace-main-stage p{
+  text-wrap:pretty;
+}
+.palace-main-stage button,
+.palace-main-stage select,
+.palace-main-stage input,
+.palace-main-stage textarea{
+  max-width:100%;
+}
+.palace-main-stage button:focus-visible,
+.palace-main-stage a:focus-visible,
+.palace-main-stage input:focus-visible,
+.palace-main-stage textarea:focus-visible,
+.palace-main-stage select:focus-visible{
+  outline:2px solid rgba(199,177,239,.74);
+  outline-offset:2px;
+}
+
+/* Each major room gets a cool-toned identity rather than one dull icon treatment. */
+.room-sigil{
+  border:1px solid transparent;
+  border-radius:10px;
+  transition:color .16s ease,background .16s ease,border-color .16s ease,box-shadow .16s ease;
+}
+.room-sigil-palace{color:#c9b4ee!important;background:rgba(149,112,207,.075);border-color:rgba(188,157,232,.10)}
+.room-sigil-reading{color:#a9caee!important;background:rgba(91,137,196,.075);border-color:rgba(135,174,222,.10)}
+.room-sigil-library{color:#a9d5d3!important;background:rgba(79,145,144,.07);border-color:rgba(126,187,183,.10)}
+.room-sigil-writing{color:#d1b6ef!important;background:rgba(160,111,207,.075);border-color:rgba(199,153,234,.10)}
+.room-sigil-life{color:#b7b9ef!important;background:rgba(100,104,197,.075);border-color:rgba(151,155,226,.10)}
+.room-sigil-events{color:#b7d7e8!important;background:rgba(91,145,177,.07);border-color:rgba(133,185,212,.10)}
+.room-sigil-treasury{color:#b8d6c8!important;background:rgba(82,145,118,.07);border-color:rgba(126,184,156,.10)}
+.room-sigil-settings{color:#b8c3db!important;background:rgba(101,118,153,.07);border-color:rgba(151,164,194,.10)}
+.room-sigil-council{color:#c5b9df!important;background:rgba(128,105,166,.07);border-color:rgba(174,153,207,.10)}
+.full-nav-room>a:hover .room-sigil,
+.full-nav-room>a.active .room-sigil{
+  border-color:currentColor;
+  box-shadow:0 0 18px color-mix(in srgb,currentColor 18%,transparent);
+}
+.top-room-sigil svg{
+  filter:drop-shadow(0 0 7px rgba(184,158,231,.24));
+}
+
+/* Phones use intentional breathing room around the fixed dock. */
+@media(max-width:720px){
+  .palace-main-stage{
+    padding-bottom:max(92px,calc(78px + env(safe-area-inset-bottom)))!important;
+  }
+  .palace-main-stage>section,
+  .palace-main-stage>article{
+    min-width:0;
+  }
+  .room-card,
+  .chamber-card,
+  .command-card,
+  .story-row,
+  .comic-card,
+  .chic-rail-card,
+  .settings-panel{
+    border-radius:14px;
+  }
+}
+
+/* Reduced motion stays a first-class mode through the refinement layer. */
+@media(prefers-reduced-motion:reduce){
+  #palace-content>section,
+  #palace-content>article,
+  .room-sigil,
+  .room-card,
+  .chamber-card,
+  .command-card,
+  .story-row,
+  .comic-card{
+    animation:none!important;
+    transition:none!important;
+  }
+}
