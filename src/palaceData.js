@@ -33,6 +33,16 @@ export async function saveOnboardingState(userId,{displayName,interests=[],fando
  }
  return updates.data
 }
+export async function getPalaceTitleOptions(userId){
+ const [catalogue,entitlements]=await Promise.all([
+  needClient().from('palace_titles').select('title,category,description,public_selectable,sort_order').order('sort_order',{ascending:true}),
+  needClient().from('profile_title_entitlements').select('title,source').eq('user_id',userId)
+ ]);
+ if(catalogue.error)throw catalogue.error;
+ if(entitlements.error)throw entitlements.error;
+ const entitled=new Set((entitlements.data||[]).map(x=>x.title));
+ return (catalogue.data||[]).filter(x=>x.public_selectable||entitled.has(x.title)).map(x=>({...x,entitled:entitled.has(x.title)}))
+}
 export async function updateMyProfile(userId,patch){
  const username=patch.username?.trim().toLowerCase().replace(/^@/,'');
  if(username&&!/^[a-z0-9_]{3,30}$/.test(username))throw new Error('Your Palace handle may use 3–30 lowercase letters, numbers and underscores.');
@@ -40,9 +50,14 @@ export async function updateMyProfile(userId,patch){
  if(patch.support_enabled&&!supportUrl)throw new Error('Add a secure support link before enabling creator support.');
  if(supportUrl&&!/^https:\/\//i.test(supportUrl))throw new Error('Creator support links must begin with https://');
  const cleanList=(value,maxItems=8,maxLength=50)=>Array.isArray(value)?value.filter(Boolean).map(x=>String(x).trim().slice(0,maxLength)).filter(Boolean).slice(0,maxItems):[];
+ const requestedTitle=patch.title?.trim()||null;
+ if(requestedTitle){
+  const available=await getPalaceTitleOptions(userId);
+  if(!available.some(x=>x.title===requestedTitle))throw new Error('Choose a Palace title available to your chamber.');
+ }
  const allowed={
   display_name:patch.display_name?.trim().slice(0,80),
-  title:patch.title?.trim().slice(0,80)||null,
+  title:requestedTitle,
   bio:patch.bio?.trim().slice(0,1200)||'',
   visibility:patch.visibility,
   message_policy:patch.message_policy,
