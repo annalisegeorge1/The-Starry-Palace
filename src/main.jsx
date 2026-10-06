@@ -6,41 +6,43 @@ import { configured, supabase } from './supabase';
 import './style.css';
 import './polish.css';
 
-const chunkErrorPattern=/dynamically imported module|importing a module script failed|failed to fetch|chunkloaderror|loading chunk/i;
+const chunkErrorPattern=/dynamically imported module|importing a module script failed|failed to fetch|chunkloaderror|loading chunk|room load timeout|networkerror/i;
+const ROOM_IMPORT_TIMEOUT_MS=12000;
+function schedulePalaceReload(key,delay=40){
+ if(typeof window==='undefined')return false;
+ const last=Number(sessionStorage.getItem(key)||0);
+ if(Date.now()-last<=15000)return false;
+ sessionStorage.setItem(key,String(Date.now()));
+ window.setTimeout(()=>window.location.reload(),delay);
+ return true;
+}
 function reloadForStaleChunk(error){
  const message=String(error?.message||error||'');
  if(typeof window==='undefined'||!chunkErrorPattern.test(message))throw error;
- const key='palace-chunk-auto-reload';
- const last=Number(sessionStorage.getItem(key)||0);
- if(Date.now()-last>12000){
-  sessionStorage.setItem(key,String(Date.now()));
-  window.setTimeout(()=>window.location.reload(),40);
-  return new Promise(()=>{});
- }
- throw error;
+ const refreshing=schedulePalaceReload('palace-chunk-auto-reload',40);
+ throw new Error(refreshing?'Palace room refresh requested after a stale bundle: '+message:message);
 }
-function importWithRecovery(importer){return importer().catch(reloadForStaleChunk)}
+function importWithRecovery(importer){
+ let timer;
+ const timeout=new Promise((_,reject)=>{timer=window.setTimeout(()=>reject(new Error('Palace room load timeout')),ROOM_IMPORT_TIMEOUT_MS)});
+ return Promise.race([Promise.resolve().then(importer),timeout]).finally(()=>window.clearTimeout(timer)).catch(reloadForStaleChunk);
+}
 
 if(typeof window!=='undefined'){
  window.addEventListener('vite:preloadError',event=>{
   event.preventDefault();
-  const key='palace-preload-reload';
-  const last=Number(sessionStorage.getItem(key)||0);
-  if(Date.now()-last>12000){
-   sessionStorage.setItem(key,String(Date.now()));
-   window.setTimeout(()=>window.location.reload(),40);
-  }
+  schedulePalaceReload('palace-preload-reload',40);
  });
  window.addEventListener('unhandledrejection',event=>{
   const message=String(event.reason?.message||event.reason||'');
   if(!chunkErrorPattern.test(message))return;
   event.preventDefault();
-  const key='palace-rejected-chunk-reload';
-  const last=Number(sessionStorage.getItem(key)||0);
-  if(Date.now()-last>12000){
-   sessionStorage.setItem(key,String(Date.now()));
-   window.setTimeout(()=>window.location.reload(),60);
-  }
+  schedulePalaceReload('palace-rejected-chunk-reload',60);
+ });
+ window.addEventListener('error',event=>{
+  const message=String(event?.message||event?.error?.message||'');
+  if(!chunkErrorPattern.test(message))return;
+  schedulePalaceReload('palace-script-error-reload',60);
  });
 }
 function roomCssMatches(mod){
