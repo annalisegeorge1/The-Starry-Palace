@@ -908,6 +908,25 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.advanced-tag-builder');
   });
 
+  it('keeps Commons composing visible and the cultural calendar rich but searchable',()=>{
+    const polish=read('src/polish.css');
+    const calendar=read('src/PalaceCalendar.jsx');
+    const data=read('src/palaceData.js');
+    expect(live).toContain("block:'start'");
+    expect(live).toContain('heritageQuery');
+    expect(live).toContain('FESTIVALS · HERITAGE · HISTORY');
+    expect(live).toContain('heritage-type-');
+    expect(live).toContain('Christmas, Carnival, Diwali, July 4, New Year…');
+    expect(polish).toContain('.palace-social-column{');
+    expect(polish).toContain('overflow:visible!important');
+    expect(polish).toContain('scroll-margin-top:200px');
+    expect(polish).toContain('.heritage-type-festival');
+    expect(polish).toContain('.calendar-heritage-legend');
+    expect(calendar).toContain('calendar-kind-dots');
+    expect(calendar).toContain("['festival','Festival']");
+    expect(data).toContain(".order('month').order('day').limit(250)");
+  });
+
   it('keeps 3,000-tag discovery member-extensible and searchable',()=>{
     const data=read('src/palaceData.js');
     expect(data).toContain("rpc('search_palace_tags'");
@@ -1207,8 +1226,12 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('palace-room-css-sync-reload');
     expect(main).toContain('palace-room-css-nonblocking');
     expect(main).toContain("Palace room '+name+' is unavailable in this build.");
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100603');
-    expect(polish).toContain('--palace-room-css-version:2026100603');
+    expect(main).toContain('ROOM_IMPORT_TIMEOUT_MS=12000');
+    expect(main).toContain("new Error('Palace room load timeout')");
+    expect(main).toContain("schedulePalaceReload('palace-script-error-reload'");
+    expect(main).not.toContain('return new Promise(()=>{})');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100604');
+    expect(polish).toContain('--palace-room-css-version:2026100604');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
