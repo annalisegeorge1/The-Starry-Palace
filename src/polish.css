@@ -10596,3 +10596,114 @@ body{overflow-x:clip}
     min-width:0;
   }
 }
+
+
+/* =========================================================
+   Screenshot review corrections — 06 Oct
+   Keep room intros visible, prevent reading hero auto-placement
+   from throwing its title to the far right, and tighten empty rooms.
+   ========================================================= */
+
+/* Reading intro: all copy belongs together on the left. */
+.chic-reading-intro{
+  position:relative!important;
+  grid-template-columns:minmax(0,1fr) minmax(180px,.34fr)!important;
+  grid-template-rows:auto auto auto!important;
+  align-items:center!important;
+  min-height:0!important;
+  padding:1rem 0 1.15rem!important;
+}
+.chic-reading-intro>.eyebrow{
+  grid-column:1!important;
+  grid-row:1!important;
+  align-self:end;
+}
+.chic-reading-intro>h1{
+  grid-column:1!important;
+  grid-row:2!important;
+  justify-self:start!important;
+  max-width:760px!important;
+  margin:.12rem 0 .35rem!important;
+  font-size:clamp(2.45rem,4.6vw,4rem)!important;
+  line-height:.96!important;
+}
+.chic-reading-intro>p:last-of-type{
+  grid-column:1!important;
+  grid-row:3!important;
+  max-width:720px!important;
+  margin:0!important;
+  color:#aaa3b8!important;
+  font-size:.78rem!important;
+  line-height:1.6!important;
+}
+.chic-reading-intro::after{
+  grid-column:2!important;
+  grid-row:1 / span 3!important;
+  justify-self:center!important;
+  align-self:center!important;
+  padding:0!important;
+  font-size:clamp(2rem,4.5vw,4.2rem)!important;
+  letter-spacing:.08em!important;
+  opacity:.72;
+}
+.chic-reading-kind-tabs{
+  width:min(100%,720px)!important;
+  margin-bottom:.65rem!important;
+}
+.chic-discovery-court{
+  margin-top:0!important;
+}
+
+/* Empty private rooms should feel intentional without becoming huge blank canvases. */
+.chic-library-room>.life-empty.large,
+.chic-review-desk>.life-empty.large,
+.chic-permission-desk>.life-empty.large,
+.chic-collab-room .life-empty.large{
+  min-height:210px!important;
+  padding:1.5rem 1rem!important;
+  border:1px solid rgba(201,178,232,.10);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 50% 18%,rgba(121,100,190,.055),transparent 13rem),
+    rgba(19,16,43,.28);
+}
+.chic-library-room>.life-empty.large h3,
+.chic-review-desk>.life-empty.large h3,
+.chic-permission-desk>.life-empty.large h3,
+.chic-collab-room .life-empty.large h3{
+  font-size:1rem!important;
+}
+.chic-library-room>.life-empty.large p,
+.chic-review-desk>.life-empty.large p,
+.chic-permission-desk>.life-empty.large p,
+.chic-collab-room .life-empty.large p{
+  max-width:520px;
+  margin-inline:auto!important;
+  font-size:.64rem!important;
+  line-height:1.55!important;
+}
+
+/* Anchored chamber sections should not hide beneath the sticky Palace header/tabs. */
+#chamber-about,#chamber-notes,#chamber-honours,#chamber-worlds{
+  scroll-margin-top:150px;
+}
+
+/* Desktop room headings should keep breathing room beneath the fixed shell. */
+.chic-writing-head,
+.chic-library-head,
+.chic-activity-head,
+.chic-letters-head{
+  scroll-margin-top:110px;
+}
+
+@media(max-width:900px){
+  .chic-reading-intro{
+    grid-template-columns:1fr!important;
+  }
+  .chic-reading-intro>.eyebrow,
+  .chic-reading-intro>h1,
+  .chic-reading-intro>p:last-of-type{
+    grid-column:1!important;
+  }
+  .chic-reading-intro::after{display:none!important}
+}
