@@ -708,7 +708,7 @@ export async function reviewHonourRecommendation(id,status,councilNote=''){
  if(error)throw error;return data
 }
 
-export async function getTreasury(userId){const [ach,gifts,showA,showG,pref]=await Promise.all([needClient().from('user_achievement_progress').select('current_value,bronze_unlocked_at,silver_unlocked_at,gold_unlocked_at,platinum_unlocked_at,emerald_unlocked_at,achievement_families(id,name,description,thresholds,art_status,catalogue_number)').eq('user_id',userId),needClient().from('user_gift_inventory').select('tier,copies,virtual_gifts(id,gift_key,name,description,court_name,catalogue_number,art_status,upgrade_copies)').eq('user_id',userId).gt('copies',0),needClient().from('profile_achievement_showcase').select('achievement_id,display_tier,position').eq('user_id',userId).order('position'),needClient().from('profile_gift_showcase').select('gift_id,display_tier,position').eq('user_id',userId).order('position'),needClient().from('ranking_preferences').select('*').eq('user_id',userId).maybeSingle()]);for(const r of[ach,gifts,showA,showG,pref])if(r.error)throw r.error;return{achievements:ach.data||[],gifts:gifts.data||[],achievementShowcase:showA.data||[],giftShowcase:showG.data||[],rankingPreferences:pref.data}}
+export async function getTreasury(userId){const [ach,gifts,showA,showG,pref,profile]=await Promise.all([needClient().from('user_achievement_progress').select('current_value,bronze_unlocked_at,silver_unlocked_at,gold_unlocked_at,platinum_unlocked_at,emerald_unlocked_at,achievement_families(id,name,description,thresholds,art_status,catalogue_number)').eq('user_id',userId),needClient().from('user_gift_inventory').select('tier,copies,virtual_gifts(id,gift_key,name,description,court_name,catalogue_number,art_status,upgrade_copies)').eq('user_id',userId).gt('copies',0),needClient().from('profile_achievement_showcase').select('achievement_id,display_tier,position').eq('user_id',userId).order('position'),needClient().from('profile_gift_showcase').select('gift_id,display_tier,position').eq('user_id',userId).order('position'),needClient().from('ranking_preferences').select('*').eq('user_id',userId).maybeSingle(),needClient().from('profiles').select('id,username,display_name,title').eq('id',userId).maybeSingle()]);for(const r of[ach,gifts,showA,showG,pref,profile])if(r.error)throw r.error;return{profile:profile.data||null,achievements:ach.data||[],gifts:gifts.data||[],achievementShowcase:showA.data||[],giftShowcase:showG.data||[],rankingPreferences:pref.data}}
 
 export async function getGiftCatalogue(){
  const{data,error,count}=await needClient().from('virtual_gifts').select('id,gift_key,catalogue_number,name,description,court_name,collection_type,art_status,upgrade_copies',{count:'exact'}).eq('catalogue_status','catalogued').eq('reward_eligible',true).order('catalogue_number');
@@ -717,8 +717,8 @@ export async function getGiftCatalogue(){
 export async function ascendPalaceGift(giftId,fromTier){
  const{data,error}=await needClient().rpc('ascend_palace_gift',{p_gift_id:giftId,p_from_tier:fromTier});if(error)throw error;return data?.[0]||null
 }
-export async function setProfileGiftShowcase(giftId,displayTier,position){
- const{data,error}=await needClient().rpc('set_profile_gift_showcase',{p_gift_id:giftId,p_display_tier:displayTier,p_position:position});if(error)throw error;return data
+export async function setProfileGiftShowcase(giftId,displayTier,position,userId=null){
+ const{data,error}=await needClient().rpc('set_profile_gift_showcase',{p_gift_id:giftId,p_display_tier:displayTier,p_position:position});if(error)throw error;if(userId)identityMarkCache.delete(userId);return data
 }
 export async function removeProfileGiftShowcase(giftId){
  const{data,error}=await needClient().rpc('remove_profile_gift_showcase',{p_gift_id:giftId});if(error)throw error;return data
@@ -743,8 +743,8 @@ export async function createGiftTradeOffer({recipientId,offeredGiftId,offeredTie
 export async function respondGiftTradeOffer(offerId,action){
  const{data,error}=await needClient().rpc('respond_gift_trade_offer',{p_offer_id:offerId,p_action:action});if(error)throw error;return data
 }
-export async function setProfileAchievementShowcase(achievementId,displayTier,position){
- const{data,error}=await needClient().rpc('set_profile_achievement_showcase',{p_achievement_id:achievementId,p_display_tier:displayTier,p_position:position});if(error)throw error;return data
+export async function setProfileAchievementShowcase(achievementId,displayTier,position,userId=null){
+ const{data,error}=await needClient().rpc('set_profile_achievement_showcase',{p_achievement_id:achievementId,p_display_tier:displayTier,p_position:position});if(error)throw error;if(userId)identityMarkCache.delete(userId);return data
 }
 export async function removeProfileAchievementShowcase(achievementId){
  const{data,error}=await needClient().rpc('remove_profile_achievement_showcase',{p_achievement_id:achievementId});if(error)throw error;return data
