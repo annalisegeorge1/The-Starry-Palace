@@ -995,6 +995,25 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.poll-starter-deck');
   });
 
+  it('keeps Palace presence real and the nightly ritual zero-pressure',()=>{
+    const polish=read('src/palace-next.css');
+    expect(live).toContain('const presenceRows=[');
+    expect(live).toContain("where:'Commons'");
+    expect(live).toContain("where:'Moonlight'");
+    expect(live).toContain("where:'New Stars'");
+    expect(live).toContain('const palacePresence=presenceRows.filter');
+    expect(live).toContain('AROUND THE PALACE');
+    expect(live).toContain('It is not a leaderboard.');
+    expect(live).toContain('TONIGHT’S PALACE RITUAL · OPTIONAL');
+    expect(live).toContain('const ritualBank=[');
+    expect(live).toContain("name:'Pass a world forward'");
+    expect(live).toContain("name:'Say something small'");
+    expect(live).not.toContain('ritual_streak');
+    expect(polish).toContain('Palace presence + rotating ritual · October 6 2026');
+    expect(polish).toContain('.palace-ritual-strip');
+    expect(polish).toContain('.palace-presence-list');
+  });
+
   it('keeps tablet room navigation swipeable without covering content',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
