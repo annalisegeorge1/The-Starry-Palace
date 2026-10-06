@@ -1096,6 +1096,14 @@ describe('Starry Palace launch safety',()=>{
     expect(next).toContain('Safer Writer find/replace controls.');
   });
 
+  it('keeps Moonlight and Forum reply drafts resilient across navigation',()=>{
+    expect(live).toContain("palace-moonlight-draft");
+    expect(live).toContain("palace-forum-reply:");
+    expect(live).toContain('draft kept on this device · Ctrl/⌘ Enter');
+    expect(live).toContain("localStorage.removeItem('palace-moonlight-draft')");
+    expect(live).toContain("localStorage.removeItem('palace-forum-reply:'+threadId)");
+  });
+
   it('keeps tablet room navigation swipeable without covering content',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
