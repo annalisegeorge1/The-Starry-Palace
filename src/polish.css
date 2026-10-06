@@ -1,4 +1,4 @@
-:root{--palace-room-css-version:2026100528}
+:root{--palace-room-css-version:2026100602}
 /* The Starry Palace — final professional polish layer
    Keep this file intentionally small and authoritative. New global visual
    refinements belong here instead of adding another override to style.css. */
@@ -11059,4 +11059,409 @@ body{overflow-x:clip}
   .palace-month-calendar{margin-left:14px!important;margin-right:14px!important}
   .palace-calendar-days>button{min-height:50px!important}
   .chic-home-footer-panels{grid-template-columns:1fr!important}
+}
+
+
+/* =========================================================
+   Palace-wide atmosphere pass · 06 Oct
+   Carry the GIF's dusk / periwinkle / blush language through
+   the rooms that still read as plain utility surfaces.
+   ========================================================= */
+:root{
+  --palace-dusk:#6f61bd;
+  --palace-periwinkle:#8ea3df;
+  --palace-lilac:#b7a5e6;
+  --palace-blush:#d89bc9;
+  --palace-ink:#17142f;
+  --palace-glass:rgba(37,29,75,.46);
+  --palace-glass-deep:rgba(19,16,43,.72);
+}
+body{
+  background:
+    radial-gradient(ellipse at 82% -8%,rgba(216,155,201,.11),transparent 30rem),
+    radial-gradient(ellipse at 36% 18%,rgba(111,97,189,.10),transparent 34rem),
+    radial-gradient(ellipse at 12% 92%,rgba(92,126,190,.09),transparent 38rem),
+    var(--palace-bg)!important;
+}
+.full-stage>main{
+  position:relative;
+}
+.full-stage>main::before{
+  content:"";
+  position:fixed;
+  z-index:-1;
+  inset:74px 0 0 min(320px,24vw);
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 76% 12%,rgba(216,155,201,.035),transparent 24rem),
+    radial-gradient(circle at 38% 64%,rgba(120,105,197,.04),transparent 28rem);
+}
+
+/* Every room begins with the same editorial signature. */
+.room-title{
+  position:relative;
+  max-width:1180px;
+}
+.room-title::after{
+  content:"";
+  display:block;
+  width:min(180px,32vw);
+  height:1px;
+  margin-top:.75rem;
+  background:linear-gradient(90deg,rgba(183,165,230,.72),rgba(216,155,201,.24),transparent);
+}
+.room-title .eyebrow{
+  color:#b6a9dc!important;
+  text-shadow:0 0 18px rgba(164,143,218,.08);
+}
+.room-title>h1{
+  color:#f2edf7;
+  text-shadow:0 8px 30px rgba(7,5,22,.09);
+}
+.room-title .lede{color:#aaa3b8!important}
+
+/* Header and drawer feel like the same sky, not separate chrome. */
+.full-topbar{
+  background:
+    linear-gradient(90deg,rgba(29,22,65,.91),rgba(20,17,47,.90) 52%,rgba(31,23,67,.88))!important;
+  border-bottom-color:rgba(200,178,231,.14)!important;
+}
+.full-sidebar{
+  background:
+    radial-gradient(circle at 20% 4%,rgba(128,104,199,.12),transparent 17rem),
+    radial-gradient(circle at 80% 24%,rgba(216,155,201,.035),transparent 13rem),
+    linear-gradient(180deg,#171235,#0c0b21 74%)!important;
+  border-color:rgba(199,178,231,.13)!important;
+}
+.identity-card-live{
+  border-color:rgba(203,181,231,.13)!important;
+  background:linear-gradient(135deg,rgba(75,59,137,.16),rgba(216,155,201,.035))!important;
+}
+.full-subnav a:hover{background:rgba(112,91,178,.06)}
+.full-nav-room>a.active{
+  border-color:rgba(210,184,233,.18)!important;
+  background:linear-gradient(90deg,rgba(116,99,193,.20),rgba(216,155,201,.045))!important;
+}
+.brandmark,.palace-float-sigil{
+  background:
+    radial-gradient(circle at 32% 26%,rgba(189,174,236,.56),rgba(102,82,183,.92) 48%,rgba(45,38,98,.96))!important;
+}
+
+/* Shared dusk glass for functional cards that were still visually flat. */
+:where(
+  .settings-form>section,
+  .settings-panel,
+  .tag-category-grid>article,
+  .tag-selection-ledger,
+  .tag-results,
+  .tag-story-grid>article,
+  .club-discovery-grid>article,
+  .club-interior-page,
+  .club-discussions-room,
+  .club-polls-room,
+  .club-members-room,
+  .club-chat-room,
+  .commons-thread,
+  .forum-thread-list>article,
+  .forum-thread-room,
+  .comic-card,
+  .comic-studio-card,
+  .studio-meta,
+  .episode-studio,
+  .legacy-showcase-wall .showcase-honour,
+  .legacy-profile-worlds>article,
+  .member-series-grid>article,
+  .member-comics-grid>article,
+  .search-result-card,
+  .library-card,
+  .activity-notice-panel,
+  .letter-paper,
+  .proposal-form,
+  .heritage-grid>article
+){
+  border-color:rgba(201,178,232,.12)!important;
+  background:
+    radial-gradient(circle at 94% 4%,rgba(216,155,201,.045),transparent 12rem),
+    radial-gradient(circle at 8% 100%,rgba(113,100,193,.05),transparent 13rem),
+    linear-gradient(150deg,rgba(48,35,94,.34),rgba(20,17,45,.70))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.018),
+    0 13px 34px rgba(7,5,22,.08)!important;
+}
+
+/* Cards share one restrained lift rather than unrelated animations. */
+:where(
+  .tag-story-grid>article,
+  .club-discovery-grid>article,
+  .commons-thread,
+  .forum-thread-list>article,
+  .comic-card,
+  .comic-studio-card,
+  .legacy-showcase-wall .showcase-honour,
+  .legacy-profile-worlds>article,
+  .member-series-grid>article,
+  .member-comics-grid>article,
+  .search-result-card,
+  .library-card,
+  .heritage-grid>article
+){
+  transition:
+    transform .17s ease,
+    border-color .17s ease,
+    box-shadow .17s ease,
+    background .17s ease!important;
+}
+:where(
+  .tag-story-grid>article,
+  .club-discovery-grid>article,
+  .commons-thread,
+  .forum-thread-list>article,
+  .comic-card,
+  .comic-studio-card,
+  .legacy-showcase-wall .showcase-honour,
+  .legacy-profile-worlds>article,
+  .member-series-grid>article,
+  .member-comics-grid>article,
+  .search-result-card,
+  .library-card,
+  .heritage-grid>article
+):hover{
+  transform:translateY(-3px);
+  border-color:rgba(220,184,233,.28)!important;
+  box-shadow:0 18px 40px rgba(7,5,22,.13)!important;
+}
+
+/* Settings: fewer “form boxes”, clearer grouped preferences. */
+.settings-head{max-width:900px!important}
+.settings-form{
+  display:grid;
+  gap:.7rem!important;
+}
+.settings-form>section,.settings-panel{
+  border-radius:19px!important;
+  padding:1rem!important;
+}
+.settings-form>section>h2,.settings-panel>h2{
+  margin:.05rem 0 .4rem!important;
+  font-size:1.18rem!important;
+  letter-spacing:-.02em;
+}
+.settings-form label{
+  color:#a8a0b4;
+  font-size:.62rem;
+}
+.settings-form label>strong{color:#eee9f5}
+.settings-tabs{
+  position:sticky;
+  top:72px;
+  z-index:9;
+  background:rgba(28,21,61,.80)!important;
+  -webkit-backdrop-filter:blur(18px);
+  backdrop-filter:blur(18px);
+}
+
+/* Tags: make discovery feel like a library constellation rather than filters. */
+.legacy-tags-page{max-width:1180px;margin:0 auto;padding-bottom:4rem}
+.tag-category-grid{
+  gap:.55rem!important;
+}
+.tag-category-grid>article{
+  border-radius:16px!important;
+  padding:.75rem!important;
+}
+.tag-picker{
+  padding:.7rem!important;
+  border:1px solid rgba(201,178,232,.11)!important;
+  border-radius:17px!important;
+  background:rgba(28,21,61,.42)!important;
+}
+.tag-picker button{
+  border-radius:999px!important;
+  border-color:rgba(201,178,232,.12)!important;
+  background:rgba(255,255,255,.018)!important;
+}
+.tag-picker button:hover,.tag-picker button.active{
+  background:linear-gradient(135deg,rgba(113,96,187,.20),rgba(216,155,201,.055))!important;
+}
+.tag-story-grid{gap:.65rem!important}
+.tag-story-grid>article{border-radius:18px!important}
+
+/* Palace Life / clubs: softer rooms, clearer social hierarchy. */
+.legacy-life-page{max-width:1180px;margin:0 auto;padding-bottom:4rem}
+.club-discovery-banner,.club-interior-hero{
+  border-color:rgba(201,178,232,.13)!important;
+  background:
+    radial-gradient(circle at 80% 18%,rgba(216,155,201,.07),transparent 18rem),
+    radial-gradient(circle at 20% 70%,rgba(111,97,189,.10),transparent 22rem),
+    linear-gradient(145deg,rgba(47,34,93,.48),rgba(20,17,45,.70))!important;
+}
+.club-discovery-grid{gap:.65rem!important}
+.club-discovery-grid>article{border-radius:18px!important}
+.club-room-tabs,.commons-view-buttons{
+  padding:.28rem!important;
+  border:1px solid rgba(201,178,232,.11)!important;
+  border-radius:15px!important;
+  background:rgba(27,21,58,.63)!important;
+}
+.club-room-tabs button,.commons-view-buttons button{
+  border-radius:10px!important;
+}
+.commons-thread,.forum-thread-list>article{border-radius:18px!important}
+
+/* Comics: the same editorial dusk surfaces as prose rooms. */
+.comics-head{max-width:900px!important}
+.comic-principles{
+  gap:.55rem!important;
+}
+.comic-principles>article{
+  border-color:rgba(201,178,232,.11)!important;
+  border-radius:16px!important;
+  background:rgba(255,255,255,.014)!important;
+}
+.comic-tools.refined,.comic-library-tools{
+  border-color:rgba(201,178,232,.12)!important;
+  background:rgba(27,21,58,.65)!important;
+}
+.comic-gallery{gap:.68rem!important}
+.comic-card{border-radius:19px!important}
+.comic-card h2{font-size:1.08rem!important}
+
+/* Public chambers: more fashion-editorial, less account dashboard. */
+.legacy-profile-page{
+  max-width:1180px;
+  margin:0 auto;
+  padding-bottom:4rem;
+}
+.legacy-profile-cover{
+  border-color:rgba(201,178,232,.14)!important;
+  box-shadow:0 20px 50px rgba(7,5,22,.12)!important;
+}
+.legacy-profile-copy{
+  background:
+    linear-gradient(180deg,rgba(18,15,43,.02),rgba(18,15,43,.72))!important;
+}
+.legacy-profile-meta,.legacy-profile-stats{
+  gap:.42rem!important;
+}
+.legacy-profile-stats>*{
+  border-color:rgba(201,178,232,.1)!important;
+  border-radius:14px!important;
+  background:rgba(44,33,87,.28)!important;
+}
+.legacy-profile-actions button,.legacy-profile-actions a{
+  border-radius:999px!important;
+}
+.legacy-profile-worlds{
+  gap:.65rem!important;
+}
+
+/* Search and discovery results inherit the same card system. */
+.legacy-search-page{max-width:1180px;margin:0 auto;padding-bottom:4rem}
+.palace-search{
+  border:1px solid rgba(201,178,232,.12)!important;
+  border-radius:18px!important;
+  background:rgba(27,21,58,.62)!important;
+}
+.search-result-card{border-radius:18px!important}
+
+/* Empty states are quiet “rooms”, never unfinished grey boxes. */
+.life-empty,.legacy-showcase-empty,.catalogue-message,.writing-empty-state,
+.writing-chapter-manager-empty,.comic-missing-page{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(201,178,232,.10)!important;
+  background:
+    radial-gradient(circle at 50% 20%,rgba(116,98,190,.075),transparent 13rem),
+    linear-gradient(145deg,rgba(43,32,86,.26),rgba(18,16,41,.58))!important;
+}
+.life-empty::before,.legacy-showcase-empty::before,.catalogue-message::before{
+  content:"";
+  position:absolute;
+  width:140px;height:140px;
+  right:-55px;top:-65px;
+  border:1px solid rgba(216,155,201,.05);
+  border-radius:50%;
+  pointer-events:none;
+}
+
+/* Secondary controls all speak the same rounded, editorial language. */
+.quiet-button,.outline-button,
+.archive-filter-pills button,
+.event-rsvp-group button,
+.letters-filter-buttons button,
+.activity-category-tabs button,
+.activity-view-pills button{
+  border-radius:999px!important;
+}
+.quiet-button,.outline-button{
+  border-color:rgba(201,178,232,.15)!important;
+  background:rgba(255,255,255,.018)!important;
+}
+.quiet-button:hover,.outline-button:hover{
+  border-color:rgba(220,184,233,.28)!important;
+  background:rgba(112,91,178,.075)!important;
+}
+
+/* Dusk form fields have a softer inset appearance. */
+input,textarea,select{
+  border-color:rgba(190,173,222,.18)!important;
+  background:rgba(8,7,23,.30)!important;
+}
+input:focus,textarea:focus,select:focus{
+  border-color:rgba(197,171,229,.48)!important;
+  box-shadow:
+    0 0 0 3px rgba(112,92,180,.09),
+    0 7px 22px rgba(7,5,22,.05)!important;
+}
+
+/* Daylight remains elegant rather than turning the system into grey boxes. */
+.daylight body{
+  background:
+    radial-gradient(ellipse at 82% -8%,rgba(184,137,176,.08),transparent 30rem),
+    radial-gradient(ellipse at 36% 18%,rgba(111,97,189,.06),transparent 34rem),
+    #eef1f6!important;
+}
+.daylight .full-topbar{
+  background:linear-gradient(90deg,rgba(250,248,253,.94),rgba(246,245,251,.93))!important;
+}
+.daylight .full-sidebar{
+  background:linear-gradient(180deg,#f8f7fb,#eef0f6 76%)!important;
+}
+.daylight .identity-card-live,
+.daylight :where(
+  .settings-form>section,.settings-panel,.tag-category-grid>article,.tag-selection-ledger,
+  .tag-results,.tag-story-grid>article,.club-discovery-grid>article,.club-interior-page,
+  .club-discussions-room,.club-polls-room,.club-members-room,.club-chat-room,.commons-thread,
+  .forum-thread-list>article,.forum-thread-room,.comic-card,.comic-studio-card,.studio-meta,
+  .episode-studio,.legacy-showcase-wall .showcase-honour,.legacy-profile-worlds>article,
+  .member-series-grid>article,.member-comics-grid>article,.search-result-card,.library-card,
+  .activity-notice-panel,.letter-paper,.proposal-form,.heritage-grid>article
+){
+  background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(245,241,248,.91))!important;
+  border-color:rgba(96,77,142,.11)!important;
+  box-shadow:0 12px 30px rgba(54,43,90,.05)!important;
+}
+.daylight .room-title>h1{color:#27223a}
+.daylight .tag-picker,.daylight .club-room-tabs,.daylight .commons-view-buttons,
+.daylight .palace-search,.daylight .settings-tabs{
+  background:rgba(255,255,255,.86)!important;
+}
+.daylight input,.daylight textarea,.daylight select{
+  background:#fff!important;
+  color:#242038!important;
+  border-color:rgba(96,77,142,.16)!important;
+}
+
+@media(max-width:1120px){
+  .full-stage>main::before{inset:118px 0 0 0}
+  .settings-tabs{top:118px}
+}
+@media(max-width:720px){
+  .full-stage>main::before{display:none}
+  .room-title::after{margin-top:.55rem}
+  .settings-tabs{top:66px}
+  .legacy-profile-page,.legacy-tags-page,.legacy-life-page,.legacy-search-page{
+    padding-left:14px!important;
+    padding-right:14px!important;
+  }
 }
