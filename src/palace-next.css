@@ -1147,3 +1147,133 @@
 @media(max-width:620px){
   .palace-identity-marks .identity-mark{width:14px;height:14px}
 }
+
+
+/* Prompt Orrery 2,012 — richer constellations without a heavier default desk. */
+.prompt-orbit-facets{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.38rem;
+  margin:.62rem 0;
+}
+.prompt-orbit-facets>span{
+  min-width:0;
+  display:grid;
+  gap:.08rem;
+  padding:.48rem .56rem;
+  border:1px solid rgba(204,180,234,.09);
+  border-radius:11px;
+  background:rgba(255,255,255,.012);
+}
+.prompt-orbit-facets small{
+  color:#81788e;
+  font-size:.4rem;
+  letter-spacing:.11em;
+}
+.prompt-orbit-facets strong{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#cfc4dc;
+  font:500 .55rem/1.35 Georgia,'Times New Roman',serif;
+}
+.prompt-filter-drawer{
+  margin:.48rem 0 .7rem;
+  border:1px solid rgba(204,180,234,.1);
+  border-radius:14px;
+  background:rgba(20,17,43,.22);
+  overflow:hidden;
+}
+.prompt-filter-drawer>summary{
+  min-height:42px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:.7rem;
+  cursor:pointer;
+  list-style:none;
+  padding:.55rem .68rem;
+}
+.prompt-filter-drawer>summary::-webkit-details-marker{display:none}
+.prompt-filter-drawer>summary span{
+  color:#cbbbdd;
+  font:600 .6rem Georgia,'Times New Roman',serif;
+}
+.prompt-filter-drawer>summary small{
+  color:#887f94;
+  font-size:.47rem;
+}
+.prompt-filter-drawer[open]>summary{
+  border-bottom:1px solid rgba(204,180,234,.08);
+  background:rgba(117,89,176,.025);
+}
+.prompt-filter-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:.5rem;
+  padding:.7rem;
+}
+.prompt-filter-grid label{
+  min-width:0;
+  display:grid;
+  gap:.18rem;
+}
+.prompt-filter-grid label>span{
+  color:#90859e;
+  font-size:.43rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.prompt-filter-grid select{
+  width:100%;
+  min-height:35px;
+  border:1px solid rgba(204,180,234,.1);
+  border-radius:10px;
+  padding:.34rem .45rem;
+  background:rgba(9,8,26,.28);
+  color:#d2c9de;
+  font-size:.5rem;
+}
+.prompt-filter-drawer>footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.75rem;
+  padding:.58rem .7rem .7rem;
+}
+.prompt-filter-drawer>footer p{
+  margin:0;
+  color:#817b8b;
+  font-size:.46rem;
+  line-height:1.4;
+}
+.prompt-lever:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+.daylight .prompt-orbit-facets>span,
+.daylight .prompt-filter-drawer{
+  border-color:rgba(96,77,142,.09);
+  background:rgba(255,255,255,.58);
+}
+.daylight .prompt-orbit-facets strong{color:#4a4058}
+.daylight .prompt-filter-grid select{
+  background:rgba(255,255,255,.78);
+  color:#443a50;
+  border-color:rgba(96,77,142,.1);
+}
+@media(max-width:720px){
+  .prompt-orbit-facets{
+    display:flex;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    padding-bottom:.12rem;
+  }
+  .prompt-orbit-facets>span{
+    flex:0 0 min(66vw,220px);
+    scroll-snap-align:start;
+  }
+  .prompt-filter-grid{grid-template-columns:1fr}
+  .prompt-filter-drawer>summary,
+  .prompt-filter-drawer>footer{align-items:flex-start;flex-direction:column}
+}
