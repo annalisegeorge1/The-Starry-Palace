@@ -924,12 +924,18 @@ describe('Starry Palace launch safety',()=>{
     expect(treasuryCss).toContain('.protected-palace-art img');
   });
 
-  it('recovers blank routes and keeps both Palace themes intentionally rich',()=>{
+  it('recovers blank routes non-destructively and keeps both Palace themes intentionally rich',()=>{
     const polish=read('src/polish.css');
+    const nextCss=read('src/palace-next.css');
     expect(main).toContain('function BlankScreenWatchdog()');
     expect(main).toContain('data-palace-frame="ready"');
+    expect(main).toContain('data-palace-route={currentHref}');
     expect(main).toContain("palace-blank-screen-reload:");
-    expect(main).toContain('blank-screen-recovery');
+    expect(main).toContain("dataset.palaceBlankRecovery='true'");
+    expect(main).toContain("content.classList.add('palace-visibility-rescue')");
+    expect(main).not.toContain("root.innerHTML='<div class=\"route-recovery blank-screen-recovery");
+    expect(nextCss).toContain('A visual rescue never destroys the mounted React tree.');
+    expect(nextCss).toContain('.palace-main-stage.palace-visibility-rescue');
     expect(polish).toContain('.nightfall .full-sidebar');
     expect(polish).toContain('.full-palace-shell.daylight');
     expect(polish).toContain('linear-gradient(135deg,#8259ad 0%,#a8669c 58%,#cb7f75 100%)');
@@ -1136,6 +1142,17 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain("revision_note:source.revision_note||''");
     expect(live).toContain('ids.splice(Math.max(0,sourceIndex+1),0,copy.id)');
     expect(live).toContain('Duplicate chapter');
+  });
+
+  it('keeps the Palace Refinement layer coherent cool-toned and reduced-motion safe',()=>{
+    const next=read('src/palace-next.css');
+    expect(next).toContain('Palace Refinement foundation · October 6 2026');
+    expect(next).toContain('--palace-radius-md:16px');
+    expect(next).toContain('.room-sigil-reading');
+    expect(next).toContain('.room-sigil-writing');
+    expect(next).toContain('.room-sigil-treasury');
+    expect(next).toContain('text-wrap:balance');
+    expect(next).toContain('@media(prefers-reduced-motion:reduce)');
   });
 
   it('keeps tablet room navigation swipeable without covering content',()=>{
