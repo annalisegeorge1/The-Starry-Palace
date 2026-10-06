@@ -1277,3 +1277,153 @@
   .prompt-filter-drawer>summary,
   .prompt-filter-drawer>footer{align-items:flex-start;flex-direction:column}
 }
+
+
+/* Treasury wardrobe — one travelling title, achievement and treasure. */
+.treasury-wardrobe{
+  max-width:1220px;
+  margin:.75rem auto 1rem;
+  padding:.82rem;
+  border:1px solid rgba(207,184,236,.13);
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 4% 18%,rgba(144,104,205,.12),transparent 13rem),
+    radial-gradient(circle at 94% 0%,rgba(78,126,193,.07),transparent 16rem),
+    linear-gradient(145deg,rgba(42,31,82,.34),rgba(18,16,41,.56));
+}
+.treasury-wardrobe>header{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:1rem;
+  padding:.1rem .12rem .72rem;
+}
+.treasury-wardrobe>header h2{
+  margin:.08rem 0;
+  color:#eee8f6;
+  font:500 1.08rem Georgia,'Times New Roman',serif;
+}
+.treasury-wardrobe>header p:not(.eyebrow){
+  margin:0;
+  max-width:720px;
+  color:#9890a4;
+  font-size:.57rem;
+  line-height:1.48;
+}
+.treasury-wardrobe>header>a{
+  color:#c6b4dc;
+  font-size:.52rem;
+  white-space:nowrap;
+}
+.treasury-wardrobe-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.48rem;
+}
+.treasury-wardrobe-grid>article,
+.treasury-wardrobe-grid>label{
+  min-width:0;
+  min-height:104px;
+  display:grid;
+  grid-template-columns:40px minmax(0,1fr);
+  gap:.62rem;
+  align-items:start;
+  padding:.68rem;
+  border:1px solid rgba(205,181,236,.1);
+  border-radius:15px;
+  background:rgba(255,255,255,.012);
+}
+.wardrobe-sigil{
+  width:40px;height:40px;
+  display:grid;place-items:center;
+  border:1px solid rgba(215,190,239,.17);
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,rgba(190,147,225,.13),rgba(90,70,148,.1));
+  color:#d8cae8;
+  font:1rem Georgia,'Times New Roman',serif;
+}
+.wardrobe-sigil.bronze{border-color:rgba(174,124,91,.22);color:#b3937d}
+.wardrobe-sigil.silver{border-color:rgba(176,184,204,.22);color:#b4bbcc}
+.wardrobe-sigil.gold{border-color:rgba(204,177,113,.23);color:#c2ac75}
+.wardrobe-sigil.platinum{border-color:rgba(199,197,218,.24);color:#cac5d5}
+.wardrobe-sigil.emerald{border-color:rgba(106,177,151,.23);color:#93bdae}
+.treasury-wardrobe-grid>article>div,
+.treasury-wardrobe-grid>label>div{
+  min-width:0;
+  display:grid;
+  gap:.13rem;
+}
+.treasury-wardrobe-grid small{
+  color:#8f849d;
+  font-size:.42rem;
+  letter-spacing:.1em;
+}
+.treasury-wardrobe-grid strong{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#e7deef;
+  font:600 .68rem Georgia,'Times New Roman',serif;
+}
+.treasury-wardrobe-grid p{
+  margin:.14rem 0 0;
+  color:#8f8998;
+  font-size:.49rem;
+}
+.treasury-wardrobe-grid select{
+  width:100%;
+  min-height:34px;
+  margin-top:.22rem;
+  border:1px solid rgba(205,181,236,.12);
+  border-radius:10px;
+  padding:.34rem .45rem;
+  background:rgba(8,8,25,.24);
+  color:#d3cadf;
+  font-size:.49rem;
+}
+.treasury-wardrobe>footer{
+  display:flex;
+  justify-content:space-between;
+  gap:.75rem;
+  margin-top:.58rem;
+  padding:.55rem .18rem .06rem;
+  border-top:1px solid rgba(205,181,236,.07);
+  color:#81798d;
+  font-size:.45rem;
+}
+.daylight .treasury-wardrobe{
+  border-color:rgba(96,77,142,.1);
+  background:
+    radial-gradient(circle at 4% 18%,rgba(126,91,183,.08),transparent 13rem),
+    linear-gradient(145deg,rgba(255,255,255,.94),rgba(244,240,248,.9));
+}
+.daylight .treasury-wardrobe>header h2,
+.daylight .treasury-wardrobe-grid strong{color:#40364d}
+.daylight .treasury-wardrobe-grid>article,
+.daylight .treasury-wardrobe-grid>label{
+  border-color:rgba(96,77,142,.09);
+  background:rgba(255,255,255,.57);
+}
+.daylight .treasury-wardrobe-grid select{
+  border-color:rgba(96,77,142,.1);
+  background:rgba(255,255,255,.78);
+  color:#443a50;
+}
+@media(max-width:850px){
+  .treasury-wardrobe-grid{
+    display:flex;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    padding-bottom:.14rem;
+  }
+  .treasury-wardrobe-grid>article,
+  .treasury-wardrobe-grid>label{
+    flex:0 0 min(78vw,300px);
+    scroll-snap-align:start;
+  }
+}
+@media(max-width:620px){
+  .treasury-wardrobe{padding:.68rem}
+  .treasury-wardrobe>header{align-items:flex-start;flex-direction:column}
+  .treasury-wardrobe>footer{align-items:flex-start;flex-direction:column}
+}
