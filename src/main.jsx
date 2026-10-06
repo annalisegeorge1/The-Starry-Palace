@@ -107,6 +107,7 @@ function Frame({children,privateArea=false}){
  const [daylight,setDaylight]=useState(()=>localStorage.getItem('palace-theme')==='daylight');
  const [search,setSearch]=useState('');
  const [commandOpen,setCommandOpen]=useState(false);
+ const [mobileMoreOpen,setMobileMoreOpen]=useState(false);
  const [commandQuery,setCommandQuery]=useState('');
  const [commandIndex,setCommandIndex]=useState(0);
  const [recentPalaceRoutes,setRecentPalaceRoutes]=useState(()=>{try{const rows=JSON.parse(localStorage.getItem('palace-recent-routes')||'[]');return Array.isArray(rows)?rows.slice(0,5):[]}catch{return[]}});
@@ -115,9 +116,9 @@ function Frame({children,privateArea=false}){
  const [activityBadge,setActivityBadge]=useState(0);
  const location=useLocation();const navigate=useNavigate();
  React.useEffect(()=>setNavOpen(false),[location.pathname]);
- React.useEffect(()=>{setCommandOpen(false);setCommandQuery('');setCommandIndex(0)},[location.pathname,location.search]);
+ React.useEffect(()=>{setCommandOpen(false);setMobileMoreOpen(false);setCommandQuery('');setCommandIndex(0)},[location.pathname,location.search]);
  React.useEffect(()=>localStorage.setItem('palace-theme',daylight?'daylight':'night'),[daylight]);
- React.useEffect(()=>{const onKey=e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();setCommandOpen(v=>!v)}else if(e.key==='Escape')setCommandOpen(false)};window.addEventListener('keydown',onKey);return()=>window.removeEventListener('keydown',onKey)},[]);
+ React.useEffect(()=>{const onKey=e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();setCommandOpen(v=>!v)}else if(e.key==='Escape'){setCommandOpen(false);setMobileMoreOpen(false)}};window.addEventListener('keydown',onKey);return()=>window.removeEventListener('keydown',onKey)},[]);
  React.useEffect(()=>{let alive=true;if(!session){setShellProfile(null);setLetterBadge(0);setActivityBadge(0);return;}Promise.all([supabase.from('profiles').select('username,display_name,title,avatar_url,cover_url').eq('id',session.user.id).maybeSingle(),supabase.from('message_requests').select('id',{count:'exact',head:true}).eq('recipient_id',session.user.id).eq('status','pending'),supabase.from('notifications').select('id',{count:'exact',head:true}).eq('user_id',session.user.id).eq('unread',true).eq('dismissed',false)]).then(([profileReq,letterReq,activityReq])=>{if(!alive)return;setShellProfile(profileReq.data||null);setLetterBadge(letterReq.count||0);setActivityBadge(activityReq.count||0)});return()=>{alive=false}},[session?.user?.id,location.pathname]);
  const visibleRooms=fullPalaceRooms.filter(r=>!r.private||session);
  const resolveRoomPath=p=>p==='/member'?(shellProfile?.username?'/member/'+shellProfile.username:'/chamber'):p;
@@ -186,8 +187,28 @@ function Frame({children,privateArea=false}){
     <button className="float-btn theme-orb" onClick={()=>setDaylight(v=>!v)} aria-label={daylight?'Switch to night mode':'Switch to light mode'} title={daylight?'Night mode':'Light mode'}><span className="theme-main">{daylight?'☾':'☼'}</span><span className="theme-star">✦</span></button>
   </div>}
   <nav className="mobile-palace-dock" aria-label="Quick Palace navigation">
-    {session?<><Link className={activeRoom?.id==='palace'?'active':''} aria-current={activeRoom?.id==='palace'?'page':undefined} to="/chamber"><span>☾</span><small>Palace</small></Link><Link className={activeRoom?.id==='reading'?'active':''} aria-current={activeRoom?.id==='reading'?'page':undefined} to="/reading"><span>◈</span><small>Read</small></Link><Link className={"mobile-dock-write "+(activeRoom?.id==='writing'?'active':'')} aria-current={activeRoom?.id==='writing'?'page':undefined} to="/writing"><span>✎</span><small>Write</small></Link><Link className={activeRoom?.id==='life'?'active':''} aria-current={activeRoom?.id==='life'?'page':undefined} to="/palace-life"><span>♢</span><small>Life</small></Link><Link className={activeRoom?.id==='treasury'?'active':''} aria-current={activeRoom?.id==='treasury'?'page':undefined} to="/treasury"><span>♛</span><small>Treasury</small></Link></>:<><Link className={location.pathname==='/'?'active':''} aria-current={location.pathname==='/'?'page':undefined} to="/"><span>☾</span><small>Home</small></Link><Link className={activeRoom?.id==='reading'?'active':''} aria-current={activeRoom?.id==='reading'?'page':undefined} to="/reading"><span>◈</span><small>Read</small></Link><Link className="mobile-dock-write" to="/search"><span>⌕</span><small>Search</small></Link><Link className={location.pathname==='/code'?'active':''} aria-current={location.pathname==='/code'?'page':undefined} to="/code"><span>§</span><small>Code</small></Link><Link to="/login"><span>✦</span><small>Enter</small></Link></>}
+    {session?<><Link className={activeRoom?.id==='palace'?'active':''} aria-current={activeRoom?.id==='palace'?'page':undefined} to="/chamber"><span>☾</span><small>Palace</small></Link><Link className={activeRoom?.id==='reading'?'active':''} aria-current={activeRoom?.id==='reading'?'page':undefined} to="/reading"><span>◈</span><small>Read</small></Link><Link className={"mobile-dock-write "+(activeRoom?.id==='writing'?'active':'')} aria-current={activeRoom?.id==='writing'?'page':undefined} to="/writing"><span>✎</span><small>Write</small></Link><Link className={activeRoom?.id==='life'?'active':''} aria-current={activeRoom?.id==='life'?'page':undefined} to="/palace-life"><span>♢</span><small>Life</small></Link><button type="button" className={"mobile-palace-more "+(['library','events','treasury','settings'].includes(activeRoom?.id)||mobileMoreOpen?'active':'')} aria-expanded={mobileMoreOpen} aria-controls="mobile-palace-more-sheet" onClick={()=>setMobileMoreOpen(v=>!v)}><span>•••</span><small>More</small>{activityBadge+letterBadge>0&&<b className="mobile-dock-badge">{activityBadge+letterBadge>99?'99+':activityBadge+letterBadge}</b>}</button></>:<><Link className={location.pathname==='/'?'active':''} aria-current={location.pathname==='/'?'page':undefined} to="/"><span>☾</span><small>Home</small></Link><Link className={activeRoom?.id==='reading'?'active':''} aria-current={activeRoom?.id==='reading'?'page':undefined} to="/reading"><span>◈</span><small>Read</small></Link><Link className="mobile-dock-write" to="/search"><span>⌕</span><small>Search</small></Link><Link className={location.pathname==='/code'?'active':''} aria-current={location.pathname==='/code'?'page':undefined} to="/code"><span>§</span><small>Code</small></Link><Link to="/login"><span>✦</span><small>Enter</small></Link></>}
   </nav>
+  {session&&mobileMoreOpen&&<div className="mobile-more-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setMobileMoreOpen(false)}}>
+    <section id="mobile-palace-more-sheet" className="mobile-more-sheet" role="dialog" aria-modal="true" aria-label="More Palace rooms">
+      <header className="mobile-more-hero">
+        <img src="/assets/palace/palace-belonging.gif" alt="" aria-hidden="true"/>
+        <div><small>MORE OF YOUR PALACE</small><strong>Choose another room.</strong><span>Everything stays one tap away without crowding the dock.</span></div>
+        <button type="button" onClick={()=>setMobileMoreOpen(false)} aria-label="Close more Palace rooms">×</button>
+      </header>
+      <div className="mobile-more-grid">
+        <Link to="/library"><span>▧</span><strong>My Library</strong><small>Saved worlds & history</small></Link>
+        <Link to="/events?tab=calendar"><span>✧</span><strong>Events</strong><small>Calendars & invitations</small></Link>
+        <Link to="/treasury"><span>♛</span><strong>Treasury</strong><small>Badges, gifts & draw</small></Link>
+        <Link to="/letters" className={letterBadge?'has-attention':''}><span>✉</span><strong>Messages</strong><small>{letterBadge?letterBadge+' request'+(letterBadge===1?'':'s')+' waiting':'Palace Letters'}</small>{letterBadge>0&&<b>{letterBadge>99?'99+':letterBadge}</b>}</Link>
+        <Link to="/activity" className={activityBadge?'has-attention':''}><span>✦</span><strong>Activity</strong><small>{activityBadge?activityBadge+' unread':'Notifications & updates'}</small>{activityBadge>0&&<b>{activityBadge>99?'99+':activityBadge}</b>}</Link>
+        <Link to="/search"><span>⌕</span><strong>Search</strong><small>Works, writers & tags</small></Link>
+        <Link to={shellProfile?.username?"/member/"+shellProfile.username:"/chamber"}><span>☾</span><strong>My Chamber</strong><small>Profile & public identity</small></Link>
+        <Link to="/settings"><span>⚙</span><strong>Settings</strong><small>Privacy, comfort & account</small></Link>
+      </div>
+      <footer><button type="button" onClick={()=>setDaylight(v=>!v)}><span>{daylight?'☾':'☼'}</span>{daylight?'Switch to Nightfall':'Switch to Daylight'}</button><button type="button" onClick={()=>{setMobileMoreOpen(false);setNavOpen(true)}}><span>☰</span>Full Palace map</button></footer>
+    </section>
+  </div>}
  </div>
 }
 function Home(){
