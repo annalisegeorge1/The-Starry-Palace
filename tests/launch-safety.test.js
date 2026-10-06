@@ -516,6 +516,21 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.personal-agenda');
   });
 
+  it('uses curated Palace titles and protects special titles',()=>{
+    const data=read('src/palaceData.js');
+    const migration=read('database/palace-profile-title-catalogue.sql');
+    const polish=read('src/polish.css');
+    expect(data).toContain('getPalaceTitleOptions');
+    expect(data).toContain("Choose a Palace title available to your chamber.");
+    expect(live).toContain('Palace title<select');
+    expect(live).toContain('Special Palace title');
+    expect(live).not.toContain('Palace title<input');
+    expect(migration).toContain("'Celestial Monarch','Special'");
+    expect(migration).toContain('profile_title_entitlements');
+    expect(migration).toContain('validate_profile_title_choice');
+    expect(polish).toContain('.chamber-title-mark');
+  });
+
   it('keeps the chamber editor preview and profile limits wired',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
@@ -780,8 +795,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('palace-room-css-sync-reload');
     expect(main).toContain('palace-room-css-nonblocking');
     expect(main).toContain("Palace room '+name+' is unavailable in this build.");
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100518');
-    expect(polish).toContain('--palace-room-css-version:2026100518');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100519');
+    expect(polish).toContain('--palace-room-css-version:2026100519');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
