@@ -1082,6 +1082,25 @@ export async function claimLuckyDraw(){
  const{data,error}=await needClient().rpc('claim_monthly_lucky_draw');if(error)throw error;return data?.[0]||null
 }
 
+export async function getMyRelayRooms(){
+ const{data,error}=await needClient().rpc('get_my_relay_rooms');if(error)throw error;return data||[]
+}
+export async function createRelayRoom(title,premise='',turnWordLimit=200){
+ const{data,error}=await needClient().rpc('create_relay_room',{p_title:title,p_premise:premise,p_turn_word_limit:turnWordLimit});if(error)throw error;return data
+}
+export async function inviteRelayWriter(roomId,username){
+ const{data,error}=await needClient().rpc('invite_relay_writer',{p_room_id:roomId,p_username:username});if(error)throw error;return data
+}
+export async function respondRelayInvitation(roomId,status){
+ const{data,error}=await needClient().rpc('respond_relay_invitation',{p_room_id:roomId,p_status:status});if(error)throw error;return data
+}
+export async function setRelayRoomStatus(roomId,status){
+ const{data,error}=await needClient().rpc('set_relay_room_status',{p_room_id:roomId,p_status:status});if(error)throw error;return data
+}
+export async function submitRelayTurn(roomId,body){
+ const{data,error}=await needClient().rpc('submit_relay_turn',{p_room_id:roomId,p_body:body});if(error)throw error;return data
+}
+
 export async function getWritingExtras(userId){
  const [incoming,outgoing,comments,downloads]=await Promise.all([
   needClient().from('work_collaborators').select('work_id,user_id,role,status,invited_by,created_at,responded_at,works(id,title,slug,author_id,publication_status)').eq('user_id',userId).order('created_at',{ascending:false}),
