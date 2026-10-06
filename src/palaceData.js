@@ -268,13 +268,13 @@ export async function createClub(userId,{name,clubType='reading',privacy='open',
  }).select().single();
  if(error)throw error;return data
 }
-export async function createClubPoll(clubId,question,options){
+export async function createClubPoll(clubId,question,options,closesAt=null){
  const cleanOptions=(options||[]).map(x=>String(x||'').trim()).filter(Boolean);
  const{data,error}=await needClient().rpc('create_club_poll',{
   p_club_id:clubId,
   p_question:String(question||'').trim(),
   p_options:cleanOptions,
-  p_closes_at:null
+  p_closes_at:closesAt
  });
  if(error)throw error;return data
 }
@@ -907,7 +907,7 @@ export async function proposeTag(userId,name,category){const clean=name.trim();i
 export async function addComment(userId,workId,chapterId,body,type='response',spoiler=false,parentId=null){const text=body.trim();if(!text)throw new Error('Write a response first.');const{data,error}=await needClient().from('comments').insert({work_id:workId,chapter_id:chapterId||null,author_id:userId,parent_comment_id:parentId,comment_type:type,body:text,spoiler,status:'pending'}).select().single();if(error)throw error;return data}
 export async function moderateComment(commentId,status){const{data,error}=await needClient().from('comments').update({status,updated_at:new Date().toISOString()}).eq('id',commentId).select().single();if(error)throw error;return data}
 
-export async function searchWorksByTags(includeIds=[],excludeIds=[],text=''){let q=needClient().from('works').select('id,title,slug,summary,rating,language,completion_status,cover_url,profiles!works_author_id_fkey(username,display_name),work_tags(tag_id,tags(id,name,category,status))').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(100);if(text.trim())q=q.or(`title.ilike.%${text.trim()}%,summary.ilike.%${text.trim()}%`);const{data,error}=await q;if(error)throw error;return(data||[]).filter(w=>{const ids=(w.work_tags||[]).filter(x=>x.tags?.status==='canonical').map(x=>x.tag_id);return includeIds.every(id=>ids.includes(id))&&!excludeIds.some(id=>ids.includes(id))})}
+export async function searchWorksByTags(includeIds=[],excludeIds=[],text=''){let q=needClient().from('works').select('id,title,slug,summary,rating,language,completion_status,work_type,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(username,display_name),work_tags(tag_id,tags(id,name,category,status))').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(100);if(text.trim())q=q.or(`title.ilike.%${text.trim()}%,summary.ilike.%${text.trim()}%`);const{data,error}=await q;if(error)throw error;return(data||[]).filter(w=>{const ids=(w.work_tags||[]).filter(x=>['canonical','community'].includes(x.tags?.status)).map(x=>x.tag_id);return includeIds.every(id=>ids.includes(id))&&!excludeIds.some(id=>ids.includes(id))})}
 
 
 async function signedAsset(bucket,path,expiresIn=3600){
