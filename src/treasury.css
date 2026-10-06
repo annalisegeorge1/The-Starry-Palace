@@ -750,3 +750,159 @@
   .badge-controls{margin-left:14px!important;margin-right:14px!important}
   .badge-grid{padding:0 14px}
 }
+
+
+/* =========================================================
+   Celestial Points chamber
+   ========================================================= */
+.celestial-balance-room{
+  display:grid;
+  grid-template-columns:minmax(0,1.1fr) minmax(180px,.42fr);
+  gap:1rem;
+  margin:1rem 0 1.25rem;
+  padding:1rem;
+  border:1px solid rgba(202,180,232,.14);
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 88% 0%,rgba(207,159,211,.09),transparent 15rem),
+    linear-gradient(145deg,rgba(35,27,72,.58),rgba(15,13,34,.72));
+}
+.celestial-balance-copy h2{
+  margin:.15rem 0 .4rem;
+  font:600 clamp(1.45rem,2.2vw,2rem)/1.05 Georgia,'Times New Roman',serif;
+}
+.celestial-balance-copy>p:last-child{
+  max-width:720px;
+  margin:0;
+  color:var(--palace-muted);
+  font-size:.76rem;
+  line-height:1.58;
+}
+.celestial-balance-total{
+  display:grid;
+  place-items:center;
+  align-content:center;
+  min-height:132px;
+  border:1px solid rgba(216,194,239,.16);
+  border-radius:18px;
+  background:rgba(11,9,28,.35);
+}
+.celestial-balance-total>span{font-size:1.2rem;color:#d7c4e8}
+.celestial-balance-total>strong{font:600 2rem/1 Georgia,'Times New Roman',serif;color:#f4eef8}
+.celestial-balance-total>small{margin-top:.28rem;color:#91899d;font-size:.57rem}
+.celestial-source-grid{
+  grid-column:1/-1;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.5rem;
+}
+.celestial-source-grid>span{
+  display:grid;
+  gap:.1rem;
+  padding:.72rem .8rem;
+  border:1px solid rgba(197,176,228,.11);
+  border-radius:14px;
+  background:rgba(255,255,255,.016);
+}
+.celestial-source-grid strong{font-size:1.05rem}
+.celestial-source-grid small{color:#90899a;font-size:.58rem}
+.celestial-title-ladder{
+  grid-column:1/-1;
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:.5rem;
+}
+.celestial-title-ladder article{
+  display:grid;
+  gap:.65rem;
+  align-content:space-between;
+  min-height:166px;
+  padding:.8rem;
+  border:1px solid rgba(198,176,229,.11);
+  border-radius:15px;
+  background:rgba(13,11,31,.32);
+}
+.celestial-title-ladder article.unlocked{
+  border-color:rgba(215,187,232,.28);
+  background:linear-gradient(145deg,rgba(112,83,158,.16),rgba(20,16,42,.4));
+}
+.celestial-title-ladder small{
+  color:#918a9b;
+  font-size:.5rem;
+  font-weight:800;
+  letter-spacing:.12em;
+}
+.celestial-title-ladder strong{
+  display:block;
+  margin:.2rem 0 .35rem;
+  font:600 .92rem/1.18 Georgia,'Times New Roman',serif;
+}
+.celestial-title-ladder p{
+  margin:0;
+  color:#958e9f;
+  font-size:.6rem;
+  line-height:1.45;
+}
+.celestial-title-progress>span{
+  display:block;
+  height:4px;
+  overflow:hidden;
+  border-radius:999px;
+  background:rgba(255,255,255,.05);
+}
+.celestial-title-progress i{
+  display:block;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,#9381cf,#d39ac5);
+}
+.celestial-title-progress b{
+  display:block;
+  margin-top:.35rem;
+  color:#bcb4c8;
+  font-size:.56rem;
+}
+.celestial-ledger{grid-column:1/-1}
+.celestial-ledger summary{
+  cursor:pointer;
+  color:#c7bfd1;
+  font-size:.67rem;
+  font-weight:700;
+}
+.celestial-ledger>div{
+  display:grid;
+  gap:.4rem;
+  margin-top:.6rem;
+}
+.celestial-ledger article{
+  display:grid;
+  grid-template-columns:28px minmax(0,1fr) auto;
+  gap:.6rem;
+  align-items:center;
+  padding:.55rem .65rem;
+  border:1px solid rgba(198,176,229,.09);
+  border-radius:12px;
+  background:rgba(255,255,255,.014);
+}
+.celestial-ledger-mark{
+  width:28px;height:28px;
+  display:grid;place-items:center;
+  border-radius:50%;
+  background:rgba(122,94,176,.12);
+}
+.celestial-ledger article strong{font-size:.68rem;text-transform:capitalize}
+.celestial-ledger article small{display:block;margin-top:.1rem;color:#8d8696;font-size:.54rem}
+.celestial-ledger article>b{color:#d7c7e7;font-size:.72rem}
+.daylight .celestial-balance-room{background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(246,243,250,.9));border-color:rgba(90,72,135,.11)}
+.daylight .celestial-balance-total{background:rgba(255,255,255,.7);border-color:rgba(90,72,135,.1)}
+.daylight .celestial-balance-total>strong{color:#2d2642}
+.daylight .celestial-title-ladder article{background:rgba(255,255,255,.68);border-color:rgba(90,72,135,.09)}
+.daylight .celestial-title-ladder article.unlocked{background:linear-gradient(145deg,rgba(116,91,175,.08),rgba(255,255,255,.72))}
+@media(max-width:1050px){
+  .celestial-title-ladder{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+  .celestial-balance-room{grid-template-columns:1fr}
+  .celestial-source-grid{grid-template-columns:1fr}
+  .celestial-title-ladder{grid-template-columns:1fr}
+}
