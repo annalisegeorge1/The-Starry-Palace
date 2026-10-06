@@ -3,6 +3,7 @@ import React,{useEffect,useMemo,useState} from 'react';
 const tiers=['bronze','silver','gold','platinum','emerald'];
 const normal=value=>String(value||'').toLowerCase().replace(/[^a-z0-9]/g,'');
 const courtImageCache=new Map();
+const courtAnalysisCache=new Map();
 const courtCropCache=new Map();
 
 export const mergedObjectPaths={
@@ -30,10 +31,8 @@ export const mergedCourtPaths={
 
 const byName=new Map([
  ...Object.entries(mergedObjectPaths).map(([id,x])=>[normal(x.name),{...x,id,type:'object'}]),
- ...Object.entries(mergedCourtPaths).map(([id,x])=>[id,{...x,id,type:'court'}])
+ ...Object.entries(mergedCourtPaths).map(([id,x])=>[normal(x.name),{...x,id,type:'court'}])
 ]);
-for(const [id,x] of Object.entries(mergedCourtPaths))byName.set(normal(x.name),{...x,id,type:'court'});
-
 const byId=new Map([
  ...Object.entries(mergedObjectPaths).map(([id,x])=>[id,{...x,id,type:'object'}]),
  ...Object.entries(mergedCourtPaths).map(([id,x])=>[id,{...x,id,type:'court'}])
@@ -52,12 +51,88 @@ export function mergedBadgeArtwork(family,tier='bronze'){
 export function courtPortraitCellRect(width,height,art){
  const cellWidth=width/5;
  const cellHeight=height/4;
- return{
-  x:art.column*cellWidth,
-  y:art.row*cellHeight,
-  width:cellWidth,
-  height:cellHeight
+ return{x:art.column*cellWidth,y:art.row*cellHeight,width:cellWidth,height:cellHeight};
+}
+
+function median(values){
+ if(!values.length)return 0;
+ values.sort((a,b)=>a-b);
+ return values[Math.floor(values.length/2)];
+}
+
+export function buildCourtForegroundMask(imageData,width,height){
+ const data=imageData.data||imageData;
+ const mask=new Uint8Array(width*height);
+ let sampled=0,transparent=0;
+ for(let y=0;y<height;y+=4)for(let x=0;x<width;x+=4){
+  sampled++;
+  if(data[(y*width+x)*4+3]<220)transparent++;
+ }
+ const usesAlpha=sampled&&transparent/sampled>.008;
+ if(usesAlpha){
+  for(let p=0;p<mask.length;p++)if(data[p*4+3]>18)mask[p]=1;
+  return mask;
+ }
+
+ const rs=[],gs=[],bs=[];
+ const take=(x,y)=>{
+  const i=(y*width+x)*4;
+  rs.push(data[i]);gs.push(data[i+1]);bs.push(data[i+2]);
  };
+ const stepX=Math.max(1,Math.floor(width/48)),stepY=Math.max(1,Math.floor(height/48));
+ for(let x=0;x<width;x+=stepX){take(x,0);take(x,height-1)}
+ for(let y=1;y<height-1;y+=stepY){take(0,y);take(width-1,y)}
+ const bg=[median(rs),median(gs),median(bs)];
+ for(let p=0;p<mask.length;p++){
+  const i=p*4,dr=data[i]-bg[0],dg=data[i+1]-bg[1],db=data[i+2]-bg[2];
+  if(dr*dr+dg*dg+db*db>38*38)mask[p]=1;
+ }
+ return mask;
+}
+
+export function findTransparentGridCuts(mask,width,height,parts,axis){
+ const length=axis==='x'?width:height;
+ const cross=axis==='x'?height:width;
+ const activity=new Uint32Array(length);
+ if(axis==='x'){
+  for(let y=0;y<height;y++)for(let x=0;x<width;x++)if(mask[y*width+x])activity[x]++;
+ }else{
+  for(let y=0;y<height;y++){
+   let count=0;for(let x=0;x<width;x++)if(mask[y*width+x])count++;
+   activity[y]=count;
+  }
+ }
+ const cuts=[0],span=length/parts;
+ for(let i=1;i<parts;i++){
+  const expected=i*span;
+  const lo=Math.max(1,Math.floor(expected-span*.3));
+  const hi=Math.min(length-2,Math.ceil(expected+span*.3));
+  const radius=Math.max(1,Math.floor(span*.025));
+  let best=Math.round(expected),bestScore=Infinity;
+  for(let p=lo;p<=hi;p++){
+   let score=0;
+   for(let d=-radius;d<=radius;d++)score+=activity[Math.max(0,Math.min(length-1,p+d))];
+   const distancePenalty=Math.abs(p-expected)*cross*.00015;
+   if(score+distancePenalty<bestScore){bestScore=score+distancePenalty;best=p}
+  }
+  const low=Math.max(1,Math.floor(cross*.012));
+  let a=best,b=best;
+  while(a>lo&&activity[a-1]<=low)a--;
+  while(b<hi&&activity[b+1]<=low)b++;
+  cuts.push(Math.round((a+b)/2));
+ }
+ cuts.push(length);
+ return cuts;
+}
+
+export function foregroundBounds(mask,width,height,x0,y0,x1,y1){
+ let minX=x1,minY=y1,maxX=x0-1,maxY=y0-1;
+ for(let y=Math.max(0,y0);y<Math.min(height,y1);y++)for(let x=Math.max(0,x0);x<Math.min(width,x1);x++){
+  if(!mask[y*width+x])continue;
+  if(x<minX)minX=x;if(x>maxX)maxX=x;if(y<minY)minY=y;if(y>maxY)maxY=y;
+ }
+ if(maxX<minX||maxY<minY)return null;
+ return{x:minX,y:minY,width:maxX-minX+1,height:maxY-minY+1};
 }
 
 function loadCourtSheet(src){
@@ -71,29 +146,51 @@ function loadCourtSheet(src){
  return courtImageCache.get(src);
 }
 
+async function analyseCourtSheet(src){
+ if(courtAnalysisCache.has(src))return courtAnalysisCache.get(src);
+ const promise=(async()=>{
+  const image=await loadCourtSheet(src);
+  const width=image.naturalWidth,height=image.naturalHeight;
+  const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;
+  const ctx=canvas.getContext('2d',{willReadFrequently:true});
+  if(!ctx)throw new Error('Canvas unavailable');
+  ctx.drawImage(image,0,0);
+  const pixels=ctx.getImageData(0,0,width,height);
+  const mask=buildCourtForegroundMask(pixels,width,height);
+  return{
+   image,width,height,mask,
+   xCuts:findTransparentGridCuts(mask,width,height,5,'x'),
+   yCuts:findTransparentGridCuts(mask,width,height,4,'y')
+  };
+ })().catch(error=>{courtAnalysisCache.delete(src);throw error});
+ courtAnalysisCache.set(src,promise);
+ return promise;
+}
+
 async function cropCourtPortrait(art){
- const src='/assets/palace-courts/'+art.sheet+'.png?v=portrait-cell-1';
- const image=await loadCourtSheet(src);
- const cell=courtPortraitCellRect(image.naturalWidth,image.naturalHeight,art);
- const pad=Math.round(Math.max(cell.width,cell.height)*.12);
- const canvas=document.createElement('canvas');
- canvas.width=Math.ceil(cell.width+pad*2);
- canvas.height=Math.ceil(cell.height+pad*2);
+ const src='/assets/palace-courts/'+art.sheet+'.png?v=portrait-content-aware-1';
+ const analysis=await analyseCourtSheet(src);
+ const{xCuts,yCuts,mask,width,height,image}=analysis;
+ const cellX0=xCuts[art.column],cellX1=xCuts[art.column+1];
+ const cellY0=yCuts[art.row],cellY1=yCuts[art.row+1];
+ const found=foregroundBounds(mask,width,height,cellX0,cellY0,cellX1,cellY1);
+ const fallback=courtPortraitCellRect(width,height,art);
+ const box=found||fallback;
+ const pad=Math.max(5,Math.round(Math.max(box.width,box.height)*.055));
+ const sx=Math.max(cellX0,Math.floor(box.x-pad));
+ const sy=Math.max(cellY0,Math.floor(box.y-pad));
+ const ex=Math.min(cellX1,Math.ceil(box.x+box.width+pad));
+ const ey=Math.min(cellY1,Math.ceil(box.y+box.height+pad));
+ const sw=Math.max(1,ex-sx),sh=Math.max(1,ey-sy);
+ const canvas=document.createElement('canvas');canvas.width=sw;canvas.height=sh;
  const ctx=canvas.getContext('2d');
  if(!ctx)throw new Error('Canvas unavailable');
- ctx.clearRect(0,0,canvas.width,canvas.height);
- ctx.drawImage(
-  image,
-  Math.floor(cell.x),Math.floor(cell.y),Math.ceil(cell.width),Math.ceil(cell.height),
-  pad,pad,Math.ceil(cell.width),Math.ceil(cell.height)
- );
+ ctx.clearRect(0,0,sw,sh);
+ ctx.drawImage(image,sx,sy,sw,sh,0,0,sw,sh);
  return canvas.toDataURL('image/png');
 }
 
-function courtCropKey(art){
- return art.sheet+':'+art.row+':'+art.column;
-}
-
+function courtCropKey(art){return art.sheet+':'+art.row+':'+art.column}
 function getCourtPortrait(art){
  const key=courtCropKey(art);
  if(!courtCropCache.has(key))courtCropCache.set(key,cropCourtPortrait(art).catch(error=>{courtCropCache.delete(key);throw error}));
@@ -106,8 +203,7 @@ function CourtPortraitArt({art,name}){
  const[failed,setFailed]=useState(false);
 
  useEffect(()=>{
-  let live=true;
-  setSrc('');setFailed(false);
+  let live=true;setSrc('');setFailed(false);
   if(typeof Image==='undefined'||typeof document==='undefined'){setFailed(true);return()=>{live=false}}
   getCourtPortrait(art).then(value=>{if(live)setSrc(value)}).catch(()=>{if(live)setFailed(true)});
   return()=>{live=false};
@@ -115,12 +211,7 @@ function CourtPortraitArt({art,name}){
 
  const label=(name||art.name)+' · '+art.tier+' · '+art.court+' court watercolour';
  if(src)return <img className="merged-court-portrait" src={src} alt={label}/>;
- return <span
-  className={'merged-court-portrait-placeholder'+(failed?' is-fallback':'')}
-  role="img"
-  aria-label={label}
-  data-court-cell={art.column+':'+art.row}
- />;
+ return <span className={'merged-court-portrait-placeholder'+(failed?' is-fallback':'')} role="img" aria-label={label} data-court-cell={art.column+':'+art.row}/>;
 }
 
 export function MergedBadgeArt({art,name}){
