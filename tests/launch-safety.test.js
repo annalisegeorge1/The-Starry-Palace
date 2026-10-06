@@ -1025,6 +1025,24 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.palace-almanac-list');
   });
 
+  it('carries worn Palace identity across reading social clubs and search without ranking it',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/palace-next.css');
+    expect(data).toContain('const identityMarkCache=new Map()');
+    expect(data).toContain("profile_achievement_showcase");
+    expect(data).toContain("profile_gift_showcase");
+    expect(data).toContain('withIdentity');
+    expect(live).toContain('function IdentityMarks');
+    expect(live).toContain('Worn Palace honours');
+    expect(live).toContain('<IdentityMarks profile={m.profiles}');
+    expect(live).toContain('<IdentityMarks profile={member.profiles}');
+    expect(live).toContain('<IdentityMarks profile={w.profiles}');
+    expect(live).toContain('<IdentityMarks profile={c.creator}');
+    expect(polish).toContain('Worn Palace signatures — tiny ceremonial marks, never a ranking surface.');
+    expect(polish).toContain('.palace-identity-marks');
+    expect(polish).not.toContain('animation:identity');
+  });
+
   it('keeps tablet room navigation swipeable without covering content',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
