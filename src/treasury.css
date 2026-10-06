@@ -151,6 +151,40 @@
 .original-collectible-grid>article{min-width:0;border:1px solid var(--line,#354060);border-radius:18px;background:var(--surface,#141a31);overflow:hidden}
 .original-collectible-stage{display:grid;place-items:center;width:100%;height:220px;padding:1rem;box-sizing:border-box;background:radial-gradient(ellipse at center,rgba(104,131,177,.13),transparent 70%)}
 .original-collectible-art{display:block;width:100%;height:100%;filter:none}
+.repainted-collectible-stage{
+  overflow:visible;
+  padding:1.25rem 1.4rem;
+}
+.repainted-collectible-stage>img{
+  display:block;
+  width:100%;
+  height:100%;
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+  object-position:center;
+  transform:scale(var(--repaint-scale,.9));
+  transform-origin:center;
+}
+.majapahit-repainted-fix{
+  background:
+    radial-gradient(ellipse at center,rgba(104,131,177,.10),transparent 66%);
+}
+.majapahit-repainted-fix>img{
+  filter:none;
+}
+.treasure-painting .majapahit-repainted-fix{
+  overflow:visible;
+}
+.treasure-painting .majapahit-repainted-fix>img{
+  transform:scale(var(--repaint-scale,.72));
+}
+.treasure-painting.compact .majapahit-repainted-fix{
+  padding:7px;
+}
+.treasure-painting.compact .majapahit-repainted-fix>img{
+  transform:scale(.68);
+}
 .original-collectible-copy{padding:0 1.1rem 1.1rem}
 .original-collectible-copy small{text-transform:uppercase;letter-spacing:.1em;color:var(--muted,#bac5df)}
 .original-collectible-copy h3{font:500 1.16rem/1.4 Georgia,serif;margin:.55rem 0 .8rem;overflow-wrap:break-word}
