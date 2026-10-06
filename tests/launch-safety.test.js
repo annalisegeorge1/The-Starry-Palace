@@ -512,6 +512,21 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.surprise-story');
   });
 
+  it('keeps fun discovery controls optional and non-ranking',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('reading-compass');
+    expect(live).toContain('A finished world');
+    expect(live).toContain('Take me back');
+    expect(live).toContain('life-wander');
+    expect(live).toContain('wanderPalaceLife');
+    expect(live).toContain('drawReveal');
+    expect(live).toContain('draw-reveal-stars');
+    expect(live).toContain('aria-live="polite"');
+    expect(polish).toContain('.reading-compass');
+    expect(polish).toContain('.life-wander');
+    expect(polish).toContain('@keyframes palaceTreasureReveal');
+  });
+
   it('keeps the optional Moon Prompt playful without streak pressure',()=>{
     const polish=read('src/polish.css');
     expect(live).toContain('palace-moon-prompt');
