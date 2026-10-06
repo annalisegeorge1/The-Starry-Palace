@@ -36,7 +36,7 @@ export async function saveOnboardingState(userId,{displayName,title,interests=[]
 }
 export async function getPalaceTitleOptions(userId){
  const [catalogue,entitlements]=await Promise.all([
-  needClient().from('palace_titles').select('title,category,description,public_selectable,sort_order').order('sort_order',{ascending:true}),
+  needClient().from('palace_titles').select('title,category,description,public_selectable,sort_order,celestial_points_required').order('sort_order',{ascending:true}),
   needClient().from('profile_title_entitlements').select('title,source').eq('user_id',userId)
  ]);
  if(catalogue.error)throw catalogue.error;
@@ -44,6 +44,21 @@ export async function getPalaceTitleOptions(userId){
  const entitled=new Set((entitlements.data||[]).map(x=>x.title));
  return (catalogue.data||[]).filter(x=>x.public_selectable||entitled.has(x.title)).map(x=>({...x,entitled:entitled.has(x.title)}))
 }
+export async function getMyCelestialPoints(){
+ const{data,error}=await needClient().rpc('get_my_celestial_points');if(error)throw error;
+ return data?.[0]||{lifetime_points:0,giving_points:0,receiving_points:0,participation_points:0}
+}
+export async function getPalacePraiseState(targetKind,targetId){
+ const{data,error}=await needClient().rpc('get_palace_praise_state',{p_target_kind:targetKind,p_target_id:targetId});if(error)throw error;
+ return data||{praise:null,counts:{heart:0,star:0,moon:0,crown:0}}
+}
+export async function givePalacePraise(targetKind,targetId,praiseType){
+ const{data,error}=await needClient().rpc('give_palace_praise',{p_target_kind:targetKind,p_target_id:targetId,p_praise_type:praiseType});if(error)throw error;return data
+}
+export async function recordPalaceShare(workId){
+ const{data,error}=await needClient().rpc('record_palace_share',{p_work_id:workId});if(error)throw error;return data
+}
+
 export async function updateMyProfile(userId,patch){
  const username=patch.username?.trim().toLowerCase().replace(/^@/,'');
  if(username&&!/^[a-z0-9_]{3,30}$/.test(username))throw new Error('Your Palace handle may use 3–30 lowercase letters, numbers and underscores.');
