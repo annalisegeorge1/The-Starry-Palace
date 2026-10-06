@@ -936,6 +936,21 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('transform:scale(.62)!important');
   });
 
+  it('puts the actual Writing Pad one action away from Writing Chamber',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('function openWritingPad()');
+    expect(live).toContain('function newBlankPage()');
+    expect(live).toContain("createDraft(session.user.id,'Untitled Draft')");
+    expect(live).toContain("createChapter(session.user.id,work.id,'Chapter 1')");
+    expect(live).toContain("navigate('/writing/'+work.slug+'?chapter='");
+    expect(live).toContain('✎ Open Writing Pad');
+    expect(live).toContain('＋ New blank page');
+    expect(live).toContain('Create & open private draft');
+    expect(polish).toContain('Writing Pad front door · October 6 2026');
+    expect(polish).toContain('.writing-pad-launch');
+    expect(polish).toContain('.writing-pad-primary');
+  });
+
   it('makes Palace Life conversations, discovery and Room polls feel connected',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
@@ -1301,8 +1316,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain("new Error('Palace room load timeout')");
     expect(main).toContain("schedulePalaceReload('palace-script-error-reload'");
     expect(main).not.toContain('return new Promise(()=>{})');
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100608');
-    expect(polish).toContain('--palace-room-css-version:2026100608');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100609');
+    expect(polish).toContain('--palace-room-css-version:2026100609');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
