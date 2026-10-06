@@ -2,6 +2,7 @@ import {useEffect,useId,useState} from 'react';
 import {resolveBadgeFrame} from './badgeArtwork';
 import originals from './originalBadges.json';
 import ApprovedBadgeArt,{approvedBadgeFrame} from './ApprovedBadgeArt';
+import {MergedBadgeArt,mergedBadgeArtwork} from './MergedBadgeArt';
 
 const ranks=['bronze','silver','gold','platinum','emerald'];
 const normal=value=>String(value||'').toLowerCase().replace(/[^a-z0-9]/g,'');
@@ -31,22 +32,23 @@ export default function PalaceBadge({family,tier='bronze',locked=false}){
  const key=normal(family?.name);
  const originalId=family?.id;
  const namedId=catalogue.get(key)||aliases[key];
- const approved=approvedBadgeFrame(family,rank);
+ const merged=mergedBadgeArtwork(family,rank);
+ const approved=merged?null:approvedBadgeFrame(family,rank);
  const[frame,setFrame]=useState(null);
  const[loading,setLoading]=useState(true);
 
  useEffect(()=>{
   let alive=true;
   setFrame(null);setLoading(true);
-  if(approved||(!originalId&&!namedId)){setLoading(false);return()=>{alive=false}}
+  if(merged||approved||(!originalId&&!namedId)){setLoading(false);return()=>{alive=false}}
   loadFrames(rank).then(frames=>{if(alive){setFrame(resolveBadgeFrame(frames,originalId,namedId));setLoading(false)}}).catch(()=>{if(alive){setFrame(null);setLoading(false)}});
   return()=>{alive=false};
- },[rank,originalId,namedId,Boolean(approved)]);
+ },[rank,originalId,namedId,Boolean(approved),Boolean(merged)]);
 
  const name=family?.name||'Palace achievement';
  
  return <figure className={'palace-watercolour-badge tier-'+rank+(locked?' is-locked':'')}>
-  {approved?<span className="original-badge-stage approved-badge-stage"><ApprovedBadgeArt frame={approved} name={name} tier={rank}/></span>:frame?<span className={'original-badge-stage'+(frame.character?' is-character':'')} role="img" aria-label={name+' · '+rank+' artwork'+(locked?' (preview)':'')}><SheetArt frame={frame} id={id}/>{frame.mount&&<SheetArt frame={frame.mount} id={id+'-mount'} mount/>}</span>:<span className="original-badge-stage" role="status">{loading?'Artwork loading…':'Artwork unavailable'}</span>}
+  {merged?<span className={'original-badge-stage merged-badge-stage '+(merged.type==='court'?'is-character':'is-object')}><MergedBadgeArt art={merged} name={name}/></span>:approved?<span className="original-badge-stage approved-badge-stage"><ApprovedBadgeArt frame={approved} name={name} tier={rank}/></span>:frame?<span className={'original-badge-stage'+(frame.character?' is-character':'')} role="img" aria-label={name+' · '+rank+' artwork'+(locked?' (preview)':'')}><SheetArt frame={frame} id={id}/>{frame.mount&&<SheetArt frame={frame.mount} id={id+'-mount'} mount/>}</span>:<span className="original-badge-stage" role="status">{loading?'Artwork loading…':'Artwork unavailable'}</span>}
   <figcaption>{rank}{locked?' · Preview':''}</figcaption>
  </figure>;
 }
