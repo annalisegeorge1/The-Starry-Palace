@@ -1803,3 +1803,68 @@
 @media(max-width:720px){
   .chapter-order-controls select{width:28px;min-height:26px}
 }
+
+
+/* Manuscript overview — quiet project health inside the chapter rail. */
+.manuscript-overview{
+  display:grid;
+  grid-template-columns:48px minmax(0,1fr);
+  gap:.55rem;
+  align-items:center;
+  margin:.58rem 0;
+  padding:.58rem;
+  border:1px solid rgba(205,181,236,.1);
+  border-radius:13px;
+  background:linear-gradient(135deg,rgba(54,39,97,.16),rgba(17,15,40,.18));
+}
+.manuscript-overview-ring{
+  --manuscript-progress:0%;
+  width:48px;height:48px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  align-content:center;
+  background:
+    radial-gradient(circle at center,rgba(17,15,40,.92) 58%,transparent 60%),
+    conic-gradient(rgba(164,126,214,.6) var(--manuscript-progress),rgba(101,82,135,.12) 0);
+}
+.manuscript-overview-ring strong{
+  color:#ded5e9;
+  font:600 .68rem Georgia,'Times New Roman',serif;
+}
+.manuscript-overview-ring small{
+  color:#81798c;
+  font-size:.34rem;
+}
+.manuscript-overview-copy{
+  min-width:0;
+  display:grid;
+  gap:.07rem;
+}
+.manuscript-overview-copy>small{
+  color:#887e96;
+  font-size:.4rem;
+  letter-spacing:.1em;
+}
+.manuscript-overview-copy>strong{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#d6cde1;
+  font:600 .57rem Georgia,'Times New Roman',serif;
+}
+.manuscript-overview-copy>span{
+  color:#837c8d;
+  font-size:.44rem;
+}
+.daylight .manuscript-overview{
+  border-color:rgba(96,77,142,.09);
+  background:linear-gradient(135deg,rgba(250,248,252,.82),rgba(243,239,247,.68));
+}
+.daylight .manuscript-overview-ring{
+  background:
+    radial-gradient(circle at center,#f7f3f8 58%,transparent 60%),
+    conic-gradient(rgba(117,88,172,.48) var(--manuscript-progress),rgba(96,77,142,.09) 0);
+}
+.daylight .manuscript-overview-ring strong,
+.daylight .manuscript-overview-copy>strong{color:#44384f}
