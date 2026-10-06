@@ -892,6 +892,40 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('Celestial praise row · Heart Star Moon Crown');
   });
 
+  it('keeps 3,000-tag discovery member-extensible and searchable',()=>{
+    const data=read('src/palaceData.js');
+    expect(data).toContain("rpc('search_palace_tags'");
+    expect(data).toContain("rpc('create_community_tag'");
+    expect(live).toContain('3,000+ TAGS · MEMBER-EXTENSIBLE');
+    expect(live).toContain('Can’t find it? Name it.');
+    expect(live).toContain('Add & attach tag ✦');
+    expect(live).toContain('COMIC CONSTELLATION');
+  });
+
+  it('keeps the writer desk richer than a plain textarea',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain("exec('undo')");
+    expect(live).toContain("exec('redo')");
+    expect(live).toContain("exec('strikeThrough')");
+    expect(live).toContain("exec('insertUnorderedList')");
+    expect(live).toContain("exec('insertOrderedList')");
+    expect(live).toContain('⌖ Typewriter');
+    expect(live).toContain('Draft font');
+    expect(live).toContain('Spacing');
+    expect(polish).toContain('.writer-view-controls');
+    expect(polish).toContain('.writing-page-stage.typewriter-mode');
+  });
+
+  it('keeps prism glass selective and Palace navigation iconography custom',()=>{
+    const polish=read('src/polish.css');
+    expect(main).toContain('function PalaceRoomIcon');
+    expect(main).toContain('room-sigil room-sigil-');
+    expect(live).toContain('prism-glass prism-story');
+    expect(live).toContain('prism-glass prism-comic');
+    expect(live).toContain('heritage-prism');
+    expect(polish).toContain('Prism personality + expanded writer desk + Palace sigils');
+  });
+
   it('keeps the Prompt Orrery playful and zero-stakes',()=>{
     const polish=read('src/polish.css');
     expect(live).toContain('PROMPT ORRERY · 1,012 CONSTELLATIONS · ZERO STAKES');
