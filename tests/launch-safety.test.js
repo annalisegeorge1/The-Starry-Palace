@@ -783,6 +783,20 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.password-field');
   });
 
+  it('keeps the Palace Lorebook reveal system available',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(data).toContain("rpc('get_work_lore')");
+    expect(data).toContain("rpc('save_work_lore_entry'");
+    expect(data).toContain("rpc('delete_work_lore_entry'");
+    expect(live).toContain('PALACE LOREBOOK');
+    expect(live).toContain('Build the world behind the work.');
+    expect(live).toContain('Behind the curtain.');
+    expect(live).toContain('Unlock after chapter');
+    expect(live).toContain('Reveal spoiler lore');
+    expect(polish).toContain('Palace Lorebook');
+  });
+
   it('keeps Relay Audience Balcony host-controlled and choice-based',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
