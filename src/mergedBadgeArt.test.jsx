@@ -3,7 +3,7 @@ import {describe,it,expect} from 'vitest';
 import {render,screen,cleanup} from '@testing-library/react';
 import fs from 'node:fs';
 import badges from './badges.json';
-import {MergedBadgeArt,courtPortraitCellRect,mergedBadgeArtwork,mergedBadgePathCount,mergedCourtPaths,mergedObjectPaths} from './MergedBadgeArt';
+import {MergedBadgeArt,buildCourtForegroundMask,courtPortraitCellRect,findTransparentGridCuts,foregroundBounds,mergedBadgeArtwork,mergedBadgePathCount,mergedCourtPaths,mergedObjectPaths} from './MergedBadgeArt';
 
 describe('merged 100-path badge artwork',()=>{
  it('absorbs exactly 25 object paintings and 60 court portraits into 17 existing paths',()=>{
@@ -47,13 +47,24 @@ describe('merged 100-path badge artwork',()=>{
   expect(portraitNode).toBeTruthy();
   expect(portraitNode.getAttribute('data-court-cell')).toBe('1:2');
  });
- it('uses exact non-overlapping court portrait cells so frames are never clipped by CSS sprite math',()=>{
-  const first=courtPortraitCellRect(1000,800,{column:0,row:0});
-  const last=courtPortraitCellRect(1000,800,{column:4,row:3});
-  expect(first).toEqual({x:0,y:0,width:200,height:200});
-  expect(last).toEqual({x:800,y:600,width:200,height:200});
-  expect(last.x+last.width).toBe(1000);
-  expect(last.y+last.height).toBe(800);
+ it('finds the real transparent gaps between court portraits instead of assuming equal sheet cells',()=>{
+  const width=100,height=80,data=new Uint8ClampedArray(width*height*4);
+  for(let row=0;row<4;row++)for(let col=0;col<5;col++){
+   const left=col*20+3+(col===2?2:0),top=row*20+2+(row===1?2:0);
+   for(let y=top;y<Math.min(top+15,height);y++)for(let x=left;x<Math.min(left+14,width);x++){
+    data[(y*width+x)*4+3]=255;
+   }
+  }
+  const mask=buildCourtForegroundMask({data},width,height);
+  const xCuts=findTransparentGridCuts(mask,width,height,5,'x');
+  const yCuts=findTransparentGridCuts(mask,width,height,4,'y');
+  expect(xCuts).toHaveLength(6);expect(yCuts).toHaveLength(5);
+  for(let i=1;i<5;i++)expect(Math.abs(xCuts[i]-i*20)).toBeLessThanOrEqual(4);
+  for(let i=1;i<4;i++)expect(Math.abs(yCuts[i]-i*20)).toBeLessThanOrEqual(4);
+  const b=foregroundBounds(mask,width,height,xCuts[2],yCuts[1],xCuts[3],yCuts[2]);
+  expect(b.width).toBeGreaterThan(10);expect(b.height).toBeGreaterThan(10);
+  const fallback=courtPortraitCellRect(1000,800,{column:4,row:3});
+  expect(fallback).toEqual({x:800,y:600,width:200,height:200});
  });
  it('keeps object badges transparent and gives them tier-matched ornamental frames',()=>{
   const css=fs.readFileSync('src/treasury.css','utf8');
