@@ -15666,3 +15666,61 @@ button.quiet-button:not(.danger-action):hover,
   .story-row.prism-story,
   .comic-card.prism-comic{transition:none!important}
 }
+
+
+/* Comic tag constellation */
+.comic-tag-studio{
+  display:grid;
+  gap:.65rem;
+  margin:1rem 0;
+  padding:.8rem;
+  border:1px solid rgba(198,176,229,.11);
+  border-radius:15px;
+  background:
+    radial-gradient(circle at 92% 0%,rgba(191,148,203,.05),transparent 11rem),
+    rgba(13,11,31,.2);
+}
+.comic-tag-studio>header{
+  display:flex;
+  justify-content:space-between;
+  gap:.8rem;
+  align-items:flex-end;
+}
+.comic-tag-studio h3{
+  margin:.12rem 0 0;
+  font:600 .96rem/1.1 Georgia,'Times New Roman',serif;
+}
+.comic-tag-studio>header>small{
+  max-width:330px;
+  color:#837c8c;
+  font-size:.52rem;
+  text-align:right;
+}
+.comic-tag-search{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(145px,210px) auto;
+  gap:.42rem;
+}
+.comic-tag-search input,
+.comic-tag-search select{
+  min-height:40px;
+  border:1px solid rgba(198,176,229,.11);
+  border-radius:10px;
+  background:rgba(8,7,22,.3);
+  color:#dad3e1;
+}
+.daylight .comic-tag-studio{
+  background:linear-gradient(145deg,rgba(255,255,255,.93),rgba(244,241,248,.86));
+  border-color:rgba(91,73,136,.09);
+}
+.daylight .comic-tag-search input,
+.daylight .comic-tag-search select{
+  background:rgba(255,255,255,.84);
+  color:#3d364b;
+  border-color:rgba(91,73,136,.1);
+}
+@media(max-width:700px){
+  .comic-tag-studio>header{align-items:flex-start;flex-direction:column}
+  .comic-tag-studio>header>small{text-align:left}
+  .comic-tag-search{grid-template-columns:1fr}
+}
