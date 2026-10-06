@@ -6575,3 +6575,288 @@ img{max-width:100%}
   .club-member-grid.enriched>article{grid-template-columns:1fr}
   .club-member-side{justify-items:start;padding-left:3.35rem}
 }
+
+
+/* =========================================================
+   Palace shell refinement · October 2026
+   A final override layer so legacy responsive rules cannot
+   crop the header controls or leave route transitions blank.
+   ========================================================= */
+html,body,#root{min-height:100%}
+body{overflow-x:clip}
+.palace-shell{min-height:100dvh}
+.palace-main-stage{position:relative;isolation:isolate}
+.palace-main-stage>section,
+.palace-main-stage>.live-state,
+.palace-main-stage>.room-shell{
+  animation:palace-room-arrive .2s ease-out both;
+}
+@keyframes palace-room-arrive{
+  from{opacity:.72;transform:translateY(4px)}
+  to{opacity:1;transform:none}
+}
+
+/* Route loading/recovery always looks like a Palace room, never a blank page. */
+.route-loading,.route-recovery{
+  min-height:calc(100dvh - 76px);
+  display:grid;
+  place-items:center;
+  padding:clamp(1rem,4vw,3rem);
+  box-sizing:border-box;
+  background:
+    radial-gradient(circle at 50% 28%,rgba(101,80,170,.13),transparent 28rem),
+    linear-gradient(180deg,rgba(9,13,27,.98),rgba(7,10,21,.99));
+}
+.route-loading-card,.route-recovery>div{
+  width:min(100%,520px);
+  display:grid;
+  justify-items:center;
+  gap:.65rem;
+  padding:clamp(1.35rem,4vw,2.4rem);
+  border:1px solid rgba(163,150,214,.2);
+  border-radius:24px;
+  background:linear-gradient(145deg,rgba(20,26,51,.94),rgba(12,17,35,.94));
+  box-shadow:0 24px 70px rgba(0,0,0,.28);
+  text-align:center;
+}
+.route-loading-mark,.route-recovery>div>span{
+  position:relative;
+  width:62px;height:62px;
+  display:grid;place-items:center;
+  border:1px solid rgba(172,157,225,.28);
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 28%,rgba(117,91,184,.7),rgba(33,37,72,.92));
+  color:#e6e0ff;
+  font:2rem Georgia,'Times New Roman',serif;
+  box-shadow:0 0 30px rgba(111,88,182,.18);
+}
+.route-loading-mark b,.route-recovery>div>span b{
+  position:absolute;right:9px;top:7px;font-size:.65rem
+}
+.route-loading-card strong,.route-recovery h1{
+  margin:.15rem 0 0;
+  font:600 clamp(1.12rem,3vw,1.5rem) Georgia,'Times New Roman',serif;
+  color:var(--palace-text,#eef0ff);
+}
+.route-loading-card small,.route-recovery p{
+  max-width:390px;
+  color:var(--palace-muted,#9ca4c4);
+  line-height:1.55;
+}
+.route-loading-card button,.route-recovery button{
+  min-height:40px;
+  margin-top:.25rem;
+  padding:.5rem .85rem;
+  border:1px solid rgba(161,145,214,.32);
+  border-radius:999px;
+  background:rgba(105,83,169,.14);
+  color:var(--palace-text,#eef0ff);
+}
+
+/* Stable shell header. */
+.full-topbar{
+  overflow:visible!important;
+  z-index:80;
+  box-sizing:border-box;
+  border-bottom-color:rgba(151,160,203,.12);
+  backdrop-filter:blur(18px) saturate(118%);
+}
+.full-topbar-row{
+  min-width:0;
+  align-items:center;
+}
+.full-brand,.full-brand>a,.full-top-actions{min-width:0;overflow:visible}
+.full-brand{display:flex;align-items:center}
+.full-top-actions{display:flex;align-items:center;justify-content:flex-end}
+.top-room-context{
+  display:inline-flex;
+  align-items:center;
+  gap:.34rem;
+  max-width:180px;
+  min-height:28px;
+  margin-left:.45rem;
+  padding:.28rem .52rem;
+  border:1px solid rgba(151,160,203,.14);
+  border-radius:999px;
+  background:rgba(105,84,168,.055);
+  color:var(--palace-muted,#9ca4c4);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:.58rem;
+  letter-spacing:.035em;
+}
+.top-icon-link,.write-action,.nav-toggle,.command-trigger{
+  flex:0 0 auto!important;
+  box-sizing:border-box;
+  display:grid;
+  place-items:center;
+  overflow:visible!important;
+  border-radius:12px;
+}
+.top-icon-link:focus-visible,.write-action:focus-visible,.nav-toggle:focus-visible,.command-trigger:focus-visible,
+.full-nav-room>a:focus-visible,.full-subnav a:focus-visible{
+  outline:2px solid rgba(190,174,239,.88);
+  outline-offset:3px;
+}
+
+/* Navigation reads as one quiet hierarchy rather than stacked loose cards. */
+.full-sidebar{
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(137,132,178,.35) transparent;
+}
+.full-nav-room>a{position:relative}
+.full-nav-room>a.active::before{
+  content:"";
+  position:absolute;
+  left:-1px;
+  top:20%;
+  bottom:20%;
+  width:2px;
+  border-radius:3px;
+  background:#a89de4;
+  box-shadow:0 0 11px rgba(168,157,228,.48);
+}
+.full-subnav{
+  position:relative;
+  margin:.2rem 0 .45rem 1.15rem;
+  padding-left:.7rem;
+  border-left:1px solid rgba(151,160,203,.12);
+}
+.full-subnav a{
+  position:relative;
+  border-radius:9px;
+}
+.full-subnav a.active{
+  color:#dcd7f6;
+  background:rgba(106,85,169,.08);
+}
+.full-subnav a.active::before{
+  content:"";
+  position:absolute;
+  left:-.78rem;
+  top:50%;
+  width:5px;height:5px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:#a89de4;
+  box-shadow:0 0 8px rgba(168,157,228,.55);
+}
+.identity-card-live{
+  border-color:rgba(151,160,203,.14);
+  transition:border-color var(--palace-motion,.16s ease),background var(--palace-motion,.16s ease),transform var(--palace-motion,.16s ease);
+}
+.identity-card-live:hover{
+  transform:translateY(-1px);
+  border-color:rgba(166,150,220,.28);
+  background:rgba(105,84,168,.06);
+}
+
+/* Tablet: two stable rows; controls never overlap the search field. */
+@media(min-width:721px) and (max-width:1120px){
+  .full-topbar{
+    min-height:116px!important;
+    height:auto!important;
+    padding:12px 18px 14px!important;
+  }
+  .full-topbar-row{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    grid-template-rows:44px 48px!important;
+    gap:10px 12px!important;
+  }
+  .full-brand{grid-column:1!important;grid-row:1!important}
+  .full-top-actions{grid-column:2!important;grid-row:1!important}
+  .global-search-live{
+    display:flex!important;
+    grid-column:1/-1!important;
+    grid-row:2!important;
+    width:100%!important;
+    min-width:0!important;
+    height:46px!important;
+    border-radius:14px!important;
+  }
+  .brandmark,.nav-toggle,.top-icon-link,.write-action,.command-trigger{
+    width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;
+  }
+  .write-action{padding:0 14px!important;width:auto!important}
+  .top-room-context{max-width:150px}
+}
+
+/* Phones: safe-area aware, compact controls, full-width search below. */
+@media(max-width:720px){
+  .full-topbar{
+    height:auto!important;
+    min-height:calc(108px + env(safe-area-inset-top))!important;
+    padding-top:max(8px,env(safe-area-inset-top))!important;
+    padding-bottom:10px!important;
+    padding-left:max(10px,env(safe-area-inset-left))!important;
+    padding-right:max(10px,env(safe-area-inset-right))!important;
+  }
+  .full-topbar-row{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    grid-template-rows:44px 46px!important;
+    gap:8px!important;
+    overflow:visible!important;
+  }
+  .full-brand{
+    grid-column:1!important;grid-row:1!important;
+    gap:5px!important;
+  }
+  .full-top-actions{
+    grid-column:2!important;grid-row:1!important;
+    gap:4px!important;
+    margin-left:0!important;
+  }
+  .global-search-live{
+    display:flex!important;
+    grid-column:1/-1!important;
+    grid-row:2!important;
+    width:100%!important;
+    min-width:0!important;
+    height:46px!important;
+    border-radius:13px!important;
+  }
+  .global-search-live input{font-size:16px!important}
+  .global-search-live button{padding:8px 11px!important;font-size:.72rem!important}
+  .brandmark,.nav-toggle,.top-icon-link,.write-action,.command-trigger{
+    width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;
+  }
+  .brandmark{font-size:22px!important}
+  .nav-toggle{font-size:19px!important}
+  .write-action{padding:0!important}
+  .command-trigger kbd{display:none}
+  .full-brand strong,.full-brand>small,.top-room-context{display:none!important}
+  .palace-stage main{padding-top:24px!important}
+}
+@media(max-width:430px){
+  .full-topbar{
+    padding-left:max(7px,env(safe-area-inset-left))!important;
+    padding-right:max(7px,env(safe-area-inset-right))!important;
+  }
+  .full-topbar-row{gap:6px!important}
+  .full-top-actions{gap:3px!important}
+  .brandmark,.nav-toggle,.top-icon-link,.write-action,.command-trigger{
+    width:39px!important;height:39px!important;min-width:39px!important;min-height:39px!important;
+  }
+  .global-search-live{height:44px!important}
+}
+.daylight .route-loading,.daylight .route-recovery{
+  background:
+    radial-gradient(circle at 50% 28%,rgba(115,101,174,.1),transparent 28rem),
+    linear-gradient(180deg,#f3f4f8,#eceef4);
+}
+.daylight .route-loading-card,.daylight .route-recovery>div{
+  background:rgba(255,255,255,.9);
+  border-color:rgba(70,76,120,.14);
+  box-shadow:0 20px 55px rgba(49,55,86,.1);
+}
+.daylight .top-room-context{background:rgba(91,75,143,.045)}
+.daylight .full-subnav a.active{color:#303b68;background:rgba(91,75,143,.055)}
+
+@media(prefers-reduced-motion:reduce){
+  .palace-main-stage>section,.palace-main-stage>.live-state,.palace-main-stage>.room-shell{animation:none}
+}
