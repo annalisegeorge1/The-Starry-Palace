@@ -7808,3 +7808,453 @@ body{overflow-x:clip}
 @media(prefers-reduced-motion:reduce){
   .palace-cover-live.dusk-gif-cover>img{display:block!important}
 }
+
+
+/* =========================================================
+   Chic social pass — quick like a social network, still Palace.
+   Left navigation + central chronological stream + useful rail.
+   ========================================================= */
+.chic-commons{max-width:1240px;margin:0 auto}
+.chic-life-intro{
+  margin-bottom:.7rem!important;
+  padding-bottom:.9rem!important;
+  border-bottom:1px solid rgba(194,174,231,.14);
+}
+.chic-life-intro h2{
+  margin:.14rem 0 .28rem!important;
+  font-size:clamp(1.75rem,3vw,2.45rem)!important;
+  letter-spacing:-.025em;
+}
+.chic-life-intro>span{
+  flex:0 0 auto;
+  color:#b6a6db!important;
+  font-size:.52rem!important;
+  letter-spacing:.12em!important;
+}
+
+.palace-social-layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 310px;
+  gap:1rem;
+  align-items:start;
+}
+.palace-social-column{
+  min-width:0;
+  border:1px solid rgba(196,175,231,.14);
+  border-radius:22px;
+  overflow:hidden;
+  background:rgba(24,18,55,.34);
+  box-shadow:0 18px 48px rgba(7,5,23,.11);
+}
+.palace-social-rail{
+  min-width:0;
+  display:grid;
+  gap:.8rem;
+  position:sticky;
+  top:86px;
+}
+.chic-rail-card{
+  margin:0!important;
+  border-radius:20px!important;
+  border-color:rgba(198,175,232,.16)!important;
+  background:
+    radial-gradient(circle at 88% 4%,rgba(221,157,205,.07),transparent 12rem),
+    linear-gradient(145deg,rgba(50,37,99,.54),rgba(22,18,49,.78))!important;
+  box-shadow:0 16px 36px rgba(7,5,23,.09);
+}
+
+/* Twitter-like tabs, but with Palace naming and chronology. */
+.chic-feed-tabs{
+  position:sticky;
+  top:72px;
+  z-index:8;
+  grid-template-columns:minmax(190px,.78fr) minmax(0,1.22fr)!important;
+  margin:0!important;
+  padding:.58rem .65rem!important;
+  border:0!important;
+  border-bottom:1px solid rgba(194,174,231,.14)!important;
+  border-radius:0!important;
+  background:rgba(25,19,57,.84)!important;
+  -webkit-backdrop-filter:blur(18px);
+  backdrop-filter:blur(18px);
+}
+.chic-feed-tabs .commons-search{
+  min-height:40px;
+  border-color:rgba(194,174,231,.14)!important;
+  background:rgba(8,8,25,.25)!important;
+}
+.chic-feed-tabs .commons-view-buttons{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:.2rem!important;
+}
+.chic-feed-tabs .commons-view-buttons button{
+  position:relative;
+  min-width:0!important;
+  min-height:40px!important;
+  padding:.4rem .3rem!important;
+  border:0!important;
+  border-radius:10px!important;
+  background:transparent!important;
+  color:#9f9ab9!important;
+  font-size:.65rem!important;
+}
+.chic-feed-tabs .commons-view-buttons button::after{
+  content:"";
+  position:absolute;
+  left:24%;right:24%;bottom:1px;
+  height:2px;border-radius:99px;
+  background:transparent;
+}
+.chic-feed-tabs .commons-view-buttons button.active{
+  color:#f0ebfa!important;
+}
+.chic-feed-tabs .commons-view-buttons button.active::after{
+  background:linear-gradient(90deg,#7e70cf,#d596c7);
+  box-shadow:0 0 10px rgba(191,139,198,.22);
+}
+
+/* Composer becomes a refined social compose box. */
+.chic-composer{
+  display:grid!important;
+  grid-template-columns:42px minmax(0,1fr)!important;
+  gap:.7rem!important;
+  margin:0!important;
+  padding:.9rem 1rem!important;
+  border:0!important;
+  border-bottom:1px solid rgba(194,174,231,.14)!important;
+  border-radius:0!important;
+  background:rgba(255,255,255,.012)!important;
+}
+.chic-composer-mark{
+  width:42px;height:42px;
+  display:grid;place-items:center;
+  border:1px solid rgba(211,185,237,.22);
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 35% 28%,rgba(224,160,207,.32),rgba(111,91,189,.35) 42%,rgba(38,29,83,.88) 74%);
+  color:#f1e9ff;
+  box-shadow:0 0 20px rgba(167,126,204,.12);
+}
+.chic-composer-fields{min-width:0;display:grid;gap:.45rem}
+.chic-composer-fields label{display:grid;gap:.2rem}
+.chic-composer-fields label>span{
+  color:#948eaa;
+  font-size:.52rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.chic-composer input,
+.chic-composer textarea{
+  width:100%;
+  box-sizing:border-box;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  padding:.25rem 0!important;
+}
+.chic-composer input{
+  color:#f3effb!important;
+  font:600 1rem Georgia,'Times New Roman',serif!important;
+}
+.chic-composer textarea{
+  min-height:76px!important;
+  resize:vertical;
+  color:#ddd7eb!important;
+  font-size:.8rem!important;
+  line-height:1.55!important;
+}
+.chic-composer-fields>div{
+  display:flex;align-items:center;justify-content:space-between;gap:.7rem;
+  padding-top:.55rem;
+  border-top:1px solid rgba(194,174,231,.1);
+}
+.chic-composer-fields>div small{color:#8f89a7;font-size:.58rem}
+.chic-composer-fields>div button{
+  min-height:36px!important;
+  padding:.45rem .8rem!important;
+  border-radius:999px!important;
+}
+
+/* Chronological stream cards — clean, readable, not boxed to death. */
+.chic-timeline{
+  display:grid!important;
+  gap:0!important;
+}
+.social-thread{
+  display:grid!important;
+  grid-template-columns:46px minmax(0,1fr)!important;
+  gap:.72rem!important;
+  margin:0!important;
+  padding:1rem!important;
+  border:0!important;
+  border-bottom:1px solid rgba(194,174,231,.12)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  transition:background .16s ease!important;
+}
+.social-thread:last-child{border-bottom:0!important}
+.social-thread:hover{
+  transform:none!important;
+  background:rgba(102,82,166,.045)!important;
+  box-shadow:none!important;
+}
+.social-thread-avatar{
+  width:46px;height:46px;
+  overflow:hidden;
+  display:grid;place-items:center;
+  border:1px solid rgba(206,182,235,.18);
+  border-radius:50%;
+  background:linear-gradient(145deg,#6253a7,#3b326f);
+  color:#f4eeff;
+  font:700 .95rem Georgia,'Times New Roman',serif;
+}
+.social-thread-avatar img{width:100%;height:100%;object-fit:cover}
+.social-thread-body{min-width:0}
+.social-thread-head{
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:space-between!important;
+  gap:.65rem!important;
+  margin:0 0 .25rem!important;
+}
+.social-thread-head>div{
+  min-width:0;
+  display:flex;
+  align-items:baseline;
+  gap:.36rem;
+  flex-wrap:wrap;
+}
+.social-thread-head a,.social-thread-head strong{
+  color:#f0edf7;
+  text-decoration:none;
+  font-size:.78rem;
+  font-weight:750;
+}
+.social-thread-head a:hover{text-decoration:underline}
+.social-thread-head span{
+  color:#908ba3;
+  font-size:.58rem;
+}
+.social-thread-more{
+  min-width:30px!important;
+  min-height:30px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:transparent!important;
+  color:#8f89a3!important;
+  letter-spacing:.12em;
+}
+.social-thread-more:hover{background:rgba(115,92,177,.1)!important;color:#ddd5f2!important}
+.social-thread-room{
+  display:block;
+  margin:.05rem 0 .35rem;
+  color:#af9ed8!important;
+  font-size:.5rem!important;
+  letter-spacing:.1em!important;
+  text-transform:uppercase;
+}
+.social-thread h3{
+  margin:0 0 .35rem!important;
+  font:600 1rem/1.32 Georgia,'Times New Roman',serif!important;
+  color:#f1edf8!important;
+}
+.social-thread p{
+  margin:0!important;
+  color:#c5c0d2!important;
+  font-size:.76rem!important;
+  line-height:1.58!important;
+  white-space:pre-wrap;
+}
+.social-thread-actions{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:.55rem!important;
+  margin-top:.75rem!important;
+  padding-top:0!important;
+  border-top:0!important;
+}
+.social-thread-actions button{
+  min-height:32px!important;
+  min-width:0!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:.28rem!important;
+  padding:.25rem .42rem!important;
+  border:0!important;
+  border-radius:999px!important;
+  background:transparent!important;
+  color:#8f8aa2!important;
+}
+.social-thread-actions button:hover{
+  background:rgba(119,96,181,.09)!important;
+  color:#cfc7e8!important;
+}
+.social-thread-actions button.active{color:#d3a2cf!important}
+.social-thread-actions span{font-size:.8rem}
+.social-thread-actions b{font-size:.58rem;font-weight:700}
+.social-thread-actions em{font-size:.58rem;font-style:normal}
+
+/* Right rail is compact and useful, not a second dashboard. */
+.palace-social-rail .following-chamber-notes{
+  grid-template-columns:1fr!important;
+  gap:.28rem!important;
+}
+.palace-social-rail .following-chamber-notes>a{
+  grid-template-columns:34px minmax(0,1fr)!important;
+  gap:.55rem!important;
+  padding:.55rem!important;
+  border:0!important;
+  border-radius:12px!important;
+  background:transparent!important;
+}
+.palace-social-rail .following-chamber-notes>a:hover{background:rgba(116,94,181,.07)!important}
+.palace-social-rail .following-chamber-notes .mini-avatar{width:34px!important;height:34px!important}
+.palace-social-rail .following-chamber-notes p{-webkit-line-clamp:2!important}
+.palace-social-rail .salon-prompt-grid{
+  grid-template-columns:1fr!important;
+  gap:.25rem!important;
+}
+.palace-social-rail .salon-prompt-grid article,
+.palace-social-rail .salon-prompt-grid article:last-child{
+  min-height:0!important;
+  padding:.65rem!important;
+  border:0!important;
+  border-radius:12px!important;
+  background:transparent!important;
+}
+.palace-social-rail .salon-prompt-grid article:hover{background:rgba(116,94,181,.06)!important}
+.palace-social-rail .salon-prompt-grid article>span{
+  width:30px!important;height:30px!important;
+  margin-bottom:.42rem!important;
+}
+.palace-social-rail .salon-prompt-grid h4{font-size:.82rem!important}
+.palace-social-rail .salon-prompt-grid p{
+  font-size:.62rem!important;
+  margin-bottom:.45rem!important;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.palace-pulse-card{padding:.9rem!important}
+.palace-pulse-card>div{margin-bottom:.45rem}
+.palace-pulse-card h3{margin:.1rem 0 .2rem;font:600 1rem Georgia,'Times New Roman',serif}
+.palace-pulse-card>button{
+  width:100%;
+  min-height:40px;
+  display:grid;
+  grid-template-columns:24px minmax(0,1fr) auto;
+  gap:.5rem;
+  align-items:center;
+  padding:.42rem .3rem;
+  border:0;
+  border-top:1px solid rgba(194,174,231,.09);
+  border-radius:0;
+  background:transparent;
+  color:inherit;
+  text-align:left;
+}
+.palace-pulse-card>button:hover{background:rgba(116,94,181,.055)}
+.palace-pulse-card>button>span{color:#c8b2e6}
+.palace-pulse-card>button>strong{font-size:.67rem}
+.palace-pulse-card>button>b{color:#aaa2bc;font-size:.62rem}
+
+/* Pulse row becomes a thin chic summary instead of six bulky dashboard tiles. */
+.community-pulse-row.restored.social-pulse{
+  display:flex!important;
+  gap:.4rem!important;
+  overflow-x:auto;
+  scrollbar-width:none;
+  margin:.65rem 0!important;
+  padding:.1rem 0 .35rem!important;
+}
+.community-pulse-row.restored.social-pulse::-webkit-scrollbar{display:none}
+.community-pulse-row.restored.social-pulse>button{
+  flex:0 0 auto!important;
+  min-width:132px!important;
+  min-height:62px!important;
+  padding:.55rem .7rem!important;
+  border-radius:14px!important;
+  background:rgba(47,35,92,.38)!important;
+  border-color:rgba(195,174,231,.13)!important;
+}
+.community-pulse-row.restored.social-pulse strong{font-size:1.05rem!important}
+.community-pulse-row.restored.social-pulse span{font-size:.62rem!important}
+.community-pulse-row.restored.social-pulse small{display:none!important}
+
+/* Main Palace Life tabs feel more like a modern social app tab rail. */
+.life-tabs.restored{
+  position:sticky;
+  top:0;
+  z-index:9;
+  padding:.35rem!important;
+  border-radius:16px!important;
+  background:rgba(28,21,63,.72)!important;
+  -webkit-backdrop-filter:blur(18px);
+  backdrop-filter:blur(18px);
+}
+.life-tabs.restored button,.life-tabs.restored a{
+  border-radius:11px!important;
+  min-height:38px!important;
+  font-size:.64rem!important;
+}
+.life-tabs.restored button.active{
+  background:linear-gradient(135deg,rgba(117,96,189,.25),rgba(208,145,199,.09))!important;
+}
+
+/* Daylight = chic lavender paper, not generic white. */
+.daylight .palace-social-column{
+  background:rgba(255,255,255,.78);
+  border-color:rgba(88,71,137,.13);
+}
+.daylight .chic-feed-tabs{
+  background:rgba(248,245,251,.9)!important;
+  border-bottom-color:rgba(88,71,137,.12)!important;
+}
+.daylight .chic-feed-tabs .commons-view-buttons button.active{color:#342c59!important}
+.daylight .chic-composer{background:rgba(255,255,255,.62)!important}
+.daylight .chic-composer input{color:#2d2845!important}
+.daylight .chic-composer textarea{color:#4f4962!important}
+.daylight .social-thread:hover{background:rgba(103,85,157,.035)!important}
+.daylight .social-thread-head a,.daylight .social-thread-head strong,
+.daylight .social-thread h3{color:#2a2543!important}
+.daylight .social-thread p{color:#5b566c!important}
+.daylight .chic-rail-card{
+  background:linear-gradient(145deg,rgba(255,255,255,.93),rgba(244,240,249,.91))!important;
+  border-color:rgba(88,71,137,.12)!important;
+}
+.daylight .life-tabs.restored{background:rgba(247,244,251,.88)!important}
+
+@media(max-width:1060px){
+  .palace-social-layout{grid-template-columns:minmax(0,1fr) 270px}
+}
+@media(max-width:900px){
+  .palace-social-layout{grid-template-columns:1fr}
+  .palace-social-rail{
+    position:static;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .palace-social-rail .palace-pulse-card{grid-column:1/-1}
+}
+@media(max-width:680px){
+  .chic-life-intro>span{display:none}
+  .palace-social-column{border-left:0;border-right:0;border-radius:0}
+  .chic-feed-tabs{
+    top:106px;
+    grid-template-columns:1fr!important;
+    gap:.4rem!important;
+  }
+  .chic-composer{grid-template-columns:34px minmax(0,1fr)!important;padding:.78rem .72rem!important}
+  .chic-composer-mark{width:34px;height:34px}
+  .social-thread{grid-template-columns:38px minmax(0,1fr)!important;padding:.85rem .72rem!important}
+  .social-thread-avatar{width:38px;height:38px}
+  .social-thread-head>div{display:grid;gap:.06rem}
+  .social-thread-actions em{display:none}
+  .palace-social-rail{grid-template-columns:1fr}
+  .palace-social-rail .palace-pulse-card{grid-column:auto}
+}
