@@ -7077,3 +7077,470 @@ body{overflow-x:clip}
   .palace-next-door-mark{width:42px;height:42px;border-radius:13px}
   .palace-next-door h2{font-size:1rem}
 }
+
+
+/* =========================================================
+   Visual atmosphere pass · make the Palace feel alive
+   Richer, celestial and regal without turning neon or noisy.
+   ========================================================= */
+
+/* Living sky behind every room */
+.palace-stage,.full-stage{
+  position:relative;
+  isolation:isolate;
+  background:
+    radial-gradient(circle at 78% 4%,rgba(92,75,166,.13),transparent 28rem),
+    radial-gradient(circle at 18% 24%,rgba(42,89,142,.11),transparent 32rem),
+    radial-gradient(circle at 66% 76%,rgba(49,112,116,.07),transparent 27rem),
+    linear-gradient(180deg,#090d1c 0%,#080b18 48%,#070a15 100%);
+}
+.palace-stage::before,.full-stage::before{
+  content:"";
+  position:fixed;
+  inset:0 0 0 var(--sidebar-width,0);
+  z-index:-2;
+  pointer-events:none;
+  opacity:.72;
+  background:
+    radial-gradient(circle at 12% 14%,rgba(205,199,255,.33) 0 1px,transparent 1.5px),
+    radial-gradient(circle at 44% 33%,rgba(191,207,255,.22) 0 1px,transparent 1.4px),
+    radial-gradient(circle at 77% 18%,rgba(223,217,255,.26) 0 1px,transparent 1.5px),
+    radial-gradient(circle at 88% 62%,rgba(175,207,221,.18) 0 1px,transparent 1.4px),
+    radial-gradient(circle at 31% 78%,rgba(203,191,245,.18) 0 1px,transparent 1.5px);
+  background-size:260px 230px,340px 310px,430px 370px,380px 340px,510px 420px;
+  animation:palace-star-drift 34s linear infinite alternate;
+}
+.palace-stage::after,.full-stage::after{
+  content:"";
+  position:fixed;
+  width:56vw;
+  height:56vw;
+  max-width:760px;
+  max-height:760px;
+  right:-18vw;
+  top:18vh;
+  z-index:-1;
+  pointer-events:none;
+  border-radius:50%;
+  opacity:.34;
+  filter:blur(42px);
+  background:
+    radial-gradient(circle at 32% 34%,rgba(118,91,190,.28),transparent 38%),
+    radial-gradient(circle at 62% 58%,rgba(46,95,150,.18),transparent 44%);
+  animation:palace-nebula-breathe 13s ease-in-out infinite alternate;
+}
+@keyframes palace-star-drift{to{transform:translate3d(-18px,12px,0)}}
+@keyframes palace-nebula-breathe{to{transform:translate3d(-2vw,2vh,0) scale(1.06);opacity:.46}}
+
+/* Public front door: more cinematic without losing readability */
+.home-hero.realised{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(175,158,230,.24);
+  background:
+    linear-gradient(120deg,rgba(11,15,34,.96) 0 38%,rgba(20,20,51,.88) 63%,rgba(12,23,46,.93) 100%);
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.035);
+}
+.home-hero.realised::after{
+  content:"";
+  position:absolute;
+  width:520px;height:520px;
+  right:-110px;top:-190px;
+  border-radius:50%;
+  pointer-events:none;
+  background:
+    radial-gradient(circle,rgba(157,137,223,.18) 0 2%,transparent 3%),
+    radial-gradient(circle at 50% 50%,rgba(112,87,183,.2),rgba(50,82,135,.08) 42%,transparent 70%);
+  box-shadow:0 0 120px rgba(88,70,163,.16);
+  animation:palace-hero-orbit 15s ease-in-out infinite alternate;
+}
+@keyframes palace-hero-orbit{to{transform:translate(-28px,28px) scale(1.05)}}
+.home-hero.realised .stars{
+  color:#d8d0fb;
+  text-shadow:0 0 18px rgba(172,153,236,.55);
+  opacity:.82;
+}
+.home-hero.realised .hero-copy{position:relative;z-index:3}
+.home-hero.realised h1{
+  max-width:790px;
+  text-shadow:0 10px 45px rgba(0,0,0,.32);
+}
+.home-hero.realised .hero-copy .button{
+  border-color:rgba(193,174,239,.46);
+  background:linear-gradient(135deg,#6952b8,#4e65a6 62%,#386f84);
+  box-shadow:0 10px 28px rgba(72,63,145,.28),inset 0 1px 0 rgba(255,255,255,.12);
+}
+.home-hero.realised .hero-copy .button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 15px 34px rgba(72,63,145,.36),0 0 24px rgba(114,94,185,.17);
+}
+.hero-orbit.palace-belonging-panel{
+  overflow:hidden;
+  border-color:rgba(186,171,234,.26);
+  background:
+    radial-gradient(circle at 50% 31%,rgba(124,98,195,.28),transparent 27%),
+    radial-gradient(circle at 78% 76%,rgba(54,105,139,.16),transparent 35%),
+    rgba(8,12,30,.62);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.025),
+    inset 0 -40px 90px rgba(14,10,39,.35),
+    0 24px 55px rgba(0,0,0,.22);
+}
+.hero-orbit.palace-belonging-panel::before{
+  content:"";
+  position:absolute;
+  inset:11%;
+  border:1px solid rgba(194,181,235,.09);
+  border-radius:50%;
+  box-shadow:0 0 0 32px rgba(194,181,235,.025),0 0 0 68px rgba(194,181,235,.015);
+  animation:palace-slow-turn 28s linear infinite;
+}
+@keyframes palace-slow-turn{to{transform:rotate(360deg)}}
+.hero-orbit .palace-belonging-art{
+  filter:saturate(.95) contrast(1.06) drop-shadow(0 16px 28px rgba(0,0,0,.25));
+}
+
+/* The principles strip becomes a ceremonial ribbon. */
+.home-intro-strip{
+  gap:.55rem!important;
+  border:0!important;
+  padding:.25rem 0 .6rem;
+}
+.home-intro-strip span{
+  position:relative;
+  overflow:hidden;
+  min-height:46px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(148,157,202,.14)!important;
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(23,28,55,.74),rgba(11,16,34,.7));
+  color:#aeb8d5;
+}
+.home-intro-strip span::before{
+  content:"✦";
+  margin-right:.45rem;
+  color:#9e92d7;
+  font-size:.55rem;
+}
+
+/* Every major room gets its own cool-toned celestial signature. */
+.room-grid.expanded{
+  gap:18px!important;
+  padding-top:28px!important;
+}
+.room-grid.expanded .room-card{
+  --room-accent:119,100,202;
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  min-height:260px!important;
+  border-color:rgba(var(--room-accent),.24)!important;
+  background:
+    linear-gradient(145deg,rgba(var(--room-accent),.12),transparent 38%),
+    linear-gradient(150deg,rgba(20,25,49,.95),rgba(10,14,31,.9))!important;
+  box-shadow:
+    0 18px 45px rgba(0,0,0,.16),
+    inset 0 1px 0 rgba(255,255,255,.025)!important;
+}
+.room-grid.expanded .room-card:nth-child(1){--room-accent:74,118,178}
+.room-grid.expanded .room-card:nth-child(2){--room-accent:83,132,151}
+.room-grid.expanded .room-card:nth-child(3){--room-accent:124,96,190}
+.room-grid.expanded .room-card:nth-child(4){--room-accent:81,121,128}
+.room-grid.expanded .room-card:nth-child(5){--room-accent:96,112,181}
+.room-grid.expanded .room-card:nth-child(6){--room-accent:118,104,177}
+.room-grid.expanded .room-card:nth-child(7){--room-accent:83,104,139}
+.room-grid.expanded .room-card::before{
+  content:"";
+  position:absolute;
+  width:250px;height:250px;
+  right:-80px;top:-90px;
+  z-index:-1;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(var(--room-accent),.24),rgba(var(--room-accent),.04) 46%,transparent 70%);
+  transition:transform .35s ease,opacity .35s ease;
+}
+.room-grid.expanded .room-card::after{
+  content:"✦";
+  position:absolute;
+  right:26px;bottom:18px;
+  z-index:-1;
+  color:rgba(var(--room-accent),.12);
+  font:5.2rem Georgia,'Times New Roman',serif;
+  transform:rotate(9deg);
+  transition:transform .35s ease,color .35s ease;
+}
+.room-grid.expanded .room-card:hover{
+  transform:translateY(-6px)!important;
+  border-color:rgba(var(--room-accent),.52)!important;
+  box-shadow:
+    0 25px 60px rgba(0,0,0,.24),
+    0 0 30px rgba(var(--room-accent),.09)!important;
+}
+.room-grid.expanded .room-card:hover::before{transform:scale(1.18) translate(-8px,10px)}
+.room-grid.expanded .room-card:hover::after{
+  color:rgba(var(--room-accent),.2);
+  transform:rotate(18deg) scale(1.08);
+}
+.room-grid.expanded .room-card>span{
+  color:rgba(var(--room-accent),.8)!important;
+  letter-spacing:.16em;
+}
+.room-grid.expanded .room-card .room-glyph{
+  width:52px;height:52px;
+  border-color:rgba(var(--room-accent),.42);
+  background:
+    radial-gradient(circle at 35% 25%,rgba(216,211,255,.28),rgba(var(--room-accent),.38) 38%,rgba(18,26,52,.9) 72%);
+  color:#eef0ff;
+  box-shadow:0 0 24px rgba(var(--room-accent),.16);
+}
+.room-grid.expanded .room-card h2{
+  font-size:clamp(1.55rem,2.6vw,2.15rem)!important;
+  color:#f0f1fb;
+}
+.room-grid.expanded .room-card b{
+  color:rgb(var(--room-accent));
+}
+
+/* Live stories should feel collectible rather than like plain feed cards. */
+.home-live-worlds{
+  border-top:0!important;
+  margin-top:1.75rem!important;
+  padding-top:1.75rem!important;
+  position:relative;
+}
+.home-live-worlds::before{
+  content:"";
+  position:absolute;
+  left:clamp(18px,3vw,42px);
+  right:clamp(18px,3vw,42px);
+  top:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(151,142,205,.36),rgba(74,113,154,.24),transparent);
+}
+.home-world-grid{gap:1rem!important}
+.home-world-grid>a{
+  border-color:rgba(151,160,203,.18)!important;
+  background:linear-gradient(155deg,rgba(19,25,48,.92),rgba(10,14,31,.86))!important;
+}
+.home-world-cover{position:relative}
+.home-world-cover::after{
+  content:"";
+  position:absolute;inset:0;
+  pointer-events:none;
+  background:linear-gradient(180deg,transparent 48%,rgba(8,11,25,.68));
+}
+.home-world-cover img{transition:transform .5s ease,filter .5s ease}
+.home-world-grid>a:hover .home-world-cover img{transform:scale(1.045);filter:saturate(1.06)}
+.home-world-grid>a:hover{transform:translateY(-5px)!important}
+
+/* Paths and manifesto get a ceremonial finish instead of flat blocks. */
+.palace-paths{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(150,146,199,.14);
+  border-radius:28px;
+  padding:clamp(1.25rem,4vw,2.5rem)!important;
+  background:
+    radial-gradient(circle at 90% 8%,rgba(84,100,178,.11),transparent 24rem),
+    linear-gradient(145deg,rgba(18,24,47,.82),rgba(9,14,30,.76));
+}
+.palace-paths::after{
+  content:"☾";
+  position:absolute;
+  right:-20px;bottom:-72px;
+  color:rgba(209,204,239,.035);
+  font:12rem Georgia,'Times New Roman',serif;
+  pointer-events:none;
+}
+.path-list>a{
+  border-color:rgba(151,160,203,.14)!important;
+  background:rgba(255,255,255,.018);
+  border-radius:14px;
+  transition:transform .18s ease,border-color .18s ease,background .18s ease;
+}
+.path-list>a:hover{
+  transform:translateX(4px);
+  border-color:rgba(169,153,221,.3)!important;
+  background:rgba(97,80,157,.06);
+}
+.manifesto{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(175,158,226,.2);
+  border-radius:30px;
+  background:
+    radial-gradient(circle at 50% 8%,rgba(118,91,188,.18),transparent 23rem),
+    linear-gradient(150deg,rgba(20,23,53,.94),rgba(11,18,36,.93));
+  box-shadow:0 28px 80px rgba(0,0,0,.22);
+}
+.manifesto::before{
+  content:"✦  ·  ☾  ·  ✧  ·  ✦";
+  position:absolute;
+  top:1.25rem;left:50%;
+  transform:translateX(-50%);
+  color:rgba(207,197,243,.28);
+  letter-spacing:.75rem;
+  white-space:nowrap;
+}
+.manifesto h2{
+  text-shadow:0 12px 36px rgba(0,0,0,.26);
+}
+
+/* Signed-in Palace gets more visual hierarchy too. */
+.palace-command-centre{
+  position:relative;
+}
+.palace-command-hero{
+  overflow:hidden;
+  border-color:rgba(175,158,226,.25)!important;
+  background:
+    linear-gradient(115deg,rgba(15,19,44,.9),rgba(26,22,58,.78) 55%,rgba(13,29,52,.86))!important;
+  box-shadow:0 28px 75px rgba(0,0,0,.2)!important;
+}
+.palace-command-hero::after{
+  content:"";
+  position:absolute;
+  width:420px;height:420px;
+  right:-100px;bottom:-230px;
+  border-radius:50%;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(115,88,188,.18),rgba(56,101,145,.08) 50%,transparent 72%);
+}
+.palace-home-shortcuts>a{
+  border-color:rgba(151,160,203,.16)!important;
+  background:linear-gradient(145deg,rgba(22,27,52,.74),rgba(12,17,34,.7))!important;
+  box-shadow:0 10px 26px rgba(0,0,0,.1);
+}
+.palace-home-shortcuts>a:hover{
+  transform:translateY(-4px)!important;
+  border-color:rgba(174,158,226,.32)!important;
+  background:linear-gradient(145deg,rgba(42,37,79,.76),rgba(17,27,50,.74))!important;
+  box-shadow:0 16px 32px rgba(0,0,0,.17);
+}
+.palace-home-shortcuts>a span{
+  color:#d5cff3!important;
+  text-shadow:0 0 16px rgba(150,130,219,.28);
+}
+.palace-dashboard-section{
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(145deg,rgba(20,26,49,.86),rgba(10,15,32,.76))!important;
+}
+.palace-dashboard-section::before{
+  content:"";
+  position:absolute;
+  width:240px;height:240px;
+  right:-120px;top:-130px;
+  border-radius:50%;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(103,84,167,.09),transparent 68%);
+}
+.palace-dashboard-section>.section-heading{
+  position:relative;
+  z-index:1;
+}
+.palace-dashboard-section>.section-heading .eyebrow{
+  color:#a99fdb;
+}
+.palace-resume-card,.palace-attention-grid>a,.palace-next-event,.palace-release-desk{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.018);
+}
+
+/* Page headings get a little atmosphere across Reading, Writing, Life, etc. */
+.room-title{
+  position:relative;
+  isolation:isolate;
+}
+.room-title::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  width:min(520px,60vw);
+  height:180px;
+  left:-90px;
+  top:-58px;
+  border-radius:50%;
+  pointer-events:none;
+  background:radial-gradient(ellipse,rgba(105,84,171,.11),transparent 68%);
+}
+.room-title h1{
+  text-shadow:0 10px 34px rgba(0,0,0,.18);
+}
+
+/* Stronger primary calls-to-action throughout the Palace */
+.button,.write-action,
+.thread-compose button:not(.quiet-button),
+.proposal-form>button,
+.palace-dialog footer button:not(.quiet-button){
+  border-color:rgba(174,157,226,.4);
+  background:linear-gradient(135deg,#6550ac,#5266a6 64%,#3f7888);
+  box-shadow:0 8px 22px rgba(63,56,126,.16);
+}
+.button:hover,.write-action:hover,
+.thread-compose button:not(.quiet-button):hover,
+.proposal-form>button:hover,
+.palace-dialog footer button:not(.quiet-button):hover{
+  box-shadow:0 12px 28px rgba(63,56,126,.24),0 0 18px rgba(102,86,171,.12);
+}
+
+/* Daylight: keep the richness, exchange darkness for cool paper and mist. */
+.daylight .palace-stage,.daylight .full-stage{
+  background:
+    radial-gradient(circle at 78% 4%,rgba(111,94,169,.09),transparent 28rem),
+    radial-gradient(circle at 18% 24%,rgba(73,111,155,.08),transparent 32rem),
+    linear-gradient(180deg,#f1f3f8,#e9edf4 52%,#edf0f5);
+}
+.daylight .palace-stage::before,.daylight .full-stage::before{opacity:.3}
+.daylight .home-hero.realised,
+.daylight .palace-command-hero{
+  background:
+    radial-gradient(circle at 82% 12%,rgba(126,107,185,.12),transparent 22rem),
+    linear-gradient(125deg,#fafafd,#eef0f7 58%,#e8edf4)!important;
+}
+.daylight .home-hero.realised h1,
+.daylight .room-grid.expanded .room-card h2{color:#202846}
+.daylight .home-intro-strip span{
+  background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(240,242,248,.9));
+  color:#5f6882;
+}
+.daylight .room-grid.expanded .room-card{
+  background:
+    linear-gradient(145deg,rgba(var(--room-accent),.07),transparent 40%),
+    linear-gradient(150deg,rgba(255,255,255,.96),rgba(244,246,251,.92))!important;
+}
+.daylight .palace-paths,
+.daylight .manifesto,
+.daylight .palace-dashboard-section{
+  background:
+    radial-gradient(circle at 90% 8%,rgba(93,87,158,.07),transparent 24rem),
+    linear-gradient(145deg,rgba(255,255,255,.94),rgba(244,246,251,.91))!important;
+}
+.daylight .home-world-grid>a,
+.daylight .palace-home-shortcuts>a{
+  background:linear-gradient(145deg,rgba(255,255,255,.95),rgba(243,245,250,.92))!important;
+}
+
+/* Motion remains decorative only. */
+@media(prefers-reduced-motion:reduce){
+  .palace-stage::before,.full-stage::before,
+  .palace-stage::after,.full-stage::after,
+  .home-hero.realised::after,
+  .hero-orbit.palace-belonging-panel::before{animation:none!important}
+  .room-grid.expanded .room-card:hover,
+  .home-world-grid>a:hover,
+  .palace-home-shortcuts>a:hover{transform:none!important}
+}
+
+@media(max-width:720px){
+  .palace-stage::after,.full-stage::after{width:90vw;height:90vw;right:-45vw;opacity:.24}
+  .home-hero.realised::after{width:330px;height:330px;right:-145px;top:-100px}
+  .room-grid.expanded{gap:12px!important}
+  .room-grid.expanded .room-card{min-height:220px!important}
+  .room-grid.expanded .room-card::after{font-size:4rem}
+  .manifesto::before{letter-spacing:.35rem;font-size:.7rem}
+}
