@@ -512,6 +512,17 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.surprise-story');
   });
 
+  it('keeps the optional Moon Prompt playful without streak pressure',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('palace-moon-prompt');
+    expect(live).toContain('MOON PROMPT · A SMALL CREATIVE SPARK');
+    expect(live).toContain('No streak. No score.');
+    expect(live).toContain('setPromptShift');
+    expect(live).toContain('Write from this →');
+    expect(polish).toContain('.palace-moon-prompt');
+    expect(polish).toContain('.moon-prompt-actions');
+  });
+
   it('keeps one-handed mobile Palace navigation available',()=>{
     const polish=read('src/polish.css');
     expect(main).toContain('mobile-palace-dock');
