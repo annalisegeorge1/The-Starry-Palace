@@ -10397,3 +10397,202 @@ body{overflow-x:clip}
     flex:1 0 112px;
   }
 }
+
+
+/* =========================================================
+   Writing Chamber desktop refinement from live review
+   Reduce dead space, strengthen hierarchy, make first-draft
+   onboarding feel intentional rather than empty.
+   ========================================================= */
+.chic-writing-head{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:.3rem!important;
+  align-items:start!important;
+  padding:1rem 0 .65rem!important;
+}
+.chic-writing-head>p,.chic-writing-head>h1{grid-column:1!important}
+.chic-writing-head h1{
+  max-width:760px;
+  margin:.08rem 0 .18rem!important;
+  font-size:clamp(2.65rem,4.6vw,4.15rem)!important;
+}
+.chic-writing-head>.lede{
+  max-width:760px!important;
+  margin-bottom:.55rem!important;
+}
+.chic-writing-summary{
+  grid-column:1!important;
+  grid-row:auto!important;
+  width:min(100%,760px)!important;
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:.36rem!important;
+  align-self:auto!important;
+  margin:0!important;
+}
+.chic-writing-summary>span{
+  min-height:54px!important;
+  grid-template-columns:auto minmax(0,1fr)!important;
+  align-items:center!important;
+  align-content:center!important;
+  gap:.38rem!important;
+  padding:.5rem .62rem!important;
+  border-radius:12px!important;
+}
+.chic-writing-summary strong{
+  font-size:1.02rem!important;
+}
+.chic-writing-summary small{
+  font-size:.48rem!important;
+  line-height:1.18;
+}
+
+/* Tabs feel like a deliberate creator tool, not a thin divider. */
+.chic-writing-tabs{
+  margin:.25rem auto .62rem!important;
+  padding:.32rem!important;
+}
+.chic-writing-tabs button{
+  min-height:42px!important;
+  font-size:.64rem!important;
+}
+.chic-writing-tabs button.active{
+  box-shadow:inset 0 0 0 1px rgba(211,183,236,.10)!important;
+}
+
+/* First-page focus and draft creation read as one composed block. */
+.writing-focus-strip{
+  min-height:72px!important;
+  margin-bottom:.5rem!important;
+}
+.chic-new-work{
+  grid-template-columns:40px minmax(0,1fr) auto!important;
+  align-items:center!important;
+  padding:.62rem .68rem!important;
+  min-height:70px;
+}
+.chic-new-work::before{
+  content:"✎";
+  width:40px;height:40px;
+  display:grid;place-items:center;
+  border:1px solid rgba(207,181,234,.16);
+  border-radius:13px;
+  background:
+    radial-gradient(circle at 35% 28%,rgba(220,157,205,.18),rgba(111,91,187,.16) 52%,rgba(30,24,68,.58));
+  color:#d9cceb;
+  font:.95rem Georgia,'Times New Roman',serif;
+}
+.chic-new-work label>span{
+  margin-bottom:.03rem;
+}
+.chic-new-work input{
+  min-height:34px!important;
+  font-size:1rem!important;
+}
+.chic-new-work button{
+  min-width:148px;
+  justify-content:center;
+}
+
+/* Controls no longer stretch like one long administrative row. */
+.chic-writing-library-tools{
+  grid-template-columns:minmax(260px,1fr) 180px 180px!important;
+  gap:.38rem!important;
+  padding:.42rem!important;
+}
+.chic-writing-library-tools .writing-library-search,
+.chic-writing-library-tools select{
+  min-height:42px!important;
+}
+
+/* Empty desk becomes an invitation, not a large blank rectangle. */
+.writing-empty-state{
+  width:100%;
+  min-height:250px!important;
+  box-sizing:border-box;
+  display:grid!important;
+  justify-items:center;
+  align-content:center;
+  gap:.42rem;
+  padding:2rem 1rem!important;
+  border:1px solid rgba(201,178,232,.12)!important;
+  border-radius:20px!important;
+  background:
+    radial-gradient(circle at 50% 16%,rgba(122,101,194,.08),transparent 15rem),
+    linear-gradient(180deg,rgba(30,24,66,.34),rgba(17,15,39,.5))!important;
+}
+.writing-empty-state>span{
+  width:48px!important;
+  height:48px!important;
+  display:grid!important;
+  place-items:center;
+  margin:0 0 .15rem!important;
+  border:1px solid rgba(210,183,235,.17);
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 28%,rgba(222,160,207,.2),rgba(102,84,171,.18) 50%,rgba(26,21,59,.62));
+  color:#ddcfed!important;
+  font-size:1rem!important;
+}
+.writing-empty-state h3{
+  margin:.08rem 0!important;
+  font-size:1.08rem!important;
+}
+.writing-empty-state p{
+  max-width:520px;
+  margin:0!important;
+  color:#9f98aa!important;
+  font-size:.66rem!important;
+  line-height:1.55!important;
+  text-align:center;
+}
+.writing-empty-state button{
+  min-height:38px;
+  margin-top:.38rem;
+  padding:.45rem .74rem;
+  border:1px solid rgba(211,183,236,.22);
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(112,91,181,.2),rgba(199,132,187,.09));
+  color:#dfd5ef;
+  font-size:.59rem;
+  font-weight:700;
+}
+.writing-empty-state button:hover{
+  border-color:rgba(223,188,234,.34);
+  background:linear-gradient(135deg,rgba(118,96,188,.27),rgba(204,138,190,.12));
+}
+
+.daylight .chic-new-work::before,
+.daylight .writing-empty-state{
+  background:linear-gradient(145deg,rgba(255,255,255,.95),rgba(244,240,248,.91))!important;
+}
+.daylight .writing-empty-state p{color:#70697c!important}
+.daylight .writing-empty-state button{color:#4e4471!important}
+
+@media(max-width:860px){
+  .chic-writing-summary{
+    width:100%!important;
+    overflow-x:auto;
+    grid-template-columns:repeat(4,minmax(120px,1fr))!important;
+  }
+}
+@media(max-width:720px){
+  .chic-writing-head{
+    padding-left:14px!important;
+    padding-right:14px!important;
+  }
+  .chic-writing-summary{
+    grid-template-columns:repeat(4,118px)!important;
+    scrollbar-width:none;
+  }
+  .chic-writing-summary::-webkit-scrollbar{display:none}
+  .chic-new-work{
+    grid-template-columns:36px minmax(0,1fr)!important;
+  }
+  .chic-new-work::before{width:36px;height:36px}
+  .chic-new-work button{
+    grid-column:2;
+    justify-self:start;
+    min-width:0;
+  }
+}
