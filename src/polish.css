@@ -1,4 +1,4 @@
-:root{--palace-room-css-version:2026100608}
+:root{--palace-room-css-version:2026100609}
 /* The Starry Palace — final professional polish layer
    Keep this file intentionally small and authoritative. New global visual
    refinements belong here instead of adding another override to style.css. */
@@ -17509,4 +17509,135 @@ button.quiet-button:not(.danger-action):hover,
   .poll-starter-deck>div{
     display:grid;
   }
+}
+
+
+/* =========================================================
+   Writing Pad front door · October 6 2026
+   ========================================================= */
+.writing-pad-launch{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  align-items:center;
+  gap:1rem;
+  width:100%;
+  margin:.35rem 0 1rem;
+  padding:1rem 1.05rem;
+  border:1px solid rgba(190,164,224,.18);
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 8% 20%,rgba(136,87,190,.18),transparent 10rem),
+    radial-gradient(circle at 88% 20%,rgba(83,117,178,.10),transparent 13rem),
+    linear-gradient(145deg,rgba(31,25,64,.84),rgba(15,17,39,.74));
+  box-shadow:0 18px 42px rgba(7,5,22,.10),inset 0 1px 0 rgba(255,255,255,.04);
+}
+.writing-pad-orb{
+  width:54px;
+  height:54px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(214,177,235,.28);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 32% 24%,rgba(255,255,255,.16),transparent 35%),
+    linear-gradient(145deg,rgba(125,72,177,.48),rgba(55,71,126,.34));
+  color:#f3eaf8;
+  font-size:1.35rem;
+  box-shadow:0 10px 24px rgba(27,11,52,.14);
+}
+.writing-pad-copy{min-width:0}
+.writing-pad-copy h2{
+  margin:.1rem 0 .24rem;
+  color:#f0eaf5;
+  font:500 clamp(1.28rem,2vw,1.65rem)/1.05 Georgia,'Times New Roman',serif;
+}
+.writing-pad-copy p:not(.eyebrow){
+  max-width:720px;
+  margin:0;
+  color:#9c94aa;
+  font-size:.7rem;
+  line-height:1.55;
+}
+.writing-pad-actions{
+  display:flex;
+  align-items:center;
+  gap:.45rem;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.writing-pad-actions button{
+  min-height:42px;
+  padding:.55rem .82rem;
+  border-radius:12px;
+  font:inherit;
+  font-size:.68rem;
+  font-weight:760;
+  cursor:pointer;
+}
+.writing-pad-primary{
+  border:1px solid rgba(216,178,237,.36);
+  background:linear-gradient(135deg,#7650a7,#51447f 58%,#3f557f);
+  color:#fff;
+  box-shadow:0 9px 22px rgba(54,30,91,.18);
+}
+.writing-pad-primary:hover{filter:brightness(1.07)}
+.writing-pad-secondary{
+  border:1px solid rgba(179,163,207,.17);
+  background:rgba(255,255,255,.025);
+  color:#c7bfd0;
+}
+.writing-pad-secondary:hover{
+  border-color:rgba(202,178,226,.28);
+  color:#eee8f4;
+}
+.writing-pad-actions button:disabled{
+  cursor:wait;
+  opacity:.58;
+}
+.daylight .writing-pad-launch{
+  border-color:rgba(107,76,145,.15);
+  background:
+    radial-gradient(circle at 8% 20%,rgba(179,141,216,.25),transparent 10rem),
+    radial-gradient(circle at 88% 20%,rgba(247,183,159,.14),transparent 13rem),
+    linear-gradient(145deg,rgba(249,244,252,.95),rgba(237,227,246,.91));
+  box-shadow:0 14px 34px rgba(74,49,96,.07),inset 0 1px 0 rgba(255,255,255,.7);
+}
+.daylight .writing-pad-orb{
+  border-color:rgba(107,72,148,.19);
+  background:
+    radial-gradient(circle at 32% 24%,rgba(255,255,255,.65),transparent 35%),
+    linear-gradient(145deg,rgba(177,138,214,.50),rgba(242,177,165,.23));
+  color:#513967;
+  box-shadow:0 8px 20px rgba(82,54,105,.09);
+}
+.daylight .writing-pad-copy h2{color:#3b2d49}
+.daylight .writing-pad-copy p:not(.eyebrow){color:#70627a}
+.daylight .writing-pad-primary{
+  border-color:rgba(112,75,154,.28);
+  background:linear-gradient(135deg,#8059a9 0%,#a56898 58%,#c68078 100%);
+}
+.daylight .writing-pad-secondary{
+  border-color:rgba(106,75,140,.14);
+  background:rgba(255,255,255,.57);
+  color:#604d6a;
+}
+@media(max-width:860px){
+  .writing-pad-launch{
+    grid-template-columns:auto minmax(0,1fr);
+  }
+  .writing-pad-actions{
+    grid-column:1/-1;
+    justify-content:stretch;
+  }
+  .writing-pad-actions button{flex:1 1 180px}
+}
+@media(max-width:560px){
+  .writing-pad-launch{
+    grid-template-columns:1fr;
+    gap:.7rem;
+    padding:.85rem;
+  }
+  .writing-pad-orb{width:46px;height:46px;border-radius:15px}
+  .writing-pad-actions{display:grid;grid-template-columns:1fr}
+  .writing-pad-actions button{width:100%}
 }
