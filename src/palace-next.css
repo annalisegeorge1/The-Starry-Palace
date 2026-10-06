@@ -1012,3 +1012,64 @@
     background:rgba(255,255,255,.012);
   }
 }
+
+
+/* Palace Almanac — real events and heritage in the social rail. */
+.palace-almanac-list{
+  display:grid;
+  gap:.36rem;
+}
+.palace-almanac-list>a{
+  display:grid;
+  grid-template-columns:30px minmax(0,1fr);
+  gap:.48rem;
+  align-items:start;
+  padding:.48rem;
+  border:1px solid rgba(205,181,236,.09);
+  border-radius:12px;
+  background:rgba(255,255,255,.01);
+  text-decoration:none;
+}
+.palace-almanac-list>a:hover{
+  border-color:rgba(210,185,238,.18);
+  background:rgba(108,82,165,.045);
+}
+.palace-almanac-list>a>span{
+  width:30px;height:30px;
+  display:grid;place-items:center;
+  border-radius:50%;
+  border:1px solid rgba(210,185,238,.13);
+  color:#cdbde1;
+  background:rgba(114,88,174,.06);
+  font: .72rem Georgia,'Times New Roman',serif;
+}
+.palace-almanac-list>a>div{
+  min-width:0;
+  display:grid;
+  gap:.08rem;
+}
+.palace-almanac-list small{
+  color:#8f849c;
+  font-size:.41rem;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+.palace-almanac-list strong{
+  color:#ddd5e8;
+  font:600 .6rem Georgia,'Times New Roman',serif;
+}
+.palace-almanac-list p{
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  margin:0;
+  color:#8f8998;
+  font-size:.48rem;
+  line-height:1.42;
+}
+.daylight .palace-almanac-list strong{color:#40364d}
+.daylight .palace-almanac-list>a{
+  border-color:rgba(96,77,142,.08);
+  background:rgba(255,255,255,.54);
+}
