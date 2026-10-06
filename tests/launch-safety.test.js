@@ -24,9 +24,11 @@ describe('Starry Palace launch safety',()=>{
     expect(pkg.scripts.build).toContain('cp dist/index.html dist/404.html');
   });
 
-  it('loads core Palace rooms eagerly so navigation cannot strand on a room chunk',()=>{
+  it('keeps core rooms eager while splitting the heavy Treasury catalogue safely',()=>{
     expect(main).toContain("from './liveRooms'");
-    expect(main).toContain("import TreasuryCatalogue from './Treasury'");
+    expect(main).not.toContain("import TreasuryCatalogue from './Treasury'");
+    expect(main).toContain("const TreasuryCatalogueLazy=React.lazy(()=>importWithRecovery(()=>import('./Treasury')))");
+    expect(main).toContain('<React.Suspense fallback={<RouteLoading/>}><TreasuryCatalogueLazy Frame={Frame}/></React.Suspense>');
     expect(main).not.toContain("const ChamberLive=lazyRoom('ChamberLive')");
     expect(main).not.toContain('<RoomBundleWarmup/>');
   });
@@ -64,6 +66,13 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('Reload room');
     expect(main).toContain('RouteErrorBoundary');
     expect(main).toContain('importWithRecovery');
+  });
+
+  it('keeps the collectible-heavy catalogue out of the initial Palace route bundle',()=>{
+    expect(main).not.toContain("import TreasuryCatalogue from './Treasury'");
+    expect(main).toContain("import('./Treasury')");
+    expect(main).toContain('TreasuryCatalogueLazy');
+    expect(main).toContain('RouteLoading');
   });
 
   it('keeps production chunks split and recoverable',()=>{
