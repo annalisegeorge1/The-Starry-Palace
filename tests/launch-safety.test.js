@@ -936,6 +936,17 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('transform:scale(.62)!important');
   });
 
+  it('keeps tablet room navigation swipeable without covering content',()=>{
+    const polish=read('src/polish.css');
+    expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
+    expect(polish).toContain('@media(max-width:1020px)');
+    expect(polish).toContain('.life-tabs.restored,\n  .chic-events-tabs');
+    expect(polish).toContain('position:relative!important');
+    expect(polish).toContain('overflow-x:auto!important');
+    expect(polish).toContain('white-space:nowrap!important');
+    expect(polish).toContain('.following-chamber-empty button');
+  });
+
   it('uses real-device QA guards for desktop width and Chromium painting',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Desktop QA correction · October 6 2026');
@@ -1270,8 +1281,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain("new Error('Palace room load timeout')");
     expect(main).toContain("schedulePalaceReload('palace-script-error-reload'");
     expect(main).not.toContain('return new Promise(()=>{})');
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100606');
-    expect(polish).toContain('--palace-room-css-version:2026100606');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100607');
+    expect(polish).toContain('--palace-room-css-version:2026100607');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
