@@ -100,6 +100,17 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain("activityBadge>99?'99+':activityBadge");
   });
 
+  it('keeps fair discovery unranked and makes saved shelves resume directly',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('✦ Surprise me');
+    expect(live).toContain('it does not use a popularity score');
+    expect(live).toContain('savedStoryProgress');
+    expect(live).toContain('savedComicProgress');
+    expect(live).toContain('SAVED · CONTINUE');
+    expect(live).toContain('COMICS SHELF · CONTINUE');
+    expect(polish).toContain('.surprise-story');
+  });
+
   it('keeps private Nightstand discovery and precise chapter continuity connected to member home',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
@@ -769,8 +780,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('palace-room-css-sync-reload');
     expect(main).toContain('palace-room-css-nonblocking');
     expect(main).toContain("Palace room '+name+' is unavailable in this build.");
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100517');
-    expect(polish).toContain('--palace-room-css-version:2026100517');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100518');
+    expect(polish).toContain('--palace-room-css-version:2026100518');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
