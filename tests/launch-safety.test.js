@@ -936,6 +936,26 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('transform:scale(.62)!important');
   });
 
+  it('makes Palace Life conversations, discovery and Room polls feel connected',()=>{
+    const data=read('src/palaceData.js');
+    const polish=read('src/polish.css');
+    expect(live).toContain("kind:'discussion',source:''");
+    expect(live).toContain("['discussion','♢','Discussion']");
+    expect(live).toContain("['question','?','Question']");
+    expect(live).toContain("['recommendation','✦','Recommendation']");
+    expect(live).toContain("['salon','☕','Salon prompt']");
+    expect(live).toContain('✧ Give me a Salon prompt');
+    expect(live).toContain("thread.kind==='question'?'Question Table'");
+    expect(live).toContain('club-discovery-control-deck');
+    expect(live).toContain('Polls\'+(data.pulse?.open_polls');
+    expect(live).toContain('poll-starter-deck');
+    expect(data).toContain("createForumThread(userId,title,body,room='Palace Commons')");
+    expect(polish).toContain('Palace Life social depth pass · October 6 2026');
+    expect(polish).toContain('.commons-compose-modes');
+    expect(polish).toContain('.club-discovery-control-deck');
+    expect(polish).toContain('.poll-starter-deck');
+  });
+
   it('keeps tablet room navigation swipeable without covering content',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
@@ -1281,8 +1301,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain("new Error('Palace room load timeout')");
     expect(main).toContain("schedulePalaceReload('palace-script-error-reload'");
     expect(main).not.toContain('return new Promise(()=>{})');
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100607');
-    expect(polish).toContain('--palace-room-css-version:2026100607');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100608');
+    expect(polish).toContain('--palace-room-css-version:2026100608');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
