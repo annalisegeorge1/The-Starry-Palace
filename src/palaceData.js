@@ -267,11 +267,26 @@ export async function getClubRoom(slug,userId){
  for(const r of[members,posts,replies,polls,options,votes,chat,membershipRequest])if(r.error)throw r.error;
  const postRows=posts.data||[],replyRows=replies.data||[],pollRows=polls.data||[],optionRows=options.data||[],voteRows=votes.data||[];
  const membership=(members.data||[]).find(m=>m.user_id===userId)||null;
+ const memberIds=(members.data||[]).map(m=>m.user_id).filter(id=>id&&id!==userId);
+ let clubFollowingIds=new Set();
+ if(memberIds.length){
+  const followRows=await needClient().from('member_follows').select('followed_id').eq('follower_id',userId).in('followed_id',memberIds);
+  if(followRows.error)throw followRows.error;
+  clubFollowingIds=new Set((followRows.data||[]).map(x=>x.followed_id));
+ }
+ const clubPulse={
+  members:(members.data||[]).length,
+  discussions:postRows.length,
+  open_polls:pollRows.filter(x=>x.status==='open').length,
+  recent_messages:(chat.data||[]).length,
+  last_activity_at:[...postRows.map(x=>x.created_at),...pollRows.map(x=>x.created_at),...(chat.data||[]).map(x=>x.created_at)].filter(Boolean).sort().at(-1)||null
+ };
  return{
   club,
   membership,
   membershipRequest:membershipRequest.data||null,
-  members:members.data||[],
+  members:(members.data||[]).map(m=>({...m,following:clubFollowingIds.has(m.user_id)})),
+  pulse:clubPulse,
   posts:postRows.map(p=>({...p,replies:replyRows.filter(r=>r.post_id===p.id)})),
   polls:pollRows.map(p=>{
    const opts=optionRows.filter(o=>o.poll_id===p.id).map(o=>({...o,vote_count:voteRows.filter(v=>v.poll_id===p.id&&v.option_id===o.id).length}));
@@ -361,10 +376,33 @@ export async function getPalaceLife(userId){
  const championRows=highlightChampions.data||[];
  const reactionRows=introReactions.data||[];
  const followingIds=new Set((follows.data||[]).map(x=>x.followed_id));
+ const clubPulseIds=[...new Set([...joined.map(x=>x.id),...discoverableClubs.map(x=>x.id)])];
+ let clubMemberRows=[],clubPostRows=[],clubPollRows=[],clubChatRows=[];
+ if(clubPulseIds.length){
+  const pulse=await Promise.all([
+   needClient().from('club_members').select('club_id,user_id').in('club_id',clubPulseIds).eq('status','active').limit(2000),
+   needClient().from('club_posts').select('club_id,created_at').in('club_id',clubPulseIds).eq('status','active').order('created_at',{ascending:false}).limit(1000),
+   needClient().from('club_polls').select('club_id,status,created_at').in('club_id',clubPulseIds).neq('status','archived').order('created_at',{ascending:false}).limit(500),
+   needClient().from('club_chat_messages').select('club_id,created_at').in('club_id',clubPulseIds).eq('status','active').order('created_at',{ascending:false}).limit(1000)
+  ]);
+  for(const r of pulse)if(r.error)throw r.error;
+  [clubMemberRows,clubPostRows,clubPollRows,clubChatRows]=pulse.map(r=>r.data||[]);
+ }
+ const clubPulse=clubId=>{
+  const posts=clubPostRows.filter(x=>x.club_id===clubId),polls=clubPollRows.filter(x=>x.club_id===clubId),chatRows=clubChatRows.filter(x=>x.club_id===clubId);
+  const activity=[...posts.map(x=>x.created_at),...polls.map(x=>x.created_at),...chatRows.map(x=>x.created_at)].filter(Boolean).sort().at(-1)||null;
+  return{
+   member_count:clubMemberRows.filter(x=>x.club_id===clubId).length,
+   discussion_count:posts.length,
+   open_polls:polls.filter(x=>x.status==='open').length,
+   recent_chat_count:chatRows.length,
+   last_activity_at:activity
+  }
+ };
 
  return{
-  clubs:joined,
-  discoverableClubs,
+  clubs:joined.map(x=>({...x,pulse:clubPulse(x.id)})),
+  discoverableClubs:discoverableClubs.map(x=>({...x,pulse:clubPulse(x.id)})),
   threads:visibleThreads.map(x=>{const threadReplies=visibleReplies.filter(r=>r.thread_id===x.id);return{...x,subscribed:subSet.has(x.id),muted:muteSet.has(x.id),saved:saveSet.has(x.id),replies:threadReplies,reply_count:threadReplies.length}}),
   chat:visibleChat.reverse(),
   introductions:visibleIntros,
