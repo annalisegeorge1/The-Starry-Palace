@@ -12,7 +12,7 @@ import {
  WorkLive,ChapterLive,WorkStudioLive,TagSearchLive,HonourLive,CouncilLive,CodeLive,ComicsLive,
  ComicLive,ComicEpisodeLive,ComicStudioLive,SeriesLive
 } from './liveRooms';
-import TreasuryCatalogue from './Treasury';
+
 
 const chunkErrorPattern=/dynamically imported module|importing a module script failed|failed to fetch|chunkloaderror|loading chunk|room load timeout|networkerror/i;
 const ROOM_IMPORT_TIMEOUT_MS=12000;
@@ -107,6 +107,7 @@ function PalaceBuildFreshnessWatch(){
  return null
 }
 
+const TreasuryCatalogueLazy=React.lazy(()=>importWithRecovery(()=>import('./Treasury')));
 const lazyRoom=name=>React.lazy(()=>importWithRecovery(()=>import('./liveRooms')).then(mod=>{
  roomCssMatches(mod);
  if(!mod?.[name])throw new Error('Palace room '+name+' is unavailable in this build.');
@@ -424,7 +425,7 @@ function App(){return <AuthProvider><PalaceBuildFreshnessWatch/><NavigationReset
  <Route path="/club/:slug" element={<ProtectedRoute><ClubLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/events" element={<EventsLive Frame={Frame}/>}/>
  <Route path="/treasury" element={<ProtectedRoute><TreasuryLive Frame={Frame}/></ProtectedRoute>}/>
- <Route path="/treasury/catalogue" element={<ProtectedRoute><TreasuryCatalogue Frame={Frame}/></ProtectedRoute>}/>
+ <Route path="/treasury/catalogue" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><TreasuryCatalogueLazy Frame={Frame}/></React.Suspense></ProtectedRoute>}/>
  <Route path="/lost-works" element={<LostWorksLive Frame={Frame}/>}/>
  <Route path="/settings" element={<ProtectedRoute><SettingsLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/activity" element={<ProtectedRoute><ActivityLive Frame={Frame}/></ProtectedRoute>}/>
