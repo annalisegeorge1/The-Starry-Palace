@@ -66,19 +66,20 @@ describe('merged 100-path badge artwork',()=>{
   const fallback=courtPortraitCellRect(1000,800,{column:4,row:3});
   expect(fallback).toEqual({x:800,y:600,width:200,height:200});
  });
- it('keeps object badges transparent and gives them tier-matched ornamental frames',()=>{
+ it('keeps badge art transparent and uses the painted Bronze-to-Emerald tier mounts',()=>{
   const css=fs.readFileSync('src/treasury.css','utf8');
   const component=fs.readFileSync('src/PalaceBadge.jsx','utf8');
+  expect(fs.existsSync('public/assets/palace-originals/palace-watercolour-tier-mounts.png')).toBe(true);
   expect(css).toContain('.approved-badge-stage{background:transparent');
   expect(css).toContain('.merged-badge-stage.is-object{');
-  expect(css).toContain('.badge-tier-frame::before');
-  expect(css).toContain('.badge-tier-ornament');
-  expect(css).toContain('.tier-gold .badge-tier-ornament');
-  expect(css).toContain('.tier-platinum .badge-tier-ornament');
-  expect(css).toContain('.tier-emerald .badge-tier-ornament');
-  expect(css).toContain('.tier-emerald .badge-tier-frame');
-  expect(component).toContain('approved-badge-stage is-object badge-tier-frame');
-  expect(component).toContain("is-object badge-tier-frame");
-  expect(component).toContain('badge-tier-ornament');
+  expect(css).toContain('.painted-tier-stage');
+  expect(css).toContain('.painted-badge-inner');
+  expect(css).toContain('.painted-tier-mount');
+  expect(css).not.toContain('.badge-tier-frame::before');
+  expect(component).toContain('palace-watercolour-tier-mounts.png');
+  expect(component).toContain('painted-tier-stage merged-badge-stage');
+  expect(component).toContain('painted-tier-stage approved-badge-stage is-object');
+  expect(component).toContain('<PaintedTierMount rank={rank}');
+  expect(component).not.toContain('badge-tier-ornament');
  });
 });
