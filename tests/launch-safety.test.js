@@ -908,6 +908,23 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.advanced-tag-builder');
   });
 
+  it('keeps badge and gift artwork display-only in the normal Palace UI',()=>{
+    const badge=read('src/PalaceBadge.jsx');
+    const gift=read('src/PalaceGift.jsx');
+    const collectibles=read('src/PalaceCollectibles.jsx');
+    const treasuryCss=read('src/treasury.css');
+    for(const source of [badge,gift,collectibles]){
+      expect(source).toContain('onContextMenu:e=>e.preventDefault()');
+      expect(source).toContain('onDragStart:e=>e.preventDefault()');
+      expect(source).toContain('onCopy:e=>e.preventDefault()');
+      expect(source).toContain('protected-palace-art');
+    }
+    expect(collectibles).toContain('draggable="false"');
+    expect(treasuryCss).toContain('-webkit-touch-callout:none!important');
+    expect(treasuryCss).toContain('-webkit-user-drag:none!important');
+    expect(treasuryCss).toContain('.protected-palace-art img');
+  });
+
   it('recovers blank routes and keeps both Palace themes intentionally rich',()=>{
     const polish=read('src/polish.css');
     expect(main).toContain('function BlankScreenWatchdog()');
