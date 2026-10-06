@@ -81,6 +81,7 @@ export function ChamberLive({Frame}){
  const attentionTotal=attention.reduce((n,x)=>n+Number(x.count||0),0);
  const scheduled=[...(data?.scheduledChapters||[]).map(ch=>({id:'writing-'+ch.id,type:'writing',title:ch.title,scheduled_for:ch.scheduled_for,parent:ch.works?.title,href:ch.works?.slug?'/writing/'+ch.works.slug:'/writing'})),...(data?.scheduledComicEpisodes||[]).map(ep=>({id:'comic-'+ep.id,type:'comic',title:ep.title,scheduled_for:ep.scheduled_for,parent:ep.comics?.title,href:'/comics/studio#comic-'+ep.comic_id}))].sort((a,b)=>new Date(a.scheduled_for)-new Date(b.scheduled_for)).slice(0,4);
  const draftChapters=nextDraft?.chapters||[];const draftWords=draftChapters.reduce((n,ch)=>n+(Number(ch.word_count)||0),0);const draftPublished=draftChapters.filter(ch=>ch.status==='published').length;
+ const focus=attention[0]?{icon:attention[0].icon,kicker:'NEEDS YOU',title:attention[0].title,copy:attention[0].copy,to:attention[0].to,action:'Review now'}:scheduled[0]?{icon:scheduled[0].type==='comic'?'◈':'✎',kicker:'UPCOMING RELEASE',title:scheduled[0].title,copy:'Your next scheduled '+(scheduled[0].type==='comic'?'comic episode':'chapter')+' is set for '+new Date(scheduled[0].scheduled_for).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+'.',to:scheduled[0].href,action:'Open release desk'}:nextDraft?{icon:'✎',kicker:'CREATIVE THREAD',title:nextDraft.title,copy:draftWords.toLocaleString()+' words across '+draftChapters.length+' chapter'+(draftChapters.length===1?'':'s')+'. Return without losing your place.',to:nextDraft.slug?'/writing/'+nextDraft.slug:'/writing',action:'Continue writing'}:currentRead?{icon:'▤',kicker:'READING THREAD',title:currentRead.title,copy:'Your private reading place is saved at '+currentStoryPercent+'% of the story.',to:currentStory?.chapter_id?'/work/'+currentRead.slug+'/chapter/'+currentStory.chapter_id:'/work/'+currentRead.slug,action:'Continue reading'}:currentComic?.comics?{icon:'◈',kicker:comicHasNew?'NEW PANELS':'COMIC THREAD',title:currentComic.comics.title,copy:comicHasNew?'A newer episode is waiting beyond your last panel.':'Your last panel is still waiting for you.',to:comicHref,action:comicHasNew?'Read new panels':'Continue comic'}:nightstand[0]?{icon:'☾',kicker:'NIGHTSTAND',title:nightstand[0].title,copy:'A world chosen from the interests you told the Palace to remember.',to:'/work/'+nightstand[0].slug,action:'Open this world'}:{icon:'✦',kicker:'A QUIET PALACE',title:'Wander where curiosity leads.',copy:'Nothing needs your attention. Read, write or explore without a queue.',to:'/reading',action:'Enter the Reading Rooms'};
  return <Frame privateArea><State loading={!data&&!error} error={error}>{p&&<section className="legacy-home-dashboard palace-command-centre">
    <nav className="legacy-home-tabs">
     <Link className="active" aria-current="page" to="/chamber">Home</Link>
@@ -91,7 +92,7 @@ export function ChamberLive({Frame}){
    </nav>
 
    <section className="legacy-home-hero palace-belonging-panel palace-command-hero"><img className="palace-belonging-art" src="/assets/palace/palace-belonging.gif" alt=""/>
-    <div><p className="eyebrow">✦ MY PALACE</p><h1>Welcome home,<br/><span>{p.display_name||p.username}.</span></h1><p>Pick up what matters next. Everything else can remain quiet until you are ready.</p></div>
+    <div className="palace-home-welcome"><p className="eyebrow">✦ MY PALACE</p><h1>Welcome home,<br/><span>{p.display_name||p.username}.</span></h1><div className="palace-home-identity"><Link className="palace-home-avatar" to={"/member/"+p.username} aria-label="Open my chamber">{p.avatar_url?<img src={p.avatar_url} alt=""/>:<span>☾<b>✦</b></span>}</Link><div><small>YOUR PALACE TITLE</small><strong>{p.title||'Palace Member'}</strong>{p.status_line&&<em>{p.status_line}</em>}</div><Link to={"/member/"+p.username}>My chamber →</Link></div><p className="palace-home-intro">Pick up what matters next. Everything else can remain quiet until you are ready.</p></div>
     <div className="palace-home-pulse" aria-label="Your Palace today">
       <span><strong>{attentionTotal}</strong><small>attention</small></span>
       <span><strong>{(counts.scheduledComics||0)+(counts.scheduledChapters||0)}</strong><small>scheduled</small></span>
@@ -107,6 +108,12 @@ export function ChamberLive({Frame}){
     <Link to="/treasury"><span>♛</span><small>Treasury</small></Link>
     <Link to="/search"><span>⌕</span><small>Search</small></Link>
    </nav>
+
+   <section className="palace-next-door" aria-label="Your next Palace door">
+    <div className="palace-next-door-mark" aria-hidden="true">{focus.icon}</div>
+    <div><small>{focus.kicker}</small><h2>{focus.title}</h2><p>{focus.copy}</p></div>
+    <Link to={focus.to}>{focus.action} <span>→</span></Link>
+   </section>
 
    <section className="palace-dashboard-section palace-resume-section">
     <div className="section-heading"><div><p className="eyebrow">CONTINUE</p><h2>Return to where you were.</h2><p>Your private creative and reading places, gathered without ranking them against anyone else.</p></div><Link to="/library">Open full library →</Link></div>
