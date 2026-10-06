@@ -677,7 +677,7 @@ export function MemberProfileLive({Frame}){
    </div>
    <div className={"legacy-profile-avatar "+(!p.avatar_url?'sigil-fallback':'')}>{p.avatar_url?<img loading="lazy" decoding="async" src={p.avatar_url} alt=""/>:<span aria-hidden="true">☾<b>✦</b></span>}</div>
    <div className="legacy-profile-copy">
-    <p className="eyebrow">{(p.title||'PALACE MEMBER').toUpperCase()}</p>
+    <p className="eyebrow chamber-title-mark"><span aria-hidden="true">✦</span>{(p.title||'PALACE MEMBER').toUpperCase()}</p>
     <h1>{p.display_name||p.username}</h1>
     {own&&<span className="legacy-public-pill">YOUR PUBLIC CHAMBER</span>}
     <p className="legacy-profile-meta">@{p.username}{roles.length?' · '+roles.join(' · '):''}{p.pronouns?' · '+p.pronouns:''}</p>
