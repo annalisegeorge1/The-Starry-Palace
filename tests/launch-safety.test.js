@@ -516,6 +516,16 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.personal-agenda');
   });
 
+  it('shows exact private chapter place and clearer end-of-chapter navigation',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain('YOUR PLACE IN THIS CHAPTER');
+    expect(live).toContain('Private place saved');
+    expect(live).toContain('reader-nav-context');
+    expect(live).toContain('reader-nav-actions');
+    expect(polish).toContain('.reader-place-status');
+    expect(polish).toContain('.reader-nav-actions');
+  });
+
   it('keeps public chambers and story/comic doorways consistent on small screens',()=>{
     const polish=read('src/polish.css');
     expect(live).toContain('publication-glance');
@@ -825,8 +835,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('palace-room-css-sync-reload');
     expect(main).toContain('palace-room-css-nonblocking');
     expect(main).toContain("Palace room '+name+' is unavailable in this build.");
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100522');
-    expect(polish).toContain('--palace-room-css-version:2026100522');
+    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100523');
+    expect(polish).toContain('--palace-room-css-version:2026100523');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
