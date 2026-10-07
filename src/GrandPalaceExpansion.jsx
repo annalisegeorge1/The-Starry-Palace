@@ -1,5 +1,6 @@
 import './grand-palace-expansion.css';
 import React,{useEffect,useState} from 'react';
+import GrandPalaceCelebrations from './GrandPalaceCelebrations';
 import{Link}from'react-router-dom';
 import{getCelestialVaultStatus,enterCelestialVault,claimCelestialBadgeGrandmaster,getGrandPalaceCommonRoom,postGrandPalaceCommonMessage,removeGrandPalaceCommonMessage}from'./grandPalaceData';
 export default function GrandPalaceExpansion(){
@@ -36,6 +37,7 @@ export default function GrandPalaceExpansion(){
    <div className="grand-vault-prize-list"><strong>What a Celestial Sovereign Box contains</strong><span>500 Celestial Points</span><span>One Emerald Treasury treasure</span><span>30 hearts · 12 stars · 3 moons · 1 crown</span><span>Exclusive Celestial Sovereign profile theme</span></div>
   </section>
   <section className="grand-common-room" id="grand-common-room"><header><p className="eyebrow">YOUR GRAND PALACE · INNER COURT</p><h2>The common room</h2><p>A shared home for the members of your permanent Grand Palace. Introduce yourself, encourage your court, and create together.</p></header>
+   <GrandPalaceCelebrations/>
    <div className="grand-quest-card"><small>✦ TODAY'S CREATIVE QUEST · UTC</small><h3>{room?.quest||'A new creative spark is gathering…'}</h3><p>Share your response with your Palace. You can also earn verified participation points through regular Palace activities; posting here alone does not generate points.</p><button type="button" onClick={()=>{setKind('quest');document.getElementById('grand-common-composer')?.focus()}}>Answer today's quest →</button></div>
    <form className="grand-common-composer" onSubmit={submit}><div className="grand-common-compose-bar"><label>Post type <select value={kind} onChange={e=>setKind(e.target.value)}><option value="message">Court conversation</option><option value="introduction">Introduction</option><option value="quest">Creative quest response</option></select></label><small>{room?.message_count_today??0}/5 daily posts</small></div>
     <textarea id="grand-common-composer" value={body} maxLength={1000} onChange={e=>setBody(e.target.value)} rows={4} placeholder="Share a thoughtful message with your Grand Palace…"/>
