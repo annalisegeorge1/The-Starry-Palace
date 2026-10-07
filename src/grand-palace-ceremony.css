@@ -37,3 +37,11 @@
 .daylight .grand-ceremony-tier.achieved{background:#e8e2fb;border-color:#b5a7df}
 @media(max-width:1100px){.grand-ceremony-gallery{grid-template-columns:repeat(3,minmax(0,1fr))}.grand-ceremony-path{grid-template-columns:repeat(3,minmax(0,1fr))}.grand-legacy-champions,.grand-legacy-laurels>div:last-child{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:660px){.grand-ceremony-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.grand-ceremony-feature{grid-template-columns:1fr}.grand-ceremony-path{grid-template-columns:repeat(2,minmax(0,1fr))}.grand-ceremony-seal{display:none}.grand-ceremony-metrics{grid-template-columns:1fr}.grand-legacy-champions,.grand-legacy-laurels>div:last-child{grid-template-columns:1fr}}
+
+.grand-hall-jumplinks{display:flex;gap:.45rem;flex-wrap:wrap;align-items:center;scroll-margin-top:80px}
+.grand-hall-jumplinks a{padding:.55rem .85rem;border:1px solid rgba(168,164,234,.32);border-radius:100px;background:rgba(85,87,166,.12);color:inherit;text-decoration:none;font-size:.76rem;font-weight:650}
+.grand-hall-jumplinks a:hover{border-color:#b7aafa;background:rgba(117,103,193,.24)}
+.grand-hall-jumplinks a:focus-visible{outline:2px solid #9fcaff;outline-offset:3px}
+#grand-atlas,#grand-legacy,#celestial-vault,#grand-common-room,#grand-rankings{scroll-margin-top:85px}
+.daylight .grand-hall-jumplinks a{color:#453365;background:#f0edfa;border-color:#cec2e6}
+@media(max-width:610px){.grand-hall-jumplinks a{font-size:.7rem;padding:.48rem .65rem}}
