@@ -25,7 +25,7 @@ export function filterInkDuels(duels=[],{view='active',search='',format='all',sc
   const matchesView=view==='all'||view==='active'&&phase!=='results'||view===phase||(view==='results'&&phase==='results');
   const matchesFormat=format==='all'||duel.content_type===format;
   const isMine=Boolean(duel.is_host||duel.my_entry||['accepted','pending'].includes(duel.my_participation));
-  const canJudge=phase==='voting'&&!duel.my_vote&&!duel.my_entry&&!(duel.match_type==='one_v_one'&&duel.my_participation==='accepted');
+  const canJudge=phase==='voting'&&!duel.my_vote&&(!duel.my_entry||Number(duel.entry_count||0)>1)&&!(duel.match_type==='one_v_one'&&duel.my_participation==='accepted');
   const matchesScope=scope==='all'||scope==='mine'&&isMine||scope==='judge'&&canJudge;
   const haystack=[duel.title,duel.prompt,duel.rule_note,duel.prompt_family,duel.content_type].filter(Boolean).join(' ').toLocaleLowerCase();
   return matchesView&&matchesFormat&&matchesScope&&(!q||haystack.includes(q));
