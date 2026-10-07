@@ -1,0 +1,104 @@
+/* Grand Palace experience: clear rooms, tactile navigation and playful cool-spectrum identity */
+.grand-palace-hall{--gp-cobalt:#5689d7;--gp-lilac:#c3b5ff;--gp-ink:#151c42;gap:1rem!important;overflow:visible}
+.grand-palace-hall .grand-palace-hero{
+  position:relative;isolation:isolate;
+  background:
+    radial-gradient(circle at 9% 24%,rgba(226,231,255,.9) 0 1px,transparent 1.6px),
+    radial-gradient(circle at 74% 16%,rgba(234,236,255,.8) 0 1.3px,transparent 1.9px),
+    radial-gradient(circle at 62% 63%,rgba(201,232,255,.8) 0 1px,transparent 2px),
+    radial-gradient(circle at 88% 85%,rgba(249,247,255,.67) 0 1.6px,transparent 2.2px),
+    radial-gradient(ellipse at 82% 14%,rgba(128,169,255,.28),transparent 44%),
+    radial-gradient(ellipse at 0% 100%,rgba(164,118,231,.33),transparent 55%),
+    linear-gradient(125deg,#111a43,#252659 52%,#122644);
+  border:1px solid rgba(180,198,254,.41);
+  box-shadow:0 20px 45px rgba(7,12,37,.16),inset 0 0 38px rgba(220,206,255,.04);
+}
+.grand-palace-hall .grand-palace-hero:after{content:'✦';position:absolute;top:-28px;right:3%;z-index:-1;color:rgba(202,196,253,.14);font:normal clamp(7rem,20vw,16rem)/1 Georgia,serif;pointer-events:none}
+.grand-palace-hall .grand-palace-hero h1{font-weight:500;letter-spacing:-.032em;text-wrap:balance}
+.grand-palace-hall .grand-hero-stats{position:relative;z-index:1}
+.grand-palace-hall .grand-your-court{position:relative;overflow:hidden;border-color:rgba(163,176,244,.35);background:linear-gradient(113deg,rgba(67,70,150,.26),rgba(43,86,129,.17))}
+.grand-palace-hall .grand-my-crest{box-shadow:inset 0 0 25px rgba(216,208,255,.13),0 0 19px rgba(160,149,232,.14);transform:rotate(-4deg)}
+.grand-palace-tabs{position:sticky;top:8px;z-index:18;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.42rem;padding:.48rem;border:1px solid rgba(162,169,222,.31);border-radius:20px;background:rgba(22,29,67,.93);box-shadow:0 13px 34px rgba(11,15,41,.22);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.grand-palace-tab{appearance:none;display:flex;align-items:center;justify-content:center;gap:.5rem;min-width:0;min-height:63px;padding:.5rem .38rem;border-radius:15px;border:1px solid transparent;background:transparent;color:#d6d2f0;text-align:left;cursor:pointer;transition:transform .16s ease,border-color .16s ease,background .16s ease}
+.grand-palace-tab:hover{background:rgba(130,126,220,.15);transform:translateY(-1px)}
+.grand-palace-tab:focus-visible{outline:2px solid #bedcff;outline-offset:2px}
+.grand-palace-tab.active{border-color:rgba(193,180,255,.43);background:linear-gradient(135deg,rgba(117,101,205,.56),rgba(57,118,180,.29));color:#fff;box-shadow:inset 0 1px rgba(246,245,255,.2),0 6px 18px rgba(5,9,35,.13)}
+.grand-palace-tab-icon{display:grid;place-items:center;width:35px;height:35px;flex:none;border-radius:12px;background:rgba(189,175,246,.11);color:#d1c6ff;font:normal 1.42rem Georgia,serif}
+.grand-palace-tab.active .grand-palace-tab-icon{background:rgba(233,224,255,.17);color:#e6f2ff}
+.grand-palace-tab-copy{display:grid;gap:.17rem;min-width:0}
+.grand-palace-tab-copy strong{font-size:.73rem;line-height:1.2;white-space:normal}
+.grand-palace-tab-copy small{font-size:.59rem;line-height:1.1;color:#c8c1e4}
+.grand-palace-room{display:grid;gap:1.15rem;min-width:0;animation:grand-room-enter .32s ease both}
+@keyframes grand-room-enter{from{opacity:.67;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.grand-welcome{display:grid;gap:1rem}
+.grand-welcome-heading{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.25rem .3rem}
+.grand-welcome-heading h2{font:500 clamp(1.65rem,3.3vw,2.4rem)/1.12 Georgia,serif;letter-spacing:-.02em;margin:.25rem 0}
+.grand-welcome-heading p:last-child{font-size:.82rem;color:#c7c2e1;line-height:1.6}
+.grand-welcome-stamp{display:grid;place-items:center;width:72px;height:72px;flex:none;border-radius:22px;border:1px solid rgba(184,177,252,.52);background:radial-gradient(circle,rgba(176,168,255,.24),transparent 75%);color:#c6c1ff;font-size:2.5rem;transform:rotate(7deg)}
+.grand-paths{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.8rem}
+.grand-path{--path-glow:rgba(140,156,252,.3);position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:flex-start;gap:.55rem;min-height:220px;min-width:0;padding:1.15rem 1rem;border-radius:20px;border:1px solid rgba(182,179,247,.31);background:radial-gradient(ellipse at 87% 15%,var(--path-glow),transparent 62%),linear-gradient(147deg,rgba(45,52,124,.86),rgba(23,31,74,.86));box-shadow:0 8px 25px rgba(7,13,39,.13),inset 0 1px 0 rgba(246,246,255,.1);color:#f4f1ff;text-align:left;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;overflow:hidden}
+.grand-path:after{content:'✧';position:absolute;right:-11px;bottom:9px;font:4.5rem Georgia,serif;color:rgba(224,220,255,.055);pointer-events:none;z-index:-1}
+.grand-path:hover{transform:translateY(-5px);box-shadow:0 18px 30px rgba(8,15,38,.22);border-color:rgba(204,204,255,.65)}
+.grand-path:active{transform:translateY(-1px)}
+.grand-path:focus-visible{outline:2px solid #badaff;outline-offset:3px}
+.grand-path-courts{--path-glow:rgba(156,159,248,.3)}
+.grand-path-arts{--path-glow:rgba(114,185,231,.3)}
+.grand-path-commons{--path-glow:rgba(125,209,207,.25)}
+.grand-path-treasury{--path-glow:rgba(183,143,233,.27)}
+.grand-path-orbit{display:grid;place-items:center;width:50px;height:50px;border:1px solid rgba(209,210,255,.35);border-radius:17px;background:rgba(225,220,255,.1);font:1.8rem Georgia,serif;color:#e2ddff}
+.grand-path>small{font-size:.6rem;letter-spacing:.1em;color:#c0c7f7}
+.grand-path>strong{font:500 clamp(1.1rem,1.6vw,1.5rem)/1.17 Georgia,serif}
+.grand-path-description{font-size:.79rem;line-height:1.55;color:#dad4ec;flex:1}
+.grand-path-foot{display:flex;width:100%;justify-content:space-between;gap:.25rem;align-items:center;font-size:.65rem;color:#c9d9f8;padding-top:.7rem;border-top:1px solid rgba(191,186,240,.2)}
+.grand-path-foot b{font-size:1.2rem}
+.grand-today-dash{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem}
+.grand-today-dash article{display:flex;align-items:center;gap:.8rem;padding:1rem;border:1px solid rgba(171,175,238,.26);border-radius:16px;background:linear-gradient(125deg,rgba(106,103,177,.15),rgba(72,103,151,.12));min-width:0}
+.grand-today-dash article>span{font:1.6rem Georgia,serif;color:#c5bdf9}
+.grand-today-dash article>div{display:grid;gap:.3rem;min-width:0}
+.grand-today-dash article small{font-size:.63rem;letter-spacing:.04em;color:#bfc4df}
+.grand-today-dash article strong{font-size:1.24rem;color:#ecebff}
+.grand-today-dash article strong small{font-size:.7rem;font-weight:400;letter-spacing:0}
+.grand-daily-whisper{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;border:1px solid rgba(147,194,242,.36);border-radius:18px;padding:1rem;background:radial-gradient(circle at 7% 20%,rgba(109,178,221,.19),transparent 34%),linear-gradient(135deg,rgba(42,65,117,.28),rgba(76,65,151,.14))}
+.grand-daily-whisper>span{font:2.2rem Georgia,serif;color:#b6d2fa}
+.grand-daily-whisper>div{flex:1 1 220px}.grand-daily-whisper p:not(.eyebrow){font:italic 1rem/1.5 Georgia,serif;margin:.3rem 0}
+.grand-daily-whisper button{border:1px solid rgba(161,193,240,.5);background:rgba(122,142,212,.15);color:inherit;border-radius:12px;padding:.7rem .9rem;cursor:pointer;font-size:.77rem}
+.grand-daily-whisper button:hover{background:rgba(137,163,236,.28)}
+/* Gentle visual rhythm and better touch targets across the Palace rooms */
+.grand-palace-room :is(button,select,input,textarea){font-family:inherit}
+.grand-palace-room :is(button,a){touch-action:manipulation}
+.grand-palace-room :is(button,select){min-height:38px}
+.grand-palace-room :is(.grand-ranked-courts article,.grand-exhibit-grid article,.grand-quest-collection article,.grand-ceremony-gallery article){transition:box-shadow .16s ease,transform .16s ease}
+.grand-palace-room :is(.grand-exhibit-grid article,.grand-quest-collection article):hover{box-shadow:0 10px 30px rgba(9,11,43,.14)}
+/* Daylight retains colour and depth without white text on pale cards */
+.daylight .grand-palace-tabs{background:rgba(248,247,255,.95);border-color:#cdc4e7;box-shadow:0 10px 25px rgba(81,69,130,.12)}
+.daylight .grand-palace-tab{color:#4e416e}.daylight .grand-palace-tab-copy small{color:#6e6381}
+.daylight .grand-palace-tab-icon{background:#ece8fa;color:#62539a}
+.daylight .grand-palace-tab.active{color:#fff;background:linear-gradient(120deg,#6258ad,#446aa2);border-color:#6258ad}
+.daylight .grand-palace-tab.active .grand-palace-tab-icon{color:#fff;background:rgba(255,255,255,.16)}
+.daylight .grand-palace-tab.active .grand-palace-tab-copy small{color:#ebe5ff}
+.daylight .grand-welcome-heading h2,.daylight .grand-welcome-heading p{color:#392d59}
+.daylight .grand-welcome-stamp{border-color:#bcb0de;color:#645493;background:#f3effe}
+.daylight .grand-today-dash article,.daylight .grand-daily-whisper{background:linear-gradient(135deg,#fff,#eff2ff);color:#382a57;border-color:#d9d1eb}
+.daylight .grand-today-dash article strong{color:#382a57}
+.daylight .grand-today-dash article small{color:#615476}
+.daylight .grand-daily-whisper p:not(.eyebrow){color:#3a2b52}
+.daylight .grand-daily-whisper button{color:#49376f;background:#eee9fb;border-color:#c7b8e2}
+@media(max-width:1080px){.grand-paths{grid-template-columns:repeat(2,minmax(0,1fr))}.grand-palace-tab{flex-direction:column;text-align:center;gap:.15rem}.grand-palace-tab-icon{width:31px;height:31px}.grand-palace-tab-copy small{display:none}.grand-palace-tab{min-height:66px}.grand-palace-tab-copy strong{font-size:.72rem}}
+@media(max-width:680px){
+ .grand-palace-hall{gap:.75rem!important}
+ .grand-palace-tabs{top:5px;padding:.35rem;gap:.18rem;border-radius:14px}
+ .grand-palace-tab{padding:.35rem .12rem;min-height:58px;border-radius:10px}
+ .grand-palace-tab-icon{width:27px;height:27px;border-radius:8px;font-size:1.12rem}
+ .grand-palace-tab-copy strong{font-size:.59rem;line-height:1.15}
+ .grand-welcome-heading{align-items:flex-start}.grand-welcome-stamp{width:48px;height:48px;border-radius:14px;font-size:1.8rem}
+ .grand-paths{gap:.55rem}.grand-path{min-height:190px;padding:.85rem .75rem;border-radius:16px}
+ .grand-path-orbit{width:42px;height:42px;font-size:1.5rem;border-radius:12px}
+ .grand-path>strong{font-size:1.08rem}
+ .grand-path-description{font-size:.74rem}
+ .grand-path-foot{font-size:.59rem}
+ .grand-today-dash{grid-template-columns:1fr}
+ .grand-today-dash article{padding:.75rem}
+ .grand-daily-whisper>span{display:none}
+}
+@media(max-width:370px){.grand-palace-tab-copy strong{font-size:.54rem}.grand-paths{grid-template-columns:1fr}.grand-path{min-height:0}.grand-path-description{flex:initial}}
+@media(prefers-reduced-motion:reduce){.grand-palace-room{animation:none}.grand-path,.grand-palace-tab{transition:none}.grand-path:hover,.grand-palace-tab:hover{transform:none}}
