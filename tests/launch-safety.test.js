@@ -949,6 +949,14 @@ describe('Starry Palace launch safety',()=>{
     expect((live.match(/useEffect\(\(\)=>\{load\(\)\},/g)||[]).length).toBeGreaterThanOrEqual(15);
   });
 
+  it('keeps the room boundary mounted across navigation so cleanup failures stay inside the room layer',()=>{
+    expect(main).toContain('componentDidUpdate(prevProps)');
+    expect(main).toContain('palace-last-route-error');
+    expect(main).toContain('The Palace shell is still running. This problem was isolated to the current room.');
+    expect(main).toContain('<RouteErrorBoundary resetKey={resetKey} path={resetKey}>');
+    expect(main).not.toContain('<RouteErrorBoundary key={location.pathname+location.search}>');
+  });
+
   it('surfaces safe root diagnostics and lets auth/network failures degrade instead of blanking the Palace',()=>{
     const auth=read('src/auth.jsx');
     expect(main).toContain('palace-error-detail');
