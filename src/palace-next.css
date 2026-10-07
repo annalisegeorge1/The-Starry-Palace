@@ -3905,3 +3905,269 @@ body.reader-focus-mode .reader-chapter-head{
   border-color:rgba(96,77,142,.09);
   color:#62566e;
 }
+
+
+/* Neon constellations · Events sigil + calendar + daylight accents */
+
+/* One deliberately electric hand-drawn room sigil. */
+.palace-events-neon-icon .neon-stroke-cyan{
+  stroke:#5df6ff!important;
+  filter:drop-shadow(0 0 3px rgba(73,239,255,.75)) drop-shadow(0 0 7px rgba(73,239,255,.32));
+}
+.palace-events-neon-icon .neon-stroke-violet{
+  stroke:#aa73ff!important;
+  filter:drop-shadow(0 0 3px rgba(164,103,255,.72)) drop-shadow(0 0 7px rgba(164,103,255,.28));
+}
+.palace-events-neon-icon .neon-stroke-pink{
+  stroke:#ff61dc!important;
+  filter:drop-shadow(0 0 3px rgba(255,76,211,.78)) drop-shadow(0 0 8px rgba(255,76,211,.34));
+}
+.room-sigil-events{
+  border-color:rgba(93,246,255,.27)!important;
+  background:
+    radial-gradient(circle at 22% 18%,rgba(93,246,255,.15),transparent 42%),
+    radial-gradient(circle at 78% 76%,rgba(255,97,220,.12),transparent 44%),
+    linear-gradient(145deg,rgba(73,46,121,.52),rgba(23,31,66,.42))!important;
+  box-shadow:0 0 14px rgba(93,246,255,.10),0 0 20px rgba(255,97,220,.07)!important;
+}
+.full-nav-room>a:hover .room-sigil-events,
+.full-nav-room>a.active .room-sigil-events{
+  border-color:rgba(93,246,255,.52)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.12),
+    0 0 12px rgba(93,246,255,.18),
+    0 0 24px rgba(170,115,255,.15),
+    0 0 34px rgba(255,97,220,.08)!important;
+}
+
+/* Calendar surfaces carry a restrained neon edge in both themes. */
+.palace-month-calendar{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  border-color:rgba(134,114,219,.28)!important;
+  box-shadow:
+    0 18px 46px rgba(6,8,24,.15),
+    0 0 28px rgba(90,218,235,.045),
+    0 0 40px rgba(180,91,230,.035)!important;
+}
+.palace-month-calendar::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:-1px;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 3% 3%,rgba(78,239,255,.075),transparent 16rem),
+    radial-gradient(circle at 96% 5%,rgba(255,77,213,.065),transparent 16rem),
+    radial-gradient(circle at 62% 108%,rgba(145,87,255,.08),transparent 20rem);
+}
+.nightfall .palace-month-calendar{
+  background:
+    radial-gradient(circle at 8% 0%,rgba(69,220,242,.055),transparent 17rem),
+    radial-gradient(circle at 94% 5%,rgba(218,79,231,.055),transparent 18rem),
+    linear-gradient(150deg,#111329 0%,#101126 55%,#15102a 100%)!important;
+}
+.palace-month-calendar>header h2{
+  letter-spacing:-.025em;
+}
+.nightfall .palace-month-calendar>header h2{
+  color:#f1ecff;
+  text-shadow:0 0 18px rgba(165,114,255,.14);
+}
+.calendar-month-controls button{
+  border-color:rgba(126,203,230,.20)!important;
+  background:linear-gradient(145deg,rgba(64,56,111,.36),rgba(24,29,58,.50))!important;
+  color:#d8def7!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 0 12px rgba(91,227,242,.045);
+}
+.calendar-month-controls button:hover{
+  border-color:rgba(94,241,255,.42)!important;
+  box-shadow:0 0 14px rgba(94,241,255,.11),0 0 20px rgba(180,98,255,.07)!important;
+}
+.calendar-weekdays{
+  color:#9aa9cf!important;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.palace-calendar-days>button{
+  position:relative;
+  border-color:rgba(130,137,190,.18)!important;
+  background:linear-gradient(145deg,rgba(25,30,62,.72),rgba(20,22,47,.76))!important;
+  transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease,background .15s ease;
+}
+.palace-calendar-days>button:hover{
+  transform:translateY(-1px);
+  border-color:rgba(104,229,247,.34)!important;
+  box-shadow:0 0 13px rgba(93,238,255,.07),0 0 18px rgba(175,104,255,.05);
+}
+.palace-calendar-days>button[aria-current="date"]{
+  border-color:rgba(83,238,255,.48)!important;
+  box-shadow:inset 0 0 0 1px rgba(83,238,255,.14),0 0 13px rgba(83,238,255,.10)!important;
+}
+.palace-calendar-days>button[aria-current="date"]>span{
+  border-bottom-color:#59f2ff!important;
+  text-shadow:0 0 8px rgba(89,242,255,.45);
+}
+.palace-calendar-days>button[aria-pressed="true"]{
+  color:#fff!important;
+  border-color:rgba(205,119,255,.58)!important;
+  background:
+    radial-gradient(circle at 22% 20%,rgba(77,239,255,.17),transparent 48%),
+    radial-gradient(circle at 82% 78%,rgba(255,79,216,.15),transparent 48%),
+    linear-gradient(145deg,rgba(91,65,153,.82),rgba(38,43,90,.88))!important;
+  box-shadow:
+    0 0 15px rgba(83,238,255,.10),
+    0 0 24px rgba(180,103,255,.12),
+    0 0 34px rgba(255,79,216,.07)!important;
+}
+.palace-calendar-days button:focus-visible{
+  outline-color:#65efff!important;
+  box-shadow:0 0 0 3px rgba(101,239,255,.10),0 0 18px rgba(174,105,255,.10)!important;
+}
+.calendar-selection{
+  border-top-color:rgba(124,173,220,.17)!important;
+}
+.calendar-selection h3{
+  color:#dedaf0;
+}
+.calendar-selection li{
+  border-left-color:#62eaf8!important;
+  background:linear-gradient(90deg,rgba(87,229,245,.035),transparent 42%);
+}
+.calendar-heritage-legend i,
+.calendar-kind-dots i{
+  box-shadow:
+    0 0 5px color-mix(in srgb,var(--heritage-accent) 86%,transparent),
+    0 0 12px color-mix(in srgb,var(--heritage-accent) 42%,transparent)!important;
+}
+.legend-festival,.dot-festival{--heritage-accent:#ff62d4!important}
+.legend-heritage,.dot-heritage{--heritage-accent:#58eee7!important}
+.legend-history,.dot-history{--heritage-accent:#b886ff!important}
+.legend-language,.dot-language{--heritage-accent:#58c9ff!important}
+.legend-awareness,.dot-awareness{--heritage-accent:#63efbb!important}
+.legend-commemoration,.dot-commemoration{--heritage-accent:#9a7dff!important}
+
+/* Lunar New Year gets a distinct festive glow without overriding the calendar system. */
+.palace-month-calendar.heritage .palace-calendar-days>button.has-lunar-new-year{
+  border-color:rgba(255,80,174,.42)!important;
+  background:
+    radial-gradient(circle at 25% 22%,rgba(255,68,166,.18),transparent 50%),
+    radial-gradient(circle at 82% 76%,rgba(163,87,255,.15),transparent 48%),
+    linear-gradient(150deg,rgba(89,33,92,.58),rgba(30,27,61,.82))!important;
+  box-shadow:inset 0 0 18px rgba(255,87,182,.045),0 0 16px rgba(255,87,182,.08)!important;
+}
+.palace-month-calendar.heritage .calendar-selection li.heritage-lunar-new-year{
+  --heritage-accent:#ff58bd;
+  border-left-color:#ff58bd!important;
+  background:linear-gradient(90deg,rgba(255,88,189,.06),rgba(142,93,255,.025),transparent 65%);
+}
+
+/* Daylight: electric ink on soft paper, not a fluorescent wall. */
+.daylight .palace-events-neon-icon .neon-stroke-cyan{stroke:#00aeca!important;filter:drop-shadow(0 0 3px rgba(0,188,216,.35))}
+.daylight .palace-events-neon-icon .neon-stroke-violet{stroke:#774bff!important;filter:drop-shadow(0 0 3px rgba(116,70,255,.28))}
+.daylight .palace-events-neon-icon .neon-stroke-pink{stroke:#d62bb4!important;filter:drop-shadow(0 0 3px rgba(218,46,183,.30))}
+.daylight .room-sigil-events{
+  border-color:rgba(0,179,202,.26)!important;
+  background:
+    radial-gradient(circle at 25% 20%,rgba(40,227,241,.20),transparent 45%),
+    radial-gradient(circle at 82% 78%,rgba(232,57,190,.13),transparent 48%),
+    linear-gradient(145deg,rgba(255,255,255,.78),rgba(221,204,245,.62))!important;
+  box-shadow:0 0 14px rgba(0,181,202,.09),0 0 22px rgba(209,46,176,.07)!important;
+}
+.daylight .palace-month-calendar{
+  border-color:rgba(62,156,197,.22)!important;
+  background:
+    radial-gradient(circle at 7% 1%,rgba(0,224,239,.105),transparent 17rem),
+    radial-gradient(circle at 95% 5%,rgba(229,51,189,.09),transparent 18rem),
+    radial-gradient(circle at 65% 104%,rgba(123,79,255,.09),transparent 20rem),
+    linear-gradient(150deg,rgba(252,249,255,.96),rgba(238,234,248,.93))!important;
+  box-shadow:
+    0 16px 38px rgba(74,50,97,.07),
+    0 0 24px rgba(0,190,215,.045),
+    0 0 34px rgba(202,54,181,.035)!important;
+}
+.daylight .palace-month-calendar>header h2{
+  color:#382c4a;
+  text-shadow:0 0 16px rgba(111,71,255,.08);
+}
+.daylight .calendar-month-controls button{
+  color:#51435f!important;
+  border-color:rgba(0,166,194,.15)!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.84),rgba(229,220,245,.72))!important;
+  box-shadow:0 0 12px rgba(0,189,213,.035)!important;
+}
+.daylight .calendar-month-controls button:hover{
+  border-color:rgba(0,174,201,.38)!important;
+  box-shadow:0 0 12px rgba(0,190,214,.10),0 0 18px rgba(210,47,179,.055)!important;
+}
+.daylight .calendar-weekdays{color:#746482!important}
+.daylight .palace-calendar-days>button{
+  color:#40374f!important;
+  border-color:rgba(93,81,133,.12)!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.79),rgba(235,230,245,.78))!important;
+}
+.daylight .palace-calendar-days>button:hover{
+  border-color:rgba(0,175,202,.29)!important;
+  background:
+    radial-gradient(circle at 18% 16%,rgba(0,220,237,.07),transparent 52%),
+    linear-gradient(145deg,rgba(255,255,255,.90),rgba(236,230,247,.82))!important;
+}
+.daylight .palace-calendar-days>button[aria-current="date"]{
+  border-color:rgba(0,173,200,.43)!important;
+  box-shadow:inset 0 0 0 1px rgba(0,184,207,.10),0 0 12px rgba(0,184,207,.08)!important;
+}
+.daylight .palace-calendar-days>button[aria-current="date"]>span{
+  border-bottom-color:#00abc5!important;
+  text-shadow:0 0 8px rgba(0,171,197,.20);
+}
+.daylight .palace-calendar-days>button[aria-pressed="true"]{
+  color:#392a4a!important;
+  border-color:rgba(126,73,217,.36)!important;
+  background:
+    radial-gradient(circle at 20% 16%,rgba(31,217,235,.16),transparent 52%),
+    radial-gradient(circle at 82% 78%,rgba(224,57,190,.12),transparent 50%),
+    linear-gradient(145deg,rgba(246,240,255,.96),rgba(224,211,245,.92))!important;
+  box-shadow:
+    0 0 13px rgba(0,190,212,.075),
+    0 0 22px rgba(129,77,239,.08),
+    0 0 30px rgba(217,48,180,.045)!important;
+}
+.daylight .calendar-selection h3{color:#43364f}
+.daylight .calendar-selection li{
+  background:linear-gradient(90deg,rgba(0,189,211,.045),transparent 44%);
+}
+.daylight .palace-month-calendar.heritage .palace-calendar-days>button.has-lunar-new-year{
+  border-color:rgba(211,42,148,.30)!important;
+  background:
+    radial-gradient(circle at 20% 18%,rgba(255,62,169,.13),transparent 50%),
+    radial-gradient(circle at 82% 76%,rgba(128,72,245,.10),transparent 48%),
+    linear-gradient(145deg,rgba(255,247,253,.95),rgba(238,220,244,.90))!important;
+  box-shadow:0 0 15px rgba(211,42,148,.07)!important;
+}
+
+/* A few controlled neon glints across Daylight mode. */
+.daylight .global-search-live:focus-within,
+.daylight .heritage-search:focus-within,
+.daylight .palace-search.restored:focus-within{
+  border-color:rgba(0,171,198,.34)!important;
+  box-shadow:0 0 0 3px rgba(0,190,214,.055),0 0 18px rgba(126,74,224,.055)!important;
+}
+.daylight .room-tabs button.active,
+.daylight .reading-mode-tabs a.active,
+.daylight .search-lenses button.active,
+.daylight .tag-family-atlas>button.active{
+  border-color:rgba(0,165,194,.24)!important;
+  box-shadow:0 0 12px rgba(0,186,211,.055),0 0 18px rgba(183,54,203,.035)!important;
+}
+.daylight .top-icon-link:hover,
+.daylight .nav-toggle:hover,
+.daylight .command-trigger:hover{
+  border-color:rgba(0,169,197,.25)!important;
+  box-shadow:0 0 12px rgba(0,190,214,.07),0 0 16px rgba(201,52,180,.04)!important;
+}
+
+@media(prefers-reduced-motion:reduce){
+  .palace-calendar-days>button{transition:none!important}
+  .palace-calendar-days>button:hover{transform:none!important}
+}
