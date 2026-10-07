@@ -3620,3 +3620,63 @@ body.reader-focus-mode .reader-chapter-head{
     grid-template-columns:minmax(0,1fr)!important;
   }
 }
+
+
+/* Rotating Constellations · stop tablet cards becoming tall narrow towers. */
+@container palace-reading-room (max-width: 1100px){
+  .chic-discovery-court .legacy-constellation-list{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  .chic-discovery-court .legacy-constellation-list article,
+  .chic-discovery-court .legacy-constellation-list article.featured{
+    grid-template-columns:104px minmax(0,1fr)!important;
+    min-height:0!important;
+    gap:1rem!important;
+    padding:.95rem!important;
+    align-items:start!important;
+  }
+  .chic-discovery-court .legacy-constellation-cover{
+    width:104px!important;
+    min-width:104px!important;
+    height:auto!important;
+    aspect-ratio:3/4!important;
+  }
+  .chic-discovery-court .legacy-constellation-list h3{
+    font-size:clamp(1.28rem,3.4cqi,1.7rem)!important;
+    line-height:1.08!important;
+    margin:.3rem 0 .42rem!important;
+  }
+  .chic-discovery-court .legacy-constellation-list p{
+    max-width:70ch!important;
+    font-size:.78rem!important;
+    line-height:1.58!important;
+  }
+  .chic-discovery-court .legacy-constellation-list article>div>a{
+    font-size:.78rem!important;
+  }
+}
+@container palace-reading-room (max-width: 620px){
+  .chic-discovery-court .legacy-constellation-list article,
+  .chic-discovery-court .legacy-constellation-list article.featured{
+    grid-template-columns:74px minmax(0,1fr)!important;
+    gap:.72rem!important;
+    padding:.76rem!important;
+  }
+  .chic-discovery-court .legacy-constellation-cover{
+    width:74px!important;
+    min-width:74px!important;
+  }
+  .chic-discovery-court .legacy-constellation-list h3{
+    font-size:1.08rem!important;
+  }
+  .chic-discovery-court .legacy-constellation-list p{
+    font-size:.69rem!important;
+    line-height:1.5!important;
+  }
+}
+/* Fallback for browser/tablet modes that report a wide viewport while the Palace content is narrow. */
+@media(max-width:1440px){
+  .legacy-reading-page .chic-discovery-court .legacy-constellation-list{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+}
