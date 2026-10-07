@@ -335,3 +335,176 @@ grant execute on function public.get_grand_palace_hall() to authenticated;
 grant execute on function public.purchase_grand_palace_honour(text,integer) to authenticated;
 grant execute on function public.send_grand_palace_honour(uuid,text,text) to authenticated;
 grant execute on function public.set_grand_palace_theme(text) to authenticated;
+
+-- One immutable settlement record per member per quarter and award class.
+create table if not exists public.grand_palace_awards(
+ quarter_start date not null references public.grand_palace_seasons(quarter_start),
+ user_id uuid not null references public.profiles(id) on delete cascade,
+ award_kind text not null check(award_kind in ('palace_victory','top_ten_box')),
+ box_tier text not null check(box_tier in ('bronze','silver','gold','platinum','emerald')),
+ individual_rank integer,
+ details jsonb not null default '{}'::jsonb,
+ awarded_at timestamptz not null default now(),
+ primary key(quarter_start,user_id,award_kind)
+);
+alter table public.grand_palace_awards enable row level security;
+revoke all on public.grand_palace_awards from anon,authenticated;
+
+-- Existing Treasury ledger supports a new provenance without creating separate fake gifts.
+alter table public.gift_grant_ledger drop constraint if exists gift_grant_ledger_source_type_check;
+alter table public.gift_grant_ledger add constraint gift_grant_ledger_source_type_check
+ check(source_type in ('lucky_draw','monthly_court','event','achievement','council','system','ink_duel','grand_palace_quarter'));
+
+create or replace function private.add_grand_palace_display_honour(p_user uuid,p_kind text,p_quantity integer)
+returns void language plpgsql security definer set search_path='' as $$
+begin
+ if p_quantity<=0 then return; end if;
+ insert into public.grand_palace_honours(user_id,honour,display_count)
+ values(p_user,p_kind,p_quantity)
+ on conflict(user_id,honour) do update set display_count=public.grand_palace_honours.display_count+excluded.display_count;
+end $$;
+
+create or replace function private.grand_palace_grant_gift(
+  p_user uuid,p_season date,p_slot text,p_tier text)
+returns uuid language plpgsql security definer set search_path='' as $$
+declare v_gift uuid;
+begin
+ select g.id into v_gift from public.virtual_gifts g
+ where g.reward_eligible=true and g.art_status='final'
+ order by md5(p_season::text||p_user::text||p_slot||g.id::text) limit 1;
+ if v_gift is null then raise exception 'No finished Palace gift is available for the quarterly reward.'; end if;
+ insert into public.gift_grant_ledger(user_id,gift_id,tier,quantity,source_type,source_key,note)
+ values(p_user,v_gift,p_tier,1,'grand_palace_quarter',
+   'grand-palace:'||p_season::text||':'||p_slot,
+   'Grand Palace Constellation quarterly victory reward')
+ on conflict(user_id,source_type,source_key) do nothing;
+ return v_gift;
+end $$;
+
+-- Hourly scheduled settlement means no member needs to press Claim. Rewards are
+-- idempotent and awarded based on committed, verified activity and final rankings.
+create or replace function private.close_due_grand_palace_seasons()
+returns integer language plpgsql security definer set search_path='' as $$
+declare
+ v_season record;
+ v_winner smallint;
+ v_rank integer;
+ v_member record;
+ v_tier text;
+ v_theme text;
+ v_bonus integer;
+ v_hearts integer;
+ v_stars integer;
+ v_moons integer;
+ v_crowns integer;
+ v_slots integer;
+ v_slot integer;
+ v_gift uuid;
+ v_gifts jsonb;
+ v_finalized integer:=0;
+ v_next_quarter date:=date_trunc('quarter',now() at time zone 'UTC')::date;
+begin
+ perform pg_advisory_xact_lock(7040312);
+ insert into public.grand_palace_seasons(quarter_start,ends_at)
+ values(v_next_quarter,((v_next_quarter::timestamp+interval '3 months') at time zone 'UTC'))
+ on conflict(quarter_start) do nothing;
+
+ for v_season in
+   select quarter_start,ends_at,status from public.grand_palace_seasons
+   where status='active' and ends_at<=now() order by quarter_start for update
+ loop
+   -- Comparable score: earned, capped team points divided by the size of each Palace.
+   with members as (
+     select palace_id,count(*)::numeric as member_count from public.grand_palace_memberships group by palace_id
+   ), scores as (
+     select palace_id,sum(points)::bigint as total from public.grand_palace_daily_scores
+     where quarter_start=v_season.quarter_start group by palace_id
+   )
+   select gp.id into v_winner
+   from public.grand_palaces gp
+   join members m on m.palace_id=gp.id
+   join scores s on s.palace_id=gp.id
+   where s.total>0
+   order by s.total::numeric/greatest(m.member_count,1) desc,s.total desc,gp.id asc limit 1;
+
+   if v_winner is not null then
+     v_rank:=0;
+     for v_member in
+       select m.user_id,
+           coalesce(sum(d.points),0)::integer as individual_points
+       from public.grand_palace_memberships m
+       left join public.grand_palace_daily_scores d
+         on d.user_id=m.user_id and d.quarter_start=v_season.quarter_start
+       where m.palace_id=v_winner and m.joined_at<v_season.ends_at
+       group by m.user_id,m.joined_at
+       order by individual_points desc,m.joined_at,m.user_id
+     loop
+       v_rank:=v_rank+1;
+       -- All winning members receive at least one finished Bronze treasure.
+       v_gift:=private.grand_palace_grant_gift(
+            v_member.user_id,v_season.quarter_start,'winning-palace','bronze');
+       insert into public.grand_palace_awards(
+         quarter_start,user_id,award_kind,box_tier,details)
+       values(v_season.quarter_start,v_member.user_id,'palace_victory','bronze',
+              jsonb_build_object('gift_id',v_gift,'palace_id',v_winner))
+       on conflict(quarter_start,user_id,award_kind) do nothing;
+       -- Top ten only for participants who actually contributed this season.
+       if v_rank<=10 and v_member.individual_points>0 then
+         v_tier:=case when v_rank=1 then 'emerald' when v_rank=2 then 'platinum'
+                      when v_rank=3 then 'gold' when v_rank<=5 then 'silver' else 'bronze' end;
+         v_bonus:=case when v_rank=1 then 100 when v_rank=2 then 75
+                       when v_rank=3 then 55 when v_rank<=5 then 35 else 20 end;
+         v_hearts:=case when v_rank=1 then 12 when v_rank=2 then 10 when v_rank=3 then 8
+                        when v_rank<=5 then 5 else 3 end;
+         v_stars:=case when v_rank=1 then 5 when v_rank=2 then 3 when v_rank=3 then 2
+                       when v_rank<=5 then 2 else 1 end;
+         v_moons:=case when v_rank<=3 then 1 else 0 end;
+         v_crowns:=case when v_rank=1 then 1 else 0 end;
+         v_theme:=case when v_rank=1 then 'sapphire-regalia' when v_rank=2 then 'violet-dusk'
+                       when v_rank=3 then 'starlit-veil' when v_rank<=5 then 'moonlit-glass'
+                       else 'silver-tide' end;
+         v_slots:=case when v_rank<=2 then 2 else 1 end;
+         v_gifts:='[]'::jsonb;
+         for v_slot in 1..v_slots loop
+           v_gift:=private.grand_palace_grant_gift(
+                v_member.user_id,v_season.quarter_start,'box-'||v_slot::text,v_tier);
+           v_gifts:=v_gifts||jsonb_build_array(v_gift);
+         end loop;
+         perform private.add_grand_palace_display_honour(v_member.user_id,'heart',v_hearts);
+         perform private.add_grand_palace_display_honour(v_member.user_id,'star',v_stars);
+         perform private.add_grand_palace_display_honour(v_member.user_id,'moon',v_moons);
+         perform private.add_grand_palace_display_honour(v_member.user_id,'crown',v_crowns);
+         perform private.grant_celestial_points(
+           v_member.user_id,v_bonus,'participation','grand_palace_box',
+           'grand_palace_box',null,null,
+           'grand-palace:'||v_season.quarter_start::text||':box:'||v_member.user_id::text);
+         insert into public.grand_palace_theme_unlocks(user_id,theme_slug,source_key)
+         values(v_member.user_id,v_theme,'grand-palace:'||v_season.quarter_start::text)
+         on conflict(user_id,theme_slug) do nothing;
+         insert into public.grand_palace_awards(
+           quarter_start,user_id,award_kind,box_tier,individual_rank,details)
+         values(v_season.quarter_start,v_member.user_id,'top_ten_box',v_tier,v_rank,
+           jsonb_build_object(
+             'palace_id',v_winner,'points',v_bonus,'hearts',v_hearts,'stars',v_stars,
+             'moons',v_moons,'crowns',v_crowns,'theme',v_theme,'gift_ids',v_gifts))
+         on conflict(quarter_start,user_id,award_kind) do nothing;
+       end if;
+     end loop;
+   end if;
+   update public.grand_palace_seasons
+      set status='finalized',winner_id=v_winner,finalized_at=now()
+    where quarter_start=v_season.quarter_start;
+   v_finalized:=v_finalized+1;
+   v_winner:=null;
+ end loop;
+ return v_finalized;
+end $$;
+
+revoke all on function private.add_grand_palace_display_honour(uuid,text,integer) from public,anon,authenticated;
+revoke all on function private.grand_palace_grant_gift(uuid,date,text,text) from public,anon,authenticated;
+revoke all on function private.close_due_grand_palace_seasons() from public,anon,authenticated;
+
+-- Cron runs in the database and catches up if a previous hourly run was missed.
+-- Schedule separately after this migration has been applied and verified:
+-- select cron.schedule('grand-palace-season-settlement','5 * * * *',
+--   'select private.close_due_grand_palace_seasons()');
