@@ -246,12 +246,13 @@ export function ReadingLive({Frame}){
   {id:'wonder',glyph:'✦',label:'Children & Wonder',terms:['childrens','fantasy','wonderland','wizard','anne of green gables']},
   {id:'translated',glyph:'◇',label:'Translated Worlds',terms:['translated','tolstoy','dostoevsky','cervantes','dumas','pu songling']},
   {id:'chinese',glyph:'☾',label:'Chinese Classics',terms:['chinese','luo guanzhong','cao xueqin','pu songling','journey to the west','three kingdoms','red chamber','mission to heaven']},
+  {id:'black-caribbean',glyph:'✺',label:'Black & Caribbean',terms:['black caribbean','caribbean folklore','black short fiction','black memoir','black atlantic','black essays','mary prince','mary seacole','jamaican','annancy','chesnutt','douglass','harriet jacobs','equiano','du bois']},
   {id:'short',glyph:'✧',label:'Short Works',terms:['short story','novella','juvenilia','collected works','scandal in bohemia','benjamin button']}
  ];
  const classicHay=w=>[w.title,w.summary,w.language,w.profiles?.display_name,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase();
  const classicMatches=(w,lens)=>{if(lens==='all')return true;const set=classicCollections.find(x=>x.id===lens);return!!set&&set.terms.some(term=>classicHay(w).includes(term))};
  const classicEditionLabel=w=>workTags(w).some(t=>String(t.name||'').toLowerCase()==='original language classic')?'Original Chinese':w.language==='Chinese'?'English translation / adaptation':'Palace Classic';
- const classicShelf=[...(archiveWorks||[])].filter(w=>classicMatches(w,classicLens)).sort((a,b)=>String(a.profiles?.display_name||'').localeCompare(String(b.profiles?.display_name||''))||String(a.title||'').localeCompare(String(b.title||''))).slice(0,classicLens==='chinese'?16:10);
+ const classicShelf=[...(archiveWorks||[])].filter(w=>classicMatches(w,classicLens)).sort((a,b)=>String(a.profiles?.display_name||'').localeCompare(String(b.profiles?.display_name||''))||String(a.title||'').localeCompare(String(b.title||''))).slice(0,['chinese','black-caribbean'].includes(classicLens)?16:10);
  const advancedView=new URLSearchParams(location.search).get('view')==='search';const surpriseHandled=useRef(false);
  function surpriseMe(){const pool=filtered.length?filtered:roomWorks;if(!pool.length)return;const choice=pool[Math.floor(Math.random()*pool.length)];if(choice)navigate(storyHref(choice))}
  useEffect(()=>{if(surpriseHandled.current||!works||new URLSearchParams(location.search).get('surprise')!=='1')return;surpriseHandled.current=true;const pool=allReadingWorks;if(!pool.length){navigate('/reading',{replace:true});return}const choice=pool[Math.floor(Math.random()*pool.length)];if(choice)navigate(storyHref(choice),{replace:true})},[works,archiveWorks,readerState,location.search]);
