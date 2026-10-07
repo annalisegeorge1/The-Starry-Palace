@@ -5438,3 +5438,643 @@ body.writing-desk-open.daylight .chic-editor-form>.chic-editor-toolbar,
     text-align:left;
   }
 }
+
+
+/* Writing Chamber · luminous editorial refinement inspired by Prompt Orrery */
+body.writing-desk-open{
+  --writer-violet:153,111,232;
+  --writer-blue:100,157,241;
+  --writer-cyan:105,199,225;
+  --writer-pink:200,111,210;
+  --writer-ink:#17132d;
+  --writer-copy:#eee8f5;
+  --writer-muted:#9d93aa;
+}
+
+/* Give the Writing Chamber the same layered, luminous confidence as the Orrery. */
+body.writing-desk-open .chic-work-studio-head{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  padding:1.05rem 1.1rem!important;
+  border:1px solid rgba(var(--writer-violet),.18)!important;
+  border-radius:22px!important;
+  background:
+    radial-gradient(circle at 8% 18%,rgba(var(--writer-violet),.15),transparent 15rem),
+    radial-gradient(circle at 92% 10%,rgba(var(--writer-blue),.09),transparent 18rem),
+    linear-gradient(145deg,rgba(42,30,80,.73),rgba(18,15,42,.88))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.045),
+    0 15px 38px rgba(5,4,20,.12),
+    0 0 28px rgba(var(--writer-violet),.035)!important;
+}
+body.writing-desk-open .chic-work-studio-head::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  width:210px;
+  height:210px;
+  right:-85px;
+  top:-115px;
+  border:1px solid rgba(var(--writer-violet),.10);
+  border-radius:50%;
+  box-shadow:
+    0 0 0 22px rgba(var(--writer-blue),.018),
+    0 0 0 52px rgba(var(--writer-violet),.012);
+}
+body.writing-desk-open .studio-head-copy h1{
+  color:#f7f1fb!important;
+  font-size:clamp(1.55rem,2.2vw,2.15rem)!important;
+  letter-spacing:-.022em!important;
+  text-shadow:0 0 20px rgba(var(--writer-violet),.075);
+}
+body.writing-desk-open .studio-head-copy>p:not(.eyebrow){
+  color:#a89fb4!important;
+  font-size:.66rem!important;
+}
+body.writing-desk-open .studio-work-pulse{
+  gap:.4rem!important;
+  margin-top:.7rem!important;
+}
+body.writing-desk-open .studio-work-pulse>span{
+  min-height:52px!important;
+  padding:.45rem .62rem!important;
+  border:1px solid rgba(var(--writer-violet),.10)!important;
+  border-radius:12px!important;
+  background:
+    radial-gradient(circle at 18% 15%,rgba(var(--writer-violet),.07),transparent 4rem),
+    rgba(255,255,255,.012)!important;
+}
+body.writing-desk-open .studio-work-pulse strong{
+  color:#ece3f5!important;
+  font-size:.78rem!important;
+}
+body.writing-desk-open .studio-work-pulse small{
+  color:#8d8498!important;
+  font-size:.44rem!important;
+}
+
+/* Chapter rail becomes a proper glowing manuscript navigator. */
+body.writing-desk-open .writing-chapter-manager{
+  border-color:rgba(var(--writer-violet),.15)!important;
+  background:
+    radial-gradient(circle at 12% 4%,rgba(var(--writer-violet),.10),transparent 11rem),
+    linear-gradient(160deg,rgba(31,24,63,.78),rgba(16,14,37,.82))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 13px 28px rgba(4,3,17,.08)!important;
+}
+body.writing-desk-open .writing-chapter-manager-head h2{
+  color:#eee7f5!important;
+  font-size:1.08rem!important;
+}
+body.writing-desk-open .manuscript-overview{
+  border-color:rgba(var(--writer-blue),.14)!important;
+  background:
+    radial-gradient(circle at 12% 18%,rgba(var(--writer-blue),.09),transparent 5rem),
+    linear-gradient(145deg,rgba(37,31,73,.53),rgba(20,17,44,.50))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 8px 18px rgba(5,4,20,.06)!important;
+}
+body.writing-desk-open .manuscript-overview-ring{
+  border-color:rgba(var(--writer-blue),.24)!important;
+  box-shadow:
+    inset 0 0 0 4px rgba(var(--writer-blue),.035),
+    0 0 18px rgba(var(--writer-blue),.07)!important;
+}
+body.writing-desk-open .chapter-manager-row>button{
+  transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease,background .16s ease!important;
+}
+body.writing-desk-open .chapter-manager-row>button:hover{
+  transform:translateY(-1px)!important;
+  border-color:rgba(var(--writer-violet),.25)!important;
+  box-shadow:0 8px 18px rgba(5,4,20,.09),0 0 18px rgba(var(--writer-violet),.045)!important;
+}
+body.writing-desk-open .chapter-manager-row>button.active{
+  border-color:rgba(var(--writer-violet),.39)!important;
+  background:
+    radial-gradient(circle at 10% 18%,rgba(var(--writer-violet),.17),transparent 6rem),
+    linear-gradient(110deg,rgba(78,52,125,.40),rgba(31,25,63,.58))!important;
+  box-shadow:
+    inset 3px 0 0 rgba(var(--writer-violet),.74),
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 9px 23px rgba(5,4,20,.12),
+    0 0 24px rgba(var(--writer-violet),.075)!important;
+}
+
+/* Chapter heading reads like the top of an actual manuscript workspace. */
+body.writing-desk-open .editor-chapter-heading{
+  padding:.82rem .9rem!important;
+  border:1px solid rgba(var(--writer-violet),.12)!important;
+  border-radius:17px!important;
+  background:
+    radial-gradient(circle at 5% 0%,rgba(var(--writer-violet),.08),transparent 9rem),
+    rgba(22,18,49,.58)!important;
+}
+body.writing-desk-open .legacy-chapter-title>span{
+  color:#a79ab7!important;
+  font-size:.5rem!important;
+  letter-spacing:.13em!important;
+}
+body.writing-desk-open .legacy-chapter-title input{
+  min-height:48px!important;
+  padding:.42rem .12rem!important;
+  border:0!important;
+  border-bottom:1px solid rgba(var(--writer-violet),.13)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#f3edf7!important;
+  font:600 clamp(1.12rem,1.6vw,1.48rem)/1.2 Georgia,'Times New Roman',serif!important;
+}
+body.writing-desk-open .legacy-chapter-title input:focus{
+  border-bottom-color:rgba(var(--writer-violet),.42)!important;
+  box-shadow:0 7px 13px -12px rgba(var(--writer-violet),.45)!important;
+}
+
+/* Status pills become easier to scan. */
+body.writing-desk-open .writing-chapter-health span{
+  border:1px solid rgba(var(--writer-violet),.10)!important;
+  border-radius:999px!important;
+  background:rgba(255,255,255,.015)!important;
+  color:#9990a5!important;
+}
+body.writing-desk-open .writing-chapter-health .ready,
+body.writing-desk-open .writing-chapter-health .published{
+  border-color:rgba(106,191,161,.20)!important;
+  background:rgba(88,163,139,.065)!important;
+  color:#b9dfd1!important;
+}
+body.writing-desk-open .writing-chapter-health .scheduled,
+body.writing-desk-open .writing-chapter-health .scheduled-time{
+  border-color:rgba(var(--writer-blue),.19)!important;
+  background:rgba(var(--writer-blue),.055)!important;
+  color:#b9caea!important;
+}
+
+/* Moonlit Sprint gets Orrery-like depth rather than reading as a flat utility. */
+body.writing-desk-open .writer-sprint-orbit{
+  position:relative!important;
+  isolation:isolate!important;
+  border-color:rgba(var(--writer-pink),.20)!important;
+  background:
+    radial-gradient(circle at 8% 25%,rgba(var(--writer-pink),.13),transparent 8rem),
+    radial-gradient(circle at 88% 10%,rgba(var(--writer-violet),.10),transparent 12rem),
+    linear-gradient(145deg,rgba(47,32,80,.72),rgba(21,17,46,.78))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 10px 24px rgba(5,4,20,.09),
+    0 0 26px rgba(var(--writer-pink),.04)!important;
+}
+body.writing-desk-open .writer-sprint-sigil{
+  border-color:rgba(var(--writer-pink),.35)!important;
+  background:
+    radial-gradient(circle at 35% 30%,rgba(255,255,255,.10),transparent 34%),
+    linear-gradient(145deg,rgba(var(--writer-pink),.20),rgba(var(--writer-violet),.10))!important;
+  color:#eadbf2!important;
+  box-shadow:
+    0 0 0 4px rgba(var(--writer-pink),.035),
+    0 0 18px rgba(var(--writer-pink),.12)!important;
+}
+
+/* The right rail is a constellation of distinct but related writing tools. */
+body.writing-desk-open .chic-editor-stats,
+body.writing-desk-open .writer-view-controls,
+body.writing-desk-open .writer-document-map,
+body.writing-desk-open .writer-margin-notes,
+body.writing-desk-open .writer-find-replace,
+body.writing-desk-open .legacy-spellcheck,
+body.writing-desk-open .revision-note-field,
+body.writing-desk-open .legacy-editor-status{
+  position:relative!important;
+  overflow:hidden!important;
+  border-color:rgba(var(--writer-accent,153,111,232),.17)!important;
+  background:
+    radial-gradient(circle at 7% 8%,rgba(var(--writer-accent,153,111,232),.10),transparent 8rem),
+    linear-gradient(150deg,rgba(37,29,72,.62),rgba(18,15,41,.72))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.028),
+    0 9px 22px rgba(5,4,20,.065),
+    0 0 22px rgba(var(--writer-accent,153,111,232),.025)!important;
+}
+body.writing-desk-open .chic-editor-stats{--writer-accent:100,157,241}
+body.writing-desk-open .writer-view-controls{--writer-accent:153,111,232}
+body.writing-desk-open .writer-document-map{--writer-accent:105,199,225}
+body.writing-desk-open .writer-margin-notes{--writer-accent:200,111,210}
+body.writing-desk-open .writer-find-replace{--writer-accent:130,130,234}
+body.writing-desk-open .legacy-spellcheck{--writer-accent:105,190,159}
+body.writing-desk-open .revision-note-field{--writer-accent:184,132,220}
+body.writing-desk-open .legacy-editor-status{--writer-accent:108,144,209}
+
+/* Page-feel card: clearer controls, font size, larger type. */
+.writer-view-heading{
+  grid-column:1/-1;
+  display:grid;
+  grid-template-columns:38px minmax(0,1fr);
+  gap:.52rem;
+  align-items:center;
+  padding-bottom:.5rem;
+  border-bottom:1px solid rgba(var(--writer-violet),.10);
+}
+.writer-view-heading>span{
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(var(--writer-violet),.34);
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 35% 28%,rgba(255,255,255,.10),transparent 35%),
+    linear-gradient(145deg,rgba(var(--writer-violet),.20),rgba(var(--writer-blue),.08));
+  color:#e8dcf3;
+  font-size:.84rem;
+  box-shadow:0 0 0 4px rgba(var(--writer-violet),.03),0 0 16px rgba(var(--writer-violet),.11);
+}
+.writer-view-heading small{
+  display:block;
+  color:#91859f;
+  font-size:.43rem;
+  font-weight:800;
+  letter-spacing:.12em;
+}
+.writer-view-heading strong{
+  display:block;
+  margin-top:.06rem;
+  color:#e8e0ef;
+  font:600 .68rem Georgia,'Times New Roman',serif;
+}
+body.writing-desk-open .writer-view-controls label>span,
+.writer-text-size-control>span{
+  color:#9e93aa!important;
+  font-size:.52rem!important;
+  font-weight:700!important;
+}
+body.writing-desk-open .writer-view-controls select{
+  min-height:43px!important;
+  border-color:rgba(var(--writer-violet),.13)!important;
+  background:rgba(10,8,28,.36)!important;
+  color:#dfd7e7!important;
+  font-size:.61rem!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.015);
+}
+.writer-text-size-control{
+  display:grid;
+  gap:.25rem;
+}
+.writer-text-size-control>div{
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr) 42px;
+  min-height:43px;
+  border:1px solid rgba(var(--writer-violet),.13);
+  border-radius:10px;
+  overflow:hidden;
+  background:rgba(10,8,28,.36);
+}
+.writer-text-size-control button{
+  min-height:42px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:rgba(255,255,255,.014)!important;
+  color:#c8bbd8!important;
+  font-size:.62rem!important;
+}
+.writer-text-size-control button:first-child{border-right:1px solid rgba(var(--writer-violet),.10)!important}
+.writer-text-size-control button:last-child{border-left:1px solid rgba(var(--writer-violet),.10)!important}
+.writer-text-size-control button:hover:not(:disabled){
+  background:rgba(var(--writer-violet),.10)!important;
+  color:#f0e8f6!important;
+}
+.writer-text-size-control strong{
+  display:grid;
+  place-items:center;
+  color:#eee7f4;
+  font:600 .67rem Georgia,'Times New Roman',serif;
+}
+.writer-view-toggles{
+  grid-column:1/-1;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.36rem;
+  margin-top:.02rem;
+}
+.writer-view-toggles button{
+  min-width:0!important;
+  min-height:42px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:.28rem!important;
+  padding:.4rem!important;
+  border:1px solid rgba(var(--writer-violet),.10)!important;
+  border-radius:10px!important;
+  background:rgba(255,255,255,.012)!important;
+  color:#9d93a8!important;
+  font-size:.52rem!important;
+}
+.writer-view-toggles button.active{
+  border-color:rgba(var(--writer-violet),.31)!important;
+  background:
+    radial-gradient(circle at 25% 25%,rgba(var(--writer-violet),.14),transparent 4rem),
+    rgba(var(--writer-violet),.07)!important;
+  color:#eee5f5!important;
+  box-shadow:0 0 15px rgba(var(--writer-violet),.05)!important;
+}
+
+/* Stats feel intentional and tactile. */
+body.writing-desk-open .writing-goal-ring{
+  border-color:rgba(var(--writer-blue),.26)!important;
+  box-shadow:0 0 0 4px rgba(var(--writer-blue),.028),0 0 18px rgba(var(--writer-blue),.065)!important;
+}
+body.writing-desk-open .writing-count-block>div:last-child>strong{
+  color:#f1ebf6!important;
+  text-shadow:0 0 15px rgba(var(--writer-blue),.06);
+}
+body.writing-desk-open .goal-presets button.active{
+  border-color:rgba(var(--writer-blue),.30)!important;
+  background:rgba(var(--writer-blue),.11)!important;
+  color:#e6eefb!important;
+}
+
+/* Details headers act like miniature Orrery cards when opened. */
+body.writing-desk-open .writer-document-map>summary,
+body.writing-desk-open .writer-margin-notes>summary,
+body.writing-desk-open .writer-find-replace>summary{
+  color:#dcd4e6!important;
+  transition:background .16s ease,color .16s ease!important;
+}
+body.writing-desk-open .writer-document-map>summary:hover,
+body.writing-desk-open .writer-margin-notes>summary:hover,
+body.writing-desk-open .writer-find-replace>summary:hover{
+  background:rgba(var(--writer-accent),.045)!important;
+  color:#f0e9f5!important;
+}
+body.writing-desk-open details[open]>summary{
+  border-bottom:1px solid rgba(var(--writer-accent),.10)!important;
+}
+body.writing-desk-open details>summary small{
+  color:#837b8d!important;
+  font-size:.44rem!important;
+}
+
+/* The sticky editor bar now has visible control groups rather than tiny loose buttons. */
+body.writing-desk-open .writer-format-scroll .editor-tool-group{
+  padding:.18rem!important;
+  border:1px solid rgba(var(--writer-violet),.085)!important;
+  border-radius:10px!important;
+  background:rgba(255,255,255,.012)!important;
+}
+body.writing-desk-open .writer-format-scroll .editor-tool-group:nth-child(2){
+  border-color:rgba(var(--writer-violet),.13)!important;
+  background:rgba(var(--writer-violet),.025)!important;
+}
+body.writing-desk-open .writer-format-scroll .editor-tool-group:nth-child(3){
+  border-color:rgba(var(--writer-blue),.12)!important;
+  background:rgba(var(--writer-blue),.022)!important;
+}
+body.writing-desk-open .writer-format-scroll .editor-tool-group:nth-child(5){
+  border-color:rgba(var(--writer-cyan),.12)!important;
+  background:rgba(var(--writer-cyan),.018)!important;
+}
+body.writing-desk-open .writer-format-scroll button,
+body.writing-desk-open .writer-format-scroll a{
+  min-height:36px!important;
+  border-color:transparent!important;
+  background:transparent!important;
+  color:#ada2b8!important;
+  font-size:.56rem!important;
+  transition:background .14s ease,color .14s ease,box-shadow .14s ease!important;
+}
+body.writing-desk-open .writer-format-scroll button:hover,
+body.writing-desk-open .writer-format-scroll a:hover{
+  background:rgba(var(--writer-violet),.10)!important;
+  color:#f1e9f7!important;
+  box-shadow:0 0 13px rgba(var(--writer-violet),.05)!important;
+}
+body.writing-desk-open .writer-chapter-jump-main select{
+  font-size:.61rem!important;
+}
+body.writing-desk-open .writer-chapter-jump-actions>button{
+  font-size:.53rem!important;
+}
+
+/* Manuscript itself: stronger page edge + refined literary hierarchy. */
+body.writing-desk-open .writing-page-stage{
+  position:relative!important;
+  overflow:visible!important;
+  border-color:rgba(var(--writer-violet),.14)!important;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(var(--writer-violet),.07),transparent 25rem),
+    radial-gradient(circle at 95% 12%,rgba(var(--writer-blue),.035),transparent 18rem),
+    rgba(11,9,29,.48)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025),
+    0 18px 42px rgba(4,3,17,.08)!important;
+}
+body.writing-desk-open .writing-page-stage::before{
+  content:"";
+  position:absolute;
+  pointer-events:none;
+  inset:12px;
+  border:1px solid rgba(var(--writer-violet),.055);
+  border-radius:15px;
+}
+body.writing-desk-open .legacy-writing-canvas{
+  font-size:var(--writer-font-size,20px)!important;
+  letter-spacing:.002em!important;
+  text-rendering:optimizeLegibility;
+  border-color:rgba(var(--writer-violet),.16)!important;
+  background:
+    radial-gradient(circle at 12% 0%,rgba(var(--writer-violet),.035),transparent 22rem),
+    linear-gradient(180deg,rgba(31,27,50,.985),rgba(24,21,40,.99))!important;
+  color:#eee9f1!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 25px 70px rgba(4,3,16,.20),
+    0 0 34px rgba(var(--writer-violet),.035)!important;
+}
+body.writing-desk-open .writing-page-stage.font-serif .legacy-writing-canvas{
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif!important;
+}
+body.writing-desk-open .writing-page-stage.font-sans .legacy-writing-canvas{
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important;
+  letter-spacing:.004em!important;
+}
+body.writing-desk-open .writing-page-stage.font-mono .legacy-writing-canvas{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace!important;
+  letter-spacing:.006em!important;
+}
+body.writing-desk-open .writing-page-stage.font-accessible .legacy-writing-canvas{
+  font-family:Verdana,Tahoma,Arial,sans-serif!important;
+  letter-spacing:.012em!important;
+  word-spacing:.025em!important;
+}
+body.writing-desk-open .legacy-writing-canvas p{
+  margin:0 0 1.05em!important;
+}
+body.writing-desk-open .legacy-writing-canvas h2{
+  margin:1.7em 0 .65em!important;
+  color:#f5eef8!important;
+  font-size:1.58em!important;
+  line-height:1.22!important;
+  letter-spacing:-.016em!important;
+}
+body.writing-desk-open .legacy-writing-canvas h3{
+  margin:1.45em 0 .55em!important;
+  color:#e9e1ef!important;
+  font-size:1.26em!important;
+  line-height:1.28!important;
+}
+body.writing-desk-open .legacy-writing-canvas blockquote{
+  margin:1.35em 0!important;
+  padding:.18em 0 .18em 1em!important;
+  border-left:2px solid rgba(var(--writer-violet),.38)!important;
+  color:#cfc5d8!important;
+  font-style:italic!important;
+}
+body.writing-desk-open .legacy-writing-canvas ul,
+body.writing-desk-open .legacy-writing-canvas ol{
+  margin:.4em 0 1.05em 1.35em!important;
+  padding:0!important;
+}
+body.writing-desk-open .legacy-writing-canvas li{
+  margin:.28em 0!important;
+}
+body.writing-desk-open .legacy-writing-canvas::selection{
+  background:rgba(var(--writer-violet),.28)!important;
+  color:#fff!important;
+}
+
+/* Preserve the three desk moods while using the upgraded typography. */
+body.writing-desk-open .writing-page-stage.mood-moonlit .legacy-writing-canvas{
+  background:
+    radial-gradient(circle at 12% 0%,rgba(var(--writer-violet),.055),transparent 21rem),
+    linear-gradient(180deg,rgba(34,29,54,.99),rgba(25,22,42,.995))!important;
+}
+body.writing-desk-open .writing-page-stage.mood-ink .legacy-writing-canvas{
+  background:
+    radial-gradient(circle at 90% 0%,rgba(var(--writer-blue),.022),transparent 17rem),
+    linear-gradient(180deg,rgba(14,13,27,.995),rgba(9,9,19,.998))!important;
+  color:#ece8ef!important;
+}
+body.writing-desk-open .writing-page-stage.mood-paper .legacy-writing-canvas{
+  background:
+    radial-gradient(circle at 12% 0%,rgba(122,95,170,.035),transparent 20rem),
+    linear-gradient(180deg,#f7f3ed,#f0ece5)!important;
+  color:#332d36!important;
+  border-color:rgba(85,66,102,.15)!important;
+  box-shadow:0 22px 60px rgba(19,12,28,.15),inset 0 1px 0 rgba(255,255,255,.86)!important;
+}
+body.writing-desk-open .writing-page-stage.mood-paper .legacy-writing-canvas h2,
+body.writing-desk-open .writing-page-stage.mood-paper .legacy-writing-canvas h3{
+  color:#2f2934!important;
+}
+body.writing-desk-open .writing-page-stage.mood-paper .legacy-writing-canvas blockquote{
+  color:#5c5363!important;
+  border-left-color:rgba(104,74,146,.34)!important;
+}
+
+/* Publication controls are prominent but calmer than the manuscript. */
+body.writing-desk-open .chic-studio-buttons{
+  border-color:rgba(var(--writer-violet),.17)!important;
+  background:
+    radial-gradient(circle at 8% 0%,rgba(var(--writer-violet),.08),transparent 9rem),
+    rgba(19,16,43,.88)!important;
+  box-shadow:0 12px 26px rgba(5,4,20,.10)!important;
+}
+body.writing-desk-open .chic-studio-buttons>button{
+  border-radius:10px!important;
+}
+body.writing-desk-open .chic-studio-buttons .publish-button{
+  border-color:rgba(var(--writer-violet),.34)!important;
+  background:linear-gradient(135deg,rgba(113,78,180,.72),rgba(81,104,178,.55))!important;
+  box-shadow:0 0 18px rgba(var(--writer-violet),.075)!important;
+}
+
+/* Daylight version keeps the luminous structure without looking washed out. */
+.daylight body.writing-desk-open .chic-work-studio-head,
+body.writing-desk-open.daylight .chic-work-studio-head,
+.daylight .writing-chapter-manager,
+.daylight .editor-chapter-heading{
+  background:
+    radial-gradient(circle at 8% 12%,rgba(var(--writer-violet),.08),transparent 14rem),
+    linear-gradient(145deg,rgba(255,255,255,.96),rgba(246,242,250,.92))!important;
+  border-color:rgba(var(--writer-violet),.16)!important;
+  box-shadow:0 12px 30px rgba(74,51,99,.065),inset 0 1px 0 rgba(255,255,255,.92)!important;
+}
+.daylight body.writing-desk-open .studio-head-copy h1,
+body.writing-desk-open.daylight .studio-head-copy h1,
+.daylight .legacy-chapter-title input,
+.daylight .writing-chapter-manager-head h2{
+  color:#3d314a!important;
+  text-shadow:none!important;
+}
+.daylight .chic-editor-stats,
+.daylight .writer-view-controls,
+.daylight .writer-document-map,
+.daylight .writer-margin-notes,
+.daylight .writer-find-replace,
+.daylight .legacy-spellcheck,
+.daylight .revision-note-field,
+.daylight .legacy-editor-status{
+  background:
+    radial-gradient(circle at 7% 8%,rgba(var(--writer-accent,153,111,232),.055),transparent 8rem),
+    rgba(255,255,255,.78)!important;
+  border-color:rgba(var(--writer-accent,153,111,232),.13)!important;
+  box-shadow:0 7px 18px rgba(72,49,95,.04),inset 0 1px 0 rgba(255,255,255,.9)!important;
+}
+.daylight .writer-view-heading strong,
+.daylight .writing-count-block>div:last-child>strong,
+.daylight .writer-text-size-control strong{
+  color:#44384f!important;
+}
+.daylight .writer-view-controls select,
+.daylight .writer-text-size-control>div{
+  background:rgba(255,255,255,.78)!important;
+  border-color:rgba(96,77,142,.11)!important;
+  color:#45394f!important;
+}
+.daylight .writer-text-size-control button{
+  color:#665972!important;
+}
+.daylight .writer-view-toggles button{
+  background:rgba(255,255,255,.55)!important;
+  color:#665d70!important;
+  border-color:rgba(96,77,142,.09)!important;
+}
+.daylight .writer-view-toggles button.active{
+  background:rgba(var(--writer-violet),.08)!important;
+  color:#483750!important;
+  border-color:rgba(var(--writer-violet),.20)!important;
+}
+
+/* Tablet and mobile retain the richer hierarchy without crowding the editor. */
+@media(max-width:1279px){
+  .writer-view-heading{
+    grid-column:1/-1;
+  }
+}
+@media(max-width:760px){
+  body.writing-desk-open .studio-head-copy h1{font-size:1.45rem!important}
+  body.writing-desk-open .legacy-writing-canvas{
+    font-size:clamp(16px,var(--writer-font-size,19px),23px)!important;
+  }
+  .writer-view-toggles{
+    grid-template-columns:1fr;
+  }
+  .writer-view-toggles button{
+    justify-content:flex-start!important;
+    padding:.45rem .55rem!important;
+  }
+  body.writing-desk-open .writer-format-scroll .editor-tool-group{
+    padding:.14rem!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  body.writing-desk-open .chapter-manager-row>button,
+  body.writing-desk-open .writer-format-scroll button,
+  body.writing-desk-open .writer-format-scroll a{
+    transition:none!important;
+  }
+  body.writing-desk-open .chapter-manager-row>button:hover{
+    transform:none!important;
+  }
+}
