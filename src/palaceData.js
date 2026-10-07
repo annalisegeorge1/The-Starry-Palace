@@ -757,8 +757,11 @@ export async function getArchive(userId=null){
  return rows.map(r=>({...r,saved:byId.has(r.id),visited_at:byId.get(r.id)?.visited_at||null}))
 }
 export async function getArchiveText(recordId){
- const{data,error}=await needClient().from('archive_texts').select('record_id,body_text,source_url,source_title,source_license,edition_note,first_publication_year,word_count,updated_at').eq('record_id',recordId).maybeSingle();
- if(error)throw error;return data
+ const[{data,error},{data:translations,error:translationError}]=await Promise.all([
+  needClient().from('archive_texts').select('record_id,body_text,source_url,source_title,source_license,edition_note,first_publication_year,word_count,updated_at').eq('record_id',recordId).maybeSingle(),
+  needClient().from('archive_translation_records').select('language,translator_name,scope,rights_basis,status,notes').eq('record_id',recordId).in('status',['approved','published']).order('created_at',{ascending:true})
+ ]);
+ if(error)throw error;if(translationError)throw translationError;return data?{...data,translations:translations||[]}:null
 }
 export async function saveArchiveRecord(userId,recordId){const{error}=await needClient().from('user_archive_records').upsert({user_id:userId,record_id:recordId,saved:true,visited_at:new Date().toISOString(),updated_at:new Date().toISOString()},{onConflict:'user_id,record_id'});if(error)throw error}
 export async function setArchiveRecordSaved(userId,recordId,saved){
