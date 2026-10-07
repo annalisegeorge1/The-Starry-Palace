@@ -3561,3 +3561,62 @@ body.reader-focus-mode .reader-chapter-head{
     line-height:1.5!important;
   }
 }
+
+
+/* Reading catalogue · actual-room-width breakpoint
+   The Reading Room itself, not the device viewport, decides when two cards fit. */
+.legacy-reading-page{
+  container-type:inline-size;
+  container-name:palace-reading-room;
+}
+@container palace-reading-room (max-width: 980px){
+  .story-shelf.refined.chic-story-catalogue{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  .story-shelf.refined.chic-story-catalogue .story-row{
+    grid-template-columns:96px minmax(0,1fr)!important;
+    min-height:0!important;
+    gap:1rem!important;
+    padding:1rem!important;
+  }
+  .story-shelf.refined.chic-story-catalogue .story-cover{
+    width:96px!important;
+    max-width:96px!important;
+    height:auto!important;
+    aspect-ratio:2/3!important;
+  }
+  .story-shelf.refined.chic-story-catalogue .story-row h2{
+    font-size:clamp(1.22rem,3.2cqi,1.55rem)!important;
+    line-height:1.08!important;
+  }
+  .story-shelf.refined.chic-story-catalogue .story-row>div:last-child>p:not(.story-meta){
+    max-width:70ch!important;
+    font-size:.8rem!important;
+    line-height:1.58!important;
+  }
+}
+@container palace-reading-room (max-width: 620px){
+  .story-shelf.refined.chic-story-catalogue .story-row{
+    grid-template-columns:72px minmax(0,1fr)!important;
+    gap:.72rem!important;
+    padding:.78rem!important;
+  }
+  .story-shelf.refined.chic-story-catalogue .story-cover{
+    width:72px!important;
+    max-width:72px!important;
+  }
+  .story-shelf.refined.chic-story-catalogue .story-row h2{
+    font-size:1.06rem!important;
+  }
+  .story-shelf.refined.chic-story-catalogue .story-row footer{
+    align-items:flex-start!important;
+    flex-direction:column!important;
+    gap:.55rem!important;
+  }
+}
+/* Fallback for browsers that do not apply container queries reliably. */
+@media(max-width:1180px){
+  .legacy-reading-page .story-shelf.refined.chic-story-catalogue{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+}
