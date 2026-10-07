@@ -1052,6 +1052,7 @@ export function MemberProfileLive({Frame}){
     <p className="legacy-profile-meta">@{p.username}{roles.length?' · '+roles.join(' · '):''}{p.pronouns?' · '+p.pronouns:''}</p>
     {intro&&<blockquote>“{intro}”</blockquote>}
     {interests.length>0&&<div className="legacy-profile-tags">{interests.map(x=><span key={x}>{x}</span>)}</div>}
+    {data.grandIdentity&&<div className="grand-profile-identity"><Link to="/grand-palaces" className="grand-profile-crest" style={{borderColor:data.grandIdentity.accent}}><span>{data.grandIdentity.sigil}</span><strong>{data.grandIdentity.palace_name}</strong><small>GRAND PALACE · VIEW THE QUARTERLY RACE →</small></Link><div className="grand-profile-honours" aria-label="Earned or received honour tokens">{[['heart','♥'],['star','✦'],['moon','☾'],['crown','♛']].map(([key,glyph])=><span key={key} className={'grand-profile-token '+key}><b>{glyph}</b><strong>{data.grandIdentity.honours?.[key]||0}</strong><small>{key.toUpperCase()}</small></span>)}</div></div>}
     <div className="chamber-crown-ribbon" aria-label="Worn Palace identity">
      <span className="chamber-crown-title"><i aria-hidden="true">♕</i><small>WORN TITLE</small><strong>{p.title||'Palace Member'}</strong></span>
      {wornAchievement&&<span className={"chamber-crown-honour "+(wornAchievement.display_tier||'bronze')}><i aria-hidden="true">✦</i><small>{(wornAchievement.display_tier||'bronze').toUpperCase()} PATH</small><strong>{wornAchievement.achievement_families?.name||'Palace achievement'}</strong></span>}
