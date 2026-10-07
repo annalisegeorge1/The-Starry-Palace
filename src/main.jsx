@@ -206,6 +206,55 @@ function FrameShell({children}){
  const activeRoom=visibleRooms.find(r=>location.pathname===r.path||r.sections.some(([,p])=>{const target=resolveRoomPath(p);return target&&location.pathname===target.split('?')[0]})||(r.id==='reading'&&['/comics','/comic/','/work/','/lost-works','/tags','/series'].some(p=>location.pathname.startsWith(p)))||(r.id==='writing'&&location.pathname.startsWith('/writing'))||(r.id==='life'&&['/palace-life','/club/','/search','/honour','/activity'].some(p=>location.pathname.startsWith(p))||(r.id==='life'&&location.pathname.startsWith('/member/')&&location.pathname!==('/member/'+(shellProfile?.username||''))))||(r.id==='events'&&location.pathname.startsWith('/events'))||(r.id==='treasury'&&location.pathname.startsWith('/treasury'))||(r.id==='settings'&&location.pathname.startsWith('/settings')));
  const currentHref=location.pathname+location.search;
  const activeSection=activeRoom?.sections.find(([,path])=>resolveRoomPath(path)===currentHref);
+ const passageMap={
+  palace:[
+   {glyph:'◈',label:'Find a story',detail:'Reading Rooms',path:'/reading'},
+   {glyph:'✎',label:'Return to the page',detail:'Writing Chamber',path:session?'/writing':'/login'},
+   {glyph:'♢',label:'See what people are saying',detail:'Palace Life',path:session?'/palace-life':'/login'}
+  ],
+  reading:[
+   {glyph:'▧',label:'Keep what you found',detail:'My Library',path:session?'/library':'/login'},
+   {glyph:'♢',label:'Talk about stories',detail:'Palace Commons',path:session?'/palace-life?room=commons':'/login'},
+   {glyph:'✎',label:'Make something of your own',detail:'Writing Chamber',path:session?'/writing':'/login'}
+  ],
+  library:[
+   {glyph:'◈',label:'Discover another world',detail:'Reading Rooms',path:'/reading'},
+   {glyph:'✎',label:'Open your own manuscript',detail:'Writing Chamber',path:'/writing'},
+   {glyph:'♢',label:'Visit the Commons',detail:'Palace Life',path:'/palace-life'}
+  ],
+  writing:[
+   {glyph:'◈',label:'Read for a while',detail:'Reading Rooms',path:'/reading'},
+   {glyph:'♢',label:'Bring an idea to the Commons',detail:'Palace Life',path:'/palace-life?room=commons'},
+   {glyph:'✧',label:'See writing gatherings',detail:'Events & Heritage',path:'/events?tab=writing'}
+  ],
+  life:[
+   {glyph:'◈',label:'Find something to read',detail:'Reading Rooms',path:'/reading'},
+   {glyph:'✎',label:'Take an idea to the page',detail:'Writing Chamber',path:session?'/writing':'/login'},
+   {glyph:'✧',label:'See what is gathering',detail:'Events & Heritage',path:'/events'}
+  ],
+  events:[
+   {glyph:'♢',label:'Continue the conversation',detail:'Palace Life',path:session?'/palace-life':'/login'},
+   {glyph:'✎',label:'Write something for it',detail:'Writing Chamber',path:session?'/writing':'/login'},
+   {glyph:'◈',label:'Browse the shelves',detail:'Reading Rooms',path:'/reading'}
+  ],
+  treasury:[
+   {glyph:'☾',label:'Wear it in your Chamber',detail:'My Palace',path:session?(shellProfile?.username?'/member/'+shellProfile.username:'/chamber'):'/login'},
+   {glyph:'♢',label:'Return to Palace Life',detail:'Community',path:session?'/palace-life':'/login'},
+   {glyph:'✧',label:'Find the next gathering',detail:'Events',path:'/events'}
+  ],
+  settings:[
+   {glyph:'☾',label:'Back to your Chamber',detail:'My Palace',path:session?(shellProfile?.username?'/member/'+shellProfile.username:'/chamber'):'/login'},
+   {glyph:'◈',label:'Reading Rooms',detail:'Return to stories',path:'/reading'},
+   {glyph:'♢',label:'Palace Life',detail:'Return to community',path:session?'/palace-life':'/login'}
+  ]
+ };
+ const passageDoors=(activeRoom?passageMap[activeRoom.id]:null)||[
+  {glyph:'◈',label:'Read',detail:'Reading Rooms',path:'/reading'},
+  {glyph:'♢',label:'Gather',detail:'Palace Life',path:session?'/palace-life':'/login'},
+  {glyph:'✎',label:'Write',detail:'Writing Chamber',path:session?'/writing':'/login'}
+ ];
+ function wanderFromHere(){const choices=passageDoors.filter(x=>x.path!==currentHref);const pick=choices[Math.floor(Math.random()*choices.length)];if(pick)navigate(pick.path)}
+
  const recentCommandItems=recentPalaceRoutes.filter(row=>row?.path&&row.path!==currentHref).slice(0,4);
  const defaultCommandItems=[...recentCommandItems,...quickDoors.filter(q=>!recentCommandItems.some(r=>r.path===q.path))].slice(0,8);
  const visibleCommandItems=commandNeedle?commandMatches:defaultCommandItems;
@@ -228,6 +277,7 @@ function FrameShell({children}){
   <button className="nav-scrim" aria-label="Close navigation" onClick={()=>setNavOpen(false)}/>
   <div className="palace-stage full-stage">
    <header className="topbar full-topbar"><div className="full-topbar-row"><div className="full-brand"><button className="nav-toggle" onClick={()=>setNavOpen(true)} aria-label="Open Palace navigation" aria-expanded={navOpen} aria-controls="palace-sidebar">☰</button><Link to="/"><span className="brandmark">☾<b>✦</b></span><strong>The Starry Palace</strong></Link><small>BETA</small>{activeRoom&&<span className="top-room-context" aria-label={'Current room: '+activeRoom.label+(activeSection?' · '+activeSection[0]:'')}><span className={"top-room-sigil top-room-sigil-"+activeRoom.id}><PalaceRoomIcon name={activeRoom.id}/></span> {activeRoom.label}{activeSection&&<><b aria-hidden="true">/</b><em>{activeSection[0]}</em></>}</span>}</div><form className="global-search-live" role="search" aria-label="Search The Starry Palace" onSubmit={submitSearch}><span aria-hidden="true">⌕</span><input aria-label="Search works, writers, tags and fandoms" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search works, writers, tags, fandoms…"/><button type="submit">Search</button></form><div className="full-top-actions"><button className="command-trigger" type="button" onClick={()=>setCommandOpen(true)} aria-label="Open Palace quick navigation" aria-expanded={commandOpen} aria-controls="palace-command-dialog" title="Quick navigation · Ctrl or Command K"><span>⌕</span><kbd>⌘K</kbd></button>{session&&<Link className="top-icon-link" to="/letters" aria-label="Palace Letters">✉</Link>}{session&&<Link className="top-icon-link" style={{position:'relative'}} to="/activity" aria-label={activityBadge?activityBadge+' unread notifications':'Notifications'}>✦{activityBadge>0&&<span className="float-unread-badge">{activityBadge>99?'99+':activityBadge}</span>}</Link>}<Link className="write-action" to={session?'/writing':'/login'}>✎ <span>Write</span></Link></div></div></header>
+   {activeRoom&&<nav className="palace-passage" aria-label="Nearby Palace doors"><div className="palace-passage-context"><span className={"passage-room-sigil passage-room-"+activeRoom.id}><PalaceRoomIcon name={activeRoom.id}/></span><span><small>YOU ARE IN</small><strong>{activeSection?.[0]||activeRoom.label}</strong></span></div><div className="palace-passage-doors">{passageDoors.map(door=><Link key={door.path+door.label} to={door.path}><span aria-hidden="true">{door.glyph}</span><span><strong>{door.label}</strong><small>{door.detail}</small></span></Link>)}</div><button type="button" className="palace-passage-wander" onClick={wanderFromHere} title="Open one of the nearby Palace doors">✧ <span>Wander</span></button></nav>}
    <main id="palace-content" data-palace-route={currentHref} className="palace-main-stage" tabIndex="-1">{children}</main>
    <footer className="palace-footer">
     <div><span className="palace-footer-mark" aria-hidden="true">☾<b>✦</b></span><div><strong>The Starry Palace</strong><small>Gather. Have a cup of tea. Write and read with me.</small></div></div>
