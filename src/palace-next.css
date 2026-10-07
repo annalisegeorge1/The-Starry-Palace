@@ -6886,3 +6886,39 @@ body.writing-desk-open.daylight .studio-head-copy h1,
   .duel-prize-copy{grid-template-columns:40px minmax(0,1fr)}
   .duel-prize-sigil{width:40px;height:40px}
 }
+
+
+/* Ink Duel · interactive arena navigation (2026-10-07) */
+.duel-how-it-works{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.45rem}
+.duel-how-it-works>span{display:flex;align-items:center;gap:.44rem;min-height:48px;padding:.65rem .75rem;border:1px solid rgba(169,153,231,.15);border-radius:13px;background:linear-gradient(115deg,rgba(75,68,141,.15),rgba(67,118,148,.055));color:#dbd3e9;font-size:.68rem;line-height:1.35}
+.duel-how-it-works b{color:#b7b0f4;letter-spacing:.08em}
+.duel-discovery-tools{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(170px,.7fr) minmax(270px,1.45fr);gap:.7rem;align-items:end;padding:1rem;border:1px solid rgba(175,159,226,.18);border-radius:18px;background:linear-gradient(145deg,rgba(30,27,67,.75),rgba(22,24,51,.74));box-shadow:0 12px 32px rgba(0,0,0,.10)}
+.duel-discovery-tools label,.duel-focus-filter{display:grid;gap:.38rem;min-width:0}
+.duel-discovery-tools label>span,.duel-focus-filter>span,.duel-prize-progress small,.duel-twist-label span{font-size:.61rem;font-weight:800;letter-spacing:.09em;color:#bcb3d1}
+.duel-discovery-tools input,.duel-discovery-tools select{display:block;width:100%;min-width:0;min-height:43px;padding:.6rem .72rem;border:1px solid rgba(178,163,225,.24);border-radius:11px;background:rgba(12,14,38,.7);color:#f4f1ff;font-size:.8rem;outline-offset:2px}
+.duel-discovery-tools input::placeholder{color:#ada4c1}
+.duel-discovery-tools :is(input,select,button):focus-visible,.duel-twist-label button:focus-visible,.duel-remix-bar button:focus-visible{outline:2px solid #b8b0ff;outline-offset:3px}
+.duel-focus-filter>div{display:flex;gap:.3rem;flex-wrap:wrap}
+.duel-focus-filter button{min-height:39px;padding:.45rem .58rem;border:1px solid rgba(184,167,234,.20);border-radius:10px;background:rgba(255,255,255,.035);color:#bfb8d2;font-size:.65rem;cursor:pointer}
+.duel-focus-filter button.active,.duel-focus-filter button[aria-pressed=true]{background:linear-gradient(125deg,rgba(98,91,194,.45),rgba(55,120,175,.23));border-color:rgba(170,164,250,.56);color:#fff}
+.duel-discovery-tools>footer{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding-top:.6rem;border-top:1px solid rgba(177,158,224,.13);color:#cfc7df;font-size:.71rem}
+.duel-discovery-tools>footer b{color:#f4eefe}
+.duel-discovery-tools>footer button{min-height:34px;padding:.3rem .65rem;border:1px solid rgba(182,171,233,.2);border-radius:9px;background:rgba(255,255,255,.035);color:#d9d1ea;cursor:pointer}
+.duel-prize-progress{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;padding:.5rem .7rem;margin-top:.42rem;border:1px dashed rgba(165,145,214,.20);border-radius:10px;background:rgba(93,77,140,.08);color:#c7bdd4;font-size:.65rem;line-height:1.45}
+.duel-prize-progress span{overflow-wrap:anywhere}
+.duel-remix-bar{display:flex;align-items:center;justify-content:space-between;gap:.65rem;flex-wrap:wrap;padding:.75rem 1rem;border-top:1px solid rgba(190,165,232,.13);color:#c6bdd5;font-size:.7rem}
+.duel-remix-bar button{min-height:38px;white-space:normal}
+.duel-twist-label{display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap}
+.duel-twist-label button{min-height:36px;padding:.35rem .75rem;border:1px solid rgba(171,161,233,.32);border-radius:10px;background:linear-gradient(120deg,rgba(112,83,199,.23),rgba(66,124,179,.16));color:#ebe6ff;cursor:pointer}
+.daylight .duel-how-it-works>span,.daylight .duel-discovery-tools{background:linear-gradient(140deg,rgba(255,255,255,.98),rgba(237,241,255,.94));border-color:rgba(93,77,151,.2);color:#3c3157}
+.daylight .duel-how-it-works b,.daylight .duel-discovery-tools label>span,.daylight .duel-focus-filter>span,.daylight .duel-prize-progress small,.daylight .duel-twist-label span{color:#58458a}
+.daylight .duel-discovery-tools input,.daylight .duel-discovery-tools select{background:#fff;color:#282044;border-color:rgba(98,78,159,.27)}
+.daylight .duel-discovery-tools input::placeholder{color:#6d637e}
+.daylight .duel-focus-filter button,.daylight .duel-discovery-tools>footer button{background:#f3f0fa;color:#4d416e;border-color:rgba(98,78,159,.2)}
+.daylight .duel-focus-filter button.active{background:linear-gradient(125deg,#d9d8fc,#d6e8f7);border-color:#998bdf;color:#302552}
+.daylight .duel-discovery-tools>footer,.daylight .duel-prize-progress,.daylight .duel-remix-bar{color:#4d4165}
+.daylight .duel-discovery-tools>footer b{color:#372a5b}
+.daylight .duel-prize-progress{background:rgba(230,222,250,.4);border-color:rgba(94,78,156,.2)}
+.daylight .duel-twist-label button{background:linear-gradient(120deg,#eee9fd,#e6f1fc);color:#433366;border-color:#c4b5e8}
+@media(max-width:1050px){.duel-discovery-tools{grid-template-columns:minmax(0,1fr) minmax(180px,.75fr)}.duel-focus-filter{grid-column:1/-1}}
+@media(max-width:700px){.duel-how-it-works{grid-template-columns:repeat(2,minmax(0,1fr))}.duel-how-it-works>span{padding:.55rem;font-size:.64rem}.duel-discovery-tools{grid-template-columns:minmax(0,1fr);padding:.78rem}.duel-focus-filter{grid-column:auto}.duel-focus-filter>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.duel-focus-filter button{white-space:normal}.duel-remix-bar button{width:100%}}
