@@ -210,15 +210,15 @@ function CourtPortraitArt({art,name}){
  },[key]);
 
  const label=(name||art.name)+' · '+art.tier+' · '+art.court+' court watercolour';
- if(src)return <img className="merged-court-portrait" src={src} alt={label}/>;
- return <span className={'merged-court-portrait-placeholder'+(failed?' is-fallback':'')} role="img" aria-label={label} data-court-cell={art.column+':'+art.row}/>;
+ if(src)return <img className="merged-court-portrait" src={src} alt={label} loading="lazy" decoding="async" draggable="false"/>;
+ return <span className={'merged-court-portrait-placeholder'+(failed?' is-fallback':'')} role="img" aria-label={label} data-court-cell={art.column+':'+art.row}><i aria-hidden="true">☾</i><small>{failed?(art.court||'Palace court'):'Watercolour gathering…'}</small></span>;
 }
 
 export function MergedBadgeArt({art,name}){
  if(!art)return null;
  if(art.type==='object'){
   const src='/assets/palace-collectibles/'+art.asset+'-'+art.tier+'.png';
-  return <img className="merged-badge-object" src={src} alt={(name||art.name)+' · '+art.tier+' watercolour'} loading="lazy" decoding="async"/>;
+  return <img className="merged-badge-object" src={src} alt={(name||art.name)+' · '+art.tier+' watercolour'} loading="lazy" decoding="async" draggable="false"/>;
  }
  return <CourtPortraitArt art={art} name={name}/>;
 }
