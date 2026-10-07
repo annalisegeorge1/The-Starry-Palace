@@ -1355,28 +1355,54 @@ export async function getRelayBalcony(roomId){
  const{data,error}=await needClient().rpc('get_relay_balcony',{p_room_id:roomId});if(error)throw error;return data
 }
 export async function getMicroDuels(){
- const{data,error}=await needClient().rpc('get_micro_duels');if(error)throw error;return data||[]
+ const{data,error}=await needClient().rpc('get_micro_duels');if(error)throw error;
+ const rows=data||[];
+ return Promise.all(rows.map(async duel=>({...duel,entries:await Promise.all((duel.entries||[]).map(async entry=>({...entry,media_url:entry.media_path?await signedAsset('duel-art',entry.media_path,1800):null})))})))
+}
+export async function getMicroDuelRecord(){
+ const{data,error}=await needClient().rpc('get_micro_duel_record');if(error)throw error;return data||{entries:0,hosted:0,types:0,votes:0,wins:0,laurels:0,one_v_one_wins:0,group_wins:0}
 }
 export async function createMicroDuel(title,prompt,wordLimit=500,options={}){
  const writingMinutes=Math.max(5,Math.min(Number(options.writingMinutes)||15,45));
  const votingMinutes=Math.max(60,Math.min(Number(options.votingMinutes)||720,1440));
  const mode=['flash','classic','deep'].includes(options.mode)?options.mode:'classic';
  const promptFamily=String(options.promptFamily||'Open').slice(0,80);
- const{data,error}=await needClient().rpc('create_micro_duel_v2',{
-  p_title:title,
-  p_prompt:prompt,
-  p_word_limit:wordLimit,
-  p_writing_minutes:writingMinutes,
-  p_voting_minutes:votingMinutes,
-  p_duel_mode:mode,
-  p_prompt_family:promptFamily
+ const contentType=['fiction','poetry','haiku','drabble','dialogue','art','comic','wildcard'].includes(options.contentType)?options.contentType:'fiction';
+ const matchType=['open','one_v_one','group'].includes(options.matchType)?options.matchType:'open';
+ const maxEntries=Math.max(2,Math.min(Number(options.maxEntries)||12,20));
+ const invitedUsernames=Array.isArray(options.invitedUsernames)?options.invitedUsernames.map(x=>String(x||'').trim()).filter(Boolean).slice(0,7):[];
+ const ruleNote=String(options.ruleNote||'').trim().slice(0,300);
+ const{data,error}=await needClient().rpc('create_micro_duel_v3',{
+  p_title:title,p_prompt:prompt,p_word_limit:wordLimit,p_writing_minutes:writingMinutes,p_voting_minutes:votingMinutes,
+  p_duel_mode:mode,p_prompt_family:promptFamily,p_content_type:contentType,p_match_type:matchType,
+  p_max_entries:maxEntries,p_invited_usernames:invitedUsernames,p_rule_note:ruleNote
  });if(error)throw error;return data
 }
-export async function submitMicroDuelEntry(duelId,body){
- const{data,error}=await needClient().rpc('submit_micro_duel_entry',{p_duel_id:duelId,p_body:body});if(error)throw error;return data
+export async function uploadMicroDuelArt(userId,duelId,file){
+ if(!file)throw new Error('Choose an image first.');
+ if(file.size>10485760)throw new Error('Duel artwork must be 10 MB or smaller.');
+ if(!['image/jpeg','image/png','image/webp','image/avif'].includes(file.type))throw new Error('Use JPG, PNG, WebP or AVIF artwork.');
+ const safe=(file.name||'duel-art').replace(/[^a-zA-Z0-9._-]+/g,'-').slice(-120);
+ const path=userId+'/'+duelId+'/'+crypto.randomUUID()+'-'+safe;
+ const{error}=await needClient().storage.from('duel-art').upload(path,file,{cacheControl:'1800',upsert:false,contentType:file.type||undefined});
+ if(error)throw error;return path
+}
+export async function submitMicroDuelEntry(duelId,body,options={}){
+ const{data,error}=await needClient().rpc('submit_micro_duel_entry_v3',{
+  p_duel_id:duelId,p_body:String(body||''),p_media_path:options.mediaPath||null,p_alt_text:String(options.altText||'')
+ });if(error)throw error;return data
 }
 export async function voteMicroDuel(duelId,entryId){
  const{data,error}=await needClient().rpc('vote_micro_duel',{p_duel_id:duelId,p_entry_id:entryId});if(error)throw error;return data
+}
+export async function markMicroDuelEntry(duelId,entryId,markType){
+ const{data,error}=await needClient().rpc('mark_micro_duel_entry',{p_duel_id:duelId,p_entry_id:entryId,p_mark_type:markType});if(error)throw error;return data
+}
+export async function respondMicroDuelInvitation(duelId,response){
+ const{data,error}=await needClient().rpc('respond_micro_duel_invitation',{p_duel_id:duelId,p_response:response});if(error)throw error;return data
+}
+export async function startMicroDuel(duelId){
+ const{data,error}=await needClient().rpc('start_micro_duel',{p_duel_id:duelId});if(error)throw error;return data
 }
 export async function cancelMicroDuel(duelId){
  const{data,error}=await needClient().rpc('cancel_micro_duel',{p_duel_id:duelId});if(error)throw error;return data
