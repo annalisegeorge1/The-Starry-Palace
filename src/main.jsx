@@ -179,7 +179,7 @@ function FrameShell({children}){
  React.useEffect(()=>{safeLocalSet('palace-theme',daylight?'daylight':'night')},[daylight]);
  React.useEffect(()=>{const onKey=e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();setCommandOpen(v=>!v)}else if(e.key==='Escape'){setCommandOpen(false);setMobileMoreOpen(false)}};window.addEventListener('keydown',onKey);return()=>window.removeEventListener('keydown',onKey)},[]);
  React.useEffect(()=>{if(!(navOpen||mobileMoreOpen||commandOpen))return;const previous=document.body.style.overflow;document.body.style.overflow='hidden';return()=>{document.body.style.overflow=previous}},[navOpen,mobileMoreOpen,commandOpen]);
- React.useEffect(()=>{let alive=true;if(!session){setShellProfile(null);setLetterBadge(0);setActivityBadge(0);return;}Promise.all([supabase.from('profiles').select('username,display_name,title,avatar_url,cover_url').eq('id',session.user.id).maybeSingle(),supabase.from('message_requests').select('id',{count:'exact',head:true}).eq('recipient_id',session.user.id).eq('status','pending'),supabase.from('notifications').select('id',{count:'exact',head:true}).eq('user_id',session.user.id).eq('unread',true).eq('dismissed',false)]).then(([profileReq,letterReq,activityReq])=>{if(!alive)return;setShellProfile(profileReq.data||null);setLetterBadge(letterReq.count||0);setActivityBadge(activityReq.count||0)});return()=>{alive=false}},[session?.user?.id,location.pathname]);
+ React.useEffect(()=>{let alive=true;if(!session?.user?.id){setShellProfile(null);setLetterBadge(0);setActivityBadge(0);return;}Promise.all([supabase.from('profiles').select('username,display_name,title,avatar_url,cover_url').eq('id',session.user.id).maybeSingle(),supabase.from('message_requests').select('id',{count:'exact',head:true}).eq('recipient_id',session.user.id).eq('status','pending'),supabase.from('notifications').select('id',{count:'exact',head:true}).eq('user_id',session.user.id).eq('unread',true).eq('dismissed',false)]).then(([profileReq,letterReq,activityReq])=>{if(!alive)return;setShellProfile(profileReq.data||null);setLetterBadge(letterReq.count||0);setActivityBadge(activityReq.count||0)}).catch(error=>{if(!alive)return;console.warn('Palace shell counters unavailable',error);setLetterBadge(0);setActivityBadge(0)});return()=>{alive=false}},[session?.user?.id,location.pathname]);
  const visibleRooms=fullPalaceRooms.filter(r=>!r.private||session);
  const resolveRoomPath=p=>p==='/member'?(shellProfile?.username?'/member/'+shellProfile.username:'/chamber'):p;
  const quickDoors=[
@@ -292,7 +292,7 @@ function Callback(){const{session,loading,error}=useAuth();const p=new URLSearch
 function NavigationReset(){
  const location=useLocation();
  React.useEffect(()=>{
-  const reset=()=>{window.scrollTo({top:0,left:0,behavior:'auto'});document.documentElement.scrollTop=0;document.body.scrollTop=0};
+  const reset=()=>{try{window.scrollTo({top:0,left:0,behavior:'auto'})}catch{try{window.scrollTo(0,0)}catch{}};if(document.documentElement)document.documentElement.scrollTop=0;if(document.body)document.body.scrollTop=0};
   const frame=requestAnimationFrame(reset);
   return()=>cancelAnimationFrame(frame);
  },[location.pathname,location.search]);
@@ -392,11 +392,16 @@ class PalaceRootBoundary extends React.Component{
  constructor(props){super(props);this.state={error:null}}
  static getDerivedStateFromError(error){return{error}}
  componentDidCatch(error,info){
+  const message=String(error?.message||error||'Unknown shell error').replace(/https?:\/\/\S+/g,'[url]').slice(0,220);
+  const diagnostic={message,path:window.location.pathname+window.location.search,at:new Date().toISOString(),component:String(info?.componentStack||'').slice(0,900)};
   console.error('The Palace shell failed safely',error,info);
-  safeSessionSet('palace-last-root-error',String(error?.message||error||'unknown').slice(0,280));
+  safeSessionSet('palace-last-root-error',JSON.stringify(diagnostic));
  }
  render(){
-  if(this.state.error)return <div className="route-recovery palace-root-recovery" role="alert"><div><span aria-hidden="true">☾<b>✦</b></span><h1>The Palace caught a shell error.</h1><p>The page did not vanish. Reload the Palace to reopen this room with a clean shell.</p><button type="button" onClick={()=>{try{const url=new URL(window.location.href);url.searchParams.set('__palace_recover',String(Date.now()));window.location.replace(url.toString())}catch{window.location.reload()}}}>Reopen the Palace</button></div></div>;
+  if(this.state.error){
+   const message=String(this.state.error?.message||this.state.error||'Unknown shell error').replace(/https?:\/\/\S+/g,'[url]').slice(0,220);
+   return <div className="route-recovery palace-root-recovery" role="alert"><div><span aria-hidden="true">☾<b>✦</b></span><h1>The Palace caught a shell error.</h1><p>The page did not vanish. The detail below tells us which root-level failure occurred.</p><code className="palace-error-detail">{message}</code><small className="palace-error-path">Room: {window.location.pathname}</small><button type="button" onClick={()=>{try{const url=new URL(window.location.href);url.searchParams.set('__palace_recover',String(Date.now()));window.location.replace(url.toString())}catch{window.location.reload()}}}>Reopen the Palace</button></div></div>;
+  }
   return this.props.children
  }
 }

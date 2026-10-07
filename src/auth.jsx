@@ -10,29 +10,35 @@ export function AuthProvider({ children }) {
     if (!supabase) { setLoading(false); return; }
     let active = true;
     let authChanged = false;
+    let subscription = null;
     const sessionTimeout = window.setTimeout(() => {
       if (active && !authChanged) {
         setError('Session restoration timed out. You can keep using the Palace or sign in again.');
         setLoading(false);
       }
     }, 8000);
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, next) => {
-      authChanged = true;
-      window.clearTimeout(sessionTimeout);
-      if (active) { setSession(next); setError(''); setLoading(false); }
-    });
-    supabase.auth.getSession().then(({ data, error }) => {
-      if (active && !authChanged) {
+    try {
+      subscription = supabase.auth.onAuthStateChange((_event, next) => {
+        authChanged = true;
         window.clearTimeout(sessionTimeout);
-        setSession(data.session);
-        setError(error?.message || '');
-        setLoading(false);
-      }
-    }).catch(() => {
+        if (active) { setSession(next || null); setError(''); setLoading(false); }
+      })?.data?.subscription || null;
+      Promise.resolve(supabase.auth.getSession()).then(({ data, error }) => {
+        if (active && !authChanged) {
+          window.clearTimeout(sessionTimeout);
+          setSession(data?.session || null);
+          setError(error?.message || '');
+          setLoading(false);
+        }
+      }).catch(() => {
+        window.clearTimeout(sessionTimeout);
+        if (active && !authChanged) { setError('Unable to restore your session. Please sign in again.'); setLoading(false); }
+      });
+    } catch {
       window.clearTimeout(sessionTimeout);
-      if (active && !authChanged) { setError('Unable to restore your session. Please sign in again.'); setLoading(false); }
-    });
-    return () => { active = false; window.clearTimeout(sessionTimeout); subscription.unsubscribe(); };
+      if (active) { setSession(null); setError('The saved Palace session could not be restored. Please sign in again.'); setLoading(false); }
+    }
+    return () => { active = false; window.clearTimeout(sessionTimeout); try { subscription?.unsubscribe?.(); } catch {} };
   }, []);
   return <AuthContext.Provider value={{ session, loading, error }}>{children}</AuthContext.Provider>;
 }

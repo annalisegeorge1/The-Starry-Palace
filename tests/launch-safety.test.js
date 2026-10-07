@@ -943,6 +943,18 @@ describe('Starry Palace launch safety',()=>{
     expect(html).toContain('Restore the Palace');
   });
 
+  it('surfaces safe root diagnostics and lets auth/network failures degrade instead of blanking the Palace',()=>{
+    const auth=read('src/auth.jsx');
+    expect(main).toContain('palace-error-detail');
+    expect(main).toContain('Room: {window.location.pathname}');
+    expect(main).toContain("safeSessionSet('palace-last-root-error',JSON.stringify(diagnostic))");
+    expect(main).toContain("catch(error=>{if(!alive)return;console.warn('Palace shell counters unavailable'");
+    expect(main).toContain("if(!session?.user?.id)");
+    expect(auth).toContain('let subscription = null');
+    expect(auth).toContain('subscription?.unsubscribe?.()');
+    expect(auth).toContain('The saved Palace session could not be restored.');
+  });
+
   it('keeps retired shell scaffolding out of the production entrypoint',()=>{
     expect(main).not.toContain('function LegacyChamber(');
     expect(main).not.toContain('function Room({title');
