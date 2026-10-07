@@ -13,3 +13,6 @@ export const claimCelestialBadgeGrandmaster=()=>call('claim_celestial_badge_gran
 export const getGrandPalaceCommonRoom=()=>call('get_grand_palace_common_room');
 export const postGrandPalaceCommonMessage=(body,kind='message')=>call('post_grand_palace_common_message',{p_body:body,p_kind:kind});
 export const removeGrandPalaceCommonMessage=(id)=>call('remove_grand_palace_common_message',{p_post_id:id});
+
+export const getGrandPalaceCourtStatus=()=>call('get_grand_palace_court_status');
+export const submitGrandPalaceDailyRitual=(body)=>call('submit_grand_palace_daily_ritual',{p_body:body});
