@@ -5084,3 +5084,295 @@ body.reader-focus-mode .reader-chapter-head{
 .daylight .duel-record-strip strong,.daylight .duel-type-arcade strong,.daylight .duel-match-doors strong{color:#40354b}.daylight .duel-type-arcade>button,.daylight .duel-match-doors>button{color:#4b4056}
 @media(max-width:1100px){.duel-type-arcade{grid-template-columns:repeat(4,minmax(0,1fr))}.duel-record-strip{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:700px){.duel-type-arcade{grid-template-columns:repeat(2,minmax(0,1fr))}.duel-match-doors,.duel-match-picker{grid-template-columns:1fr}.duel-content-picker{grid-template-columns:repeat(2,minmax(0,1fr))}.duel-record-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.duel-laurels{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+
+/* Writing Desk v2 · persistent edit bar + safer chapter switching */
+body.writing-desk-open .legacy-editor-page,
+body.writing-desk-open .writing-studio-grid,
+body.writing-desk-open .writing-editor-workspace,
+body.writing-desk-open .chic-editor-form{
+  overflow:visible!important;
+}
+
+/* Keep chapter navigation reachable during long drafting sessions. */
+@media(min-width:1120px){
+  body.writing-desk-open .writing-studio-rail{
+    position:sticky!important;
+    top:76px!important;
+    align-self:start!important;
+    max-height:calc(100dvh - 92px)!important;
+    overflow:auto!important;
+    overscroll-behavior:contain;
+    scrollbar-width:thin;
+    scrollbar-color:rgba(184,156,217,.20) transparent;
+  }
+}
+
+/* The editing bar stays with the manuscript instead of disappearing above it. */
+body.writing-desk-open .chic-editor-form>.chic-editor-toolbar{
+  position:sticky!important;
+  top:76px!important;
+  z-index:80!important;
+  align-self:start!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:.36rem!important;
+  width:100%!important;
+  min-width:0!important;
+  padding:.48rem .54rem .42rem!important;
+  border:1px solid rgba(206,181,235,.18)!important;
+  border-radius:16px!important;
+  background:
+    radial-gradient(circle at 4% 10%,rgba(130,90,199,.10),transparent 10rem),
+    linear-gradient(180deg,rgba(24,19,53,.97),rgba(19,16,45,.96))!important;
+  -webkit-backdrop-filter:blur(22px) saturate(1.08);
+  backdrop-filter:blur(22px) saturate(1.08);
+  box-shadow:
+    0 12px 30px rgba(4,3,18,.18),
+    inset 0 1px 0 rgba(255,255,255,.035)!important;
+}
+
+/* Tier one: chapter switching, rename, autosave and quick save. */
+.writer-chapter-jump{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.55rem;
+  min-width:0;
+  padding:0 0 .42rem;
+  border-bottom:1px solid rgba(205,181,235,.09);
+}
+.writer-chapter-jump-main{
+  min-width:0;
+  display:grid;
+  grid-template-columns:34px minmax(170px,310px) 34px;
+  gap:.32rem;
+  align-items:end;
+}
+.writer-chapter-jump-main label{
+  min-width:0;
+  display:grid;
+  gap:.14rem;
+}
+.writer-chapter-jump-main label>span{
+  color:#8e839c;
+  font-size:.42rem;
+  font-weight:800;
+  letter-spacing:.13em;
+}
+.writer-chapter-jump-main select{
+  width:100%;
+  min-width:0;
+  min-height:34px;
+  padding:.32rem .5rem;
+  border:1px solid rgba(204,180,233,.12);
+  border-radius:9px;
+  background:rgba(9,8,26,.42);
+  color:#e1d9e8;
+  font:600 .56rem Georgia,'Times New Roman',serif;
+}
+.writer-chapter-arrow{
+  min-width:34px!important;
+  width:34px!important;
+  min-height:34px!important;
+  padding:0!important;
+  border-radius:10px!important;
+  font-size:.76rem!important;
+}
+.writer-chapter-arrow:disabled{
+  opacity:.28!important;
+}
+.writer-chapter-jump-actions{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:.32rem;
+  flex-wrap:wrap;
+}
+.writer-chapter-jump-actions>button{
+  min-height:34px!important;
+  padding:.32rem .5rem!important;
+  border-radius:9px!important;
+  font-size:.49rem!important;
+}
+.writer-toolbar-save-state,
+.writer-toolbar-wordcount{
+  display:inline-flex;
+  align-items:center;
+  gap:.28rem;
+  min-height:30px;
+  padding:.26rem .4rem;
+  border:1px solid rgba(204,180,233,.07);
+  border-radius:999px;
+  color:#8f8798;
+  background:rgba(255,255,255,.012);
+  font-size:.46rem;
+  white-space:nowrap;
+}
+.writer-toolbar-save-state i{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#75b99f;
+  box-shadow:0 0 8px rgba(117,185,159,.28);
+}
+
+/* Tier two: formatting remains horizontally accessible instead of wrapping
+   into an oversized wall of controls. */
+.writer-format-scroll{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:.28rem;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding:.02rem 0 .12rem;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(188,158,220,.18) transparent;
+  overscroll-behavior-x:contain;
+}
+.writer-format-scroll::-webkit-scrollbar{height:4px}
+.writer-format-scroll::-webkit-scrollbar-thumb{
+  background:rgba(188,158,220,.18);
+  border-radius:99px;
+}
+.writer-format-scroll .editor-tool-group{
+  flex:0 0 auto!important;
+}
+body.writing-desk-open .chic-editor-toolbar .editor-shortcut-hint{
+  color:#736c7d!important;
+  font-size:.42rem!important;
+  line-height:1.2!important;
+  padding:.02rem .08rem 0!important;
+}
+
+/* A little more room for actual prose; the paper should feel like the main
+   object, not a form field floating among controls. */
+body.writing-desk-open .writing-page-stage{
+  scroll-margin-top:170px!important;
+}
+body.writing-desk-open .legacy-writing-canvas{
+  caret-color:#6c4aa6;
+}
+body.writing-desk-open .legacy-writing-canvas:focus{
+  outline:none!important;
+}
+body.writing-desk-open .writing-page-stage:focus-within{
+  border-color:rgba(190,157,226,.20)!important;
+  box-shadow:
+    0 18px 42px rgba(4,3,17,.10),
+    inset 0 0 0 1px rgba(197,167,230,.035)!important;
+}
+
+/* Chapter cards update live after autosave, and the current chapter gets a
+   clearer marker while the rail follows the writer down the manuscript. */
+body.writing-desk-open .chapter-manager-row>button.active{
+  box-shadow:
+    inset 3px 0 0 rgba(188,139,222,.55),
+    0 8px 18px rgba(7,5,21,.06)!important;
+}
+body.writing-desk-open .chapter-manager-row>button.active>strong{
+  color:#f4edf8!important;
+}
+
+/* Focus mode keeps the same editing tools, but pins them to the very top
+   because the Palace shell is intentionally hidden there. */
+.focus-editor .chic-editor-form>.chic-editor-toolbar{
+  top:0!important;
+  border-radius:0 0 15px 15px!important;
+}
+.focus-editor .writer-chapter-jump-actions .writer-toolbar-wordcount{
+  display:none;
+}
+
+/* Tablet: preserve sticky editing without sacrificing half the viewport. */
+@media(min-width:761px) and (max-width:1279px){
+  body.writing-desk-open .chic-editor-form>.chic-editor-toolbar{
+    top:68px!important;
+    padding:.42rem!important;
+  }
+  .writer-chapter-jump{
+    align-items:flex-end;
+  }
+  .writer-chapter-jump-main{
+    grid-template-columns:32px minmax(150px,1fr) 32px;
+    flex:1 1 330px;
+  }
+  .writer-chapter-jump-actions{
+    flex:0 1 auto;
+  }
+  .writer-toolbar-save-state{
+    max-width:180px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+}
+
+/* Phones: the whole bar still follows the page, with the chapter switcher on
+   its own row and formatting swipeable beneath it. */
+@media(max-width:760px){
+  body.writing-desk-open .chic-editor-form>.chic-editor-toolbar{
+    top:56px!important;
+    margin-left:-2px!important;
+    margin-right:-2px!important;
+    padding:.4rem!important;
+    border-radius:13px!important;
+  }
+  .writer-chapter-jump{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:.35rem;
+    padding-bottom:.36rem;
+  }
+  .writer-chapter-jump-main{
+    grid-template-columns:32px minmax(0,1fr) 32px;
+  }
+  .writer-chapter-jump-main select{
+    min-height:36px;
+    font-size:.54rem;
+  }
+  .writer-chapter-jump-actions{
+    justify-content:flex-start;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    padding-bottom:.02rem;
+  }
+  .writer-chapter-jump-actions>*{
+    flex:0 0 auto;
+  }
+  .writer-toolbar-wordcount{
+    display:none;
+  }
+  .writer-format-scroll{
+    padding-bottom:.16rem;
+  }
+  body.writing-desk-open .chic-editor-toolbar .editor-shortcut-hint{
+    display:none!important;
+  }
+}
+
+/* Daylight keeps the persistent edit bar calm rather than stark. */
+.daylight body.writing-desk-open .chic-editor-form>.chic-editor-toolbar,
+body.writing-desk-open.daylight .chic-editor-form>.chic-editor-toolbar,
+.daylight .chic-editor-form>.chic-editor-toolbar{
+  background:
+    radial-gradient(circle at 4% 10%,rgba(138,98,201,.06),transparent 10rem),
+    rgba(248,246,250,.97)!important;
+  border-color:rgba(96,77,142,.13)!important;
+  box-shadow:0 10px 26px rgba(72,48,96,.08),inset 0 1px 0 rgba(255,255,255,.8)!important;
+}
+.daylight .writer-chapter-jump{
+  border-bottom-color:rgba(96,77,142,.08);
+}
+.daylight .writer-chapter-jump-main select{
+  background:rgba(255,255,255,.78);
+  color:#40354a;
+  border-color:rgba(96,77,142,.11);
+}
+.daylight .writer-toolbar-save-state,
+.daylight .writer-toolbar-wordcount{
+  color:#6d6476;
+  background:rgba(255,255,255,.58);
+  border-color:rgba(96,77,142,.08);
+}
