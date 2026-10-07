@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from 'react';
 import{Link}from'react-router-dom';
+import GrandPalaceExpansion from './GrandPalaceExpansion';
 import{useAuth}from'./auth';
 import{getGrandPalaceHall,purchaseGrandPalaceHonour,sendGrandPalaceHonour,selectGrandPalaceTheme}from'./grandPalaceData';
 import{HONOUR_SHOP,QUARTERLY_BOXES,daysUntilSeasonEnd}from'./grandPalaceModel';
@@ -22,6 +23,7 @@ export default function GrandPalaceHall({Frame}){
  {ends&&<p className="grand-season-date">This season ends {ends} · next season starts immediately · competition hours follow UTC</p>}</header>
  {error&&<p role="alert" className="grand-notice error">{error}</p>}{notice&&<p role="status" className="grand-notice">{notice}</p>}
  {data&&<><section className="grand-your-court"><div className="grand-my-crest">{mine?.sigil||'☾'}</div><div><p className="eyebrow">YOUR PERMANENT GRAND PALACE</p><h2>{mine?.name}</h2><p>{mine?.motto}</p><small>Your contribution this quarter: <b>{Number(data.my_contribution||0)} verified points</b>. A maximum of 30 points per member per UTC day counts toward the race.</small></div><Link to="/chamber" className="button-moonstone">Your chamber →</Link></section>
+ <GrandPalaceExpansion/>
  <section className="grand-leaderboard"><div className="section-heading"><div><p className="eyebrow">THE TEN GRAND PALACES</p><h2>The quarterly constellation race</h2><p>Ranked by verified points per member. This gives small courts a fair chance to win.</p></div></div>
  <div className="grand-ranked-courts">{rank.map(p=><article key={p.id} className={Number(p.id)===Number(data.my_palace_id)?'mine':''}><b className="grand-place">{String(p.place).padStart(2,'0')}</b><i style={{color:p.accent}}>{p.sigil}</i><div><strong>{p.name}</strong><small>{p.members} members · {p.contributors} contributors</small></div><span><b>{p.average_points.toLocaleString(undefined,{maximumFractionDigits:2})}</b><small>points / member</small></span></article>)}</div></section>
  <section className="grand-box-room"><div className="section-heading"><div><p className="eyebrow">THE VICTORY VAULT</p><h2>Mystery boxes worth fighting for.</h2><p>Every member of the winning court gets one Bronze treasure. Its ten highest contributing members also earn these ranked boxes.</p></div></div><div className="grand-box-grid">{QUARTERLY_BOXES.map(box=><article key={box.tier} className={'grand-box '+box.tier}><span className="grand-box-mark">♛</span><small>RANK {box.rank} · {box.tier.toUpperCase()}</small><h3>{box.label}</h3><p>{box.details}</p></article>)}</div><p className="grand-fairness">A qualifying contribution is required for a top-ten box. Gift identities are picked from the existing finished Palace Treasury; duplicate rewards are prevented.</p></section>
