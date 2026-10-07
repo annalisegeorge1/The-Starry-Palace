@@ -17,6 +17,10 @@ describe('Ink Duel discovery',()=>{
   expect(filterInkDuels(duels,{view:'all',scope:'mine'}).map(d=>d.id)).toEqual(['1','2']);
   expect(filterInkDuels(duels,{scope:'judge'}).map(d=>d.id)).toEqual(['3']);
  });
+ it('allows group creators to judge other entries, but not their own',()=>{
+  expect(filterInkDuels([{id:'g',phase:'voting',match_type:'group',my_entry:{id:'own'},entry_count:3}],{scope:'judge'})).toHaveLength(1);
+  expect(filterInkDuels([{id:'g',phase:'voting',match_type:'group',my_entry:{id:'own'},entry_count:1}],{scope:'judge'})).toHaveLength(0);
+ });
  it('prevents 1-v-1 competitors from appearing as eligible judges',()=>{
   expect(filterInkDuels([{id:'x',phase:'voting',match_type:'one_v_one',my_participation:'accepted'}],{scope:'judge'})).toEqual([]);
  });
