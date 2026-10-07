@@ -807,6 +807,7 @@ export async function getMemberProfile(username,viewerId){
  const{data:profile,error}=await needClient().from('profiles').select('id,username,display_name,title,bio,avatar_url,cover_url,visibility,message_policy,pronouns,status_line,availability,roles,featured_genres,featured_fandoms,accent,cover_position,support_enabled,support_label,support_url').eq('username',username).maybeSingle();
  if(error)throw error;if(!profile)return null;
  const own=viewerId===profile.id;
+ const {data:grandIdentity}=await needClient().rpc('get_grand_palace_identity',{p_member:profile.id});
  const [privacy,works,comics,series,workTotal,comicTotal,seriesTotal,follow,counting,clubCount,showA,showG]=await Promise.all([
   own?getMyPrivacy(profile.id):Promise.resolve(null),
   needClient().from('works').select('id,title,slug,summary,cover_url,completion_status,last_published_at').eq('author_id',profile.id).eq('publication_status','published').order('last_published_at',{ascending:false}).limit(12),
@@ -825,7 +826,7 @@ export async function getMemberProfile(username,viewerId){
  const signedComics=await Promise.all((comics.data||[]).map(async comic=>({...comic,cover_url:await signedAsset('comic-covers',comic.cover_path)})));
  const visibleSeries=(series.data||[]).map(s=>({...s,series_works:(s.series_works||[]).filter(x=>x.works?.publication_status==='published').sort((a,b)=>a.position-b.position)}));
  return{
-  profile,privacy:privacy||null,works:works.data||[],comics:signedComics,series:visibleSeries,following:!!follow.data,followerCount:counting.count||0,
+  profile,grandIdentity:grandIdentity||null,privacy:privacy||null,works:works.data||[],comics:signedComics,series:visibleSeries,following:!!follow.data,followerCount:counting.count||0,
   showcase:{achievements:showA.data||[],gifts:showG.data||[]},
   counts:{works:workTotal.count||0,comics:comicTotal.count||0,series:seriesTotal.count||0,clubs:clubCount.count||0,honours:(showA.data?.length||0)+(showG.data?.length||0)}
  }
