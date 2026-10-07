@@ -6,6 +6,7 @@ import { configured, supabase } from './supabase';
 import './style.css';
 import './polish.css';
 import './palace-next.css';
+import './neon-map.css';
 import {
  ChamberLive,OnboardingLive,ReadingLive,ClubLive,WritingLive,SettingsLive,ActivityLive,LibraryLive,
  PalaceLifeLive,LettersLive,EventsLive,TreasuryLive,LostWorksLive,MemberProfileLive,SearchLive,

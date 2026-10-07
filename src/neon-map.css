@@ -331,3 +331,139 @@
   .full-nav-room>a,
   .room-sigil{transition:none!important}
 }
+
+
+/* Daylight clarity + Reading card repair from live screenshots */
+.daylight{
+  --palace-text:#211a33;
+  --palace-muted:#5a5368;
+  --palace-dim:#71697e;
+}
+.daylight .lede,
+.daylight .quiet-copy,
+.daylight [class*="description"],
+.daylight .heritage-card p,
+.daylight .story-row p,
+.daylight .comic-card p,
+.daylight .treasury-summary span,
+.daylight .gift-family-card small,
+.daylight .badge-card small{
+  color:#5a5368!important;
+}
+.daylight .heritage-card small,
+.daylight .story-meta,
+.daylight .story-creator-line small,
+.daylight .reading-result-count span,
+.daylight .reading-reader-lenses>div span{
+  color:#756b83!important;
+}
+.daylight .heritage-card,
+.daylight .story-row,
+.daylight .comic-card,
+.daylight .treasury-summary article,
+.daylight .gift-family-card,
+.daylight .badge-card{
+  background:rgba(255,255,255,.82)!important;
+}
+.daylight .legacy-discovery-modes button{
+  color:#5b506a!important;
+  background:rgba(255,255,255,.64)!important;
+  border-color:rgba(93,74,135,.16)!important;
+}
+.daylight .legacy-discovery-modes button.active{
+  color:#3a244d!important;
+  background:linear-gradient(110deg,rgba(26,218,234,.18),rgba(127,77,244,.16),rgba(225,55,188,.14))!important;
+  border-color:rgba(0,174,201,.32)!important;
+  box-shadow:0 0 12px rgba(0,194,218,.08),0 0 19px rgba(216,48,180,.055)!important;
+}
+.daylight .reading-reader-lenses{
+  background:linear-gradient(135deg,rgba(255,255,255,.82),rgba(242,234,249,.86))!important;
+  border-color:rgba(0,176,202,.18)!important;
+  box-shadow:0 0 18px rgba(0,193,217,.05),0 0 24px rgba(211,48,179,.035)!important;
+}
+.daylight .reading-reader-lenses>div small{
+  color:#6840c7!important;
+}
+.daylight .reading-reader-lenses nav button{
+  color:#5d536b!important;
+  background:rgba(255,255,255,.70)!important;
+  border-color:rgba(91,75,132,.13)!important;
+}
+.daylight .reading-reader-lenses nav button.active{
+  color:#3c2450!important;
+  background:linear-gradient(110deg,rgba(26,218,234,.19),rgba(126,76,242,.17),rgba(224,55,187,.15))!important;
+  border-color:rgba(0,175,202,.34)!important;
+}
+.daylight .reading-result-count{
+  background:linear-gradient(135deg,rgba(222,246,249,.88),rgba(237,224,249,.92),rgba(250,225,243,.88))!important;
+  border-color:rgba(0,176,202,.20)!important;
+}
+.daylight .reading-result-count strong{color:#3f2855!important}
+.daylight .chic-reading-tools{
+  background:rgba(250,247,253,.92)!important;
+  border-color:rgba(0,176,202,.15)!important;
+  box-shadow:0 8px 24px rgba(84,57,106,.06),0 0 18px rgba(0,191,215,.035)!important;
+}
+.daylight .chic-reading-tools select,
+.daylight .chic-reading-tools .reading-search{
+  color:#342b43!important;
+  border-color:rgba(89,75,130,.15)!important;
+  background:rgba(255,255,255,.86)!important;
+}
+.daylight .life-empty{
+  color:#3d3450!important;
+  background:linear-gradient(135deg,rgba(246,247,252,.96),rgba(229,226,242,.96))!important;
+  border:1px solid rgba(91,77,134,.13)!important;
+}
+.daylight .life-empty h3{color:#342b43!important}
+
+/* The tablet Reading cards were still letting the 112px minimum cover width overflow a narrower grid column. */
+@container palace-reading-room (max-width:980px){
+  .story-shelf.refined.chic-story-catalogue .story-cover{
+    width:96px!important;
+    min-width:96px!important;
+    max-width:96px!important;
+    height:auto!important;
+    position:relative!important;
+    inset:auto!important;
+    transform:none!important;
+  }
+}
+@container palace-reading-room (max-width:620px){
+  .story-shelf.refined.chic-story-catalogue .story-cover{
+    width:72px!important;
+    min-width:72px!important;
+    max-width:72px!important;
+  }
+}
+@media(max-width:1180px){
+  .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row{
+    grid-template-columns:96px minmax(0,1fr)!important;
+  }
+  .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-cover{
+    width:96px!important;
+    min-width:96px!important;
+    max-width:96px!important;
+  }
+}
+@media(max-width:720px){
+  .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row{
+    grid-template-columns:72px minmax(0,1fr)!important;
+  }
+  .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-cover{
+    width:72px!important;
+    min-width:72px!important;
+    max-width:72px!important;
+  }
+}
+
+/* Daylight mobile dock keeps the neon but restores stronger labels. */
+.daylight .mobile-palace-dock>a,
+.daylight .mobile-palace-more{
+  color:#4d435b!important;
+}
+.daylight .mobile-palace-dock>a.active,
+.daylight .mobile-palace-more.active{
+  color:#321e48!important;
+  font-weight:700!important;
+}
