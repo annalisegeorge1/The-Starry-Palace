@@ -2597,3 +2597,129 @@ body.reader-focus-mode .reader-chapter-head{
     border-radius:14px!important;
   }
 }
+
+
+/* =========================================================
+   Mobile shell conflict resolution · October 6 2026
+   Final-source rules intentionally neutralize older 50–54px
+   !important header controls that caused clipping and drift.
+   ========================================================= */
+@media(max-width:720px){
+  .full-topbar{
+    min-height:calc(104px + env(safe-area-inset-top))!important;
+    padding:
+      max(7px,env(safe-area-inset-top))
+      max(9px,env(safe-area-inset-right))
+      9px
+      max(9px,env(safe-area-inset-left))!important;
+  }
+  .full-topbar-row{
+    width:100%!important;
+    min-width:0!important;
+    grid-template-columns:minmax(70px,1fr) auto!important;
+    grid-template-rows:40px 44px!important;
+    gap:7px!important;
+    align-items:center!important;
+  }
+  .full-brand{
+    min-width:0!important;
+    gap:5px!important;
+  }
+  .full-brand>a{
+    min-width:0!important;
+  }
+  .full-top-actions{
+    min-width:0!important;
+    max-width:190px!important;
+    gap:4px!important;
+    justify-content:flex-end!important;
+  }
+  .brandmark,
+  .nav-toggle,
+  .top-icon-link,
+  .command-trigger,
+  .write-action{
+    width:38px!important;
+    height:38px!important;
+    min-width:38px!important;
+    min-height:38px!important;
+    max-width:38px!important;
+    max-height:38px!important;
+    padding:0!important;
+    border-radius:11px!important;
+    place-items:center!important;
+    line-height:1!important;
+    overflow:visible!important;
+  }
+  .brandmark{
+    font-size:20px!important;
+  }
+  .nav-toggle{
+    font-size:18px!important;
+  }
+  .write-action span{
+    display:none!important;
+  }
+  .command-trigger kbd{
+    display:none!important;
+  }
+  .global-search-live{
+    width:100%!important;
+    min-width:0!important;
+    height:44px!important;
+    min-height:44px!important;
+    border-radius:12px!important;
+  }
+  .global-search-live input{
+    min-width:0!important;
+    font-size:16px!important;
+  }
+  .global-search-live button{
+    min-height:34px!important;
+    padding:6px 10px!important;
+    font-size:.68rem!important;
+  }
+
+  /* The bottom dock already owns quick navigation on phones;
+     keep only the theme orb floating so the screen feels calmer. */
+  .restored-floating-controls .notification-anchor{
+    display:none!important;
+  }
+  .restored-floating-controls{
+    right:max(10px,env(safe-area-inset-right))!important;
+    bottom:calc(82px + env(safe-area-inset-bottom))!important;
+    gap:0!important;
+  }
+  .restored-floating-controls .float-btn,
+  .restored-floating-controls .palace-float-sigil{
+    width:44px!important;
+    height:44px!important;
+    min-width:44px!important;
+    min-height:44px!important;
+  }
+}
+@media(max-width:430px){
+  .full-topbar-row{
+    grid-template-columns:minmax(66px,1fr) auto!important;
+    gap:5px!important;
+  }
+  .full-top-actions{
+    max-width:174px!important;
+    gap:3px!important;
+  }
+  .brandmark,
+  .nav-toggle,
+  .top-icon-link,
+  .command-trigger,
+  .write-action{
+    width:36px!important;
+    height:36px!important;
+    min-width:36px!important;
+    min-height:36px!important;
+    max-width:36px!important;
+    max-height:36px!important;
+  }
+  .global-search-live button{
+    padding-inline:8px!important;
+  }
+}
