@@ -57,19 +57,7 @@ if(typeof window!=='undefined'){
   schedulePalaceReload('palace-script-error-reload',60);
  });
 }
-function roomCssMatches(mod){
- if(typeof window==='undefined'||!mod?.PALACE_ROOM_CSS_VERSION)return true;
- const cssVersion=Number(getComputedStyle(document.documentElement).getPropertyValue('--palace-room-css-version').trim()||0);
- if(cssVersion===Number(mod.PALACE_ROOM_CSS_VERSION))return true;
- const key='palace-room-css-sync-reload';
- const last=Number(safeSessionGet(key)||0);
- if(Date.now()-last>12000){
-  safeSessionSet(key,Date.now());
-  window.setTimeout(()=>window.location.reload(),80);
- }
- // palace-room-css-nonblocking: never strand a route on a permanently pending lazy promise.
- return true;
-}
+
 function loadedPalaceAssetPath(){
  if(typeof document==='undefined')return'';
  const script=[...document.querySelectorAll('script[type="module"][src]')].find(node=>/\/assets\/index-[^/]+\.js(?:\?|$)/.test(node.getAttribute('src')||node.src||''));
@@ -112,13 +100,7 @@ function PalaceBuildFreshnessWatch(){
 }
 
 const TreasuryCatalogueLazy=React.lazy(()=>importWithRecovery(()=>import('./Treasury')));
-const lazyRoom=name=>React.lazy(()=>importWithRecovery(()=>import('./liveRooms')).then(mod=>{
- roomCssMatches(mod);
- if(!mod?.[name])throw new Error('Palace room '+name+' is unavailable in this build.');
- return{default:mod[name]};
-}));
 // Core Palace rooms are imported eagerly for navigation reliability.
-// The older recovery helpers remain for stale-module detection during an in-flight deploy.
 
 const rooms=[
   ['Reading Rooms','/reading','Read, discover and return to the stories waiting for you.'],
@@ -178,7 +160,7 @@ function Frame(props){
  if(insidePalaceFrame)return <>{props.children}</>;
  return <PalaceFrameContext.Provider value={true}><FrameShell {...props}/></PalaceFrameContext.Provider>;
 }
-function FrameShell({children,privateArea=false}){
+function FrameShell({children}){
  const {session}=useAuth();
  const [navOpen,setNavOpen]=useState(false);
  const [daylight,setDaylight]=useState(()=>safeLocalGet('palace-theme')==='daylight');
@@ -229,7 +211,6 @@ function FrameShell({children,privateArea=false}){
  const visibleCommandItems=commandNeedle?commandMatches:defaultCommandItems;
  React.useEffect(()=>{if(!activeRoom)return;const label=activeSection?.[0]||activeRoom.label;const item={label,path:currentHref,icon:activeRoom.icon,detail:activeSection?activeRoom.label+' · recently visited':'Recently visited',kind:'recent'};setRecentPalaceRoutes(prev=>{const next=[item,...prev.filter(x=>x.path!==item.path)].slice(0,5);safeLocalSet('palace-recent-routes',JSON.stringify(next));return next})},[currentHref,activeRoom?.id,activeSection?.[0]]);
  React.useEffect(()=>setCommandIndex(0),[commandQuery,commandOpen]);
- const profileInitial=(shellProfile?.display_name||shellProfile?.username||session?.user?.email||'P').slice(0,1).toUpperCase();
  function submitSearch(e){e.preventDefault();if(search.trim())navigate('/search?q='+encodeURIComponent(search.trim()))}
  function chooseCommand(path){setCommandOpen(false);setCommandQuery('');setCommandIndex(0);navigate(path)}
  function searchCommand(){const q=commandQuery.trim();if(!q)return;setCommandOpen(false);setCommandQuery('');setCommandIndex(0);navigate('/search?q='+encodeURIComponent(q))}
@@ -304,13 +285,8 @@ function Login(){
  return <Frame><section className="gate"><div className="gate-copy"><p className="eyebrow">THE PALACE GATES</p><h1>{mode==='signup'?'A place among the stars.':'Welcome home.'}</h1><p>Choose the doorway that suits you. If you use a Palace password, create one for this account — never enter the password for your email inbox.</p></div><div className="auth-panel">{!configured?<p role="alert">Sign-in is not configured.</p>:<><label>Email<input type="email" autoComplete="email" required value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com"/></label><button type="button" className="magic-button" disabled={busy||loading} onClick={magic}>Email me a passwordless entrance link</button><div className="auth-divider"><span>or use a Palace password</span></div><form onSubmit={submit}><label>Password<div className="password-field"><input type={showPassword?'text':'password'} autoComplete={mode==='signup'?'new-password':'current-password'} minLength={mode==='signup'?8:undefined} required value={password} onChange={e=>setPassword(e.target.value)}/><button type="button" onClick={()=>setShowPassword(v=>!v)} aria-label={showPassword?'Hide password':'Show password'}>{showPassword?'Hide':'Show'}</button></div></label>{mode==='signup'&&<small className="password-note">Use at least 8 characters. This is a Palace password, not your email password.</small>}<button disabled={busy||loading}>{busy?'Please wait…':mode==='signup'?'Create my chamber':'Enter the Palace'}</button></form><button className="secondary" disabled={busy} onClick={()=>{setMode(mode==='signup'?'login':'signup');setMessage('');setPassword('')}}>{mode==='signup'?'Already a member? Sign in':'New beneath these stars? Create an account'}</button></>}{(message||sessionError)&&<p className="status" role="status">{message||sessionError}</p>}</div></section></Frame>
 }
 
-function LegacyChamber(){
- const {session}=useAuth(); const navigate=useNavigate(); const [busy,setBusy]=useState(false); const [error,setError]=useState('');
- async function signOut(){setBusy(true);try{const{error}=await supabase.auth.signOut();if(error)throw error;navigate('/',{replace:true})}catch(e){setError(e.message)}finally{setBusy(false)}}
- return <Frame privateArea><section className="chamber-head"><p className="eyebrow">MY CHAMBER</p><h1>Welcome home.</h1><p className="lede">Your private doorway into everything you read, write, collect and share.</p></section><section className="chamber-grid"><article className="chamber-card feature"><small>CONTINUE</small><h2>Your Palace is ready.</h2><p>Your secure session is active as <strong>{session.user.email}</strong>. Reading continuity and live shelves are the next data connection.</p><Link to="/reading">Go to Reading Rooms →</Link></article><article className="chamber-card"><small>CREATE</small><h2>Writing Chamber</h2><p>Return to drafts, chapters and collaborations.</p><Link to="/writing">Open chamber →</Link></article><article className="chamber-card"><small>COLLECT</small><h2>Royal Treasury</h2><p>Badges, gifts and court honours live here.</p><Link to="/treasury">View treasury →</Link></article><article className="chamber-card"><small>COMMUNITY</small><h2>Palace Life</h2><p>Find your clubs, Commons and Moonlight conversations.</p><Link to="/palace-life">Enter Palace Life →</Link></article></section><div className="account-strip"><span>Signed in securely</span><button className="quiet-button" onClick={signOut} disabled={busy}>{busy?'Leaving…':'Leave the Palace'}</button>{error&&<span role="alert">{error}</span>}</div></Frame>
-}
 
-function Room({title,eyebrow,description,protectedRoom=false}){
+){
  const content=<Frame privateArea={protectedRoom}><section className="room-title"><p className="eyebrow">{eyebrow}</p><h1>{title}</h1><p className="lede">{description}</p><div className="coming"><span>PRODUCTION ROOM</span><h2>The doors are open. The furniture comes next.</h2><p>This route now belongs to the production Palace shell. Its existing prototype experience will be connected to Supabase here without pretending unfinished data is live.</p></div></section></Frame>;
  return protectedRoom?<ProtectedRoute>{content}</ProtectedRoute>:content;
 }
@@ -402,20 +378,7 @@ function RouteLoading(){
  React.useEffect(()=>{const timer=window.setTimeout(()=>setSlow(true),2200);return()=>window.clearTimeout(timer)},[]);
  return <div className="route-loading" role="status" aria-live="polite"><div className="route-loading-card"><span className="route-loading-mark" aria-hidden="true">☾<b>✦</b></span><strong>Opening this Palace room…</strong><small>{slow?'This is taking longer than usual. You can safely reload the room.':'Gathering the room beneath the stars.'}</small>{slow&&<button onClick={()=>window.location.reload()}>Reload room</button>}</div></div>
 }
-function RoomBundleWarmup(){
- React.useEffect(()=>{
-  const connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
-  if(connection?.saveData||/2g/.test(connection?.effectiveType||''))return;
-  const warm=()=>{importWithRecovery(()=>import('./liveRooms')).catch(()=>{})};
-  if('requestIdleCallback'in window){
-   const id=window.requestIdleCallback(warm,{timeout:2500});
-   return()=>window.cancelIdleCallback?.(id);
-  }
-  const timer=window.setTimeout(warm,1200);
-  return()=>window.clearTimeout(timer);
- },[]);
- return null
-}
+
 class RouteErrorBoundary extends React.Component{
  constructor(props){super(props);this.state={error:null}}
  static getDerivedStateFromError(error){return{error}}
