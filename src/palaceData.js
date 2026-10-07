@@ -756,6 +756,10 @@ export async function getArchive(userId=null){
  if(saved.error)throw saved.error;const byId=new Map((saved.data||[]).map(x=>[x.record_id,x]));
  return rows.map(r=>({...r,saved:byId.has(r.id),visited_at:byId.get(r.id)?.visited_at||null}))
 }
+export async function getArchiveText(recordId){
+ const{data,error}=await needClient().from('archive_texts').select('record_id,body_text,source_url,source_title,source_license,edition_note,first_publication_year,word_count,updated_at').eq('record_id',recordId).maybeSingle();
+ if(error)throw error;return data
+}
 export async function saveArchiveRecord(userId,recordId){const{error}=await needClient().from('user_archive_records').upsert({user_id:userId,record_id:recordId,saved:true,visited_at:new Date().toISOString(),updated_at:new Date().toISOString()},{onConflict:'user_id,record_id'});if(error)throw error}
 export async function setArchiveRecordSaved(userId,recordId,saved){
  const{data,error}=await needClient().from('user_archive_records').upsert({user_id:userId,record_id:recordId,saved:!!saved,visited_at:new Date().toISOString(),updated_at:new Date().toISOString()},{onConflict:'user_id,record_id'}).select('record_id,saved,visited_at').single();
