@@ -1214,6 +1214,15 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('[navOpen,mobileMoreOpen,commandOpen]');
   });
 
+  it('keeps Palace Life conversation-first on phones',()=>{
+    const next=read('src/palace-next.css');
+    expect(next).toContain('Palace Life mobile hierarchy — conversation first, supporting rooms second.');
+    expect(next).toContain('.social-thread-actions');
+    expect(next).toContain('overflow-x:auto!important');
+    expect(next).toContain('.palace-social-rail .chic-rail-card');
+    expect(next).toContain('.chat-scroll.live-chat');
+  });
+
   it('keeps tablet room navigation swipeable without covering content',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
