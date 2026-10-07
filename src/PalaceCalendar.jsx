@@ -1,5 +1,6 @@
 import {useId,useState} from 'react';
 import {localDay,monthDays,eventOnDay,heritageOnDay} from './calendarModel';
+import './neon-map.css';
 
 const heritageType=item=>String(item?.observance_type||'heritage').toLowerCase().replace(/[^a-z0-9]+/g,'-');
 

@@ -1,0 +1,333 @@
+/* Palace neon map · loaded after the main style stack */
+
+/* Every major sidebar room has a distinct electric identity. */
+.full-nav-room>a[href="/chamber"]{--room-neon:#c66cff}
+.full-nav-room>a[href="/reading"]{--room-neon:#35dcff}
+.full-nav-room>a[href="/library"]{--room-neon:#35efb2}
+.full-nav-room>a[href="/writing"]{--room-neon:#ff5dcc}
+.full-nav-room>a[href="/palace-life"]{--room-neon:#6c7dff}
+.full-nav-room>a[href="/events"]{--room-neon:#58f2ff}
+.full-nav-room>a[href="/treasury"]{--room-neon:#c9f95c}
+.full-nav-room>a[href="/settings"]{--room-neon:#ff865c}
+
+.full-nav-room>a[href="/chamber"],
+.full-nav-room>a[href="/reading"],
+.full-nav-room>a[href="/library"],
+.full-nav-room>a[href="/writing"],
+.full-nav-room>a[href="/palace-life"],
+.full-nav-room>a[href="/events"],
+.full-nav-room>a[href="/treasury"],
+.full-nav-room>a[href="/settings"]{
+  border-color:color-mix(in srgb,var(--room-neon) 24%,transparent)!important;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--room-neon) 11%,transparent),transparent 76%)!important;
+  box-shadow:
+    inset 1px 0 0 color-mix(in srgb,var(--room-neon) 30%,transparent),
+    0 0 14px color-mix(in srgb,var(--room-neon) 5%,transparent)!important;
+}
+.full-nav-room>a[href="/chamber"]>span,
+.full-nav-room>a[href="/reading"]>span,
+.full-nav-room>a[href="/library"]>span,
+.full-nav-room>a[href="/writing"]>span,
+.full-nav-room>a[href="/palace-life"]>span,
+.full-nav-room>a[href="/events"]>span,
+.full-nav-room>a[href="/treasury"]>span,
+.full-nav-room>a[href="/settings"]>span{
+  color:color-mix(in srgb,var(--room-neon) 74%,#f2edf8)!important;
+  font-weight:650;
+  text-shadow:0 0 9px color-mix(in srgb,var(--room-neon) 24%,transparent)!important;
+}
+.full-nav-room>a[href="/chamber"] .room-sigil,
+.full-nav-room>a[href="/reading"] .room-sigil,
+.full-nav-room>a[href="/library"] .room-sigil,
+.full-nav-room>a[href="/writing"] .room-sigil,
+.full-nav-room>a[href="/palace-life"] .room-sigil,
+.full-nav-room>a[href="/events"] .room-sigil,
+.full-nav-room>a[href="/treasury"] .room-sigil,
+.full-nav-room>a[href="/settings"] .room-sigil{
+  color:var(--room-neon)!important;
+  border-color:color-mix(in srgb,var(--room-neon) 48%,transparent)!important;
+  background:
+    radial-gradient(circle at 28% 20%,rgba(255,255,255,.18),transparent 38%),
+    linear-gradient(145deg,color-mix(in srgb,var(--room-neon) 24%,#2b214b),#12152e)!important;
+  box-shadow:
+    0 0 11px color-mix(in srgb,var(--room-neon) 24%,transparent),
+    0 0 24px color-mix(in srgb,var(--room-neon) 11%,transparent)!important;
+}
+.full-nav-room>a[href="/chamber"] .room-sigil svg,
+.full-nav-room>a[href="/reading"] .room-sigil svg,
+.full-nav-room>a[href="/library"] .room-sigil svg,
+.full-nav-room>a[href="/writing"] .room-sigil svg,
+.full-nav-room>a[href="/palace-life"] .room-sigil svg,
+.full-nav-room>a[href="/events"] .room-sigil svg,
+.full-nav-room>a[href="/treasury"] .room-sigil svg,
+.full-nav-room>a[href="/settings"] .room-sigil svg{
+  filter:
+    drop-shadow(0 0 4px color-mix(in srgb,var(--room-neon) 70%,transparent))
+    drop-shadow(0 0 9px color-mix(in srgb,var(--room-neon) 30%,transparent))!important;
+}
+.full-nav-room>a[aria-current="page"]{
+  border-color:color-mix(in srgb,var(--room-neon) 58%,transparent)!important;
+  background:
+    linear-gradient(90deg,color-mix(in srgb,var(--room-neon) 22%,#211637),color-mix(in srgb,var(--room-neon) 7%,transparent) 72%,transparent)!important;
+  box-shadow:
+    inset 3px 0 0 color-mix(in srgb,var(--room-neon) 90%,white 10%),
+    0 0 17px color-mix(in srgb,var(--room-neon) 20%,transparent),
+    0 0 31px color-mix(in srgb,var(--room-neon) 10%,transparent)!important;
+}
+.full-nav-room>a[aria-current="page"]>span{
+  color:color-mix(in srgb,var(--room-neon) 58%,white)!important;
+  text-shadow:
+    0 0 8px color-mix(in srgb,var(--room-neon) 46%,transparent),
+    0 0 18px color-mix(in srgb,var(--room-neon) 20%,transparent)!important;
+}
+
+/* Daylight intentionally becomes much more electric. */
+.daylight{
+  --neon-cyan:#00cce6;
+  --neon-violet:#7a46ff;
+  --neon-pink:#df2fbb;
+  --neon-mint:#00b982;
+}
+.daylight .full-stage,
+.daylight .palace-stage{
+  background:
+    radial-gradient(circle at 7% 8%,rgba(0,222,237,.21),transparent 25rem),
+    radial-gradient(circle at 91% 8%,rgba(225,49,188,.17),transparent 24rem),
+    radial-gradient(circle at 57% 72%,rgba(119,69,255,.15),transparent 31rem),
+    radial-gradient(circle at 12% 88%,rgba(0,190,153,.10),transparent 24rem),
+    linear-gradient(180deg,#eee6f8 0%,#e7ddf3 48%,#eadff0 100%)!important;
+}
+.daylight .full-sidebar{
+  background:
+    radial-gradient(circle at 10% 5%,rgba(0,218,236,.20),transparent 14rem),
+    radial-gradient(circle at 92% 22%,rgba(220,45,183,.17),transparent 16rem),
+    radial-gradient(circle at 8% 76%,rgba(113,67,255,.16),transparent 18rem),
+    linear-gradient(180deg,#f1eafb 0%,#e9ddf4 54%,#e4d8ef 100%)!important;
+  border-right-color:rgba(0,177,202,.30)!important;
+  box-shadow:
+    inset -1px 0 0 rgba(218,47,184,.10),
+    10px 0 34px rgba(87,53,119,.07)!important;
+}
+.daylight .full-nav-room>a[href="/chamber"],
+.daylight .full-nav-room>a[href="/reading"],
+.daylight .full-nav-room>a[href="/library"],
+.daylight .full-nav-room>a[href="/writing"],
+.daylight .full-nav-room>a[href="/palace-life"],
+.daylight .full-nav-room>a[href="/events"],
+.daylight .full-nav-room>a[href="/treasury"],
+.daylight .full-nav-room>a[href="/settings"]{
+  border-color:color-mix(in srgb,var(--room-neon) 34%,transparent)!important;
+  background:
+    linear-gradient(90deg,color-mix(in srgb,var(--room-neon) 18%,white 20%),rgba(255,255,255,.18) 70%,transparent)!important;
+  box-shadow:
+    inset 1px 0 0 color-mix(in srgb,var(--room-neon) 44%,transparent),
+    0 0 16px color-mix(in srgb,var(--room-neon) 10%,transparent)!important;
+}
+.daylight .full-nav-room>a[href="/chamber"]>span,
+.daylight .full-nav-room>a[href="/reading"]>span,
+.daylight .full-nav-room>a[href="/library"]>span,
+.daylight .full-nav-room>a[href="/writing"]>span,
+.daylight .full-nav-room>a[href="/palace-life"]>span,
+.daylight .full-nav-room>a[href="/events"]>span,
+.daylight .full-nav-room>a[href="/treasury"]>span,
+.daylight .full-nav-room>a[href="/settings"]>span{
+  color:color-mix(in srgb,var(--room-neon) 84%,#261c31)!important;
+  font-weight:700!important;
+  text-shadow:0 0 10px color-mix(in srgb,var(--room-neon) 18%,transparent)!important;
+}
+.daylight .full-nav-room>a[href="/chamber"] .room-sigil,
+.daylight .full-nav-room>a[href="/reading"] .room-sigil,
+.daylight .full-nav-room>a[href="/library"] .room-sigil,
+.daylight .full-nav-room>a[href="/writing"] .room-sigil,
+.daylight .full-nav-room>a[href="/palace-life"] .room-sigil,
+.daylight .full-nav-room>a[href="/events"] .room-sigil,
+.daylight .full-nav-room>a[href="/treasury"] .room-sigil,
+.daylight .full-nav-room>a[href="/settings"] .room-sigil{
+  color:color-mix(in srgb,var(--room-neon) 92%,#24182d)!important;
+  border-color:color-mix(in srgb,var(--room-neon) 55%,transparent)!important;
+  background:
+    radial-gradient(circle at 28% 20%,rgba(255,255,255,.84),transparent 40%),
+    linear-gradient(145deg,color-mix(in srgb,var(--room-neon) 22%,white 75%),rgba(245,237,250,.90))!important;
+  box-shadow:
+    0 0 12px color-mix(in srgb,var(--room-neon) 22%,transparent),
+    0 0 25px color-mix(in srgb,var(--room-neon) 11%,transparent)!important;
+}
+.daylight .full-topbar{
+  border-bottom-color:rgba(0,178,203,.28)!important;
+  background:
+    radial-gradient(circle at 7% 50%,rgba(0,219,235,.15),transparent 13rem),
+    radial-gradient(circle at 72% 0%,rgba(220,48,184,.13),transparent 15rem),
+    linear-gradient(90deg,rgba(247,240,253,.96),rgba(244,235,250,.94) 62%,rgba(239,232,250,.96))!important;
+  box-shadow:
+    0 8px 30px rgba(71,46,92,.07),
+    0 0 24px rgba(0,190,216,.06),
+    0 0 35px rgba(213,45,181,.05)!important;
+}
+.daylight .brandmark{
+  color:var(--neon-violet)!important;
+  text-shadow:
+    0 0 9px rgba(122,70,255,.34),
+    0 0 18px rgba(223,47,187,.14)!important;
+}
+.daylight .global-search-live{
+  border-color:rgba(0,174,200,.32)!important;
+  background:linear-gradient(90deg,rgba(255,255,255,.88),rgba(242,235,251,.90))!important;
+  box-shadow:
+    0 0 17px rgba(0,194,218,.08),
+    0 0 25px rgba(122,70,255,.05)!important;
+}
+.daylight .global-search-live>span{
+  color:var(--neon-cyan)!important;
+  text-shadow:0 0 8px rgba(0,204,230,.30)!important;
+}
+.daylight .global-search-live:focus-within,
+.daylight .heritage-search:focus-within,
+.daylight .palace-search.restored:focus-within,
+.daylight input:focus-visible,
+.daylight textarea:focus-visible,
+.daylight select:focus-visible{
+  border-color:rgba(0,171,198,.55)!important;
+  outline-color:rgba(0,196,221,.55)!important;
+  box-shadow:
+    0 0 0 3px rgba(0,190,214,.10),
+    0 0 21px rgba(126,74,224,.10),
+    0 0 31px rgba(223,47,187,.06)!important;
+}
+.daylight .global-search-live button,
+.daylight .write-action,
+.daylight .button:not(.quiet-button),
+.daylight .proposal-form>button,
+.daylight .thread-compose button:not(.quiet-button){
+  color:#fff!important;
+  border-color:rgba(0,183,209,.40)!important;
+  background:linear-gradient(110deg,#00bdd7 0%,#754cff 47%,#df35b7 100%)!important;
+  box-shadow:
+    0 8px 18px rgba(93,61,193,.17),
+    0 0 16px rgba(0,199,224,.17),
+    0 0 27px rgba(218,49,181,.12)!important;
+}
+.daylight .room-tabs button.active,
+.daylight .reading-mode-tabs a.active,
+.daylight .search-lenses button.active,
+.daylight .tag-family-atlas>button.active,
+.daylight .reading-reader-lenses nav button.active,
+.daylight .badge-collection-switch button[aria-pressed="true"]{
+  color:#3b2150!important;
+  border-color:rgba(0,181,208,.48)!important;
+  background:
+    linear-gradient(100deg,rgba(32,222,236,.26),rgba(128,80,255,.23) 52%,rgba(231,60,192,.22))!important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.55),
+    0 0 16px rgba(0,196,220,.15),
+    0 0 26px rgba(125,74,241,.11),
+    0 0 35px rgba(221,53,186,.08)!important;
+}
+.daylight .eyebrow{
+  color:#6840c7!important;
+  text-shadow:0 0 13px rgba(124,68,236,.15)!important;
+}
+.daylight .top-icon-link,
+.daylight .nav-toggle,
+.daylight .command-trigger,
+.daylight .sidebar-retract,
+.daylight .floating-controls .float-btn{
+  border-color:rgba(0,173,200,.24)!important;
+  background:
+    radial-gradient(circle at 28% 22%,rgba(0,222,237,.13),transparent 45%),
+    linear-gradient(145deg,rgba(255,255,255,.82),rgba(231,221,245,.74))!important;
+  box-shadow:
+    0 0 13px rgba(0,193,217,.08),
+    0 0 21px rgba(216,48,180,.05)!important;
+}
+.daylight .room-card,
+.daylight .chamber-card,
+.daylight .command-card,
+.daylight .story-row,
+.daylight .comic-card,
+.daylight .settings-panel,
+.daylight .heritage-card,
+.daylight .tag-category-grid>article,
+.daylight .search-archive-result{
+  border-color:rgba(0,177,204,.20)!important;
+  box-shadow:
+    0 12px 28px rgba(69,45,92,.06),
+    -1px 0 0 rgba(0,195,220,.11),
+    1px 0 0 rgba(222,50,184,.09)!important;
+}
+.daylight .room-card:hover,
+.daylight .chamber-card:hover,
+.daylight .command-card:hover,
+.daylight .story-row:hover,
+.daylight .comic-card:hover,
+.daylight .heritage-card:hover,
+.daylight .search-archive-result:hover{
+  border-color:rgba(0,177,204,.38)!important;
+  box-shadow:
+    0 15px 34px rgba(69,45,92,.08),
+    0 0 16px rgba(0,198,222,.11),
+    0 0 25px rgba(127,74,241,.08),
+    0 0 34px rgba(219,48,182,.06)!important;
+}
+.daylight .tag-starting-doors button,
+.daylight .reading-card-tags span,
+.daylight .comic-card-tags span,
+.daylight .search-match-signals span,
+.daylight .tag-picker>div{
+  border-color:rgba(0,174,201,.24)!important;
+  background:
+    linear-gradient(135deg,rgba(29,219,235,.15),rgba(131,81,246,.13),rgba(228,59,190,.11))!important;
+}
+.daylight .palace-passage{
+  border-color:rgba(0,174,201,.24)!important;
+  background:
+    radial-gradient(circle at 4% 50%,rgba(0,219,236,.15),transparent 14rem),
+    radial-gradient(circle at 96% 50%,rgba(221,52,185,.13),transparent 14rem),
+    linear-gradient(90deg,rgba(249,245,253,.93),rgba(240,233,249,.91))!important;
+  box-shadow:
+    0 6px 22px rgba(81,55,101,.05),
+    0 0 22px rgba(0,194,219,.05)!important;
+}
+.daylight .palace-passage-doors>a:hover{
+  border-color:rgba(0,177,204,.34)!important;
+  background:
+    linear-gradient(110deg,rgba(25,219,234,.15),rgba(128,78,244,.13),rgba(225,55,188,.12))!important;
+  box-shadow:
+    0 0 15px rgba(0,196,219,.10),
+    0 0 24px rgba(216,49,181,.07)!important;
+}
+.daylight .palace-passage-wander{
+  color:#fff!important;
+  border-color:rgba(0,183,207,.32)!important;
+  background:linear-gradient(110deg,#06b6cf,#7449ef 54%,#cf39ad)!important;
+  box-shadow:
+    0 0 17px rgba(0,195,219,.14),
+    0 0 26px rgba(211,48,178,.10)!important;
+}
+.daylight .mobile-palace-dock{
+  border-color:rgba(0,174,202,.30)!important;
+  background:
+    radial-gradient(circle at 18% 0%,rgba(0,219,236,.17),transparent 10rem),
+    radial-gradient(circle at 82% 0%,rgba(222,49,185,.15),transparent 10rem),
+    linear-gradient(180deg,rgba(249,244,253,.98),rgba(234,224,246,.98))!important;
+  box-shadow:
+    0 -9px 28px rgba(74,49,95,.08),
+    0 0 26px rgba(0,195,219,.07)!important;
+}
+.daylight .mobile-palace-dock>a.active,
+.daylight .mobile-palace-more.active{
+  color:#542b83!important;
+  background:
+    linear-gradient(145deg,rgba(29,219,235,.21),rgba(125,75,244,.19),rgba(225,56,188,.16))!important;
+  box-shadow:
+    0 0 14px rgba(0,197,221,.11),
+    0 0 22px rgba(217,48,181,.08)!important;
+}
+.daylight ::selection{
+  background:rgba(116,70,255,.22);
+  color:#2b1738;
+}
+
+@media(prefers-reduced-motion:reduce){
+  .full-nav-room>a,
+  .room-sigil{transition:none!important}
+}
