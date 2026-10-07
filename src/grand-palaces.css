@@ -58,3 +58,18 @@
 @media(max-width:920px){.grand-box-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.grand-token-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.grand-hero-stats{grid-template-columns:1fr}.grand-your-court{grid-template-columns:70px minmax(0,1fr)}.grand-my-crest{width:70px;height:70px;font-size:2.4rem}.grand-your-court>a{grid-column:1/-1}.grand-box-grid,.grand-token-grid{grid-template-columns:1fr 1fr}.grand-ranked-courts article{grid-template-columns:1.6rem 1.7rem minmax(0,1fr) auto;gap:.35rem;padding:.5rem}.grand-ranked-courts article i{font-size:1.3rem}.grand-ranked-courts strong{font-size:.72rem}.grand-ranked-courts article>span b{font-size:.86rem}}
 @media(max-width:390px){.grand-box-grid,.grand-token-grid{grid-template-columns:1fr}.grand-ranked-courts article>span small{display:none}}
+
+/* Grand Palace membership and earned-token ribbons on profile */
+.grand-profile-identity{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.7rem;align-items:stretch;margin:.8rem 0 1rem}
+.grand-profile-crest{display:flex;gap:.7rem;align-items:center;padding:.7rem 1rem;border:1px solid rgba(183,172,241,.35);border-radius:15px;background:linear-gradient(120deg,rgba(117,105,203,.18),rgba(70,133,184,.09));text-decoration:none;min-width:0;color:inherit;flex-wrap:wrap}
+.grand-profile-crest>span{font-size:2rem;color:#b8b1f4}
+.grand-profile-crest>strong{font:500 clamp(.88rem,1.5vw,1.2rem) Georgia,serif}
+.grand-profile-crest>small{flex:0 0 100%;font-size:.59rem;letter-spacing:.04em;color:#b8b4d3}
+.grand-profile-honours{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.35rem}
+.grand-profile-token{display:grid;place-items:center;align-content:center;min-width:65px;padding:.45rem;border:1px solid rgba(160,157,214,.17);border-radius:13px;background:rgba(61,64,129,.12);gap:.1rem}
+.grand-profile-token b{font-size:1.25rem;color:#c1bef4}
+.grand-profile-token.heart b{color:#e99cb6}.grand-profile-token.star b{color:#9fccfa}.grand-profile-token.moon b{color:#baa7ef}.grand-profile-token.crown b{color:#e3d1f2}
+.grand-profile-token strong{font-size:.82rem}.grand-profile-token small{font-size:.54rem;letter-spacing:.04em;color:#a9a4c1}
+.daylight .grand-profile-crest,.daylight .grand-profile-token{background:#f0effc;color:#3b2f5c;border-color:#c8bce6}
+.daylight .grand-profile-token small,.daylight .grand-profile-crest small{color:#5c5075}
+@media(max-width:820px){.grand-profile-identity{grid-template-columns:1fr}.grand-profile-honours{width:100%}}
