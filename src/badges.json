@@ -3898,5 +3898,373 @@
         "threshold": 10000000
       }
     ]
+  },
+  {
+    "id": "first-bell-scribe",
+    "number": 101,
+    "name": "First Bell Scribe",
+    "symbol": "✎",
+    "category": "Ink Duels · The Arena",
+    "metric": "duel_entries",
+    "description": "Seal entries in Ink Duels across the Palace.",
+    "difficulty": "Standard",
+    "accent": "#7659b6",
+    "accent2": "#c8b0ef",
+    "thresholds": [
+      3,
+      10,
+      30,
+      100,
+      250
+    ],
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 30
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 100
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 250
+      }
+    ]
+  },
+  {
+    "id": "keeper-of-the-arena",
+    "number": 102,
+    "name": "Keeper of the Arena",
+    "symbol": "♜",
+    "category": "Ink Duels · The Arena",
+    "metric": "duel_hosts",
+    "description": "Open fair Ink Duels for other creators.",
+    "difficulty": "Rare",
+    "accent": "#7659b6",
+    "accent2": "#c8b0ef",
+    "thresholds": [
+      1,
+      5,
+      20,
+      75,
+      200
+    ],
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 20
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 75
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 200
+      }
+    ]
+  },
+  {
+    "id": "many-form-quill",
+    "number": 103,
+    "name": "Many-Form Quill",
+    "symbol": "✦",
+    "category": "Ink Duels · The Arena",
+    "metric": "duel_types_completed",
+    "description": "Compete across fiction, poetry, haiku, dialogue, art, comics and other duel forms.",
+    "difficulty": "Rare",
+    "accent": "#7659b6",
+    "accent2": "#c8b0ef",
+    "thresholds": [
+      2,
+      3,
+      5,
+      7,
+      8
+    ],
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 2
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 3
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 5
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 7
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 8
+      }
+    ]
+  },
+  {
+    "id": "blind-moon-juror",
+    "number": 104,
+    "name": "Blind Moon Juror",
+    "symbol": "☾",
+    "category": "Ink Duels · The Arena",
+    "metric": "duel_votes_cast",
+    "description": "Cast valid blind ballots after reading or viewing sealed entries.",
+    "difficulty": "Standard",
+    "accent": "#7659b6",
+    "accent2": "#c8b0ef",
+    "thresholds": [
+      5,
+      25,
+      100,
+      500,
+      2000
+    ],
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 5
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 25
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 500
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 2000
+      }
+    ]
+  },
+  {
+    "id": "crowned-in-ink",
+    "number": 105,
+    "name": "Crowned in Ink",
+    "symbol": "♕",
+    "category": "Ink Duels · The Laurels",
+    "metric": "duel_wins",
+    "description": "Win revealed Ink Duels by blind community vote.",
+    "difficulty": "Rare",
+    "accent": "#4f73aa",
+    "accent2": "#b4d4ef",
+    "thresholds": [
+      1,
+      5,
+      20,
+      75,
+      250
+    ],
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 20
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 75
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 250
+      }
+    ]
+  },
+  {
+    "id": "laurel-constellation",
+    "number": 106,
+    "name": "Laurel Constellation",
+    "symbol": "❦",
+    "category": "Ink Duels · The Laurels",
+    "metric": "duel_laurels",
+    "description": "Earn craft laurels for impact, atmosphere, originality and craft.",
+    "difficulty": "Rare",
+    "accent": "#4f73aa",
+    "accent2": "#b4d4ef",
+    "thresholds": [
+      3,
+      15,
+      60,
+      250,
+      1000
+    ],
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 3
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 15
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 60
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "twin-quills-victor",
+    "number": 107,
+    "name": "Twin Quills Victor",
+    "symbol": "⚔",
+    "category": "Ink Duels · The Laurels",
+    "metric": "duel_1v1_wins",
+    "description": "Win direct one-versus-one Ink Duel challenges.",
+    "difficulty": "Legendary",
+    "accent": "#4f73aa",
+    "accent2": "#b4d4ef",
+    "thresholds": [
+      1,
+      3,
+      10,
+      40,
+      150
+    ],
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 3
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 10
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 40
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 150
+      }
+    ]
+  },
+  {
+    "id": "court-of-eight",
+    "number": 108,
+    "name": "Court of Eight",
+    "symbol": "✧",
+    "category": "Ink Duels · The Laurels",
+    "metric": "duel_group_wins",
+    "description": "Win invited group Ink Duels where several creators answer the same bell.",
+    "difficulty": "Legendary",
+    "accent": "#4f73aa",
+    "accent2": "#b4d4ef",
+    "thresholds": [
+      1,
+      3,
+      10,
+      40,
+      150
+    ],
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 3
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 10
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 40
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 150
+      }
+    ]
   }
 ]
