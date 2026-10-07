@@ -1427,16 +1427,24 @@ describe('Starry Palace launch safety',()=>{
 
   it('keeps the writer desk richer than a plain textarea',()=>{
     const polish=read('src/polish.css');
+    const next=read('src/palace-next.css');
     expect(live).toContain("exec('undo')");
     expect(live).toContain("exec('redo')");
     expect(live).toContain("exec('strikeThrough')");
     expect(live).toContain("exec('insertUnorderedList')");
     expect(live).toContain("exec('insertOrderedList')");
-    expect(live).toContain('⌖ Typewriter');
+    expect(live).toContain('⌖ <span>Typewriter</span>');
     expect(live).toContain('Draft font');
-    expect(live).toContain('Spacing');
+    expect(live).toContain('Text size');
+    expect(live).toContain('writerFontSize');
+    expect(live).toContain("'--writer-font-size':writerFontSize+'px'");
+    expect(live).toContain('Line spacing');
+    expect(live).toContain('Make the desk yours.');
     expect(polish).toContain('.writer-view-controls');
     expect(polish).toContain('.writing-page-stage.typewriter-mode');
+    expect(next).toContain('Writing Chamber · luminous editorial refinement inspired by Prompt Orrery');
+    expect(next).toContain('font-size:var(--writer-font-size,20px)!important');
+    expect(next).toContain('.writer-text-size-control');
   });
 
   it('uses a shared LGBTQ prism treatment for calendar dates stories and comics',()=>{
