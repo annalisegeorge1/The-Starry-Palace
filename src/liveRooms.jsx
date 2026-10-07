@@ -245,9 +245,10 @@ export function ReadingLive({Frame}){
   {id:'society',glyph:'☕',label:'Society & Romance',terms:['classic novel','romance','society','austen','brontë','wharton','awakening','middlemarch','gatsby']},
   {id:'wonder',glyph:'✦',label:'Children & Wonder',terms:['childrens','fantasy','wonderland','wizard','anne of green gables']},
   {id:'translated',glyph:'◇',label:'Translated Worlds',terms:['translated','tolstoy','dostoevsky','cervantes','dumas','pu songling']},
+  {id:'chinese',glyph:'☾',label:'Chinese Classics',terms:['chinese','luo guanzhong','cao xueqin','pu songling','journey to the west','three kingdoms','red chamber','mission to heaven']},
   {id:'short',glyph:'✧',label:'Short Works',terms:['short story','novella','juvenilia','collected works','scandal in bohemia','benjamin button']}
  ];
- const classicHay=w=>[w.title,w.summary,w.profiles?.display_name,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase();
+ const classicHay=w=>[w.title,w.summary,w.language,w.profiles?.display_name,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase();
  const classicMatches=(w,lens)=>{if(lens==='all')return true;const set=classicCollections.find(x=>x.id===lens);return!!set&&set.terms.some(term=>classicHay(w).includes(term))};
  const classicShelf=[...(archiveWorks||[])].filter(w=>classicMatches(w,classicLens)).sort((a,b)=>String(a.profiles?.display_name||'').localeCompare(String(b.profiles?.display_name||''))||String(a.title||'').localeCompare(String(b.title||''))).slice(0,10);
  const advancedView=new URLSearchParams(location.search).get('view')==='search';const surpriseHandled=useRef(false);
