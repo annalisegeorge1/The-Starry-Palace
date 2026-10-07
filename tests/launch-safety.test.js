@@ -840,14 +840,24 @@ describe('Starry Palace launch safety',()=>{
 
   it('keeps Ink Duels timed, blind and participation-focused',()=>{
     const data=read('src/palaceData.js');
+    const duelMigration=read('database/ink-duels-v2.sql');
+    const next=read('src/palace-next.css');
     expect(data).toContain("rpc('get_micro_duels')");
-    expect(data).toContain("rpc('create_micro_duel'");
+    expect(data).toContain("rpc('create_micro_duel_v2'");
     expect(data).toContain("rpc('submit_micro_duel_entry'");
     expect(data).toContain("rpc('vote_micro_duel'");
-    expect(live).toContain('MICRO-FICTION DUELS');
-    expect(live).toContain('Fifteen minutes. One strange prompt.');
+    expect(data).toContain("rpc('cancel_micro_duel'");
+    expect(live).toContain('INK DUELS · BLIND MICRO-FICTION');
+    expect(live).toContain('Put the clock on the page.');
+    expect(live).toContain('FLASH INK');
+    expect(live).toContain('CLASSIC DUEL');
+    expect(live).toContain('DEEP INK');
+    expect(live).toContain('Pull from Prompt Orrery');
     expect(live).toContain('Cast blind vote');
-    expect(live).toContain('winning never changes discovery ranking');
+    expect(live).toContain('Moonlit favourite ✦');
+    expect(duelMigration).toContain("'results'");
+    expect(duelMigration).toContain('voting_closes_at');
+    expect(next).toContain('Ink Duels v2 · blind writing arena');
   });
 
   it('keeps chapter praise unified with Heart Star Moon Crown',()=>{
@@ -1450,15 +1460,25 @@ describe('Starry Palace launch safety',()=>{
     const polish=read('src/polish.css');
     const next=read('src/palace-next.css');
     const orrery=read('src/promptOrreryData.js');
-    expect(live).toContain('PROMPT ORRERY · 2,012 CONSTELLATIONS · ZERO STAKES');
+    expect(live).toContain('PROMPT ORRERY · 4,012 CONSTELLATIONS · ZERO STAKES');
     expect(live).toContain('Pull the lever');
     expect(live).toContain('Shape the orbit');
     expect(live).toContain('promptFilterKeys');
+    expect(live).toContain("flavour:'Story family'");
     expect(live).toContain('Copy full prompt');
     expect(live).toContain('GENRE / VIBE');
     expect(live).toContain('RANDOM OBJECT');
     expect(live).toContain('TWIST');
-    expect(orrery).toContain('length:2012');
+    expect(orrery).toContain('ORRERY_CLASSIC_RECIPES=Array.from({length:2012}');
+    expect(orrery).toContain('ORRERY_EXPANSION_RECIPES=Array.from({length:2000}');
+    expect(orrery).toContain('ORRERY_EXPANSION_FAMILIES');
+    expect(orrery).toContain('"Dark"');
+    expect(orrery).toContain('"Mystical"');
+    expect(orrery).toContain('"Romantic"');
+    expect(orrery).toContain('"Cerebral / Smart"');
+    expect(orrery).toContain('"Timeline / Time-bending"');
+    expect(orrery).toContain('"Genre Mix"');
+    expect(orrery).toContain('"Drama"');
     expect(orrery).toContain('ORRERY_MOODS');
     expect(orrery).toContain('ORRERY_CHARACTERS');
     expect(orrery).toContain('ORRERY_RELATIONSHIPS');
@@ -1466,7 +1486,7 @@ describe('Starry Palace launch safety',()=>{
     expect(orrery).toContain('ORRERY_CONFLICTS');
     expect(orrery).toContain('ORRERY_DIFFICULTIES');
     expect(polish).toContain('Prompt Orrery · creative three-reel generator');
-    expect(next).toContain('Prompt Orrery 2,012 — richer constellations without a heavier default desk.');
+    expect(next).toContain('Prompt Orrery · luminous card lift inspired by Palace shell controls');
   });
 
   it('uses the live ranking preference column for public opt-out',()=>{
