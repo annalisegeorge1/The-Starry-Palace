@@ -6529,3 +6529,213 @@ body.writing-desk-open.daylight .studio-head-copy h1,
     justify-content:flex-start;
   }
 }
+
+
+/* Palace dialogs v2 · viewport-safe portal surfaces */
+/* Dialogs render at document.body now, so the shell can never cover their
+   title or actions. Only the body scrolls; header and footer stay visible. */
+.palace-dialog-backdrop{
+  z-index:16000!important;
+  place-items:center!important;
+  padding:max(14px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left))!important;
+  overflow:hidden!important;
+}
+.palace-dialog{
+  display:grid!important;
+  grid-template-rows:auto minmax(0,1fr) auto!important;
+  max-height:calc(100dvh - 28px)!important;
+  overflow:hidden!important;
+}
+.palace-dialog>header,
+.palace-dialog>footer{
+  position:relative;
+  z-index:3;
+  background:linear-gradient(180deg,rgba(21,18,46,.985),rgba(18,15,40,.965))!important;
+  -webkit-backdrop-filter:blur(18px);
+  backdrop-filter:blur(18px);
+}
+.palace-dialog>header{
+  box-shadow:0 8px 22px rgba(4,3,18,.08);
+}
+.palace-dialog>footer{
+  box-shadow:0 -8px 22px rgba(4,3,18,.08);
+}
+.palace-dialog-body{
+  min-height:0!important;
+  overflow:auto!important;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(202,180,231,.26) transparent;
+}
+.palace-dialog-body::-webkit-scrollbar{width:8px}
+.palace-dialog-body::-webkit-scrollbar-track{background:transparent}
+.palace-dialog-body::-webkit-scrollbar-thumb{
+  background:rgba(202,180,231,.22);
+  border:2px solid transparent;
+  background-clip:padding-box;
+  border-radius:999px;
+}
+.palace-dialog-body::-webkit-scrollbar-thumb:hover{
+  background:rgba(202,180,231,.34);
+  border:2px solid transparent;
+  background-clip:padding-box;
+}
+
+/* Ink Duel creator gets enough room to read as a builder, not a cramped form. */
+.ink-duel-dialog{
+  width:min(840px,calc(100vw - 32px))!important;
+  max-height:min(92dvh,860px)!important;
+  border-color:rgba(190,158,226,.24)!important;
+  background:
+    radial-gradient(circle at 8% 0%,rgba(145,101,211,.10),transparent 16rem),
+    radial-gradient(circle at 94% 4%,rgba(91,145,218,.055),transparent 18rem),
+    linear-gradient(155deg,rgba(20,18,47,.995),rgba(12,11,31,.995))!important;
+  box-shadow:
+    0 34px 100px rgba(0,0,0,.48),
+    0 0 36px rgba(132,91,193,.045)!important;
+}
+.ink-duel-dialog>header{
+  padding:.9rem 1rem .72rem!important;
+}
+.ink-duel-dialog>header h2{
+  margin:.08rem 0 0!important;
+  font-size:1.35rem!important;
+}
+.ink-duel-dialog>header .eyebrow{
+  font-size:.46rem!important;
+}
+.ink-duel-dialog .palace-dialog-body{
+  padding:.78rem 1rem .9rem!important;
+}
+.ink-duel-dialog .ink-duel-form{
+  gap:.58rem!important;
+}
+.ink-duel-dialog .duel-builder-block{
+  gap:.28rem!important;
+}
+.ink-duel-dialog .duel-builder-label{
+  font-size:.42rem!important;
+  color:#91869e!important;
+}
+.ink-duel-dialog .duel-content-picker{
+  gap:.32rem!important;
+}
+.ink-duel-dialog .duel-content-picker>button{
+  min-height:54px!important;
+  padding:.32rem!important;
+  border-radius:11px!important;
+}
+.ink-duel-dialog .duel-content-picker>button span{
+  font-size:.78rem!important;
+}
+.ink-duel-dialog .duel-content-picker>button strong{
+  font-size:.49rem!important;
+}
+.ink-duel-dialog .duel-match-picker{
+  gap:.34rem!important;
+}
+.ink-duel-dialog .duel-match-picker>button{
+  min-height:66px!important;
+  padding:.42rem .48rem!important;
+  border-radius:11px!important;
+}
+.ink-duel-dialog .duel-mode-picker{
+  gap:.34rem!important;
+}
+.ink-duel-dialog .duel-mode-picker>button{
+  min-height:64px!important;
+  padding:.4rem!important;
+  border-radius:11px!important;
+}
+.ink-duel-dialog label{
+  gap:.24rem!important;
+  font-size:.64rem!important;
+}
+.ink-duel-dialog input,
+.ink-duel-dialog textarea,
+.ink-duel-dialog select{
+  padding:.62rem .68rem!important;
+  border-radius:10px!important;
+}
+.ink-duel-dialog textarea{
+  resize:vertical;
+}
+.ink-duel-dialog .duel-prompt-tools{
+  gap:.42rem!important;
+}
+.ink-duel-dialog .duel-rule-grid{
+  gap:.42rem!important;
+}
+.ink-duel-dialog .duel-seal-note{
+  padding:.55rem!important;
+}
+.ink-duel-dialog>footer{
+  padding:.62rem 1rem .72rem!important;
+}
+.ink-duel-dialog>footer button{
+  min-height:38px!important;
+}
+
+/* On shorter laptop screens, keep all three choice bands compact while the
+   descriptive fields scroll independently below them. */
+@media(min-width:701px) and (max-height:820px){
+  .ink-duel-dialog{
+    max-height:calc(100dvh - 18px)!important;
+  }
+  .ink-duel-dialog .palace-dialog-body{
+    padding:.62rem .9rem .72rem!important;
+  }
+  .ink-duel-dialog .ink-duel-form{
+    gap:.48rem!important;
+  }
+  .ink-duel-dialog .duel-content-picker>button{
+    min-height:48px!important;
+  }
+  .ink-duel-dialog .duel-match-picker>button{
+    min-height:58px!important;
+  }
+  .ink-duel-dialog .duel-mode-picker>button{
+    min-height:56px!important;
+  }
+  .ink-duel-dialog .duel-match-picker small{
+    display:none;
+  }
+}
+
+/* Mobile becomes a full-width bottom sheet, but the title and action bar
+   remain pinned while the form scrolls between them. */
+@media(max-width:700px){
+  .palace-dialog-backdrop{
+    place-items:end center!important;
+    padding:8px!important;
+  }
+  .palace-dialog{
+    width:100%!important;
+    max-height:calc(100dvh - 12px)!important;
+    border-radius:18px 18px 10px 10px!important;
+  }
+  .ink-duel-dialog{
+    width:100%!important;
+    max-height:calc(100dvh - 12px)!important;
+  }
+  .ink-duel-dialog .duel-content-picker{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  .ink-duel-dialog .duel-match-picker,
+  .ink-duel-dialog .duel-mode-picker,
+  .ink-duel-dialog .duel-rule-grid,
+  .ink-duel-dialog .duel-prompt-tools{
+    grid-template-columns:1fr!important;
+  }
+}
+
+.daylight .palace-dialog>header,
+.daylight .palace-dialog>footer{
+  background:rgba(249,247,251,.97)!important;
+}
+.daylight .ink-duel-dialog{
+  background:
+    radial-gradient(circle at 8% 0%,rgba(145,101,211,.055),transparent 16rem),
+    linear-gradient(155deg,rgba(255,255,255,.985),rgba(246,243,249,.98))!important;
+  border-color:rgba(96,77,142,.14)!important;
+}
