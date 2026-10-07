@@ -933,6 +933,16 @@ describe('Starry Palace launch safety',()=>{
     expect(treasuryCss).toContain('.protected-palace-art img');
   });
 
+  it('recovers even when React never mounts',()=>{
+    const html=read('index.html');
+    expect(html).toContain('palace-pre-react-recovery');
+    expect(html).toContain('window.__palaceBootFailure');
+    expect(html).toContain("url.searchParams.set('__palace_recover'");
+    expect(html).toContain('palace-entry');
+    expect(html).toContain('The Palace did not finish opening.');
+    expect(html).toContain('Restore the Palace');
+  });
+
   it('recovers blank routes non-destructively and keeps both Palace themes intentionally rich',()=>{
     const polish=read('src/polish.css');
     const nextCss=read('src/palace-next.css');
