@@ -149,7 +149,7 @@ export default function Treasury({Frame}) {
 
   <div className="badge-collection-switch treasury-collection-switch" role="group" aria-label="Treasury collection">
    <button aria-pressed={collection==='originals'} onClick={()=>choose('originals')}>Palace originals · 175 badges</button>
-   <button aria-pressed={collection==='expanded'} onClick={()=>choose('expanded')}>Expanded paths · 100 families · merged watercolours</button>
+   <button aria-pressed={collection==='expanded'} onClick={()=>choose('expanded')}>Expanded paths · 108 families · merged watercolours</button>
    <button aria-pressed={collection==='gifts'} onClick={()=>choose('gifts')}>Gift collection · {giftData.count||600} treasures</button>
   </div>
 
