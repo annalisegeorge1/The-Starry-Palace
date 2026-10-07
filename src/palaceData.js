@@ -265,9 +265,10 @@ export async function getLibrary(userId){const [saved,progress,subs,savedComics,
  const comics=await Promise.all((savedComics.data||[]).map(async x=>({...x,cover_url:await signedAsset('comic-covers',x.comics?.cover_path)})));
  const comicHistory=await Promise.all((comicProgress.data||[]).map(async x=>({...x,cover_url:await signedAsset('comic-covers',x.comics?.cover_path)})));
  return{saved:saved.data||[],progress:progress.data||[],subscriptions:subs.data||[],savedComics:comics,comicProgress:comicHistory,comicSubscriptions:comicSubs.data||[],followedWriters:follows.data||[]}}
-export async function getTagConstellation(){const{data,error}=await needClient().rpc('search_palace_tags',{p_query:'',p_category:null,p_limit:120});if(error)throw error;return data||[]}
-export async function searchPalaceTags(query='',category='all',limit=100){const{data,error}=await needClient().rpc('search_palace_tags',{p_query:String(query||''),p_category:category==='all'?null:category,p_limit:limit});if(error)throw error;return data||[]}
-export async function createCommunityTag(name,category='additional'){const{data,error}=await needClient().rpc('create_community_tag',{p_name:String(name||''),p_category:category});if(error)throw error;return data}
+export async function getTagConstellation(){const{data,error}=await needClient().rpc('search_palace_tags_v2',{p_query:'',p_category:null,p_limit:120});if(error)throw error;return data||[]}
+export async function searchPalaceTags(query='',category='all',limit=100){const{data,error}=await needClient().rpc('search_palace_tags_v2',{p_query:String(query||''),p_category:category==='all'?null:category,p_limit:limit});if(error)throw error;return data||[]}
+export async function getTagFamilyCounts(){const{data,error}=await needClient().rpc('get_tag_family_counts');if(error)throw error;return data||[]}
+export async function createCommunityTag(name,category='additional'){const clean=String(name||'').trim().replace(/\s+/g,' ');if(clean.length<2)throw new Error('Give the tag at least 2 characters.');const nearby=await searchPalaceTags(clean,category,8);const exact=nearby.find(t=>String(t.name||'').toLowerCase()===clean.toLowerCase()&&t.category===category);if(exact)return exact;const{data,error}=await needClient().rpc('create_community_tag',{p_name:clean,p_category:category});if(error)throw error;return data}
 export async function getWorksForTag(tagId){const{data,error}=await needClient().from('work_tags').select('position,works(id,title,slug,summary,rating,completion_status,cover_url,publication_status,profiles!works_author_id_fkey(username,display_name))').eq('tag_id',tagId).order('position').limit(50);if(error)throw error;return(data||[]).filter(x=>x.works?.publication_status==='published')}
 
 export async function createClub(userId,{name,clubType='reading',privacy='open',description='',guidelines=''}) {
@@ -830,35 +831,56 @@ export async function searchMembers(term){
  if(error)throw error;return data||[]
 }
 export async function searchPalace(term){
- const q=term.trim();if(!q)return{works:[],comics:[],members:[],tags:[],clubs:[],archive:[]};
- const safe=q.replace(/[%_,]/g,' ');
- const [works,comics,members,tags,clubs,archive]=await Promise.all([
-  needClient().from('works').select('id,title,slug,summary,rating,completion_status,cover_url,author_id,profiles!works_author_id_fkey(username,display_name,avatar_url,title)').eq('publication_status','published').or(`title.ilike.%${safe}%,summary.ilike.%${safe}%`).order('last_published_at',{ascending:false}).limit(18),
-  needClient().from('comics').select('id,creator_id,title,slug,summary,rating,completion_status,cover_path,last_published_at').eq('publication_status','published').or(`title.ilike.%${safe}%,summary.ilike.%${safe}%`).order('last_published_at',{ascending:false}).limit(18),
-  needClient().from('profiles').select('id,username,display_name,title,avatar_url,visibility').or(`username.ilike.%${safe}%,display_name.ilike.%${safe}%`).neq('visibility','hidden').limit(18),
-  needClient().from('tags').select('id,name,category,status').eq('status','canonical').ilike('name',`%${safe}%`).order('name').limit(24),
+ const q=String(term||'').trim();if(!q)return{works:[],comics:[],members:[],tags:[],clubs:[],archive:[]};
+ const safe=q.replace(/[%_,]/g,' ').trim();const needle=safe.toLowerCase();
+ const [directWorks,directComics,members,tags,clubs,archive]=await Promise.all([
+  needClient().from('works').select('id,title,slug,summary,rating,completion_status,cover_url,author_id,last_published_at,profiles!works_author_id_fkey(username,display_name,avatar_url,title)').eq('publication_status','published').or(`title.ilike.%${safe}%,summary.ilike.%${safe}%`).order('last_published_at',{ascending:false}).limit(24),
+  needClient().from('comics').select('id,creator_id,title,slug,summary,rating,completion_status,cover_path,last_published_at').eq('publication_status','published').or(`title.ilike.%${safe}%,summary.ilike.%${safe}%`).order('last_published_at',{ascending:false}).limit(24),
+  needClient().from('profiles').select('id,username,display_name,title,avatar_url,visibility').or(`username.ilike.%${safe}%,display_name.ilike.%${safe}%`).neq('visibility','hidden').limit(24),
+  searchPalaceTags(safe,'all',24),
   needClient().from('clubs').select('id,name,slug,club_type,privacy,description').or(`name.ilike.%${safe}%,description.ilike.%${safe}%`).neq('privacy','private').order('name').limit(18),
-  needClient().from('archive_records').select('id,slug,title,creator_name,category,summary,rights_status,host_mode').eq('publication_status','published').or(`title.ilike.%${safe}%,creator_name.ilike.%${safe}%,summary.ilike.%${safe}%`).order('updated_at',{ascending:false}).limit(18)
+  needClient().from('archive_records').select('id,slug,title,creator_name,category,summary,rights_status,host_mode').eq('publication_status','published').or(`title.ilike.%${safe}%,creator_name.ilike.%${safe}%,summary.ilike.%${safe}%`).limit(30)
  ]);
- for(const r of[works,comics,members,tags,clubs,archive])if(r.error)throw r.error;
- const comicRows=comics.data||[];
+ for(const r of[directWorks,directComics,members,clubs,archive])if(r.error)throw r.error;
+ const tagRows=tags||[],tagIds=tagRows.map(t=>t.id),memberIds=(members.data||[]).map(x=>x.id);
+ const [tagWorkLinks,tagComicLinks,authorWorks]=await Promise.all([
+  tagIds.length?needClient().from('work_tags').select('work_id,tag_id').in('tag_id',tagIds).limit(160):Promise.resolve({data:[],error:null}),
+  tagIds.length?needClient().from('comic_tags').select('comic_id,tag_id').in('tag_id',tagIds).limit(160):Promise.resolve({data:[],error:null}),
+  memberIds.length?needClient().from('works').select('id,title,slug,summary,rating,completion_status,cover_url,author_id,last_published_at,profiles!works_author_id_fkey(username,display_name,avatar_url,title)').eq('publication_status','published').in('author_id',memberIds).order('last_published_at',{ascending:false}).limit(36):Promise.resolve({data:[],error:null})
+ ]);
+ for(const r of[tagWorkLinks,tagComicLinks,authorWorks])if(r.error)throw r.error;
+ const extraWorkIds=[...new Set((tagWorkLinks.data||[]).map(x=>x.work_id).filter(id=>!(directWorks.data||[]).some(w=>w.id===id)&&!(authorWorks.data||[]).some(w=>w.id===id)))];
+ const extraComicIds=[...new Set((tagComicLinks.data||[]).map(x=>x.comic_id).filter(id=>!(directComics.data||[]).some(w=>w.id===id)))];
+ const [taggedWorks,taggedComics]=await Promise.all([
+  extraWorkIds.length?needClient().from('works').select('id,title,slug,summary,rating,completion_status,cover_url,author_id,last_published_at,profiles!works_author_id_fkey(username,display_name,avatar_url,title)').eq('publication_status','published').in('id',extraWorkIds).limit(40):Promise.resolve({data:[],error:null}),
+  extraComicIds.length?needClient().from('comics').select('id,creator_id,title,slug,summary,rating,completion_status,cover_path,last_published_at').eq('publication_status','published').in('id',extraComicIds).limit(40):Promise.resolve({data:[],error:null})
+ ]);
+ for(const r of[taggedWorks,taggedComics])if(r.error)throw r.error;
+
+ const workRows=[...(directWorks.data||[]),...(authorWorks.data||[]),...(taggedWorks.data||[])].filter((x,i,a)=>a.findIndex(y=>y.id===x.id)===i);
+ const comicRows=[...(directComics.data||[]),...(taggedComics.data||[])].filter((x,i,a)=>a.findIndex(y=>y.id===x.id)===i);
  const creatorIds=[...new Set(comicRows.map(c=>c.creator_id).filter(Boolean))];
  let creatorRows=[];
- if(creatorIds.length){
-  const p=await needClient().from('profiles').select('id,username,display_name,avatar_url,title').in('id',creatorIds);
-  if(p.error)throw p.error;creatorRows=p.data||[];
- }
+ if(creatorIds.length){const p=await needClient().from('profiles').select('id,username,display_name,avatar_url,title').in('id',creatorIds);if(p.error)throw p.error;creatorRows=p.data||[]}
  const creatorMap=Object.fromEntries(creatorRows.map(p=>[p.id,p]));
- const identityIds=[...new Set([...(works.data||[]).map(x=>x.author_id),...comicRows.map(x=>x.creator_id),...(members.data||[]).map(x=>x.id)].filter(Boolean))];
+ const tagMap=Object.fromEntries(tagRows.map(t=>[t.id,t]));
+ const workTagMap={};for(const row of tagWorkLinks.data||[])(workTagMap[row.work_id]??=[]).push(tagMap[row.tag_id]);
+ const comicTagMap={};for(const row of tagComicLinks.data||[])(comicTagMap[row.comic_id]??=[]).push(tagMap[row.tag_id]);
+ const rank=(title,summary,person='',matchedTags=[])=>{
+  const t=String(title||'').toLowerCase(),s=String(summary||'').toLowerCase(),p=String(person||'').toLowerCase();
+  let score=0;if(t===needle)score+=1000;else if(t.startsWith(needle))score+=760;else if(t.includes(needle))score+=560;
+  if(p===needle)score+=900;else if(p.startsWith(needle))score+=650;else if(p.includes(needle))score+=470;
+  if(s.includes(needle))score+=180;
+  score+=Math.max(0,...matchedTags.map(x=>Number(x?.match_score||0)))*5;
+  return score;
+ };
+ const identityIds=[...new Set([...workRows.map(x=>x.author_id),...comicRows.map(x=>x.creator_id),...(members.data||[]).map(x=>x.id)].filter(Boolean))];
  const marks=await getIdentityMarks(identityIds);
- return{
-  works:(works.data||[]).map(x=>({...x,profiles:withIdentity(x.profiles,x.author_id,marks)})),
-  comics:await Promise.all(comicRows.map(async c=>({...c,creator:withIdentity(creatorMap[c.creator_id]||null,c.creator_id,marks),cover_url:await signedAsset('comic-covers',c.cover_path)}))),
-  members:(members.data||[]).map(x=>withIdentity(x,x.id,marks)),
-  tags:tags.data||[],
-  clubs:clubs.data||[],
-  archive:archive.data||[]
- }
+ const works=workRows.map(x=>{const mt=(workTagMap[x.id]||[]).filter(Boolean);const person=x.profiles?.display_name||x.profiles?.username||'';return{...x,profiles:withIdentity(x.profiles,x.author_id,marks),matched_tags:mt,search_score:rank(x.title,x.summary,person,mt)}}).sort((a,b)=>b.search_score-a.search_score||new Date(b.last_published_at||0)-new Date(a.last_published_at||0)).slice(0,24);
+ const comics=(await Promise.all(comicRows.map(async c=>{const creator=withIdentity(creatorMap[c.creator_id]||null,c.creator_id,marks),mt=(comicTagMap[c.id]||[]).filter(Boolean);return{...c,creator,matched_tags:mt,search_score:rank(c.title,c.summary,creator?.display_name||creator?.username||'',mt),cover_url:await signedAsset('comic-covers',c.cover_path)}}))).sort((a,b)=>b.search_score-a.search_score||new Date(b.last_published_at||0)-new Date(a.last_published_at||0)).slice(0,24);
+ const memberRows=(members.data||[]).map(x=>withIdentity(x,x.id,marks)).sort((a,b)=>{const an=String(a.display_name||a.username||'').toLowerCase(),bn=String(b.display_name||b.username||'').toLowerCase();const score=n=>n===needle?3:n.startsWith(needle)?2:n.includes(needle)?1:0;return score(bn)-score(an)||an.localeCompare(bn)});
+ const archiveRows=[...(archive.data||[])].sort((a,b)=>{const ar=rank(a.title,a.summary,a.creator_name),br=rank(b.title,b.summary,b.creator_name);return br-ar||String(a.title).localeCompare(String(b.title))}).slice(0,24);
+ return{works,comics,members:memberRows,tags:tagRows,clubs:clubs.data||[],archive:archiveRows}
 }
 
 export async function getWorkBySlug(slug){const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,language,completion_status,publication_status,visibility,comment_policy,constructive_criticism,translation_policy,download_policy,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(username,display_name,avatar_url,title),chapters(id,title,position,status,word_count,scheduled_for,published_at)').eq('slug',slug).maybeSingle();if(error)throw error;if(!data)return null;data.chapters=(data.chapters||[]).sort((a,b)=>a.position-b.position);return data}
