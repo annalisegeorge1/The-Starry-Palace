@@ -1749,3 +1749,243 @@
     radial-gradient(circle at 90% 5%,rgba(174,91,218,.05),transparent 11rem),
     linear-gradient(145deg,rgba(31,29,69,.66),rgba(18,18,43,.80))!important;
 }
+
+
+/* Commons composer desktop navigation + clipping repair */
+
+/* Structural guarantee: fields always stack and consume the available column. */
+.chic-composer-fields{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  align-content:start!important;
+  overflow:visible!important;
+}
+.chic-composer-fields>label,
+.chic-composer-fields>.composer-source-chip,
+.chic-composer-fields>.commons-poll-builder,
+.chic-composer-fields>.commons-compose-footer{
+  grid-column:1/-1!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+}
+.chic-composer-fields>label{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:.28rem!important;
+  overflow:visible!important;
+}
+.chic-composer-fields>label>span{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+.chic-composer-fields>label>input,
+.chic-composer-fields>label>textarea{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  overflow:visible!important;
+}
+.chic-composer-fields>label>textarea{
+  resize:vertical!important;
+}
+
+/* Footer status never competes with the Post/Clear controls. */
+.commons-compose-footer{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  align-items:center!important;
+  gap:.65rem 1rem!important;
+  width:100%!important;
+  min-width:0!important;
+  padding-top:.7rem!important;
+}
+.commons-compose-footer>small{
+  display:block!important;
+  min-width:0!important;
+  max-width:none!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  line-height:1.45!important;
+}
+.commons-compose-footer>div{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:.45rem!important;
+  min-width:max-content!important;
+}
+
+/* Wide desktop: five clear conversation modes across the first row.
+   Salon prompt generation gets its own obvious second-row action. */
+@media(min-width:1121px){
+  .commons-compose-modes{
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    grid-auto-flow:row!important;
+    align-items:stretch!important;
+    justify-content:stretch!important;
+    gap:.48rem!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    overflow:visible!important;
+    padding:.1rem 0 .72rem!important;
+    margin:0 0 .55rem!important;
+    box-sizing:border-box!important;
+    touch-action:auto!important;
+  }
+  .commons-compose-modes>button{
+    flex:none!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    min-height:42px!important;
+    padding:.52rem .58rem!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:.28rem!important;
+    border-radius:12px!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    line-height:1.15!important;
+    text-align:center!important;
+    font-size:.68rem!important;
+  }
+  .commons-compose-modes>button>span{
+    flex:0 0 auto!important;
+    margin-right:0!important;
+  }
+  .commons-compose-modes .salon-shuffle{
+    grid-column:1/-1!important;
+    justify-self:end!important;
+    width:auto!important;
+    min-width:210px!important;
+    max-width:100%!important;
+    min-height:38px!important;
+    margin:0!important;
+    padding:.48rem .76rem!important;
+    border-style:dashed!important;
+    border-radius:11px!important;
+  }
+  .chic-composer{
+    overflow:visible!important;
+  }
+  .chic-composer-fields{
+    gap:.65rem!important;
+  }
+  .chic-composer input{
+    min-height:42px!important;
+  }
+  .chic-composer textarea{
+    min-height:112px!important;
+  }
+  .commons-compose-footer>small{
+    font-size:.62rem!important;
+  }
+}
+
+/* Tablet / smaller desktop: three-column deck, still no horizontal hunting. */
+@media(min-width:761px) and (max-width:1120px){
+  .commons-compose-modes{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:.42rem!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    overflow:visible!important;
+    padding:.1rem 0 .65rem!important;
+    margin:0 0 .5rem!important;
+    box-sizing:border-box!important;
+    touch-action:auto!important;
+  }
+  .commons-compose-modes>button{
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    min-height:40px!important;
+    padding:.48rem .5rem!important;
+    display:inline-flex!important;
+    justify-content:center!important;
+    align-items:center!important;
+    gap:.25rem!important;
+    white-space:normal!important;
+    line-height:1.15!important;
+    text-align:center!important;
+  }
+  .commons-compose-modes .salon-shuffle{
+    grid-column:1/-1!important;
+    justify-self:start!important;
+    width:auto!important;
+    min-width:190px!important;
+    margin:0!important;
+  }
+  .commons-compose-footer{
+    grid-template-columns:1fr!important;
+  }
+  .commons-compose-footer>div{
+    justify-content:flex-start!important;
+    min-width:0!important;
+  }
+}
+
+/* Mobile alone keeps the swipe rail; it now has visible edge affordance. */
+@media(max-width:760px){
+  .commons-compose-modes{
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    gap:.32rem!important;
+    padding:.1rem 26px .45rem 2px!important;
+    scroll-snap-type:x proximity!important;
+    scrollbar-width:none!important;
+    -webkit-overflow-scrolling:touch!important;
+    touch-action:pan-x!important;
+  }
+  .commons-compose-modes>button{
+    flex:0 0 auto!important;
+    width:auto!important;
+    min-width:max-content!important;
+    white-space:nowrap!important;
+    scroll-snap-align:start!important;
+  }
+  .commons-compose-modes .salon-shuffle{
+    margin:0 2px 0 0!important;
+  }
+  .commons-compose-footer{
+    grid-template-columns:1fr!important;
+  }
+  .commons-compose-footer>div{
+    min-width:0!important;
+    justify-content:flex-start!important;
+  }
+}
+
+/* Clearer selected mode hierarchy in both themes. */
+.nightfall .commons-compose-modes>button.active{
+  color:#fff!important;
+  border-color:rgba(122,145,242,.34)!important;
+  background:linear-gradient(110deg,rgba(70,103,224,.36),rgba(121,78,218,.38) 54%,rgba(208,72,190,.28))!important;
+  box-shadow:0 0 13px rgba(88,117,233,.11),0 0 21px rgba(205,84,194,.07)!important;
+}
+.daylight .commons-compose-modes>button.active{
+  color:#fff!important;
+  border-color:rgba(0,183,209,.36)!important;
+  background:linear-gradient(110deg,#16bfd6 0%,#7855ef 50%,#d84bb7 100%)!important;
+  box-shadow:0 7px 17px rgba(99,66,184,.15),0 0 14px rgba(0,190,214,.10)!important;
+}
