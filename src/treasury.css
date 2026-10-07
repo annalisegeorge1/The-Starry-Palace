@@ -1147,3 +1147,43 @@
 .protected-palace-art img{
   pointer-events:none;
 }
+
+
+/* Intentional court portrait fallback: a failed crop should never look like a broken badge. */
+.painted-tier-stage .painted-badge-inner>.merged-court-portrait-placeholder{
+  display:grid!important;
+  place-items:center!important;
+  align-content:center!important;
+  gap:2px!important;
+  overflow:hidden!important;
+  border:1px solid rgba(186,164,211,.12)!important;
+  border-radius:10px!important;
+  background:
+    radial-gradient(circle at 36% 28%,rgba(178,146,210,.12),transparent 42%),
+    linear-gradient(160deg,rgba(56,48,83,.16),rgba(22,25,45,.08))!important;
+  color:#a99bb8!important;
+  text-align:center!important;
+}
+.merged-court-portrait-placeholder>i{
+  font:normal .78rem/1 Georgia,'Times New Roman',serif;
+  color:#c1afd2;
+}
+.merged-court-portrait-placeholder>small{
+  max-width:90%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:.28rem;
+  line-height:1.1;
+  letter-spacing:.02em;
+}
+.merged-court-portrait-placeholder:not(.is-fallback)>small{
+  opacity:.66;
+}
+.daylight .painted-tier-stage .painted-badge-inner>.merged-court-portrait-placeholder{
+  border-color:rgba(100,77,138,.1)!important;
+  background:
+    radial-gradient(circle at 36% 28%,rgba(176,142,205,.13),transparent 42%),
+    rgba(249,246,251,.42)!important;
+  color:#725f7c!important;
+}
