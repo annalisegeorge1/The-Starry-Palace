@@ -6739,3 +6739,150 @@ body.writing-desk-open.daylight .studio-head-copy h1,
     linear-gradient(155deg,rgba(255,255,255,.985),rgba(246,243,249,.98))!important;
   border-color:rgba(96,77,142,.14)!important;
 }
+
+
+/* Ink Duels v4 · victory treasury and competitive stakes */
+.duel-prize-house{
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(340px,.85fr);
+  gap:.7rem;
+  padding:.8rem;
+  border:1px solid rgba(205,178,232,.15);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 7% 8%,rgba(155,108,217,.13),transparent 13rem),
+    radial-gradient(circle at 94% 0%,rgba(91,145,218,.07),transparent 15rem),
+    linear-gradient(145deg,rgba(41,30,77,.56),rgba(17,15,39,.68));
+  box-shadow:0 12px 28px rgba(5,4,20,.075),inset 0 1px 0 rgba(255,255,255,.025);
+}
+.duel-prize-copy{
+  display:grid;
+  grid-template-columns:48px minmax(0,1fr);
+  gap:.65rem;
+  align-items:center;
+}
+.duel-prize-sigil{
+  width:48px;height:48px;
+  display:grid;place-items:center;
+  border:1px solid rgba(205,178,232,.24);
+  border-radius:50%;
+  color:#e2d4ed;
+  background:
+    radial-gradient(circle at 35% 28%,rgba(255,255,255,.10),transparent 34%),
+    linear-gradient(145deg,rgba(142,95,206,.22),rgba(80,111,182,.10));
+  box-shadow:0 0 0 4px rgba(147,102,209,.03),0 0 20px rgba(147,102,209,.10);
+  font-size:1rem;
+}
+.duel-prize-copy small{
+  color:#998aa7;font-size:.43rem;font-weight:800;letter-spacing:.12em
+}
+.duel-prize-copy h3{
+  margin:.1rem 0 .18rem;
+  color:#eee7f4;
+  font:600 .82rem Georgia,'Times New Roman',serif;
+}
+.duel-prize-copy p{
+  margin:0;color:#8d8498;font-size:.5rem;line-height:1.48
+}
+.duel-prize-tiers{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.35rem;
+}
+.duel-prize-tiers article{
+  min-width:0;
+  display:grid;
+  align-content:center;
+  gap:.12rem;
+  padding:.55rem;
+  border:1px solid rgba(200,178,232,.09);
+  border-radius:12px;
+  background:rgba(255,255,255,.012);
+}
+.duel-prize-tiers article:nth-child(1){border-color:rgba(174,128,94,.16)}
+.duel-prize-tiers article:nth-child(2){border-color:rgba(188,197,218,.16)}
+.duel-prize-tiers article:nth-child(3){border-color:rgba(209,182,96,.18)}
+.duel-prize-tiers span{
+  color:#91879c;font-size:.4rem;font-weight:800;letter-spacing:.1em
+}
+.duel-prize-tiers strong{
+  color:#d9d0e2;font:600 .55rem Georgia,'Times New Roman',serif
+}
+.duel-prize-tiers small{
+  color:#7d7587;font-size:.4rem;line-height:1.35
+}
+.duel-stakes-line{
+  display:flex;
+  align-items:center;
+  gap:.4rem;
+  flex-wrap:wrap;
+  margin-top:.5rem;
+  padding:.38rem .5rem;
+  border:1px solid rgba(205,178,232,.07);
+  border-radius:10px;
+  background:rgba(255,255,255,.01);
+}
+.duel-stakes-line small{
+  color:#8a7d98;font-size:.39rem;font-weight:800;letter-spacing:.1em
+}
+.duel-stakes-line span{
+  color:#837a8e;font-size:.44rem;line-height:1.35
+}
+.duel-stakes-line strong{
+  color:#bcb0c9;font-size:.48rem
+}
+.duel-stakes-line .tier-bronze{color:#c39d83}
+.duel-stakes-line .tier-silver{color:#c8d0df}
+.duel-stakes-line .tier-gold{color:#dcc878}
+.duel-victory-gift{
+  display:grid;
+  grid-template-columns:68px minmax(0,1fr);
+  gap:.58rem;
+  align-items:center;
+  margin-top:.65rem;
+  padding:.58rem;
+  border:1px solid rgba(208,181,231,.16);
+  border-radius:13px;
+  background:
+    radial-gradient(circle at 8% 40%,rgba(154,104,213,.12),transparent 6rem),
+    rgba(255,255,255,.012);
+  box-shadow:0 0 20px rgba(145,99,204,.04);
+}
+.duel-victory-gift .palace-gift-art{
+  width:68px!important;
+  height:58px!important;
+  min-width:68px!important;
+  margin:0!important;
+}
+.duel-victory-gift small{
+  display:block;color:#927fa2;font-size:.39rem;font-weight:800;letter-spacing:.1em
+}
+.duel-victory-gift strong{
+  display:block;margin:.06rem 0;color:#ece3f3;font:600 .6rem Georgia,'Times New Roman',serif
+}
+.duel-victory-gift span{
+  color:#877d91;font-size:.43rem;line-height:1.35
+}
+.duel-winner-mark{
+  display:inline-flex;
+  align-items:center;
+  gap:.24rem;
+}
+.daylight .duel-prize-house,
+.daylight .duel-victory-gift{
+  background:
+    radial-gradient(circle at 7% 8%,rgba(155,108,217,.06),transparent 13rem),
+    rgba(255,255,255,.72);
+  border-color:rgba(96,77,142,.10);
+}
+.daylight .duel-prize-copy h3,
+.daylight .duel-prize-tiers strong,
+.daylight .duel-victory-gift strong{color:#40354a}
+@media(max-width:900px){
+  .duel-prize-house{grid-template-columns:1fr}
+}
+@media(max-width:650px){
+  .duel-prize-tiers{grid-template-columns:1fr}
+  .duel-prize-copy{grid-template-columns:40px minmax(0,1fr)}
+  .duel-prize-sigil{width:40px;height:40px}
+}
