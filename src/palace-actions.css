@@ -1,0 +1,132 @@
+/* Shared Palace action language
+   Compact controls keep their existing dimensions; only the visual surface is unified. */
+:root{
+  --palace-action-bg:linear-gradient(135deg,#6550ac 0%,#5266a6 64%,#3f7888 100%);
+  --palace-action-border:rgba(174,157,226,.42);
+  --palace-action-shadow:0 8px 22px rgba(63,56,126,.18),0 0 16px rgba(102,86,171,.08);
+  --palace-action-shadow-hover:0 12px 28px rgba(63,56,126,.26),0 0 20px rgba(102,86,171,.15);
+  --palace-action-text:#fff;
+  --palace-action-muted:rgba(255,255,255,.82);
+}
+.daylight{
+  --palace-action-bg:linear-gradient(110deg,#00bdd7 0%,#754cff 47%,#df35b7 100%);
+  --palace-action-border:rgba(0,183,209,.40);
+  --palace-action-shadow:0 8px 18px rgba(93,61,193,.17),0 0 16px rgba(0,199,224,.17),0 0 27px rgba(218,49,181,.12);
+  --palace-action-shadow-hover:0 11px 24px rgba(93,61,193,.22),0 0 20px rgba(0,199,224,.22),0 0 32px rgba(218,49,181,.16);
+  --palace-action-text:#fff;
+  --palace-action-muted:rgba(255,255,255,.88);
+}
+.write-action,
+.button:not(.quiet-button),
+.button-starlight,
+.thread-compose button:not(.quiet-button),
+.proposal-form>button,
+.palace-dialog footer button:not(.quiet-button){
+  color:var(--palace-action-text)!important;
+  border-color:var(--palace-action-border)!important;
+  background:var(--palace-action-bg)!important;
+  box-shadow:var(--palace-action-shadow)!important;
+}
+.write-action:hover,
+.button:not(.quiet-button):hover,
+.button-starlight:hover,
+.thread-compose button:not(.quiet-button):hover,
+.proposal-form>button:hover,
+.palace-dialog footer button:not(.quiet-button):hover{
+  box-shadow:var(--palace-action-shadow-hover)!important;
+  filter:saturate(1.08) brightness(1.025);
+}
+.palace-home-shortcuts>a{
+  position:relative;
+  overflow:hidden;
+  color:var(--palace-action-text)!important;
+  border-color:var(--palace-action-border)!important;
+  background:var(--palace-action-bg)!important;
+  box-shadow:var(--palace-action-shadow)!important;
+}
+.palace-home-shortcuts>a::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:radial-gradient(circle at 18% 12%,rgba(255,255,255,.18),transparent 34%),linear-gradient(180deg,rgba(255,255,255,.035),transparent 48%);
+}
+.palace-home-shortcuts>a:hover{
+  background:var(--palace-action-bg)!important;
+  box-shadow:var(--palace-action-shadow-hover)!important;
+  filter:saturate(1.08) brightness(1.035);
+}
+.palace-home-shortcuts>a span{
+  position:relative;
+  z-index:1;
+  color:var(--palace-action-text)!important;
+  text-shadow:0 0 10px rgba(255,255,255,.22),0 0 18px rgba(135,112,236,.28)!important;
+}
+.palace-home-shortcuts>a small{
+  position:relative;
+  z-index:1;
+  color:var(--palace-action-muted)!important;
+  font-weight:760!important;
+}
+.moon-prompt-actions>a,
+.release-desk-link,
+.palace-next-event>a,
+.archive-read-button,
+.search-group-head>a{
+  color:var(--palace-action-text)!important;
+  border-color:var(--palace-action-border)!important;
+  background:var(--palace-action-bg)!important;
+  box-shadow:var(--palace-action-shadow)!important;
+}
+.moon-prompt-actions>a:hover,
+.release-desk-link:hover,
+.palace-next-event>a:hover,
+.archive-read-button:hover,
+.search-group-head>a:hover{
+  color:var(--palace-action-text)!important;
+  box-shadow:var(--palace-action-shadow-hover)!important;
+}
+.release-desk-link,
+.palace-next-event>a,
+.search-group-head>a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:max-content;
+  max-width:100%;
+  min-height:30px;
+  padding:.28rem .52rem;
+  border:1px solid var(--palace-action-border);
+  border-radius:9px;
+  text-decoration:none;
+}
+.palace-home-shortcuts>a:focus-visible,
+.write-action:focus-visible,
+.button:not(.quiet-button):focus-visible,
+.button-starlight:focus-visible{
+  outline:2px solid color-mix(in srgb,var(--palace-action-border) 68%,white 24%)!important;
+  outline-offset:2px;
+  box-shadow:var(--palace-action-shadow-hover)!important;
+}
+.nightfall .legacy-treasury-page{
+  --palace-action-bg:linear-gradient(110deg,#ffb62e 0%,#ffd84d 48%,#ff7d31 100%);
+  --palace-action-border:rgba(255,218,82,.46);
+  --palace-action-shadow:0 8px 20px rgba(126,77,20,.20),0 0 15px rgba(255,213,69,.15),0 0 24px rgba(255,128,42,.09);
+  --palace-action-shadow-hover:0 11px 26px rgba(126,77,20,.26),0 0 20px rgba(255,216,74,.20),0 0 30px rgba(255,128,42,.13);
+}
+.nightfall .settings-room,
+.nightfall .legacy-settings-page{
+  --palace-action-bg:linear-gradient(110deg,#b987ff 0%,#e7cfff 50%,#ffb7dc 100%);
+  --palace-action-border:rgba(221,190,255,.42);
+  --palace-action-shadow:0 8px 20px rgba(95,68,130,.18),0 0 15px rgba(214,179,255,.13),0 0 22px rgba(238,232,247,.08);
+  --palace-action-shadow-hover:0 11px 26px rgba(95,68,130,.24),0 0 20px rgba(214,179,255,.18),0 0 28px rgba(255,183,220,.10);
+  --palace-action-text:#24172f;
+  --palace-action-muted:rgba(36,23,47,.75);
+}
+@media(prefers-reduced-motion:reduce){
+  .palace-home-shortcuts>a,
+  .write-action,
+  .button:not(.quiet-button),
+  .button-starlight{transition:none!important}
+  .palace-home-shortcuts>a:hover{transform:none!important}
+}
