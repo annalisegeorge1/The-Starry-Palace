@@ -1388,7 +1388,7 @@ export async function getMicroDuels(){
  return Promise.all(rows.map(async duel=>({...duel,entries:await Promise.all((duel.entries||[]).map(async entry=>({...entry,media_url:entry.media_path?await signedAsset('duel-art',entry.media_path,1800):null})))})))
 }
 export async function getMicroDuelRecord(){
- const{data,error}=await needClient().rpc('get_micro_duel_record');if(error)throw error;return data||{entries:0,hosted:0,types:0,votes:0,wins:0,laurels:0,one_v_one_wins:0,group_wins:0}
+ const{data,error}=await needClient().rpc('get_micro_duel_record');if(error)throw error;return data||{entries:0,hosted:0,types:0,votes:0,wins:0,laurels:0,one_v_one_wins:0,group_wins:0,prizes:0,silver_prizes:0,gold_prizes:0}
 }
 export async function createMicroDuel(title,prompt,wordLimit=500,options={}){
  const writingMinutes=Math.max(5,Math.min(Number(options.writingMinutes)||15,45));
