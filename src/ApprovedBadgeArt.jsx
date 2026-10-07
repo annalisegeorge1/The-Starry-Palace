@@ -4,11 +4,24 @@ import sheets from './approvedBadgeSheets.json';
 const tiers=['bronze','silver','gold','platinum','emerald'];
 const normalize=value=>String(value||'').toLowerCase().replace(/[^a-z0-9]/g,'');
 const names=new Map(Object.entries(sheets).map(([id,entry])=>[normalize(entry.name),id]));
+/* New Ink Duel paths intentionally inherit approved Palace watercolour motifs
+   until their bespoke duel sheets are painted. This keeps them visually
+   coherent and avoids introducing placeholder/cartoon art. */
+const duelArtAliases={
+ 'first-bell-scribe':'draft-moon',
+ 'keeper-of-the-arena':'writing-circle-host',
+ 'many-form-quill':'infinite-inkwell',
+ 'blind-moon-juror':'sprint-moon',
+ 'crowned-in-ink':'crown-of-completion',
+ 'laurel-constellation':'prompt-collector',
+ 'twin-quills-victor':'collaboration-scribe',
+ 'court-of-eight':'community-host'
+};
 const imagePromises=new Map();
 const cutoutPromises=new Map();
 
 export function approvedBadgeFrame(family,tier='bronze'){
- const entry=sheets[family?.id]||sheets[names.get(normalize(family?.name))];
+ const sourceId=duelArtAliases[family?.id]||family?.id;const entry=sheets[sourceId]||sheets[names.get(normalize(family?.name))];
  if(!entry)return null;
  const column=Math.max(0,tiers.indexOf(tier));
  return {...entry,box:entry.frames[column]};
