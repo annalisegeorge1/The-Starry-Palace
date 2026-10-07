@@ -4,6 +4,7 @@ import GrandPalaceExpansion from './GrandPalaceExpansion';
 import GrandPalaceAtlas from './GrandPalaceAtlas';
 import GrandPalaceCeremony from './GrandPalaceCeremony';
 import GrandPalaceGatherings from './GrandPalaceGatherings';
+import PalaceArtsDiscovery from './PalaceArtsDiscovery';
 import{useAuth}from'./auth';
 import{getGrandPalaceHall,purchaseGrandPalaceHonour,sendGrandPalaceHonour,selectGrandPalaceTheme}from'./grandPalaceData';
 import{HONOUR_SHOP,QUARTERLY_BOXES,daysUntilSeasonEnd}from'./grandPalaceModel';
@@ -26,10 +27,11 @@ export default function GrandPalaceHall({Frame}){
  {ends&&<p className="grand-season-date">This season ends {ends} · next season starts immediately · competition hours follow UTC</p>}</header>
  {error&&<p role="alert" className="grand-notice error">{error}</p>}{notice&&<p role="status" className="grand-notice">{notice}</p>}
  {data&&<><section className="grand-your-court"><div className="grand-my-crest">{mine?.sigil||'☾'}</div><div><p className="eyebrow">YOUR PERMANENT GRAND PALACE</p><h2>{mine?.name}</h2><p>{mine?.motto}</p><small>Your contribution this quarter: <b>{Number(data.my_contribution||0)} verified points</b>. A maximum of 30 points per member per UTC day counts toward the race.</small></div><Link to="/chamber" className="button-moonstone">Your chamber →</Link></section>
- <nav className="grand-hall-jumplinks" aria-label="Explore the Grand Palace Hall"><a href="#grand-atlas">Court Atlas</a><a href="#grand-legacy">Legacy Gallery</a><a href="#grand-gatherings">Creative Gatherings</a><a href="#celestial-vault">Celestial Vault</a><a href="#grand-common-room">Common Room</a><a href="#grand-rankings">Rankings</a></nav>
+ <nav className="grand-hall-jumplinks" aria-label="Explore the Grand Palace Hall"><a href="#grand-atlas">Court Atlas</a><a href="#grand-legacy">Legacy Gallery</a><a href="#grand-gatherings">Creative Gatherings</a><a href="#arts-discovery-title">Discover Creators</a><a href="#celestial-vault">Celestial Vault</a><a href="#grand-common-room">Common Room</a><a href="#grand-rankings">Rankings</a></nav>
  <GrandPalaceAtlas palaces={data.palaces||[]} myPalaceId={data.my_palace_id} quarterStart={data.quarter_start} onRitualSuccess={load}/>
  <GrandPalaceCeremony myPalaceId={data.my_palace_id}/>
  <GrandPalaceGatherings/>
+ <PalaceArtsDiscovery/>
  <GrandPalaceExpansion/>
  <section className="grand-leaderboard" id="grand-rankings"><div className="section-heading"><div><p className="eyebrow">THE TEN GRAND PALACES</p><h2>The quarterly constellation race</h2><p>Ranked by verified points per member. This gives small courts a fair chance to win.</p></div></div>
  <div className="grand-ranked-courts">{rank.map(p=><article key={p.id} className={Number(p.id)===Number(data.my_palace_id)?'mine':''}><b className="grand-place">{String(p.place).padStart(2,'0')}</b><i style={{color:p.accent}}>{p.sigil}</i><div><strong>{p.name}</strong><small>{p.members} members · {p.contributors} contributors</small></div><span><b>{p.average_points.toLocaleString(undefined,{maximumFractionDigits:2})}</b><small>points / member</small></span></article>)}</div></section>
