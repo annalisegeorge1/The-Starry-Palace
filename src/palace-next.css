@@ -5046,3 +5046,41 @@ body.reader-focus-mode .reader-chapter-head{
   .daylight .chapter-manager-row>button>small{color:#706879!important}
   .daylight .chapter-manager-row>button>span{color:#6f647d!important}
 }
+
+
+/* Ink Duels v3 · multi-form competitive arena */
+.duel-record-strip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.45rem;padding:.5rem;border:1px solid rgba(200,178,232,.1);border-radius:17px;background:rgba(16,13,37,.38)}
+.duel-record-strip>div{min-height:64px;display:grid;place-items:center;align-content:center;padding:.45rem;border:1px solid rgba(200,178,232,.06);border-radius:12px;background:rgba(255,255,255,.012);text-align:center}
+.duel-record-strip>div:first-child{background:radial-gradient(circle at 50% 0%,rgba(153,105,214,.13),transparent 5rem),rgba(255,255,255,.014)}
+.duel-record-strip small{color:#8e839c;font-size:.41rem;letter-spacing:.1em}
+.duel-record-strip strong{color:#eee7f5;font:600 1.05rem Georgia,'Times New Roman',serif}
+.duel-record-strip span{color:#827a8c;font-size:.46rem}
+.duel-type-arcade{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:.42rem}
+.duel-type-arcade>button{min-width:0;min-height:86px;display:grid;place-items:center;align-content:center;gap:.14rem;padding:.48rem;border:1px solid rgba(200,178,232,.09);border-radius:15px;background:linear-gradient(145deg,rgba(40,30,76,.38),rgba(16,14,35,.5));color:#ddd5e7}
+.duel-type-arcade>button:hover{border-color:rgba(205,178,236,.22);transform:translateY(-1px)}
+.duel-type-arcade>button>span{font-size:.92rem;color:#c9b6df}
+.duel-type-arcade strong{font:600 .58rem Georgia,'Times New Roman',serif}
+.duel-type-arcade small{color:#81798c;font-size:.4rem;text-align:center}
+.duel-match-doors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.55rem}
+.duel-match-doors>button{display:grid;grid-template-columns:42px minmax(0,1fr);gap:.65rem;align-items:center;text-align:left;min-height:98px;padding:.75rem;border:1px solid rgba(200,178,232,.1);border-radius:17px;background:radial-gradient(circle at 7% 50%,rgba(125,91,188,.09),transparent 7rem),rgba(19,16,44,.46);color:#ddd5e7}
+.duel-match-doors>button>span{width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(205,181,236,.15);border-radius:50%;color:#d7c9e8;background:rgba(108,82,166,.08)}
+.duel-match-doors small{display:block;color:#887f94;font-size:.42rem;letter-spacing:.1em}.duel-match-doors strong{display:block;margin:.12rem 0;color:#eee8f5;font:600 .72rem Georgia,'Times New Roman',serif}.duel-match-doors p{margin:0;color:#827b8b;font-size:.49rem;line-height:1.4}
+.duel-rule-note{margin:.5rem 0 0;padding:.5rem .65rem;border-left:2px solid rgba(188,151,228,.32);background:rgba(117,86,174,.045);color:#9e94aa;font-size:.53rem;font-style:normal;line-height:1.45}
+.duel-lobby{display:grid;gap:.65rem;padding:.75rem;border-top:1px solid rgba(200,178,232,.08)}
+.duel-roster{display:flex;flex-wrap:wrap;gap:.4rem}
+.duel-roster-chip{display:flex;align-items:center;gap:.35rem;min-height:32px;padding:.28rem .5rem;border:1px solid rgba(200,178,232,.09);border-radius:999px;background:rgba(255,255,255,.012);color:#9d94a8}
+.duel-roster-chip b{font-size:.52rem}.duel-roster-chip small{font-size:.42rem;color:#776f82}.duel-roster-chip.accepted{border-color:rgba(117,177,161,.18)}.duel-roster-chip.pending{border-style:dashed}.duel-roster-chip.host{background:rgba(114,86,177,.08)}
+.duel-invite-actions{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;padding:.6rem;border:1px solid rgba(200,178,232,.08);border-radius:13px;background:rgba(255,255,255,.01)}
+.duel-invite-actions p{flex:1 1 260px;margin:0;color:#8f8799;font-size:.53rem;line-height:1.45}.duel-invite-actions strong{color:#cfc5da}
+.duel-art-compose{display:grid;gap:.55rem}.duel-art-compose label{display:grid;gap:.25rem;padding:.6rem;border:1px solid rgba(200,178,232,.08);border-radius:12px;background:rgba(255,255,255,.01)}.duel-art-compose label>span{color:#a297ae;font-size:.5rem;font-weight:700}.duel-art-compose label>small{color:#7d7587;font-size:.44rem}.duel-art-compose input[type=file]{font-size:.52rem}.duel-art-compose textarea{min-height:74px}
+.duel-entry-art{margin:.55rem 0;padding:.35rem;border:1px solid rgba(200,178,232,.08);border-radius:12px;background:rgba(5,4,16,.18)}.duel-entry-art img{display:block;width:100%;max-height:520px;object-fit:contain;border-radius:9px}.duel-entry-art figcaption{padding:.38rem .2rem .12rem;color:#7f7789;font-size:.45rem;line-height:1.35}
+.duel-poem{white-space:pre-wrap!important;font-family:Georgia,'Times New Roman',serif!important;line-height:1.8!important}
+.duel-laurels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.3rem;margin:.6rem 0}.duel-laurels button{min-height:42px;display:grid;grid-template-columns:auto 1fr;gap:.24rem;place-items:center;padding:.35rem;border:1px solid rgba(200,178,232,.08);border-radius:10px;background:rgba(255,255,255,.01);color:#8f8798;font-size:.45rem}.duel-laurels button span{color:#bca9cf}.duel-laurels button.active{border-color:rgba(194,157,229,.3);background:rgba(112,84,176,.12);color:#e8dff0}
+.duel-laurel-results{display:flex;flex-wrap:wrap;gap:.28rem;margin:.55rem 0}.duel-laurel-results span{padding:.22rem .4rem;border:1px solid rgba(200,178,232,.08);border-radius:999px;color:#93899f;font-size:.43rem;background:rgba(255,255,255,.01)}
+.duel-builder-block{display:grid;gap:.4rem}.duel-builder-label{color:#8c8298;font-size:.44rem;font-weight:800;letter-spacing:.12em}
+.duel-content-picker{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.4rem}.duel-content-picker>button{min-height:58px;display:grid;place-items:center;gap:.08rem;padding:.35rem;border:1px solid rgba(200,178,232,.09);border-radius:12px;background:rgba(255,255,255,.01);color:#a89fb2}.duel-content-picker>button span{font-size:.82rem}.duel-content-picker>button strong{font:600 .5rem Georgia,'Times New Roman',serif}.duel-content-picker>button.active{border-color:rgba(197,161,231,.3);background:linear-gradient(145deg,rgba(116,86,180,.18),rgba(75,111,183,.08));color:#efe8f5}
+.duel-match-picker{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.4rem}.duel-match-picker>button{min-height:74px;display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;column-gap:.45rem;align-content:center;text-align:left;padding:.5rem;border:1px solid rgba(200,178,232,.09);border-radius:12px;background:rgba(255,255,255,.01);color:#a59cac}.duel-match-picker>button>span{grid-row:1/3;font-size:.9rem;color:#baa8ce}.duel-match-picker strong{font:600 .56rem Georgia,'Times New Roman',serif}.duel-match-picker small{font-size:.42rem;color:#807988;line-height:1.3}.duel-match-picker>button.active{border-color:rgba(197,161,231,.3);background:linear-gradient(145deg,rgba(116,86,180,.18),rgba(75,111,183,.08));color:#eee7f4}
+.daylight .duel-record-strip,.daylight .duel-type-arcade>button,.daylight .duel-match-doors>button,.daylight .duel-lobby,.daylight .duel-invite-actions,.daylight .duel-content-picker>button,.daylight .duel-match-picker>button{background:rgba(255,255,255,.72);border-color:rgba(96,77,142,.1)}
+.daylight .duel-record-strip strong,.daylight .duel-type-arcade strong,.daylight .duel-match-doors strong{color:#40354b}.daylight .duel-type-arcade>button,.daylight .duel-match-doors>button{color:#4b4056}
+@media(max-width:1100px){.duel-type-arcade{grid-template-columns:repeat(4,minmax(0,1fr))}.duel-record-strip{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:700px){.duel-type-arcade{grid-template-columns:repeat(2,minmax(0,1fr))}.duel-match-doors,.duel-match-picker{grid-template-columns:1fr}.duel-content-picker{grid-template-columns:repeat(2,minmax(0,1fr))}.duel-record-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.duel-laurels{grid-template-columns:repeat(2,minmax(0,1fr))}}
