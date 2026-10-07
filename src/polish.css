@@ -18082,3 +18082,68 @@ button.quiet-button:not(.danger-action):hover,
     animation:none!important;
   }
 }
+
+
+/* Reading Room private lenses + catalogue controls · October 6 2026 */
+.chic-reading-tools{
+  grid-template-columns:minmax(220px,1.5fr) repeat(3,minmax(118px,.62fr)) auto!important;
+  align-items:stretch!important;
+}
+.reading-result-count{
+  min-width:94px;
+  display:grid;
+  place-content:center;
+  justify-items:center;
+  gap:.08rem;
+  padding:.45rem .62rem;
+  border:1px solid rgba(179,196,229,.11);
+  border-radius:13px;
+  background:rgba(19,21,47,.46);
+}
+.reading-result-count strong{font:700 1rem Georgia,'Times New Roman',serif;color:#e5ddf4}
+.reading-result-count span{font-size:.44rem;color:#8f99b4;text-transform:uppercase;letter-spacing:.07em}
+.reading-reader-lenses{
+  display:flex;
+  align-items:center;
+  gap:.65rem;
+  margin:.55rem 0 1rem;
+  padding:.56rem .68rem;
+  border:1px solid rgba(181,174,224,.10);
+  border-radius:15px;
+  background:linear-gradient(135deg,rgba(34,29,70,.58),rgba(20,24,54,.48));
+}
+.reading-reader-lenses>div{display:grid;gap:.08rem;min-width:max-content}
+.reading-reader-lenses>div small{font-size:.46rem;font-weight:800;letter-spacing:.11em;color:#b9a7de}
+.reading-reader-lenses>div span{font-size:.45rem;color:#7f89a5}
+.reading-reader-lenses nav{display:flex;gap:.28rem;overflow-x:auto;scrollbar-width:none;flex:1}
+.reading-reader-lenses nav::-webkit-scrollbar{display:none}
+.reading-reader-lenses nav button{
+  flex:0 0 auto;
+  min-height:31px;
+  padding:.3rem .58rem;
+  border:1px solid rgba(181,174,224,.10);
+  border-radius:999px;
+  background:rgba(255,255,255,.018);
+  color:#aeb6cc;
+  font-size:.49rem;
+}
+.reading-reader-lenses nav button.active{
+  border-color:rgba(194,177,231,.32);
+  background:rgba(143,111,201,.15);
+  color:#f1ebfa;
+  box-shadow:0 0 18px rgba(127,101,189,.10);
+}
+.reading-reader-lenses>.quiet-button{flex:0 0 auto}
+@media(max-width:980px){
+  .chic-reading-tools{grid-template-columns:minmax(0,1fr) repeat(2,minmax(110px,.45fr))!important}
+  .chic-reading-tools .reading-result-count{grid-column:auto}
+  .reading-reader-lenses{align-items:flex-start;flex-wrap:wrap}
+  .reading-reader-lenses nav{order:3;flex-basis:100%}
+}
+@media(max-width:620px){
+  .chic-reading-tools{grid-template-columns:1fr 1fr!important}
+  .chic-reading-tools .reading-search{grid-column:1/-1}
+  .chic-reading-tools .reading-result-count{min-width:0}
+  .reading-reader-lenses>div{width:100%}
+  .reading-reader-lenses>.quiet-button{margin-left:auto}
+}

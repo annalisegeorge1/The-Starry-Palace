@@ -1259,6 +1259,20 @@ describe('Starry Palace launch safety',()=>{
     expect(next).toContain('.tag-category-grid.density-compact');
   });
 
+  it('keeps Reading discovery reader-controlled without turning continuity into ranking',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain("const[readerLens,setReaderLens]=useState('all')");
+    expect(live).toContain("const[catalogueSort,setCatalogueSort]=useState('updated')");
+    expect(live).toContain("readerLens==='new'&&hasNew(w)");
+    expect(live).toContain('MY READING LENSES');
+    expect(live).toContain('Private to you · never changes public discovery ranking');
+    expect(live).toContain('Clear reading filters');
+    expect(live).toContain('world{catalogue.length===1');
+    expect(polish).toContain('Reading Room private lenses + catalogue controls · October 6 2026');
+    expect(polish).toContain('.reading-reader-lenses');
+    expect(polish).toContain('.reading-result-count');
+  });
+
   it('keeps the mobile shell centred unclipped and safe-area aware',()=>{
     const next=read('src/palace-next.css');
     expect(next).toContain('Mobile shell convergence — one final rule-set after legacy responsive layers.');
