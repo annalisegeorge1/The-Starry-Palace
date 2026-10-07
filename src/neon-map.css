@@ -904,3 +904,246 @@
     margin-inline:auto!important;
   }
 }
+
+
+/* Dark room palettes · Treasury goldfire + Settings moon-silver */
+
+/* ROYAL TREASURY · dark mode only
+   Palace gold should feel electric: yellow at the centre, orange at the edges. */
+.nightfall .full-nav-room>a[href="/treasury"]{
+  --room-neon:#ffd84d;
+}
+.nightfall .full-nav-room>a[href="/treasury"]{
+  border-color:rgba(255,210,70,.34)!important;
+  background:
+    radial-gradient(circle at 12% 50%,rgba(255,224,83,.18),transparent 34%),
+    radial-gradient(circle at 88% 50%,rgba(255,126,42,.10),transparent 42%),
+    linear-gradient(90deg,rgba(116,76,16,.18),rgba(36,25,35,.12) 74%,transparent)!important;
+  box-shadow:
+    inset 2px 0 0 rgba(255,216,77,.52),
+    0 0 13px rgba(255,210,70,.12),
+    0 0 24px rgba(255,126,42,.07)!important;
+}
+.nightfall .full-nav-room>a[href="/treasury"]>span{
+  color:#ffe58a!important;
+  text-shadow:
+    0 0 7px rgba(255,226,94,.42),
+    0 0 15px rgba(255,139,48,.16)!important;
+}
+.nightfall .full-nav-room>a[href="/treasury"] .room-sigil{
+  color:#ffe267!important;
+  border-color:rgba(255,213,70,.52)!important;
+  background:
+    radial-gradient(circle at 28% 20%,rgba(255,241,164,.22),transparent 36%),
+    radial-gradient(circle at 78% 80%,rgba(255,120,32,.22),transparent 48%),
+    linear-gradient(145deg,rgba(117,77,18,.58),rgba(43,24,30,.86))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,246,190,.10),
+    0 0 10px rgba(255,215,72,.26),
+    0 0 23px rgba(255,126,42,.12)!important;
+}
+.nightfall .full-nav-room>a[href="/treasury"] .room-sigil svg{
+  filter:
+    drop-shadow(0 0 4px rgba(255,225,83,.72))
+    drop-shadow(0 0 9px rgba(255,127,40,.28))!important;
+}
+.nightfall .full-nav-room>a[href="/treasury"][aria-current="page"]{
+  border-color:rgba(255,220,88,.62)!important;
+  background:
+    radial-gradient(circle at 11% 50%,rgba(255,226,83,.26),transparent 38%),
+    radial-gradient(circle at 86% 52%,rgba(255,122,38,.15),transparent 44%),
+    linear-gradient(90deg,rgba(113,73,15,.32),rgba(54,30,31,.24) 72%,transparent)!important;
+  box-shadow:
+    inset 4px 0 0 #ffd84d,
+    0 0 15px rgba(255,216,77,.22),
+    0 0 30px rgba(255,126,42,.12)!important;
+}
+
+.nightfall .legacy-treasury-page{
+  --treasury-gold:#ffd84d;
+  --treasury-yellow:#fff08a;
+  --treasury-orange:#ff8a34;
+}
+.nightfall .legacy-treasury-page .treasury-head,
+.nightfall .legacy-treasury-page .treasury-wardrobe,
+.nightfall .legacy-treasury-page .treasury-room{
+  border-color:rgba(255,211,70,.15)!important;
+  box-shadow:
+    0 16px 40px rgba(4,4,14,.12),
+    0 0 20px rgba(255,211,70,.035),
+    0 0 30px rgba(255,128,42,.025)!important;
+}
+.nightfall .legacy-treasury-page .treasury-head .eyebrow,
+.nightfall .legacy-treasury-page .treasury-room-head .eyebrow,
+.nightfall .legacy-treasury-page .treasury-wardrobe .eyebrow{
+  color:#ffe270!important;
+  text-shadow:0 0 10px rgba(255,218,76,.22),0 0 18px rgba(255,127,39,.09)!important;
+}
+.nightfall .legacy-treasury-page .treasury-tabs{
+  border-color:rgba(255,213,75,.14)!important;
+  background:
+    linear-gradient(90deg,rgba(91,61,20,.18),rgba(26,23,43,.68),rgba(70,36,29,.14))!important;
+  box-shadow:0 0 18px rgba(255,204,63,.035)!important;
+}
+.nightfall .legacy-treasury-page .treasury-tabs button,
+.nightfall .legacy-treasury-page .treasury-tabs a{
+  color:#cfc5d5!important;
+  border-color:rgba(255,214,82,.08)!important;
+}
+.nightfall .legacy-treasury-page .treasury-tabs button.active{
+  color:#fff0a6!important;
+  border-color:rgba(255,218,80,.38)!important;
+  background:
+    linear-gradient(110deg,rgba(255,216,67,.18),rgba(255,139,48,.14),rgba(116,64,30,.09))!important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,240,148,.06),
+    0 0 12px rgba(255,213,69,.10),
+    0 0 20px rgba(255,132,45,.07)!important;
+}
+.nightfall .legacy-treasury-page .treasury-summary article{
+  border-color:rgba(255,213,73,.11)!important;
+  background:
+    radial-gradient(circle at 12% 12%,rgba(255,224,91,.07),transparent 44%),
+    linear-gradient(145deg,rgba(255,255,255,.02),rgba(66,39,25,.08))!important;
+}
+.nightfall .legacy-treasury-page .treasury-summary strong{
+  color:#ffe379!important;
+  text-shadow:0 0 9px rgba(255,213,70,.14);
+}
+.nightfall .legacy-treasury-page .showcase-toggle,
+.nightfall .legacy-treasury-page .treasury-wardrobe select:focus{
+  border-color:rgba(255,213,73,.26)!important;
+  box-shadow:0 0 0 3px rgba(255,210,72,.045),0 0 14px rgba(255,127,42,.045)!important;
+}
+
+/* SETTINGS & SAFETY · dark mode only
+   Cool moonlit Palace colours: lilac, pale pink and silver. */
+.nightfall .full-nav-room>a[href="/settings"]{
+  --room-neon:#d8b6ff;
+}
+.nightfall .full-nav-room>a[href="/settings"]{
+  border-color:rgba(216,182,255,.30)!important;
+  background:
+    radial-gradient(circle at 12% 48%,rgba(215,178,255,.16),transparent 34%),
+    radial-gradient(circle at 86% 54%,rgba(255,176,220,.09),transparent 40%),
+    linear-gradient(90deg,rgba(93,70,124,.17),rgba(27,25,45,.12) 74%,transparent)!important;
+  box-shadow:
+    inset 2px 0 0 rgba(214,181,255,.46),
+    0 0 13px rgba(203,166,255,.10),
+    0 0 23px rgba(238,231,255,.055)!important;
+}
+.nightfall .full-nav-room>a[href="/settings"]>span{
+  color:#ead9ff!important;
+  text-shadow:
+    0 0 7px rgba(211,174,255,.38),
+    0 0 15px rgba(255,181,220,.12)!important;
+}
+.nightfall .full-nav-room>a[href="/settings"] .room-sigil{
+  color:#e3c7ff!important;
+  border-color:rgba(220,191,255,.48)!important;
+  background:
+    radial-gradient(circle at 26% 18%,rgba(245,239,255,.21),transparent 35%),
+    radial-gradient(circle at 80% 78%,rgba(255,173,220,.15),transparent 48%),
+    linear-gradient(145deg,rgba(90,67,122,.56),rgba(27,25,47,.88))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(250,247,255,.11),
+    0 0 10px rgba(216,182,255,.22),
+    0 0 22px rgba(232,229,242,.10)!important;
+}
+.nightfall .full-nav-room>a[href="/settings"] .room-sigil svg{
+  filter:
+    drop-shadow(0 0 4px rgba(218,187,255,.62))
+    drop-shadow(0 0 9px rgba(236,231,243,.22))!important;
+}
+.nightfall .full-nav-room>a[href="/settings"][aria-current="page"]{
+  border-color:rgba(224,195,255,.58)!important;
+  background:
+    radial-gradient(circle at 11% 50%,rgba(214,176,255,.24),transparent 38%),
+    radial-gradient(circle at 86% 50%,rgba(255,174,220,.12),transparent 44%),
+    linear-gradient(90deg,rgba(91,67,124,.30),rgba(51,38,67,.18) 72%,transparent)!important;
+  box-shadow:
+    inset 4px 0 0 #d8b6ff,
+    0 0 15px rgba(212,177,255,.18),
+    0 0 28px rgba(238,232,247,.09)!important;
+}
+
+.nightfall .settings-head,
+.nightfall .settings-tabs,
+.nightfall .settings-panel,
+.nightfall .settings-form>section{
+  --settings-lilac:#d8b6ff;
+  --settings-pink:#ffb7dc;
+  --settings-silver:#e6e2eb;
+}
+.nightfall .settings-head{
+  border-color:rgba(216,182,255,.12)!important;
+  box-shadow:0 0 24px rgba(208,174,255,.025)!important;
+}
+.nightfall .settings-head .eyebrow,
+.nightfall .settings-panel .eyebrow,
+.nightfall .settings-form .eyebrow{
+  color:#ddc0ff!important;
+  text-shadow:0 0 11px rgba(214,180,255,.18),0 0 18px rgba(255,183,220,.06)!important;
+}
+.nightfall .settings-tabs{
+  border-color:rgba(215,182,255,.13)!important;
+  background:
+    radial-gradient(circle at 5% 40%,rgba(214,177,255,.07),transparent 34%),
+    radial-gradient(circle at 95% 60%,rgba(255,180,221,.05),transparent 34%),
+    linear-gradient(90deg,rgba(35,29,57,.82),rgba(25,24,42,.78))!important;
+  box-shadow:0 0 18px rgba(216,182,255,.03)!important;
+}
+.nightfall .settings-tabs button{
+  color:#c5bdcb!important;
+  border-color:rgba(224,198,255,.07)!important;
+}
+.nightfall .settings-tabs button.active{
+  color:#f0e7fa!important;
+  border-color:rgba(216,184,255,.32)!important;
+  background:
+    linear-gradient(110deg,rgba(196,151,248,.18),rgba(255,176,220,.11),rgba(230,228,237,.07))!important;
+  box-shadow:
+    inset 0 0 0 1px rgba(244,238,251,.045),
+    0 0 12px rgba(211,177,255,.09),
+    0 0 20px rgba(255,181,220,.045)!important;
+}
+.nightfall .settings-panel,
+.nightfall .settings-form>section{
+  border-color:rgba(216,186,250,.11)!important;
+  background:
+    radial-gradient(circle at 3% 2%,rgba(205,163,252,.055),transparent 19rem),
+    radial-gradient(circle at 96% 3%,rgba(255,178,220,.04),transparent 18rem),
+    linear-gradient(145deg,rgba(18,19,39,.88),rgba(27,23,43,.78))!important;
+  box-shadow:
+    0 15px 38px rgba(4,4,15,.12),
+    0 0 18px rgba(212,178,255,.025)!important;
+}
+.nightfall .settings-panel .private-pill{
+  color:#ece8f0!important;
+  border-color:rgba(222,214,231,.18)!important;
+  background:rgba(225,220,232,.055)!important;
+}
+.nightfall .settings-presets button,
+.nightfall .quiet-counts article,
+.nightfall .storage-rights-grid article,
+.nightfall .system-note{
+  border-color:rgba(218,188,249,.10)!important;
+  background:
+    linear-gradient(145deg,rgba(219,185,255,.035),rgba(236,231,242,.018))!important;
+}
+.nightfall .settings-presets button:hover,
+.nightfall .settings-presets button:focus-visible{
+  border-color:rgba(221,190,255,.27)!important;
+  background:
+    linear-gradient(135deg,rgba(203,161,250,.10),rgba(255,179,220,.065),rgba(229,225,236,.035))!important;
+  box-shadow:0 0 13px rgba(214,179,255,.07),0 0 20px rgba(255,181,220,.035)!important;
+}
+.nightfall .settings-form input:focus-visible,
+.nightfall .settings-form select:focus-visible,
+.nightfall .settings-form textarea:focus-visible,
+.nightfall .settings-panel input:focus-visible,
+.nightfall .settings-panel select:focus-visible{
+  border-color:rgba(219,187,255,.36)!important;
+  outline-color:rgba(225,198,255,.48)!important;
+  box-shadow:0 0 0 3px rgba(215,180,255,.07),0 0 15px rgba(244,232,255,.04)!important;
+}
