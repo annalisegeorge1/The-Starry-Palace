@@ -2437,3 +2437,163 @@ body.reader-focus-mode .reader-chapter-head{
   }
   .mobile-palace-dock{width:calc(100vw - 10px)!important}
 }
+
+
+/* Palace Life mobile hierarchy — conversation first, supporting rooms second. */
+@media(max-width:620px){
+  .legacy-life-page .life-room-intro{
+    margin-bottom:.55rem!important;
+  }
+  .legacy-life-page .life-room-intro h2{
+    font-size:clamp(1.55rem,8vw,2.15rem)!important;
+    line-height:1.02!important;
+  }
+  .legacy-life-page .life-room-intro p{
+    font-size:.67rem!important;
+    line-height:1.5!important;
+  }
+  .palace-ritual-strip{
+    margin:.5rem 0 .7rem!important;
+    padding:.58rem!important;
+    gap:.5rem!important;
+    border-radius:14px!important;
+  }
+  .palace-ritual-strip p{
+    font-size:.49rem!important;
+    line-height:1.4!important;
+  }
+  .palace-ritual-strip>button{
+    min-height:36px!important;
+  }
+  .palace-social-layout{
+    gap:.62rem!important;
+  }
+  .palace-social-column{
+    min-width:0!important;
+  }
+  .chic-composer{
+    grid-template-columns:36px minmax(0,1fr)!important;
+    gap:.55rem!important;
+    padding:.68rem!important;
+    border-radius:14px!important;
+  }
+  .chic-composer-mark{
+    width:36px!important;
+    height:36px!important;
+  }
+  .chic-composer-fields{
+    gap:.42rem!important;
+  }
+  .chic-composer input{
+    min-height:38px!important;
+    font-size:.82rem!important;
+  }
+  .chic-composer textarea{
+    min-height:82px!important;
+    font-size:.72rem!important;
+    line-height:1.5!important;
+  }
+  .commons-compose-modes{
+    margin-bottom:.48rem!important;
+    gap:.3rem!important;
+  }
+  .commons-compose-modes button{
+    min-height:32px!important;
+    padding:.34rem .54rem!important;
+    font-size:.55rem!important;
+  }
+  .commons-compose-footer{
+    gap:.4rem!important;
+  }
+  .commons-compose-footer small{
+    flex:1 1 100%!important;
+    font-size:.45rem!important;
+    line-height:1.35!important;
+  }
+  .social-thread{
+    padding:.72rem!important;
+    border-radius:14px!important;
+  }
+  .social-thread+.social-thread{
+    margin-top:.45rem!important;
+  }
+  .social-thread-head{
+    gap:.42rem!important;
+  }
+  .social-thread-head .chat-avatar{
+    width:34px!important;
+    height:34px!important;
+  }
+  .social-thread-head a,
+  .social-thread-head strong{
+    font-size:.66rem!important;
+  }
+  .social-thread-head span,
+  .social-thread-head time{
+    font-size:.46rem!important;
+  }
+  .social-thread h3{
+    margin:.42rem 0 .25rem!important;
+    font-size:.88rem!important;
+    line-height:1.22!important;
+  }
+  .social-thread>p{
+    font-size:.65rem!important;
+    line-height:1.5!important;
+  }
+  .social-thread-actions{
+    gap:.28rem!important;
+    margin-top:.5rem!important;
+    overflow-x:auto!important;
+    flex-wrap:nowrap!important;
+    scrollbar-width:none!important;
+  }
+  .social-thread-actions::-webkit-scrollbar{display:none}
+  .social-thread-actions button,
+  .social-thread-actions a{
+    flex:0 0 auto!important;
+    min-height:34px!important;
+    padding:.35rem .5rem!important;
+    white-space:nowrap!important;
+    font-size:.5rem!important;
+  }
+  .commons-live-poll{
+    margin:.55rem 0 .1rem!important;
+    padding:.58rem!important;
+    border-radius:13px!important;
+  }
+  .commons-live-poll>div>button{
+    min-height:38px!important;
+  }
+  .palace-social-rail{
+    gap:.5rem!important;
+  }
+  .palace-social-rail .chic-rail-card{
+    padding:.72rem!important;
+    border-radius:14px!important;
+  }
+  .palace-social-rail .section-heading{
+    gap:.4rem!important;
+    margin-bottom:.55rem!important;
+  }
+  .palace-social-rail .section-heading h3{
+    font-size:.94rem!important;
+  }
+  .chic-rail-note{
+    font-size:.5rem!important;
+    line-height:1.4!important;
+  }
+  .palace-almanac-list>a{
+    padding:.42rem!important;
+  }
+  .chat-scroll.live-chat{
+    max-height:48vh!important;
+  }
+  .club-chat-stream{
+    max-height:47vh!important;
+  }
+  .moon-chat-wrap,
+  .club-chat-wrap{
+    border-radius:14px!important;
+  }
+}
