@@ -3332,3 +3332,171 @@ body.reader-focus-mode .reader-chapter-head{
     flex:0 0 min(78vw,260px);
   }
 }
+
+
+/* Reading Rooms — Palace Classics Hall */
+.reading-classics-hall{
+  margin:1rem 0;
+  padding:clamp(.8rem,2vw,1.15rem);
+  border:1px solid rgba(176,143,104,.13);
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 88% 0%,rgba(153,113,74,.09),transparent 18rem),
+    linear-gradient(145deg,rgba(49,37,61,.48),rgba(24,21,48,.34));
+}
+.reading-classics-hall>header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:1rem;
+  margin-bottom:.72rem;
+}
+.reading-classics-hall>header>div:first-child{max-width:760px}
+.reading-classics-hall>header h2{margin:.1rem 0 .22rem}
+.reading-classics-hall>header p:last-child{margin:0;color:#8f8799;font-size:.58rem;line-height:1.55}
+.reading-classics-hall>header>div:last-child{
+  display:flex;
+  align-items:center;
+  gap:.45rem;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.reading-classics-hall>header a{
+  color:#bca88f;
+  font-size:.52rem;
+  text-decoration:none;
+}
+.classic-hall-lenses{
+  display:flex;
+  gap:.34rem;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding:.08rem 1rem .46rem .02rem;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.classic-hall-lenses::-webkit-scrollbar{display:none}
+.classic-hall-lenses button{
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  gap:.32rem;
+  min-height:34px;
+  padding:.3rem .52rem;
+  border:1px solid rgba(181,149,111,.11);
+  border-radius:999px;
+  background:rgba(255,255,255,.012);
+  color:#9f958c;
+}
+.classic-hall-lenses button span{color:#b79b7a}
+.classic-hall-lenses button strong{font-size:.5rem}
+.classic-hall-lenses button.active{
+  border-color:rgba(201,164,119,.26);
+  background:rgba(140,99,60,.08);
+  color:#dccab6;
+}
+.classic-hall-rail{
+  display:flex;
+  gap:.5rem;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding:.15rem 1rem .6rem .02rem;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+  scroll-snap-type:x proximity;
+}
+.classic-hall-rail::-webkit-scrollbar{display:none}
+.classic-hall-card{
+  flex:0 0 clamp(230px,31vw,330px);
+  min-height:175px;
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr);
+  overflow:hidden;
+  border:1px solid rgba(184,149,107,.12);
+  border-radius:15px;
+  background:rgba(255,255,255,.014);
+  color:inherit;
+  text-decoration:none;
+  scroll-snap-align:start;
+}
+.classic-hall-card:hover{
+  border-color:rgba(205,170,127,.23);
+  background:rgba(132,96,62,.045);
+}
+.classic-spine{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  padding:.55rem .25rem;
+  border-right:1px solid rgba(184,149,107,.11);
+  background:linear-gradient(180deg,rgba(132,94,60,.11),rgba(63,48,72,.08));
+}
+.classic-spine>span{color:#c1a381;font-size:.9rem}
+.classic-spine small{
+  writing-mode:vertical-rl;
+  transform:rotate(180deg);
+  color:#8e7760;
+  font-size:.36rem;
+  letter-spacing:.11em;
+}
+.classic-hall-card>div:last-child{
+  display:flex;
+  flex-direction:column;
+  padding:.7rem;
+}
+.classic-hall-card>div:last-child>small{
+  color:#9b846e;
+  font-size:.43rem;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+.classic-hall-card h3{
+  margin:.16rem 0 .28rem;
+  color:#e1d4c7;
+  font:600 .8rem Georgia,'Times New Roman',serif;
+}
+.classic-hall-card p{
+  margin:0 0 .55rem;
+  color:#8d8595;
+  font-size:.52rem;
+  line-height:1.5;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.classic-hall-card b{
+  margin-top:auto;
+  color:#b7a188;
+  font-size:.49rem;
+}
+.reading-classics-hall>footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.6rem;
+  padding-top:.35rem;
+  color:#756c76;
+  font-size:.45rem;
+}
+.reading-classics-hall>footer button{
+  border:0;
+  background:transparent;
+  color:#9a8774;
+  font-size:.46rem;
+}
+.daylight .reading-classics-hall{
+  background:linear-gradient(145deg,rgba(250,247,241,.94),rgba(245,241,247,.88));
+  border-color:rgba(125,91,60,.11);
+}
+.daylight .classic-hall-card{background:rgba(255,255,255,.7)}
+.daylight .classic-hall-card h3{color:#4e4034}
+.daylight .classic-hall-card p{color:#746b75}
+@media(max-width:700px){
+  .reading-classics-hall>header{align-items:flex-start;flex-direction:column}
+  .reading-classics-hall>header>div:last-child{justify-content:flex-start}
+  .classic-hall-card{flex-basis:min(82vw,290px)}
+  .classic-hall-lenses{padding-right:22px}
+  .classic-hall-rail{padding-right:22px}
+}
