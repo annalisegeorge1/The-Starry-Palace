@@ -1680,6 +1680,7 @@ describe('Starry Palace launch safety',()=>{
 
   it('keeps the Writing Studio comfortable for long-form work',()=>{
     const polish=read('src/polish.css');
+    const next=read('src/palace-next.css');
     expect(live).toContain('writing-studio-grid');
     expect(live).toContain('writing-studio-rail');
     expect(live).toContain('writing-editor-workspace');
@@ -1689,11 +1690,20 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain("e.key==='Escape'&&focusMode");
     expect(live).toContain('writing-page-stage');
     expect(live).toContain('PRIVATE REVISION NOTE');
+    expect(live).toContain('switchChapterSafely');
+    expect(live).toContain('Saving before chapter switch…');
+    expect(live).toContain('writer-chapter-jump');
+    expect(live).toContain('writer-format-scroll');
+    expect(live).toContain('Formatting stays with you while you scroll');
+    expect(live).toContain('focusChapterTitle');
     expect(polish).toContain('.chic-work-studio-head');
     expect(polish).toContain('.writing-studio-grid');
     expect(polish).toContain('.writing-page-stage .legacy-writing-canvas');
     expect(polish).toContain('.chic-studio-buttons');
     expect(polish).toContain('.focus-editor .writing-studio-rail');
+    expect(next).toContain('Writing Desk v2 · persistent edit bar + safer chapter switching');
+    expect(next).toContain('position:sticky!important');
+    expect(next).toContain('.writer-chapter-jump');
   });
 
   it('keeps Writing Chamber revision snapshots separate from autosave',()=>{
