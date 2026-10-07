@@ -1651,7 +1651,8 @@ describe('Starry Palace launch safety',()=>{
     const polish=read('src/polish.css');
     expect(data).toContain('getWorkExport');
     expect(live).toContain('Export work backup');
-    expect(live).toContain("e.key.toLowerCase()==='s'");
+    expect(live).toContain("const key=e.key.toLowerCase()");
+    expect(live).toContain("key==='s'");
     expect(live).toContain('Portable work backup exported.');
     expect(live).toContain('Ctrl/⌘ S · save · Ctrl/⌘ Z · undo');
     expect(polish).toContain('.studio-head-actions');
