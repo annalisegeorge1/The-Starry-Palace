@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const root=resolve(process.cwd());
@@ -7,12 +7,33 @@ const read=(p)=>readFileSync(resolve(root,p),'utf8');
 const main=read('src/main.jsx');
 const live=read('src/liveRooms.jsx');
 const pkg=JSON.parse(read('package.json'));
+const authoredTextFiles=()=>{
+  const out=['index.html','README.md'];
+  const walk=(dir)=>{
+    for(const name of readdirSync(resolve(root,dir))){
+      const rel=dir+'/'+name;
+      const full=resolve(root,rel);
+      if(statSync(full).isDirectory())walk(rel);
+      else if(/\.(?:js|jsx|css|html|md|json|sql|txt)$/.test(name))out.push(rel);
+    }
+  };
+  for(const dir of ['src','docs','database'])walk(dir);
+  return out;
+};
 
 describe('Starry Palace launch safety',()=>{
   it('keeps protected member rooms behind ProtectedRoute',()=>{
     for(const path of ['/chamber','/writing','/comics/studio','/palace-life','/treasury','/settings','/activity','/library','/letters','/council']){
       expect(main).toContain(`<Route path="${path}" element={<ProtectedRoute>`);
     }
+  });
+
+  it('keeps Palace-authored surfaces free of ChatGPT, OpenAI and AI attribution',()=>{
+    const forbidden=/chat\s*gpt|chatgpt|open\s*ai|openai|artificial intelligence|generative ai|ai[- ]generated|powered by ai|created with ai|\bgpt(?:-\w+)?\b|\bai\b/i;
+    for(const file of authoredTextFiles()){
+      expect(read(file),file).not.toMatch(forbidden);
+    }
+    expect(read('index.html')).toContain('<meta name="application-name" content="The Starry Palace"/>');
   });
 
   it('does not use raw browser prompt or confirm dialogs',()=>{
