@@ -3070,3 +3070,7 @@ body.reader-focus-mode .reader-chapter-head{
     min-height:50px;
   }
 }
+
+@media(min-width:721px) and (max-width:1120px){
+  .palace-passage{top:118px}
+}
