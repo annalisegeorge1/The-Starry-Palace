@@ -44,17 +44,22 @@ begin
  perform pg_advisory_xact_lock(7040316);
  for v_row in
   select s.quarter_start,s.status,g.id as palace_id,g.name,
-   coalesce(sum(d.points),0)::bigint as points,
-   count(distinct m.user_id)::integer as members,
-   coalesce(sum(d.points),0)::numeric / greatest(count(distinct m.user_id),1) as average_points
+   coalesce(d.points,0)::bigint as points,
+   coalesce(m.member_count,0)::integer as members,
+   coalesce(d.points,0)::numeric / greatest(coalesce(m.member_count,0),1) as average_points
   from public.grand_palace_seasons s
   cross join public.grand_palaces g
-  join public.grand_palace_memberships m on m.palace_id=g.id
-  left join public.grand_palace_daily_scores d
-   on d.quarter_start=s.quarter_start and d.palace_id=g.id
+  join lateral (
+    select count(*)::integer as member_count
+    from public.grand_palace_memberships where palace_id=g.id
+  )m on m.member_count>0
+  left join lateral (
+    select coalesce(sum(points),0)::bigint as points
+    from public.grand_palace_daily_scores
+    where quarter_start=s.quarter_start and palace_id=g.id
+  )d on true
   where s.quarter_start >= (date_trunc('quarter',(now() at time zone 'UTC')-interval '6 months'))::date
     and s.status in ('active','finalized')
-  group by s.quarter_start,s.status,g.id,g.name
  loop
    if v_row.points <= 0 then continue; end if;
    for v_stage in
