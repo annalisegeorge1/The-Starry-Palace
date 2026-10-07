@@ -1206,6 +1206,14 @@ describe('Starry Palace launch safety',()=>{
     expect(next).toContain('Mobile shell convergence — one final rule-set after legacy responsive layers.');
   });
 
+  it('keeps navigation overlays explicit and prevents background scroll',()=>{
+    expect(main).toContain('aria-controls="palace-sidebar"');
+    expect(main).toContain('aria-expanded={navOpen}');
+    expect(main).toContain('aria-controls="palace-command-dialog"');
+    expect(main).toContain("document.body.style.overflow='hidden'");
+    expect(main).toContain('[navOpen,mobileMoreOpen,commandOpen]');
+  });
+
   it('keeps tablet room navigation swipeable without covering content',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
