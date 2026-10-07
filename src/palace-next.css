@@ -3262,3 +3262,73 @@ body.reader-focus-mode .reader-chapter-head{
   .reader-end-trail{align-items:flex-start;flex-direction:column}
   .reader-end-trail nav{justify-content:flex-start}
 }
+
+
+/* Reading Rooms: All Stories + archive classics */
+.chic-reading-kind-tabs.three-way{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+.story-row.palace-classic-story{
+  border-color:rgba(182,151,113,.16);
+  background:
+    radial-gradient(circle at 95% 8%,rgba(173,137,96,.065),transparent 13rem),
+    rgba(255,255,255,.012);
+}
+.story-row.palace-classic-story .story-cover{
+  background:
+    linear-gradient(145deg,rgba(127,94,66,.18),rgba(34,27,49,.68));
+}
+.story-row.palace-classic-story .story-cover>span{color:#c7ad91}
+.story-classic-author{
+  display:flex;
+  align-items:center;
+  gap:.48rem;
+  min-width:0;
+}
+.story-classic-author>i{
+  width:36px;height:36px;
+  flex:0 0 36px;
+  display:grid;place-items:center;
+  border:1px solid rgba(194,158,119,.17);
+  border-radius:50%;
+  background:rgba(139,102,70,.07);
+  color:#c5ab8d;
+  font-style:normal;
+}
+.story-classic-author>span{min-width:0;display:grid}
+.story-classic-author small{
+  color:#967f68;
+  font-size:.42rem;
+  letter-spacing:.08em;
+}
+.story-classic-author strong{
+  color:#d8c8b8;
+  font:600 .66rem Georgia,'Times New Roman',serif;
+}
+.story-classic-author em{
+  color:#81766c;
+  font-size:.45rem;
+  font-style:normal;
+}
+.daylight .story-row.palace-classic-story{
+  background:rgba(250,247,241,.8);
+  border-color:rgba(132,96,61,.12);
+}
+.daylight .story-classic-author strong{color:#554638}
+.daylight .story-classic-author small,.daylight .story-classic-author em{color:#7f6c5c}
+
+@media(max-width:680px){
+  .chic-reading-kind-tabs.three-way{
+    display:flex!important;
+    grid-template-columns:none!important;
+    overflow-x:auto;
+    flex-wrap:nowrap;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+    padding-right:18px;
+  }
+  .chic-reading-kind-tabs.three-way::-webkit-scrollbar{display:none}
+  .chic-reading-kind-tabs.three-way>button{
+    flex:0 0 min(78vw,260px);
+  }
+}
