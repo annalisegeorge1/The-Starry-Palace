@@ -838,26 +838,34 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('Audience Balcony + Ink Duels');
   });
 
-  it('keeps Ink Duels timed, blind and participation-focused',()=>{
+  it('keeps Ink Duels multi-format blind and participation-focused',()=>{
     const data=read('src/palaceData.js');
-    const duelMigration=read('database/ink-duels-v2.sql');
+    const duelMigration=read('database/ink-duels-v3.sql');
     const next=read('src/palace-next.css');
+    const badges=read('src/badges.json');
     expect(data).toContain("rpc('get_micro_duels')");
-    expect(data).toContain("rpc('create_micro_duel_v2'");
-    expect(data).toContain("rpc('submit_micro_duel_entry'");
+    expect(data).toContain("rpc('create_micro_duel_v3'");
+    expect(data).toContain("rpc('submit_micro_duel_entry_v3'");
     expect(data).toContain("rpc('vote_micro_duel'");
-    expect(data).toContain("rpc('cancel_micro_duel'");
-    expect(live).toContain('INK DUELS · BLIND MICRO-FICTION');
-    expect(live).toContain('Put the clock on the page.');
-    expect(live).toContain('FLASH INK');
-    expect(live).toContain('CLASSIC DUEL');
-    expect(live).toContain('DEEP INK');
-    expect(live).toContain('Pull from Prompt Orrery');
-    expect(live).toContain('Cast blind vote');
-    expect(live).toContain('Moonlit favourite ✦');
-    expect(duelMigration).toContain("'results'");
-    expect(duelMigration).toContain('voting_closes_at');
-    expect(next).toContain('Ink Duels v2 · blind writing arena');
+    expect(data).toContain("rpc('mark_micro_duel_entry'");
+    expect(data).toContain("rpc('respond_micro_duel_invitation'");
+    expect(data).toContain("rpc('start_micro_duel'");
+    expect(live).toContain('INK DUELS · CREATIVE ARENA');
+    expect(live).toContain('1 vs 1');
+    expect(live).toContain('Court Duel');
+    expect(live).toContain('Haiku');
+    expect(live).toContain('Art Duel');
+    expect(live).toContain('Comic Clash');
+    expect(live).toContain('Impact');
+    expect(live).toContain('Atmosphere');
+    expect(live).toContain('Originality');
+    expect(live).toContain('Crowned in Ink ✦');
+    expect(duelMigration).toContain('micro_duel_participants');
+    expect(duelMigration).toContain('micro_duel_marks');
+    expect(duelMigration).toContain('duel-art');
+    expect(badges).toContain('First Bell Scribe');
+    expect(badges).toContain('Court of Eight');
+    expect(next).toContain('Ink Duels v3 · multi-form competitive arena');
   });
 
   it('keeps chapter praise unified with Heart Star Moon Crown',()=>{
