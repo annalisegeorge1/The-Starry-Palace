@@ -355,6 +355,11 @@ export function WritingLive({Frame}){
   wildcard:{label:'Wildcard',glyph:'✦',limit:500,rule:'Host-defined creative constraint.'}
  };
  function applyDuelType(contentType){const preset=duelTypePresets[contentType]||duelTypePresets.fiction;setDuelForm(v=>({...v,contentType,limit:preset.limit,ruleNote:preset.rule}))}
+ function duelPrizeRule(duel){
+  if(duel.match_type==='one_v_one')return{bronze:'2 entries · 3 outside ballots',silver:'7 outside ballots',gold:'15 outside ballots'};
+  if(duel.match_type==='group')return{bronze:'3 entries · 4 ballots · 2 outside',silver:'5 entries · 8 ballots · 4 outside',gold:'7 entries · 12 ballots · 6 outside'};
+  return{bronze:'3 entries · 4 ballots · 2 outside',silver:'6 entries · 8 ballots · 4 outside',gold:'10 entries · 15 ballots · 8 outside'}
+ }
  function applyDuelPreset(mode){const preset=duelPreset(mode);setDuelForm(v=>({...v,...preset}))}
  function pullDuelPrompt(){
   const filters=duelForm.promptFamily&&duelForm.promptFamily!=='Open'?{flavour:duelForm.promptFamily}:{};
@@ -397,12 +402,14 @@ export function WritingLive({Frame}){
   <button className="button-starlight" type="button" onClick={()=>setDuelOpen(true)}>Open an Ink Duel ✦</button>
  </section>
  {duelRecord&&<section className="duel-record-strip" aria-label="My Ink Duel record">
-  <div><small>MY DUEL RECORD</small><strong>{duelRecord.wins||0}</strong><span>victories</span></div>
+  <div><small>MY DUEL RECORD</small><strong>{duelRecord.wins||0}</strong><span>qualified victories</span></div>
+  <div><strong>{duelRecord.prizes||0}</strong><span>victory treasures</span></div>
+  <div><strong>{duelRecord.silver_prizes||0}</strong><span>silver prizes</span></div>
+  <div><strong>{duelRecord.gold_prizes||0}</strong><span>gold prizes</span></div>
   <div><strong>{duelRecord.entries||0}</strong><span>entries sealed</span></div>
   <div><strong>{duelRecord.types||0}/8</strong><span>forms tried</span></div>
   <div><strong>{duelRecord.laurels||0}</strong><span>craft laurels</span></div>
   <div><strong>{duelRecord.one_v_one_wins||0}</strong><span>1 vs 1 wins</span></div>
-  <div><strong>{duelRecord.group_wins||0}</strong><span>group wins</span></div>
  </section>}
  <section className="duel-type-arcade" aria-label="Ink Duel creative forms">
   {Object.entries(duelTypePresets).map(([key,item])=><button type="button" key={key} onClick={()=>{setDuelForm(v=>({...v,contentType:key,limit:item.limit,ruleNote:item.rule}));setDuelOpen(true)}}><span>{item.glyph}</span><strong>{item.label}</strong><small>{key==='art'||key==='comic'?'Visual entry':key==='drabble'?'Exactly 100 words':key==='haiku'?'Three lines':item.limit+' word default'}</small></button>)}
@@ -412,6 +419,14 @@ export function WritingLive({Frame}){
   <button type="button" onClick={()=>{setDuelForm(v=>({...v,matchType:'group',maxEntries:8}));setDuelOpen(true)}}><span>♜</span><div><small>COURT DUEL</small><strong>3–8 invited creators</strong><p>The host rings the bell once at least three duelists have accepted.</p></div></button>
   <button type="button" onClick={()=>{setDuelForm(v=>({...v,matchType:'open',maxEntries:12}));setDuelOpen(true)}}><span>✦</span><div><small>OPEN ARENA</small><strong>First creators to seal an entry</strong><p>Public creative pressure with capped seats and blind judging.</p></div></button>
  </section>
+ <section className="duel-prize-house" aria-label="Ink Duel victory treasure rules">
+  <div className="duel-prize-copy"><span className="duel-prize-sigil">✒</span><div><small>VICTORY TREASURY</small><h3>Win a real Palace gift — when the duel is genuinely competitive.</h3><p>A unique winner can receive a Comet Quill treasure after reveal. Ties, cancelled duels, empty contests and low-participation matches do not mint prizes.</p></div></div>
+  <div className="duel-prize-tiers">
+   <article><span>BRONZE</span><strong>Qualified victory</strong><small>Enough valid entries and independent ballots.</small></article>
+   <article><span>SILVER</span><strong>High-stakes victory</strong><small>Larger field or stronger outside judging.</small></article>
+   <article><span>GOLD</span><strong>Grand Arena victory</strong><small>Large, well-judged duel with decisive participation.</small></article>
+  </div>
+ </section>
  <div className="duel-dashboard">
   <div className="duel-stat"><strong>{duels.filter(d=>d.phase==='waiting').length}</strong><span>challenges waiting</span></div>
   <div className="duel-stat"><strong>{duelWritingCount}</strong><span>writing now</span></div>
@@ -420,7 +435,7 @@ export function WritingLive({Frame}){
  </div>
  {duelVisible.length?<div className="duel-list">{duelVisible.map(duel=>{const waiting=duel.phase==='waiting';const writing=duel.phase==='writing';const voting=duel.phase==='voting';const results=duel.phase==='results';const mine=duel.my_entry;const draft=duelDrafts[duel.id]??mine?.body??'';const words=String(draft).trim().split(/\s+/).filter(Boolean).length;const visual=['art','comic'].includes(duel.content_type);const type=duelTypePresets[duel.content_type]||duelTypePresets.fiction;return <article className={"duel-card "+duel.phase+" mode-"+(duel.duel_mode||'classic')+" type-"+(duel.content_type||'fiction')} key={duel.id}>
    <header>
-    <div><div className="duel-meta-row"><small>{waiting?'CHALLENGE LOBBY':writing?'WRITING WINDOW':voting?'BLIND GALLERY':'THE REVEAL'} · {type.label.toUpperCase()}</small><em>{duel.match_type==='one_v_one'?'1 VS 1':duel.match_type==='group'?'GROUP DUEL':'OPEN ARENA'} · {duel.prompt_family||'Open'}</em></div><h3>{duel.title}</h3><p>{duel.prompt}</p>{duel.rule_note&&<blockquote className="duel-rule-note">{duel.rule_note}</blockquote>}<div className="duel-counts"><span>{duel.participant_count||0}/{duel.max_entries||12} duelists</span><span>{duel.entry_count||0} sealed entr{Number(duel.entry_count||0)===1?'y':'ies'}</span>{!writing&&!waiting&&<span>{duel.vote_count||0} ballot{Number(duel.vote_count||0)===1?'':'s'}</span>}</div></div>
+    <div><div className="duel-meta-row"><small>{waiting?'CHALLENGE LOBBY':writing?'WRITING WINDOW':voting?'BLIND GALLERY':'THE REVEAL'} · {type.label.toUpperCase()}</small><em>{duel.match_type==='one_v_one'?'1 VS 1':duel.match_type==='group'?'GROUP DUEL':'OPEN ARENA'} · {duel.prompt_family||'Open'}</em></div><h3>{duel.title}</h3><p>{duel.prompt}</p>{duel.rule_note&&<blockquote className="duel-rule-note">{duel.rule_note}</blockquote>}<div className="duel-counts"><span>{duel.participant_count||0}/{duel.max_entries||12} duelists</span><span>{duel.entry_count||0} sealed entr{Number(duel.entry_count||0)===1?'y':'ies'}</span>{!writing&&!waiting&&<span>{duel.vote_count||0} ballot{Number(duel.vote_count||0)===1?'':'s'}</span>}{!writing&&!waiting&&<span>{duel.external_vote_count||0} outside judge{Number(duel.external_vote_count||0)===1?'':'s'}</span>}</div>{!waiting&&<div className="duel-stakes-line"><small>VICTORY TREASURE</small>{duel.reward?<strong className={"tier-"+duel.reward.gift_tier}>{duel.reward.gift_tier.toUpperCase()} · {duel.reward.gift?.name||'Comet Quill'}</strong>:results?<strong>No prize minted</strong>:<span>Bronze: {duelPrizeRule(duel).bronze} · Silver: {duelPrizeRule(duel).silver} · Gold: {duelPrizeRule(duel).gold}</span>}</div>}</div>
     <div className="duel-clock"><small>{waiting?'LOBBY':writing?'WRITE':voting?'VOTE':'REVEALED'}</small><strong>{waiting?'WAITING':writing?duelCountdown(duel.closes_at):voting?duelCountdown(duel.voting_closes_at):'OPEN'}</strong>{duel.is_host&&!results&&<button type="button" className="duel-host-close" disabled={duelBusy==='close'+duel.id} onClick={()=>closeDuel(duel.id)}>Close</button>}</div>
    </header>
    {waiting?<section className="duel-lobby">
@@ -434,8 +449,8 @@ export function WritingLive({Frame}){
       {entry.body&&<p className={(duel.content_type==='poetry'||duel.content_type==='haiku')?'duel-poem':''}>{entry.body}</p>}
       {voting&&!entry.is_mine&&<div className="duel-laurels" aria-label="Craft laurels">{[['impact','⚡','Impact'],['atmosphere','☾','Atmosphere'],['originality','✦','Originality'],['craft','✒','Craft']].map(([mark,glyph,label])=><button type="button" key={mark} className={duel.my_marks?.[mark]===entry.id?'active':''} disabled={duelBusy==='mark'+duel.id+mark} onClick={()=>castDuelMark(duel.id,entry.id,mark)}><span>{glyph}</span>{label}</button>)}</div>}
       {results&&entry.marks&&<div className="duel-laurel-results">{Object.entries(entry.marks).map(([mark,total])=><span key={mark}>{mark} · {total}</span>)}</div>}
-      {results&&entry.author&&<div className="duel-author-reveal"><span>{entry.author.avatar_url?<img src={entry.author.avatar_url} alt=""/>:'✎'}</span><div><small>CREATED BY</small><strong>{entry.author.display_name||entry.author.username||'Palace creator'}</strong>{entry.author.title&&<em>{entry.author.title}</em>}</div></div>}
-      <footer>{voting?<><button className={duel.my_vote===entry.id?'button-twilight':'button-moonstone'} disabled={duelBusy==='vote'+duel.id||entry.is_mine||(duel.match_type==='one_v_one'&&duel.my_participation==='accepted')} onClick={()=>castDuelVote(duel.id,entry.id)}>{entry.is_mine?'Your sealed entry':duel.match_type==='one_v_one'&&duel.my_participation==='accepted'?'Gallery decides':duel.my_vote===entry.id?'Your vote ✓':'Cast blind vote'}</button><span>{duel.my_vote?'Vote may be changed until reveal':'One blind vote + four optional craft laurels'}</span></>:<><span>{Number(entry.votes||0)} vote{Number(entry.votes||0)===1?'':'s'}</span>{entry.winner&&<b className="duel-winner-mark">Crowned in Ink ✦</b>}</>}</footer>
+      {results&&entry.author&&<div className="duel-author-reveal"><span>{entry.author.avatar_url?<img src={entry.author.avatar_url} alt=""/>:'✎'}</span><div><small>CREATED BY</small><strong>{entry.author.display_name||entry.author.username||'Palace creator'}</strong>{entry.author.title&&<em>{entry.author.title}</em>}</div></div>}{results&&entry.winner&&duel.reward&&<div className="duel-victory-gift"><PalaceGift gift={duel.reward.gift} tier={duel.reward.gift_tier||'bronze'} compact/><div><small>{duel.reward.reward_level==='grand_arena'?'GRAND ARENA PRIZE':duel.reward.reward_level==='high_stakes'?'HIGH-STAKES PRIZE':'VICTORY TREASURE'}</small><strong>{duel.reward.gift?.name||'Comet Quill'}</strong><span>{String(duel.reward.gift_tier||'bronze').toUpperCase()} · sent to the winner’s Royal Treasury</span></div></div>}
+      <footer>{voting?<><button className={duel.my_vote===entry.id?'button-twilight':'button-moonstone'} disabled={duelBusy==='vote'+duel.id||entry.is_mine||(duel.match_type==='one_v_one'&&duel.my_participation==='accepted')} onClick={()=>castDuelVote(duel.id,entry.id)}>{entry.is_mine?'Your sealed entry':duel.match_type==='one_v_one'&&duel.my_participation==='accepted'?'Gallery decides':duel.my_vote===entry.id?'Your vote ✓':'Cast blind vote'}</button><span>{duel.my_vote?'Vote may be changed until reveal':'One blind vote + four optional craft laurels'}</span></>:<><span>{Number(entry.votes||0)} vote{Number(entry.votes||0)===1?'':'s'}</span>{entry.winner&&<b className="duel-winner-mark">Crowned in Ink ✦ · Treasure awarded</b>}</>}</footer>
      </article>):<div className="duel-empty-gallery"><span>◇</span><strong>{voting?'No sealed entries made the bell.':'No entries were sealed for this duel.'}</strong></div>}</div>}
   </article>})}</div>:<div className="life-empty large"><span>✦</span><h3>{duelView==='results'?'No recent reveals yet.':'No Ink Duels in this view.'}</h3><p>Challenge a rival, gather a court, or open the arena and let the Prompt Orrery choose the trouble.</p><button type="button" onClick={()=>setDuelOpen(true)}>Open an Ink Duel →</button></div>}
 </section>}
