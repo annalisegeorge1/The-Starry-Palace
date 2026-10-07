@@ -2739,3 +2739,74 @@ body.reader-focus-mode .reader-chapter-head{
 .archive-reader-sheet>footer p{margin:.45rem 0;font-size:.88rem;line-height:1.55;opacity:.82}
 .archive-reader-sheet>footer a{display:inline-block;margin-top:.4rem}
 @media(max-width:680px){.archive-reader-sheet{max-height:68vh}.archive-reader-copy{font-size:1rem;line-height:1.72}.archive-card-actions{width:100%}.archive-card-actions button{flex:1}}
+
+
+/* Writing Studio usability pass: more page, less chrome. */
+.writer-rail-toggle{
+  min-height:36px;
+  border:1px solid rgba(205,181,236,.13);
+  border-radius:10px;
+  background:rgba(255,255,255,.018);
+  color:#c9c1d4;
+  font-weight:700;
+}
+.writer-rail-toggle.active{
+  border-color:rgba(214,187,239,.28);
+  background:linear-gradient(135deg,rgba(112,92,184,.16),rgba(95,126,193,.07));
+  color:#eee8f5;
+}
+.writing-studio-grid.rail-collapsed{
+  grid-template-columns:minmax(0,1fr)!important;
+  width:min(1060px,100%);
+}
+.writer-compact-chapter-nav{
+  grid-column:1/-1;
+  position:sticky;
+  top:72px;
+  z-index:8;
+  display:grid;
+  grid-template-columns:auto minmax(180px,1fr) auto;
+  gap:.4rem;
+  align-items:center;
+  padding:.45rem;
+  margin-bottom:.1rem;
+  border:1px solid rgba(205,181,236,.11);
+  border-radius:13px;
+  background:rgba(25,20,55,.94);
+  -webkit-backdrop-filter:blur(18px);
+  backdrop-filter:blur(18px);
+  box-shadow:0 10px 28px rgba(7,5,22,.08);
+}
+.writer-compact-chapter-nav button,
+.writer-compact-chapter-nav select{
+  min-height:34px;
+  border:1px solid rgba(205,181,236,.11);
+  border-radius:9px;
+  background:rgba(255,255,255,.018);
+  color:#cfc7d8;
+  font-size:.55rem;
+}
+.writer-compact-chapter-nav button{padding:.35rem .55rem}
+.writer-compact-chapter-nav button.active{
+  border-color:rgba(214,187,239,.25);
+  background:rgba(112,92,184,.09);
+}
+.daylight .writer-rail-toggle,
+.daylight .writer-compact-chapter-nav button,
+.daylight .writer-compact-chapter-nav select{color:#4c435c}
+.daylight .writer-compact-chapter-nav{
+  background:rgba(248,246,250,.95);
+  border-color:rgba(96,77,142,.1);
+}
+.writer-view-controls button[aria-pressed="true"]{
+  box-shadow:inset 0 0 0 1px rgba(226,201,247,.045);
+}
+@media(max-width:760px){
+  .writer-compact-chapter-nav{
+    top:58px;
+    grid-template-columns:1fr auto;
+  }
+  .writer-compact-chapter-nav>button:first-child{display:none}
+  .writer-compact-chapter-nav select{min-width:0;width:100%}
+  .writer-rail-toggle{flex:1 1 auto}
+}
