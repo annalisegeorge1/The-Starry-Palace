@@ -191,3 +191,147 @@ on conflict(quarter_start) do nothing;
 revoke all on function private.assign_grand_palace(uuid) from public,anon,authenticated;
 revoke all on function private.on_palace_profile_created() from public,anon,authenticated;
 revoke all on function private.grand_palace_points_awarded() from public,anon,authenticated;
+
+-- Member-facing RPCs; no direct public table writes are permitted.
+create or replace function public.get_grand_palace_identity(p_member uuid)
+returns jsonb language sql stable security definer set search_path='' as $$
+ select jsonb_build_object(
+   'palace_id', gp.id, 'palace_name',gp.name, 'palace_slug',gp.slug,
+   'sigil',gp.sigil, 'accent',gp.accent, 'motto',gp.motto,
+   'theme',w.selected_theme,
+   'honours',coalesce((select jsonb_object_agg(h.honour,h.display_count)
+                       from public.grand_palace_honours h
+                       where h.user_id=p.id and h.display_count>0),'{}'::jsonb)
+ )
+ from public.profiles p
+ join public.grand_palace_memberships m on m.user_id=p.id
+ join public.grand_palaces gp on gp.id=m.palace_id
+ left join public.grand_palace_wallets w on w.user_id=p.id
+ where p.id=p_member and (p.visibility<>'hidden' or p.id=auth.uid())
+ limit 1
+$$;
+revoke all on function public.get_grand_palace_identity(uuid) from public,anon,authenticated;
+grant execute on function public.get_grand_palace_identity(uuid) to anon,authenticated;
+
+create or replace function public.get_grand_palace_hall()
+returns jsonb language plpgsql security definer set search_path='' as $$
+declare
+ v_user uuid:=auth.uid();
+ v_quarter date:=date_trunc('quarter',now() at time zone 'UTC')::date;
+ v_end timestamptz:=(date_trunc('quarter',now() at time zone 'UTC')+interval '3 months') at time zone 'UTC';
+ v_result jsonb;
+begin
+ if v_user is null then raise exception 'Sign in to enter the Grand Palace Hall.'; end if;
+ insert into public.grand_palace_seasons(quarter_start,ends_at)
+ values(v_quarter,v_end) on conflict(quarter_start) do nothing;
+ select jsonb_build_object(
+  'quarter_start',v_quarter,
+  'ends_at',v_end,
+  'daily_cap',30,
+  'palaces',coalesce((
+    with member_totals as (
+      select palace_id,count(*)::integer as members from public.grand_palace_memberships group by palace_id
+    ), team_scores as (
+      select palace_id,coalesce(sum(points),0)::bigint as points,
+             count(distinct user_id)::integer as contributors,
+             count(distinct day_utc)::integer as active_days
+      from public.grand_palace_daily_scores where quarter_start=v_quarter group by palace_id
+    ), ranked as (
+      select gp.id,gp.name,gp.slug,gp.motto,gp.sigil,gp.accent,
+        coalesce(m.members,0) as members,coalesce(s.points,0) as points,
+        coalesce(s.contributors,0) as contributors,coalesce(s.active_days,0) as active_days,
+        round(coalesce(s.points,0)::numeric/greatest(coalesce(m.members,0),1),2) as average_points,
+        row_number() over (order by
+           (coalesce(s.points,0)::numeric/greatest(coalesce(m.members,0),1)) desc,
+           coalesce(s.points,0) desc,gp.id asc) as place
+      from public.grand_palaces gp left join member_totals m on m.palace_id=gp.id
+       left join team_scores s on s.palace_id=gp.id
+    )
+    select jsonb_agg(to_jsonb(r) order by r.place) from ranked r
+   ),'[]'::jsonb),
+  'my_palace_id',(select palace_id from public.grand_palace_memberships where user_id=v_user),
+  'my_contribution',(select coalesce(sum(points),0)::bigint from public.grand_palace_daily_scores
+       where user_id=v_user and quarter_start=v_quarter),
+  'balance',(select coalesce(spendable_points,0) from public.grand_palace_wallets where user_id=v_user),
+  'selected_theme',(select selected_theme from public.grand_palace_wallets where user_id=v_user),
+  'unlocked_themes',coalesce((select jsonb_agg(jsonb_build_object('slug',t.slug,'name',t.name,'description',t.description) order by t.name)
+     from public.grand_palace_theme_unlocks u join public.grand_palace_themes t on t.slug=u.theme_slug where u.user_id=v_user),'[]'::jsonb),
+  'honours',coalesce((select jsonb_agg(jsonb_build_object('honour',h.honour,'display_count',h.display_count,'gift_stock',h.gift_stock) order by h.honour)
+     from public.grand_palace_honours h where h.user_id=v_user),'[]'::jsonb),
+  'past_victories',coalesce((select jsonb_agg(jsonb_build_object('season',s.quarter_start,'palace_id',s.winner_id,'palace_name',gp.name) order by s.quarter_start desc)
+     from (select * from public.grand_palace_seasons where status='finalized' and winner_id is not null order by quarter_start desc limit 8)s
+     join public.grand_palaces gp on gp.id=s.winner_id),'[]'::jsonb),
+  'my_boxes',coalesce((select jsonb_agg(jsonb_build_object(
+    'season',a.quarter_start,'award_kind',a.award_kind,'tier',a.box_tier,
+    'rank',a.individual_rank,'details',a.details) order by a.quarter_start desc)
+    from public.grand_palace_awards a where a.user_id=v_user),'[]'::jsonb)
+ ) into v_result;
+ return v_result;
+end $$;
+
+create or replace function public.purchase_grand_palace_honour(p_honour text,p_quantity integer default 1)
+returns jsonb language plpgsql security definer set search_path='' as $$
+declare v_user uuid:=auth.uid(); v_cost integer; v_total bigint; v_balance bigint;
+begin
+ if v_user is null then raise exception 'Sign in to visit the Palace Honour Shop.'; end if;
+ v_cost:=case p_honour when 'heart' then 20 when 'star' then 150 when 'moon' then 600 when 'crown' then 3000 else null end;
+ if v_cost is null or p_quantity is null or p_quantity<1 or p_quantity>5 then raise exception 'Choose 1–5 recognised honours.'; end if;
+ v_total:=v_cost::bigint*p_quantity;
+ update public.grand_palace_wallets set spendable_points=spendable_points-v_total,updated_at=now()
+ where user_id=v_user and spendable_points>=v_total returning spendable_points into v_balance;
+ if not found then raise exception 'Not enough spendable Celestial Points.'; end if;
+ insert into public.grand_palace_honours(user_id,honour,gift_stock)
+ values(v_user,p_honour,p_quantity)
+ on conflict(user_id,honour) do update
+ set gift_stock=public.grand_palace_honours.gift_stock+excluded.gift_stock;
+ return jsonb_build_object('honour',p_honour,'purchased',p_quantity,'balance',v_balance,'giving_only',true);
+end $$;
+
+create or replace function public.send_grand_palace_honour(p_recipient uuid,p_honour text,p_note text default '')
+returns jsonb language plpgsql security definer set search_path='' as $$
+declare v_user uuid:=auth.uid(); v_note text:=btrim(coalesce(p_note,'')); v_name text;
+begin
+ if v_user is null then raise exception 'Sign in to send Palace honours.'; end if;
+ if p_recipient=v_user or p_recipient is null then raise exception 'Gift an honour to another member.'; end if;
+ if p_honour not in ('heart','star','moon','crown') then raise exception 'Unknown Palace honour.'; end if;
+ if char_length(v_note)>180 then raise exception 'Keep your gift note within 180 characters.'; end if;
+ select username into v_name from public.profiles where id=p_recipient and visibility<>'hidden';
+ if v_name is null then raise exception 'This member is not available to receive a Palace gift.'; end if;
+ if exists(select 1 from public.user_member_boundaries b
+   where ((b.user_id=v_user and b.other_user_id=p_recipient)
+       or (b.user_id=p_recipient and b.other_user_id=v_user)) and b.blocked)
+ then raise exception 'This exchange is unavailable because of a member boundary.'; end if;
+ update public.grand_palace_honours set gift_stock=gift_stock-1
+ where user_id=v_user and honour=p_honour and gift_stock>=1;
+ if not found then raise exception 'You do not have a giftable token of this type.'; end if;
+ insert into public.grand_palace_honours(user_id,honour,display_count)
+ values(p_recipient,p_honour,1)
+ on conflict(user_id,honour) do update
+ set display_count=public.grand_palace_honours.display_count+1;
+ insert into public.grand_palace_token_transfers(sender_id,recipient_id,honour,note)
+ values(v_user,p_recipient,p_honour,v_note);
+ return jsonb_build_object('sent',true,'honour',p_honour,'recipient',v_name);
+end $$;
+
+create or replace function public.set_grand_palace_theme(p_theme text default null)
+returns boolean language plpgsql security definer set search_path='' as $$
+declare v_user uuid:=auth.uid();
+begin
+ if v_user is null then raise exception 'Sign in to decorate your chamber.'; end if;
+ if p_theme is not null and not exists(
+   select 1 from public.grand_palace_theme_unlocks where user_id=v_user and theme_slug=p_theme)
+ then raise exception 'This theme has not been unlocked.'; end if;
+ update public.grand_palace_wallets set selected_theme=p_theme,updated_at=now()
+ where user_id=v_user;
+ if not found then raise exception 'Grand Palace wallet not ready.'; end if;
+ return true;
+end $$;
+
+revoke all on function public.get_grand_palace_hall() from public,anon;
+revoke all on function public.purchase_grand_palace_honour(text,integer) from public,anon;
+revoke all on function public.send_grand_palace_honour(uuid,text,text) from public,anon;
+revoke all on function public.set_grand_palace_theme(text) from public,anon;
+grant execute on function public.get_grand_palace_hall() to authenticated;
+grant execute on function public.purchase_grand_palace_honour(text,integer) to authenticated;
+grant execute on function public.send_grand_palace_honour(uuid,text,text) to authenticated;
+grant execute on function public.set_grand_palace_theme(text) to authenticated;
