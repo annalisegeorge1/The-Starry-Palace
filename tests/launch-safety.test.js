@@ -943,6 +943,12 @@ describe('Starry Palace launch safety',()=>{
     expect(html).toContain('Restore the Palace');
   });
 
+  it('never returns async load promises from React effects',()=>{
+    const live=read('src/liveRooms.jsx');
+    expect(live).not.toMatch(/useEffect\s*\(\s*load\s*,/);
+    expect((live.match(/useEffect\(\(\)=>\{load\(\)\},/g)||[]).length).toBeGreaterThanOrEqual(15);
+  });
+
   it('surfaces safe root diagnostics and lets auth/network failures degrade instead of blanking the Palace',()=>{
     const auth=read('src/auth.jsx');
     expect(main).toContain('palace-error-detail');
