@@ -1678,6 +1678,22 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.organizer-item-row');
   });
 
+  it('keeps Work settings from nulling required creator policies',()=>{
+    const data=read('src/palaceData.js');
+    const next=read('src/palace-next.css');
+    expect(live).toContain('name="comment_policy"');
+    expect(live).toContain('name="translation_policy"');
+    expect(live).toContain('name="download_policy"');
+    expect(live).toContain("f.get('comment_policy')||data.comment_policy||'moderated'");
+    expect(live).toContain("f.get('translation_policy')||data.translation_policy||'ask'");
+    expect(live).toContain("f.get('download_policy')||data.download_policy||'off'");
+    expect(data).toContain("comment_policy:['open','moderated','closed']");
+    expect(data).toContain("translation_policy:['yes','ask','no']");
+    expect(data).toContain("download_policy:['off','ask','credit']");
+    expect(data).toContain("if(valid.includes(patch[key]))allowed[key]=patch[key]");
+    expect(next).toContain('Work settings permissions · comments translations downloads');
+  });
+
   it('keeps the Writing Studio comfortable for long-form work',()=>{
     const polish=read('src/polish.css');
     const next=read('src/palace-next.css');
