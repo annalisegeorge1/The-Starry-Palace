@@ -315,7 +315,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
     overflow:visible;
   }
   .full-topbar-row{min-height:42px;overflow:visible}
-  .full-brand,.full-brand>a,.full-top-actions{min-width:0;overflow:visible}
   .full-top-actions{flex:0 0 auto}
   .nav-toggle,.brandmark,.top-icon-link,.write-action,.command-trigger{
     flex:0 0 auto;
@@ -1852,10 +1851,6 @@ img{max-width:100%}
   .settings-presets{grid-template-columns:1fr}
   .settings-presets button{min-height:88px}
 }
-
-
-/* Search — scoped discovery with quiet local history */
-.legacy-search-page{max-width:1180px;margin:0 auto;padding-bottom:4rem}
 .palace-search.restored{
   margin-top:.8rem;
   border-color:var(--palace-border);
@@ -2804,7 +2799,6 @@ img{max-width:100%}
   overflow-x:auto;
   scrollbar-width:none;
 }
-.archive-filter-pills::-webkit-scrollbar{display:none}
 .archive-filter-pills button{
   flex:0 0 auto;
   min-height:36px;
@@ -6777,9 +6771,6 @@ body{overflow-x:clip}
     min-width:0!important;
     height:46px!important;
     border-radius:14px!important;
-  }
-  .brandmark,.nav-toggle,.top-icon-link,.write-action,.command-trigger{
-    width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;
   }
   .write-action{padding:0 14px!important;width:auto!important}
   .top-room-context{max-width:150px}
