@@ -1,3 +1,4 @@
+import './grand-palace-expansion.css';
 import React,{useEffect,useState} from 'react';
 import{Link}from'react-router-dom';
 import{getCelestialVaultStatus,enterCelestialVault,claimCelestialBadgeGrandmaster,getGrandPalaceCommonRoom,postGrandPalaceCommonMessage,removeGrandPalaceCommonMessage}from'./grandPalaceData';
