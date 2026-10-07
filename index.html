@@ -62,9 +62,7 @@
       }
       function hasMounted(){
         var root=document.getElementById('root');
-        if(!root)return false;
-        if(root.querySelector('[data-palace-frame="ready"],.route-recovery,.route-loading'))return true;
-        return root.childElementCount>0&&((root.textContent||'').trim().length>2||root.getBoundingClientRect().height>48);
+        return !!(root&&root.querySelector('[data-palace-frame="ready"],.route-recovery,.route-loading'));
       }
       function retry(reason){
         if(retrying||hasMounted())return;

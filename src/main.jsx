@@ -168,7 +168,13 @@ const fullPalaceRooms=[
  ]}
 ];
 
-function Frame({children,privateArea=false}){
+const PalaceFrameContext=React.createContext(false);
+function Frame(props){
+ const insidePalaceFrame=React.useContext(PalaceFrameContext);
+ if(insidePalaceFrame)return <>{props.children}</>;
+ return <PalaceFrameContext.Provider value={true}><FrameShell {...props}/></PalaceFrameContext.Provider>;
+}
+function FrameShell({children,privateArea=false}){
  const {session}=useAuth();
  const [navOpen,setNavOpen]=useState(false);
  const [daylight,setDaylight]=useState(()=>localStorage.getItem('palace-theme')==='daylight');
@@ -317,6 +323,17 @@ function NavigationReset(){
  },[location.pathname,location.search]);
  return null;
 }
+function RouteStateReset(){
+ const location=useLocation();
+ React.useLayoutEffect(()=>{
+  const path=location.pathname;
+  const ownsReaderFocus=/^\/work\/[^/]+\/chapter\/[^/]+/.test(path);
+  const ownsWritingDesk=/^\/writing\/[^/]+/.test(path);
+  if(!ownsReaderFocus)document.body.classList.remove('reader-focus-mode');
+  if(!ownsWritingDesk)document.body.classList.remove('focus-editor','writing-desk-open');
+ },[location.pathname]);
+ return null;
+}
 function BlankScreenWatchdog(){
  const location=useLocation();
  React.useEffect(()=>{
@@ -409,7 +426,7 @@ function RouteGuard({children}){
  return <RouteErrorBoundary key={location.pathname+location.search}>{children}</RouteErrorBoundary>
 }
 
-function App(){return <AuthProvider><PalaceBuildFreshnessWatch/><NavigationReset/><BlankScreenWatchdog/><RouteGuard><Routes>
+function App(){return <AuthProvider><PalaceBuildFreshnessWatch/><NavigationReset/><RouteStateReset/><BlankScreenWatchdog/><Frame><RouteGuard><Routes>
  <Route path="/" element={<Home/>}/><Route path="/login" element={<Login/>}/><Route path="/auth/callback" element={<Callback/>}/>
  <Route path="/welcome" element={<ProtectedRoute><OnboardingLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
@@ -436,7 +453,7 @@ function App(){return <AuthProvider><PalaceBuildFreshnessWatch/><NavigationReset
  <Route path="/search" element={<SearchLive Frame={Frame}/>}/><Route path="/honour" element={<HonourLive Frame={Frame}/>}/><Route path="/council" element={<ProtectedRoute><CouncilLive Frame={Frame}/></ProtectedRoute>}/><Route path="/code" element={<CodeLive Frame={Frame}/>}/>
  <Route path="/member/:username" element={<MemberProfileLive Frame={Frame}/>}/>
  <Route path="*" element={<Frame><section className="lost-gates-page"><div className="lost-gates-orbit"><span>☾</span><i>✦</i></div><p className="eyebrow">BEYOND THE GATES</p><h1>You left palace grounds.</h1><p>The path thinned, the lamps disappeared, and somehow you wandered beyond the Palace walls.</p><div className="lost-gates-actions"><Link className="button" to="/">Return to the Palace</Link><Link to="/search">Search for a room →</Link></div></section></Frame>}/>
- </Routes></RouteGuard></AuthProvider>}
+ </Routes></RouteGuard></Frame></AuthProvider>}
 
 createRoot(document.getElementById('root')).render(<React.StrictMode><BrowserRouter><App/></BrowserRouter></React.StrictMode>);
 

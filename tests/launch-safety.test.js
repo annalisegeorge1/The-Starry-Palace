@@ -943,6 +943,20 @@ describe('Starry Palace launch safety',()=>{
     expect(html).toContain('Restore the Palace');
   });
 
+  it('keeps one persistent Palace shell across route transitions',()=>{
+    const main=read('src/main.jsx');
+    const auth=read('src/auth.jsx');
+    const html=read('index.html');
+    expect(main).toContain('const PalaceFrameContext=React.createContext(false)');
+    expect(main).toContain('function FrameShell({children,privateArea=false})');
+    expect(main).toContain('<Frame><RouteGuard><Routes>');
+    expect(main).toContain('<RouteStateReset/>');
+    expect(main).toContain("document.body.classList.remove('focus-editor','writing-desk-open')");
+    expect(auth).toContain('Session restoration timed out.');
+    expect(auth).toContain('}, 8000)');
+    expect(html).toContain("root&&root.querySelector('[data-palace-frame=\"ready\"],.route-recovery,.route-loading')");
+  });
+
   it('recovers blank routes non-destructively and keeps both Palace themes intentionally rich',()=>{
     const polish=read('src/polish.css');
     const nextCss=read('src/palace-next.css');
