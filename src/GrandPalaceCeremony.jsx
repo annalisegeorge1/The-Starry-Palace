@@ -1,6 +1,6 @@
 import React,{useEffect,useState} from 'react';
 import{Link}from'react-router-dom';
-import{getGrandPalaceCeremonyHall}from'./grandPalaceData';
+import{getGrandPalaceCeremonyHall}from'./ceremonyApi';
 import{loreForPalace}from'./grandPalaceLore';
 import{ceremonyStage}from'./grandPalaceCeremony';
 export default function GrandPalaceCeremony(){
