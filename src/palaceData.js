@@ -181,8 +181,14 @@ export async function getChamberSnapshot(userId){
  }
 }
 export async function getPublishedWorks(){const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,language,completion_status,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(username,display_name,avatar_url,title),work_tags(tags(id,name,category,status))').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(24);if(error)throw error;const rows=data||[];const marks=await getIdentityMarks(rows.map(x=>x.author_id));return rows.map(x=>({...x,profiles:withIdentity(x.profiles,x.author_id,marks)}))}
-export async function getMyWorks(userId){const{data,error}=await needClient().from('works').select('id,title,slug,summary,publication_status,completion_status,visibility,updated_at,chapters(id,title,position,status,word_count,scheduled_for,published_at)').eq('author_id',userId).order('updated_at',{ascending:false});if(error)throw error;return(data||[]).map(w=>({...w,chapters:(w.chapters||[]).sort((a,b)=>a.position-b.position)}))}
-export async function createDraft(userId,title){const clean=title.trim();if(!clean)throw new Error('Give your work a title first.');const slug=(clean.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,70)||'untitled')+'-'+Date.now().toString(36);const{data,error}=await needClient().from('works').insert({author_id:userId,title:clean,slug,publication_status:'draft',visibility:'private'}).select().single();if(error)throw error;return data}
+export async function getMyWorks(userId){const{data,error}=await needClient().from('works').select('id,title,slug,summary,work_type,publication_status,completion_status,visibility,updated_at,chapters(id,title,position,status,word_count,scheduled_for,published_at)').eq('author_id',userId).order('updated_at',{ascending:false});if(error)throw error;return(data||[]).map(w=>({...w,chapters:(w.chapters||[]).sort((a,b)=>a.position-b.position)}))}
+export async function createDraft(userId,title,options={}){
+ const clean=title.trim();if(!clean)throw new Error('Give your work a title first.');
+ const slug=(clean.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,70)||'untitled')+'-'+Date.now().toString(36);
+ const workType=['original','fanwork','poetry','essay','other'].includes(options.workType)?options.workType:'original';
+ const{data,error}=await needClient().from('works').insert({author_id:userId,title:clean,slug,work_type:workType,publication_status:'draft',visibility:'private'}).select().single();
+ if(error)throw error;return data
+}
 
 export async function getSettings(userId){
  const [privacy,notifications,exports,deletions,boundaries,forumMutes,profile,works,comics]=await Promise.all([
@@ -1014,6 +1020,7 @@ export async function saveWork(userId,workId,patch){
   constructive_criticism:!!patch.constructive_criticism,
   updated_at:new Date().toISOString()
  };
+ if(['original','fanwork','poetry','essay','other'].includes(patch.work_type))allowed.work_type=patch.work_type;
  const policyValues={
   comment_policy:['open','moderated','closed'],
   translation_policy:['yes','ask','no'],
