@@ -1,3 +1,4 @@
+import './grand-palace-emblems.css';
 import PalaceEmblem from './PalaceEmblem';
 import React,{useEffect,useState} from 'react';
 import{Link,useSearchParams}from'react-router-dom';
