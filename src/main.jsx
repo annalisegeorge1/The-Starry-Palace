@@ -7,6 +7,8 @@ import './style.css';
 import './polish.css';
 import './palace-next.css';
 import './neon-map.css';
+import './grand-palaces.css';
+import GrandPalaceHall from './GrandPalaceHall';
 import {
  ChamberLive,OnboardingLive,ReadingLive,ClubLive,WritingLive,SettingsLive,ActivityLive,LibraryLive,
  PalaceLifeLive,LettersLive,EventsLive,TreasuryLive,LostWorksLive,MemberProfileLive,SearchLive,
@@ -110,6 +112,7 @@ const rooms=[
   ['Palace Life','/palace-life','Clubs, Commons, Moonlight Chat and kindred stars.'],
   ['Events & Heritage','/events','Creative gatherings and carefully sourced heritage observances.'],
   ['Royal Treasury','/treasury','Achievements, gifts, court honours and your collection.'],
+  ['Grand Palaces','/grand-palaces','Ten Grand Palaces compete for quarterly honours and celestial prizes.'],
   ['Lost Works','/lost-works','A rights-conscious preservation archive for works at risk of being lost.']
 ];
 
@@ -142,7 +145,7 @@ const fullPalaceRooms=[
   ['Editor & drafts','/writing'],['Comic studio','/comics/studio'],['Co-writing','/writing?tab=collab'],['Comment review','/writing?tab=comments'],['Requests & permissions','/writing?tab=permissions']
  ]},
  {id:'life',icon:'♢',label:'Palace Life',path:'/palace-life',sections:[
-  ['Commons','/palace-life?room=commons'],['Clubs','/palace-life?room=clubs'],['Forum','/palace-life?room=forum'],['Moonlight Chat','/palace-life?room=moonlight'],['New Stars','/palace-life?room=stars'],['Introductions & highlights','/palace-life?room=highlights'],['Activities','/activity'],['Throne of Honour','/honour']
+  ['Grand Palace Hall','/grand-palaces'],['Commons','/palace-life?room=commons'],['Clubs','/palace-life?room=clubs'],['Forum','/palace-life?room=forum'],['Moonlight Chat','/palace-life?room=moonlight'],['New Stars','/palace-life?room=stars'],['Introductions & highlights','/palace-life?room=highlights'],['Activities','/activity'],['Throne of Honour','/honour']
  ]},
  {id:'events',icon:'✧',label:'Events & Heritage',path:'/events',sections:[
   ['Writing calendar','/events?tab=writing'],['Heritage calendar','/events?tab=heritage'],['My calendar','/events?tab=calendar'],['Event proposals','/events?tab=proposals'],['Member ballots','/events?tab=ballots']
@@ -491,6 +494,7 @@ function App(){return <AuthProvider><PalaceBuildFreshnessWatch/><NavigationReset
  <Route path="/palace-life" element={<ProtectedRoute><PalaceLifeLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/club/:slug" element={<ProtectedRoute><ClubLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/events" element={<EventsLive Frame={Frame}/>}/>
+ <Route path="/grand-palaces" element={<ProtectedRoute><GrandPalaceHall Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/treasury" element={<ProtectedRoute><TreasuryLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/treasury/catalogue" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><TreasuryCatalogueLazy Frame={Frame}/></React.Suspense></ProtectedRoute>}/>
  <Route path="/lost-works" element={<LostWorksLive Frame={Frame}/>}/>
