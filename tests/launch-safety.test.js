@@ -1354,6 +1354,24 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('COMIC CONSTELLATION');
   });
 
+  it('adds Word-like paragraph controls and manuscript-scoped keyboard shortcuts',()=>{
+    const polish=read('src/polish.css');
+    expect(live).toContain("exec('justifyLeft')");
+    expect(live).toContain("exec('justifyCenter')");
+    expect(live).toContain("exec('justifyRight')");
+    expect(live).toContain("exec('justifyFull')");
+    expect(live).toContain("exec('outdent')");
+    expect(live).toContain("exec('indent')");
+    expect(live).toContain("key==='b'");
+    expect(live).toContain("key==='i'");
+    expect(live).toContain("key==='u'");
+    expect(live).toContain("key==='f'");
+    expect(live).toContain('function openFindPanel()');
+    expect(live).toContain('ref={findPanelRef}');
+    expect(live).toContain('ref={findInputRef}');
+    expect(polish).toContain('.editor-layout-tools button');
+  });
+
   it('keeps the writer desk richer than a plain textarea',()=>{
     const polish=read('src/polish.css');
     expect(live).toContain("exec('undo')");

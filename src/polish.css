@@ -12921,6 +12921,19 @@ input:focus,textarea:focus,select:focus{
   font-size:.43rem!important;
 }
 
+.editor-layout-tools button{
+  min-width:32px!important;
+  padding-inline:.38rem!important;
+  font-variant-numeric:tabular-nums;
+}
+.editor-layout-tools button:nth-child(4){
+  letter-spacing:-.08em;
+}
+@media(max-width:760px){
+  .editor-shortcut-hint{display:none!important}
+  .editor-layout-tools button{min-width:36px!important}
+}
+
 /* The writing surface now feels like a page. */
 .legacy-find-replace,.legacy-spellcheck{
   background:rgba(22,18,49,.74)!important;
