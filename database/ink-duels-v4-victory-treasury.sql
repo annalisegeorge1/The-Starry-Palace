@@ -1,0 +1,38 @@
+-- Ink Duels v4 · Victory Treasury
+-- Applied to production on 2026-10-07.
+--
+-- Competitive gift rules
+-- ----------------------
+-- Every *qualified* Ink Duel victory mints one Palace gift for the unique winner.
+-- Ties, cancelled duels, zero-vote reveals and low-participation contests do not mint rewards.
+--
+-- Base qualification:
+--   1 vs 1   · 2 sealed entries + 3 external ballots
+--   Group    · 3 sealed entries + 4 ballots + 2 external ballots
+--   Open     · 3 sealed entries + 4 ballots + 2 external ballots
+--
+-- Silver:
+--   1 vs 1   · 7 external ballots
+--   Group    · 5 entries + 8 ballots + 4 external ballots
+--   Open     · 6 entries + 8 ballots + 4 external ballots
+--
+-- Gold:
+--   1 vs 1   · 15 external ballots
+--   Group    · 7 entries + 12 ballots + 6 external ballots
+--   Open     · 10 entries + 15 ballots + 8 external ballots
+--
+-- The current prize is the final-art Celestial Comet Quill, granted at
+-- Bronze, Silver or Gold according to the completed duel's competitive tier.
+-- Duplicate grants are prevented by gift_grant_ledger's source key.
+--
+-- Production objects added/changed:
+-- public.micro_duel_rewards
+-- private.settle_micro_duel_victories()
+-- private.sync_duel_achievements(uuid)
+-- public.get_micro_duel_record()
+-- public.get_micro_duels()
+-- public.cancel_micro_duel(uuid)
+--
+-- gift_grant_ledger source_type now includes 'ink_duel'.
+-- Winning achievements are now counted from qualified micro_duel_rewards,
+-- so badge progress and Treasury rewards share the same integrity rules.
