@@ -2997,3 +2997,76 @@ body.reader-focus-mode .reader-chapter-head{
   }
   .palace-passage-wander span{display:none}
 }
+
+
+/* Palace Life should feel like a live hallway, not a KPI dashboard. */
+.community-pulse-row.restored.social-pulse{
+  width:100%;
+  min-width:0;
+  display:flex!important;
+  grid-template-columns:none!important;
+  gap:.34rem!important;
+  overflow-x:auto;
+  overflow-y:hidden;
+  margin:.2rem 0 .75rem!important;
+  padding:.22rem .08rem .48rem!important;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.community-pulse-row.restored.social-pulse::-webkit-scrollbar{display:none}
+.community-pulse-row.restored.social-pulse>button{
+  flex:0 0 auto;
+  min-width:138px;
+  min-height:54px;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  grid-template-rows:auto auto;
+  gap:.03rem .42rem;
+  align-items:center;
+  padding:.44rem .58rem!important;
+  border:1px solid rgba(195,174,229,.1)!important;
+  border-radius:13px!important;
+  background:rgba(255,255,255,.012)!important;
+  box-shadow:none!important;
+  transform:none!important;
+}
+.community-pulse-row.restored.social-pulse>button:hover{
+  border-color:rgba(207,183,235,.2)!important;
+  background:rgba(110,87,174,.05)!important;
+  transform:none!important;
+}
+.community-pulse-row.restored.social-pulse strong{
+  grid-row:1/3;
+  min-width:30px;
+  color:#d8cee5;
+  font:600 1.02rem/1 Georgia,'Times New Roman',serif!important;
+}
+.community-pulse-row.restored.social-pulse span{
+  margin:0!important;
+  color:#c3bccd;
+  font-size:.56rem;
+  font-weight:700;
+}
+.community-pulse-row.restored.social-pulse small{
+  margin:0!important;
+  color:#746f7d;
+  font-size:.42rem;
+  white-space:nowrap;
+}
+.daylight .community-pulse-row.restored.social-pulse>button{
+  background:rgba(255,255,255,.55)!important;
+  border-color:rgba(96,77,142,.09)!important;
+}
+.daylight .community-pulse-row.restored.social-pulse strong{color:#4a4058}
+.daylight .community-pulse-row.restored.social-pulse span{color:#5b5366}
+.daylight .community-pulse-row.restored.social-pulse small{color:#837b8e}
+@media(max-width:620px){
+  .community-pulse-row.restored.social-pulse{
+    scroll-padding-inline:6px 18px;
+    padding-right:18px!important;
+  }
+  .community-pulse-row.restored.social-pulse>button{
+    min-width:128px;
+    min-height:50px;
+  }
+}
