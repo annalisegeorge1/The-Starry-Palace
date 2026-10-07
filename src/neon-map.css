@@ -1989,3 +1989,210 @@
   background:linear-gradient(110deg,#16bfd6 0%,#7855ef 50%,#d84bb7 100%)!important;
   box-shadow:0 7px 17px rgba(99,66,184,.15),0 0 14px rgba(0,190,214,.10)!important;
 }
+
+
+/* Commons composer structural reset · fieldset deck */
+.chic-composer-fields>.commons-compose-mode-deck{
+  grid-column:1/-1!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:0 0 .72rem!important;
+  border:0!important;
+  overflow:visible!important;
+}
+.chic-composer-fields>.commons-compose-mode-deck>legend{
+  display:block!important;
+  width:100%!important;
+  margin:0 0 .38rem!important;
+  padding:0!important;
+  color:#948eaa!important;
+  font-size:.52rem!important;
+  letter-spacing:.08em!important;
+  text-transform:uppercase!important;
+}
+.chic-composer-fields>.commons-compose-mode-deck>.commons-compose-modes{
+  display:grid!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:visible!important;
+  align-items:stretch!important;
+  justify-content:stretch!important;
+  box-sizing:border-box!important;
+}
+.chic-composer-fields>.commons-compose-mode-deck>.commons-compose-modes>button{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  min-height:40px!important;
+  margin:0!important;
+  padding:.48rem .5rem!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:.28rem!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  line-height:1.15!important;
+  text-align:center!important;
+  border-radius:11px!important;
+  box-sizing:border-box!important;
+}
+.chic-composer-fields>.commons-compose-mode-deck>.commons-compose-modes>button>span{
+  flex:0 0 auto!important;
+  margin:0!important;
+}
+.chic-composer-fields>.commons-compose-mode-deck>.salon-shuffle{
+  justify-self:start!important;
+  width:auto!important;
+  min-width:0!important;
+  max-width:100%!important;
+  min-height:38px!important;
+  margin:.48rem 0 0!important;
+  padding:.46rem .72rem!important;
+  border-radius:11px!important;
+  white-space:normal!important;
+  line-height:1.2!important;
+}
+.chic-composer-fields>.commons-compose-footer{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  align-items:center!important;
+  justify-content:stretch!important;
+  gap:.7rem 1rem!important;
+  box-sizing:border-box!important;
+}
+.chic-composer-fields>.commons-compose-footer>small{
+  display:block!important;
+  min-width:0!important;
+  max-width:none!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  line-height:1.45!important;
+}
+.chic-composer-fields>.commons-compose-footer>div{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:.45rem!important;
+  min-width:0!important;
+}
+@media(min-width:1121px){
+  .chic-composer-fields>.commons-compose-mode-deck>.commons-compose-modes{
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    gap:.48rem!important;
+  }
+  .chic-composer-fields>.commons-compose-mode-deck>.salon-shuffle{
+    justify-self:end!important;
+    min-width:210px!important;
+  }
+}
+@media(min-width:761px) and (max-width:1120px){
+  .chic-composer-fields>.commons-compose-mode-deck>.commons-compose-modes{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:.42rem!important;
+  }
+  .chic-composer-fields>.commons-compose-footer{
+    grid-template-columns:1fr!important;
+  }
+  .chic-composer-fields>.commons-compose-footer>div{
+    justify-content:flex-start!important;
+  }
+}
+@media(max-width:760px){
+  .chic-composer-fields>.commons-compose-mode-deck>.commons-compose-modes{
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    gap:.32rem!important;
+    padding:0 24px .2rem 0!important;
+    scroll-snap-type:x proximity!important;
+    scrollbar-width:none!important;
+    -webkit-overflow-scrolling:touch!important;
+    touch-action:pan-x!important;
+  }
+  .chic-composer-fields>.commons-compose-mode-deck>.commons-compose-modes::-webkit-scrollbar{display:none!important}
+  .chic-composer-fields>.commons-compose-mode-deck>.commons-compose-modes>button{
+    flex:0 0 auto!important;
+    width:auto!important;
+    min-width:max-content!important;
+    white-space:nowrap!important;
+    scroll-snap-align:start!important;
+  }
+  .chic-composer-fields>.commons-compose-mode-deck>.salon-shuffle{
+    width:100%!important;
+  }
+  .chic-composer-fields>.commons-compose-footer{
+    grid-template-columns:1fr!important;
+  }
+  .chic-composer-fields>.commons-compose-footer>div{
+    justify-content:flex-start!important;
+  }
+}
+
+/* Commons navigation: desktop is four stable equal tabs; narrower widths stack
+   rather than forcing the tabs off-screen. */
+.commons-lens.chic-feed-tabs{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  overflow:visible!important;
+}
+.commons-lens.chic-feed-tabs>.commons-view-buttons{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  gap:.25rem!important;
+  padding:.22rem!important;
+  box-sizing:border-box!important;
+  overflow:visible!important;
+}
+.commons-lens.chic-feed-tabs>.commons-view-buttons>button{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  min-height:42px!important;
+  padding:.42rem .3rem!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  line-height:1.15!important;
+}
+@media(min-width:1001px){
+  .commons-lens.chic-feed-tabs{
+    grid-template-columns:minmax(260px,.82fr) minmax(420px,1.18fr)!important;
+    gap:.65rem!important;
+  }
+}
+@media(min-width:761px) and (max-width:1000px){
+  .commons-lens.chic-feed-tabs{
+    grid-template-columns:1fr!important;
+    gap:.45rem!important;
+  }
+}
+@media(max-width:760px){
+  .commons-lens.chic-feed-tabs{
+    grid-template-columns:1fr!important;
+    gap:.4rem!important;
+  }
+  .commons-lens.chic-feed-tabs>.commons-view-buttons{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+
+.daylight .chic-composer-fields>.commons-compose-mode-deck>legend{color:#6a5b74!important}
