@@ -53,7 +53,7 @@ it('clears empty duplicate filters without treating different tiers as duplicate
  expect(screen.getByRole('heading',{name:'Moon cup'})).toBeTruthy();
 });
 
-it('paginates all 100 families and resets the page when searching',async()=>{
+it('paginates all 108 families and resets the page when searching',async()=>{
  window.history.replaceState(null,'','/?collection=expanded');
  render(<Treasury Frame={({children})=><main>{children}</main>}/>);
  expect(screen.getAllByRole('button',{name:/Enlarge .* artwork/})).toHaveLength(24);
