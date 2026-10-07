@@ -83,8 +83,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain("palace-preload-reload");
   });
 
-  it('keeps the old room warmup helper unmounted after moving core rooms into the main app',()=>{
-    expect(main).toContain('function RoomBundleWarmup()');
+  it('removes the obsolete room warmup helper after moving core rooms into the main app',()=>{
+    expect(main).not.toContain('function RoomBundleWarmup()');
     expect(main).not.toContain('<RoomBundleWarmup/>');
     expect(main).toContain("from './liveRooms'");
   });
@@ -943,6 +943,15 @@ describe('Starry Palace launch safety',()=>{
     expect(html).toContain('Restore the Palace');
   });
 
+  it('keeps retired shell scaffolding out of the production entrypoint',()=>{
+    expect(main).not.toContain('function LegacyChamber(');
+    expect(main).not.toContain('function Room({title');
+    expect(main).not.toContain('function RoomBundleWarmup(');
+    expect(main).not.toContain('const lazyRoom=');
+    expect(main).not.toContain('function roomCssMatches(');
+    expect(main).not.toContain('const profileInitial=');
+  });
+
   it('keeps the root shell visible when browser storage or React itself fails',()=>{
     const main=read('src/main.jsx');
     const html=read('index.html');
@@ -960,7 +969,7 @@ describe('Starry Palace launch safety',()=>{
     const auth=read('src/auth.jsx');
     const html=read('index.html');
     expect(main).toContain('const PalaceFrameContext=React.createContext(false)');
-    expect(main).toContain('function FrameShell({children,privateArea=false})');
+    expect(main).toContain('function FrameShell({children})');
     expect(main).toContain('<Frame><RouteGuard><Routes>');
     expect(main).toContain('<RouteStateReset/>');
     expect(main).toContain("document.body.classList.remove('focus-editor','writing-desk-open')");
@@ -1629,18 +1638,16 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('.club-door-queue');
   });
 
-  it('self-heals stale lazy-room styling and protects mobile top controls',()=>{
+  it('keeps recoverable lazy loading for the heavy Treasury route and protects mobile top controls',()=>{
     const polish=read('src/polish.css');
-    expect(main).toContain('roomCssMatches');
-    expect(main).toContain('palace-room-css-sync-reload');
-    expect(main).toContain('palace-room-css-nonblocking');
-    expect(main).toContain("Palace room '+name+' is unavailable in this build.");
+    expect(main).not.toContain('roomCssMatches');
+    expect(main).not.toContain('palace-room-css-sync-reload');
+    expect(main).not.toContain('function RoomBundleWarmup()');
     expect(main).toContain('ROOM_IMPORT_TIMEOUT_MS=12000');
     expect(main).toContain("new Error('Palace room load timeout')");
     expect(main).toContain("schedulePalaceReload('palace-script-error-reload'");
+    expect(main).toContain("const TreasuryCatalogueLazy=React.lazy(()=>importWithRecovery(()=>import('./Treasury')))");
     expect(main).not.toContain('return new Promise(()=>{})');
-    expect(live).toContain('PALACE_ROOM_CSS_VERSION=2026100611');
-    expect(polish).toContain('--palace-room-css-version:2026100611');
     expect(polish).toContain('padding-top:calc(10px + env(safe-area-inset-top))');
     expect(polish).toContain('min-height:calc(62px + env(safe-area-inset-top))');
     expect(polish).toContain('scroll-padding-top:calc(64px + env(safe-area-inset-top))');
