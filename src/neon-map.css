@@ -1566,3 +1566,186 @@
   border-color:rgba(108,76,145,.12)!important;
   box-shadow:0 12px 30px rgba(78,52,101,.05),0 0 22px rgba(0,190,214,.025)!important;
 }
+
+
+/* Dark Events + Palace Life refinement · screenshot QA */
+
+/* EVENTS & HERITAGE — dark mode gets its own cyan / violet / pink pulse. */
+.nightfall .events-pulse>span{
+  position:relative;
+  overflow:hidden;
+  border-color:rgba(102,196,232,.14)!important;
+  background:
+    radial-gradient(circle at 92% 12%,rgba(81,219,238,.08),transparent 7rem),
+    linear-gradient(145deg,rgba(31,28,64,.82),rgba(20,18,45,.78))!important;
+  box-shadow:0 10px 24px rgba(5,6,22,.10)!important;
+}
+.nightfall .events-pulse>span:nth-child(2){
+  border-color:rgba(170,125,238,.17)!important;
+  background:
+    radial-gradient(circle at 92% 12%,rgba(160,110,239,.10),transparent 7rem),
+    linear-gradient(145deg,rgba(39,29,72,.84),rgba(21,18,46,.79))!important;
+}
+.nightfall .events-pulse>span:nth-child(3){
+  border-color:rgba(227,111,192,.15)!important;
+  background:
+    radial-gradient(circle at 92% 12%,rgba(225,86,184,.09),transparent 7rem),
+    linear-gradient(145deg,rgba(49,28,66,.80),rgba(21,18,45,.79))!important;
+}
+.nightfall .events-pulse>span:nth-child(4){
+  border-color:rgba(95,152,239,.15)!important;
+  background:
+    radial-gradient(circle at 92% 12%,rgba(79,133,236,.10),transparent 7rem),
+    linear-gradient(145deg,rgba(28,36,72,.82),rgba(19,18,44,.79))!important;
+}
+.nightfall .events-pulse>span strong{
+  color:#f3effc!important;
+  text-shadow:0 0 10px rgba(159,128,230,.12)!important;
+}
+.nightfall .events-pulse>span small{
+  color:#aaa3ba!important;
+}
+
+.nightfall .chic-events-tabs{
+  border-color:rgba(86,215,237,.13)!important;
+  background:
+    radial-gradient(circle at 5% 50%,rgba(53,210,233,.055),transparent 12rem),
+    radial-gradient(circle at 95% 50%,rgba(222,76,183,.05),transparent 12rem),
+    rgba(22,20,43,.82)!important;
+  box-shadow:0 9px 24px rgba(5,5,19,.10)!important;
+}
+.nightfall .chic-events-tabs button{
+  color:#aaa6b7!important;
+  border-color:rgba(126,110,170,.08)!important;
+  background:transparent!important;
+}
+.nightfall .chic-events-tabs button:hover:not(.active){
+  color:#ece8f5!important;
+  border-color:rgba(81,205,230,.18)!important;
+  background:
+    linear-gradient(110deg,rgba(51,203,229,.075),rgba(129,81,214,.075),rgba(219,73,182,.055))!important;
+}
+.nightfall .chic-events-tabs button.active{
+  color:#fff!important;
+  border-color:rgba(91,222,242,.30)!important;
+  background:
+    linear-gradient(110deg,rgba(26,202,226,.34),rgba(121,78,218,.36) 52%,rgba(216,70,182,.26))!important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.035),
+    0 0 13px rgba(55,205,229,.10),
+    0 0 21px rgba(212,67,178,.065)!important;
+}
+
+.nightfall .ballot-room>.section-heading{
+  padding:.6rem 0 .85rem!important;
+  border-bottom:1px solid rgba(103,187,224,.10);
+}
+.nightfall .ballot-room>.section-heading .eyebrow{
+  color:#a8a0e8!important;
+}
+.nightfall .ballot-room>.section-heading h2{
+  color:#f1edf8!important;
+  text-shadow:0 0 18px rgba(145,108,229,.08);
+}
+.nightfall .ballot-room>.section-heading p{
+  color:#aaa4ba!important;
+}
+.nightfall .ballot-room>.life-empty.large{
+  position:relative;
+  overflow:hidden;
+  min-height:180px!important;
+  border:1px solid rgba(90,197,229,.14)!important;
+  border-radius:18px!important;
+  background:
+    radial-gradient(circle at 12% 18%,rgba(44,203,229,.07),transparent 14rem),
+    radial-gradient(circle at 88% 78%,rgba(220,71,183,.06),transparent 16rem),
+    linear-gradient(145deg,rgba(31,27,64,.78),rgba(18,17,42,.84))!important;
+  box-shadow:0 14px 34px rgba(4,5,18,.11),0 0 20px rgba(79,190,224,.025)!important;
+}
+.nightfall .ballot-room>.life-empty.large::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(90deg,rgba(57,214,236,.14),rgba(132,82,220,.12),rgba(223,74,184,.11));
+  -webkit-mask:linear-gradient(#000 0 0) top/100% 1px no-repeat;
+  mask:linear-gradient(#000 0 0) top/100% 1px no-repeat;
+}
+.nightfall .ballot-room>.life-empty.large>span{
+  color:#a8c9f0!important;
+  text-shadow:0 0 15px rgba(82,209,235,.20),0 0 24px rgba(180,93,224,.10)!important;
+}
+.nightfall .ballot-room>.life-empty.large h3{
+  color:#f0ecf7!important;
+}
+
+/* PALACE LIFE — dark social room picks up a cool lilac / blue identity. */
+.nightfall .legacy-life-page .life-tabs.restored{
+  border-color:rgba(105,129,235,.15)!important;
+  background:
+    radial-gradient(circle at 6% 50%,rgba(84,115,231,.07),transparent 12rem),
+    radial-gradient(circle at 94% 50%,rgba(185,101,231,.05),transparent 12rem),
+    rgba(20,19,43,.82)!important;
+  box-shadow:0 10px 26px rgba(5,5,18,.10)!important;
+}
+.nightfall .legacy-life-page .life-tabs.restored button,
+.nightfall .legacy-life-page .life-tabs.restored a{
+  color:#aaa6b8!important;
+  border-color:rgba(108,116,181,.10)!important;
+  background:rgba(255,255,255,.012)!important;
+}
+.nightfall .legacy-life-page .life-tabs.restored button:hover,
+.nightfall .legacy-life-page .life-tabs.restored a:hover{
+  color:#f0ecf8!important;
+  border-color:rgba(112,137,234,.20)!important;
+  background:
+    linear-gradient(110deg,rgba(72,105,219,.10),rgba(127,83,209,.09),rgba(193,91,213,.06))!important;
+}
+.nightfall .legacy-life-page .life-tabs.restored button.active,
+.nightfall .legacy-life-page .life-tabs.restored a.active{
+  color:#fff!important;
+  border-color:rgba(125,145,242,.32)!important;
+  background:
+    linear-gradient(110deg,rgba(70,103,224,.34),rgba(120,77,218,.36) 55%,rgba(181,87,219,.27))!important;
+  box-shadow:0 0 13px rgba(89,116,232,.11),0 0 21px rgba(180,88,219,.07)!important;
+}
+.nightfall .legacy-life-page .life-tabs.restored .life-wander{
+  color:#e9e2f7!important;
+  border-color:rgba(163,123,231,.20)!important;
+  background:
+    linear-gradient(110deg,rgba(99,79,190,.18),rgba(161,88,206,.12))!important;
+}
+
+.nightfall .legacy-life-page .palace-social-column{
+  border-color:rgba(109,130,232,.14)!important;
+  background:
+    radial-gradient(circle at 5% 2%,rgba(81,112,225,.055),transparent 15rem),
+    radial-gradient(circle at 96% 98%,rgba(188,89,218,.045),transparent 16rem),
+    linear-gradient(145deg,rgba(19,22,48,.92),rgba(14,17,38,.93))!important;
+  box-shadow:
+    0 18px 48px rgba(6,5,22,.12),
+    inset 0 1px 0 rgba(135,148,238,.025),
+    0 0 22px rgba(86,109,227,.025)!important;
+}
+.nightfall .legacy-life-page .chic-feed-tabs{
+  border-bottom-color:rgba(112,128,226,.13)!important;
+  background:
+    radial-gradient(circle at 5% 50%,rgba(76,108,224,.045),transparent 10rem),
+    rgba(20,21,48,.90)!important;
+}
+.nightfall .legacy-life-page .chic-feed-tabs .commons-view-buttons button.active::after{
+  background:linear-gradient(90deg,#6382ee,#a16ce7,#d46ec2)!important;
+  box-shadow:0 0 11px rgba(102,130,238,.24),0 0 18px rgba(205,105,193,.10)!important;
+}
+.nightfall .legacy-life-page .chic-composer{
+  background:
+    radial-gradient(circle at 3% 8%,rgba(81,113,224,.065),transparent 10rem),
+    radial-gradient(circle at 97% 92%,rgba(193,91,218,.045),transparent 12rem),
+    linear-gradient(145deg,rgba(28,29,64,.42),rgba(17,18,42,.38))!important;
+}
+.nightfall .legacy-life-page .chic-rail-card{
+  border-color:rgba(112,130,229,.13)!important;
+  background:
+    radial-gradient(circle at 90% 5%,rgba(174,91,218,.05),transparent 11rem),
+    linear-gradient(145deg,rgba(31,29,69,.66),rgba(18,18,43,.80))!important;
+}
