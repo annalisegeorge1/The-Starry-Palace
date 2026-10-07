@@ -849,9 +849,10 @@ describe('Starry Palace launch safety',()=>{
     expect(next).toContain('z-index:16000!important');
   });
 
-  it('keeps Ink Duels multi-format blind and participation-focused',()=>{
+  it('keeps Ink Duels multi-format blind competitive and Treasury-linked',()=>{
     const data=read('src/palaceData.js');
     const duelMigration=read('database/ink-duels-v3.sql');
+    const rewards=read('database/ink-duels-v4-victory-treasury.sql');
     const next=read('src/palace-next.css');
     const badges=read('src/badges.json');
     expect(data).toContain("rpc('get_micro_duels')");
@@ -862,6 +863,8 @@ describe('Starry Palace launch safety',()=>{
     expect(data).toContain("rpc('respond_micro_duel_invitation'");
     expect(data).toContain("rpc('start_micro_duel'");
     expect(live).toContain('INK DUELS · CREATIVE ARENA');
+    expect(live).toContain('VICTORY TREASURY');
+    expect(live).toContain('Win a real Palace gift');
     expect(live).toContain('1 vs 1');
     expect(live).toContain('Court Duel');
     expect(live).toContain('Haiku');
@@ -870,13 +873,17 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('Impact');
     expect(live).toContain('Atmosphere');
     expect(live).toContain('Originality');
-    expect(live).toContain('Crowned in Ink ✦');
+    expect(live).toContain('Crowned in Ink ✦ · Treasure awarded');
+    expect(live).toContain('PalaceGift gift={duel.reward.gift}');
     expect(duelMigration).toContain('micro_duel_participants');
     expect(duelMigration).toContain('micro_duel_marks');
     expect(duelMigration).toContain('duel-art');
+    expect(rewards).toContain('Every *qualified* Ink Duel victory mints one Palace gift');
+    expect(rewards).toContain('Celestial Comet Quill');
+    expect(rewards).toContain('micro_duel_rewards');
     expect(badges).toContain('First Bell Scribe');
     expect(badges).toContain('Court of Eight');
-    expect(next).toContain('Ink Duels v3 · multi-form competitive arena');
+    expect(next).toContain('Ink Duels v4 · victory treasury and competitive stakes');
   });
 
   it('keeps chapter praise unified with Heart Star Moon Crown',()=>{
