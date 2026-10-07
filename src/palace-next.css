@@ -5376,3 +5376,65 @@ body.writing-desk-open.daylight .chic-editor-form>.chic-editor-toolbar,
   background:rgba(255,255,255,.58);
   border-color:rgba(96,77,142,.08);
 }
+
+
+/* Work settings permissions · comments translations downloads */
+.work-permission-settings{
+  display:grid;
+  gap:.7rem;
+  margin:.25rem 0 .2rem;
+  padding:.8rem;
+  border:1px solid rgba(201,178,232,.10);
+  border-radius:16px;
+  background:
+    radial-gradient(circle at 6% 0%,rgba(126,91,190,.07),transparent 11rem),
+    rgba(255,255,255,.012);
+}
+.work-permission-settings>header{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:.7rem;
+}
+.work-permission-settings>header h3{
+  margin:.08rem 0 0;
+  color:#e7deef;
+  font:600 .82rem Georgia,'Times New Roman',serif;
+}
+.work-permission-settings>header>small{
+  max-width:190px;
+  color:#837b8e;
+  font-size:.45rem;
+  line-height:1.35;
+  text-align:right;
+}
+.work-permission-settings .settings-grid{
+  margin:0!important;
+}
+.work-permission-settings .settings-grid label{
+  display:grid;
+  gap:.25rem;
+}
+.work-permission-settings .settings-grid label>small{
+  color:#7f7789;
+  font-size:.44rem;
+  line-height:1.4;
+}
+.work-permission-settings select{
+  min-height:40px;
+}
+.daylight .work-permission-settings{
+  background:rgba(255,255,255,.58);
+  border-color:rgba(96,77,142,.10);
+}
+.daylight .work-permission-settings>header h3{color:#41364b}
+@media(max-width:700px){
+  .work-permission-settings>header{
+    display:grid;
+    align-items:start;
+  }
+  .work-permission-settings>header>small{
+    max-width:none;
+    text-align:left;
+  }
+}
