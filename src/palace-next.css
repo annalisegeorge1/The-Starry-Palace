@@ -2810,3 +2810,47 @@ body.reader-focus-mode .reader-chapter-head{
   .writer-compact-chapter-nav select{min-width:0;width:100%}
   .writer-rail-toggle{flex:1 1 auto}
 }
+
+
+/* Commons composer mode rail — never clip the final action. */
+.commons-compose-modes{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  justify-content:flex-start!important;
+  align-items:center!important;
+  gap:.38rem!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  padding:.12rem max(16px,env(safe-area-inset-right)) .5rem max(2px,env(safe-area-inset-left))!important;
+  margin:0 0 .55rem!important;
+  box-sizing:border-box!important;
+  scrollbar-width:none!important;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-inline:contain;
+  scroll-padding-inline:8px 24px;
+  touch-action:pan-x pan-y;
+}
+.commons-compose-modes::-webkit-scrollbar{display:none!important}
+.commons-compose-modes>button{
+  flex:0 0 auto!important;
+  width:auto!important;
+  max-width:none!important;
+  white-space:nowrap!important;
+  scroll-snap-align:start;
+}
+.commons-compose-modes .salon-shuffle{
+  flex:0 0 auto!important;
+  margin-left:0!important;
+  margin-right:2px!important;
+}
+@media(max-width:760px){
+  .commons-compose-modes{
+    gap:.32rem!important;
+    padding-right:max(24px,env(safe-area-inset-right))!important;
+    cursor:grab;
+  }
+  .commons-compose-modes:active{cursor:grabbing}
+}
