@@ -1,3 +1,4 @@
+import PalaceEmblem from './PalaceEmblem';
 import React,{useEffect,useState} from 'react';
 import{Link}from'react-router-dom';
 import{getGrandPalaceCeremonyHall}from'./ceremonyApi';
@@ -11,7 +12,7 @@ function LegacyStandard({court,large=false}){
  return <div className={'legacy-standard '+(large?'large ':'')+'level-'+stageIndex} style={{'--legacy-accent':lore.colour,'--legacy-deep':lore.secondary}} aria-label={court.name+' · '+stage.name+' · '+court.victories+' victories'}>
    <div className="legacy-standard-inner">
      <span className="legacy-standard-stars" aria-hidden="true">{stageIndex>=1?'✦  ·  ✧':'·  ✧  ·'}</span>
-     <span className="legacy-standard-symbol" aria-hidden="true">{lore.crest}</span>
+     <span className="legacy-standard-symbol"><PalaceEmblem palace={court} size={large?132:67} decorative/></span>
      <span className="legacy-standard-crest-label">{stageIndex>=3?'♛ ':''}{stage.name}</span>
      <div className="legacy-standard-victories" aria-label={court.victories+' past quarterly victories'}>
        {ceremonyOrnaments(court.victories).map(star=><span aria-hidden="true" key={star.id}>{star.glyph}</span>)}
