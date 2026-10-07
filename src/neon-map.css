@@ -467,3 +467,123 @@
   color:#321e48!important;
   font-weight:700!important;
 }
+
+
+/* Screenshot pass · stronger sidebar electricity + heritage card definition */
+
+/* Desktop sidebar: keep each room unmistakably electric in Daylight. */
+.daylight .full-nav-room>a[href="/chamber"],
+.daylight .full-nav-room>a[href="/reading"],
+.daylight .full-nav-room>a[href="/library"],
+.daylight .full-nav-room>a[href="/writing"],
+.daylight .full-nav-room>a[href="/palace-life"],
+.daylight .full-nav-room>a[href="/events"],
+.daylight .full-nav-room>a[href="/treasury"],
+.daylight .full-nav-room>a[href="/settings"]{
+  border-color:color-mix(in srgb,var(--room-neon) 42%,transparent)!important;
+  background:
+    radial-gradient(circle at 8% 50%,color-mix(in srgb,var(--room-neon) 18%,transparent),transparent 36%),
+    linear-gradient(90deg,color-mix(in srgb,var(--room-neon) 19%,white 18%),rgba(255,255,255,.30) 72%,transparent)!important;
+  box-shadow:
+    inset 2px 0 0 color-mix(in srgb,var(--room-neon) 56%,transparent),
+    0 0 14px color-mix(in srgb,var(--room-neon) 11%,transparent)!important;
+}
+.daylight .full-nav-room>a[href="/chamber"]>span,
+.daylight .full-nav-room>a[href="/reading"]>span,
+.daylight .full-nav-room>a[href="/library"]>span,
+.daylight .full-nav-room>a[href="/writing"]>span,
+.daylight .full-nav-room>a[href="/palace-life"]>span,
+.daylight .full-nav-room>a[href="/events"]>span,
+.daylight .full-nav-room>a[href="/treasury"]>span,
+.daylight .full-nav-room>a[href="/settings"]>span{
+  color:color-mix(in srgb,var(--room-neon) 72%,#25192f)!important;
+  font-weight:760!important;
+  letter-spacing:.005em;
+  text-shadow:
+    0 0 7px color-mix(in srgb,var(--room-neon) 18%,transparent),
+    0 0 14px color-mix(in srgb,var(--room-neon) 8%,transparent)!important;
+}
+.daylight .full-nav-room>a[aria-current="page"]{
+  background:
+    radial-gradient(circle at 8% 50%,color-mix(in srgb,var(--room-neon) 28%,transparent),transparent 40%),
+    linear-gradient(90deg,color-mix(in srgb,var(--room-neon) 31%,white 58%),color-mix(in srgb,var(--room-neon) 12%,white 54%) 74%,rgba(255,255,255,.28))!important;
+  border-color:color-mix(in srgb,var(--room-neon) 70%,transparent)!important;
+  box-shadow:
+    inset 4px 0 0 color-mix(in srgb,var(--room-neon) 94%,white 6%),
+    0 0 15px color-mix(in srgb,var(--room-neon) 18%,transparent),
+    0 0 31px color-mix(in srgb,var(--room-neon) 10%,transparent)!important;
+}
+.daylight .full-subnav a{
+  color:#5f556e!important;
+}
+.daylight .full-subnav a.active{
+  color:#3e2854!important;
+  font-weight:700!important;
+}
+
+/* Heritage cards: keep the paper look, but give each class a luminous spine and date tile. */
+.heritage-card{--heritage-card-neon:#8a6cff}
+.heritage-card.heritage-type-festival{--heritage-card-neon:#ff4fc3}
+.heritage-card.heritage-type-heritage{--heritage-card-neon:#24d9e5}
+.heritage-card.heritage-type-history{--heritage-card-neon:#8c63ff}
+.heritage-card.heritage-type-language{--heritage-card-neon:#2bb9ff}
+.heritage-card.heritage-type-awareness{--heritage-card-neon:#21c98c}
+.heritage-card.heritage-type-commemoration{--heritage-card-neon:#f27b4f}
+.daylight .heritage-card{
+  position:relative;
+  border-left:3px solid color-mix(in srgb,var(--heritage-card-neon) 72%,transparent)!important;
+  box-shadow:
+    inset 5px 0 20px color-mix(in srgb,var(--heritage-card-neon) 7%,transparent),
+    0 12px 28px rgba(72,49,91,.06),
+    0 0 16px color-mix(in srgb,var(--heritage-card-neon) 5%,transparent)!important;
+}
+.daylight .heritage-card .heritage-date{
+  border-color:color-mix(in srgb,var(--heritage-card-neon) 28%,rgba(96,77,142,.12))!important;
+  background:
+    radial-gradient(circle at 20% 12%,color-mix(in srgb,var(--heritage-card-neon) 17%,transparent),transparent 54%),
+    linear-gradient(180deg,rgba(255,255,255,.88),rgba(246,240,250,.84))!important;
+  box-shadow:0 0 13px color-mix(in srgb,var(--heritage-card-neon) 7%,transparent)!important;
+}
+.daylight .heritage-card .heritage-month{
+  color:color-mix(in srgb,var(--heritage-card-neon) 72%,#3c2d4b)!important;
+  font-weight:800!important;
+}
+.daylight .heritage-card .heritage-date strong{
+  color:#30253d!important;
+}
+.daylight .heritage-card>div:nth-child(2)>small{
+  color:#75677f!important;
+  font-weight:700!important;
+}
+.daylight .heritage-card h2{color:#24182f!important}
+.daylight .heritage-card .heritage-context,
+.daylight .heritage-card blockquote{
+  color:#5b5066!important;
+}
+
+/* Preserve the LGBTQ prism, but stop pale copy from disappearing into it. */
+.daylight .heritage-card.heritage-prism p,
+.daylight .heritage-card.heritage-prism .heritage-context,
+.daylight .heritage-card.heritage-prism blockquote{
+  color:#574862!important;
+}
+.daylight .heritage-card.heritage-prism .heritage-month{
+  color:#8c2f91!important;
+}
+
+/* A few stronger neon anchors across large desktop surfaces. */
+.daylight .legacy-home-tabs a.active:after,
+.daylight .profile-tabs a.active:after{
+  background:linear-gradient(90deg,#00cfe5,#7b48ff,#df34b8)!important;
+  box-shadow:0 0 10px rgba(0,199,224,.20),0 0 17px rgba(218,49,181,.10)!important;
+}
+.daylight .chic-reading-intro,
+.daylight .legacy-home-hero,
+.daylight .life-hero,
+.daylight .treasury-hero{
+  border-color:rgba(0,174,200,.16)!important;
+  box-shadow:
+    0 18px 40px rgba(77,54,98,.06),
+    0 0 22px rgba(0,194,218,.035),
+    0 0 30px rgba(218,49,181,.025)!important;
+}
