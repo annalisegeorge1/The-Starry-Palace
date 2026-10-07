@@ -16,11 +16,15 @@ import {
 
 const chunkErrorPattern=/dynamically imported module|importing a module script failed|failed to fetch|chunkloaderror|loading chunk|room load timeout|networkerror/i;
 const ROOM_IMPORT_TIMEOUT_MS=12000;
+function safeSessionGet(key){try{return window.sessionStorage?.getItem(key)??null}catch{return null}}
+function safeSessionSet(key,value){try{window.sessionStorage?.setItem(key,String(value));return true}catch{return false}}
+function safeLocalGet(key){try{return window.localStorage?.getItem(key)??null}catch{return null}}
+function safeLocalSet(key,value){try{window.localStorage?.setItem(key,String(value));return true}catch{return false}}
 function schedulePalaceReload(key,delay=40){
  if(typeof window==='undefined')return false;
- const last=Number(sessionStorage.getItem(key)||0);
+ const last=Number(safeSessionGet(key)||0);
  if(Date.now()-last<=15000)return false;
- sessionStorage.setItem(key,String(Date.now()));
+ safeSessionSet(key,Date.now());
  window.setTimeout(()=>window.location.reload(),delay);
  return true;
 }
@@ -58,9 +62,9 @@ function roomCssMatches(mod){
  const cssVersion=Number(getComputedStyle(document.documentElement).getPropertyValue('--palace-room-css-version').trim()||0);
  if(cssVersion===Number(mod.PALACE_ROOM_CSS_VERSION))return true;
  const key='palace-room-css-sync-reload';
- const last=Number(sessionStorage.getItem(key)||0);
+ const last=Number(safeSessionGet(key)||0);
  if(Date.now()-last>12000){
-  sessionStorage.setItem(key,String(Date.now()));
+  safeSessionSet(key,Date.now());
   window.setTimeout(()=>window.location.reload(),80);
  }
  // palace-room-css-nonblocking: never strand a route on a permanently pending lazy promise.
@@ -88,9 +92,9 @@ function PalaceBuildFreshnessWatch(){
    if(document.visibilityState==='hidden')return;
    const focused=document.activeElement;
    if(focused&&(focused.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(focused.tagName)))return;
-   const last=Number(sessionStorage.getItem('palace-build-last-check')||0);
+   const last=Number(safeSessionGet('palace-build-last-check')||0);
    if(Date.now()-last<20000)return;
-   sessionStorage.setItem('palace-build-last-check',String(Date.now()));
+   safeSessionSet('palace-build-last-check',Date.now());
    const current=loadedPalaceAssetPath();const newest=await newestPalaceAssetPath();
    if(!alive||!current||!newest)return;
    const currentPath=new URL(current,window.location.origin).pathname;
@@ -177,20 +181,20 @@ function Frame(props){
 function FrameShell({children,privateArea=false}){
  const {session}=useAuth();
  const [navOpen,setNavOpen]=useState(false);
- const [daylight,setDaylight]=useState(()=>localStorage.getItem('palace-theme')==='daylight');
+ const [daylight,setDaylight]=useState(()=>safeLocalGet('palace-theme')==='daylight');
  const [search,setSearch]=useState('');
  const [commandOpen,setCommandOpen]=useState(false);
  const [mobileMoreOpen,setMobileMoreOpen]=useState(false);
  const [commandQuery,setCommandQuery]=useState('');
  const [commandIndex,setCommandIndex]=useState(0);
- const [recentPalaceRoutes,setRecentPalaceRoutes]=useState(()=>{try{const rows=JSON.parse(localStorage.getItem('palace-recent-routes')||'[]');return Array.isArray(rows)?rows.slice(0,5):[]}catch{return[]}});
+ const [recentPalaceRoutes,setRecentPalaceRoutes]=useState(()=>{try{const rows=JSON.parse(safeLocalGet('palace-recent-routes')||'[]');return Array.isArray(rows)?rows.slice(0,5):[]}catch{return[]}});
  const [shellProfile,setShellProfile]=useState(null);
  const [letterBadge,setLetterBadge]=useState(0);
  const [activityBadge,setActivityBadge]=useState(0);
  const location=useLocation();const navigate=useNavigate();
  React.useEffect(()=>setNavOpen(false),[location.pathname]);
  React.useEffect(()=>{setCommandOpen(false);setMobileMoreOpen(false);setCommandQuery('');setCommandIndex(0)},[location.pathname,location.search]);
- React.useEffect(()=>localStorage.setItem('palace-theme',daylight?'daylight':'night'),[daylight]);
+ React.useEffect(()=>{safeLocalSet('palace-theme',daylight?'daylight':'night')},[daylight]);
  React.useEffect(()=>{const onKey=e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();setCommandOpen(v=>!v)}else if(e.key==='Escape'){setCommandOpen(false);setMobileMoreOpen(false)}};window.addEventListener('keydown',onKey);return()=>window.removeEventListener('keydown',onKey)},[]);
  React.useEffect(()=>{if(!(navOpen||mobileMoreOpen||commandOpen))return;const previous=document.body.style.overflow;document.body.style.overflow='hidden';return()=>{document.body.style.overflow=previous}},[navOpen,mobileMoreOpen,commandOpen]);
  React.useEffect(()=>{let alive=true;if(!session){setShellProfile(null);setLetterBadge(0);setActivityBadge(0);return;}Promise.all([supabase.from('profiles').select('username,display_name,title,avatar_url,cover_url').eq('id',session.user.id).maybeSingle(),supabase.from('message_requests').select('id',{count:'exact',head:true}).eq('recipient_id',session.user.id).eq('status','pending'),supabase.from('notifications').select('id',{count:'exact',head:true}).eq('user_id',session.user.id).eq('unread',true).eq('dismissed',false)]).then(([profileReq,letterReq,activityReq])=>{if(!alive)return;setShellProfile(profileReq.data||null);setLetterBadge(letterReq.count||0);setActivityBadge(activityReq.count||0)});return()=>{alive=false}},[session?.user?.id,location.pathname]);
@@ -223,7 +227,7 @@ function FrameShell({children,privateArea=false}){
  const recentCommandItems=recentPalaceRoutes.filter(row=>row?.path&&row.path!==currentHref).slice(0,4);
  const defaultCommandItems=[...recentCommandItems,...quickDoors.filter(q=>!recentCommandItems.some(r=>r.path===q.path))].slice(0,8);
  const visibleCommandItems=commandNeedle?commandMatches:defaultCommandItems;
- React.useEffect(()=>{if(!activeRoom)return;const label=activeSection?.[0]||activeRoom.label;const item={label,path:currentHref,icon:activeRoom.icon,detail:activeSection?activeRoom.label+' · recently visited':'Recently visited',kind:'recent'};setRecentPalaceRoutes(prev=>{const next=[item,...prev.filter(x=>x.path!==item.path)].slice(0,5);try{localStorage.setItem('palace-recent-routes',JSON.stringify(next))}catch{}return next})},[currentHref,activeRoom?.id,activeSection?.[0]]);
+ React.useEffect(()=>{if(!activeRoom)return;const label=activeSection?.[0]||activeRoom.label;const item={label,path:currentHref,icon:activeRoom.icon,detail:activeSection?activeRoom.label+' · recently visited':'Recently visited',kind:'recent'};setRecentPalaceRoutes(prev=>{const next=[item,...prev.filter(x=>x.path!==item.path)].slice(0,5);safeLocalSet('palace-recent-routes',JSON.stringify(next))return next})},[currentHref,activeRoom?.id,activeSection?.[0]]);
  React.useEffect(()=>setCommandIndex(0),[commandQuery,commandOpen]);
  const profileInitial=(shellProfile?.display_name||shellProfile?.username||session?.user?.email||'P').slice(0,1).toUpperCase();
  function submitSearch(e){e.preventDefault();if(search.trim())navigate('/search?q='+encodeURIComponent(search.trim()))}
@@ -426,6 +430,19 @@ function RouteGuard({children}){
  return <RouteErrorBoundary key={location.pathname+location.search}>{children}</RouteErrorBoundary>
 }
 
+class PalaceRootBoundary extends React.Component{
+ constructor(props){super(props);this.state={error:null}}
+ static getDerivedStateFromError(error){return{error}}
+ componentDidCatch(error,info){
+  console.error('The Palace shell failed safely',error,info);
+  safeSessionSet('palace-last-root-error',String(error?.message||error||'unknown').slice(0,280));
+ }
+ render(){
+  if(this.state.error)return <div className="route-recovery palace-root-recovery" role="alert"><div><span aria-hidden="true">☾<b>✦</b></span><h1>The Palace caught a shell error.</h1><p>The page did not vanish. Reload the Palace to reopen this room with a clean shell.</p><button type="button" onClick={()=>{try{const url=new URL(window.location.href);url.searchParams.set('__palace_recover',String(Date.now()));window.location.replace(url.toString())}catch{window.location.reload()}}}>Reopen the Palace</button></div></div>;
+  return this.props.children
+ }
+}
+
 function App(){return <AuthProvider><PalaceBuildFreshnessWatch/><NavigationReset/><RouteStateReset/><BlankScreenWatchdog/><Frame><RouteGuard><Routes>
  <Route path="/" element={<Home/>}/><Route path="/login" element={<Login/>}/><Route path="/auth/callback" element={<Callback/>}/>
  <Route path="/welcome" element={<ProtectedRoute><OnboardingLive Frame={Frame}/></ProtectedRoute>}/>
@@ -455,6 +472,6 @@ function App(){return <AuthProvider><PalaceBuildFreshnessWatch/><NavigationReset
  <Route path="*" element={<Frame><section className="lost-gates-page"><div className="lost-gates-orbit"><span>☾</span><i>✦</i></div><p className="eyebrow">BEYOND THE GATES</p><h1>You left palace grounds.</h1><p>The path thinned, the lamps disappeared, and somehow you wandered beyond the Palace walls.</p><div className="lost-gates-actions"><Link className="button" to="/">Return to the Palace</Link><Link to="/search">Search for a room →</Link></div></section></Frame>}/>
  </Routes></RouteGuard></Frame></AuthProvider>}
 
-createRoot(document.getElementById('root')).render(<React.StrictMode><BrowserRouter><App/></BrowserRouter></React.StrictMode>);
+createRoot(document.getElementById('root')).render(<React.StrictMode><PalaceRootBoundary><BrowserRouter><App/></BrowserRouter></PalaceRootBoundary></React.StrictMode>);
 
 

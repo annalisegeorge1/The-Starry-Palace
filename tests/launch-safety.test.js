@@ -943,6 +943,18 @@ describe('Starry Palace launch safety',()=>{
     expect(html).toContain('Restore the Palace');
   });
 
+  it('keeps the root shell visible when browser storage or React itself fails',()=>{
+    const main=read('src/main.jsx');
+    const html=read('index.html');
+    expect(main).toContain('function safeSessionGet(key)');
+    expect(main).toContain('function safeLocalSet(key,value)');
+    expect(main).toContain('class PalaceRootBoundary extends React.Component');
+    expect(main).toContain('The Palace caught a shell error.');
+    expect(main).toContain('<PalaceRootBoundary><BrowserRouter><App/></BrowserRouter></PalaceRootBoundary>');
+    expect(html).toContain("showFailure('react-tree-lost')");
+    expect(html).not.toContain('observer.disconnect();window.__palaceBootReady()');
+  });
+
   it('keeps one persistent Palace shell across route transitions',()=>{
     const main=read('src/main.jsx');
     const auth=read('src/auth.jsx');

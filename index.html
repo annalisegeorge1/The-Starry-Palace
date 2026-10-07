@@ -96,8 +96,13 @@
       document.addEventListener('DOMContentLoaded',function(){
         var root=document.getElementById('root');
         if(root&&window.MutationObserver){
+          var lostTimer=0;
           var observer=new MutationObserver(function(){
-            if(hasMounted()){observer.disconnect();window.__palaceBootReady()}
+            window.clearTimeout(lostTimer);
+            if(hasMounted()){window.__palaceBootReady();return}
+            lostTimer=window.setTimeout(function(){
+              if(!hasMounted())showFailure('react-tree-lost');
+            },350);
           });
           observer.observe(root,{childList:true,subtree:true});
         }
