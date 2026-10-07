@@ -377,15 +377,27 @@ function RouteLoading(){
 class RouteErrorBoundary extends React.Component{
  constructor(props){super(props);this.state={error:null}}
  static getDerivedStateFromError(error){return{error}}
- componentDidCatch(error){console.error('Palace route failed to render',error)}
+ componentDidUpdate(prevProps){
+  if(prevProps.resetKey!==this.props.resetKey&&this.state.error)this.setState({error:null});
+ }
+ componentDidCatch(error,info){
+  const message=String(error?.message||error||'Unknown room error').replace(/https?:\/\/\S+/g,'[url]').slice(0,220);
+  const diagnostic={message,path:this.props.path||window.location.pathname+window.location.search,at:new Date().toISOString(),component:String(info?.componentStack||'').slice(0,900)};
+  console.error('Palace route failed to render',error,info);
+  safeSessionSet('palace-last-route-error',JSON.stringify(diagnostic));
+ }
  render(){
-  if(this.state.error)return <div className="route-recovery" role="alert"><div><span aria-hidden="true">☾<b>✦</b></span><h1>This room did not finish opening.</h1><p>Your place is safe. Reload the room to restore the newest Palace files.</p><button onClick={()=>window.location.reload()}>Reload this room</button></div></div>;
+  if(this.state.error){
+   const message=String(this.state.error?.message||this.state.error||'Unknown room error').replace(/https?:\/\/\S+/g,'[url]').slice(0,220);
+   return <div className="route-recovery palace-room-recovery" role="alert"><div><span aria-hidden="true">☾<b>✦</b></span><h1>This room did not finish opening.</h1><p>The Palace shell is still running. This problem was isolated to the current room.</p><code className="palace-error-detail">{message}</code><small className="palace-error-path">Room: {this.props.path||window.location.pathname}</small><button type="button" onClick={()=>this.setState({error:null})}>Try this room again</button><Link to="/chamber">Return to My Palace</Link></div></div>;
+  }
   return this.props.children
  }
 }
 function RouteGuard({children}){
  const location=useLocation();
- return <RouteErrorBoundary key={location.pathname+location.search}>{children}</RouteErrorBoundary>
+ const resetKey=location.pathname+location.search;
+ return <RouteErrorBoundary resetKey={resetKey} path={resetKey}>{children}</RouteErrorBoundary>
 }
 
 class PalaceRootBoundary extends React.Component{
