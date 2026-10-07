@@ -4332,3 +4332,297 @@ body.reader-focus-mode .reader-chapter-head{
  .duel-dashboard{grid-template-columns:1fr 1fr 1fr}.duel-stat span{font-size:.42rem}
 }
 @media(prefers-reduced-motion:reduce){.duel-format-cards>button{transition:none}.duel-format-cards>button:hover{transform:none}}
+
+
+/* Writing Chamber root composition fix · editor belongs in the centre */
+/*
+   The earlier Production Prep rule accidentally reversed the two columns:
+   because the chapter rail is the first DOM child, "1fr 300px" made the
+   chapter manager huge and squeezed the actual writing desk into the right
+   edge. Keep the chapter rail narrow, give the editor the flexible centre,
+   then use a small support column *inside* the editor on roomy desktops.
+*/
+@media(min-width:1121px){
+  .writing-studio-grid{
+    width:min(1500px,100%)!important;
+    grid-template-columns:minmax(230px,270px) minmax(0,1fr)!important;
+    gap:1rem!important;
+    align-items:start!important;
+  }
+  .writing-studio-grid.rail-collapsed{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  .writing-studio-rail{
+    grid-column:1!important;
+    min-width:0!important;
+    max-width:270px!important;
+  }
+  .writing-editor-workspace{
+    grid-column:2!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+  }
+  .writing-studio-grid.rail-collapsed>.writing-editor-workspace{
+    grid-column:1!important;
+  }
+}
+
+/* Large desktop: centre = manuscript, right = writer utilities. */
+@media(min-width:1280px){
+  .chic-editor-form{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(265px,305px)!important;
+    grid-template-areas:
+      "recovery recovery"
+      "heading heading"
+      "health health"
+      "sprint sprint"
+      "toolbar stats"
+      "canvas view"
+      "canvas map"
+      "canvas notes"
+      "canvas find"
+      "canvas spell"
+      "canvas goal"
+      "canvas revision"
+      "canvas status"
+      "canvas actions"!important;
+    column-gap:1rem!important;
+    row-gap:.62rem!important;
+    align-items:start!important;
+    padding-bottom:52px!important;
+  }
+
+  .chic-editor-form>.draft-recovery-banner{grid-area:recovery}
+  .chic-editor-form>.editor-chapter-heading{grid-area:heading}
+  .chic-editor-form>.writing-chapter-health{grid-area:health}
+  .chic-editor-form>.writer-sprint-orbit{grid-area:sprint}
+  .chic-editor-form>.chic-editor-toolbar{grid-area:toolbar}
+  .chic-editor-form>.chic-editor-stats{grid-area:stats}
+  .chic-editor-form>.writer-view-controls{grid-area:view}
+  .chic-editor-form>.writer-document-map{grid-area:map}
+  .chic-editor-form>.writer-margin-notes{grid-area:notes}
+  .chic-editor-form>.writer-find-replace{grid-area:find}
+  .chic-editor-form>.legacy-spellcheck{grid-area:spell}
+  .chic-editor-form>.legacy-goal-progress{grid-area:goal}
+  .chic-editor-form>.writing-page-stage{grid-area:canvas}
+  .chic-editor-form>.revision-note-field{grid-area:revision}
+  .chic-editor-form>.legacy-editor-status{grid-area:status}
+  .chic-editor-form>.chic-studio-buttons{grid-area:actions}
+
+  /* The formatting strip sits directly above the page, not over in the tool rail. */
+  .chic-editor-form>.chic-editor-toolbar{
+    position:sticky!important;
+    top:78px!important;
+    z-index:9!important;
+    width:100%!important;
+    min-width:0!important;
+    border:1px solid rgba(201,178,232,.11)!important;
+    border-radius:14px!important;
+    background:rgba(25,20,55,.95)!important;
+    box-shadow:0 9px 24px rgba(5,4,18,.07)!important;
+    -webkit-backdrop-filter:blur(18px);
+    backdrop-filter:blur(18px);
+  }
+
+  /* The manuscript finally occupies the large blank central area. */
+  .chic-editor-form>.writing-page-stage{
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    min-height:760px!important;
+    margin:0!important;
+    padding:24px clamp(16px,2.2vw,34px) 38px!important;
+    border:1px solid rgba(201,178,232,.11)!important;
+    border-radius:18px!important;
+    background:
+      radial-gradient(circle at 50% 5%,rgba(116,99,194,.045),transparent 24rem),
+      rgba(12,10,30,.48)!important;
+  }
+  .chic-editor-form>.writing-page-stage .legacy-writing-canvas{
+    width:min(820px,100%)!important;
+    min-height:720px!important;
+    margin:0 auto!important;
+    padding:clamp(44px,4vw,68px) clamp(34px,5vw,76px) 88px!important;
+    font-size:clamp(18px,1.15vw,20px)!important;
+    line-height:1.84!important;
+  }
+
+  /* Support column: compact tools, not the writing surface. */
+  .chic-editor-form>.chic-editor-stats{
+    grid-template-columns:1fr!important;
+    gap:.6rem!important;
+    padding:.7rem!important;
+    border-radius:16px!important;
+  }
+  .chic-editor-form .writing-count-block{
+    align-items:center!important;
+  }
+  .chic-editor-form .editor-goal-control{
+    padding-top:.52rem;
+    border-top:1px solid rgba(201,178,232,.08);
+  }
+  .chic-editor-form .editor-stat-actions{
+    grid-column:1!important;
+    display:flex!important;
+    flex-wrap:wrap!important;
+    justify-content:flex-start!important;
+    gap:.32rem!important;
+    padding-top:.48rem;
+    border-top:1px solid rgba(201,178,232,.08);
+  }
+  .chic-editor-form .editor-stat-actions button{
+    flex:1 1 auto;
+    min-width:0;
+  }
+
+  .chic-editor-form>.writer-view-controls{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:.42rem!important;
+    padding:.62rem!important;
+    border:1px solid rgba(201,178,232,.10)!important;
+    border-radius:15px!important;
+    background:rgba(20,17,45,.58)!important;
+    overflow:visible!important;
+  }
+  .chic-editor-form>.writer-view-controls label,
+  .chic-editor-form>.writer-view-controls button{
+    min-width:0!important;
+    width:100%!important;
+    flex:none!important;
+  }
+  .chic-editor-form>.writer-view-controls label{
+    display:grid!important;
+    gap:.2rem!important;
+  }
+  .chic-editor-form>.writer-view-controls label>span{
+    font-size:.44rem!important;
+  }
+  .chic-editor-form>.writer-view-controls select,
+  .chic-editor-form>.writer-view-controls button{
+    min-height:36px!important;
+    font-size:.5rem!important;
+  }
+
+  .chic-editor-form>.writer-document-map,
+  .chic-editor-form>.writer-margin-notes,
+  .chic-editor-form>.writer-find-replace,
+  .chic-editor-form>.legacy-spellcheck,
+  .chic-editor-form>.legacy-goal-progress,
+  .chic-editor-form>.revision-note-field,
+  .chic-editor-form>.legacy-editor-status{
+    width:100%!important;
+    min-width:0!important;
+    margin:0!important;
+    border:1px solid rgba(201,178,232,.10)!important;
+    border-radius:14px!important;
+    background:rgba(20,17,45,.58)!important;
+    box-sizing:border-box!important;
+  }
+
+  .chic-editor-form>.writer-find-replace>div{
+    grid-template-columns:1fr!important;
+  }
+  .chic-editor-form>.legacy-spellcheck{
+    align-items:flex-start!important;
+    padding:.68rem!important;
+  }
+  .chic-editor-form>.legacy-spellcheck>span{
+    line-height:1.35;
+  }
+  .chic-editor-form>.legacy-goal-progress{
+    overflow:hidden;
+    min-height:30px!important;
+  }
+  .chic-editor-form>.revision-note-field{
+    padding:.68rem!important;
+  }
+  .chic-editor-form>.legacy-editor-status{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:.25rem!important;
+    padding:.68rem!important;
+    font-size:.51rem!important;
+  }
+
+  .chic-editor-form>.chic-studio-buttons{
+    position:sticky!important;
+    bottom:12px!important;
+    display:flex!important;
+    flex-wrap:wrap!important;
+    justify-content:flex-start!important;
+    gap:.34rem!important;
+    width:100%!important;
+    margin:0!important;
+    padding:.55rem!important;
+    border-radius:15px!important;
+  }
+  .chic-editor-form>.chic-studio-buttons .studio-button-note{
+    flex:1 0 100%;
+    width:100%;
+    margin:0 0 .1rem!important;
+  }
+  .chic-editor-form>.chic-studio-buttons>button{
+    flex:1 1 auto;
+  }
+
+  /* Chapter manager remains a navigator rather than becoming the page itself. */
+  .writing-chapter-manager{
+    width:100%!important;
+  }
+  .manuscript-overview{
+    grid-template-columns:42px minmax(0,1fr)!important;
+  }
+}
+
+/* Mid-size/tablet: the manuscript stays primary and support tools fall beneath it. */
+@media(min-width:761px) and (max-width:1279px){
+  .writing-studio-grid{
+    grid-template-columns:minmax(210px,240px) minmax(0,1fr)!important;
+  }
+  .writing-studio-rail{max-width:240px!important}
+  .chic-editor-form{
+    display:block!important;
+  }
+  .chic-editor-form>.writing-page-stage{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+  }
+}
+
+/* Focus mode remains purely about the page. */
+.focus-editor .writing-studio-grid,
+.focus-editor .writing-studio-grid.rail-collapsed{
+  grid-template-columns:minmax(0,1fr)!important;
+}
+.focus-editor .writing-editor-workspace{
+  grid-column:1!important;
+}
+@media(min-width:1280px){
+  .focus-editor .chic-editor-form{
+    display:block!important;
+    width:min(920px,100%)!important;
+    margin:0 auto!important;
+  }
+  .focus-editor .writing-page-stage{
+    width:100%!important;
+    max-width:none!important;
+  }
+}
+
+/* Daylight mirrors the same centre-page / side-tools hierarchy. */
+.daylight .chic-editor-form>.chic-editor-toolbar,
+.daylight .chic-editor-form>.writer-view-controls,
+.daylight .chic-editor-form>.writer-document-map,
+.daylight .chic-editor-form>.writer-margin-notes,
+.daylight .chic-editor-form>.writer-find-replace,
+.daylight .chic-editor-form>.legacy-spellcheck,
+.daylight .chic-editor-form>.legacy-goal-progress,
+.daylight .chic-editor-form>.revision-note-field,
+.daylight .chic-editor-form>.legacy-editor-status{
+  background:rgba(248,246,250,.94)!important;
+  border-color:rgba(96,77,142,.11)!important;
+}
