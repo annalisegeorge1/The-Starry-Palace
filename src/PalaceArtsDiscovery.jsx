@@ -2,7 +2,6 @@ import React,{useEffect,useState}from'react';
 import{Link}from'react-router-dom';
 import{getPalaceArtsDiscovery,setPalaceQuestInvitesEnabled,sendPalaceQuestInvite,respondPalaceQuestInvite}from'./palaceArtsDiscoveryData';
 import{getPalaceGatherings}from'./grandPalaceGatheringsData';
-import{loreForPalace,seasonFestival}from'./grandPalaceLore';
 import './palace-arts-discovery.css';
 export default function PalaceArtsDiscovery(){
  const[data,setData]=useState(null),[gatherings,setGatherings]=useState(null),[error,setError]=useState(''),[notice,setNotice]=useState(''),[busy,setBusy]=useState(false);
@@ -10,8 +9,6 @@ export default function PalaceArtsDiscovery(){
  const refresh=async()=>{const[a,b]=await Promise.all([getPalaceArtsDiscovery(),getPalaceGatherings()]);setData(a);setGatherings(b);setError('')};
  useEffect(()=>{refresh().catch(e=>setError(e.message))},[]);
  const action=async(name,fn)=>{if(busy)return;setBusy(true);setError('');setNotice('');try{await fn();await refresh();setNotice(name+' updated.')}catch(e){setError(e.message)}finally{setBusy(false)}};
- const festival=seasonFestival(new Date(new Date().getUTCFullYear(),Math.floor(new Date().getUTCMonth()/3)*3,1).toISOString().slice(0,10));
- const [month,setMonth]=useState(0);
  const now=new Date();
  const calendar=Array.from({length:3},(_,i)=>{const monthStart=new Date(Date.UTC(now.getUTCFullYear(),Math.floor(now.getUTCMonth()/3)*3+i,1));return{title:['Opening of the Gates','Court of Living Stories','Closing Constellation'][i],month:monthStart.toLocaleString(undefined,{month:'long',timeZone:'UTC'}),date:monthStart.toISOString().slice(0,10),phase:i+1}});
  const myQuests=(gatherings?.collaborations||[]).filter(q=>q.status==='open');
