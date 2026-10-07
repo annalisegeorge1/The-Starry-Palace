@@ -2854,3 +2854,146 @@ body.reader-focus-mode .reader-chapter-head{
   }
   .commons-compose-modes:active{cursor:grabbing}
 }
+
+
+/* Palace Passage — connective tissue between rooms. */
+.palace-passage{
+  position:sticky;
+  top:72px;
+  z-index:17;
+  min-width:0;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  align-items:center;
+  gap:.55rem;
+  min-height:52px;
+  padding:.38rem clamp(.55rem,2vw,1rem);
+  border-bottom:1px solid rgba(194,174,231,.11);
+  background:linear-gradient(90deg,rgba(20,16,46,.93),rgba(29,23,61,.9),rgba(20,17,45,.93));
+  -webkit-backdrop-filter:blur(18px);
+  backdrop-filter:blur(18px);
+}
+.palace-passage-context{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:.45rem;
+  padding-right:.5rem;
+  border-right:1px solid rgba(194,174,231,.1);
+}
+.passage-room-sigil{
+  width:31px;height:31px;flex:0 0 31px;
+  display:grid;place-items:center;
+  border:1px solid rgba(207,182,235,.16);
+  border-radius:10px;
+  background:rgba(110,87,176,.08);
+  color:#cdbfe2;
+}
+.passage-room-sigil svg{width:17px;height:17px}
+.palace-passage-context>span:last-child{min-width:0;display:grid}
+.palace-passage-context small{
+  color:#766f84;
+  font-size:.39rem;
+  letter-spacing:.12em;
+}
+.palace-passage-context strong{
+  max-width:150px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#dcd4e7;
+  font:600 .58rem Georgia,'Times New Roman',serif;
+}
+.palace-passage-doors{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:.28rem;
+  overflow-x:auto;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.palace-passage-doors::-webkit-scrollbar{display:none}
+.palace-passage-doors>a{
+  flex:0 0 auto;
+  min-height:36px;
+  display:grid;
+  grid-template-columns:25px auto;
+  gap:.34rem;
+  align-items:center;
+  padding:.3rem .5rem;
+  border:1px solid transparent;
+  border-radius:10px;
+  color:#a9a2b5;
+  text-decoration:none;
+}
+.palace-passage-doors>a:hover{
+  border-color:rgba(207,182,235,.13);
+  background:rgba(111,88,176,.06);
+  color:#eee8f5;
+}
+.palace-passage-doors>a>span:first-child{
+  width:25px;height:25px;
+  display:grid;place-items:center;
+  border-radius:8px;
+  background:rgba(125,101,184,.07);
+  color:#c8b8df;
+}
+.palace-passage-doors>a>span:last-child{display:grid}
+.palace-passage-doors strong{font-size:.51rem}
+.palace-passage-doors small{color:#736e7d;font-size:.4rem}
+.palace-passage-wander{
+  min-height:34px;
+  padding:.3rem .58rem;
+  border:1px dashed rgba(211,181,235,.2);
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(120,86,171,.09),rgba(87,111,172,.055));
+  color:#cdbce0;
+  font-size:.5rem;
+  white-space:nowrap;
+}
+.work-discuss-door{
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none!important;
+}
+.composer-source-chip.carried-source{
+  border-color:rgba(111,159,202,.18);
+  background:linear-gradient(135deg,rgba(69,111,156,.1),rgba(91,76,154,.08));
+}
+.composer-source-chip.carried-source span{color:#8ea9bf}
+
+.daylight .palace-passage{
+  background:rgba(247,246,250,.93);
+  border-color:rgba(96,77,142,.1);
+}
+.daylight .palace-passage-context strong,
+.daylight .palace-passage-doors>a{color:#4a4158}
+.daylight .palace-passage-doors>a:hover{background:rgba(111,84,165,.05)}
+.daylight .palace-passage-doors small,
+.daylight .palace-passage-context small{color:#827a8d}
+
+@media(max-width:720px){
+  .palace-passage{
+    top:calc(104px + env(safe-area-inset-top));
+    grid-template-columns:minmax(0,1fr) auto;
+    min-height:48px;
+    padding:.34rem max(7px,env(safe-area-inset-right)) .34rem max(7px,env(safe-area-inset-left));
+  }
+  .palace-passage-context{display:none}
+  .palace-passage-doors{gap:.2rem}
+  .palace-passage-doors>a{
+    min-height:34px;
+    grid-template-columns:22px auto;
+    padding:.25rem .38rem;
+  }
+  .palace-passage-doors>a>span:first-child{width:22px;height:22px}
+  .palace-passage-doors strong{font-size:.48rem}
+  .palace-passage-doors small{display:none}
+  .palace-passage-wander{
+    width:34px;height:34px;min-width:34px;
+    padding:0;
+  }
+  .palace-passage-wander span{display:none}
+}
