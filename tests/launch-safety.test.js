@@ -838,6 +838,17 @@ describe('Starry Palace launch safety',()=>{
     expect(polish).toContain('Audience Balcony + Ink Duels');
   });
 
+  it('keeps long Palace dialogs above the shell with visible actions',()=>{
+    const next=read('src/palace-next.css');
+    expect(live).toContain("import{createPortal}from'react-dom'");
+    expect(live).toContain("return typeof document!=='undefined'?createPortal(dialog,document.body):dialog");
+    expect(live).toContain('className="ink-duel-dialog"');
+    expect(next).toContain('Palace dialogs v2 · viewport-safe portal surfaces');
+    expect(next).toContain('grid-template-rows:auto minmax(0,1fr) auto');
+    expect(next).toContain('.ink-duel-dialog');
+    expect(next).toContain('z-index:16000!important');
+  });
+
   it('keeps Ink Duels multi-format blind and participation-focused',()=>{
     const data=read('src/palaceData.js');
     const duelMigration=read('database/ink-duels-v3.sql');
