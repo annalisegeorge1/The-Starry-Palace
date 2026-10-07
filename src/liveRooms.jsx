@@ -1,3 +1,4 @@
+import MemberPalaceShowcase from './MemberPalaceShowcase';
 import{beginPalaceReading,completePalaceReading}from'./creativePointsData';
 import PalaceCalendar from './PalaceCalendar';
 import{PROMPT_ORRERY_RECIPES,randomOrreryRecipe}from'./promptOrreryData';
@@ -1053,7 +1054,7 @@ export function MemberProfileLive({Frame}){
     <p className="legacy-profile-meta">@{p.username}{roles.length?' · '+roles.join(' · '):''}{p.pronouns?' · '+p.pronouns:''}</p>
     {intro&&<blockquote>“{intro}”</blockquote>}
     {interests.length>0&&<div className="legacy-profile-tags">{interests.map(x=><span key={x}>{x}</span>)}</div>}
-    {data.grandIdentity&&<div className="grand-profile-identity"><Link to="/grand-palaces" className="grand-profile-crest" style={{borderColor:data.grandIdentity.accent}}><span>{data.grandIdentity.sigil}</span><strong>{data.grandIdentity.palace_name}</strong><small>GRAND PALACE · VIEW THE QUARTERLY RACE →</small></Link><div className="grand-profile-honours" aria-label="Earned or received honour tokens">{[['heart','♥'],['star','✦'],['moon','☾'],['crown','♛']].map(([key,glyph])=><span key={key} className={'grand-profile-token '+key}><b>{glyph}</b><strong>{data.grandIdentity.honours?.[key]||0}</strong><small>{key.toUpperCase()}</small></span>)}</div></div>}
+
     <div className="chamber-crown-ribbon" aria-label="Worn Palace identity">
      <span className="chamber-crown-title"><i aria-hidden="true">♕</i><small>WORN TITLE</small><strong>{p.title||'Palace Member'}</strong></span>
      {wornAchievement&&<span className={"chamber-crown-honour "+(wornAchievement.display_tier||'bronze')}><i aria-hidden="true">✦</i><small>{(wornAchievement.display_tier||'bronze').toUpperCase()} PATH</small><strong>{wornAchievement.achievement_families?.name||'Palace achievement'}</strong></span>}
@@ -1074,6 +1075,7 @@ export function MemberProfileLive({Frame}){
     <div><strong>{counts.honours||0}</strong><span>DISPLAYED HONOURS</span></div>
    </div>
   </section>
+  <MemberPalaceShowcase profile={p} identity={data.grandIdentity} own={own}/>
   <nav className="chamber-section-nav chic-chamber-tabs" aria-label="Explore this chamber"><a href="#chamber-about"><span>☾</span> About</a><a href="#chamber-notes"><span>✎</span> Notes</a><a href="#chamber-honours"><span>♛</span> Honours</a><a href="#chamber-worlds"><span>◈</span> Creative shelves</a></nav>
   <section id="chamber-about" className="chamber-creator-overview">
    <article className="chamber-about-card"><div><p className="eyebrow">ABOUT THIS CHAMBER</p><h2>{fullBio?'A little more from '+(p.display_name||p.username)+'.':'This chamber is still being shaped.'}</h2></div><p>{fullBio||'No long-form bio has been added yet. The published work and chamber notes below can speak for the room in the meantime.'}</p>{p.availability&&<span className="chamber-availability-chip">☾ {p.availability}</span>}</article>
