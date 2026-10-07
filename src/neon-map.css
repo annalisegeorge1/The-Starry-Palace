@@ -1356,3 +1356,213 @@
     padding:.5rem;
   }
 }
+
+
+/* Screenshot QA · Daylight room consistency · Oct 7 */
+
+/* My Palace quick actions: match the Write button treatment while
+   preserving the existing tile dimensions and six-column layout. */
+.daylight .palace-command-centre .palace-home-shortcuts>a{
+  color:#fff!important;
+  border-color:rgba(0,183,209,.42)!important;
+  background:
+    radial-gradient(circle at 18% 12%,rgba(255,255,255,.22),transparent 32%),
+    linear-gradient(110deg,#00bdd7 0%,#754cff 47%,#df35b7 100%)!important;
+  box-shadow:
+    0 8px 18px rgba(93,61,193,.17),
+    0 0 16px rgba(0,199,224,.17),
+    0 0 27px rgba(218,49,181,.12)!important;
+}
+.daylight .palace-command-centre .palace-home-shortcuts>a:hover{
+  color:#fff!important;
+  border-color:rgba(0,188,214,.58)!important;
+  background:
+    radial-gradient(circle at 18% 12%,rgba(255,255,255,.27),transparent 34%),
+    linear-gradient(110deg,#00c5df 0%,#7a50ff 47%,#e63bbd 100%)!important;
+  box-shadow:
+    0 11px 24px rgba(93,61,193,.22),
+    0 0 20px rgba(0,199,224,.22),
+    0 0 32px rgba(218,49,181,.16)!important;
+}
+.daylight .palace-command-centre .palace-home-shortcuts>a span,
+.daylight .palace-command-centre .palace-home-shortcuts>a small{
+  color:#fff!important;
+  opacity:1!important;
+  text-shadow:0 1px 1px rgba(31,22,62,.18),0 0 9px rgba(255,255,255,.18)!important;
+}
+
+/* My Chamber: the cover can stay photographic; the identity body
+   should become luminous paper instead of a grey night overlay. */
+.daylight .chic-member-profile{
+  color:#2f2340!important;
+  border-color:rgba(117,75,162,.16)!important;
+  background:
+    radial-gradient(circle at 10% 58%,rgba(0,205,226,.07),transparent 18rem),
+    radial-gradient(circle at 88% 70%,rgba(224,64,190,.07),transparent 20rem),
+    linear-gradient(180deg,#fbf8fd 0%,#f7f0fb 54%,#eee7f3 100%)!important;
+  box-shadow:0 22px 54px rgba(77,48,103,.10),0 0 28px rgba(0,195,218,.035)!important;
+}
+.daylight .chic-member-profile .legacy-cover-shade{
+  background:
+    linear-gradient(180deg,rgba(40,24,58,.02) 45%,rgba(62,38,79,.08) 72%,rgba(249,240,252,.74) 100%)!important;
+}
+.daylight .chic-member-profile .legacy-profile-copy{
+  color:#342641!important;
+  background:
+    radial-gradient(circle at 5% 15%,rgba(0,199,222,.045),transparent 12rem),
+    linear-gradient(180deg,rgba(250,245,253,.94),rgba(245,237,249,.96))!important;
+}
+.daylight .chic-member-profile .legacy-profile-copy h1,
+.daylight .chic-member-profile .legacy-profile-copy strong{
+  color:#2d2039!important;
+}
+.daylight .chic-member-profile .legacy-profile-meta,
+.daylight .chic-member-profile .legacy-profile-copy blockquote,
+.daylight .chic-member-profile .legacy-availability{
+  color:#5d5268!important;
+}
+.daylight .chic-member-profile .legacy-profile-tags span{
+  color:#55485f!important;
+  border-color:rgba(120,76,164,.14)!important;
+  background:rgba(255,255,255,.64)!important;
+}
+.daylight .chic-member-profile .legacy-profile-stats{
+  border-top-color:rgba(119,80,157,.12)!important;
+  background:rgba(255,255,255,.72)!important;
+}
+.daylight .chic-member-profile .legacy-profile-stats>div{
+  border-right-color:rgba(119,80,157,.09)!important;
+}
+.daylight .chic-member-profile .legacy-profile-stats strong{color:#2d2039!important}
+.daylight .chic-member-profile .legacy-profile-stats span{color:#6b5d75!important}
+
+/* Light-mode tab grammar: no more charcoal fallback slabs.
+   This catches Life, Council and the generic room rails. */
+.daylight .life-tabs.restored,
+.daylight .legacy-council-page .room-tabs,
+.daylight .legacy-treasury-page .treasury-tabs{
+  border-color:rgba(0,179,205,.13)!important;
+  background:
+    radial-gradient(circle at 5% 50%,rgba(0,202,224,.08),transparent 12rem),
+    radial-gradient(circle at 95% 50%,rgba(220,58,186,.06),transparent 13rem),
+    rgba(255,255,255,.72)!important;
+  box-shadow:0 8px 24px rgba(83,54,109,.055),inset 0 1px 0 rgba(255,255,255,.82)!important;
+}
+.daylight .life-tabs.restored button,
+.daylight .life-tabs.restored a,
+.daylight .legacy-council-page .room-tabs button,
+.daylight .legacy-council-page .room-tabs a,
+.daylight .legacy-treasury-page .treasury-tabs button,
+.daylight .legacy-treasury-page .treasury-tabs a{
+  color:#51425f!important;
+  border-color:rgba(107,72,145,.10)!important;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.88),rgba(244,237,249,.82))!important;
+  box-shadow:none!important;
+}
+.daylight .life-tabs.restored button:hover,
+.daylight .life-tabs.restored a:hover,
+.daylight .legacy-council-page .room-tabs button:hover,
+.daylight .legacy-treasury-page .treasury-tabs button:hover{
+  color:#39264c!important;
+  border-color:rgba(0,184,208,.22)!important;
+  background:
+    linear-gradient(110deg,rgba(0,204,225,.10),rgba(122,79,244,.10),rgba(225,57,187,.08))!important;
+}
+.daylight .life-tabs.restored button.active,
+.daylight .life-tabs.restored a.active,
+.daylight .legacy-council-page .room-tabs button.active{
+  color:#fff!important;
+  border-color:rgba(0,183,209,.36)!important;
+  background:linear-gradient(110deg,#16bfd6 0%,#7855ef 49%,#d84bb7 100%)!important;
+  box-shadow:0 7px 17px rgba(99,66,184,.15),0 0 14px rgba(0,190,214,.10)!important;
+}
+.daylight .life-tabs.restored .life-wander{
+  color:#fff!important;
+  border-color:rgba(0,183,209,.34)!important;
+  background:linear-gradient(110deg,#18bfd5,#7856ed 52%,#d94bb8)!important;
+  box-shadow:0 7px 17px rgba(99,66,184,.14),0 0 13px rgba(0,190,214,.09)!important;
+}
+
+/* Treasury keeps its own daylight identity: bright gold at the centre,
+   but still lives inside the Palace neon family. */
+.daylight .legacy-treasury-page .treasury-tabs button.active,
+.daylight .legacy-treasury-page .treasury-tabs a.active{
+  color:#3c2a13!important;
+  border-color:rgba(226,166,32,.42)!important;
+  background:
+    linear-gradient(110deg,#fff29b 0%,#ffd867 46%,#ff9b50 72%,#c783f2 100%)!important;
+  box-shadow:0 8px 18px rgba(207,148,32,.13),0 0 15px rgba(255,173,52,.10)!important;
+}
+
+/* Reading: Wander is a special night button, but in Daylight it
+   should read as a playful neon door, not a disabled dark block. */
+.daylight .reading-compass .reading-compass-wander{
+  color:#fff!important;
+  border-color:rgba(0,183,209,.34)!important;
+  background:
+    radial-gradient(circle at 80% 12%,rgba(255,255,255,.17),transparent 35%),
+    linear-gradient(110deg,#15bfd6 0%,#7456ea 56%,#d94ab7 100%)!important;
+  box-shadow:0 7px 17px rgba(99,66,184,.13),0 0 13px rgba(0,190,214,.09)!important;
+}
+.daylight .reading-compass .reading-compass-wander>span,
+.daylight .reading-compass .reading-compass-wander>b,
+.daylight .reading-compass .reading-compass-wander>small{
+  color:#fff!important;
+}
+
+/* Council: governance stays serious without looking like an accidental
+   dark-mode island inside a light page. */
+.daylight .legacy-council-page .council-principles article{
+  color:#352842!important;
+  border-color:rgba(116,77,151,.13)!important;
+  background:
+    radial-gradient(circle at 90% 5%,rgba(0,200,221,.065),transparent 10rem),
+    linear-gradient(145deg,rgba(255,255,255,.91),rgba(242,235,248,.87))!important;
+  box-shadow:0 10px 24px rgba(75,49,94,.055)!important;
+}
+.daylight .legacy-council-page .council-principles span{
+  color:#7352a4!important;
+  border-color:rgba(122,82,164,.24)!important;
+  background:linear-gradient(145deg,rgba(233,219,248,.90),rgba(217,238,247,.80))!important;
+}
+.daylight .legacy-council-page .council-principles strong{color:#352842!important}
+.daylight .legacy-council-page .council-principles small{color:#675b71!important}
+.daylight .legacy-council-page .council-status{
+  color:#4b3e56!important;
+  border-color:rgba(116,77,151,.13)!important;
+  background:rgba(255,255,255,.72)!important;
+}
+.daylight .legacy-council-page .council-status p{color:#62576c!important}
+.daylight .legacy-council-page .council-desk{
+  color:#3d3149!important;
+  border-color:rgba(116,77,151,.12)!important;
+  background:
+    radial-gradient(circle at 8% 8%,rgba(0,198,220,.045),transparent 16rem),
+    linear-gradient(145deg,rgba(255,255,255,.86),rgba(241,235,247,.84))!important;
+  box-shadow:0 12px 28px rgba(72,47,92,.05)!important;
+}
+.daylight .legacy-council-page .council-desk .quiet-copy{
+  color:#6a6073!important;
+}
+.daylight .legacy-council-page .council-list>article{
+  color:#3c3048!important;
+  border-color:rgba(116,77,151,.11)!important;
+  background:rgba(255,255,255,.70)!important;
+}
+.daylight .legacy-council-page .council-list p,
+.daylight .legacy-council-page .council-list blockquote{
+  color:#62576c!important;
+}
+
+/* Give pale editorial surfaces just enough edge definition to avoid
+   disappearing into the pink/cyan Daylight atmosphere. */
+.daylight .reading-mood-doors,
+.daylight .reading-classics-hall,
+.daylight .writing-pad-launcher,
+.daylight .prompt-orrery,
+.daylight .palace-social-column,
+.daylight .legacy-treasury-page .treasury-wardrobe{
+  border-color:rgba(108,76,145,.12)!important;
+  box-shadow:0 12px 30px rgba(78,52,101,.05),0 0 22px rgba(0,190,214,.025)!important;
+}
