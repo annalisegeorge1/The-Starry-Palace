@@ -1702,6 +1702,27 @@ describe('Starry Palace launch safety',()=>{
     expect(next).toContain('Work settings permissions · comments translations downloads');
   });
 
+  it('keeps fanworks classified by fandom and tagging inside Work Settings',()=>{
+    const data=read('src/palaceData.js');
+    const next=read('src/palace-next.css');
+    expect(data).toContain("['original','fanwork','poetry','essay','other'].includes(options.workType)");
+    expect(data).toContain("if(['original','fanwork','poetry','essay','other'].includes(patch.work_type))allowed.work_type=patch.work_type");
+    expect(live).toContain('WORLD OF THE WORK');
+    expect(live).toContain('Which world does this belong to?');
+    expect(live).toContain("newWorkType==='fanwork'");
+    expect(live).toContain("searchPalaceTags(newWorkFandomQuery,'fandom',16)");
+    expect(live).toContain("if(newWorkType==='fanwork'&&!newWorkFandoms.length)");
+    expect(live).toContain("if(nextWorkType==='fanwork'&&!community.tags.some(x=>x.tags?.category==='fandom'))");
+    expect(live).toContain('initialChapterResolvedRef');
+    expect(live).toContain('attachTagToWork');
+    expect(live).toContain('detachTagFromWork');
+    expect(live).toContain('keep choosing tags.');
+    expect(live).toContain('Adding or removing a tag no longer closes this page');
+    expect(next).toContain('Work worlds + uninterrupted tag constellation');
+    expect(next).toContain('.work-world-settings');
+    expect(next).toContain('.new-work-fandom-builder');
+  });
+
   it('keeps the Writing Studio comfortable for long-form work',()=>{
     const polish=read('src/polish.css');
     const next=read('src/palace-next.css');
