@@ -3500,3 +3500,64 @@ body.reader-focus-mode .reader-chapter-head{
   .classic-hall-lenses{padding-right:22px}
   .classic-hall-rail{padding-right:22px}
 }
+
+
+/* Reading catalogue · container-aware card sizing
+   Prevent tablet/compact desktop shells from forcing two skinny columns. */
+.story-shelf.refined.chic-story-catalogue{
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr))!important;
+  align-items:stretch!important;
+}
+.story-shelf.refined.chic-story-catalogue .story-row{
+  min-width:0!important;
+  grid-template-columns:clamp(88px,17%,112px) minmax(0,1fr)!important;
+  gap:clamp(.8rem,1.8vw,1.15rem)!important;
+  padding:clamp(.85rem,1.8vw,1.1rem)!important;
+  align-items:start!important;
+}
+.story-shelf.refined.chic-story-catalogue .story-cover{
+  width:100%!important;
+  max-width:112px!important;
+  height:auto!important;
+  aspect-ratio:2/3!important;
+  align-self:start!important;
+}
+.story-shelf.refined.chic-story-catalogue .story-row>div:last-child{
+  min-width:0!important;
+}
+.story-shelf.refined.chic-story-catalogue .story-row h2,
+.story-shelf.refined.chic-story-catalogue .story-row h2 a{
+  max-width:100%!important;
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+  text-wrap:balance!important;
+}
+.story-shelf.refined.chic-story-catalogue .story-row>div:last-child>p:not(.story-meta){
+  max-width:72ch!important;
+}
+.story-shelf.refined.chic-story-catalogue .story-row footer{
+  min-width:0!important;
+  flex-wrap:wrap!important;
+}
+@media(max-width:720px){
+  .story-shelf.refined.chic-story-catalogue{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  .story-shelf.refined.chic-story-catalogue .story-row{
+    grid-template-columns:72px minmax(0,1fr)!important;
+    gap:.72rem!important;
+    padding:.78rem!important;
+  }
+  .story-shelf.refined.chic-story-catalogue .story-cover{
+    width:72px!important;
+    max-width:72px!important;
+  }
+  .story-shelf.refined.chic-story-catalogue .story-row h2{
+    font-size:1.08rem!important;
+    line-height:1.14!important;
+  }
+  .story-shelf.refined.chic-story-catalogue .story-row>div:last-child>p:not(.story-meta){
+    font-size:.72rem!important;
+    line-height:1.5!important;
+  }
+}
