@@ -3852,3 +3852,56 @@ body.reader-focus-mode .reader-chapter-head{
     justify-self:start;
   }
 }
+
+
+/* Tag Constellation · human starting doors */
+.tag-starting-doors{
+  display:flex;
+  align-items:center;
+  gap:.34rem;
+  overflow-x:auto;
+  padding:.15rem 0 .72rem;
+  margin:.1rem 0 .15rem;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.tag-starting-doors::-webkit-scrollbar{display:none}
+.tag-starting-doors>span{
+  flex:0 0 auto;
+  color:var(--palace-dim);
+  font-size:.48rem;
+  letter-spacing:.11em;
+  margin-right:.15rem;
+}
+.tag-starting-doors button{
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  gap:.34rem;
+  min-height:32px;
+  padding:.34rem .58rem;
+  border:1px solid rgba(199,178,226,.12);
+  border-radius:999px;
+  background:rgba(255,255,255,.016);
+  color:#beb5c9;
+  font-size:.55rem;
+  cursor:pointer;
+}
+.tag-starting-doors button:hover{
+  border-color:rgba(213,190,239,.24);
+  background:rgba(111,86,166,.07);
+  color:#e2dbe9;
+}
+.tag-starting-doors i{
+  width:18px;height:18px;
+  display:grid;place-items:center;
+  border-radius:50%;
+  background:rgba(117,91,173,.08);
+  font-style:normal;
+  font-size:.48rem;
+}
+.daylight .tag-starting-doors button{
+  background:rgba(255,255,255,.62);
+  border-color:rgba(96,77,142,.09);
+  color:#62566e;
+}
