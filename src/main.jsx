@@ -227,7 +227,7 @@ function FrameShell({children,privateArea=false}){
  const recentCommandItems=recentPalaceRoutes.filter(row=>row?.path&&row.path!==currentHref).slice(0,4);
  const defaultCommandItems=[...recentCommandItems,...quickDoors.filter(q=>!recentCommandItems.some(r=>r.path===q.path))].slice(0,8);
  const visibleCommandItems=commandNeedle?commandMatches:defaultCommandItems;
- React.useEffect(()=>{if(!activeRoom)return;const label=activeSection?.[0]||activeRoom.label;const item={label,path:currentHref,icon:activeRoom.icon,detail:activeSection?activeRoom.label+' · recently visited':'Recently visited',kind:'recent'};setRecentPalaceRoutes(prev=>{const next=[item,...prev.filter(x=>x.path!==item.path)].slice(0,5);safeLocalSet('palace-recent-routes',JSON.stringify(next))return next})},[currentHref,activeRoom?.id,activeSection?.[0]]);
+ React.useEffect(()=>{if(!activeRoom)return;const label=activeSection?.[0]||activeRoom.label;const item={label,path:currentHref,icon:activeRoom.icon,detail:activeSection?activeRoom.label+' · recently visited':'Recently visited',kind:'recent'};setRecentPalaceRoutes(prev=>{const next=[item,...prev.filter(x=>x.path!==item.path)].slice(0,5);safeLocalSet('palace-recent-routes',JSON.stringify(next));return next})},[currentHref,activeRoom?.id,activeSection?.[0]]);
  React.useEffect(()=>setCommandIndex(0),[commandQuery,commandOpen]);
  const profileInitial=(shellProfile?.display_name||shellProfile?.username||session?.user?.email||'P').slice(0,1).toUpperCase();
  function submitSearch(e){e.preventDefault();if(search.trim())navigate('/search?q='+encodeURIComponent(search.trim()))}
