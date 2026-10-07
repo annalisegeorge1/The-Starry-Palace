@@ -3680,3 +3680,87 @@ body.reader-focus-mode .reader-chapter-head{
     grid-template-columns:minmax(0,1fr)!important;
   }
 }
+
+
+/* Desktop Palace sidebar · retractable shell */
+.sidebar-retract{display:none}
+@media(min-width:981px){
+  .full-palace-shell{
+    grid-template-columns:288px minmax(0,1fr)!important;
+    transition:grid-template-columns .22s ease;
+  }
+  .full-palace-shell .full-sidebar{
+    width:288px!important;
+    min-width:288px!important;
+    transition:
+      width .22s ease,
+      min-width .22s ease,
+      padding .22s ease,
+      opacity .16s ease,
+      transform .22s ease,
+      border-color .22s ease;
+  }
+  .full-palace-shell.sidebar-collapsed{
+    grid-template-columns:0 minmax(0,1fr)!important;
+  }
+  .full-palace-shell.sidebar-collapsed .full-sidebar{
+    width:0!important;
+    min-width:0!important;
+    padding-left:0!important;
+    padding-right:0!important;
+    border-right-color:transparent!important;
+    opacity:0!important;
+    overflow:hidden!important;
+    pointer-events:none!important;
+    transform:translateX(-100%)!important;
+  }
+  .sidebar-retract{
+    position:absolute;
+    z-index:7;
+    right:8px;
+    top:8px;
+    width:32px;
+    height:32px;
+    display:grid;
+    place-items:center;
+    border:1px solid rgba(224,207,244,.18);
+    border-radius:10px;
+    background:rgba(13,11,31,.68);
+    color:#eee7f7;
+    -webkit-backdrop-filter:blur(12px);
+    backdrop-filter:blur(12px);
+    box-shadow:0 8px 22px rgba(4,3,14,.18);
+    cursor:pointer;
+    font:700 1.2rem/1 Georgia,'Times New Roman',serif;
+  }
+  .sidebar-retract:hover{
+    background:rgba(87,67,135,.34);
+    border-color:rgba(224,207,244,.3);
+  }
+  .daylight .sidebar-retract{
+    background:rgba(250,247,252,.86);
+    color:#51435f;
+    border-color:rgba(96,77,142,.14);
+  }
+  .full-topbar .nav-toggle{
+    display:grid!important;
+    place-items:center!important;
+    width:38px!important;
+    height:38px!important;
+    min-width:38px!important;
+    min-height:38px!important;
+    padding:0!important;
+    border:1px solid rgba(205,184,235,.14)!important;
+    border-radius:11px!important;
+    background:rgba(255,255,255,.018)!important;
+    color:inherit!important;
+    cursor:pointer;
+  }
+  .full-palace-shell.sidebar-collapsed .full-stage{
+    width:100%!important;
+    max-width:none!important;
+  }
+}
+@media(max-width:980px){
+  .sidebar-retract{display:none!important}
+}
