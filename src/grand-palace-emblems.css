@@ -1,0 +1,31 @@
+/* Illustrated heraldry and category-coloured icons, shared across Palace rooms */
+.palace-emblem{display:block;flex:none;max-width:100%;filter:drop-shadow(0 4px 11px rgba(13,18,54,.22))}
+.grand-atlas-choice .grand-atlas-crest{width:72px;height:72px;background:radial-gradient(circle,rgba(231,234,255,.16),rgba(71,82,154,.1))}
+.grand-atlas-choice .grand-atlas-crest .palace-emblem{width:61px;height:61px;transition:transform .22s ease}
+.grand-atlas-choice:hover .palace-emblem{transform:scale(1.13) rotate(-3deg)}
+.grand-atlas-large-crest .palace-emblem{width:100%;height:100%}
+.grand-my-crest .palace-emblem{width:100%;height:100%}
+.grand-welcome-stamp .palace-emblem{width:100%;height:100%}
+.legacy-standard-symbol{display:grid;place-items:center;flex:1;min-height:0;overflow:visible}
+.legacy-standard-symbol .palace-emblem{max-width:100%;width:auto;height:auto;max-height:100%;filter:drop-shadow(0 4px 14px rgba(202,213,255,.21))}
+.legacy-standard.level-3 .palace-emblem,.legacy-standard.level-4 .palace-emblem{filter:drop-shadow(0 5px 16px rgba(216,218,255,.5))}
+.grand-palace-tab-icon{box-shadow:inset 0 0 0 1px rgba(214,218,255,.09)}
+.grand-palace-tab:nth-child(1) .grand-palace-tab-icon{color:#d4b9ff;background:rgba(170,135,240,.2)}
+.grand-palace-tab:nth-child(2) .grand-palace-tab-icon{color:#b1d4ff;background:rgba(104,157,232,.2)}
+.grand-palace-tab:nth-child(3) .grand-palace-tab-icon{color:#efaedc;background:rgba(219,125,204,.17)}
+.grand-palace-tab:nth-child(4) .grand-palace-tab-icon{color:#a4eee2;background:rgba(82,194,177,.17)}
+.grand-palace-tab:nth-child(5) .grand-palace-tab-icon{color:#e6c3ff;background:rgba(185,130,229,.2)}
+.grand-path-courts .grand-path-orbit{color:#b6ceff;background:rgba(111,158,240,.24)}
+.grand-path-arts .grand-path-orbit{color:#f0bbe7;background:rgba(198,112,198,.21)}
+.grand-path-commons .grand-path-orbit{color:#a7eee0;background:rgba(88,201,183,.17)}
+.grand-path-treasury .grand-path-orbit{color:#dcc0ff;background:rgba(184,132,226,.2)}
+.grand-today-dash article:nth-child(1)>span{color:#c5b9fb}.grand-today-dash article:nth-child(2)>span{color:#addfff}.grand-today-dash article:nth-child(3)>span{color:#a4e5d6}
+.grand-palace-hall .grand-leaderboard .grand-ranked-courts i{display:grid;place-items:center;min-width:42px}
+.daylight .grand-palace-tab:nth-child(1) .grand-palace-tab-icon{color:#6c449d;background:#eadcfa}
+.daylight .grand-palace-tab:nth-child(2) .grand-palace-tab-icon{color:#345f9f;background:#dceafc}
+.daylight .grand-palace-tab:nth-child(3) .grand-palace-tab-icon{color:#964d92;background:#f6e2f4}
+.daylight .grand-palace-tab:nth-child(4) .grand-palace-tab-icon{color:#286e70;background:#daf5ef}
+.daylight .grand-palace-tab:nth-child(5) .grand-palace-tab-icon{color:#76539d;background:#ede0fa}
+.daylight .grand-palace-tab.active .grand-palace-tab-icon{color:#fff;background:rgba(255,255,255,.17)}
+@media(max-width:650px){.grand-atlas-choice .grand-atlas-crest{width:61px;height:61px}.grand-atlas-large-crest .palace-emblem{max-width:100%}.legacy-standard.large{min-height:240px}}
+@media(prefers-reduced-motion:reduce){.grand-atlas-choice .grand-atlas-crest .palace-emblem{transition:none}.grand-atlas-choice:hover .palace-emblem{transform:none}}
