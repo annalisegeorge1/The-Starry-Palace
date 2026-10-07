@@ -1223,6 +1223,14 @@ describe('Starry Palace launch safety',()=>{
     expect(next).toContain('.chat-scroll.live-chat');
   });
 
+  it('keeps the phone shell compact and unclipped',()=>{
+    const next=read('src/palace-next.css');
+    expect(next).toContain('Mobile shell conflict resolution · October 6 2026');
+    expect(next).toContain('.write-action span');
+    expect(next).toContain('max-width:38px!important');
+    expect(next).toContain('.restored-floating-controls .notification-anchor');
+  });
+
   it('keeps tablet room navigation swipeable without covering content',()=>{
     const polish=read('src/polish.css');
     expect(polish).toContain('Tablet navigation rail correction · October 6 2026');
