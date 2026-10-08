@@ -1,9 +1,10 @@
 import {describe,it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
-const live=readFileSync(new URL('../src/liveRooms.jsx',import.meta.url),'utf8');
+import {resolve} from 'node:path';
+const live=readFileSync(resolve(process.cwd(),'src/liveRooms.jsx'),'utf8');
 const reader=live.split('export function ChapterLive(')[1]?.split('export function ')[0]||'';
 const writer=live.split('export function WritingLive(')[1]?.split('export function ')[0]||'';
-const data=readFileSync(new URL('../src/palaceData.js',import.meta.url),'utf8');
+const data=readFileSync(resolve(process.cwd(),'src/palaceData.js'),'utf8');
 
 describe('effortless reading and writing regression protection',()=>{
  it('restores a chapter once, then lets the reader scroll independently',()=>{
