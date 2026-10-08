@@ -26,6 +26,17 @@ These eight function names and their SQL definitions were inspected without read
 
 These are **code observations**, not adversarial verification of every parameter, role grant, or nested function.
 
+## Follow-up: Celestial Point reward visibility
+
+A targeted review of `give_palace_praise` and `record_palace_share` found that these `SECURITY DEFINER` functions checked `publication_status='published'`, but did **not** check work visibility before awarding points. The standard `works` and `chapters` reading policies restrict public access to published public works and signed-in access to published members-only works. Knowing a private/hidden published work's UUID should not bypass that visibility model.
+
+The minimal correction in [`database/restrict-rewards-to-readable-works.sql`](../database/restrict-rewards-to-readable-works.sql) requires a published work to have `visibility in ('public','members')` for:
+- Praise of a work
+- Praise of an individual published chapter
+- Share-triggered Celestial Points
+
+Both functions already require `auth.uid()` to be non-null. This preserves eligible published stories, all original reward quantities and limits, and idempotent point awards. The migration must be verified in the live database before this item is considered resolved. The **public-facing praise count getter** still needs a separate read-authorization review; it is not altered by this rewards correction.
+
 ## Release review order
 
 1. **Protect unpublished work and account data.** In a controlled test setup, sign in as two unrelated accounts and verify one cannot obtain the other's drafts, unpublished chapters, writing notes, private messages, account export, or private Council matters through either table APIs or RPCs. Check storage bucket policies separately.
