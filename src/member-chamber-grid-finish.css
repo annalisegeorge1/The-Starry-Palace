@@ -1,0 +1,206 @@
+/*
+ * Member Chamber | grid and navigation repair
+ * 8 Oct 2026. Only the public member Chamber is affected.
+ * Restore usable natural layouts over conflicting legacy flex/grid rules.
+ * Preserve existing cover dimensions, crest art, frames and earned colours.
+ */
+.palace-shell .member-chamber-atelier.chic-member-profile{
+ box-sizing:border-box!important;
+ width:min(100%,1180px)!important;
+ max-width:100%!important;
+ min-width:0!important;
+ margin-inline:auto!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile :is(.legacy-profile-copy,.legacy-profile-cover,.legacy-profile-actions,.legacy-profile-stats){
+ box-sizing:border-box;
+ min-width:0;
+ max-width:100%;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats{
+ display:grid!important;
+ grid-template-columns:repeat(6,minmax(0,1fr))!important;
+ gap:8px!important;
+ overflow:visible!important;
+ padding:10px clamp(10px,2vw,20px) 14px!important;
+ align-items:stretch!important;
+ border-top:1px solid rgba(185,182,236,.22)!important;
+ background:rgba(15,22,53,.48)!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats>div{
+ box-sizing:border-box;
+ display:flex!important;
+ flex:none!important;
+ flex-direction:column!important;
+ align-items:center!important;
+ justify-content:center!important;
+ gap:5px!important;
+ width:auto!important;
+ min-width:0!important;
+ min-height:74px!important;
+ margin:0!important;
+ padding:10px 6px!important;
+ border:1px solid rgba(178,175,235,.22)!important;
+ border-radius:12px!important;
+ background:rgba(130,119,193,.09)!important;
+ text-align:center!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats strong{
+ font:650 clamp(1.12rem,1.9vw,1.46rem)/1.15 Georgia,serif!important;
+ color:#f1ebff!important;
+ font-variant-numeric:tabular-nums;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats span{
+ display:block!important;
+ max-width:100%!important;
+ margin:0!important;
+ font-size:clamp(.61rem,.95vw,.72rem)!important;
+ line-height:1.4!important;
+ letter-spacing:.035em!important;
+ overflow-wrap:break-word!important;
+ white-space:normal!important;
+ text-wrap:balance;
+ color:#d1cce8!important;
+}
+.palace-shell .member-chamber-atelier .chamber-atelier-worn-heading{
+ max-width:100%;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-crown-ribbon{
+ display:grid!important;
+ grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))!important;
+ width:100%!important;
+ max-width:100%!important;
+ gap:10px!important;
+ align-items:stretch!important;
+ overflow:visible!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-crown-ribbon>span{
+ box-sizing:border-box!important;
+ grid-column:auto!important;
+ width:auto!important;
+ min-width:0!important;
+ max-width:none!important;
+ min-height:78px;
+ padding:12px!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-crown-ribbon>span strong{
+ white-space:normal!important;
+ overflow-wrap:break-word!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions :is(a,button){
+ box-sizing:border-box!important;
+ max-width:100%!important;
+ white-space:normal!important;
+ text-align:center!important;
+ line-height:1.35!important;
+ overflow-wrap:break-word!important;
+}
+.palace-shell .chamber-atelier-tabs.chic-chamber-tabs{
+ box-sizing:border-box!important;
+ width:min(100%,1180px)!important;
+ max-width:100%!important;
+ min-width:0!important;
+ margin-inline:auto!important;
+}
+.palace-shell .chamber-atelier-tabs.chic-chamber-tabs a:focus-visible{
+ outline:3px solid #addcff!important;
+ outline-offset:-3px;
+}
+.palace-shell .chamber-atelier-palace-stage,
+.palace-shell .chamber-creator-overview,
+.palace-shell .chamber-atelier-gallery.legacy-showcase-wall{
+ box-sizing:border-box;
+ width:100%;
+ min-width:0;
+ max-width:1180px;
+}
+.palace-shell .member-palace-heraldry>div:last-child{
+ min-width:0;
+ overflow-wrap:break-word;
+}
+.palace-shell.daylight .member-chamber-atelier.chic-member-profile .legacy-profile-stats{
+ background:#f5f1fa!important;
+ border-top-color:#d5c6e9!important;
+}
+.palace-shell.daylight .member-chamber-atelier.chic-member-profile .legacy-profile-stats>div{
+ background:#fff!important;
+ border-color:#d8cce8!important;
+}
+.palace-shell.daylight .member-chamber-atelier.chic-member-profile .legacy-profile-stats strong{color:#35274d!important}
+.palace-shell.daylight .member-chamber-atelier.chic-member-profile .legacy-profile-stats span{color:#544566!important}
+@media(max-width:980px){
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ }
+}
+@media(max-width:600px){
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:7px!important;
+  padding:10px!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats>div{
+  min-height:76px!important;
+  padding:10px 7px!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-crown-ribbon{
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:8px!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px!important;
+  justify-content:stretch!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions :is(a,button){
+  width:100%!important;
+  min-width:0!important;
+  min-height:44px!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions .creator-support-link{
+  grid-column:1/-1;
+ }
+ /* All five doors should be visible without an invisible sideways scroll. */
+ .palace-shell .chamber-atelier-tabs.chic-chamber-tabs{
+  display:grid!important;
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  gap:5px!important;
+  padding:6px!important;
+  overflow:visible!important;
+  top:64px!important;
+ }
+ .palace-shell .chamber-atelier-tabs.chic-chamber-tabs a{
+  grid-column:span 2;
+  display:flex!important;
+  flex:none!important;
+  flex-direction:column;
+  gap:2px!important;
+  min-width:0!important;
+  min-height:50px!important;
+  padding:6px 2px!important;
+  text-align:center!important;
+  white-space:normal!important;
+  line-height:1.2!important;
+  font-size:clamp(.65rem,2.4vw,.78rem)!important;
+ }
+ .palace-shell .chamber-atelier-tabs.chic-chamber-tabs a:nth-child(n+4){grid-column:span 3}
+ .palace-shell #chamber-palace,
+ .palace-shell #chamber-about,
+ .palace-shell #chamber-notes,
+ .palace-shell #chamber-honours,
+ .palace-shell #chamber-worlds{scroll-margin-top:184px}
+}
+@media(max-width:400px){
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions{
+  grid-template-columns:minmax(0,1fr)!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions .creator-support-link{
+  grid-column:auto;
+ }
+}
+@media(max-height:480px) and (max-width:600px){
+ .palace-shell .chamber-atelier-tabs.chic-chamber-tabs{position:static!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats>div{transition:none!important}
+}
