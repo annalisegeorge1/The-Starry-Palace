@@ -24,7 +24,9 @@ describe('editor and reader daily-use guarantees',()=>{
   expect(writer).toContain("localStorage.setItem(recoveryKey(),JSON.stringify(snap))");
   expect(writer).toContain('createManuscriptSaveCoordinator(');
   expect(writer).toContain('await persistChapter(form)');
-  expect(writer).toContain("setSaved('Recovery copy kept on this device')");
+  expect(writer).toContain('setSaved(saveFailureNotice())');
+  expect(writer).toContain("recoveryStorageRef.current?'Recovery copy kept on this device':'Cloud save failed · export draft now'");
+  expect(writer).toContain('setRecoveryStorageAvailable(false)');
  });
  it('makes reader settings and the active reading tone identifiable',()=>{
   expect(reader).toContain('aria-controls="palace-reader-settings"');

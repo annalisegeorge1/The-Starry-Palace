@@ -1,0 +1,90 @@
+
+/* Chapter trust signals — a gentle, honest status display and a local copy button.
+   The chapter DOM, save coordinator, editor formatting and publication are untouched. */
+body.writing-desk-open .manuscript-sticky-toolbar .writer-chapter-jump-actions{
+ flex-wrap:wrap;row-gap:7px;min-width:0;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-toolbar-save-state{
+ max-width:100%;overflow-wrap:anywhere;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-toolbar-save-state i{
+ flex:0 0 7px;width:7px;height:7px;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-toolbar-save-state.state-ready i{
+ background:#b6b8d8!important;box-shadow:none!important;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-toolbar-save-state.state-pending i{
+ background:#a7c8fa!important;box-shadow:0 0 8px rgba(132,179,246,.35)!important;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-toolbar-save-state.state-saved i{
+ background:#8ce4d4!important;box-shadow:0 0 8px rgba(129,235,212,.5)!important;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-toolbar-save-state.state-recovery i,
+body.writing-desk-open .manuscript-sticky-toolbar .writer-toolbar-save-state.state-attention i{
+ background:#e0b8fb!important;box-shadow:0 0 8px rgba(205,165,250,.32)!important;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-backup-action{
+ display:inline-flex;align-items:center;justify-content:center;
+ min-height:39px;padding:.48rem .72rem;
+ background:rgba(105,99,183,.19);border:1px solid rgba(184,177,247,.54);
+ color:#ebe3ff;border-radius:11px;font:700 .74rem/1.35 system-ui,sans-serif;
+ cursor:pointer;white-space:nowrap;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-backup-action:hover{
+ background:rgba(145,130,218,.31);border-color:rgba(218,197,255,.8);
+}
+body.writing-desk-open .writer-recovery-alert,
+body.writing-desk-open .writer-backup-feedback{
+ display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;
+ padding:13px 16px;margin:10px 0;border-radius:14px;
+ border:1px solid rgba(207,174,241,.58);
+ background:linear-gradient(130deg,rgba(96,68,135,.27),rgba(71,80,152,.16));
+ color:#f1eaff;font:normal .82rem/1.6 system-ui,sans-serif;
+}
+body.writing-desk-open .writer-recovery-alert strong{font-size:.9rem;flex:0 0 auto;color:#f1d9ff}
+body.writing-desk-open .writer-recovery-alert span{flex:1 1 270px}
+body.writing-desk-open .writer-recovery-alert button{
+ border-radius:10px;min-height:42px;
+ padding:8px 14px;background:#d7c3fb;color:#302245;
+ border:1px solid #ddcff8;font:750 .79rem/1.4 system-ui,sans-serif;
+ cursor:pointer;
+}
+body.writing-desk-open .writer-backup-feedback{
+ background:rgba(95,143,164,.12);border-color:rgba(148,205,218,.4);
+ color:#d9f2f2;margin:8px 0;font-size:.79rem;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-backup-action:focus-visible,
+body.writing-desk-open .writer-recovery-alert button:focus-visible{
+ outline:3px solid #c5b3ff!important;outline-offset:3px!important;
+}
+.daylight body.writing-desk-open .manuscript-sticky-toolbar .writer-backup-action,
+body.daylight.writing-desk-open .manuscript-sticky-toolbar .writer-backup-action{
+ background:#efe8fb;color:#463261;border-color:#b7a5d0;
+}
+.daylight body.writing-desk-open .manuscript-sticky-toolbar .writer-backup-action:hover,
+body.daylight.writing-desk-open .manuscript-sticky-toolbar .writer-backup-action:hover{background:#e6dcf6}
+.daylight body.writing-desk-open .writer-recovery-alert,
+body.daylight.writing-desk-open .writer-recovery-alert{
+ background:linear-gradient(125deg,#fcf8ff,#f0edfb);
+ border-color:#b7a1cd;color:#352746;
+}
+.daylight body.writing-desk-open .writer-recovery-alert strong,
+body.daylight.writing-desk-open .writer-recovery-alert strong{color:#5f407e}
+.daylight body.writing-desk-open .writer-recovery-alert button,
+body.daylight.writing-desk-open .writer-recovery-alert button{background:#634987;color:white;border-color:#634987}
+.daylight body.writing-desk-open .writer-backup-feedback,
+body.daylight.writing-desk-open .writer-backup-feedback{
+ background:#f1f8fa;color:#315563;border-color:#a9c4cb;
+}
+@media(max-width:760px){
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-backup-action{
+  min-height:44px;padding:9px 11px;
+ }
+ body.writing-desk-open .writer-recovery-alert{padding:11px 13px}
+ body.writing-desk-open .writer-recovery-alert button{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-backup-action{
+  transition:none!important;animation:none!important;
+ }
+}
