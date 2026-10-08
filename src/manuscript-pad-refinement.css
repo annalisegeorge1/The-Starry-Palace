@@ -169,13 +169,53 @@ body.writing-desk-open.daylight .chic-editor-form>.manuscript-sticky-toolbar,
  .manuscript-type-ribbon label{flex:none}
  .manuscript-type-ribbon>.manuscript-paper,.manuscript-type-ribbon>.manuscript-focus{flex:none}
 }
+/* On phones the manuscript, not the duplicate font settings, deserves the
+   available height. All font, size, spacing, mood, and focus controls are still
+   available in the accessible Writing tools drawer immediately below the bar.
+   Keep chapter navigation, save state, Save now, and formatting tools sticky. */
 @media(max-width:760px){
- body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar{top:56px!important;z-index:90!important;padding:.4rem!important;gap:.3rem!important}
- .manuscript-type-ribbon{padding:.29rem!important;max-width:100%;overflow-x:auto}
- .manuscript-type-ribbon label>span{display:none}
- .manuscript-type-ribbon select{min-width:84px;max-width:118px;min-height:32px}
- .manuscript-type-ribbon>.manuscript-paper,.manuscript-type-ribbon>.manuscript-focus{font-size:.65rem!important}
+ body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar{
+  top:56px!important;
+  z-index:90!important;
+  padding:.35rem!important;
+  gap:.25rem!important;
+  max-width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+ }
+ body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar .manuscript-type-ribbon{
+  display:none!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-chapter-jump{
+  min-width:0!important;
+  gap:.25rem!important;
+  padding-bottom:.28rem!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-chapter-jump-actions{
+  min-width:0!important;
+  width:100%!important;
+  max-width:100%!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  flex-wrap:nowrap!important;
+  overscroll-behavior-x:contain;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(195,166,238,.44) transparent;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-chapter-jump-actions > *{
+  flex:0 0 auto!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-toolbar-save-state{
+  max-width:min(68vw,260px)!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+ }
  .manuscript-toolbar-note{display:none}
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-format-navigator{
+  min-width:0!important;
+  max-width:100%!important;
+ }
  .manuscript-sticky-toolbar .writer-format-scroll button{min-height:35px!important;padding:.35rem .48rem!important}
  .manuscript-sheet-heading{font-size:.47rem;padding:.2rem .4rem}
  body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas{font-size:var(--writer-font-size,20px)!important;min-height:65vh!important}

@@ -4403,11 +4403,6 @@ body.reader-focus-mode .reader-chapter-head{
   .chic-editor-form>.writer-desk-drawer{grid-area:view!important;min-width:0}
   .chic-editor-form>.writer-recovery-alert{grid-area:alert;min-width:0}
   .chic-editor-form>.writer-backup-feedback{grid-area:feedback;min-width:0}
-  .chic-editor-form>.writer-view-controls{grid-area:view}
-  .chic-editor-form>.writer-document-map{grid-area:map}
-  .chic-editor-form>.writer-margin-notes{grid-area:notes}
-  .chic-editor-form>.writer-find-replace{grid-area:find}
-  .chic-editor-form>.legacy-spellcheck{grid-area:spell}
   .chic-editor-form>.legacy-goal-progress{grid-area:goal}
   .chic-editor-form>.writing-page-stage{grid-area:canvas}
   .chic-editor-form>.revision-note-field{grid-area:revision}
@@ -4480,39 +4475,6 @@ body.reader-focus-mode .reader-chapter-head{
     min-width:0;
   }
 
-  .chic-editor-form>.writer-view-controls{
-    display:grid!important;
-    grid-template-columns:repeat(2,minmax(0,1fr))!important;
-    gap:.42rem!important;
-    padding:.62rem!important;
-    border:1px solid rgba(201,178,232,.10)!important;
-    border-radius:15px!important;
-    background:rgba(20,17,45,.58)!important;
-    overflow:visible!important;
-  }
-  .chic-editor-form>.writer-view-controls label,
-  .chic-editor-form>.writer-view-controls button{
-    min-width:0!important;
-    width:100%!important;
-    flex:none!important;
-  }
-  .chic-editor-form>.writer-view-controls label{
-    display:grid!important;
-    gap:.2rem!important;
-  }
-  .chic-editor-form>.writer-view-controls label>span{
-    font-size:.44rem!important;
-  }
-  .chic-editor-form>.writer-view-controls select,
-  .chic-editor-form>.writer-view-controls button{
-    min-height:36px!important;
-    font-size:.5rem!important;
-  }
-
-  .chic-editor-form>.writer-document-map,
-  .chic-editor-form>.writer-margin-notes,
-  .chic-editor-form>.writer-find-replace,
-  .chic-editor-form>.legacy-spellcheck,
   .chic-editor-form>.legacy-goal-progress,
   .chic-editor-form>.revision-note-field,
   .chic-editor-form>.legacy-editor-status{
@@ -4525,16 +4487,6 @@ body.reader-focus-mode .reader-chapter-head{
     box-sizing:border-box!important;
   }
 
-  .chic-editor-form>.writer-find-replace>div{
-    grid-template-columns:1fr!important;
-  }
-  .chic-editor-form>.legacy-spellcheck{
-    align-items:flex-start!important;
-    padding:.68rem!important;
-  }
-  .chic-editor-form>.legacy-spellcheck>span{
-    line-height:1.35;
-  }
   .chic-editor-form>.legacy-goal-progress{
     overflow:hidden;
     min-height:30px!important;

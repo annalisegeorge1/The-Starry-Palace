@@ -32,7 +32,7 @@ describe('calmer manuscript workspace',()=>{
   expect(studio).toContain("defaultOpen={readPalacePreference('palace-writing-tools-expanded','false')==='true'}");
   expect(studio).toContain("onToggle={e=>writePalacePreference('palace-writing-tools-expanded',e.currentTarget.open?'true':'false')}");
   expect(studio).toContain('<summary><span aria-hidden="true" className="writer-desk-drawer-glyph">');
-  expect(studio).toContain('Page appearance · Chapter map · Notes · Find');
+  expect(studio).toContain('Typeface · Text size · Page feel · Map · Notes · Find');
  });
  it('allows Ctrl/⌘ F and the toolbar to open Find inside the collapsed drawer',()=>{
   const handler=studio.split('function openFindPanel()')[1]?.split('function editorViewClass()')[0]||'';
