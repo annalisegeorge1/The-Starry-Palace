@@ -25,25 +25,42 @@ export function structureClassicText(source=''){
  const groups=raw.split(/\n\s*\n+/);
  const result=[];
  for(const group of groups){
-  const lines=group.split('\n').map(s=>s.trim()).filter(Boolean);
+  const rawLines=group.split('\n').filter(s=>s.trim());
+  const lines=rawLines.map(s=>s.trim());
   if(!lines.length)continue;
+  // Indented prose/dialogue in plain-text editions may encode paragraph
+  // boundaries even without a blank line. Preserve that evidence first.
+  const average=lines.reduce((n,line)=>n+line.length,0)/lines.length;
+  const looksLikeDialogue=lines.filter(line=>/^[“"‘']/.test(line)).length>=2;
+  const likelyVerse=lines.length>=3&&average<54&&!looksLikeDialogue
+   &&lines.filter(line=>verseHint.test(line)).length>=Math.ceil(lines.length/3);
+  if(likelyVerse){result.push({kind:'verse',text:lines.join('\n')});continue;}
+  let paragraph=[];
+  const flush=()=>{
+   if(!paragraph.length)return;
+   const text=paragraph.join(' ').replace(/ {2,}/g,' ');
+   // Only a genuinely flattened one-line import gets inferred breaks.
+   // Never split paragraphs supported by line breaks or empty-line evidence.
+   const recovery=groups.length===1&&rawLines.length===1;
+   for(const block of recovery?segmentLongProse(text):[text])
+    result.push({kind:'paragraph',text:block});
+   paragraph=[];
+  };
   for(let i=0;i<lines.length;i++){
    if(heading.test(lines[i])&&lines[i].length<100){
+    flush();
     result.push({kind:'heading',text:lines[i]});
-    lines.splice(i,1);i--;
+    continue;
    }
+   // Plain text editions often use a three-space first-line indentation.
+   // Keep paragraphs in their original order instead of guessing based on
+   // arbitrary sentence/character counts.
+   if(paragraph.length&&/^(?: {3,}|\t)/.test(rawLines[i]))flush();
+   paragraph.push(lines[i]);
   }
-  if(!lines.length)continue;
-  // Single newlines are common in Gutenberg and other copied prose.
-  // Keep short, deliberately broken lines as verse instead of merging them.
-  const average=lines.reduce((n,line)=>n+line.length,0)/lines.length;
-  const likelyVerse=lines.length>=3&&average<54&&lines.filter(line=>verseHint.test(line)).length>=Math.ceil(lines.length/3);
-  if(likelyVerse){result.push({kind:'verse',text:lines.join('\n')});continue;}
-  const text=lines.join(' ').replace(/ {2,}/g,' ');
-  // Existing paragraph boundaries are authoritative. Only rescue unusually
-  // long blocks that arrived without breaks.
-  for(const block of segmentLongProse(text))result.push({kind:'paragraph',text:block});
+  flush();
  }
+
  return result;
 }
 
