@@ -47,3 +47,7 @@ export const submitPetition=(category,title,description)=>rpc('submit_palace_pet
 export const supportPetition=id=>rpc('toggle_palace_petition_support',{p_petition:id});
 export const respondPetition=(id,status,response)=>rpc('respond_palace_petition',{p_petition:id,p_status:status,p_response:response});
 export const hidePetition=(id,reason)=>rpc('hide_palace_petition',{p_petition:id,p_reason:reason});
+
+export const getPetitionEngagement=(page=0,palace=null)=>rpc('get_palace_petition_engagement',{p_page:page,p_palace:palace});
+export const logPetitionProgress=(id,stage,summary,proofUrl)=>rpc('log_palace_petition_progress',{p_petition:id,p_stage:stage,p_summary:summary,p_proof_url:proofUrl||null});
+export const verifyPetitionDelivery=(id,note)=>rpc('verify_palace_petition_delivery',{p_update:id,p_note:note});
