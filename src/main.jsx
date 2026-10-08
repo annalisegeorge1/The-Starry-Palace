@@ -447,7 +447,8 @@ function BlankScreenWatchdog(){
    layer.className='route-recovery blank-screen-recovery';
    layer.dataset.palaceBlankRecovery='true';
    layer.setAttribute('role','alert');
-   layer.innerHTML='<div><span aria-hidden="true">☾<b>✦</b></span><h1>This room lost its moonlight.</h1><p>The Palace caught an incomplete screen without discarding your live app state.</p><button type="button">Restore this room</button></div>';
+   const protectDrafts=shouldOfferManualPalaceRefresh(location.pathname);
+    layer.innerHTML='<div><span aria-hidden="true">☾<b>✦</b></span><h1>This room lost its moonlight.</h1><p>The Palace caught an incomplete screen without discarding your live app state.</p>'+(protectDrafts?'<p>This room may hold unfinished work. Save or export your text before choosing to reload.</p>':'')+'<button type="button">Restore this room</button></div>';
    layer.querySelector('button')?.addEventListener('click',()=>window.location.reload());
    document.body.appendChild(layer);
   };
@@ -520,7 +521,7 @@ class RouteErrorBoundary extends React.Component{
  render(){
   if(this.state.error){
    const message=String(this.state.error?.message||this.state.error||'Unknown room error').replace(/https?:\/\/\S+/g,'[url]').slice(0,220);
-   return <div className="route-recovery palace-room-recovery" role="alert"><div><span aria-hidden="true">☾<b>✦</b></span><h1>This room did not finish opening.</h1><p>The Palace shell is still running. This problem was isolated to the current room.</p><code className="palace-error-detail">{message}</code><small className="palace-error-path">Room: {this.props.path||window.location.pathname}</small><button type="button" onClick={()=>this.setState({error:null})}>Try this room again</button><Link to="/chamber">Return to My Palace</Link></div></div>;
+   return <div className="route-recovery palace-room-recovery" role="alert"><div><span aria-hidden="true">☾<b>✦</b></span><h1>This room did not finish opening.</h1><p>The Palace shell is still running. This problem was isolated to the current room.</p>{shouldOfferManualPalaceRefresh(this.props.path?.split(/[?#]/)[0])&&<p>This room may hold unfinished work. Save or export your text before choosing to reload.</p>}<code className="palace-error-detail">{message}</code><small className="palace-error-path">Room: {this.props.path||window.location.pathname}</small><button type="button" onClick={()=>this.setState({error:null})}>Try this room again</button><Link to="/chamber">Return to My Palace</Link></div></div>;
   }
   return this.props.children
  }
