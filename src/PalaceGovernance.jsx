@@ -11,7 +11,7 @@ const formatDate=value=>new Date(value).toLocaleString(undefined,{dateStyle:'med
 export default function PalaceGovernance({Frame}){
  const [data,setData]=useState(null),[error,setError]=useState(''),[notice,setNotice]=useState(''),[busy,setBusy]=useState(false);
  const [streak,setStreak]=useState(null);useEffect(()=>{getPalaceVisitProgress().then(setStreak).catch(()=>{})},[]);
- const [view,setView]=useState('ballots'),[filter,setFilter]=useState('open');
+ const [view,setView]=useState(()=>{const t=new URLSearchParams(window.location.search).get('tab');return ['ballots','elections','results','service','notices-private','appeals','notices','checklists','accountability','manage'].includes(t)?t:'ballots'}),[filter,setFilter]=useState('open');
  const [title,setTitle]=useState(''),[description,setDescription]=useState(''),[choices,setChoices]=useState('Yes\nNo'),[hours,setHours]=useState(72),[visibility,setVisibility]=useState('after_close');
  const [noticeTitle,setNoticeTitle]=useState(''),[noticeBody,setNoticeBody]=useState(''),[category,setCategory]=useState('tidings');
  async function load(){setData(await getPalaceGovernance())}
