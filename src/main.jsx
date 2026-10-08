@@ -25,6 +25,7 @@ import {
  WorkLive,ChapterLive,WorkStudioLive,TagSearchLive,HonourLive,CouncilLive,CodeLive,ComicsLive,
  ComicLive,ComicEpisodeLive,ComicStudioLive,SeriesLive
 } from './liveRooms';
+import './palace-editorial-finish.css';
 
 
 const chunkErrorPattern=/dynamically imported module|importing a module script failed|failed to fetch|chunkloaderror|loading chunk|room load timeout|networkerror/i;
