@@ -27,6 +27,14 @@ describe('volunteer testing model',()=>{
   expect(betaChecksFor('reader').find(c=>c.id==='story-history').url).toBe('/palace-life?room=history');
   expect(betaChecksFor('reader').find(c=>c.id==='heritage').url).toBe('/events?tab=heritage');
  });
+ it('asks writers to test chapter searching, unsaved warnings, and local recovery',()=>{
+  for(const role of ['writer','artist']){
+   const checks=betaChecksFor(role);
+   expect(checks.some(x=>x.id==='chapter-organisation')).toBe(true);
+   expect(checks.find(x=>x.id==='autosave')?.hint).toContain('Saved to Palace');
+  }
+  expect(betaChecksFor('writer').find(x=>x.id==='network')?.hint).toContain('disposable text');
+ });
  it('separates success, trouble, and skipped tasks instead of counting them all as passed',()=>{
   const checks=betaChecksFor('reader').slice(0,4);
   const checked={[checks[0].id]:'passed',[checks[1].id]:'stuck',[checks[2].id]:'skipped'};
