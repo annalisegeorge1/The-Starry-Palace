@@ -91,3 +91,22 @@ export function buildBetaReport(state,checks=betaChecksFor(state.role,state.show
   'Do not attach passwords, private manuscripts, private messages, or other people\'s personal data.');
  return lines.join('\n');
 }
+
+
+/**
+ * Invitations must point to the host where the tester is currently standing.
+ * A localhost or insecure development address is not a shareable public beta.
+ */
+export function betaInviteUrl(origin){
+ try{
+  const address=new URL(String(origin||''));
+  if(address.protocol!=='https:'||!address.hostname||address.username||address.password)return '';
+  if(address.hostname==='localhost'||address.hostname==='127.0.0.1'||address.hostname==='[::1]')return '';
+  return new URL('/beta',address.origin).href;
+ }catch{return ''}
+}
+export function betaInvitationText(origin){
+ const url=betaInviteUrl(origin);
+ if(!url)return '';
+ return 'Would you like to help test The Starry Palace, a new home for stories? Try a few reader or writer tasks at '+url+'. No experience needed, no pressure to publish, and please use disposable text when testing drafts. Your notes stay on your device until you choose to share them.';
+}

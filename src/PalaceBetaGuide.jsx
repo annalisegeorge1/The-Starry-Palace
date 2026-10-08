@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react';
 import {Link} from 'react-router-dom';
 import {
  PALACE_BETA_CHECKS,PALACE_BETA_TRACKS,BETA_RESULTS,BETA_SEVERITY,
- betaChecksFor,betaCounts,nextBetaCheck,betaIssueHasContent,cleanBetaIssue,buildBetaReport
+ betaChecksFor,betaCounts,nextBetaCheck,betaIssueHasContent,cleanBetaIssue,buildBetaReport,betaInviteUrl,betaInvitationText
 } from './palaceBetaData';
 import './palace-beta.css';
 import './palace-beta-ready.css';
@@ -91,7 +91,9 @@ export default function PalaceBetaGuide({Frame}){
   const empty={role:'reader',device:'',showAll:false,showRemaining:false,results:{},notes:'',issues:[],issueDraft:{...EMPTY_ISSUE}};
   update(empty);setMessage('Your local beta feedback was cleared.');
  }
- const invite='Would you like to help test The Starry Palace, a new home for stories? Try a few reader or writer tasks at https://the-starry-palace.onrender.com/beta. No experience needed, no pressure to publish, and please use disposable text when testing drafts. Your notes stay on your device until you choose to share them.';
+ const inviteOrigin=typeof window==='undefined'?'':window.location.origin;
+ const inviteUrl=betaInviteUrl(inviteOrigin);
+ const invite=betaInvitationText(inviteOrigin);
  return <Frame><main className="palace-beta-guide">
   <header className="palace-beta-hero">
    <p className="eyebrow">THE PALACE TEST KITCHEN · FRIENDLY EARLY ACCESS</p>
@@ -162,6 +164,6 @@ export default function PalaceBetaGuide({Frame}){
    {message&&<p className="palace-beta-message" role="status">{message}</p>}
    <small>Share the report privately with the person who invited you. Copying or opening the share sheet does not guarantee delivery. {storageWarning?'Local storage is blocked; export your answers before leaving this page.':'All notes and checklist results are stored only in this browser.'}</small>
   </section>
-  <section className="palace-beta-invitation"><div><p className="eyebrow">INVITING A FRIEND?</p><h2>Make room for another voice.</h2><p>Anyone can explore the beta guide. You can share this invitation with someone who enjoys reading, writing, comics or thoughtful communities.</p></div><button type="button" onClick={()=>copyText(invite,'Invitation')}>Copy a friendly tester invitation</button></section>
+  <section className="palace-beta-invitation"><div><p className="eyebrow">INVITING A FRIEND?</p><h2>Make room for another voice.</h2><p>Anyone can explore the beta guide. You can share this invitation with someone who enjoys reading, writing, comics or thoughtful communities.</p>{inviteUrl?<p className="palace-beta-current-link">This invitation opens the Palace you are visiting: <strong>{inviteUrl}</strong></p>:<p className="palace-beta-current-link">This is a local or unshareable preview. Open the deployed Palace before inviting testers.</p>}</div><button type="button" disabled={!inviteUrl} onClick={()=>copyText(invite,'Invitation')}>Copy a friendly tester invitation</button></section>
  </main></Frame>;
 }
