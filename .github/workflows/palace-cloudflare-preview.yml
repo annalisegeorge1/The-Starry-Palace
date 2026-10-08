@@ -1,6 +1,7 @@
 name: Palace Cloudflare preview bundle
 
-# One initial bundle when this workflow is introduced, then on-demand only.
+# A fresh bundle runs whenever this workflow is edited on main; otherwise on-demand.
+# This does not deploy to any website or use Render pipeline minutes.
 # The standard Palace build checks remain the normal release gate.
 on:
   workflow_dispatch:
@@ -52,4 +53,4 @@ jobs:
           path: dist/
           if-no-files-found: error
           include-hidden-files: false
-          retention-days: 2
+          retention-days: 5
