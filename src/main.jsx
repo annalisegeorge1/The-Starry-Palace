@@ -27,6 +27,7 @@ import {
 } from './liveRooms';
 import './palace-editorial-finish.css';
 import './palace-navigation-jewels.css';
+import './palace-regalia-rooms.css';
 
 
 const chunkErrorPattern=/dynamically imported module|importing a module script failed|failed to fetch|chunkloaderror|loading chunk|room load timeout|networkerror/i;
