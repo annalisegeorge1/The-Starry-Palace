@@ -32,8 +32,15 @@ export function structureClassicText(source=''){
   // boundaries even without a blank line. Preserve that evidence first.
   const average=lines.reduce((n,line)=>n+line.length,0)/lines.length;
   const looksLikeDialogue=lines.filter(line=>/^[“"‘']/.test(line)).length>=2;
+  const capitalLineStarts=lines.filter(line=>/^[“"‘']?[A-Z]/.test(line)).length;
+  const linesWithoutStop=lines.filter(line=>!/[.!?;:]\s*[”"'’]?$/.test(line)).length;
+  // Verse frequently uses intentional short, capitalized lines without
+  // end-stop punctuation. Prose copied with hard wraps usually does not.
+  const verseLineation=lines.length>=4&&average<54
+   &&capitalLineStarts>=Math.ceil(lines.length*.75)
+   &&linesWithoutStop>=Math.ceil(lines.length*.6);
   const likelyVerse=lines.length>=3&&average<54&&!looksLikeDialogue
-   &&lines.filter(line=>verseHint.test(line)).length>=Math.ceil(lines.length/3);
+   &&(lines.filter(line=>verseHint.test(line)).length>=Math.ceil(lines.length/3)||verseLineation);
   if(likelyVerse){result.push({kind:'verse',text:lines.join('\n')});continue;}
   let paragraph=[];
   const flush=()=>{
