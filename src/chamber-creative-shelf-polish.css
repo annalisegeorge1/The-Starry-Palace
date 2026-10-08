@@ -1,0 +1,250 @@
+/* The Starry Palace — member gallery & creative shelf finishing.
+   Keep all uploaded covers and painted rewards in their natural proportions. */
+.palace-shell .creator-worlds-room .creator-shelf-block{
+ min-width:0;
+ border-radius:20px!important;
+ border-color:rgba(174,171,232,.28)!important;
+ background:linear-gradient(145deg,rgba(34,41,88,.46),rgba(24,26,60,.65))!important;
+ box-shadow:0 13px 32px rgba(6,9,32,.1)!important;
+}
+.palace-shell .creator-worlds-room .creator-shelf-block>header{
+ flex-wrap:wrap;
+ gap:10px 16px;
+}
+.palace-shell .creator-worlds-room .creator-shelf-block>header>div{
+ min-width:0;
+}
+.palace-shell .creator-worlds-room .creator-shelf-block>header>div>span{
+ flex:0 0 40px;
+ height:40px;
+ width:40px;
+ border-radius:13px;
+ font-size:1.18rem;
+ background:rgba(140,135,211,.12);
+ color:#c3ccff;
+}
+.palace-shell .creator-worlds-room .creator-shelf-block>header>b{
+ font-weight:650;
+ font-variant-numeric:tabular-nums;
+ line-height:1.4;
+ white-space:normal;
+ color:#d0c7f1;
+}
+.palace-shell .creator-worlds-room .creator-work-grid{
+ min-width:0;
+ gap:12px!important;
+}
+.palace-shell .creator-worlds-room .creator-work-grid>article.chamber-story-card{
+ box-sizing:border-box;
+ display:grid!important;
+ grid-template-columns:minmax(0,92px) minmax(0,1fr);
+ align-items:stretch;
+ min-width:0!important;
+ min-height:180px;
+ padding:0!important;
+ overflow:hidden;
+ border-radius:17px!important;
+ border:1px solid rgba(185,177,235,.28)!important;
+ background:linear-gradient(140deg,rgba(63,61,123,.2),rgba(26,33,78,.45))!important;
+ box-shadow:0 6px 19px rgba(7,11,39,.11);
+}
+.palace-shell .chamber-story-cover{
+ display:grid;
+ place-items:center;
+ min-width:0;
+ min-height:100%;
+ padding:8px;
+ overflow:hidden;
+ background:radial-gradient(ellipse at 40% 25%,rgba(181,169,243,.25),transparent 70%),linear-gradient(160deg,#282b61,#141c3c);
+}
+.palace-shell .chamber-story-cover img{
+ display:block;
+ width:100%;
+ height:100%;
+ max-height:210px;
+ object-fit:contain;
+}
+.palace-shell .chamber-story-cover>span{
+ font:500 1.65rem Georgia,serif;
+ letter-spacing:.04em;
+ color:#ddd9ff;
+ text-align:center;
+}
+.palace-shell .creator-worlds-room .chamber-story-content{
+ display:flex;
+ flex-direction:column;
+ gap:7px;
+ min-width:0;
+ padding:clamp(11px,1.3vw,16px);
+}
+.palace-shell .creator-worlds-room .chamber-story-content>small{
+ display:block;
+ color:#bab5df;
+ line-height:1.35;
+ overflow-wrap:break-word;
+}
+.palace-shell .creator-worlds-room .chamber-story-content h2{
+ margin:0!important;
+ font:550 clamp(1rem,1.5vw,1.2rem)/1.22 Georgia,serif!important;
+ overflow-wrap:anywhere;
+}
+.palace-shell .creator-worlds-room .chamber-story-content h2 a{
+ color:#f2ecff;
+ text-decoration:none;
+}
+.palace-shell .creator-worlds-room .chamber-story-content p{
+ margin:0!important;
+ max-width:100%;
+ color:#c9c2df;
+ font-size:.75rem;
+ line-height:1.55;
+ overflow-wrap:break-word;
+}
+.palace-shell .creator-worlds-room .chamber-story-content>a:last-child{
+ margin-top:auto;
+ padding-top:3px;
+ color:#c3d6ff;
+ font-weight:700;
+ font-size:.75rem;
+ text-underline-offset:3px;
+}
+.palace-shell .creator-worlds-room .creator-work-grid>article:hover,
+.palace-shell .creator-worlds-room .member-series-grid>article:hover,
+.palace-shell .creator-worlds-room .member-comics-grid>a:hover{
+ border-color:rgba(199,192,255,.6)!important;
+ box-shadow:0 13px 30px rgba(4,9,37,.2);
+}
+.palace-shell .creator-worlds-room :is(.chamber-story-content a,.member-comics-grid>a,.member-series-grid a):focus-visible{
+ outline:3px solid #b8dcff!important;
+ outline-offset:3px;
+ border-radius:5px;
+}
+.palace-shell .creator-worlds-room .member-series-grid>article{
+ min-width:0;
+ overflow-wrap:anywhere;
+}
+.palace-shell .creator-worlds-room .member-series-grid>article>div a{
+ display:block;
+ line-height:1.5;
+ padding-block:2px;
+}
+.palace-shell .creator-worlds-room .member-comics-grid>a>div:last-child{
+ min-width:0;
+}
+.palace-shell .creator-worlds-room .member-comics-grid :is(h3,p){
+ overflow-wrap:anywhere;
+}
+.palace-shell .creator-worlds-room .chamber-shelf-count{
+ font-size:.76rem;
+ line-height:1.5;
+ color:#c5bdda;
+ padding-inline:3px;
+ font-variant-numeric:tabular-nums;
+}
+.palace-shell .creator-worlds-room .chamber-shelf-search:focus-within{
+ border-color:#aeb8f6!important;
+ box-shadow:0 0 0 2px rgba(182,185,246,.16);
+}
+.palace-shell .creator-worlds-room .chamber-shelf-search input:focus-visible{
+ outline:0!important;
+}
+.palace-shell .chamber-atelier-gallery .chamber-atelier-gallery-count{
+ font-variant-numeric:tabular-nums;
+}
+.palace-shell .chamber-atelier-gallery .chamber-atelier-gallery-filters{
+ flex-wrap:wrap!important;
+ overflow:visible!important;
+ gap:8px!important;
+}
+.palace-shell .chamber-atelier-gallery .chamber-atelier-gallery-filters button{
+ min-height:44px!important;
+ max-width:100%;
+ white-space:normal!important;
+ line-height:1.3;
+}
+.palace-shell .chamber-atelier-gallery .chamber-art-arrange{
+ margin-top:auto;
+ align-content:start;
+}
+.palace-shell .chamber-atelier-gallery .chamber-art-arrange button{
+ min-height:40px;
+ line-height:1.3;
+}
+.palace-shell .chamber-atelier-gallery .chamber-art-arrange button:focus-visible,
+.palace-shell .chamber-atelier-gallery .chamber-atelier-gallery-filters button:focus-visible{
+ outline:3px solid #b8dcff!important;
+ outline-offset:2px;
+}
+.palace-shell.daylight .creator-worlds-room .creator-shelf-block{
+ background:linear-gradient(145deg,#fff,#f4f2fb)!important;
+ border-color:#d3c9e9!important;
+}
+.palace-shell.daylight .creator-worlds-room .creator-shelf-block>header>b,
+.palace-shell.daylight .creator-worlds-room .chamber-shelf-count{
+ color:#574b73;
+}
+.palace-shell.daylight .creator-worlds-room .creator-work-grid>article.chamber-story-card{
+ background:#fff!important;
+ border-color:#d9d0e9!important;
+}
+.palace-shell.daylight .chamber-story-cover{
+ background:linear-gradient(155deg,#edecfa,#dae5fb);
+}
+.palace-shell.daylight .chamber-story-cover>span{color:#62569c}
+.palace-shell.daylight .creator-worlds-room .chamber-story-content :is(h2 a){color:#332649}
+.palace-shell.daylight .creator-worlds-room .chamber-story-content :is(p,small){color:#605674}
+.palace-shell.daylight .creator-worlds-room .chamber-story-content>a:last-child{color:#425b95}
+@media(max-width:760px){
+ .palace-shell .creator-worlds-room .creator-work-grid{
+  grid-template-columns:minmax(0,1fr)!important;
+ }
+ .palace-shell .creator-worlds-room .chamber-shelf-tools{
+  align-items:stretch!important;
+ }
+ .palace-shell .creator-worlds-room .chamber-shelf-search{
+  box-sizing:border-box;
+  flex:1 1 100%!important;
+  width:100%;
+  min-width:0!important;
+ }
+ .palace-shell .creator-worlds-room .chamber-shelf-filters{
+  width:100%;
+ }
+ .palace-shell .creator-worlds-room .chamber-shelf-filters button{
+  min-height:44px!important;
+ }
+}
+@media(max-width:420px){
+ .palace-shell .creator-worlds-room .creator-work-grid>article.chamber-story-card{
+  grid-template-columns:82px minmax(0,1fr);
+ }
+ .palace-shell .creator-worlds-room .chamber-story-content{
+  padding:11px;
+ }
+ .palace-shell .creator-worlds-room .chamber-shelf-filters{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:7px!important;
+ }
+ .palace-shell .creator-worlds-room .chamber-shelf-filters button{
+  min-width:0!important;
+  width:100%;
+ }
+ .palace-shell .chamber-atelier-gallery .chamber-atelier-gallery-filters button{
+  flex:1 1 125px;
+ }
+}
+@media(hover:none){
+ .palace-shell .creator-worlds-room .creator-work-grid>article:hover,
+ .palace-shell .creator-worlds-room .member-series-grid>article:hover,
+ .palace-shell .creator-worlds-room .member-comics-grid>a:hover{
+  transform:none!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .creator-worlds-room .creator-work-grid>article,
+ .palace-shell .creator-worlds-room .member-comics-grid>a,
+ .palace-shell .creator-worlds-room .member-series-grid>article{
+  transition:none!important;
+ }
+}
