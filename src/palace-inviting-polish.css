@@ -1,0 +1,42 @@
+/* Invitation-first polish: one simple doorway, then the full Palace. */
+.palace-tour-fold{max-width:1230px;margin:14px auto 26px}
+.palace-tour-fold>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:13px;padding:17px 21px;border:1px solid #a58fc578;border-radius:17px;background:rgba(96,81,136,.12);color:var(--palace-text,inherit)}
+.palace-tour-fold>summary::-webkit-details-marker{display:none}
+.palace-tour-fold>summary>span:first-child{display:grid;gap:5px;font-weight:750;font-size:.91rem}
+.palace-tour-fold>summary small{font-weight:500;font-size:.75rem;opacity:.78}
+.palace-tour-fold>summary>span:last-child{font-size:1.4rem;transition:transform .16s}
+.palace-tour-fold[open]>summary>span:last-child{transform:rotate(180deg)}
+.palace-tour-fold>summary:focus-visible{outline:3px solid #aa95eb;outline-offset:3px}
+.palace-tour-fold>.palace-starting-path{margin:12px 0 0;max-width:none}
+.palace-starting-path{background:linear-gradient(125deg,rgba(52,46,84,.86),rgba(32,34,67,.86));color:#f6f1ff}
+.palace-starting-doors a{color:#f4efff}
+.palace-starting-copy .eyebrow{color:#dbcbff}
+.palace-starting-doors a:hover{background:rgba(179,157,237,.12)}
+.gate-destination-note{padding:12px 15px;border-radius:12px;border:1px solid rgba(143,193,225,.46);color:var(--palace-text,#f6f1ff);background:rgba(120,155,200,.12);font-weight:650;line-height:1.55}
+.palace-shell.daylight .gate-destination-note{color:#23365b;background:#eaf2ff;border-color:#86a4d3}
+
+/* Daylight must always be readable even when a newer card has no --card token. */
+.palace-shell.daylight :is(.palace-room-directory>summary,.palace-tour-fold>summary){background:#f8f5ff;color:#272340;border-color:#ac9cbe}
+.palace-shell.daylight :is(.palace-starting-path,.palace-live-gatherings,.palace-resume-reading,.palace-beta-report,.palace-beta-checks article){background:#fff;color:#24243e;border-color:#aa9cbd}
+.palace-shell.daylight .palace-starting-doors a{color:#24243e;background:#f8f5fc;border-color:#a79abe}
+.palace-shell.daylight .palace-starting-copy .eyebrow{color:#624590}
+.palace-shell.daylight .palace-starting-doors small{opacity:.87}
+.palace-shell.daylight .palace-starting-meter small{color:#4f4660;opacity:1}
+.palace-shell.daylight .palace-starting-track{background:#d6cce5}
+.palace-shell.daylight .palace-starting-track>span{background:#7753b8}
+.palace-shell.daylight .palace-gathering-grid article{background:#f9f6ff;color:#292540;border-color:#b2a1c3}
+.palace-shell.daylight .palace-resume-shelf>a{background:#f9f6ff;color:#28233d;border-color:#ae9cbf}
+.palace-shell.daylight .palace-beta-guide :is(input:not([type=checkbox]),select,textarea){background:#fff;color:#25233e;border-color:#9e8bb8}
+.palace-shell.daylight .palace-beta-guide :is(.palace-beta-report,.palace-beta-checks article){color:#24233e}
+.palace-shell.daylight .palace-beta-guide .palace-beta-actions button.quiet{color:#35294d}
+.palace-shell.daylight .writer-welcome{color:#292540}
+.palace-shell.daylight .writer-welcome .writer-eyebrow,.palace-shell.daylight .writer-first-manuscript-guide .writer-eyebrow{color:#5d438c}
+.palace-shell.daylight :is(.writer-feature-grid article,.writer-first-chapter,.writer-faq-items details,.writer-first-manuscript-guide){background:#fff;color:#292540;border-color:#ae9fbe}
+.palace-shell.daylight :is(.writer-feature-grid article p,.writer-first-chapter li p,.writer-faq-items details p,.writer-first-manuscript-guide p){opacity:.86}
+.palace-shell.daylight .writer-welcome .writer-section-heading>p:not(.writer-eyebrow){color:#3d364f;opacity:.87}
+.palace-shell.daylight .writer-feature-grid article>span{background:#ede2ff;color:#594090}
+.palace-shell.daylight .writer-manuscript-steps span{background:#f8f4fd;color:#392c56;border-color:#ad9aca}
+.palace-shell.daylight .writer-manuscript-steps span.completed{background:#e7f7ef;border-color:#5d9b81;color:#205743}
+.palace-shell.daylight .palace-tour-fold>summary small{opacity:.85}
+@media(max-width:600px){.palace-tour-fold{margin:14px 10px}.palace-tour-fold>summary{padding:15px 17px}.palace-tour-fold>.palace-starting-path{margin:9px 0 0}}
+@media(prefers-reduced-motion:reduce){.palace-tour-fold>summary>span:last-child{transition:none}}
