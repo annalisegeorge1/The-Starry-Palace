@@ -8,7 +8,7 @@ afterEach(cleanup);
 describe('inviting Palace entrance',()=>{
  it('offers just three choices before the full directory',()=>{
   render(<MemoryRouter><PalaceHomeWelcome/><PalaceRoomDirectory rooms={[["Treasury","/treasury","Collect and explore"]]}/></MemoryRouter>);
-  expect(screen.getByRole('heading',{name:'What would you like to do tonight?'})).toBeTruthy();
+  expect(screen.getByRole('heading',{name:'Where would you like to begin?'})).toBeTruthy();
   expect(screen.getByRole('link',{name:/Explore the Writer’s Door/}).getAttribute('href')).toBe('/writers');
   expect(screen.getByRole('link',{name:/Explore Palace gatherings/}).getAttribute('href')).toBe('/events');
   expect(screen.getByText('Explore all the Palace rooms')).toBeTruthy();
