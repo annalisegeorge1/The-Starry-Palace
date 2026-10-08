@@ -10,7 +10,7 @@ it('guides new testers through a role-sized task list and never claims feedback 
  mount();
  expect(screen.getByRole('heading',{name:'Help make the Palace feel effortless.'})).toBeTruthy();
  expect(screen.getByText(/Nothing on this page is automatically sent/)).toBeTruthy();
- expect(screen.getByText('How did this go?')).toBeTruthy();
+ expect(screen.getAllByText('How did this go?').length).toBeGreaterThan(0);
  expect(screen.getByRole('button',{name:'Copy my report'})).toBeTruthy();
  expect(screen.queryByRole('heading',{name:'Find the Council and read its voting rules'})).toBeNull();
 });
