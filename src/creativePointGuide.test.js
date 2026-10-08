@@ -34,6 +34,7 @@ describe('chapter word goals and transparent Celestial Points',()=>{
   expect(live).toContain("readPalacePreference('chapter-goal:'+ch.id,'1500')");
   expect(live).not.toContain("localStorage.setItem('chapter-goal:'+chapter.id");
   expect(live).toContain('manuscriptGoalProgress(wordCount,goal)');
+  expect(live).toContain('onClick={()=>updateChapterGoal(String(n))}');
   expect(live).toContain('celestialPointBreakdown(celestial)');
   expect(live).toContain('CELESTIAL_CREATIVE_RULES.map(');
   expect(live).toContain('See fair points rules →');
