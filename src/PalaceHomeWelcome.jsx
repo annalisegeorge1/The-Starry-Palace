@@ -5,7 +5,7 @@ import './palace-home-welcome.css';
 const CHOICES=[
  {id:'read',sigil:'◈',kicker:'DISCOVER',title:'Find a story',description:'Wander through original stories, fanworks, poetry and comics.',url:'/reading',action:'Enter the Reading Rooms'},
  {id:'write',sigil:'✎',kicker:'CREATE',title:'Tell your story',description:'Begin a private draft, find your rhythm and publish when you are ready.',url:'/writers',action:'Explore the Writer’s Door'},
- {id:'belong',sigil:'☾',kicker:'GATHER',title:'Find your people',description:'Meet kindred readers and writers, discover events and explore the Grand Palaces.',url:'/grand-palaces',action:'Discover Palace Life'}
+ {id:'belong',sigil:'☾',kicker:'GATHER',title:'Find your people',description:'Meet kindred readers and writers, discover events and explore the Grand Palaces.',url:'/events',action:'Explore Palace gatherings'}
 ];
 export function PalaceHomeWelcome({member=false}){
  return <section className="palace-home-welcome" aria-label="Choose how to begin">
