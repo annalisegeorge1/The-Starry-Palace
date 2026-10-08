@@ -26,6 +26,7 @@
 - For each attempted task, they select **Worked**, **Had trouble**, or **Skipped**. These results do not falsely count skipped tasks as passes.
 - They can add **multiple separate issues** with route, steps, expected result, observed result, severity and frequency.
 - The guide saves checklist selections and report drafts **only in that browser**. It does **not** send reports automatically. Don't promise feedback has reached the site owner until the tester actually shares it.
+- **Shared device:** The beta report is not protected by a member account. Anyone subsequently using the same browser may see its saved notes. Have each volunteer **Copy / Save as text file**, verify their own backup, then choose **Start a fresh tester report** and confirm before passing the device to the next volunteer. Do not reset someone else's in-progress notes without their permission.
 - Reports can be **copied**, opened in the device **share sheet**, or **saved as a plain text file**. The tester chooses their recipient and channel.
 - Testers should never send passwords, private work, private messages, or screenshots exposing other people's personal information.
 
