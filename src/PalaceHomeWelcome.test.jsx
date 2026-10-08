@@ -16,7 +16,7 @@ describe('inviting Palace entrance',()=>{
  it('offers events and literary heritage without adding more primary doors',()=>{
   render(<MemoryRouter><PalaceHomeWelcome/></MemoryRouter>);
   expect(document.querySelectorAll('.palace-choice-card')).toHaveLength(3);
-  expect(screen.getByRole('link',{name:/Festivals & gatherings/}).getAttribute('href')).toBe('/events?tab=calendar');
+  expect(screen.getByRole('link',{name:/History, heritage & festivals/}).getAttribute('href')).toBe('/events?tab=heritage');
   expect(screen.getByRole('link',{name:/Literature across generations/}).getAttribute('href')).toBe('/reading');
  });
  it('sends signed-in members straight to their room',()=>{
