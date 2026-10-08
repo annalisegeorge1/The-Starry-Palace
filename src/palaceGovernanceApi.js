@@ -36,3 +36,8 @@ export const reviewRestoration=(id,note)=>rpc('second_review_palace_restoration'
 
 export const checkCouncilDeadlines=()=>rpc('check_my_palace_council_deadlines');
 export const getCouncilAppealQueue=()=>rpc('get_council_appeal_queue');
+
+export const getCouncilAppealPage=(page=0,size=30)=>rpc('get_council_appeal_page',{p_page:page,p_page_size:size});
+export const extendCouncilAppeal=(id,days,reason)=>rpc('extend_palace_appeal_deadline',{p_appeal:id,p_days:days,p_reason:reason});
+export const escalateCouncilAppeal=(id,reason)=>rpc('escalate_overdue_palace_appeal',{p_appeal:id,p_reason:reason});
+export const extendCouncilResponse=(id,days,reason)=>rpc('extend_palace_member_response',{p_report:id,p_days:days,p_reason:reason});
