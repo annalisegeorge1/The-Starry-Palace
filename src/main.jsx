@@ -42,6 +42,7 @@ import './commons-conversation-path.css';
 import './mobile-profile-writer-layout.css';
 import './profile-grid-restoration.css';
 import './chamber-creative-shelf-polish.css';
+import './reader-journey-path.css';
 
 
 const chunkErrorPattern=/dynamically imported module|importing a module script failed|failed to fetch|chunkloaderror|loading chunk|room load timeout|networkerror/i;

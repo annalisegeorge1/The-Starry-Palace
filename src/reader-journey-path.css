@@ -1,0 +1,154 @@
+/* Reader's return path: compact, clear and deliberately non-sticky.
+ * Keep the page a reading experience, not a navigation dashboard. */
+.palace-shell .reader-page .reader-story-passage{
+ box-sizing:border-box;
+ display:flex;
+ align-items:stretch;
+ flex-wrap:wrap;
+ gap:8px;
+ width:100%;
+ max-width:900px;
+ margin:0 0 clamp(18px,3vw,25px);
+ padding:9px;
+ border:1px solid rgba(175,169,225,.28);
+ border-radius:15px;
+ background:linear-gradient(120deg,rgba(65,67,131,.17),rgba(35,56,108,.12));
+}
+.palace-shell .reader-page .reader-story-passage :is(a,button){
+ box-sizing:border-box;
+ display:inline-flex;
+ justify-content:center;
+ align-items:center;
+ gap:7px;
+ flex:1 1 auto;
+ min-width:0;
+ min-height:42px;
+ max-width:100%;
+ padding:9px 12px;
+ border:1px solid transparent;
+ border-radius:11px;
+ background:rgba(155,144,211,.09);
+ color:var(--reader-text,#f0eafc);
+ font:650 .78rem/1.4 system-ui,sans-serif;
+ text-decoration:none;
+ text-align:center;
+ overflow-wrap:break-word;
+ white-space:normal;
+ cursor:pointer;
+ transition:background .16s ease,border-color .16s ease;
+}
+.palace-shell .reader-page .reader-story-passage :is(a,button):hover{
+ background:rgba(152,139,221,.22);
+ border-color:rgba(185,178,236,.38);
+}
+.palace-shell .reader-page .reader-story-passage :is(a,button):focus-visible{
+ outline:3px solid #afceff!important;
+ outline-offset:2px;
+}
+.palace-shell .reader-page .reader-story-passage .reader-story-passage-save{
+ color:#f6f1ff;
+ border-color:rgba(179,168,238,.38);
+ background:linear-gradient(125deg,rgba(101,85,175,.57),rgba(76,113,176,.38));
+}
+.palace-shell .reader-page .reader-story-passage .reader-story-passage-save[aria-pressed="true"]{
+ color:#edfff9;
+ border-color:rgba(132,210,188,.55);
+ background:linear-gradient(125deg,rgba(40,116,105,.42),rgba(77,109,163,.35));
+}
+.palace-shell .reader-page .reader-story-passage button:disabled{
+ opacity:.7;
+ cursor:wait;
+}
+.palace-shell .reader-page .reader-story-passage-status{
+ margin:-9px 0 17px;
+ color:var(--reader-muted,#c7bfdc);
+ font-size:.8rem;
+ line-height:1.55;
+}
+.palace-shell .reader-page .reader-story-passage :is(a,button)>span{
+ color:#c8b7ff;
+ font:500 1.08rem Georgia,serif;
+}
+.palace-shell.daylight .reader-page .reader-story-passage,
+.palace-shell .reader-page.tone-paper .reader-story-passage,
+.palace-shell .reader-page.tone-soft .reader-story-passage{
+ background:linear-gradient(125deg,rgba(241,237,251,.87),rgba(231,241,250,.75));
+ border-color:rgba(107,91,153,.27);
+}
+.palace-shell.daylight .reader-page .reader-story-passage :is(a,button),
+.palace-shell .reader-page.tone-paper .reader-story-passage :is(a,button),
+.palace-shell .reader-page.tone-soft .reader-story-passage :is(a,button){
+ color:#392e53;
+ background:rgba(255,255,255,.55);
+}
+.palace-shell.daylight .reader-page .reader-story-passage .reader-story-passage-save,
+.palace-shell .reader-page.tone-paper .reader-story-passage .reader-story-passage-save,
+.palace-shell .reader-page.tone-soft .reader-story-passage .reader-story-passage-save{
+ color:#342648;
+ background:#e1d8f5;
+ border-color:#afa0d1;
+}
+.palace-shell.daylight .reader-page .reader-story-passage .reader-story-passage-save[aria-pressed="true"],
+.palace-shell .reader-page.tone-paper .reader-story-passage .reader-story-passage-save[aria-pressed="true"],
+.palace-shell .reader-page.tone-soft .reader-story-passage .reader-story-passage-save[aria-pressed="true"]{
+ color:#1d574b;
+ background:#d5f0e7;
+ border-color:#8bb9af;
+}
+.palace-shell.daylight .reader-page .reader-story-passage :is(a,button)>span,
+.palace-shell .reader-page.tone-paper .reader-story-passage :is(a,button)>span,
+.palace-shell .reader-page.tone-soft .reader-story-passage :is(a,button)>span{color:#685aa3}
+@media(max-width:680px){
+ .palace-shell .reader-page .reader-story-passage{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:7px;
+  padding:7px;
+ }
+ .palace-shell .reader-page .reader-story-passage :is(a,button){
+  width:100%;
+  min-height:44px;
+  font-size:clamp(.71rem,2.5vw,.8rem);
+ }
+}
+@media(max-width:390px){
+ .palace-shell .reader-page .reader-story-passage{
+  grid-template-columns:minmax(0,1fr);
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .reader-page .reader-story-passage :is(a,button){transition:none!important}
+}
+
+/* The overview offers a genuine sign-in path instead of a dead guest action. */
+.palace-shell .work-page .work-actions .work-guest-keep{
+ box-sizing:border-box;
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ min-height:44px;
+ max-width:100%;
+ padding:9px 14px;
+ border:1px solid rgba(181,166,229,.44);
+ border-radius:13px;
+ background:linear-gradient(120deg,rgba(101,83,164,.27),rgba(76,107,156,.16));
+ color:#f1e9ff;
+ font-size:.78rem;
+ font-weight:700;
+ text-align:center;
+ text-decoration:none;
+ overflow-wrap:break-word;
+}
+.palace-shell .work-page .work-actions .work-guest-keep:hover{
+ border-color:rgba(215,195,247,.7);
+ background:rgba(121,105,184,.3);
+}
+.palace-shell .work-page .work-actions .work-guest-keep:focus-visible{
+ outline:3px solid #afceff!important;
+ outline-offset:3px;
+}
+.palace-shell.daylight .work-page .work-actions .work-guest-keep{
+ background:#ece7f9;
+ color:#42345a;
+ border-color:#c4b3df;
+}
