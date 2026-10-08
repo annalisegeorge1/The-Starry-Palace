@@ -84,7 +84,7 @@ export default function PalaceBetaGuide({Frame}){
    <h1>Help make the Palace feel effortless.</h1>
    <p>You don't need to be technical or finish every task. Tell us what felt lovely, what felt confusing, and where you got stuck.</p>
    <p className="palace-beta-privacy">✦ Nothing on this page is automatically sent. Your notes stay on this device until you choose to share a report.</p>
-   <div className="palace-beta-progress"><strong>{counts.explored}/{checks.length}</strong><span>checkpoints explored in your track</span><div role="progressbar" aria-valuemin={0} aria-valuemax={checks.length} aria-valuenow={counts.explored} aria-label="Beta checklist progress"><i style={{width:(checks.length?counts.explored/checks.length*100:0)+'%'}}/></div></div>
+   <div className="palace-beta-progress"><strong>{counts.marked}/{checks.length}</strong><span>checkpoints marked in your track</span><div role="progressbar" aria-valuemin={0} aria-valuemax={checks.length} aria-valuenow={counts.marked} aria-label="Beta checklist progress"><i style={{width:(checks.length?counts.marked/checks.length*100:0)+'%'}}/></div></div>
   </header>
   <section className="palace-beta-intro" aria-label="How to test">
    <div><span aria-hidden="true">01</span><strong>Choose what you enjoy</strong><p>Reader, writer, artist, or community tester.</p></div>
