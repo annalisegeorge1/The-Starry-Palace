@@ -41,3 +41,9 @@ export const getCouncilAppealPage=(page=0,size=30)=>rpc('get_council_appeal_page
 export const extendCouncilAppeal=(id,days,reason)=>rpc('extend_palace_appeal_deadline',{p_appeal:id,p_days:days,p_reason:reason});
 export const escalateCouncilAppeal=(id,reason)=>rpc('escalate_overdue_palace_appeal',{p_appeal:id,p_reason:reason});
 export const extendCouncilResponse=(id,days,reason)=>rpc('extend_palace_member_response',{p_report:id,p_days:days,p_reason:reason});
+
+export const getPetitionHall=(page=0,palace=null)=>rpc('get_palace_petition_hall',{p_page:page,p_palace:palace});
+export const submitPetition=(category,title,description)=>rpc('submit_palace_petition',{p_category:category,p_title:title,p_description:description});
+export const supportPetition=id=>rpc('toggle_palace_petition_support',{p_petition:id});
+export const respondPetition=(id,status,response)=>rpc('respond_palace_petition',{p_petition:id,p_status:status,p_response:response});
+export const hidePetition=(id,reason)=>rpc('hide_palace_petition',{p_petition:id,p_reason:reason});
