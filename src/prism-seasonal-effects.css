@@ -1,0 +1,15 @@
+/* Seasonal Prism theatre: restrained motion, always optional, never over text or paintings */
+.prism-scene{position:relative;contain:paint;transition:background .28s ease,border-color .28s ease}
+.prism-scene-veil{position:absolute;inset:-45%;pointer-events:none;z-index:-1;opacity:.25;background:conic-gradient(from 100deg at 45% 40%,transparent,var(--prism-accent),transparent,var(--prism-secondary),transparent);transform:rotate(-20deg)}
+.prism-scene-moon{position:absolute;top:14%;right:12%;font:clamp(3rem,6vw,5rem) Georgia,serif;color:#fff;opacity:.3;pointer-events:none;text-shadow:0 0 16px var(--prism-accent)}
+.prism-scene.motion-enabled .prism-scene-veil{animation:prism-slow-aurora 16s ease-in-out infinite alternate}
+.prism-scene.motion-enabled .prism-scene-moon{animation:prism-gentle-moon 12s ease-in-out infinite alternate}
+.prism-scene.motion-enabled .prism-preview-stars{animation:prism-soft-stars 8s ease-in-out infinite alternate}
+@keyframes prism-slow-aurora{0%{transform:translate(-5%,3%) rotate(-20deg);opacity:.18}100%{transform:translate(8%,-4%) rotate(26deg);opacity:.37}}
+@keyframes prism-gentle-moon{0%{opacity:.2;transform:translateY(0)}100%{opacity:.39;transform:translateY(-8px)}}
+@keyframes prism-soft-stars{0%{opacity:.45}100%{opacity:.72}}
+.prism-motion-toggle{display:flex!important;flex-direction:row;align-items:center;gap:.5rem;border:1px solid rgba(178,170,225,.32);border-radius:12px;padding:.6rem .7rem;background:rgba(104,91,175,.08)}
+.prism-motion-toggle input{accent-color:#947ee1;width:18px;height:18px;flex:none}
+.prism-scene .prism-preview-pills{position:relative;z-index:1}
+.prism-swatch:focus-visible,.prism-families button:focus-visible,.prism-categories button:focus-visible{outline:2px solid #b7d9ff;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.prism-scene.motion-enabled .prism-scene-veil,.prism-scene.motion-enabled .prism-scene-moon,.prism-scene.motion-enabled .prism-preview-stars{animation:none!important}.prism-scene{transition:none!important}}
