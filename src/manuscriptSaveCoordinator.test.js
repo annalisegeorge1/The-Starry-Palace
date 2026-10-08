@@ -34,6 +34,48 @@ describe('manuscript save coordinator',()=>{
   release({body_html:'old'});
   expect((await p).isCurrent).toBe(false);
  });
+ it('only considers the latest successful cloud revision safe',async()=>{
+  let releaseFirst,releaseSecond;
+  const send=vi.fn()
+   .mockImplementationOnce(()=>new Promise(resolve=>releaseFirst=resolve))
+   .mockImplementationOnce(()=>new Promise(resolve=>releaseSecond=resolve));
+  const queue=createManuscriptSaveCoordinator(send);
+  expect(queue.hasUnsavedChanges()).toBe(false);
+  const old=queue.markChanged('chapter-A');
+  const first=queue.persist('chapter-A',{body_html:'first'},old);
+  await Promise.resolve();await Promise.resolve();
+  expect(queue.isSaving('chapter-A')).toBe(true);
+  const latest=queue.markChanged('chapter-A');
+  const second=queue.persist('chapter-A',{body_html:'second'},latest);
+  releaseFirst({id:'chapter-A'});
+  expect((await first).isCurrent).toBe(false);
+  expect(queue.isDirty('chapter-A')).toBe(true);
+  await Promise.resolve();await Promise.resolve();
+  releaseSecond({id:'chapter-A'});
+  expect((await second).isCurrent).toBe(true);
+  expect(queue.isDirty('chapter-A')).toBe(false);
+  expect(queue.hasUnsavedChanges()).toBe(false);
+  expect(queue.isSaving('chapter-A')).toBe(false);
+ });
+ it('keeps unsaved edits flagged after a network error and clears them after retry',async()=>{
+  const send=vi.fn().mockRejectedValueOnce(new Error('offline')).mockResolvedValueOnce({id:'chapter-A'});
+  const queue=createManuscriptSaveCoordinator(send);
+  const first=queue.markChanged('chapter-A');
+  await expect(queue.persist('chapter-A',{body_html:'draft'},first)).rejects.toThrow('offline');
+  expect(queue.isSaving('chapter-A')).toBe(false);
+  expect(queue.hasUnsavedChanges()).toBe(true);
+  const second=queue.markChanged('chapter-A');
+  await queue.persist('chapter-A',{body_html:'draft'},second);
+  expect(queue.hasUnsavedChanges()).toBe(false);
+ });
+ it('tracks saved and unsaved chapters independently',async()=>{
+  const queue=createManuscriptSaveCoordinator(async(id)=>({id}));
+  await queue.persist('A',{},queue.markChanged('A'));
+  queue.markChanged('B');
+  expect(queue.isDirty('A')).toBe(false);
+  expect(queue.isDirty('B')).toBe(true);
+  expect(queue.hasUnsavedChanges()).toBe(true);
+ });
  it('allows a second attempt after a failed cloud save',async()=>{
   const writer=vi.fn().mockRejectedValueOnce(new Error('offline')).mockResolvedValueOnce({ok:true});
   const queue=createManuscriptSaveCoordinator(writer);
