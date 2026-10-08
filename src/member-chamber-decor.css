@@ -1,0 +1,35 @@
+.chamber-decorator{margin:1rem auto;max-width:1180px;padding:1rem;border:1px solid rgba(170,162,225,.3);border-radius:20px;background:linear-gradient(135deg,rgba(64,62,135,.23),rgba(43,95,129,.17))}
+.chamber-decorator>header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.8rem}.chamber-decorator h2{font:500 1.5rem Georgia,serif;margin:.2rem 0}.chamber-decorator p{font-size:.78rem;line-height:1.55;color:#c7c1de}.chamber-decorator button{cursor:pointer;border:1px solid rgba(183,183,239,.5);border-radius:11px;background:rgba(113,106,196,.2);color:inherit;padding:.65rem .85rem;min-height:42px}.chamber-decorator>header>button,.chamber-decorator-workspace footer button:last-child{background:linear-gradient(130deg,#7460b8,#4677a9);color:white}
+.chamber-decorator-workspace{display:grid;gap:1rem;margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(175,168,226,.26)}.chamber-decorator fieldset{border:0;padding:0;margin:0;min-width:0}.chamber-decorator legend{font-weight:700;font-size:.8rem;margin-bottom:.5rem}.chamber-decor-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.55rem}
+.chamber-decorator .chamber-decor-option{display:grid;place-items:center;align-content:center;gap:.25rem;min-width:0;min-height:112px;border-radius:15px;background:radial-gradient(circle at 50% 0%,rgba(178,160,233,.2),transparent 75%),rgba(29,38,81,.38);text-align:center}.chamber-decor-option span{font:1.8rem Georgia,serif;color:#c9b8f3}.chamber-decor-option strong{font-size:.76rem}.chamber-decor-option small{font-size:.65rem;color:#c6c2dc;line-height:1.45}.chamber-decor-option.chosen{border-color:#bcb2f3!important;box-shadow:0 0 0 1px rgba(196,183,253,.48),inset 0 0 28px rgba(132,131,224,.2)}.chamber-decor-option:disabled{opacity:.56;cursor:not-allowed}.chamber-decorator-workspace footer{display:flex;gap:.55rem;justify-content:flex-end;flex-wrap:wrap}.chamber-decorator button:focus-visible{outline:2px solid #badaff;outline-offset:3px}
+.chamber-mood-midnight{--chamber-mood-one:#19254c;--chamber-mood-two:#17132f;--chamber-mood-glimmer:rgba(149,145,222,.25)}
+.chamber-mood-moonwater{--chamber-mood-one:#164960;--chamber-mood-two:#182b5e;--chamber-mood-glimmer:rgba(116,226,226,.25)}
+.chamber-mood-violet-dusk{--chamber-mood-one:#5a3575;--chamber-mood-two:#22265a;--chamber-mood-glimmer:rgba(226,171,255,.24)}
+.chamber-mood-aurora{--chamber-mood-one:#226f7d;--chamber-mood-two:#40376c;--chamber-mood-glimmer:rgba(131,243,206,.28)}
+.chamber-mood-star-garden{--chamber-mood-one:#255d69;--chamber-mood-two:#38315f;--chamber-mood-glimmer:rgba(195,223,184,.24)}
+.chamber-mood-crystal-sky{--chamber-mood-one:#4069a1;--chamber-mood-two:#353979;--chamber-mood-glimmer:rgba(208,236,255,.27)}
+.member-chamber-atelier.chic-member-profile[class*="chamber-mood-"]{background:linear-gradient(135deg,var(--chamber-mood-one),var(--chamber-mood-two))!important}
+.member-chamber-atelier.chic-member-profile[class*="chamber-mood-"] .legacy-profile-cover:not([style*="background-image"]){background:radial-gradient(ellipse at 18% 45%,var(--chamber-mood-glimmer),transparent 45%),linear-gradient(125deg,var(--chamber-mood-one),var(--chamber-mood-two))!important}
+.member-chamber-atelier.chic-member-profile[class*="chamber-mood-"] .legacy-profile-copy{background:linear-gradient(135deg,var(--chamber-mood-one),var(--chamber-mood-two))!important}
+.chamber-ornament-none .chamber-atelier-cover-corner>span{display:none}
+.chamber-ornament-crescent .chamber-atelier-cover-corner>span:before{content:'☾'}
+.chamber-ornament-ink-vines .chamber-atelier-cover-corner>span:before{content:'❦'}
+.chamber-ornament-silver-branches .chamber-atelier-cover-corner>span:before{content:'♧'}
+.chamber-ornament-royal-constellation .chamber-atelier-cover-corner>span:before{content:'♛'}
+.chamber-ornament-stars .chamber-atelier-cover-corner>span:before{content:'✧'}
+.member-chamber-atelier[class*="chamber-ornament-"] .chamber-atelier-cover-corner>span{font-size:0!important}
+.member-chamber-atelier[class*="chamber-ornament-"] .chamber-atelier-cover-corner>span:before{font:1.65rem Georgia,serif}
+.chamber-atelier-gallery.gallery-layout-compact .legacy-showcase-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.chamber-atelier-gallery.gallery-layout-compact .chamber-atelier-art-stage{height:170px!important}
+.chamber-atelier-gallery.gallery-layout-spotlight .chamber-atelier-art-card.featured{grid-column:span 2}
+.chamber-atelier-gallery.gallery-layout-spotlight .chamber-atelier-art-card.featured .chamber-atelier-art-stage{height:290px}
+.chamber-atelier-gallery .chamber-art-arrange{display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;margin:auto .75rem .7rem;border-top:1px solid rgba(170,158,218,.22);padding-top:.55rem}
+.chamber-art-arrange button{min-height:36px;min-width:35px;border:1px solid rgba(182,171,229,.31);border-radius:9px;background:rgba(92,103,180,.14);color:inherit;font-size:.7rem;padding:.35rem .55rem;cursor:pointer}
+.chamber-art-arrange button:disabled{opacity:.38;cursor:not-allowed}.chamber-art-arrange button:focus-visible{outline:2px solid #bad7ff;outline-offset:2px}
+.daylight .chamber-decorator{background:linear-gradient(130deg,#fbfaff,#edf3fc);color:#362b50;border-color:#d6ceec}.daylight .chamber-decorator p,.daylight .chamber-decor-option small{color:#695f7c}.daylight .chamber-decorator .chamber-decor-option{background:#fff;color:#362a4f}.daylight .chamber-art-arrange button{color:#51406d;background:#f1edfa}
+.daylight .member-chamber-atelier.chic-member-profile[class*="chamber-mood-"]{background:linear-gradient(125deg,#fff,#f5f3fd)!important}.daylight .member-chamber-atelier.chic-member-profile[class*="chamber-mood-"] .legacy-profile-copy{background:linear-gradient(125deg,#fff,#f3f1fb)!important}
+.daylight .member-chamber-atelier.chic-member-profile[class*="chamber-mood-"] .legacy-profile-cover:not([style*="background-image"]){background:linear-gradient(125deg,color-mix(in srgb,var(--chamber-mood-one) 55%,white),color-mix(in srgb,var(--chamber-mood-two) 65%,white))!important}
+@media(max-width:780px){.chamber-decor-choices{grid-template-columns:repeat(2,minmax(0,1fr))}.chamber-atelier-gallery.gallery-layout-compact .legacy-showcase-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:540px){.chamber-decorator>header>button{width:100%}.chamber-atelier-gallery.gallery-layout-compact .legacy-showcase-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.chamber-atelier-gallery.gallery-layout-spotlight .chamber-atelier-art-card.featured{grid-column:span 2}}
+@media(max-width:370px){.chamber-decor-choices{grid-template-columns:1fr}.chamber-atelier-gallery.gallery-layout-spotlight .chamber-atelier-art-card.featured{grid-column:auto}}
+@media(prefers-reduced-motion:reduce){.chamber-decorator *{transition:none!important}}
