@@ -26,6 +26,7 @@
  background:transparent;border:1px solid transparent;text-decoration:underline;
  text-underline-offset:4px;font-weight:800;
 }
+.palace-shell .chic-story-catalogue>.reading-catalogue-empty{grid-column:1/-1}
 .palace-shell .reading-catalogue-empty,
 .palace-shell .reading-advanced-empty{
  width:100%;min-width:0;box-sizing:border-box;
