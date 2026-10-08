@@ -11,3 +11,7 @@
 .reading-story-context-facts .reading-story-fandom{max-width:100%}
 .palace-shell.daylight .reading-story-context-facts .reading-story-kind{background:#ece7f9;border-color:#b9a9d5}
 @media(max-width:600px){.reading-story-context-facts{gap:6px 10px;font-size:.76rem}.reading-story-context-summary{margin:10px 0 4px}}
+
+.reading-story-context-summary .reading-story-summary-toggle{display:inline-flex;align-items:center;justify-content:flex-start;min-height:36px;max-width:100%;margin-top:6px;padding:4px 2px;border:0;background:transparent;color:inherit;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(160,138,214,.7);font:750 .76rem/1.4 system-ui,sans-serif;cursor:pointer}
+.reading-story-context-summary .reading-story-summary-toggle:hover{text-decoration-color:currentColor}
+.reading-story-context-summary .reading-story-summary-toggle:focus-visible{outline:3px solid #b8d8fa;outline-offset:3px;border-radius:4px}
