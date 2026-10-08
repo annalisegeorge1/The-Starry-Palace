@@ -1,0 +1,8 @@
+.palace-story-statline{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:clamp(12px,2vw,24px);row-gap:6px;margin:12px 0 16px;padding:10px 12px;border-top:1px solid rgba(170,155,215,.28);border-bottom:1px solid rgba(170,155,215,.28);font:500 .82rem/1.55 system-ui,sans-serif}
+.palace-story-statline>div{display:inline-flex;align-items:baseline;gap:5px;min-width:0;margin:0}
+.palace-story-statline dt{margin:0;color:inherit;opacity:.72;font-weight:500}
+.palace-story-statline dd{margin:0;font-variant-numeric:tabular-nums;font-weight:750;color:inherit}
+.palace-story-statline a{color:inherit;text-decoration:underline;text-decoration-color:rgba(178,163,231,.55);text-underline-offset:3px}
+.palace-story-statline a:hover{text-decoration-color:currentColor}
+.palace-story-statline a:focus-visible{outline:2px solid #b6d7f4;outline-offset:3px;border-radius:3px}
+@media(max-width:520px){.palace-story-statline{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px 12px;font-size:.78rem}.palace-story-statline>div{flex-wrap:wrap}}
