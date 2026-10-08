@@ -803,8 +803,11 @@ describe('Starry Palace launch safety',()=>{
 
   it('keeps the public Home alive and the Palace Gates free of dead controls',()=>{
     const polish=read('src/polish.css');
-    expect(main).toContain('home-live-worlds');
-    expect(main).toContain('NEWLY OPENED WORLDS');
+    const shelf=read('src/PalaceNewStories.jsx');
+    expect(main).toContain("import PalaceNewStories from './PalaceNewStories'");
+    expect(main).toContain('<PalaceNewStories/>');
+    expect(shelf).toContain('home-live-worlds');
+    expect(shelf).toContain('NEWLY OPENED WORLDS');
     expect(main).toContain('Email me a passwordless entrance link');
     expect(main).toContain('password-field');
     expect(main).not.toContain('Google entrance · coming soon');
