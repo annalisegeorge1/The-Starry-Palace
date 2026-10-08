@@ -119,3 +119,36 @@
 @media(prefers-reduced-motion:reduce){
  .palace-shell .reader-page .reader-story-passage :is(a,button){transition:none!important}
 }
+
+/* The overview offers a genuine sign-in path instead of a dead guest action. */
+.palace-shell .work-page .work-actions .work-guest-keep{
+ box-sizing:border-box;
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ min-height:44px;
+ max-width:100%;
+ padding:9px 14px;
+ border:1px solid rgba(181,166,229,.44);
+ border-radius:13px;
+ background:linear-gradient(120deg,rgba(101,83,164,.27),rgba(76,107,156,.16));
+ color:#f1e9ff;
+ font-size:.78rem;
+ font-weight:700;
+ text-align:center;
+ text-decoration:none;
+ overflow-wrap:break-word;
+}
+.palace-shell .work-page .work-actions .work-guest-keep:hover{
+ border-color:rgba(215,195,247,.7);
+ background:rgba(121,105,184,.3);
+}
+.palace-shell .work-page .work-actions .work-guest-keep:focus-visible{
+ outline:3px solid #afceff!important;
+ outline-offset:3px;
+}
+.palace-shell.daylight .work-page .work-actions .work-guest-keep{
+ background:#ece7f9;
+ color:#42345a;
+ border-color:#c4b3df;
+}
