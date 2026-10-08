@@ -16,6 +16,7 @@ import {PalaceHomeWelcome,PalaceRoomDirectory} from './PalaceHomeWelcome';
 import PalaceNewStories from './PalaceNewStories';
 import {safePalaceReturnPath} from './palaceReturnPath';
 import {shouldOfferManualPalaceRefresh} from './palaceUpdateSafety';
+import {usePalaceDialogFocusTrap} from './usePalaceDialogFocusTrap';
 import './palace-inviting-polish.css';
 import {
  ChamberLive,OnboardingLive,ReadingLive,ClubLive,WritingLive,SettingsLive,ActivityLive,LibraryLive,
@@ -200,6 +201,8 @@ function FrameShell({children}){
  const [letterBadge,setLetterBadge]=useState(0);
  const [activityBadge,setActivityBadge]=useState(0);
  const location=useLocation();const navigate=useNavigate();
+ usePalaceDialogFocusTrap(commandOpen,'palace-command-dialog','.command-trigger');
+ usePalaceDialogFocusTrap(mobileMoreOpen,'mobile-palace-more-sheet','.mobile-palace-more');
  React.useEffect(()=>setNavOpen(false),[location.pathname,location.search]);
  React.useEffect(()=>{setCommandOpen(false);setMobileMoreOpen(false);setCommandQuery('');setCommandIndex(0)},[location.pathname,location.search]);
  React.useEffect(()=>{safeLocalSet('palace-theme',daylight?'daylight':'night')},[daylight]);
