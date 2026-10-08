@@ -8,9 +8,10 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vitest run && vite build && cp dist/index.html dist/404.html",
+    "build": "vite build && cp dist/index.html dist/404.html",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "verify": "vitest run && npm run build"
   },
   "keywords": [],
   "author": "",
