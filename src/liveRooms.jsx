@@ -1575,6 +1575,28 @@ function WorkStudioForWork({Frame,slug}){
  }
  function queueSave(form){snapshotDraft(form);setSaved('Saving to Palace…');if(saveTimerRef.current)clearTimeout(saveTimerRef.current);saveTimerRef.current=setTimeout(async()=>{try{await persistChapter(form)}catch(err){setSaved(saveFailureNotice());setError(err.message)}},900)}
  async function quickSaveChapter(){const form=editorRef.current?.closest('form');if(!form||!chapter)return;if(saveTimerRef.current){clearTimeout(saveTimerRef.current);saveTimerRef.current=null}setSaved('Saving to Palace…');try{await persistChapter(form)}catch(err){setSaved(saveFailureNotice());setError(err.message)}}
+ function downloadDraftBackup(){
+  const form=editorRef.current?.closest('form');
+  if(!form||!chapter)return;
+  try{
+   const fields=new FormData(form);
+   const chapterTitle=String(fields.get('title')||chapter.title||'Untitled chapter');
+   const body=editorRef.current?.innerText??editorRef.current?.textContent??'';
+   const payload=writerBackupText({
+    workTitle:data?.title||'',chapterTitle,body,
+    revisionNote:String(fields.get('revision_note')||''),exportedAt:new Date().toLocaleString()
+   });
+   const objectUrl=URL.createObjectURL(new Blob([payload],{type:'text/plain;charset=utf-8'}));
+   const anchor=document.createElement('a');
+   anchor.href=objectUrl;
+   anchor.download=writerBackupFilename(data?.title,chapterTitle);
+   document.body.appendChild(anchor);
+   try{anchor.click()}finally{anchor.remove();window.setTimeout(()=>URL.revokeObjectURL(objectUrl),2000)}
+   setBackupMessage('A text backup was prepared on this device. Cloud save status has not changed.');
+  }catch{
+   setBackupMessage('This browser could not prepare a text file. Copy your draft manually and check the cloud save status.');
+  }
+ }
  async function switchChapterSafely(nextId){
   const next=nextId||null;
   if(next===selectedRef.current)return;
