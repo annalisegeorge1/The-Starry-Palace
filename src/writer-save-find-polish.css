@@ -1,0 +1,42 @@
+/* Writing Studio beta refinement: distinguish cloud save from device recovery. */
+body.writing-desk-open .writer-unsaved-alert{
+ display:inline-flex;align-items:center;max-width:min(100%,380px);min-height:34px;
+ padding:5px 10px;border:1px solid rgba(211,166,141,.55);border-radius:10px;
+ background:rgba(168,94,70,.11);color:inherit;
+ font:700 .72rem/1.4 system-ui,sans-serif;overflow-wrap:anywhere;
+}
+body.writing-desk-open .writer-toolbar-save-state.state-attention{
+ border-color:rgba(208,141,138,.7);background:rgba(176,88,84,.16);
+}
+body.writing-desk-open .writer-toolbar-save-state.state-saved i{background:#71cca6}
+body.writing-desk-open .writer-toolbar-save-state.state-pending i{background:#b6a6ee}
+body.writing-desk-open .writing-chapter-manager-tools{
+ min-width:0;align-items:end;
+}
+body.writing-desk-open .writing-chapter-manager-tools input{
+ min-width:0;max-width:100%;
+}
+body.writing-desk-open .writer-filter-context{
+ display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+ font:.75rem/1.5 system-ui,sans-serif;padding:10px 12px;
+ margin:10px 0;border:1px solid rgba(159,147,211,.45);
+ border-radius:11px;background:rgba(146,123,197,.11);
+ overflow-wrap:anywhere;
+}
+body.writing-desk-open .writer-filter-context button{
+ min-height:40px;border:1px solid rgba(173,160,224,.65);
+ border-radius:9px;background:rgba(153,139,213,.2);color:inherit;
+ padding:7px 11px;font:750 .74rem/1.4 system-ui,sans-serif;cursor:pointer;
+}
+body.writing-desk-open :is(.writer-filter-context button,.writing-chapter-manager-tools button):focus-visible{
+ outline:3px solid #aacef4;outline-offset:3px;
+}
+@media(max-width:700px){
+ body.writing-desk-open .writing-chapter-manager-tools{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+ body.writing-desk-open .writing-chapter-manager-tools>label{min-width:0}
+ body.writing-desk-open .writing-chapter-manager-tools>button{grid-column:1/-1;width:100%;min-height:42px}
+ body.writing-desk-open .writer-unsaved-alert{max-width:100%}
+}
+@media(max-width:380px){
+ body.writing-desk-open .writing-chapter-manager-tools{grid-template-columns:1fr}
+}
