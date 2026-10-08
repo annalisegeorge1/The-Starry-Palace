@@ -331,3 +331,18 @@
   animation:none!important;transition:none!important;
  }
 }
+
+/* Unsuccessful searches are explained, not silently ignored. */
+.palace-shell .grand-palace-hall .grand-search-empty{
+ padding:.7rem .85rem;
+ border-radius:12px;
+ border:1px solid rgba(176,189,229,.34);
+ background:rgba(105,121,167,.11);
+ color:#e3e3f6;
+ font-size:.81rem;
+ line-height:1.55;
+ margin:.5rem 0;
+}
+.palace-shell.daylight .grand-palace-hall .grand-search-empty{
+ background:#f0effb;border-color:#b5a8d6;color:#3d3459;
+}
