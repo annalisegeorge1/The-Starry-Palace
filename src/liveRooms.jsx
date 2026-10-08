@@ -2,6 +2,7 @@ import ManuscriptProgressDashboard from './ManuscriptProgressDashboard';
 import{getManuscriptFolders,editManuscriptFolder,fileManuscriptChapter}from'./manuscriptFoldersData';
 import './manuscript-organiser.css';
 import './manuscript-pad-refinement.css';
+import './writer-desk-layout-repair.css';
 import './writer-statistics-title-path.css';
 import './palace-creative-points-polish.css';
 import {FirstManuscriptGuide} from './WriterWelcome';
