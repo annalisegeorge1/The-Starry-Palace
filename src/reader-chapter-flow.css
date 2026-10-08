@@ -73,3 +73,20 @@
 .palace-shell .reader-page.tone-soft .reader-start-text-link{
  background:rgba(238,233,251,.7);border-color:#c3b4df;color:#3a3153;
 }
+
+/* The same clear chapter controls remain available after the last paragraph. */
+.palace-shell .reader-page .reader-nav{max-width:900px;box-sizing:border-box;align-items:center;flex-wrap:wrap;padding-top:20px;margin-top:clamp(22px,4vw,45px)}
+.palace-shell .reader-page .reader-nav-context{display:flex;flex:1 1 220px;flex-direction:column;gap:5px;min-width:0}
+.palace-shell .reader-page .reader-nav-context small{line-height:1.35;overflow-wrap:anywhere;opacity:.75}
+.palace-shell .reader-page .reader-nav-context .reader-return-top{align-self:flex-start}
+.palace-shell .reader-page .reader-nav-actions{display:flex;flex:1 1 275px;flex-wrap:wrap;justify-content:flex-end;gap:9px;min-width:0}
+.palace-shell .reader-page .reader-nav-actions :is(a,button){box-sizing:border-box;min-width:0;min-height:46px;display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1.4;overflow-wrap:anywhere}
+.palace-shell .reader-page .reader-nav-actions>span:empty{display:none}
+.palace-shell .reader-page .reader-nav :is(a,button):focus-visible{outline:3px solid #afceff;outline-offset:3px}
+@media(max-width:720px){
+ .palace-shell .reader-page .reader-nav{gap:12px;align-items:stretch}
+ .palace-shell .reader-page .reader-nav-context{text-align:left;flex-basis:100%}
+ .palace-shell .reader-page .reader-nav-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));flex-basis:100%;width:100%;gap:8px}
+ .palace-shell .reader-page .reader-nav-actions :is(a,button){width:100%;white-space:normal;padding:10px 8px}
+ .palace-shell .reader-page .reader-nav-actions :is(a,button):only-child{grid-column:1/-1}
+}
