@@ -35,6 +35,7 @@ import './reading-room-wayfinding.css';
 import './writer-draft-reassurance.css';
 import './writer-toolbar-flow.css';
 import './manuscript-calm-focus.css';
+import './writer-desk-drawer.css';
 
 
 const chunkErrorPattern=/dynamically imported module|importing a module script failed|failed to fetch|chunkloaderror|loading chunk|room load timeout|networkerror/i;
