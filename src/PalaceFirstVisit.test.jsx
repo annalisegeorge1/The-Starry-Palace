@@ -53,4 +53,29 @@ describe('gentle first-visit Palace map',()=>{
   mount(null);
   expect(screen.queryByText('Your first four doorways')).toBeNull();
  });
+ it('switches members in place without showing the previous member\'s progress',()=>{
+  localStorage.setItem('palace-first-visit:v1:reader-a',JSON.stringify({visited:['read','write'],hidden:false}));
+  localStorage.setItem('palace-first-visit:v1:reader-b',JSON.stringify({visited:['gather'],hidden:false}));
+  const view=render(<MemoryRouter><PalaceStartingPath memberId="reader-a"/></MemoryRouter>);
+  expect(screen.getAllByText(/2 of 4 doorways opened/).length).toBeGreaterThan(0);
+  view.rerender(<MemoryRouter><PalaceStartingPath memberId="reader-b"/></MemoryRouter>);
+  expect(screen.getAllByText(/1 of 4 doorways opened/).length).toBeGreaterThan(0);
+  expect(screen.queryByText(/2 of 4 doorways opened/)).toBeNull();
+  view.rerender(<MemoryRouter><PalaceStartingPath memberId="reader-a"/></MemoryRouter>);
+  expect(screen.getAllByText(/2 of 4 doorways opened/).length).toBeGreaterThan(0);
+ });
+ it('hides and restores the correct account\'s introduction during in-place logout and login',()=>{
+  localStorage.setItem('palace-first-visit:v1:reader-a',JSON.stringify({visited:[],hidden:true}));
+  const view=render(<MemoryRouter><PalaceStartingPath memberId="reader-a"/></MemoryRouter>);
+  expect(screen.queryByText('Your first four doorways')).toBeNull();
+  view.rerender(<MemoryRouter><PalaceStartingPath memberId={null}/></MemoryRouter>);
+  expect(screen.queryByText('Your first four doorways')).toBeNull();
+  view.rerender(<MemoryRouter><PalaceStartingPath memberId="reader-b"/></MemoryRouter>);
+  expect(screen.getByText('Your first four doorways')).toBeTruthy();
+  expect(localStorage.getItem('palace-first-visit:v1:undefined')).toBeNull();
+  expect(localStorage.getItem('palace-first-visit:v1:null')).toBeNull();
+  view.rerender(<MemoryRouter><PalaceStartingPath memberId="reader-a"/></MemoryRouter>);
+  expect(screen.queryByText('Your first four doorways')).toBeNull();
+ });
+
 });
