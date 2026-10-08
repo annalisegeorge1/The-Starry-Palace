@@ -61,7 +61,7 @@ function schedulePalaceReload(key,delay=40){
  const last=Number(safeSessionGet(key)||0);
  if(Date.now()-last<=15000)return false;
  safeSessionSet(key,Date.now());
- window.setTimeout(()=>window.location.reload(),delay);
+ window.setTimeout(()=>{if(!shouldOfferManualPalaceRefresh(window.location.pathname))window.location.reload()},delay);
  return true;
 }
 function reloadForStaleChunk(error){
