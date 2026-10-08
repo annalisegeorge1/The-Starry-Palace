@@ -67,3 +67,10 @@ it('can show the full set on request',()=>{
  fireEvent.click(screen.getByLabelText(/Show all Palace checkpoints/));
  expect(screen.getByText('Find the Council and read its voting rules')).toBeTruthy();
 });
+
+it('shows the current preview host clearly and blocks local-only tester invitations',()=>{
+ mount();
+ const invite=screen.getByRole('button',{name:'Copy a friendly tester invitation'});
+ expect(invite.disabled).toBe(true);
+ expect(screen.getByText(/This is a local or unshareable preview/)).toBeTruthy();
+});
