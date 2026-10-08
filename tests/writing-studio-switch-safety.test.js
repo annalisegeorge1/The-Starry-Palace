@@ -25,7 +25,9 @@ describe('writing desk selection and cloud status protection',()=>{
  });
  it('continues to retain on-device recovery during slow and failed cloud saves',()=>{
   expect(studio).toContain("localStorage.setItem(recoveryKey(),JSON.stringify(snap))");
-  expect(studio).toContain("setSaved('Recovery copy kept on this device')");
+  expect(studio).toContain('setSaved(saveFailureNotice())');
+  expect(studio).toContain("recoveryStorageRef.current?'Recovery copy kept on this device':'Cloud save failed · export draft now'");
+  expect(studio).toContain('setRecoveryStorageAvailable(false)');
   expect(studio).toContain('restoreRecovery()');
  });
 });
