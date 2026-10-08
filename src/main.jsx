@@ -45,6 +45,7 @@ import './palace-life-room-clarity.css';
 import './commons-conversation-path.css';
 import './palace-life-history.css';
 import './mobile-profile-writer-layout.css';
+import './palace-writer-profile-finish.css';
 import './profile-grid-restoration.css';
 import './chamber-creative-shelf-polish.css';
 import './reader-journey-path.css';
