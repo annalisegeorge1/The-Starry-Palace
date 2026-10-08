@@ -48,11 +48,11 @@ export default function PalaceChatDrawer({userId}){
   }catch(err){setError(err.message||'Your letter could not be sent. Your draft is preserved.')}
   finally{setBusy(false)}
  }
- if((quiet||chatPaused)&&!open)return null;
- return <div className={'palace-chat-dock'+(open?' is-open':'')}>
-  {!open?<button type="button" className="palace-chat-launch" aria-label={'Open Palace chat'+(unread?' · '+unread+' unread':'')} aria-expanded={false} onClick={()=>setOpen(true)}><span aria-hidden="true">✉</span><span>Chat</span>{unread>0&&<b>{unread>99?'99+':unread}</b>}</button>:
+ if(quiet&&!open)return null;
+ return <div className={'palace-chat-dock'+(open?' is-open':'')+(chatPaused?' is-quiet':'')}>
+  {!open?<button type="button" className="palace-chat-launch" aria-label={'Open Palace chat'+(chatPaused?' · quiet mode':'')+(unread?' · '+unread+' unread':'')} aria-expanded={false} onClick={()=>setOpen(true)}><span aria-hidden="true">✉</span><span>Chat</span>{unread>0&&<b>{unread>99?'99+':unread}</b>}</button>:
    <section className="palace-chat-panel" aria-label="Palace quick chat">
-    <header><div><small>PRIVATE PALACE LETTERS</small><strong>Chat while you wander</strong></div><div className="palace-chat-header-actions"><button type="button" onClick={()=>setChatPaused(v=>!v)} aria-pressed={chatPaused} title="Hide chat after minimising" aria-label={chatPaused?'Keep chat visible':'Hide chat after minimising'}>{chatPaused?'◉':'◌'}</button><button type="button" onClick={()=>setOpen(false)} aria-label="Minimize Palace chat">−</button></div></header>
+    <header><div><small>PRIVATE PALACE LETTERS</small><strong>Chat while you wander</strong></div><div className="palace-chat-header-actions"><button type="button" onClick={()=>setChatPaused(v=>!v)} aria-pressed={chatPaused} title="Toggle quiet launcher" aria-label={chatPaused?'Restore full chat launcher':'Use small quiet chat launcher'}>{chatPaused?'◉':'◌'}</button><button type="button" onClick={()=>setOpen(false)} aria-label="Minimize Palace chat">−</button></div></header>
     <div className="palace-chat-tools"><input aria-label="Find a conversation" placeholder="Find a conversation…" value={search} onChange={e=>setSearch(e.target.value)}/><Link to="/letters" onClick={()=>setOpen(false)}>All letters ↗</Link></div>
     <div className="palace-chat-people" aria-label="Conversations">{visible.map(c=><button type="button" key={c.conversation_id} onClick={()=>setSelected(c.conversation_id)} aria-pressed={active?.conversation_id===c.conversation_id}>{c.unread?'● ':''}{c.correspondent?.display_name||c.correspondent?.username||'Palace member'}</button>)}</div>
     {error&&<p className="palace-chat-error" role="alert">{error}</p>}
@@ -60,7 +60,7 @@ export default function PalaceChatDrawer({userId}){
      <div className="palace-chat-messages" role="log" aria-label="Conversation messages" aria-live="polite">{messages.length?messages.map(m=><div key={m.id} className={'palace-chat-bubble'+(m.sender_id===userId?' mine':'')}><p>{m.body}</p><small>{m.created_at?new Date(m.created_at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):''}</small></div>):<p className="palace-chat-empty">No messages yet. Begin with a hello.</p>}</div>
      <form className="palace-chat-compose" onSubmit={send}><textarea aria-label="Write a private message" placeholder="Write a little note…" rows={2} maxLength={3000} value={currentDraft} onChange={e=>setDraft(e.target.value)}/><button type="submit" disabled={busy||!currentDraft.trim()}>{busy?'Sending…':'Send ✦'}</button></form></>:
      <div className="palace-chat-empty"><p>No open conversations yet.</p><p>Start or accept a correspondence in Palace Letters, then chat here as you explore.</p><Link to="/letters" onClick={()=>setOpen(false)}>Open Palace Letters →</Link></div>}
-    <footer><small>{chatPaused?'Chat will stay hidden when minimised. Return to Palace Letters to reopen it.':'Messages remain private. Minimise the drawer whenever you want to focus.'}</small></footer>
+    <footer><small>{chatPaused?'Quiet mode: the launcher stays small when minimised.':'Messages remain private. Minimise the drawer whenever you want to focus.'}</small></footer>
    </section>}
  </div>;
 }
