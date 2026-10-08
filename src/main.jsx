@@ -15,6 +15,7 @@ import {WriterWelcome} from './WriterWelcome';
 import {PalaceHomeWelcome,PalaceRoomDirectory} from './PalaceHomeWelcome';
 import PalaceNewStories from './PalaceNewStories';
 import {safePalaceReturnPath} from './palaceReturnPath';
+import {shouldOfferManualPalaceRefresh} from './palaceUpdateSafety';
 import './palace-inviting-polish.css';
 import {
  ChamberLive,OnboardingLive,ReadingLive,ClubLive,WritingLive,SettingsLive,ActivityLive,LibraryLive,
@@ -25,6 +26,7 @@ import {
 import './palace-editorial-finish.css';
 import './palace-navigation-jewels.css';
 import './palace-regalia-rooms.css';
+import './palace-build-safety.css';
 
 
 const chunkErrorPattern=/dynamically imported module|importing a module script failed|failed to fetch|chunkloaderror|loading chunk|room load timeout|networkerror/i;
@@ -87,6 +89,7 @@ async function newestPalaceAssetPath(){
 }
 function PalaceBuildFreshnessWatch(){
  const location=useLocation();
+ const [updateAvailable,setUpdateAvailable]=useState(false);
  React.useEffect(()=>{
   let alive=true;
   const check=async()=>{
@@ -100,7 +103,10 @@ function PalaceBuildFreshnessWatch(){
    if(!alive||!current||!newest)return;
    const currentPath=new URL(current,window.location.origin).pathname;
    const newestPath=new URL(newest,window.location.origin).pathname;
-   if(currentPath!==newestPath)schedulePalaceReload('palace-new-build-reload',80);
+   if(currentPath!==newestPath){
+    if(shouldOfferManualPalaceRefresh(location.pathname))setUpdateAvailable(true);
+    else schedulePalaceReload('palace-new-build-reload',80);
+   }
   };
   const routeTimer=window.setTimeout(check,900);
   const onVisible=()=>{if(document.visibilityState==='visible')window.setTimeout(check,250)};
@@ -109,7 +115,8 @@ function PalaceBuildFreshnessWatch(){
   window.addEventListener('pageshow',onVisible);
   return()=>{alive=false;window.clearTimeout(routeTimer);window.clearInterval(interval);document.removeEventListener('visibilitychange',onVisible);window.removeEventListener('pageshow',onVisible)}
  },[location.pathname,location.search]);
- return null
+ if(!updateAvailable||!shouldOfferManualPalaceRefresh(location.pathname))return null;
+ return <aside className="palace-update-safety" role="status" aria-live="polite"><span aria-hidden="true">✦</span><div><strong>A newer Palace is ready.</strong><p>Finish saving your work before reloading. Your current page will stay open until you choose.</p></div><button type="button" onClick={()=>window.location.reload()}>Reload after saving</button></aside>
 }
 
 const TreasuryCatalogueLazy=React.lazy(()=>importWithRecovery(()=>import('./Treasury')));
