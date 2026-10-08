@@ -271,6 +271,26 @@ export async function getLibrary(userId){const [saved,progress,subs,savedComics,
  const comics=await Promise.all((savedComics.data||[]).map(async x=>({...x,cover_url:await signedAsset('comic-covers',x.comics?.cover_path)})));
  const comicHistory=await Promise.all((comicProgress.data||[]).map(async x=>({...x,cover_url:await signedAsset('comic-covers',x.comics?.cover_path)})));
  return{saved:saved.data||[],progress:progress.data||[],subscriptions:subs.data||[],savedComics:comics,comicProgress:comicHistory,comicSubscriptions:comicSubs.data||[],followedWriters:follows.data||[]}}
+/**
+ * Published chapter metadata for a reader-facing story history.
+ * Only publicly published chapters count; timestamps do not imply an edit
+ * unless a published chapter's updated_at is later than published_at.
+ */
+export async function getStoryHistoryMetadata(workIds=[]){
+ const ids=[...new Set(workIds.filter(Boolean))];
+ if(!ids.length)return {};
+ const results=[];
+ for(let index=0;index<ids.length;index+=60){
+  const {data,error}=await needClient().from('chapters')
+   .select('id,work_id,title,word_count,published_at,updated_at,status')
+   .in('work_id',ids.slice(index,index+60))
+   .eq('status','published')
+   .order('published_at',{ascending:false});
+  if(error)throw error;
+  results.push(...(data||[]));
+ }
+ return Object.fromEntries(ids.map(id=>[id,results.filter(c=>c.work_id===id)]));
+}
 export async function getTagConstellation(){return searchPalaceTags('','all',120)}
 export async function searchPalaceTags(query='',category='all',limit=100){const args={p_query:String(query||''),p_category:category==='all'?null:category,p_limit:limit};const modern=await needClient().rpc('search_palace_tags_v2',args);if(!modern.error)return modern.data||[];const legacy=await needClient().rpc('search_palace_tags',args);if(legacy.error)throw modern.error||legacy.error;return legacy.data||[]}
 export async function getTagFamilyCounts(){const{data,error}=await needClient().rpc('get_tag_family_counts');if(error)throw error;return data||[]}
