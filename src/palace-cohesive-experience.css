@@ -59,7 +59,10 @@ body.writing-desk-open .manuscript-sticky-toolbar button:focus-visible{
   flex:0 0 auto;max-width:min(75vw,260px);scroll-snap-align:start;
  }
  body.writing-desk-open .manuscript-sticky-toolbar{
-  top:0;max-height:55dvh;overflow-y:auto;overscroll-behavior:contain;
+  top:0;max-height:none;overflow:visible;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-format-scroll{
+  overflow-x:auto;overflow-y:hidden;
  }
  .palace-shell .reader-page .chapter-text{
   padding-inline:clamp(12px,4vw,24px);
@@ -67,4 +70,23 @@ body.writing-desk-open .manuscript-sticky-toolbar button:focus-visible{
 }
 @media(prefers-reduced-motion:reduce){
  .palace-main-stage :is(.palace-choice-card,.heritage-card,.history-shelf article,.palace-life-history-entry,.palace-life-story-list article){transition:none}
+}
+
+/* Keep full chapter controls reachable without nesting a second vertical scroll
+   container inside the editor. On very short screens, let the toolbar flow. */
+@media(max-height:560px){
+ body.writing-desk-open .manuscript-sticky-toolbar{position:relative;top:auto}
+}
+/* Hover-only animations should not penalise touch layouts. */
+@media(hover:none){
+ .palace-main-stage :is(.palace-choice-card,.heritage-card,.history-shelf article,.palace-life-history-entry,.palace-life-story-list article):hover{
+  box-shadow:none;transform:none;
+ }
+}
+/* Every room's main content should be zoomable without horizontal page clipping. */
+.palace-main-stage :is(.room-title,.room-tabs,.life-tabs,.library-tabs,.reader-page,.legacy-library-page,.legacy-life-page){
+ min-width:0;
+}
+.palace-main-stage :is(.heritage-card,.palace-life-story-list article,.palace-life-history-entry){
+ box-sizing:border-box;
 }
