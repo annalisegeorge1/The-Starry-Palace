@@ -6,6 +6,8 @@
 
 **Tester link:** https://the-starry-palace.onrender.com/beta
 
+**When using a parallel preview:** The fixed Render link below is for the existing live host only. Open `/beta` on the actual preview (`*.pages.dev` or future custom domain) and choose **Copy a friendly tester invitation** there. The generated invitation uses that verified page's current origin, so people do not accidentally test an older Render build. Do not share a localhost link. Keep the original Render URL unchanged until an alternative is explicitly tested and approved.
+
 **Short invitation:**
 > Hello! I'm inviting a few readers, writers and comic lovers to try The Starry Palace, a new literary community. You don't need technical experience, and there's no obligation to publish. Pick a short testing track and tell me what felt confusing or didn't work. Please use disposable writing when testing the editor. Your checklist and notes stay on your device until you choose to share your report. Would you be interested?
 >
