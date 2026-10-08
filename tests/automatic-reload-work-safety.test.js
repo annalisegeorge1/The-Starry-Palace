@@ -21,7 +21,7 @@ function testScheduler(pathname){
   safeSessionSet:(key,value)=>{storage.set(key,value);return true},
   shouldOfferManualPalaceRefresh
  });
- return{schedule,storage,timers};
+ return{schedule,storage,timers,location:fakeWindow.location};
 }
 
 describe('one work-safe guard for every automatic refresh path',()=>{
@@ -46,6 +46,14 @@ describe('one work-safe guard for every automatic refresh path',()=>{
   expect(storage.has('palace-chunk-auto-reload')).toBe(true);
   expect(schedule('palace-chunk-auto-reload',40)).toBe(false);
   expect(timers).toHaveLength(1);
+ });
+ it('cancels a queued public-route reload if the member enters the writing desk before it fires',()=>{
+  const {schedule,timers,location}=testScheduler('/reading');
+  expect(schedule('palace-new-build-reload',180)).toBe(true);
+  location.pathname='/writing/new-draft';
+  expect(()=>timers[0].callback()).not.toThrow();
+  location.pathname='/reading';
+  expect(()=>timers[0].callback()).toThrow('Unexpected automatic reload');
  });
  it('covers each automatic trigger and leaves deliberate manual reload buttons available',()=>{
   for(const key of [
