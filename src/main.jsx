@@ -39,6 +39,7 @@ import './manuscript-calm-focus.css';
 import './writer-desk-drawer.css';
 import './palace-life-room-clarity.css';
 import './commons-conversation-path.css';
+import './mobile-profile-writer-layout.css';
 
 
 const chunkErrorPattern=/dynamically imported module|importing a module script failed|failed to fetch|chunkloaderror|loading chunk|room load timeout|networkerror/i;
