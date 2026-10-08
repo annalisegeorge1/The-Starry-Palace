@@ -6,6 +6,7 @@ import { configured, supabase } from './supabase';
 import './style.css';
 import './polish.css';
 import './palace-next.css';
+import './palace-quality-pass.css';
 import './neon-map.css';
 import './grand-palaces.css';
 import GrandPalaceHall from './GrandPalaceHall';
