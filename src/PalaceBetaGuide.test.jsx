@@ -34,10 +34,13 @@ it('offers a keyboard-accessible next checkpoint and a saved unfinished-only vie
  const first=screen.getByText('Find reading and writing from the home page').closest('article');
  fireEvent.click(first.querySelector('input[value="passed"]'));
  expect(screen.getByText('Next up: Navigate between sections and go back')).toBeTruthy();
- fireEvent.click(screen.getByLabelText("Show only checkpoints I haven't marked yet"));
+ fireEvent.click(screen.getByLabelText("Focus on unfinished and troubled checkpoints"));
  expect(screen.queryByText('Find reading and writing from the home page')).toBeNull();
+ const troubled=screen.getByText('Navigate between sections and go back').closest('article');
+ fireEvent.click(troubled.querySelector('input[value="stuck"]'));
+ expect(screen.getByRole('button',{name:'Describe what happened →'})).toBeTruthy();
  fireEvent.click(screen.getByRole('button',{name:/Go to next checkpoint/}));
- expect(document.activeElement?.id).toBe('palace-beta-task-mobile');
+ expect(document.activeElement?.id).toBe('palace-beta-task-reading');
  expect(JSON.parse(localStorage.getItem('palace-beta-feedback-v2')).showRemaining).toBe(true);
 });
 it('handles a finished track without hiding the report or making results irreversible',()=>{
