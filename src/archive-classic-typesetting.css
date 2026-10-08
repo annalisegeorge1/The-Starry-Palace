@@ -1,0 +1,5 @@
+.archive-reader-copy{max-width:72ch;margin:0 auto;font:400 clamp(1.05rem,1.2vw,1.18rem)/1.85 Georgia,"Times New Roman",serif;letter-spacing:.006em;overflow-wrap:break-word;hyphens:auto}
+.archive-reader-copy p{margin:0 0 1.35em;text-align:left;white-space:normal}
+.archive-reader-copy h2{font:600 clamp(1.35rem,2.4vw,1.8rem)/1.35 Georgia,serif;text-align:center;letter-spacing:.025em;margin:2em 0 1.2em}
+.archive-reader-copy .archive-classic-verse{white-space:pre-line;line-height:1.7;text-align:left;margin:1.5em auto;max-width:62ch}
+@media(max-width:600px){.archive-reader-copy{font-size:1.05rem;line-height:1.75}.archive-reader-copy p{margin-bottom:1.15em}}
