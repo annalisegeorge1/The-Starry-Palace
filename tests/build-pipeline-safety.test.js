@@ -2,10 +2,10 @@ import {describe,it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
 
 describe('safe build pipeline division',()=>{
- it('builds the static app and SPA 404 without rerunning all tests on Render',()=>{
+ it('builds the static app with a host-aware SPA fallback, without rerunning all tests on Render',()=>{
   const pkg=JSON.parse(readFileSync('package.json','utf8'));
   expect(pkg.scripts.build).toContain('vite build');
-  expect(pkg.scripts.build).toContain('cp dist/index.html dist/404.html');
+  expect(pkg.scripts.build).toContain('node scripts/prepare-spa-fallback.mjs');
   expect(pkg.scripts.build).not.toMatch(/vitest|npm run test/);
  });
  it('requires a full test suite followed by the production build in GitHub CI',()=>{

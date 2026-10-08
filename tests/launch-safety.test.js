@@ -41,8 +41,12 @@ describe('Starry Palace launch safety',()=>{
     expect(live).not.toContain('window.confirm(');
   });
 
-  it('keeps a static-host SPA fallback in the production build',()=>{
-    expect(pkg.scripts.build).toContain('cp dist/index.html dist/404.html');
+  it('preserves the Render SPA fallback while enabling native Cloudflare routing',()=>{
+    expect(pkg.scripts.build).toContain('node scripts/prepare-spa-fallback.mjs');
+    const routeFallback=read('scripts/prepare-spa-fallback.mjs');
+    expect(routeFallback).toContain("process.env.CF_PAGES==='1'");
+    expect(routeFallback).toContain('copyFileSync(entry,fallback)');
+    expect(routeFallback).toContain('unlinkSync(fallback)');
   });
 
   it('keeps core rooms eager while splitting the heavy Treasury catalogue safely',()=>{
