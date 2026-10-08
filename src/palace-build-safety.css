@@ -1,0 +1,70 @@
+/* A quiet, accessible update notice that never forces an unsaved manuscript to reload. */
+.palace-update-safety{
+ position:fixed;
+ z-index:1100;
+ right:clamp(12px,2vw,28px);
+ bottom:clamp(14px,3vw,28px);
+ display:flex;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:12px;
+ width:min(440px,calc(100vw - 24px));
+ min-width:0;
+ padding:15px;
+ border:1px solid rgba(194,182,247,.63);
+ border-radius:19px;
+ background:linear-gradient(140deg,#252241,#171d39);
+ color:#f6f1ff;
+ box-shadow:0 18px 44px rgba(4,7,27,.35);
+}
+.palace-update-safety>span{
+ flex:none;
+ display:grid;
+ place-items:center;
+ width:37px;
+ height:37px;
+ border-radius:12px;
+ background:rgba(175,156,238,.14);
+ color:#cbb8ff;
+ font:normal 1.35rem Georgia,serif;
+}
+.palace-update-safety>div{
+ flex:1 1 215px;
+ min-width:0;
+}
+.palace-update-safety strong{font-size:.88rem;line-height:1.4;display:block}
+.palace-update-safety p{
+ margin:4px 0 0;
+ color:#e0d9f2;
+ font-size:.74rem;
+ line-height:1.55;
+}
+.palace-update-safety button{
+ flex:1 0 auto;
+ min-height:42px;
+ padding:9px 14px;
+ border:1px solid rgba(204,190,252,.59);
+ border-radius:12px;
+ background:linear-gradient(120deg,#7162a7,#535e9c);
+ color:#fff;
+ font:700 .79rem/1.25 inherit;
+ cursor:pointer;
+}
+.palace-update-safety button:hover{background:linear-gradient(120deg,#806db9,#586cb2)}
+.palace-update-safety button:focus-visible{outline:3px solid #badbff;outline-offset:3px}
+@media (max-width:720px){
+ .palace-update-safety{
+  left:12px;right:12px;
+  bottom:calc(82px + env(safe-area-inset-bottom));
+  width:auto;
+  max-height:calc(60dvh - env(safe-area-inset-bottom));
+  overflow-y:auto;
+  padding:12px;
+ }
+ .palace-update-safety>span{width:30px;height:30px}
+ .palace-update-safety>div{flex-basis:165px}
+ .palace-update-safety button{width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+ .palace-update-safety,.palace-update-safety button{transition:none!important;animation:none!important}
+}
