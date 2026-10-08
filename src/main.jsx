@@ -14,6 +14,7 @@ import PalaceResumeReading from './PalaceResumeReading';
 import {WriterWelcome} from './WriterWelcome';
 import {PalaceHomeWelcome,PalaceRoomDirectory} from './PalaceHomeWelcome';
 import PalaceNewStories from './PalaceNewStories';
+import PalaceChatDrawer from './PalaceChatDrawer';
 import {safePalaceReturnPath} from './palaceReturnPath';
 import {palaceSignInDoor,palaceDoorDestinationMessage} from './palaceDoorway';
 import {shouldOfferManualPalaceRefresh} from './palaceUpdateSafety';
@@ -550,6 +551,8 @@ class PalaceRootBoundary extends React.Component{
  }
 }
 
+function PalaceChatHost(){const {session}=useAuth();return <PalaceChatDrawer userId={session?.user?.id}/>}
+
 function App(){return <AuthProvider><PalaceBuildFreshnessWatch/><NavigationReset/><RouteStateReset/><BlankScreenWatchdog/><Frame><RouteGuard><Routes>
  <Route path="/" element={<Home/>}/><Route path="/login" element={<Login/>}/><Route path="/auth/callback" element={<Callback/>}/>
  <Route path="/welcome" element={<ProtectedRoute><OnboardingLive Frame={Frame}/></ProtectedRoute>}/>
@@ -579,7 +582,7 @@ function App(){return <AuthProvider><PalaceBuildFreshnessWatch/><NavigationReset
  <Route path="/search" element={<SearchLive Frame={Frame}/>}/><Route path="/honour" element={<HonourLive Frame={Frame}/>}/><Route path="/council" element={<ProtectedRoute><CouncilLive Frame={Frame}/></ProtectedRoute>}/><Route path="/council/governance" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><PalaceGovernance Frame={Frame}/></React.Suspense></ProtectedRoute>}/><Route path="/code" element={<CodeLive Frame={Frame}/>}/><Route path="/beta" element={<React.Suspense fallback={<RouteLoading/>}><PalaceBetaGuide Frame={Frame}/></React.Suspense>}/>
  <Route path="/member/:username" element={<MemberProfileLive Frame={Frame}/>}/>
  <Route path="*" element={<Frame><section className="lost-gates-page"><div className="lost-gates-orbit"><span>☾</span><i>✦</i></div><p className="eyebrow">BEYOND THE GATES</p><h1>You left palace grounds.</h1><p>The path thinned, the lamps disappeared, and somehow you wandered beyond the Palace walls.</p><div className="lost-gates-actions"><Link className="button" to="/">Return to the Palace</Link><Link to="/search">Search for a room →</Link></div></section></Frame>}/>
- </Routes></RouteGuard></Frame></AuthProvider>}
+ </Routes></RouteGuard><PalaceChatHost/></Frame></AuthProvider>}
 
 createRoot(document.getElementById('root')).render(<React.StrictMode><PalaceRootBoundary><BrowserRouter><App/></BrowserRouter></PalaceRootBoundary></React.StrictMode>);
 
