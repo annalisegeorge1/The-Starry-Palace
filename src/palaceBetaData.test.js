@@ -14,7 +14,7 @@ describe('volunteer testing model',()=>{
  it('separates success, trouble, and skipped tasks instead of counting them all as passed',()=>{
   const checks=betaChecksFor('reader').slice(0,4);
   const checked={[checks[0].id]:'passed',[checks[1].id]:'stuck',[checks[2].id]:'skipped'};
-  expect(betaCounts(checks,checked)).toEqual({explored:3,passed:1,stuck:1});
+  expect(betaCounts(checks,checked)).toEqual({marked:3,attempted:2,passed:1,stuck:1,skipped:1});
  });
  it('builds a usable report with multiple problems but no private account data',()=>{
   const state={role:'writer',device:'Android Chrome',results:{draft:'passed',autosave:'stuck',tags:'skipped'},
@@ -26,6 +26,8 @@ describe('volunteer testing model',()=>{
    expect(report).toContain(fragment);
   }
   expect(report).toContain('Impact: blocker');
+  expect(report).toContain('Checkpoints attempted: 2/');
+  expect(report).toContain('Skipped: 1');
   expect(report).toContain('It was NOT automatically submitted');
   expect(report).not.toContain('password:');
  });
