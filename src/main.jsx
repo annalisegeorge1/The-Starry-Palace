@@ -17,6 +17,7 @@ import PalaceResumeReading from './PalaceResumeReading';
 import {WriterWelcome} from './WriterWelcome';
 import {PalaceHomeWelcome,PalaceRoomDirectory} from './PalaceHomeWelcome';
 import {safePalaceReturnPath} from './palaceReturnPath';
+import './palace-inviting-polish.css';
 import {
  ChamberLive,OnboardingLive,ReadingLive,ClubLive,WritingLive,SettingsLive,ActivityLive,LibraryLive,
  PalaceLifeLive,LettersLive,EventsLive,TreasuryLive,LostWorksLive,MemberProfileLive,SearchLive,
