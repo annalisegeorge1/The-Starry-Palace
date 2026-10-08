@@ -94,7 +94,7 @@ export function FirstManuscriptGuide({works}){
  if(!Array.isArray(works))return null;
  const hasWork=works.length>0;
  const hasChapter=works.some(w=>(w.chapters||[]).length>0);
- const hasPublished=works.some(w=>(w.chapters||[]).some(c=>c.status==='published'));
+ const hasPublished=works.some(w=>w.publication_status==='published'||(w.chapters||[]).some(c=>c.status==='published'));
  if(hasPublished)return null;
  const progress=hasWork?(hasChapter?2:1):0;
  return <aside className="writer-first-manuscript-guide" aria-label="Optional guide to first published chapter">
@@ -106,6 +106,6 @@ export function FirstManuscriptGuide({works}){
    <span className={hasChapter?'completed':''}>{hasChapter?'✓':'2'} Chapter</span>
    <span>3 Publish when ready</span>
   </div>
-  <Link to="/writers#first-chapter">How publishing works →</Link>
+  <Link to="/writers">Writer’s Door and publishing guide →</Link>
  </aside>;
 }
