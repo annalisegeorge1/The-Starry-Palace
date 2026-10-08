@@ -1,0 +1,50 @@
+/* A small chapter compass at the top of the manuscript.
+ * The reading page remains focused on the prose, not a second dashboard. */
+.palace-shell .reader-page .reader-chapter-steps{
+ display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+ align-items:stretch;gap:9px;margin:18px 0 4px;
+ padding:9px;border:1px solid rgba(171,161,220,.3);
+ border-radius:16px;background:rgba(112,102,172,.07);
+}
+.palace-shell .reader-page .reader-chapter-steps>a{
+ display:flex;align-items:center;justify-content:flex-start;gap:9px;
+ min-width:0;min-height:54px;padding:9px 12px;border:1px solid rgba(170,154,224,.35);
+ border-radius:11px;background:rgba(145,131,209,.09);color:inherit;text-decoration:none;
+}
+.palace-shell .reader-page .reader-chapter-steps>a:last-child{justify-content:flex-end;text-align:right}
+.palace-shell .reader-page .reader-chapter-steps>a:hover{border-color:rgba(174,168,234,.76);background:rgba(149,134,216,.18)}
+.palace-shell .reader-page .reader-chapter-steps>a:focus-visible{outline:3px solid #afceff;outline-offset:3px}
+.palace-shell .reader-page .reader-chapter-steps>a>span{min-width:0}
+.palace-shell .reader-page .reader-chapter-steps>a>span:first-child:last-child{font-size:1.1rem}
+.palace-shell .reader-page .reader-chapter-steps>a small{display:block;letter-spacing:.10em;font-size:.62rem;opacity:.7;line-height:1.4}
+.palace-shell .reader-page .reader-chapter-steps>a strong{display:block;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.84rem;max-width:26ch}
+.palace-shell .reader-page .reader-chapter-steps-location{
+ display:flex;align-items:center;justify-content:center;min-width:56px;
+ font:700 .83rem/1.2 system-ui,sans-serif;letter-spacing:.04em;
+ font-variant-numeric:tabular-nums;opacity:.85;
+}
+.palace-shell .reader-page .reader-chapter-steps-edge{
+ display:flex;align-items:center;justify-content:center;
+ min-height:44px;padding:7px 10px;
+ font:.73rem/1.4 system-ui,sans-serif;opacity:.7;
+}
+.palace-shell .reader-page .chapter-text :is(p,blockquote,li){overflow-wrap:break-word}
+.palace-shell .reader-page .chapter-text blockquote{margin-inline:clamp(12px,4vw,30px);padding-inline:clamp(12px,3vw,20px);border-inline-start:2px solid rgba(161,149,213,.5)}
+@media(max-width:620px){
+ .palace-shell .reader-page .reader-chapter-steps{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:5px;padding:6px}
+ .palace-shell .reader-page .reader-chapter-steps>a{min-height:46px;padding:7px 8px}
+ .palace-shell .reader-page .reader-chapter-steps>a strong{font-size:.73rem;max-width:18ch}
+ .palace-shell .reader-page .reader-chapter-steps>a small{font-size:.58rem;letter-spacing:.06em}
+ .palace-shell .reader-page .reader-chapter-steps-location{min-width:40px;font-size:.73rem}
+ .palace-shell .reader-page .reader-chapter-steps-edge{font-size:.65rem}
+}
+@media(max-width:390px){
+ .palace-shell .reader-page .reader-chapter-steps{grid-template-columns:minmax(0,1fr) 40px minmax(0,1fr)}
+ .palace-shell .reader-page .reader-chapter-steps>a strong{max-width:10ch}
+}
+.palace-shell.daylight .reader-page .reader-chapter-steps,
+.palace-shell .reader-page.tone-paper .reader-chapter-steps,
+.palace-shell .reader-page.tone-soft .reader-chapter-steps{background:rgba(226,222,243,.26);border-color:rgba(102,91,150,.28)}
+.palace-shell.daylight .reader-page .reader-chapter-steps>a,
+.palace-shell .reader-page.tone-paper .reader-chapter-steps>a,
+.palace-shell .reader-page.tone-soft .reader-chapter-steps>a{background:rgba(254,254,255,.62);color:#392e53;border-color:#c5b9df}
