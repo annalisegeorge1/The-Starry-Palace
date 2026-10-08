@@ -48,3 +48,28 @@
 .palace-shell.daylight .reader-page .reader-chapter-steps>a,
 .palace-shell .reader-page.tone-paper .reader-chapter-steps>a,
 .palace-shell .reader-page.tone-soft .reader-chapter-steps>a{background:rgba(254,254,255,.62);color:#392e53;border-color:#c5b9df}
+
+/* One direct route into the text for screen-reader, keyboard and touch readers. */
+.palace-shell .reader-page .reader-start-text-link{
+ display:inline-flex;align-items:center;justify-content:center;
+ min-height:42px;max-width:100%;margin:9px 0 0;padding:8px 12px;
+ border-radius:11px;border:1px solid rgba(183,167,225,.38);
+ background:rgba(146,130,211,.09);color:inherit;
+ font:700 .78rem/1.4 system-ui,sans-serif;text-decoration:none;
+}
+.palace-shell .reader-page .reader-start-text-link:hover{border-color:rgba(188,180,245,.83);background:rgba(146,130,211,.18)}
+.palace-shell .reader-page .reader-start-text-link:focus-visible{
+ outline:3px solid #afceff;outline-offset:3px;
+}
+.palace-shell .reader-page #palace-reading-text{
+ scroll-margin-top:clamp(20px,8vh,70px);
+}
+.palace-shell .reader-page #palace-reading-text:focus{outline:none}
+.palace-shell .reader-page #palace-reading-text:focus-visible{
+ outline:3px solid #afceff;outline-offset:4px;border-radius:6px;
+}
+.palace-shell.daylight .reader-page .reader-start-text-link,
+.palace-shell .reader-page.tone-paper .reader-start-text-link,
+.palace-shell .reader-page.tone-soft .reader-start-text-link{
+ background:rgba(238,233,251,.7);border-color:#c3b4df;color:#3a3153;
+}
