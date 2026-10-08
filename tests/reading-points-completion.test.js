@@ -67,7 +67,8 @@ describe('Celestial reading points after every chapter',()=>{
   expect(server).toContain("'creative:reading:'");
  });
  it('uses the chapter transition in both Next and chapter navigation without finishing the whole work',()=>{
-  expect(reader).toContain('const readingSessionId=earnSessionRef.current;');
+  expect(reader).toContain('const pendingReadingSession=earnSessionRequestRef.current;');
+  expect(reader).toContain('const readingSessionId=earnSessionRef.current||(pendingReadingSession?await pendingReadingSession.catch(()=>null):null);');
   expect(reader).toContain('sessionId:readingSessionId');
   expect(reader).toContain('await settleReadingChapterTransition(');
   expect(reader).toContain("onClick={()=>finish(false)} to={\"/work/\"+slug+\"/chapter/\"+next.id}");
