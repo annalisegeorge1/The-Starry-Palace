@@ -16,9 +16,12 @@ describe('long-form classic reader',()=>{
   expect(screen.queryByText('Paragraph 88 of a public-domain source text.')).toBeNull();
   fireEvent.click(screen.getByRole('button',{name:'Next page →'}));
   expect(screen.getByText('Reading page 2 of 3')).toBeTruthy();
+  view.unmount();
+  const resumed=render(<ArchiveClassicReader record={record} text={text}/>);
+  expect(screen.getByText('Reading page 2 of 3')).toBeTruthy();
   fireEvent.click(screen.getByRole('button',{name:'← Previous page'}));
   expect(screen.getByText('Reading page 1 of 3')).toBeTruthy();
-  view.unmount();
+  resumed.unmount();
  });
  it('uses authentic source chapter headings and never hides translation credit',()=>{
   const text={...textFor(4),body_text:'CHAPTER I\n\nThe story begins.\n\nCHAPTER II\n\nA second chapter begins.',translations:[{translator_name:'The Translator',language:'English',scope:'complete',notes:'Historical translation'}]};
