@@ -56,7 +56,7 @@ The built-in tracks contain a subset of 13 optional checkpoints covering: first-
 - Can it be reproduced after a normal reload?
 
 ## Technical regression checklist
-- Run `npm run build` (includes Vitest).
+- Run `npm run verify` (the full Vitest suite followed by the production build). The standalone `npm run build` does not run tests.
 - Verify protected routes and navigation (desktop and mobile).
 - Run two fast successive autosaves while typing; confirm the newest text survives a reload.
 - Simulate failed save and reconnect; confirm local recovery is retained until the latest successful save.
@@ -66,6 +66,7 @@ The built-in tracks contain a subset of 13 optional checkpoints covering: first-
 - Confirm Council and voting RLS protects private data and result visibility.
 - Load slow networks, light mode, zoomed mobile, keyboard-only, reduced-motion.
 - Validate error screens recover without hiding existing local draft recovery.
+- While typing disposable text on a draft, simulate a stale chunk or a temporary network error and confirm no automatic browser reload occurs. Save or export the text before using the manual recovery button; on ordinary public reading pages confirm recovery is still available.
 
 ## Rules for further feature expansion
 No new major mechanics until **reliability blockers** are closed and new members can complete the primary reading and writing journeys. Prefer consolidating modules, removing obsolete CSS, and strengthening existing features before expanding the collectible catalogue.
