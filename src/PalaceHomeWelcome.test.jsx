@@ -13,6 +13,12 @@ describe('inviting Palace entrance',()=>{
   expect(screen.getByRole('link',{name:/Explore public gatherings/}).getAttribute('href')).toBe('/events');
   expect(screen.getByText('Explore all the Palace rooms')).toBeTruthy();
  });
+ it('offers events and literary heritage without adding more primary doors',()=>{
+  render(<MemoryRouter><PalaceHomeWelcome/></MemoryRouter>);
+  expect(document.querySelectorAll('.palace-choice-card')).toHaveLength(3);
+  expect(screen.getByRole('link',{name:/Festivals & gatherings/}).getAttribute('href')).toBe('/events?tab=calendar');
+  expect(screen.getByRole('link',{name:/Literature across generations/}).getAttribute('href')).toBe('/reading');
+ });
  it('sends signed-in members straight to their room',()=>{
   render(<MemoryRouter><PalaceHomeWelcome member/></MemoryRouter>);
   expect(screen.getByRole('link',{name:/Open my Writing Chamber/}).getAttribute('href')).toBe('/writing');
