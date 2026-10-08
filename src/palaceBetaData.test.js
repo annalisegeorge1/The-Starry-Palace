@@ -18,6 +18,15 @@ describe('volunteer testing model',()=>{
   }
   expect(betaChecksFor('reader').find(check=>check.id==='events').url).toBe('/events');
  });
+ it('covers imported classic formatting, dated story history, and persistent chat',()=>{
+  for(const role of ['reader','writer','artist']){
+   const checks=betaChecksFor(role);
+   for(const id of ['classics','story-history','quick-chat'])expect(checks.some(c=>c.id===id)).toBe(true);
+  }
+  expect(betaChecksFor('moderator').some(c=>c.id==='story-history')).toBe(true);
+  expect(betaChecksFor('reader').find(c=>c.id==='story-history').url).toBe('/palace-life?room=history');
+  expect(betaChecksFor('reader').find(c=>c.id==='heritage').url).toBe('/events?tab=heritage');
+ });
  it('separates success, trouble, and skipped tasks instead of counting them all as passed',()=>{
   const checks=betaChecksFor('reader').slice(0,4);
   const checked={[checks[0].id]:'passed',[checks[1].id]:'stuck',[checks[2].id]:'skipped'};
