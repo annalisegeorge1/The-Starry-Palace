@@ -1,0 +1,55 @@
+name: Palace Cloudflare preview bundle
+
+# One initial bundle when this workflow is introduced, then on-demand only.
+# The standard Palace build checks remain the normal release gate.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/palace-cloudflare-preview.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  preview-zip:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout current main
+        uses: actions/checkout@v4
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked packages
+        run: npm ci
+      - name: Prepare browser-public Supabase configuration
+        run: |
+          test -f .env.example
+          grep -q '^VITE_SUPABASE_URL=https://' .env.example
+          grep -q '^VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_' .env.example
+          cp .env.example .env.local
+      - name: Verify Palace tests
+        run: npm test
+      - name: Build Cloudflare Pages SPA
+        env:
+          CF_PAGES: '1'
+        run: |
+          npm run build
+          test -s dist/index.html
+          if test -e dist/404.html; then
+            echo 'Cloudflare preview must not include root 404.html'
+            exit 1
+          fi
+      - name: Package direct-upload website
+        uses: actions/upload-artifact@v4
+        with:
+          name: palace-cloudflare-preview-${{ github.sha }}
+          path: dist/
+          if-no-files-found: error
+          include-hidden-files: false
+          retention-days: 2
