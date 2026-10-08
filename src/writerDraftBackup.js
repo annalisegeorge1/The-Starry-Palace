@@ -29,8 +29,8 @@ export function writerBackupText({workTitle='',chapterTitle='',body='',revisionN
 
 export function writerSavePhase(message=''){
  const text=String(message||'').toLowerCase();
- if(/cannot|failed|unavailable|export draft now/.test(text))return 'attention';
- if(/recovery copy|recovered on this device/.test(text))return 'recovery';
+ if(/cannot|failed|unavailable|export draft now|not completed/.test(text))return 'attention';
+ if(/recovery copy|recovered on this device|restored locally|unsaved cloud edits/.test(text))return 'recovery';
  if(/waiting|saving|pasted without outside formatting/.test(text))return 'pending';
  if(/saved to palace/.test(text))return 'saved';
  return 'ready';
