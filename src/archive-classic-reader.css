@@ -82,3 +82,13 @@
 }
 @media(max-width:390px){.archive-classic-experience .archive-classic-locator{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.archive-classic-experience *{scroll-behavior:auto!important}}
+
+.archive-classic-experience .archive-classic-edition-jump{
+ display:inline-flex;align-items:center;justify-content:center;
+ min-height:42px;margin-top:7px;padding:9px 14px;
+ border:1px solid rgba(182,166,227,.55);border-radius:999px;
+ background:rgba(146,126,209,.14);color:inherit;
+ font:750 .76rem/1.4 system-ui,sans-serif;cursor:pointer;
+}
+.archive-classic-experience .archive-classic-edition-jump:hover{border-color:rgba(199,185,239,.95);background:rgba(146,126,209,.25)}
+.archive-classic-experience .archive-classic-edition{scroll-margin-top:15px}
