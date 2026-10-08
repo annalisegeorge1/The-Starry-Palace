@@ -1,0 +1,333 @@
+/*
+ * The Starry Palace — Regalia & Rooms
+ * A finishing layer for Grand Palaces, personal Chambers and the Treasury.
+ * Preserve artwork, colours earned by members, data and existing grid structure.
+ */
+
+.palace-shell{
+ --regalia-border:rgba(184,173,235,.32);
+ --regalia-caption:#c9c5df;
+ --regalia-heading:#f6f2ff;
+ --regalia-soft:rgba(141,128,198,.1);
+}
+.palace-shell :is(.grand-palace-hall,.member-palace-showcase,.prism-atelier,.treasury-catalogue-head){
+ min-width:0;
+}
+.palace-shell :is(.grand-palace-hall,.member-palace-showcase,.prism-atelier) :is(h1,h2,h3){
+ text-wrap:balance;
+ overflow-wrap:break-word;
+}
+.palace-shell :is(.grand-palace-hall,.member-palace-showcase,.prism-atelier) :is(p,small){
+ overflow-wrap:break-word;
+}
+.palace-shell .grand-palace-hall :is(.grand-palace-hero,.grand-leaderboard,.grand-shop,.grand-dressing-room,.grand-awards,.grand-box-room){
+ box-shadow:0 13px 32px rgba(6,11,33,.12),inset 0 1px 0 rgba(255,255,255,.035);
+}
+.palace-shell .grand-palace-hall .grand-hero-stats>span{
+ border-radius:16px;
+ min-width:0;
+}
+.palace-shell .grand-palace-hall .grand-hero-stats strong{
+ font-variant-numeric:tabular-nums;
+ line-height:1.27;
+}
+.palace-shell .grand-palace-hall .grand-ranked-courts article{
+ min-width:0;
+ border-radius:15px;
+}
+.palace-shell .grand-palace-hall .grand-ranked-courts article.mine{
+ box-shadow:inset 3px 0 0 #b3a5ff;
+}
+.palace-shell .grand-palace-hall .grand-ranked-courts :is(strong,b){
+ overflow-wrap:anywhere;
+}
+.palace-shell .grand-palace-hall .grand-ranked-courts article>span b{
+ font-variant-numeric:tabular-nums;
+}
+.palace-shell .grand-palace-hall .grand-palace-tab{
+ scroll-margin:12px;
+ outline-offset:3px;
+}
+.palace-shell .grand-palace-hall .grand-palace-tab[aria-pressed=true]{
+ box-shadow:inset 0 -2px 0 rgba(206,220,255,.63),0 7px 16px rgba(5,8,31,.13);
+}
+.palace-shell .grand-palace-hall .grand-hero-stats small,
+.palace-shell .grand-palace-hall .grand-hero-stats strong,
+.palace-shell .grand-palace-hall .grand-ranked-courts small{
+ line-height:1.45;
+}
+.palace-shell .grand-palace-hall .grand-send label{
+ min-width:0;
+}
+.palace-shell .grand-palace-hall .grand-chosen-recipient{
+ display:flex;flex-wrap:wrap;align-items:baseline;gap:.35rem;
+ margin:.5rem 0;padding:.7rem .85rem;
+ border:1px solid rgba(133,209,197,.48);
+ border-radius:12px;background:rgba(73,154,143,.13);
+ color:#e1fff6;line-height:1.5;font-size:.81rem;
+}
+.palace-shell .grand-palace-hall .grand-chosen-recipient>span{color:#9ce6d3}
+.palace-shell .grand-palace-hall .grand-chosen-recipient strong{color:#f3fffd}
+.palace-shell .grand-palace-hall .grand-chosen-recipient small{color:#b2e1d8}
+.palace-shell .grand-palace-hall .grand-recipients button{
+ text-align:left;
+ min-height:44px;
+}
+.palace-shell .grand-palace-hall .grand-theme-grid button[aria-pressed=true]{
+ box-shadow:inset 3px 0 0 #b6a5fa,0 5px 18px rgba(89,64,159,.12);
+}
+
+/* Curated collections, not crowded rows of same-looking prizes. */
+.palace-shell .treasury-catalogue-head h1{
+ letter-spacing:-.035em;
+ line-height:1.12;
+ text-wrap:balance;
+}
+.palace-shell .treasury-catalogue-head .lede{
+ line-height:1.75;
+ max-width:70ch;
+}
+.palace-shell .treasury-collection-switch{
+ display:flex;
+ flex-wrap:wrap;
+ gap:.55rem;
+ align-items:stretch;
+}
+.palace-shell .treasury-collection-switch button{
+ min-height:44px;
+ line-height:1.4;
+ border-radius:13px;
+ white-space:normal;
+ overflow-wrap:break-word;
+}
+.palace-shell .treasury-collection-switch button[aria-pressed=true]{
+ box-shadow:inset 0 -2px 0 rgba(226,216,255,.75),0 7px 18px rgba(12,9,40,.14);
+}
+.palace-shell .gift-catalogue-card,
+.palace-shell .badge-card{
+ min-width:0;
+ box-shadow:0 10px 26px rgba(8,10,30,.11);
+}
+.palace-shell .gift-catalogue-copy h2,
+.palace-shell .badge-card h2{
+ text-wrap:balance;
+ overflow-wrap:anywhere;
+ line-height:1.25;
+}
+.palace-shell .gift-catalogue-copy p{
+ line-height:1.65;
+}
+.palace-shell .gift-collection-summary article strong{
+ font-variant-numeric:tabular-nums;
+}
+.palace-shell :is(.catalogue-pagination button,.gift-edition-ribbon button){
+ min-height:42px;
+}
+.palace-shell .catalogue-pagination{
+ flex-wrap:wrap;
+}
+.palace-shell .catalogue-celestial-doorway{
+ border-radius:20px;
+}
+.palace-shell .catalogue-celestial-doorway h2{
+ text-wrap:balance;
+ line-height:1.2;
+}
+
+/* The permanent Grand Palace crest should be the centrepiece of a personal page. */
+.palace-shell .member-palace-showcase{
+ gap:clamp(12px,2vw,19px);
+}
+.palace-shell .member-palace-heraldry{
+ position:relative;
+ isolation:isolate;
+ overflow:hidden;
+ transition:border-color .18s ease,box-shadow .18s ease;
+}
+.palace-shell .member-palace-heraldry::after{
+ content:"✧";
+ position:absolute;
+ top:8px;right:22px;pointer-events:none;
+ color:rgba(229,216,255,.19);
+ font:normal clamp(2.5rem,5vw,5rem) Georgia,serif;
+}
+.palace-shell .member-palace-heraldry:hover{
+ box-shadow:0 15px 34px rgba(9,14,37,.2),inset 0 1px 0 rgba(255,255,255,.06);
+}
+.palace-shell .member-palace-heraldry :is(strong,p,small){
+ overflow-wrap:break-word;
+}
+.palace-shell .member-palace-honour-room,
+.palace-shell .member-palace-creative-room{
+ border-color:var(--regalia-border);
+}
+.palace-shell .member-palace-honour{
+ gap:.3rem;
+}
+.palace-shell .member-palace-honour>span{
+ font-size:clamp(1.75rem,3vw,2.25rem);
+}
+.palace-shell .member-palace-honour strong,
+.palace-shell .member-palace-creative-grid strong{
+ font-variant-numeric:tabular-nums;
+}
+.palace-shell .member-palace-honour em,
+.palace-shell .member-palace-creative-grid p{
+ line-height:1.55;
+}
+.palace-shell .member-palace-creative-grid article{
+ border-radius:16px;
+ background:linear-gradient(140deg,rgba(100,98,176,.18),rgba(49,65,120,.11));
+}
+.palace-shell .member-palace-creative-grid article :is(strong,small,p){
+ overflow-wrap:anywhere;
+}
+
+/* Prism Atelier: make selected swatches and available palettes effortless to scan. */
+.palace-shell .prism-atelier .prism-preview{
+ border:1px solid rgba(222,215,255,.29);
+}
+.palace-shell .prism-atelier .prism-swatch{
+ min-height:112px;
+ border-radius:15px;
+ transition:border-color .15s ease,box-shadow .15s ease;
+}
+.palace-shell .prism-atelier .prism-swatch.selected{
+ border-color:#c4baff;
+ box-shadow:0 0 0 2px rgba(201,188,253,.74),0 8px 20px rgba(20,13,49,.19);
+}
+.palace-shell .prism-atelier .prism-swatch:focus-visible{
+ outline:2px solid #c9daff;
+ outline-offset:2px;
+}
+.palace-shell .prism-atelier .prism-swatch strong{
+ line-height:1.32;
+ overflow-wrap:anywhere;
+}
+.palace-shell .prism-atelier .prism-families,
+.palace-shell .prism-atelier .prism-categories{
+ scroll-padding-inline:.5rem;
+ overscroll-behavior-inline:contain;
+}
+.palace-shell .prism-atelier .prism-main :is(button,select,input){
+ min-width:0;
+}
+.palace-shell .prism-atelier .prism-settings label{
+ line-height:1.5;
+}
+
+/* Daylight surfaces need readable ink, not the dark theme's white typography. */
+.palace-shell.daylight{
+ --regalia-border:rgba(113,92,162,.28);
+ --regalia-caption:#514669;
+ --regalia-heading:#30264b;
+}
+.palace-shell.daylight .grand-palace-hall .grand-ranked-courts article.mine{
+ box-shadow:inset 3px 0 0 #7463b4;
+}
+.palace-shell.daylight .grand-palace-hall .grand-chosen-recipient{
+ background:#e8f8f2;border-color:#74ada7;color:#235954;
+}
+.palace-shell.daylight .grand-palace-hall .grand-chosen-recipient :is(strong,small){
+ color:#235954;
+}
+.palace-shell.daylight .grand-palace-hall .grand-theme-grid button[aria-pressed=true]{
+ box-shadow:inset 3px 0 0 #7561af;
+}
+.palace-shell.daylight .member-palace-heraldry{
+ background:radial-gradient(ellipse at 7% 18%,color-mix(in srgb,var(--member-court-deep) 17%,transparent),transparent 48%),linear-gradient(125deg,#faf7ff,#e8e9fa);
+ color:#32294b;
+}
+.palace-shell.daylight .member-palace-heraldry :is(strong,p,small,span){
+ color:#3c3158;
+}
+.palace-shell.daylight .member-palace-heraldry::after{color:rgba(87,68,149,.15)}
+.palace-shell.daylight .member-palace-heraldry-emblem{
+ background:#f4f0fc;border-color:rgba(123,102,172,.27);
+}
+.palace-shell.daylight :is(.member-palace-honour-room,.member-palace-creative-room){
+ background:linear-gradient(140deg,#fff,#f2effa);
+ border-color:#c7b7dc;
+ color:#342947;
+}
+.palace-shell.daylight .member-palace-honour{
+ background:radial-gradient(circle at 50% 8%,color-mix(in srgb,var(--honour-colour) 23%,transparent),transparent 80%),#fbf9ff;
+}
+.palace-shell.daylight .member-palace-honour em,
+.palace-shell.daylight .member-palace-creative-grid p,
+.palace-shell.daylight .member-palace-creative-grid small,
+.palace-shell.daylight .member-palace-honour-room header p:last-child{
+ color:#544763;opacity:1;
+}
+.palace-shell.daylight .member-palace-creative-grid article{
+ background:#f8f5fe;border-color:#c8bddc;color:#352947;
+}
+.palace-shell.daylight .prism-atelier :is(.prism-palette-column,.prism-settings,.prism-looks){
+ background:linear-gradient(140deg,#fff,#f4f1fa);
+ color:#35294b;
+ border-color:#c4b6d7;
+}
+.palace-shell.daylight .prism-atelier .prism-swatch{
+ background:#faf7ff;color:#38294e;border-color:#c9bdda;
+}
+.palace-shell.daylight .prism-atelier .prism-swatch.selected{
+ border-color:#7260ae;
+ box-shadow:0 0 0 2px rgba(112,92,177,.42),0 7px 18px rgba(65,48,105,.09);
+}
+.palace-shell.daylight .prism-atelier :is(.prism-families,.prism-categories) button:not(.active){
+ color:#443357;background:#f8f6fc;border-color:#c4b8d5;
+}
+.palace-shell.daylight .treasury-collection-switch button[aria-pressed=true]{
+ box-shadow:inset 0 -3px 0 rgba(91,72,156,.38);
+}
+
+/* Smaller screens: preserve all useful content, no clipped ornamental labels. */
+@media(max-width:720px){
+ .palace-shell .grand-palace-hall .grand-hero-stats{gap:.55rem}
+ .palace-shell .grand-palace-hall .grand-palace-tabs{
+  top:4px;
+ }
+ .palace-shell .grand-palace-hall .grand-palace-tab-copy strong{
+  overflow-wrap:break-word;
+ }
+ .palace-shell .member-palace-heraldry{
+  gap:.75rem;padding:.85rem;align-items:center;
+ }
+ .palace-shell .member-palace-heraldry-emblem{
+  width:75px;height:75px;border-radius:19px;
+ }
+ .palace-shell .member-palace-heraldry>div:last-child{flex:1;min-width:0}
+ .palace-shell .member-palace-honour-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+ }
+ .palace-shell .member-palace-creative-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+ }
+ .palace-shell .member-palace-honour{min-height:130px}
+ .palace-shell .treasury-collection-switch{
+  flex-direction:column;
+  align-items:stretch;
+ }
+ .palace-shell .treasury-collection-switch button{
+  width:100%;
+  text-align:left;
+  padding:.75rem 1rem;
+ }
+ .palace-shell .grand-palace-hall :is(.grand-hero-stats strong,.grand-ranked-courts strong){
+  font-size:clamp(.85rem,3.2vw,1.08rem);
+ }
+}
+@media(max-width:390px){
+ .palace-shell .member-palace-heraldry-emblem{width:62px;height:62px}
+ .palace-shell .member-palace-honour-grid{gap:.45rem}
+ .palace-shell .member-palace-creative-grid{gap:.45rem}
+ .palace-shell .grand-palace-hall .grand-palace-tab{
+  padding:.35rem .08rem;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .member-palace-heraldry,
+ .palace-shell .prism-atelier .prism-swatch{
+  animation:none!important;transition:none!important;
+ }
+}
