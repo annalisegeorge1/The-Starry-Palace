@@ -1,0 +1,23 @@
+/* Manuscript collections: small, private planning surfaces; never affect chapter content */
+.manuscript-folder-organiser{display:grid;gap:.62rem;padding:.75rem;margin:.55rem 0;border:1px solid rgba(174,164,230,.24);border-radius:15px;background:linear-gradient(140deg,rgba(74,64,142,.17),rgba(49,102,146,.11))}
+.manuscript-folder-organiser header{display:grid;gap:.18rem}.manuscript-folder-organiser header strong{font:500 1.02rem Georgia,serif;color:#e1d1ff}.manuscript-folder-organiser header small{font-size:.66rem;color:#bcb4d7}
+.manuscript-folder-filter{display:flex;gap:.34rem;overflow-x:auto;scrollbar-width:thin;padding:.14rem 0 .3rem}
+.manuscript-folder-filter>button,.manuscript-folder-chip{flex:none;border:1px solid rgba(170,164,233,.32);border-radius:9px;background:rgba(67,66,130,.22);color:#e9e5f7;font-size:.67rem}
+.manuscript-folder-filter>button{padding:.44rem .56rem;min-height:34px}
+.manuscript-folder-chip{display:flex;align-items:center;min-height:34px;--folder-tint:#b9a0ee;border-color:color-mix(in srgb,var(--folder-tint) 48%,transparent)}
+.manuscript-folder-chip.tint-sapphire{--folder-tint:#a3c9f7}.manuscript-folder-chip.tint-teal{--folder-tint:#96e1d8}.manuscript-folder-chip.tint-rose{--folder-tint:#e9acd3}.manuscript-folder-chip.tint-silver{--folder-tint:#ccd6e8}.manuscript-folder-chip.tint-mint{--folder-tint:#b6e6c7}
+.manuscript-folder-chip button{border:0;background:transparent;color:var(--folder-tint);font-size:.65rem;min-height:33px;padding:.3rem .45rem}
+.manuscript-folder-chip button:last-child{border-left:1px solid rgba(194,179,231,.21);font-size:.9rem}
+.manuscript-folder-filter button.active{background:rgba(131,107,196,.36);box-shadow:inset 0 0 0 1px rgba(190,168,245,.37);color:#fff}
+.manuscript-folder-add{display:grid;grid-template-columns:minmax(0,1fr) minmax(90px,.4fr) auto;gap:.35rem}
+.manuscript-folder-add :is(input,select){width:100%;min-width:0;min-height:39px;color:#eeeafd;border:1px solid rgba(187,171,236,.3);border-radius:9px;background:rgba(18,25,58,.61);font-size:.72rem;padding:.42rem}
+.manuscript-folder-add button{min-height:39px;border:1px solid rgba(188,174,238,.4);border-radius:9px;background:rgba(98,84,167,.33);color:#efe9ff;font-size:.73rem;padding:.4rem .55rem}
+.chapter-row-extras{display:flex;gap:.35rem;flex-wrap:wrap;align-items:center;min-width:0}
+.chapter-folder-assignment{display:flex;align-items:center;gap:.27rem;font-size:.65rem;color:#c7badc}
+.chapter-folder-assignment select{min-width:93px;max-width:160px;min-height:32px;border-radius:8px;background:#202345;border:1px solid rgba(187,171,230,.34);color:#ece8fa;font-size:.67rem}
+.manuscript-folder-organiser :is(button,input,select):focus-visible,.chapter-folder-assignment select:focus-visible{outline:2px solid #b7d8ff;outline-offset:2px}
+.daylight .manuscript-folder-organiser{background:#f6f3fc;border-color:#d8cbe8}.daylight .manuscript-folder-organiser header strong{color:#53406d}.daylight .manuscript-folder-organiser header small,.daylight .chapter-folder-assignment{color:#635776}
+.daylight .manuscript-folder-filter>button,.daylight .manuscript-folder-chip{background:#fff;color:#49375f;border-color:#d4c7e7}.daylight .manuscript-folder-chip button{color:#57446b}.daylight .manuscript-folder-filter button.active{background:#e2d9f5;color:#422f5c}
+.daylight .manuscript-folder-add :is(input,select),.daylight .chapter-folder-assignment select{background:#fff;color:#413454;border-color:#d2c5e0}.daylight .manuscript-folder-add button{color:#fff;background:#68539c}
+@media(max-width:760px){.manuscript-folder-organiser{padding:.6rem}.manuscript-folder-add{grid-template-columns:minmax(0,1fr) 94px}.manuscript-folder-add button{grid-column:1/-1}.chapter-row-extras{flex-wrap:nowrap;overflow-x:auto}}
+@media(prefers-reduced-motion:reduce){.manuscript-folder-organiser *{transition:none!important}}
