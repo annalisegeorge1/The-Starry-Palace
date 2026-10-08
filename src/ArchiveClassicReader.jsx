@@ -22,6 +22,7 @@ export default function ArchiveClassicReader({record,text}){
  const [leading,setLeading]=useState(()=>readPalaceChoice(LEADING_KEY,['compact','comfortable','airy'],'comfortable'));
  const readerRef=useRef(null);
  const pendingHeadingRef=useRef(null);
+ const pendingPageTopRef=useRef(false);
  const [chosenHeading,setChosenHeading]=useState(null);
  const [editionOpen,setEditionOpen]=useState(false);
  const current=clampClassicPage(page,pages.length);
@@ -32,18 +33,23 @@ export default function ArchiveClassicReader({record,text}){
  const safeSource=/^https:\/\/[^\s]+$/i.test(sourceUrl)?sourceUrl:null;
  useEffect(()=>{writePalacePreference(pageKey,current)},[pageKey,current]);
  useEffect(()=>{
-  if(pendingHeadingRef.current===null)return;
-  const heading=readerRef.current?.querySelector('[data-classic-heading="'+pendingHeadingRef.current+'"]');
-  if(heading&&typeof heading.scrollIntoView==='function')heading.scrollIntoView({block:'start',behavior:'auto'});
-  pendingHeadingRef.current=null;
+  if(pendingHeadingRef.current!==null){
+   const heading=readerRef.current?.querySelector('[data-classic-heading="'+pendingHeadingRef.current+'"]');
+   if(heading&&typeof heading.scrollIntoView==='function')heading.scrollIntoView({block:'start',behavior:'auto'});
+   pendingHeadingRef.current=null;
+   pendingPageTopRef.current=false;
+  }else if(pendingPageTopRef.current){
+   const text=readerRef.current?.querySelector('.archive-classic-page');
+   if(text&&typeof text.scrollIntoView==='function')text.scrollIntoView({block:'start',behavior:'auto'});
+   pendingPageTopRef.current=false;
+  }
  },[current,chosenHeading]);
  function changePage(next){
   const n=clampClassicPage(next,total);
   if(n===current)return;
+  pendingPageTopRef.current=true;
   setChosenHeading(null);
   setPage(n);
-  const parent=readerRef.current?.closest('.palace-dialog');
-  if(parent&&typeof parent.scrollTo==='function')parent.scrollTo({top:0,behavior:'auto'});
  }
  function jumpToHeading(section){
   if(!section)return;
