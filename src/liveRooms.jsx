@@ -5,6 +5,7 @@ import './manuscript-pad-refinement.css';
 import {FirstManuscriptGuide} from './WriterWelcome';
 import {createManuscriptSaveCoordinator} from './manuscriptSaveCoordinator';
 import {chooseWritingResumeTarget} from './writingReturnModel';
+import './palace-chapter-transitions.css';
 import './effortless-reader-paths.css';
 import PrismWayfinder from './PrismWayfinder';
 import MemberChamberDecor,{useChamberDecor} from './MemberChamberDecor';
@@ -1451,7 +1452,7 @@ export function WorkStudioLive({Frame}){
   setSaved('');setError('');
   if(!selected){setChapterLoading(false);return()=>{active=false}}
   setChapterLoading(true);
-  Promise.all([getChapter(slug,selected),getChapterSnapshots(selected)])
+  Promise.all([getChapter(slug,selected),getChapterSnapshots(selected).catch(()=>[])])
    .then(([result,revisions])=>{
     if(!active)return;
     const ch=result?.chapter?.id===selected?result.chapter:null;
