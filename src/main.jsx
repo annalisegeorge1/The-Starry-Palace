@@ -9,10 +9,7 @@ import './palace-next.css';
 import './palace-quality-pass.css';
 import './neon-map.css';
 import './grand-palaces.css';
-import GrandPalaceHall from './GrandPalaceHall';
-import PalaceGovernance from './PalaceGovernance';
 import {PalaceStartingPath,PalaceLiveGatherings} from './PalaceFirstVisit';
-import PalaceBetaGuide from './PalaceBetaGuide';
 import PalaceResumeReading from './PalaceResumeReading';
 import {WriterWelcome} from './WriterWelcome';
 import {PalaceHomeWelcome,PalaceRoomDirectory} from './PalaceHomeWelcome';
@@ -116,6 +113,10 @@ function PalaceBuildFreshnessWatch(){
 }
 
 const TreasuryCatalogueLazy=React.lazy(()=>importWithRecovery(()=>import('./Treasury')));
+// Secondary Palace destinations load on demand; core reader and writing rooms remain eager.
+const GrandPalaceHall=React.lazy(()=>importWithRecovery(()=>import('./GrandPalaceHall')));
+const PalaceGovernance=React.lazy(()=>importWithRecovery(()=>import('./PalaceGovernance')));
+const PalaceBetaGuide=React.lazy(()=>importWithRecovery(()=>import('./PalaceBetaGuide')));
 // Core Palace rooms are imported eagerly for navigation reliability.
 
 const rooms=[
@@ -516,7 +517,7 @@ function App(){return <AuthProvider><PalaceBuildFreshnessWatch/><NavigationReset
  <Route path="/palace-life" element={<ProtectedRoute><PalaceLifeLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/club/:slug" element={<ProtectedRoute><ClubLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/events" element={<EventsLive Frame={Frame}/>}/>
- <Route path="/grand-palaces" element={<ProtectedRoute><GrandPalaceHall Frame={Frame}/></ProtectedRoute>}/>
+ <Route path="/grand-palaces" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><GrandPalaceHall Frame={Frame}/></React.Suspense></ProtectedRoute>}/>
  <Route path="/treasury" element={<ProtectedRoute><TreasuryLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/treasury/catalogue" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><TreasuryCatalogueLazy Frame={Frame}/></React.Suspense></ProtectedRoute>}/>
  <Route path="/lost-works" element={<LostWorksLive Frame={Frame}/>}/>
@@ -525,7 +526,7 @@ function App(){return <AuthProvider><PalaceBuildFreshnessWatch/><NavigationReset
  <Route path="/library" element={<ProtectedRoute><LibraryLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/letters" element={<ProtectedRoute><LettersLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/tags" element={<TagSearchLive Frame={Frame}/>}/>
- <Route path="/search" element={<SearchLive Frame={Frame}/>}/><Route path="/honour" element={<HonourLive Frame={Frame}/>}/><Route path="/council" element={<ProtectedRoute><CouncilLive Frame={Frame}/></ProtectedRoute>}/><Route path="/council/governance" element={<ProtectedRoute><PalaceGovernance Frame={Frame}/></ProtectedRoute>}/><Route path="/code" element={<CodeLive Frame={Frame}/>}/><Route path="/beta" element={<PalaceBetaGuide Frame={Frame}/>}/>
+ <Route path="/search" element={<SearchLive Frame={Frame}/>}/><Route path="/honour" element={<HonourLive Frame={Frame}/>}/><Route path="/council" element={<ProtectedRoute><CouncilLive Frame={Frame}/></ProtectedRoute>}/><Route path="/council/governance" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><PalaceGovernance Frame={Frame}/></React.Suspense></ProtectedRoute>}/><Route path="/code" element={<CodeLive Frame={Frame}/>}/><Route path="/beta" element={<React.Suspense fallback={<RouteLoading/>}><PalaceBetaGuide Frame={Frame}/></React.Suspense>}/>
  <Route path="/member/:username" element={<MemberProfileLive Frame={Frame}/>}/>
  <Route path="*" element={<Frame><section className="lost-gates-page"><div className="lost-gates-orbit"><span>☾</span><i>✦</i></div><p className="eyebrow">BEYOND THE GATES</p><h1>You left palace grounds.</h1><p>The path thinned, the lamps disappeared, and somehow you wandered beyond the Palace walls.</p><div className="lost-gates-actions"><Link className="button" to="/">Return to the Palace</Link><Link to="/search">Search for a room →</Link></div></section></Frame>}/>
  </Routes></RouteGuard></Frame></AuthProvider>}
