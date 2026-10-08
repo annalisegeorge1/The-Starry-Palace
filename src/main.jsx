@@ -230,6 +230,7 @@ function FrameShell({children}){
  const location=useLocation();const navigate=useNavigate();
  usePalaceDialogFocusTrap(commandOpen,'palace-command-dialog','.command-trigger');
  usePalaceDialogFocusTrap(mobileMoreOpen,'mobile-palace-more-sheet','.mobile-palace-more');
+ React.useEffect(()=>{try{window.localStorage?.removeItem('palace-recent-routes')}catch{}},[]);
  React.useEffect(()=>{setRecentPalaceRoutes({key:recentDoorsKey,items:readPalaceRecentDoors(safeLocalGet,recentDoorsKey)})},[recentDoorsKey]);
  React.useEffect(()=>{if(recentPalaceRoutes.key)safeLocalSet(recentPalaceRoutes.key,JSON.stringify(recentPalaceRoutes.items))},[recentPalaceRoutes]);
  React.useEffect(()=>setNavOpen(false),[location.pathname,location.search]);
