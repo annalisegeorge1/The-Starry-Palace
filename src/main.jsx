@@ -405,6 +405,7 @@ function BlankScreenWatchdog(){
  const location=useLocation();
  React.useEffect(()=>{
   let firstTimer,secondTimer,rescueTimer;
+  const followupTimers=new Set();
   const removeRecovery=()=>document.querySelector('[data-palace-blank-recovery]')?.remove();
   const showRecovery=()=>{
    if(document.querySelector('[data-palace-blank-recovery]'))return;
@@ -451,11 +452,15 @@ function BlankScreenWatchdog(){
   };
   firstTimer=window.setTimeout(inspect,1800);
   secondTimer=window.setTimeout(inspect,5200);
-  const onPageShow=event=>window.setTimeout(inspect,event.persisted?120:260);
-  const onVisible=()=>{if(document.visibilityState==='visible')window.setTimeout(inspect,180)};
+  const scheduleFollowup=delay=>{
+   const timer=window.setTimeout(()=>{followupTimers.delete(timer);inspect()},delay);
+   followupTimers.add(timer);
+  };
+  const onPageShow=event=>scheduleFollowup(event.persisted?120:260);
+  const onVisible=()=>{if(document.visibilityState==='visible')scheduleFollowup(180)};
   window.addEventListener('pageshow',onPageShow);
   document.addEventListener('visibilitychange',onVisible);
-  return()=>{window.clearTimeout(firstTimer);window.clearTimeout(secondTimer);window.clearTimeout(rescueTimer);removeRecovery();window.removeEventListener('pageshow',onPageShow);document.removeEventListener('visibilitychange',onVisible)};
+  return()=>{window.clearTimeout(firstTimer);window.clearTimeout(secondTimer);window.clearTimeout(rescueTimer);followupTimers.forEach(timer=>window.clearTimeout(timer));followupTimers.clear();removeRecovery();window.removeEventListener('pageshow',onPageShow);document.removeEventListener('visibilitychange',onVisible)};
  },[location.pathname,location.search]);
  return null;
 }
