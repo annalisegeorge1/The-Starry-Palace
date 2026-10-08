@@ -74,3 +74,52 @@
  padding:0!important;margin:0!important;flex:0 0 18px;
  appearance:auto;accent-color:#9d79d5;
 }
+
+/* The tester compass is a quiet way back into the checklist, not another dashboard. */
+.palace-beta-compass{
+ display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+ margin-top:18px;padding:13px 15px;border-radius:15px;
+ background:rgba(235,226,255,.09);border:1px solid rgba(220,204,252,.43);
+ color:#f7f1ff;
+}
+.palace-beta-compass-sigil{
+ display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;
+ border-radius:14px;background:rgba(204,188,253,.17);
+ color:#ddd0ff;font:1.65rem Georgia,serif;
+}
+.palace-beta-compass>div{flex:1 1 210px;min-width:0}
+.palace-beta-compass strong{display:block;font:600 1.08rem/1.3 Georgia,serif}
+.palace-beta-compass p{margin:4px 0 0;font-size:.85rem;line-height:1.5;color:#e5dbf8;overflow-wrap:anywhere}
+.palace-beta-compass button,.palace-beta-finished button{
+ display:inline-flex;justify-content:center;align-items:center;gap:8px;
+ min-height:44px;padding:11px 15px;cursor:pointer;border-radius:11px;
+ border:1px solid #e1d5fb;background:#e3d9fa;color:#2b2349;
+ font:750 .83rem/1.35 var(--curation-body,system-ui,sans-serif);
+}
+.palace-beta-compass button:hover,.palace-beta-finished button:hover{background:#f4edff}
+.palace-beta-finished{
+ padding:23px;border-radius:16px;border:1px dashed #b7a1d6;
+ background:rgba(142,118,188,.095);display:grid;justify-items:start;gap:9px;
+}
+.palace-beta-finished strong{font:600 1.25rem/1.35 Georgia,serif}
+.palace-beta-finished p{margin:0;line-height:1.55;font-size:.9rem}
+.palace-beta-checks article:focus-visible,.palace-beta-report[tabindex="-1"]:focus-visible{
+ outline:3px solid #c1aaff;outline-offset:4px;
+}
+.palace-shell.daylight .palace-beta-finished{background:#f8f4fd;border-color:#917ab2;color:#302544}
+.palace-shell.daylight .palace-beta-finished button{border-color:#694d90}
+@media(max-width:640px){
+ .palace-beta-compass{padding:13px;gap:11px}
+ .palace-beta-compass-sigil{width:36px;height:36px;flex-basis:36px}
+ .palace-beta-compass>div{flex-basis:calc(100% - 55px)}
+ .palace-beta-compass button{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-beta-compass button,.palace-beta-finished button{transition:none!important}
+}
+
+.palace-beta-hero .palace-beta-storage-warning{
+ max-width:100%;padding:11px 14px;margin:12px 0 0;border-radius:12px;
+ background:rgba(102,180,199,.19);border:1px solid rgba(171,232,245,.65);
+ color:#f0fcff;font-size:.88rem;line-height:1.6;
+}
