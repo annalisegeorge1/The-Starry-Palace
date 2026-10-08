@@ -12,25 +12,27 @@ export default function PalaceChatDrawer({userId}){
  const[busy,setBusy]=useState(false);
  const[error,setError]=useState('');
  const[search,setSearch]=useState('');
+ const[quiet,setQuiet]=useState(false);
  useEffect(()=>{setOpen(false);setData(null);setSelected('');setDrafts({});setError('');},[userId]);
  useEffect(()=>{
-  if(!open||!userId)return;
+  if(!userId)return;
   let live=true;
   const refresh=()=>{
    getLetters(userId).then(next=>{
     if(!live)return;
-    setData(next);
+    setData(next);setError('');
     setSelected(previous=>next.conversations.some(c=>c.conversation_id===previous)?previous:(next.conversations.find(c=>!c.preference?.archived)?.conversation_id||''));
    }).catch(err=>{if(live)setError(err.message||'Messages could not be loaded.')});
   };
   refresh();
-  const timer=window.setInterval(()=>{if(document.visibilityState==='visible')refresh()},20000);
+  const timer=window.setInterval(()=>{if(document.visibilityState==='visible')refresh()},open?20000:60000);
   return()=>{live=false;window.clearInterval(timer)};
  },[open,userId]);
+ useEffect(()=>{const update=()=>setQuiet(document.body.classList.contains('reader-focus-mode')||document.body.classList.contains('writer-focus-mode'));update();const observer=new MutationObserver(update);observer.observe(document.body,{attributes:true,attributeFilter:['class']});return()=>observer.disconnect()},[]);
  if(!userId)return null;
  const visible=(data?.conversations||[]).filter(c=>!c.preference?.archived&&c.conversations?.kind==='direct'&&
   [c.correspondent?.username,c.correspondent?.display_name].join(' ').toLowerCase().includes(search.toLowerCase()));
- const active=visible.find(c=>c.conversation_id===selected)||(data?.conversations||[]).find(c=>c.conversation_id===selected);
+ const active=(data?.conversations||[]).find(c=>c.conversation_id===selected&&!c.preference?.archived&&c.conversations?.kind==='direct');
  const messages=(data?.messages||[]).filter(m=>m.conversation_id===active?.conversation_id).slice().reverse();
  const unread=(data?.conversations||[]).filter(c=>c.unread&&!c.preference?.archived&&!c.preference?.muted).length;
  const currentDraft=active?(drafts[active.conversation_id]??(()=>{try{return localStorage.getItem(draftKey(userId,active.conversation_id))||''}catch{return ''}})()):'';
@@ -45,6 +47,7 @@ export default function PalaceChatDrawer({userId}){
   }catch(err){setError(err.message||'Your letter could not be sent. Your draft is preserved.')}
   finally{setBusy(false)}
  }
+ if(quiet&&!open)return null;
  return <div className={'palace-chat-dock'+(open?' is-open':'')}>
   {!open?<button type="button" className="palace-chat-launch" aria-label={'Open Palace chat'+(unread?' · '+unread+' unread':'')} aria-expanded={false} onClick={()=>setOpen(true)}><span aria-hidden="true">✉</span><span>Chat</span>{unread>0&&<b>{unread>99?'99+':unread}</b>}</button>:
    <section className="palace-chat-panel" aria-label="Palace quick chat">
