@@ -46,3 +46,26 @@ export function structureClassicText(source=''){
  }
  return result;
 }
+
+/**
+ * Repair archive story chapters imported into a single HTML paragraph.
+ * Never rewrite or persist source material; only adjust the rendered copy.
+ * Multi-paragraph chapters retain their original rich HTML.
+ */
+export function restoreFlatClassicChapterHtml(html=''){
+ const original=String(html||'');
+ if(typeof DOMParser==='undefined'||!original.trim())return original;
+ try{
+  const doc=new DOMParser().parseFromString('<body>'+original+'</body>','text/html');
+  const nodes=[...doc.body.querySelectorAll('p,h2,h3,blockquote,li,pre')];
+  if(nodes.length>2||nodes.some(x=>['H2','H3','PRE','BLOCKQUOTE','LI'].includes(x.tagName)))return original;
+  const text=doc.body.textContent||'';
+  if(text.trim().length<700)return original;
+  const blocks=structureClassicText(text);
+  if(blocks.length<2)return original;
+  const escape=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return blocks.map(b=>b.kind==='heading'?'<h2>'+escape(b.text)+'</h2>':
+   b.kind==='verse'?'<p class="archive-classic-verse">'+escape(b.text)+'</p>':
+   '<p>'+escape(b.text)+'</p>').join('');
+ }catch{return original}
+}
