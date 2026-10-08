@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {PALACE_BETA_CHECKS,betaChecksFor,betaCounts,nextBetaCheck,buildBetaReport,cleanBetaIssue,betaIssueHasContent} from './palaceBetaData';
+import {PALACE_BETA_CHECKS,betaChecksFor,betaCounts,nextBetaCheck,buildBetaReport,cleanBetaIssue,betaIssueHasContent,betaInviteUrl,betaInvitationText} from './palaceBetaData';
 describe('volunteer testing model',()=>{
  it('offers a focused reader and writer track rather than requiring every task',()=>{
   const reader=betaChecksFor('reader');
@@ -43,4 +43,23 @@ describe('volunteer testing model',()=>{
   const issue=cleanBetaIssue({steps:'x'.repeat(2000)});
   expect(issue.steps.length).toBe(1800);
  });
+ it('builds host-specific invitations without routing testers back to an older deployment',()=>{
+  const render='https://the-starry-palace.onrender.com';
+  const preview='https://the-starry-palace-preview.pages.dev';
+  expect(betaInviteUrl(render)).toBe(render+'/beta');
+  expect(betaInviteUrl(preview)).toBe(preview+'/beta');
+  expect(betaInviteUrl('https://www.starrypalace.example/stories')).toBe('https://www.starrypalace.example/beta');
+  const text=betaInvitationText(preview);
+  expect(text).toContain(preview+'/beta');
+  expect(text).not.toContain(render);
+  expect(text).toContain('no pressure to publish');
+ });
+ it('does not generate shareable invites from localhost, insecure or malformed origins',()=>{
+  for(const origin of ['',null,'http://localhost:5173','http://127.0.0.1:4173',
+   'http://example.org','javascript:alert(1)','invalid']){
+   expect(betaInviteUrl(origin)).toBe('');
+   expect(betaInvitationText(origin)).toBe('');
+  }
+ });
+
 });
