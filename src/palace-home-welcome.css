@@ -1,0 +1,34 @@
+/* Palace welcome doors: a calm first screen, with the grander rooms one click away. */
+.palace-home-welcome,.palace-room-directory{max-width:1230px;margin:clamp(24px,4vw,48px) auto}
+.palace-home-welcome header{margin-bottom:17px;max-width:760px}
+.palace-home-welcome h2{font:600 clamp(1.65rem,3.2vw,2.7rem)/1.17 Georgia,serif;letter-spacing:-.02em;margin:8px 0 10px;color:inherit}
+.palace-home-welcome header p:not(.eyebrow){line-height:1.65;font-size:.96rem;opacity:.82;margin:0}
+.palace-home-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.palace-choice-card{--door-accent:#c5b0fa;--door-glow:#7954ad24;display:flex;flex-direction:column;min-width:0;min-height:216px;padding:clamp(17px,2.6vw,25px);border:1px solid var(--door-border,#a18dcb69);border-radius:20px;color:inherit;text-decoration:none;background:radial-gradient(ellipse at 84% 8%,var(--door-glow),transparent 65%),var(--card,rgba(31,28,56,.87));box-shadow:0 14px 32px #0b08251d;transition:border-color .16s ease,transform .16s ease}
+.palace-choice-card.palace-choice-read{--door-accent:#86bcf3;--door-glow:#6092db21}
+.palace-choice-card.palace-choice-write{--door-accent:#c5a5f1;--door-glow:#a885e527}
+.palace-choice-card.palace-choice-belong{--door-accent:#82d8c7;--door-glow:#67c9ba21}
+.palace-choice-card:hover{transform:translateY(-2px);border-color:var(--door-accent)}
+.palace-choice-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.palace-choice-sigil{display:grid;place-items:center;width:54px;height:54px;border:1px solid var(--door-accent);border-radius:16px;color:var(--door-accent);font-size:1.55rem;background:var(--door-glow)}
+.palace-choice-kicker{font-size:.66rem;font-weight:800;letter-spacing:.16em;opacity:.68}
+.palace-choice-card h3{font:600 clamp(1.25rem,2vw,1.65rem)/1.22 Georgia,serif;margin:20px 0 9px}
+.palace-choice-card p{line-height:1.58;opacity:.84;font-size:.86rem;margin:0 0 17px;flex:1}
+.palace-choice-action{font-size:.85rem;font-weight:800;text-decoration:underline;text-underline-offset:4px}
+.palace-choice-card:focus-visible,.palace-room-directory summary:focus-visible,.palace-room-directory a:focus-visible{outline:3px solid #b19af1;outline-offset:4px}
+.palace-room-directory{margin-top:18px;margin-bottom:28px}
+.palace-room-directory>summary{list-style:none;cursor:pointer;padding:19px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px solid #a58fc578;border-radius:17px;background:var(--card,rgba(33,30,60,.8));color:inherit}
+.palace-room-directory>summary::-webkit-details-marker{display:none}
+.palace-room-directory>summary>span:first-child{display:grid;gap:4px}
+.palace-room-directory>summary strong{font:600 1.1rem Georgia,serif}
+.palace-room-directory>summary small{font-size:.78rem;opacity:.77;line-height:1.4}
+.palace-room-chevron{font-size:1.6rem;transition:transform .16s ease}
+.palace-room-directory[open] .palace-room-chevron{transform:rotate(180deg)}
+.palace-room-directory>.room-grid{margin-top:14px}
+.palace-shell.daylight .palace-choice-card{background:radial-gradient(ellipse at 84% 8%,var(--door-glow),transparent 65%),#f9f7ff;color:#25223b;border-color:#9f92bc}
+.palace-shell.daylight .palace-choice-kicker,.palace-shell.daylight .palace-choice-card p{opacity:.88}
+.palace-shell.daylight .palace-choice-sigil{color:#50457c}
+.palace-shell.daylight .palace-room-directory>summary{background:#f7f5fb;color:#27233f;border-color:#9b8ab7}
+@media(max-width:850px){.palace-home-choices{grid-template-columns:1fr;gap:10px}.palace-choice-card{min-height:0}.palace-choice-card h3{margin-top:12px}}
+@media(max-width:550px){.palace-home-welcome,.palace-room-directory{margin:20px 10px}.palace-choice-card{padding:18px}.palace-home-welcome header{padding:0 4px}}
+@media(prefers-reduced-motion:reduce){.palace-choice-card,.palace-room-chevron{transition:none}.palace-choice-card:hover{transform:none}}
