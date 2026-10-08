@@ -180,7 +180,33 @@ export async function getChamberSnapshot(userId){
   }
  }
 }
-export async function getPublishedWorks(){const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,language,completion_status,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(username,display_name,avatar_url,title),work_tags(tags(id,name,category,status))').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(24);if(error)throw error;const rows=data||[];const marks=await getIdentityMarks(rows.map(x=>x.author_id));return rows.map(x=>({...x,profiles:withIdentity(x.profiles,x.author_id,marks)}))}
+export async function getPublishedWorks(){
+ const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,language,completion_status,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(username,display_name,avatar_url,title),work_tags(tags(id,name,category,status))').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(24);
+ if(error)throw error;
+ const rows=data||[];
+ const marks=await getIdentityMarks(rows.map(x=>x.author_id));
+ const ids=rows.map(x=>x.id);
+ if(!ids.length)return [];
+ // A single grouped read per table avoids per-card network requests. Only
+ // released chapters and approved comments contribute to public figures.
+ let stats={};
+ try{
+  const [chapters,comments,bookmarks]=await Promise.all([
+   needClient().from('chapters').select('work_id,word_count,status').in('work_id',ids).eq('status','published'),
+   needClient().from('comments').select('work_id,status').in('work_id',ids).eq('status','approved'),
+   needClient().from('saved_works').select('work_id').in('work_id',ids)
+  ]);
+  for(const response of [chapters,comments,bookmarks])if(response.error)throw response.error;
+  stats=Object.fromEntries(ids.map(id=>[id,{words:0,chapters:0,comments:0,bookmarks:0}]));
+  for(const row of chapters.data||[]){const v=stats[row.work_id];if(v){v.chapters++;v.words+=Math.max(0,Number(row.word_count)||0)}}
+  for(const row of comments.data||[]){const v=stats[row.work_id];if(v)v.comments++}
+  for(const row of bookmarks.data||[]){const v=stats[row.work_id];if(v)v.bookmarks++}
+ }catch{
+  // A missing public-count privilege must never break story discovery.
+  // No numbers are displayed unless the aggregation succeeds.
+ }
+ return rows.map(x=>({...x,profiles:withIdentity(x.profiles,x.author_id,marks),reading_stats:stats[x.id]||null}));
+}
 export async function getMyWorks(userId){const{data,error}=await needClient().from('works').select('id,title,slug,summary,work_type,publication_status,completion_status,visibility,updated_at,chapters(id,title,position,status,word_count,scheduled_for,published_at,updated_at)').eq('author_id',userId).order('updated_at',{ascending:false});if(error)throw error;return(data||[]).map(w=>({...w,chapters:(w.chapters||[]).sort((a,b)=>a.position-b.position)}))}
 export async function createDraft(userId,title,options={}){
  const clean=title.trim();if(!clean)throw new Error('Give your work a title first.');
