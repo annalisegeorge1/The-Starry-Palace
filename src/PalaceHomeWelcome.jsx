@@ -16,7 +16,7 @@ export function PalaceHomeWelcome({member=false}){
    {CHOICES.map(choice=><Link className={'palace-choice-card palace-choice-'+choice.id}
     key={choice.id} to={member&&choice.id==='write'?'/writing':member&&choice.id==='belong'?'/palace-life':choice.url}>
     <div className="palace-choice-top"><span className="palace-choice-sigil" aria-hidden="true">{choice.sigil}</span><span className="palace-choice-kicker">{choice.kicker}</span></div>
-    <h3>{choice.title}</h3><p>{choice.description}</p><span className="palace-choice-action">{member&&choice.id==='write'?'Open my Writing Chamber':choice.action} <span aria-hidden="true">→</span></span>
+    <h3>{choice.title}</h3><p>{choice.id==='belong'?(member?'Step into the Commons, meet kindred readers and writers, and find a conversation that feels like yours.':'Browse public Palace events and see the kind of gatherings waiting inside.'):choice.description}</p><span className="palace-choice-action">{choice.id==='belong'?(member?'Enter Palace Life':'Explore public gatherings'):member&&choice.id==='write'?'Open my Writing Chamber':choice.action} <span aria-hidden="true">→</span></span>
    </Link>)}
   </div>
  </section>;

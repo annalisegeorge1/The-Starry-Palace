@@ -10,12 +10,12 @@ describe('inviting Palace entrance',()=>{
   render(<MemoryRouter><PalaceHomeWelcome/><PalaceRoomDirectory rooms={[["Treasury","/treasury","Collect and explore"]]}/></MemoryRouter>);
   expect(screen.getByRole('heading',{name:'Where would you like to begin?'})).toBeTruthy();
   expect(screen.getByRole('link',{name:/Explore the Writer’s Door/}).getAttribute('href')).toBe('/writers');
-  expect(screen.getByRole('link',{name:/Explore Palace gatherings/}).getAttribute('href')).toBe('/events');
+  expect(screen.getByRole('link',{name:/Explore public gatherings/}).getAttribute('href')).toBe('/events');
   expect(screen.getByText('Explore all the Palace rooms')).toBeTruthy();
  });
  it('sends signed-in members straight to their room',()=>{
   render(<MemoryRouter><PalaceHomeWelcome member/></MemoryRouter>);
   expect(screen.getByRole('link',{name:/Open my Writing Chamber/}).getAttribute('href')).toBe('/writing');
-  expect(screen.getByRole('link',{name:/Explore Palace gatherings/}).getAttribute('href')).toBe('/palace-life');
+  expect(screen.getByRole('link',{name:/Enter Palace Life/}).getAttribute('href')).toBe('/palace-life');
  });
 });
