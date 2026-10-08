@@ -1,0 +1,70 @@
+/* One restrained finish across rooms: jewel-toned surfaces, legible controls,
+   calm transitions. Scoped so individual Palace rooms keep their identity. */
+.palace-shell{
+ --palace-soft-violet:#b9a4f2;
+ --palace-soft-blue:#9fcdf2;
+ --palace-ui-radius:15px;
+}
+.palace-main-stage :is(.room-title,.life-room-intro,.section-heading) h1,
+.palace-main-stage :is(.room-title,.life-room-intro,.section-heading) h2{
+ text-wrap:balance;overflow-wrap:anywhere;
+}
+.palace-main-stage :is(.room-tabs,.life-tabs,.library-tabs,.letters-filter-buttons,.club-room-tabs,.heritage-filter-bar){
+ scrollbar-width:thin;scrollbar-color:#a18bce66 transparent;
+}
+.palace-main-stage :is(.room-tabs,.life-tabs,.library-tabs,.letters-filter-buttons,.club-room-tabs) :is(button,a){
+ min-height:42px;line-height:1.35;white-space:normal;text-wrap:pretty;
+}
+.palace-main-stage :is(.room-title,.life-room-intro,.section-heading) :is(p,.lede){
+ max-width:78ch;line-height:1.65;
+}
+.palace-main-stage :is(.palace-choice-card,.heritage-card,.history-shelf article,.palace-life-history-entry,.palace-life-story-list article){
+ transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+.palace-main-stage :is(.palace-choice-card,.heritage-card,.history-shelf article,.palace-life-history-entry,.palace-life-story-list article):hover{
+ border-color:rgba(172,158,225,.65);box-shadow:0 12px 28px rgba(16,16,46,.16);
+}
+.palace-main-stage :is(.history-shelf article,.palace-life-story-list article) p{
+ overflow-wrap:anywhere;line-height:1.55;
+}
+/* Support a long Word-style toolbar without burying its controls. */
+body.writing-desk-open .manuscript-sticky-toolbar{
+ position:sticky;top:0;z-index:45;max-width:100%;min-width:0;
+}
+body.writing-desk-open .manuscript-sticky-toolbar :is(select,input,button){
+ max-width:100%;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-format-scroll{
+ -webkit-overflow-scrolling:touch;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .editor-tool-group{
+ flex-shrink:0;
+}
+body.writing-desk-open .manuscript-sticky-toolbar button:focus-visible{
+ outline:3px solid #afd5fa;outline-offset:2px;
+}
+.palace-shell .reader-page .chapter-text{
+ max-width:74ch;margin-inline:auto;overflow-wrap:break-word;
+}
+.palace-shell .reader-page .chapter-text :is(p,blockquote,li){
+ line-height:inherit;
+}
+@media(max-width:760px){
+ .palace-main-stage{min-width:0}
+ .palace-main-stage :is(.room-tabs,.life-tabs,.library-tabs,.letters-filter-buttons,.club-room-tabs){
+  display:flex;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;
+  gap:7px;max-width:100%;padding-bottom:7px;
+ }
+ .palace-main-stage :is(.room-tabs,.life-tabs,.library-tabs,.letters-filter-buttons,.club-room-tabs)>:is(button,a){
+  flex:0 0 auto;max-width:min(75vw,260px);scroll-snap-align:start;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar{
+  top:0;max-height:55dvh;overflow-y:auto;overscroll-behavior:contain;
+ }
+ .palace-shell .reader-page .chapter-text{
+  padding-inline:clamp(12px,4vw,24px);
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-main-stage :is(.palace-choice-card,.heritage-card,.history-shelf article,.palace-life-history-entry,.palace-life-story-list article){transition:none}
+}
