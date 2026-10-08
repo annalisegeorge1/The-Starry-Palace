@@ -11,6 +11,13 @@ describe('volunteer testing model',()=>{
   expect(writer.every(x=>x.roles.includes('writer'))).toBe(true);
   expect(betaChecksFor('reader',true).length).toBe(PALACE_BETA_CHECKS.length);
  });
+ it('includes events, heritage and community discovery for every volunteer track',()=>{
+  for(const role of ['reader','writer','artist','moderator']){
+   const checks=betaChecksFor(role);
+   for(const id of ['events','heritage','commons'])expect(checks.some(check=>check.id===id)).toBe(true);
+  }
+  expect(betaChecksFor('reader').find(check=>check.id==='events').url).toBe('/events');
+ });
  it('separates success, trouble, and skipped tasks instead of counting them all as passed',()=>{
   const checks=betaChecksFor('reader').slice(0,4);
   const checked={[checks[0].id]:'passed',[checks[1].id]:'stuck',[checks[2].id]:'skipped'};
