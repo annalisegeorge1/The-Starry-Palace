@@ -1573,7 +1573,7 @@ function WorkStudioForWork({Frame,slug}){
   formatSelectionRef.current=null;
   recoverySchedulerRef.current?.flush();
   if(typewriterScrollFrameRef.current!==null){window.cancelAnimationFrame(typewriterScrollFrameRef.current);typewriterScrollFrameRef.current=null}
-  setChapter(null);setSnapshots([]);setRecovery(null);setRecoveryDiscardArmed(false);setChapterMap([]);
+  setChapter(null);setSnapshots([]);setRecovery(null);setChapterMap([]);setRecoveryDiscardArmed(false);
   setSaved('');setError('');setBackupMessage('');setRecoveryStorageAvailable(null);recoveryStorageRef.current=true;
   if(!selected){setChapterLoading(false);return}
   setChapterLoading(true);
