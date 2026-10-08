@@ -58,6 +58,12 @@ describe('classic literature typesetting',()=>{
   const blocks=structureClassicText(first+'\n\n'+second);
   expect(blocks).toEqual([{kind:'paragraph',text:first},{kind:'paragraph',text:second}]);
  });
+ it('keeps punctuation-light poetic lines separate from prose',()=>{
+  const poem='In distant fields the shadows rise\nBeneath the pale and patient skies\nAround the house the branches bend\nUntil the longest hours end';
+  expect(structureClassicText(poem)).toEqual([{kind:'verse',text:poem}]);
+  const wrapped='The evening turned quiet as the townsfolk wandered\nthrough the old streets and back towards their homes.';
+  expect(structureClassicText(wrapped)).toEqual([{kind:'paragraph',text:'The evening turned quiet as the townsfolk wandered through the old streets and back towards their homes.'}]);
+ });
  it('handles empty and CRLF source',()=>{
   expect(structureClassicText('')).toEqual([]);
   expect(structureClassicText('One.\r\n\r\nTwo.').map(x=>x.text)).toEqual(['One.','Two.']);
