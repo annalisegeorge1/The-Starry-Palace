@@ -17,6 +17,7 @@ import PalaceNewStories from './PalaceNewStories';
 import {safePalaceReturnPath} from './palaceReturnPath';
 import {shouldOfferManualPalaceRefresh} from './palaceUpdateSafety';
 import {usePalaceDialogFocusTrap} from './usePalaceDialogFocusTrap';
+import {shouldOpenPalaceQuickNavigation} from './palaceKeyboard';
 import './palace-inviting-polish.css';
 import {
  ChamberLive,OnboardingLive,ReadingLive,ClubLive,WritingLive,SettingsLive,ActivityLive,LibraryLive,
@@ -207,7 +208,7 @@ function FrameShell({children}){
  React.useEffect(()=>{setCommandOpen(false);setMobileMoreOpen(false);setCommandQuery('');setCommandIndex(0)},[location.pathname,location.search]);
  React.useEffect(()=>{safeLocalSet('palace-theme',daylight?'daylight':'night')},[daylight]);
  React.useEffect(()=>{safeLocalSet('palace-sidebar-collapsed',sidebarCollapsed?'1':'0')},[sidebarCollapsed]);
- React.useEffect(()=>{const onKey=e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();setCommandOpen(v=>!v)}else if(e.key==='Escape'){setCommandOpen(false);setMobileMoreOpen(false)}};window.addEventListener('keydown',onKey);return()=>window.removeEventListener('keydown',onKey)},[]);
+ React.useEffect(()=>{const onKey=e=>{if(shouldOpenPalaceQuickNavigation(e)){e.preventDefault();setCommandOpen(v=>!v)}else if(e.key==='Escape'){setCommandOpen(false);setMobileMoreOpen(false);setNavOpen(false)}};window.addEventListener('keydown',onKey);return()=>window.removeEventListener('keydown',onKey)},[]);
  React.useEffect(()=>{if(!(navOpen||mobileMoreOpen||commandOpen))return;const previous=document.body.style.overflow;document.body.style.overflow='hidden';return()=>{document.body.style.overflow=previous}},[navOpen,mobileMoreOpen,commandOpen]);
  React.useEffect(()=>{let alive=true;if(!session?.user?.id){setShellProfile(null);setLetterBadge(0);setActivityBadge(0);return;}Promise.all([supabase.from('profiles').select('username,display_name,title,avatar_url,cover_url').eq('id',session.user.id).maybeSingle(),supabase.from('message_requests').select('id',{count:'exact',head:true}).eq('recipient_id',session.user.id).eq('status','pending'),supabase.from('notifications').select('id',{count:'exact',head:true}).eq('user_id',session.user.id).eq('unread',true).eq('dismissed',false)]).then(([profileReq,letterReq,activityReq])=>{if(!alive)return;setShellProfile(profileReq.data||null);setLetterBadge(letterReq.count||0);setActivityBadge(activityReq.count||0)}).catch(error=>{if(!alive)return;console.warn('Palace shell counters unavailable',error);setLetterBadge(0);setActivityBadge(0)});return()=>{alive=false}},[session?.user?.id,location.pathname]);
  const visibleRooms=fullPalaceRooms.filter(r=>!r.private||session);
