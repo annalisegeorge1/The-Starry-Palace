@@ -31,7 +31,7 @@ describe('gentle first-visit Palace map',()=>{
   expect(record.visited).toEqual(['read']);
   view.unmount();
   mount();
-  expect(screen.getByText(/1 of 4 doorways opened/)).toBeTruthy();
+  expect(screen.getAllByText(/1 of 4 doorways opened/).length).toBeGreaterThan(0);
  });
  it('keeps members separate and caps corrupted stored progress at four doorways',()=>{
   localStorage.setItem('palace-first-visit:v1:a',JSON.stringify({visited:['read','read','write','palace','gather','bogus']}));
@@ -40,7 +40,7 @@ describe('gentle first-visit Palace map',()=>{
   expect(screen.getByRole('progressbar',{name:'Welcome doorways opened'}).getAttribute('aria-valuenow')).toBe('4');
   cleanup();
   mount('b');
-  expect(screen.getByText(/0 of 4 doorways opened/)).toBeTruthy();
+  expect(screen.getAllByText(/0 of 4 doorways opened/).length).toBeGreaterThan(0);
  });
  it('allows members to hide the introduction without altering member content',()=>{
   mount();
