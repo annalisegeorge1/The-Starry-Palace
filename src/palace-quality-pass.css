@@ -1,0 +1,29 @@
+/* A small accessibility consistency layer. Existing room identities are preserved. */
+:root{--palace-focus-outline:#b49af3;--palace-focus-offset:3px}
+.palace-main-stage :is(a,button,input,select,textarea,[role="button"]):focus-visible,
+.full-sidebar :is(a,button):focus-visible{
+ outline:3px solid var(--palace-focus-outline);
+ outline-offset:var(--palace-focus-offset);
+}
+.palace-main-stage :is(h1,h2,h3,p,strong,small,span){overflow-wrap:break-word}
+.palace-main-stage :is(input,select,textarea){max-width:100%}
+.palace-shell.daylight .palace-main-stage :is(.palace-starting-path,.palace-live-gatherings,.palace-resume-reading,.palace-beta-guide){
+ color:var(--text,#232345);
+}
+.palace-shell.daylight .palace-main-stage :is(.palace-starting-doors a,.palace-resume-shelf>a,.palace-gathering-grid article,.palace-beta-checks article){
+ color:inherit;
+}
+@media(max-width:750px){
+ .palace-main-stage :is(.palace-starting-doors a,.palace-beta-actions button,.palace-beta-checks a){
+  min-height:44px;
+ }
+ .palace-main-stage :is(.palace-gathering-grid,.palace-starting-doors,.palace-resume-shelf){min-width:0}
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-main-stage *, .palace-main-stage *::before,.palace-main-stage *::after{
+  scroll-behavior:auto!important;
+  animation-duration:.01ms!important;
+  animation-iteration-count:1!important;
+  transition-duration:.01ms!important;
+ }
+}
