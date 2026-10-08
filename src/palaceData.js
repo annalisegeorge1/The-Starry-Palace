@@ -261,7 +261,7 @@ export async function dismissNotice(userId,id){const{error}=await needClient().f
 
 export async function getLibrary(userId){const [saved,progress,subs,savedComics,comicProgress,comicSubs,follows]=await Promise.all([
  needClient().from('saved_works').select('saved_at,works(id,title,slug,summary,cover_url,completion_status,last_published_at,profiles!works_author_id_fkey(username,display_name))').eq('user_id',userId).order('saved_at',{ascending:false}),
- needClient().from('reading_progress').select('work_id,chapter_id,progress_percent,chapter_progress_percent,completed,updated_at,works(id,title,slug,cover_url,last_published_at)').eq('user_id',userId).order('updated_at',{ascending:false}),
+ needClient().from('reading_progress').select('work_id,chapter_id,progress_percent,chapter_progress_percent,completed,updated_at,works(id,title,slug,summary,cover_url,last_published_at)').eq('user_id',userId).order('updated_at',{ascending:false}),
  needClient().from('story_subscriptions').select('work_id,enabled,frequency,works(id,title,slug,last_published_at)').eq('user_id',userId).eq('enabled',true),
  needClient().from('saved_comics').select('saved_at,comics(id,title,slug,summary,completion_status,cover_path)').eq('user_id',userId).order('saved_at',{ascending:false}),
  needClient().from('comic_reading_progress').select('comic_id,episode_id,page_id,completed,updated_at,comics(id,title,slug,cover_path,last_published_at)').eq('user_id',userId).order('updated_at',{ascending:false}),
