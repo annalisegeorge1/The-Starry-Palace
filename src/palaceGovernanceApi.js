@@ -15,3 +15,12 @@ export const getCaseChecklists=()=>rpc('get_palace_case_checklists');
 export const saveCaseChecklist=(v)=>rpc('save_palace_case_checklist',{p_report:v.report_id,p_categories:v.categories,p_evidence:v.evidence_checked,p_context:v.context_checked,p_heard:v.member_heard,p_conflict:v.conflict_checked,p_proportionality:v.proportionality_checked,p_appeal:v.appeal_explained,p_finding:v.finding,p_action:v.action_label,p_note:v.reviewer_note});
 export const submitCaseAppeal=(report,text)=>rpc('submit_palace_case_appeal',{p_report:report,p_text:text});
 export const reviewCaseAppeal=(id,status,note)=>rpc('review_palace_case_appeal',{p_appeal:id,p_status:status,p_note:note});
+
+export const getCouncilOutcomes=()=>rpc('get_palace_council_outcomes');
+export const certifyCouncilElection=id=>rpc('finalize_palace_council_election',{p_election:id});
+export const castRunoffVote=(id,candidate)=>rpc('cast_palace_council_runoff_vote',{p_runoff:id,p_candidate:candidate});
+export const certifyRunoff=id=>rpc('finalize_palace_council_runoff',{p_runoff:id});
+export const openTieBreak=id=>rpc('open_palace_council_tiebreak',{p_runoff:id});
+export const submitCouncilMotion=(category,title,description)=>rpc('submit_palace_council_motion',{p_category:category,p_title:title,p_description:description});
+export const reviewCouncilMotion=(id,status,note)=>rpc('review_palace_council_motion',{p_motion:id,p_status:status,p_note:note});
+export const getMyCouncilAppeals=()=>rpc('get_my_palace_appeals');
