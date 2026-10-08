@@ -6,7 +6,7 @@ import './palace-council-next.css';
 import {CouncilElections,CouncilReviewChecklist} from './PalaceCouncilNext';
 import {CouncilResults,MyCouncilAppeals} from './PalaceCouncilResults';
 import {CouncilService,MyCouncilRestoration,CouncilRestorationDesk} from './PalaceCouncilAccountability';
-import {getPalaceVisitProgress} from './palaceGovernanceApi';
+import {getPalaceVisitProgress,checkCouncilDeadlines} from './palaceGovernanceApi';
 const formatDate=value=>new Date(value).toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'});
 export default function PalaceGovernance({Frame}){
  const [data,setData]=useState(null),[error,setError]=useState(''),[notice,setNotice]=useState(''),[busy,setBusy]=useState(false);
@@ -15,7 +15,7 @@ export default function PalaceGovernance({Frame}){
  const [title,setTitle]=useState(''),[description,setDescription]=useState(''),[choices,setChoices]=useState('Yes\nNo'),[hours,setHours]=useState(72),[visibility,setVisibility]=useState('after_close');
  const [noticeTitle,setNoticeTitle]=useState(''),[noticeBody,setNoticeBody]=useState(''),[category,setCategory]=useState('tidings');
  async function load(){setData(await getPalaceGovernance())}
- useEffect(()=>{load().catch(e=>setError(e.message))},[]);
+ useEffect(()=>{load().catch(e=>setError(e.message));checkCouncilDeadlines().catch(()=>{})},[]);
  async function action(fn,success){if(busy)return;setBusy(true);setError('');setNotice('');try{await fn();await load();setNotice(success)}catch(e){setError(e.message)}finally{setBusy(false)}}
  const ballots=(data?.ballots||[]).filter(b=>filter==='all'||(filter==='open'?b.status==='open'&&new Date(b.opens_at)<=new Date()&&new Date(b.closes_at)>new Date():b.status==='closed'||new Date(b.closes_at)<=new Date()));
  return <Frame privateArea><main className="palace-governance"><header className="governance-hero"><span>♛ THE PALACE COUNCIL · VOICES OF THE COURT</span><h1>The Voting Hall</h1><p>Every member has a voice. Each ballot has clear rules, a closing time, and a documented outcome. Crowns and points never buy additional votes.</p><Link to="/council">Visit the Council review desk →</Link></header>
