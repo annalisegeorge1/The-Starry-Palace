@@ -1,0 +1,26 @@
+/* A quiet, honest explanation at the end of an eligible reading chapter.
+   Reward grants are made only by the authenticated, time-gated server RPC. */
+.reader-reward-hint{
+ box-sizing:border-box;
+ max-width:860px;
+ margin:1.3rem auto .7rem;
+ padding:.78rem 1rem;
+ border:1px solid rgba(175,161,224,.35);
+ border-radius:13px;
+ background:linear-gradient(115deg,rgba(100,81,165,.13),rgba(88,145,167,.08));
+ color:#d4cce9;
+ font-size:clamp(.78rem,.8vw,.87rem);
+ line-height:1.65;
+}
+.daylight .reader-reward-hint,
+.palace-shell.daylight .reader-reward-hint{
+ background:#f1edf9;
+ border-color:#c6b8df;
+ color:#534466;
+}
+@media(max-width:680px){
+ .reader-reward-hint{padding:.8rem .85rem;margin-inline:0}
+}
+@media(prefers-reduced-motion:reduce){
+ .reader-reward-hint{transition:none!important}
+}
