@@ -1,0 +1,182 @@
+
+/* The manuscript is the destination; secondary desk settings belong in a
+   single discoverable drawer rather than five interruptions above the page.
+   Native <details> keeps all editor utilities mounted without new React state. */
+body.writing-desk-open .chic-editor-form > .writer-desk-drawer{
+ display:block;
+ position:relative;
+ min-width:0;
+ margin:.7rem 0 .82rem;
+ padding:0!important;
+ border:1px solid rgba(178,157,237,.34);
+ border-radius:16px;
+ background:linear-gradient(135deg,rgba(30,29,66,.91),rgba(21,36,67,.87));
+ box-shadow:0 6px 21px rgba(6,10,32,.12),inset 0 1px rgba(233,218,255,.055);
+ color:#eae6fc;
+}
+body.writing-desk-open .writer-desk-drawer > summary{
+ display:flex;
+ align-items:center;
+ gap:.7rem;
+ padding:.77rem .88rem;
+ min-height:62px;
+ cursor:pointer;
+ list-style:none;
+ user-select:none;
+ border-radius:15px;
+}
+body.writing-desk-open .writer-desk-drawer > summary::-webkit-details-marker{display:none}
+body.writing-desk-open .writer-desk-drawer > summary::marker{content:''}
+body.writing-desk-open .writer-desk-drawer > summary:hover{
+ background:rgba(132,114,213,.12);
+}
+body.writing-desk-open .writer-desk-drawer > summary:focus-visible{
+ outline:3px solid #c0dfff;
+ outline-offset:3px;
+}
+body.writing-desk-open .writer-desk-drawer-glyph{
+ display:grid;
+ place-items:center;
+ width:34px;height:34px;flex:0 0 34px;
+ border:1px solid rgba(192,174,249,.44);
+ border-radius:11px;
+ background:rgba(123,111,196,.19);
+ color:#d9cdff;
+ font:1.3rem/1 Georgia,serif;
+}
+body.writing-desk-open .writer-desk-drawer-title{
+ flex:1 1 190px;
+ display:flex;flex-direction:column;gap:2px;min-width:0;
+}
+body.writing-desk-open .writer-desk-drawer-title strong{
+ font:700 .89rem/1.32 system-ui,sans-serif;
+ color:#f6f1ff;
+ letter-spacing:.01em;
+}
+body.writing-desk-open .writer-desk-drawer-title small{
+ color:#c2c2df;
+ font:500 .68rem/1.42 system-ui,sans-serif;
+}
+body.writing-desk-open .writer-desk-drawer-hint{
+ flex:0 0 auto;
+ font:600 .68rem/1.4 system-ui,sans-serif;
+ color:#d9c6fc;
+}
+body.writing-desk-open .writer-desk-drawer-chevron{
+ flex:0 0 auto;
+ display:grid;place-items:center;
+ width:23px;height:23px;
+ font:1.4rem/1 Georgia,serif;color:#e0d7fc;
+ transition:transform .17s ease;
+}
+body.writing-desk-open .writer-desk-drawer[open] .writer-desk-drawer-chevron{
+ transform:rotate(180deg);
+}
+body.writing-desk-open .writer-desk-drawer[open] > summary{
+ border-radius:15px 15px 0 0;
+ border-bottom:1px solid rgba(188,163,248,.2);
+}
+body.writing-desk-open .writer-desk-drawer-body{
+ display:grid;
+ min-width:0;
+ gap:.68rem;
+ padding:.86rem .92rem 1rem;
+}
+body.writing-desk-open .writer-desk-drawer-body .writer-view-controls{
+ margin:0!important;
+ border:1px solid rgba(185,164,238,.19);
+ border-radius:12px;
+ padding:.64rem .72rem;
+ background:rgba(16,20,49,.29);
+ gap:.52rem;
+}
+body.writing-desk-open .writer-desk-drawer-body .writer-view-controls select,
+body.writing-desk-open .writer-desk-drawer-body .writer-view-controls button{
+ min-height:39px;
+ font-size:.73rem;
+}
+body.writing-desk-open .writer-desk-drawer-body .writer-view-controls label > span{
+ font-size:.67rem;
+ color:#d0c8e9;
+}
+body.writing-desk-open .writer-desk-drawer-body > :is(details,.legacy-spellcheck){
+ margin:0;
+ min-width:0;
+}
+body.writing-desk-open .writer-desk-drawer-body > details > summary{
+ min-height:43px;
+}
+body.writing-desk-open .writer-desk-drawer-body .legacy-spellcheck{
+ display:flex;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:.32rem .53rem;
+ border:1px solid rgba(191,168,235,.22)!important;
+ border-radius:11px;
+ padding:.65rem .75rem;
+ color:#d8d5ed;
+ font-size:.77rem;
+}
+body.writing-desk-open .writer-desk-drawer-body .legacy-spellcheck span{
+ color:#bbb7d3;
+ line-height:1.45;
+}
+body.writing-desk-open .writer-desk-drawer-body :is(button,select,input,textarea,summary):focus-visible{
+ outline:3px solid #bedcff;
+ outline-offset:2px;
+}
+body.daylight.writing-desk-open .chic-editor-form > .writer-desk-drawer,
+.daylight body.writing-desk-open .chic-editor-form > .writer-desk-drawer{
+ background:linear-gradient(135deg,#f9f6ff,#eaf1fc);
+ border-color:#b8aed3;
+ color:#3f3556;
+ box-shadow:0 6px 16px rgba(68,54,105,.08);
+}
+.daylight body.writing-desk-open .writer-desk-drawer > summary:hover,
+body.daylight.writing-desk-open .writer-desk-drawer > summary:hover{
+ background:rgba(105,82,159,.08);
+}
+.daylight body.writing-desk-open .writer-desk-drawer-glyph,
+body.daylight.writing-desk-open .writer-desk-drawer-glyph{
+ color:#513980;background:#ece5f8;border-color:#b8a4d8;
+}
+.daylight body.writing-desk-open .writer-desk-drawer-title strong,
+body.daylight.writing-desk-open .writer-desk-drawer-title strong{color:#382b55}
+.daylight body.writing-desk-open .writer-desk-drawer-title small,
+body.daylight.writing-desk-open .writer-desk-drawer-title small{color:#5c5274}
+.daylight body.writing-desk-open .writer-desk-drawer-hint,
+.daylight body.writing-desk-open .writer-desk-drawer-chevron,
+body.daylight.writing-desk-open .writer-desk-drawer-hint,
+body.daylight.writing-desk-open .writer-desk-drawer-chevron{color:#63478b}
+.daylight body.writing-desk-open .writer-desk-drawer-body .writer-view-controls,
+body.daylight.writing-desk-open .writer-desk-drawer-body .writer-view-controls{
+ background:#f7f4fc;border-color:#d4c9e3;
+}
+.daylight body.writing-desk-open .writer-desk-drawer-body .writer-view-controls label > span,
+body.daylight.writing-desk-open .writer-desk-drawer-body .writer-view-controls label > span{color:#504066}
+.daylight body.writing-desk-open .writer-desk-drawer-body .legacy-spellcheck,
+body.daylight.writing-desk-open .writer-desk-drawer-body .legacy-spellcheck{
+ color:#433759!important;background:#f8f5ff!important;border-color:#d5cbe5!important;
+}
+.daylight body.writing-desk-open .writer-desk-drawer-body .legacy-spellcheck span,
+body.daylight.writing-desk-open .writer-desk-drawer-body .legacy-spellcheck span{color:#655979}
+.daylight body.writing-desk-open .writer-desk-drawer > summary:focus-visible,
+body.daylight.writing-desk-open .writer-desk-drawer > summary:focus-visible{outline-color:#644194}
+@media(max-width:760px){
+ body.writing-desk-open .writer-desk-drawer > summary{
+  gap:.52rem;padding:.62rem .66rem;min-height:59px;
+ }
+ body.writing-desk-open .writer-desk-drawer-glyph{
+  flex-basis:30px;width:30px;height:30px;
+ }
+ body.writing-desk-open .writer-desk-drawer-title small{font-size:.63rem}
+ body.writing-desk-open .writer-desk-drawer-hint{display:none}
+ body.writing-desk-open .writer-desk-drawer-body{padding:.64rem;gap:.49rem}
+ body.writing-desk-open .writer-desk-drawer-body .writer-view-controls{padding:.5rem}
+ body.writing-desk-open .writer-desk-drawer-body .writer-view-controls select,
+ body.writing-desk-open .writer-desk-drawer-body .writer-view-controls button{min-height:44px}
+ body.writing-desk-open .writer-desk-drawer-body > details > summary{min-height:44px}
+}
+@media(prefers-reduced-motion:reduce){
+ body.writing-desk-open .writer-desk-drawer-chevron{transition:none!important}
+}
