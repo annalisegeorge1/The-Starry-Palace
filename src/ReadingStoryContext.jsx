@@ -19,7 +19,7 @@ export default function ReadingStoryContext({work}){
    <div className="reading-story-context-summary">
     <small>SUMMARY</small>
     <p>{expanded?details.summary:preview}</p>
-    {isLong&&<button type="button" className="reading-story-summary-toggle" aria-expanded={expanded} onClick={()=>setExpanded(value=>!value)}>{expanded?'Show less ↑':'Read full summary ↓'}</button>
+    {isLong&&<button type="button" className="reading-story-summary-toggle" aria-expanded={expanded} onClick={()=>setExpanded(value=>!value)}>{expanded?'Show less ↑':'Read full summary ↓'}</button>}
    </div>
  </section>;
 }
