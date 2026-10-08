@@ -1,0 +1,1 @@
+-- Migration applied via Supabase: council_overdue_workflow_v7. Includes one-time 1–7 day deadline extensions, paged prioritised appeal queue, non-punitive escalation, private notices, and audit history. See Supabase migration history for authoritative SQL.
