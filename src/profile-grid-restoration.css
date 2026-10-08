@@ -1,0 +1,267 @@
+/* Member Chamber profile layout · 8 Oct 2026
+ * Canonical responsive layout for the public Chamber. Older chic styles set the
+ * six-count statistics rail to flex with 118px minimum children and hidden
+ * scrollbars. That cuts counts off on a phone regardless of grid breakpoints.
+ * Fix only the layout: keep all member art, names, palettes and proportions.
+ */
+.palace-shell .member-chamber-atelier.chic-member-profile{
+ box-sizing:border-box!important;
+ width:min(100%,1180px)!important;
+ max-width:100%!important;
+ min-width:0!important;
+ margin-inline:auto!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile :is(.legacy-profile-cover,.legacy-profile-copy,.legacy-profile-stats){
+ box-sizing:border-box;
+ max-width:100%;
+ min-width:0;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-copy{
+ width:100%;
+ overflow-wrap:break-word;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-copy :is(h1,.legacy-profile-meta,blockquote){
+ max-width:100%;
+ overflow-wrap:anywhere;
+}
+
+/* Restore an actual grid, not a horizontally scrolling flex rail. */
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats{
+ display:grid!important;
+ grid-template-columns:repeat(6,minmax(0,1fr))!important;
+ gap:clamp(6px,1vw,10px)!important;
+ width:100%!important;
+ padding:clamp(8px,1.2vw,12px)!important;
+ overflow-x:visible!important;
+ align-items:stretch!important;
+ background:rgba(15,22,53,.48)!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats>div{
+ display:flex!important;
+ flex:none!important;
+ flex-direction:column!important;
+ align-items:center!important;
+ justify-content:center!important;
+ gap:.32rem!important;
+ box-sizing:border-box!important;
+ min-width:0!important;
+ max-width:100%!important;
+ min-height:78px!important;
+ padding:.76rem .32rem!important;
+ border:1px solid rgba(190,185,242,.22)!important;
+ border-radius:14px!important;
+ background:linear-gradient(150deg,rgba(106,100,179,.18),rgba(41,49,105,.16))!important;
+ text-align:center!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats strong{
+ display:block;
+ max-width:100%;
+ font:700 clamp(1.18rem,2vw,1.5rem)/1.1 Georgia,serif!important;
+ font-variant-numeric:tabular-nums;
+ color:#f1efff!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats span{
+ display:block;
+ max-width:100%;
+ margin:0!important;
+ color:#c6c0df!important;
+ font-size:clamp(.6rem,.8vw,.69rem)!important;
+ line-height:1.42!important;
+ letter-spacing:.045em!important;
+ white-space:normal!important;
+ overflow-wrap:break-word!important;
+}
+
+/* Let one or two earned honours fill a symmetrical ribbon instead of leaving
+ * a phantom third column or a half-empty second row. No artwork is resized. */
+.palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-crown-ribbon{
+ display:grid!important;
+ grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))!important;
+ width:100%!important;
+ max-width:100%!important;
+ gap:clamp(8px,1.2vw,12px)!important;
+ overflow:visible!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-crown-ribbon>span,
+.palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-crown-ribbon>span:first-child{
+ grid-column:auto!important;
+ min-width:0!important;
+ max-width:100%!important;
+ box-sizing:border-box!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-crown-ribbon>span strong{
+ white-space:normal!important;
+ overflow-wrap:anywhere!important;
+}
+
+/* The Palace, About, Notes, Gallery and Worlds remain on the same width
+ * as the identity card. No full-viewport or fixed-width child escapes it. */
+.palace-shell :is(.chamber-atelier-tabs,.chamber-atelier-palace-stage,.chamber-creator-overview,.chamber-atelier-gallery,.chamber-decorator,.creator-worlds-room){
+ box-sizing:border-box;
+ max-width:100%;
+ min-width:0;
+}
+.palace-shell .chamber-atelier-tabs.chic-chamber-tabs{
+ width:min(100%,1180px);
+ grid-template-columns:repeat(5,minmax(0,1fr))!important;
+}
+.palace-shell .chamber-atelier-tabs.chic-chamber-tabs a{
+ min-width:0;
+ white-space:normal;
+ text-align:center;
+}
+.palace-shell .chamber-atelier-tabs.chic-chamber-tabs a:focus-visible{
+ outline:2px solid #c9d8ff;
+ outline-offset:-2px;
+}
+.palace-shell .chamber-atelier-gallery .legacy-showcase-grid,
+.palace-shell .chamber-creator-overview>*{
+ min-width:0;
+ max-width:100%;
+}
+
+/* One deliberate breakpoint per device class; children never depend on
+ * invisible sideways scrolling to reveal a missing statistic. */
+@media(max-width:1100px){
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ }
+}
+@media(max-width:640px){
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats>div{
+  min-height:74px!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-copy{
+  padding-inline:clamp(12px,4vw,18px)!important;
+ }
+ /* All five profile rooms should be visible at once. No clipped last tab. */
+ .palace-shell .chamber-atelier-tabs.chic-chamber-tabs{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  width:100%!important;
+  gap:3px!important;
+  overflow-x:visible!important;
+  padding:4px!important;
+ }
+ .palace-shell .chamber-atelier-tabs.chic-chamber-tabs a{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:3px!important;
+  min-width:0!important;
+  min-height:48px!important;
+  padding:7px 2px!important;
+  font-size:clamp(.59rem,2vw,.72rem)!important;
+  line-height:1.3!important;
+  white-space:normal!important;
+  overflow-wrap:break-word;
+ }
+ .palace-shell .chamber-atelier-tabs.chic-chamber-tabs a span{
+  font-size:1rem;
+  line-height:1;
+ }
+}
+@media(max-width:360px){
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats span{
+  font-size:.58rem!important;
+ }
+}
+.palace-shell.daylight .member-chamber-atelier.chic-member-profile .legacy-profile-stats{
+ background:#f5f1fa!important;
+}
+.palace-shell.daylight .member-chamber-atelier.chic-member-profile .legacy-profile-stats>div{
+ background:linear-gradient(150deg,#fff,#f1ecf9)!important;
+ border-color:#d5c9e5!important;
+}
+.palace-shell.daylight .member-chamber-atelier.chic-member-profile .legacy-profile-stats strong{color:#392e55!important}
+.palace-shell.daylight .member-chamber-atelier.chic-member-profile .legacy-profile-stats span{color:#625376!important}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats *,
+ .palace-shell .chamber-atelier-tabs.chic-chamber-tabs *{transition:none!important}
+}
+
+/* Profile finish: a quiet hierarchy across identity, biography, Palace and art.
+   Decorations remain earned and personalised; no cover image dimensions change. */
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions{
+ display:flex!important;
+ flex-wrap:wrap!important;
+ align-items:stretch!important;
+ gap:clamp(8px,1vw,12px)!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions :is(a,button){
+ box-sizing:border-box!important;
+ min-width:0!important;
+ min-height:44px!important;
+ max-width:100%!important;
+ line-height:1.35!important;
+ text-align:center!important;
+ white-space:normal!important;
+ overflow-wrap:break-word!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions :is(a,button):focus-visible,
+.palace-shell .chamber-atelier-palace-stage .member-palace-heraldry:focus-visible{
+ outline:3px solid #bad8ff!important;
+ outline-offset:3px!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-worn-heading{
+ max-width:100%!important;
+ line-height:1.5;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-worn-heading>a{
+ overflow-wrap:anywhere;
+}
+.palace-shell .chamber-atelier-palace-stage .member-palace-heraldry{
+ box-sizing:border-box;
+ width:100%;
+ max-width:100%;
+ min-width:0;
+ border-radius:clamp(16px,2vw,22px);
+}
+.palace-shell .chamber-atelier-palace-stage .member-palace-heraldry>div:last-child{
+ min-width:0;
+ overflow-wrap:anywhere;
+}
+.palace-shell .chamber-atelier-palace-stage .member-palace-heraldry :is(strong,p,span){
+ line-height:1.45;
+}
+.palace-shell .chamber-creator-overview :is(h2,p),
+.palace-shell .chamber-atelier-gallery .chamber-atelier-gallery-heading :is(h2,p){
+ max-width:100%;
+ overflow-wrap:break-word;
+}
+.palace-shell .chamber-atelier-gallery .chamber-atelier-gallery-filters{
+ display:flex;
+ flex-wrap:wrap;
+ gap:8px;
+}
+.palace-shell .chamber-atelier-gallery .chamber-atelier-gallery-filters button{
+ min-height:44px;
+ white-space:normal;
+ line-height:1.3;
+}
+.palace-shell .chamber-atelier-gallery .chamber-atelier-gallery-filters button:focus-visible{
+ outline:3px solid #b5d4ff;
+ outline-offset:2px;
+}
+@media(max-width:640px){
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions :is(a,button){
+  flex:1 1 min(100%,210px)!important;
+ }
+ .palace-shell .chamber-atelier-palace-stage .member-palace-heraldry{
+  gap:clamp(8px,2vw,13px);
+  padding:clamp(10px,3vw,16px);
+ }
+ .palace-shell .chamber-atelier-palace-stage .member-palace-heraldry-emblem{
+  flex-shrink:0;
+ }
+}
+.palace-shell.daylight .member-chamber-atelier.chic-member-profile .legacy-profile-actions .secondary-profile-action{
+ color:#42365f!important;
+ border-color:#c8b8df!important;
+}
+.palace-shell.daylight .chamber-atelier-palace-stage .member-palace-heraldry:focus-visible,
+.palace-shell.daylight .chamber-atelier-gallery .chamber-atelier-gallery-filters button:focus-visible{
+ outline-color:#5d47ae!important;
+}
