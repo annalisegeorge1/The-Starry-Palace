@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react';
 import {Link,useSearchParams} from 'react-router-dom';
 import {getPalaceGovernance,togglePalaceBallot,createPalaceBallot,publishPalaceNotice} from './palaceGovernanceApi';
 import './palace-governance.css';
+import './palace-governance-refinement.css';
 import './palace-council-next.css';
 import {CouncilElections,CouncilReviewChecklist} from './PalaceCouncilNext';
 import {CouncilResults,MyCouncilAppeals} from './PalaceCouncilResults';
