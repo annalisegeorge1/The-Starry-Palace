@@ -1,76 +1,142 @@
 import React,{useState} from 'react';
 import {Link} from 'react-router-dom';
+import {
+ PALACE_BETA_CHECKS,PALACE_BETA_TRACKS,BETA_RESULTS,BETA_SEVERITY,
+ betaChecksFor,betaCounts,betaIssueHasContent,cleanBetaIssue,buildBetaReport
+} from './palaceBetaData';
 import './palace-beta.css';
+import './palace-beta-ready.css';
 
-export const PALACE_BETA_CHECKS=[
- {id:'start',group:'First arrival',name:'Locate Reading Rooms and Writing Chamber without help',url:'/',hint:'Find both main doors from the homepage.'},
- {id:'mobile',group:'First arrival',name:'Use the sidebar and back navigation on your phone',url:'/',hint:'No chopped labels, blank screens or sideways scrolling.'},
- {id:'reading',group:'Reading & discovery',name:'Find a story with search and filters',url:'/reading',hint:'Try a genre and tag. Reset the filter.'},
- {id:'progress',group:'Reading & discovery',name:'Open a chapter, leave and resume reading',url:'/reading',hint:'Confirm progress persists after reloading.'},
- {id:'following',group:'Reading & discovery',name:'Save or follow a story',url:'/reading',hint:'Verify it appears in your library.'},
- {id:'draft',group:'Writing & publishing',name:'Create a private story and chapter',url:'/writing',hint:'Confirm you can type naturally in the manuscript pad.'},
- {id:'autosave',group:'Writing & publishing',name:'Type, wait for cloud save, reopen your draft',url:'/writing',hint:'Check no words disappear and your caret stays in place.'},
- {id:'network',group:'Writing & publishing',name:'Test temporary network loss while drafting',url:'/writing',hint:'Keep a separate copy; confirm device recovery is offered.'},
- {id:'tags',group:'Writing & publishing',name:'Add several tags and save work settings',url:'/writing',hint:'Confirm tags and settings are retained after navigation.'},
- {id:'palace',group:'Community & accessibility',name:'Visit your Grand Palace and one creative room',url:'/grand-palaces',hint:'Find the Palace crest, activities and community rules.'},
- {id:'vote',group:'Community & accessibility',name:'Find Council, member voting and appeals',url:'/council/governance',hint:'Confirm your choices cannot exceed ballot limits.'},
- {id:'contrast',group:'Community & accessibility',name:'Check light/dark mode, keyboard focus and mobile readability',url:'/settings',hint:'Look for legible text, visible focus and touch-sized controls.'}
-];
-const groups=[...new Set(PALACE_BETA_CHECKS.map(x=>x.group))];
+export {PALACE_BETA_CHECKS} from './palaceBetaData';
+
+const KEY='palace-beta-feedback-v2';
+const EMPTY_ISSUE={page:'',steps:'',expected:'',actual:'',severity:'major',frequency:'unknown'};
+const validRoles=Object.keys(PALACE_BETA_TRACKS);
 function stored(){
- try{const raw=JSON.parse(localStorage.getItem('palace-beta-checks-v1')||'{}');return{
-  checked:typeof raw.checked==='object'&&raw.checked?raw.checked:{},
-  notes:typeof raw.notes==='string'?raw.notes:'',
-  device:typeof raw.device==='string'?raw.device:'',
-  role:typeof raw.role==='string'?raw.role:'reader'
- }}catch{return{checked:{},notes:'',device:'',role:'reader'}}
+ try{
+  const recent=JSON.parse(localStorage.getItem(KEY)||'null');
+  const older=recent||JSON.parse(localStorage.getItem('palace-beta-checks-v1')||'{}');
+  return{
+   role:validRoles.includes(older.role)?older.role:'reader',
+   device:typeof older.device==='string'?older.device.slice(0,120):'',
+   showAll:older.showAll===true,
+   results:recent?.results&&typeof recent.results==='object'
+    ?recent.results:Object.fromEntries(Object.entries(older.checked||{}).filter(([,v])=>v).map(([k])=>[k,'passed'])),
+   notes:typeof older.notes==='string'?older.notes.slice(0,7000):'',
+   issues:Array.isArray(older.issues)?older.issues.slice(0,30).map(cleanBetaIssue):[],
+   issueDraft:cleanBetaIssue(older.issueDraft||EMPTY_ISSUE)
+  };
+ }catch{return{role:'reader',device:'',showAll:false,results:{},notes:'',issues:[],issueDraft:{...EMPTY_ISSUE}}}
 }
+function store(next){try{localStorage.setItem(KEY,JSON.stringify(next))}catch{}}
 export default function PalaceBetaGuide({Frame}){
  const[state,setState]=useState(stored);
  const[message,setMessage]=useState('');
- function update(patch){
-  const next={...state,...patch};setState(next);
-  try{localStorage.setItem('palace-beta-checks-v1',JSON.stringify(next))}catch{}
+ const checks=betaChecksFor(state.role,state.showAll);
+ const counts=betaCounts(checks,state.results);
+ const report=buildBetaReport(state,checks);
+ const groups=[...new Set(checks.map(x=>x.group))];
+ function update(patch){setState(prev=>{const next={...prev,...patch};store(next);return next})}
+ function updateIssue(patch){update({issueDraft:{...state.issueDraft,...patch}})}
+ function saveIssue(){
+  const issue=cleanBetaIssue(state.issueDraft);
+  if(!betaIssueHasContent(issue)){setMessage('Please describe at least the page or what happened before adding an issue.');return}
+  if(state.issues.length>=30){setMessage('This report holds up to 30 issues. Copy or save it, then begin a new report.');return}
+  update({issues:[...state.issues,issue],issueDraft:{...EMPTY_ISSUE}});
+  setMessage('Issue added to your private report on this device.');
  }
- const done=PALACE_BETA_CHECKS.filter(x=>state.checked[x.id]).length;
- async function copyReport(){
-  const text=[
-   'THE STARRY PALACE — BETA FEEDBACK',
-   'Tester role: '+state.role,'Device/browser: '+(state.device||'Not specified'),
-   'Checks explored: '+done+'/'+PALACE_BETA_CHECKS.length,'',
-   ...PALACE_BETA_CHECKS.map(check=>(state.checked[check.id]?'[x] ':'[ ] ')+check.name),
-   '', 'Issues, screenshots to reference, and suggestions:',
-   state.notes||'(No notes entered)',
-   '', 'Please share this report privately with the site owner. Do not include passwords, private stories, or other members’ personal information.'
-  ].join('\n');
-  try{await navigator.clipboard.writeText(text);setMessage('Feedback copied. You can paste it into a private message to the site owner.')}
-  catch{setMessage('Copy was blocked by your browser. Select the notes below and copy them manually.');}
+ function troubleHere(item){
+  update({issueDraft:{...state.issueDraft,page:item.url}});
+  document.getElementById('palace-beta-issue-form')?.scrollIntoView({block:'start',behavior:'auto'});
  }
+ async function copyText(text,what){
+  try{
+   if(!navigator.clipboard?.writeText)throw new Error('Clipboard unavailable');
+   await navigator.clipboard.writeText(text);
+   setMessage(what+' copied. It has not been sent to anyone.');
+  }catch{setMessage('Clipboard access was blocked. Open “Preview my report”, select the text, and copy it manually.')}
+ }
+ async function shareReport(){
+  try{
+   if(typeof navigator.share!=='function'){await copyText(report,'Report');return}
+   await navigator.share({title:'The Starry Palace — beta feedback',text:report});
+   setMessage('Share sheet closed. Please confirm with your recipient that they received the report.');
+  }catch(err){if(err?.name!=='AbortError')setMessage('Sharing was unavailable. Try copying or saving your report instead.')}
+ }
+ function downloadReport(){
+  try{
+   const blob=new Blob([report],{type:'text/plain;charset=utf-8'});
+   const url=URL.createObjectURL(blob),a=document.createElement('a');
+   a.href=url;a.download='starry-palace-beta-report.txt';
+   document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
+   setMessage('Text report prepared for download on your device. No information was uploaded.');
+  }catch{setMessage('Your browser could not create the report file. Try copying the report instead.')}
+ }
+ function clearAll(){
+  if(!window.confirm('Clear your checklist, issue notes and locally saved feedback on this device?'))return;
+  const empty={role:'reader',device:'',showAll:false,results:{},notes:'',issues:[],issueDraft:{...EMPTY_ISSUE}};
+  update(empty);setMessage('Your local beta feedback was cleared.');
+ }
+ const invite='Would you like to help test The Starry Palace, a new home for stories? Try a few reader or writer tasks at https://the-starry-palace.onrender.com/beta. No experience needed, no pressure to publish, and please use disposable text when testing drafts. Your notes stay on your device until you choose to share them.';
  return <Frame><main className="palace-beta-guide">
-  <header className="palace-beta-hero"><p className="eyebrow">THE PALACE TEST KITCHEN · OPTIONAL PREVIEW</p>
+  <header className="palace-beta-hero">
+   <p className="eyebrow">THE PALACE TEST KITCHEN · FRIENDLY EARLY ACCESS</p>
    <h1>Help make the Palace feel effortless.</h1>
-   <p>Try real tasks, tell us what feels confusing and note anything that fails. Nothing you type here is automatically sent to anyone.</p>
-   <div className="palace-beta-progress"><strong>{done}/{PALACE_BETA_CHECKS.length}</strong><span>checkpoints explored</span><div role="progressbar" aria-valuemin={0} aria-valuemax={PALACE_BETA_CHECKS.length} aria-valuenow={done} aria-label="Beta checklist progress"><i style={{width:done/PALACE_BETA_CHECKS.length*100+'%'}}/></div></div>
+   <p>You don't need to be technical or finish every task. Tell us what felt lovely, what felt confusing, and where you got stuck.</p>
+   <p className="palace-beta-privacy">✦ Nothing on this page is automatically sent. Your notes stay on this device until you choose to share a report.</p>
+   <div className="palace-beta-progress"><strong>{counts.explored}/{checks.length}</strong><span>checkpoints explored in your track</span><div role="progressbar" aria-valuemin={0} aria-valuemax={checks.length} aria-valuenow={counts.explored} aria-label="Beta checklist progress"><i style={{width:(checks.length?counts.explored/checks.length*100:0)+'%'}}/></div></div>
   </header>
-  <section className="palace-beta-controls">
-   <label>I'm testing as<select value={state.role} onChange={e=>update({role:e.target.value})}><option value="reader">A reader</option><option value="writer">A writer</option><option value="artist">An artist / comic creator</option><option value="moderator">A Council member / moderator</option></select></label>
-   <label>Device and browser<input value={state.device} maxLength={120} placeholder="e.g. Android · Chrome" onChange={e=>update({device:e.target.value})}/></label>
+  <section className="palace-beta-intro" aria-label="How to test">
+   <div><span aria-hidden="true">01</span><strong>Choose what you enjoy</strong><p>Reader, writer, artist, or community tester.</p></div>
+   <div><span aria-hidden="true">02</span><strong>Try the tasks</strong><p>Choose Worked, Had trouble, or Skipped. Stop whenever you like.</p></div>
+   <div><span aria-hidden="true">03</span><strong>Share what happened</strong><p>Copy, share or save a private text report. Nothing is submitted automatically.</p></div>
   </section>
+  <section className="palace-beta-controls" aria-label="Test preferences">
+   <label>I'm testing as<select value={state.role} onChange={e=>{update({role:e.target.value});setMessage('')}}>{Object.entries(PALACE_BETA_TRACKS).map(([value,info])=><option key={value} value={value}>{info.label}</option>)}</select></label>
+   <label>Device and browser (optional)<input value={state.device} maxLength={120} placeholder="e.g. Samsung tablet · Chrome" onChange={e=>update({device:e.target.value})}/></label>
+   <p className="palace-beta-track-description">{PALACE_BETA_TRACKS[state.role].description}</p>
+   <label className="palace-beta-all-checks"><input type="checkbox" checked={state.showAll} onChange={e=>update({showAll:e.target.checked})}/> Show all Palace checkpoints instead of just my track</label>
+  </section>
+  <section className="palace-beta-safety" aria-label="Testing safety"><strong>Use a test story, not a treasured manuscript.</strong> Avoid private messages, passwords and personal information in screenshots or reports. Don't change live Council votes or moderation actions just to test them. If a task needs an account and you'd rather not register, choose Skipped.</section>
   {groups.map(group=><section className="palace-beta-group" key={group}><h2>{group}</h2><div className="palace-beta-checks">
-   {PALACE_BETA_CHECKS.filter(x=>x.group===group).map(item=><article key={item.id}>
-    <label className="palace-beta-task"><input type="checkbox" checked={!!state.checked[item.id]} onChange={e=>update({checked:{...state.checked,[item.id]:e.target.checked}})}/>
-     <strong>{item.name}</strong></label>
-    <p>{item.hint}</p><Link to={item.url}>Open this part of the Palace →</Link>
+   {checks.filter(x=>x.group===group).map(item=><article key={item.id} className={state.results[item.id]==='stuck'?'palace-beta-had-trouble':''}>
+    <strong className="palace-beta-task-name">{item.name}</strong>
+    <p>{item.hint}</p>
+    <Link to={item.url}>Open this part of the Palace →</Link>
+    <fieldset className="palace-beta-result"><legend>How did this go?</legend><div>{BETA_RESULTS.map(option=><label key={option.value} className={state.results[item.id]===option.value?'selected':''}><input type="radio" name={'beta-result-'+item.id} value={option.value} checked={state.results[item.id]===option.value} onChange={()=>update({results:{...state.results,[item.id]:option.value}})}/>{option.label}</label>)}</div></fieldset>
+    {state.results[item.id]==='stuck'&&<button type="button" className="palace-beta-report-link" onClick={()=>troubleHere(item)}>Describe what happened →</button>}
    </article>)}
    </div></section>)}
-  <section className="palace-beta-report"><h2>What needs improvement?</h2>
-   <p>Describe the page, what you tried, what you expected, what happened and whether the problem repeats. Do not include secrets or private drafts.</p>
-   <label htmlFor="palace-beta-notes">Feedback and problems</label>
-   <textarea id="palace-beta-notes" value={state.notes} rows={7} maxLength={7000} placeholder="Page: Writing Pad\nWhat I did: Typed and changed chapters\nExpected: All words saved\nActual: ...\nDevice: ..." onChange={e=>update({notes:e.target.value})}/>
-   <div className="palace-beta-actions"><button type="button" onClick={copyReport}>Copy my feedback report</button>
-    <button type="button" className="quiet" onClick={()=>{if(window.confirm('Clear your local checklist and notes?')){update({checked:{},notes:'',device:'',role:'reader'});setMessage('Local checklist cleared.')}}}>Reset checklist</button></div>
-   {message&&<p role="status">{message}</p>}
-   <small>Checklist progress is saved only in this browser. Copying the report does not submit it; the site owner must receive it through a channel you choose.</small>
+  <section id="palace-beta-issue-form" className="palace-beta-report palace-beta-issue-form"><p className="eyebrow">WHEN SOMETHING GOES WRONG</p><h2>Tell us about a problem</h2>
+   <p>A short description is enough. The best reports say which page, what you tried, what you expected, and what happened instead. Add separate issues when useful.</p>
+   <div className="palace-beta-issue-grid">
+    <label>Where was it?<input value={state.issueDraft.page} maxLength={180} placeholder="/writing, /reading or page title" onChange={e=>updateIssue({page:e.target.value})}/></label>
+    <label>How serious was it?<select value={state.issueDraft.severity||'major'} onChange={e=>updateIssue({severity:e.target.value})}>{BETA_SEVERITY.map(x=><option key={x.value} value={x.value}>{x.label}</option>)}</select></label>
+    <label>What did you try?<textarea rows={2} maxLength={1800} value={state.issueDraft.steps} placeholder="I opened Chapter 2 and began typing…" onChange={e=>updateIssue({steps:e.target.value})}/></label>
+    <label>What should have happened?<textarea rows={2} maxLength={1800} value={state.issueDraft.expected} placeholder="My draft should open and save normally…" onChange={e=>updateIssue({expected:e.target.value})}/></label>
+    <label>What actually happened?<textarea rows={3} maxLength={1800} value={state.issueDraft.actual} placeholder="The page stayed blank until I refreshed…" onChange={e=>updateIssue({actual:e.target.value})}/></label>
+    <label>Does it happen again?<select value={state.issueDraft.frequency||'unknown'} onChange={e=>updateIssue({frequency:e.target.value})}><option value="unknown">Not sure</option><option value="once">Once</option><option value="sometimes">Sometimes</option><option value="always">Every time</option></select></label>
+   </div>
+   <button type="button" className="palace-beta-save-issue" onClick={saveIssue}>＋ Add this issue to my report</button>
+   {state.issues.length>0&&<div className="palace-beta-saved-issues"><h3>{state.issues.length} issue{state.issues.length===1?'':'s'} in this report</h3>
+    {state.issues.map((item,index)=><div key={index}><div><strong>{index+1}. {item.page||'Untitled page'}</strong><small>{item.severity||'Unrated'} · {item.actual||item.steps||'Issue details included'}</small></div><button type="button" onClick={()=>update({issues:state.issues.filter((_,i)=>i!==index)})} aria-label={'Remove reported issue '+(index+1)}>Remove</button></div>)}
+   </div>}
   </section>
+  <section className="palace-beta-report"><p className="eyebrow">YOUR NOTES</p><h2>What should feel better?</h2>
+   <p>Share anything you noticed, including what worked beautifully. You can leave this blank.</p>
+   <label htmlFor="palace-beta-notes">Comments and suggestions</label>
+   <textarea id="palace-beta-notes" value={state.notes} rows={4} maxLength={7000} placeholder="I loved… / I had trouble finding… / On my phone…" onChange={e=>update({notes:e.target.value})}/>
+   <h3>Your report is ready when you are.</h3>
+   <div className="palace-beta-actions">
+    <button type="button" onClick={()=>copyText(report,'Report')}>Copy my report</button>
+    <button type="button" onClick={shareReport}>Share report</button>
+    <button type="button" onClick={downloadReport}>Save as text file</button>
+    <button type="button" className="quiet" onClick={clearAll}>Clear my local feedback</button>
+   </div>
+   <details className="palace-beta-preview"><summary>Preview my full report</summary><textarea readOnly value={report} rows={12} aria-label="Complete beta report to copy manually" onFocus={e=>e.target.select()}/></details>
+   {message&&<p className="palace-beta-message" role="status">{message}</p>}
+   <small>Share the report privately with the person who invited you. Copying or opening the share sheet does not guarantee delivery. All notes and checklist results are stored only in this browser.</small>
+  </section>
+  <section className="palace-beta-invitation"><div><p className="eyebrow">INVITING A FRIEND?</p><h2>Make room for another voice.</h2><p>Anyone can explore the beta guide. You can share this invitation with someone who enjoys reading, writing, comics or thoughtful communities.</p></div><button type="button" onClick={()=>copyText(invite,'Invitation')}>Copy a friendly tester invitation</button></section>
  </main></Frame>;
 }
