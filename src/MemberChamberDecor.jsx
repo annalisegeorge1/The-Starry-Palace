@@ -1,3 +1,4 @@
+import './prism-seasonal-effects.css';
 import React,{useEffect,useMemo,useState}from'react';
 import{getMemberChamberDecor,saveMemberChamberDecor,getPrismState,purchasePrismPalette,selectPrismPalette,savePrismLook}from'./memberChamberDecorData';
 import './member-chamber-decor.css';
