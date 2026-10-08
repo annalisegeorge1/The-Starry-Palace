@@ -1,0 +1,129 @@
+/*
+ * The Starry Palace — Navigation Jewels
+ * A restrained, room-specific palette for the shell's repeated navigation.
+ * Visual-only: preserve routes, touch-target geometry and established drawer behavior.
+ */
+
+.palace-shell :is(.room-sigil-palace,.top-room-sigil-palace,.passage-room-palace){--room-jewel:#c6b4ff;--room-halo:rgba(167,143,244,.22)}
+.palace-shell :is(.room-sigil-reading,.top-room-sigil-reading,.passage-room-reading){--room-jewel:#94c7ff;--room-halo:rgba(105,173,241,.23)}
+.palace-shell :is(.room-sigil-library,.top-room-sigil-library,.passage-room-library){--room-jewel:#9fe1d9;--room-halo:rgba(110,219,202,.21)}
+.palace-shell :is(.room-sigil-writing,.top-room-sigil-writing,.passage-room-writing){--room-jewel:#e4b2ed;--room-halo:rgba(208,139,223,.22)}
+.palace-shell :is(.room-sigil-life,.top-room-sigil-life,.passage-room-life){--room-jewel:#8cdbc5;--room-halo:rgba(98,199,178,.23)}
+.palace-shell :is(.room-sigil-events,.top-room-sigil-events,.passage-room-events){--room-jewel:#afb9ff;--room-halo:rgba(143,158,249,.23)}
+.palace-shell :is(.room-sigil-treasury,.top-room-sigil-treasury,.passage-room-treasury){--room-jewel:#dfc1f7;--room-halo:rgba(194,153,222,.22)}
+.palace-shell :is(.room-sigil-settings,.top-room-sigil-settings,.passage-room-settings){--room-jewel:#bbd1e4;--room-halo:rgba(151,184,211,.20)}
+.palace-shell :is(.room-sigil-council,.top-room-sigil-council,.passage-room-council){--room-jewel:#d0b8fc;--room-halo:rgba(178,144,235,.22)}
+
+/* In a dim Palace, the artwork itself should still be vivid and legible. */
+.palace-shell.nightfall .full-nav-room>a .room-sigil{
+ color:var(--room-jewel,#c6b4ff)!important;
+ border-color:color-mix(in srgb,var(--room-jewel,#c6b4ff) 33%,transparent)!important;
+ background:
+  radial-gradient(circle at 25% 20%,rgba(255,255,255,.16),transparent 32%),
+  radial-gradient(circle at 74% 80%,var(--room-halo,rgba(167,143,244,.22)),transparent 68%),
+  linear-gradient(150deg,#322747,#1d2039)!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 4px 13px rgba(5,8,22,.24)!important;
+}
+.palace-shell.nightfall .full-nav-room>a.active .room-sigil{
+ border-color:color-mix(in srgb,var(--room-jewel,#c6b4ff) 68%,transparent)!important;
+ background:
+  radial-gradient(circle at 32% 24%,var(--room-halo,rgba(167,143,244,.22)),transparent 82%),
+  linear-gradient(140deg,#433259,#242843)!important;
+ box-shadow:0 0 0 1px var(--room-halo,rgba(167,143,244,.22)),0 4px 20px var(--room-halo,rgba(167,143,244,.22))!important;
+}
+.palace-shell.nightfall .full-nav-room>a:not(.active){color:#d0c9dd}
+.palace-shell.nightfall .full-nav-room>a:hover{color:#fff6ff!important}
+.palace-shell .full-nav-room>a .room-sigil svg{
+ color:inherit!important;
+ filter:drop-shadow(0 0 5px var(--room-halo,rgba(167,143,244,.22)));
+}
+.palace-shell :is(.top-room-sigil,.passage-room-sigil){
+ color:var(--room-jewel,#c6b4ff)!important;
+ filter:drop-shadow(0 0 5px var(--room-halo,rgba(167,143,244,.22)));
+}
+
+/* Daylight is a readable lavender paper palette, not washed-out neon. */
+.palace-shell.daylight :is(.room-sigil-palace,.top-room-sigil-palace,.passage-room-palace){--room-jewel:#604399}
+.palace-shell.daylight :is(.room-sigil-reading,.top-room-sigil-reading,.passage-room-reading){--room-jewel:#28649f}
+.palace-shell.daylight :is(.room-sigil-library,.top-room-sigil-library,.passage-room-library){--room-jewel:#176f69}
+.palace-shell.daylight :is(.room-sigil-writing,.top-room-sigil-writing,.passage-room-writing){--room-jewel:#82428c}
+.palace-shell.daylight :is(.room-sigil-life,.top-room-sigil-life,.passage-room-life){--room-jewel:#176f67}
+.palace-shell.daylight :is(.room-sigil-events,.top-room-sigil-events,.passage-room-events){--room-jewel:#4e59a1}
+.palace-shell.daylight :is(.room-sigil-treasury,.top-room-sigil-treasury,.passage-room-treasury){--room-jewel:#704189}
+.palace-shell.daylight :is(.room-sigil-settings,.top-room-sigil-settings,.passage-room-settings){--room-jewel:#3e617f}
+.palace-shell.daylight :is(.room-sigil-council,.top-room-sigil-council,.passage-room-council){--room-jewel:#69439b}
+.palace-shell.daylight .full-nav-room>a .room-sigil{
+ color:var(--room-jewel,#604399)!important;
+ border-color:color-mix(in srgb,var(--room-jewel,#604399) 24%,transparent)!important;
+ background:
+  radial-gradient(circle at 27% 19%,#fff,transparent 46%),
+  linear-gradient(140deg,#f8f5ff,#e9e5f5)!important;
+ box-shadow:inset 0 1px 0 #fff,0 4px 12px rgba(51,40,82,.07)!important;
+}
+.palace-shell.daylight .full-nav-room>a.active .room-sigil{
+ border-color:color-mix(in srgb,var(--room-jewel,#604399) 50%,transparent)!important;
+ background:linear-gradient(145deg,#f4effd,#e3dcf4)!important;
+}
+.palace-shell.daylight .full-nav-room>a:not(.active){color:#493e5b!important}
+.palace-shell.daylight .full-nav-room>a:hover{color:#2b2240!important}
+
+/* The bottom dock borrows the same colours: each doorway has a distinct cue. */
+.palace-shell .mobile-palace-dock>a[href="/"],
+.palace-shell .mobile-palace-dock>a[href="/chamber"]{--dock-jewel:#c6b4ff;--dock-paper:#624299}
+.palace-shell .mobile-palace-dock>a[href="/reading"]{--dock-jewel:#97c9ff;--dock-paper:#28649f}
+.palace-shell .mobile-palace-dock>a[href="/writing"]{--dock-jewel:#e0b4f4;--dock-paper:#814392}
+.palace-shell .mobile-palace-dock>a[href="/writers"]{--dock-jewel:#e0b4f4;--dock-paper:#814392}
+.palace-shell .mobile-palace-dock>a[href="/palace-life"]{--dock-jewel:#91e0d1;--dock-paper:#186e67}
+.palace-shell .mobile-palace-dock>a[href="/events"]{--dock-jewel:#b9c0ff;--dock-paper:#4c56a2}
+.palace-shell .mobile-palace-dock>a[href="/login"]{--dock-jewel:#c6b4ff;--dock-paper:#624299}
+.palace-shell.nightfall .mobile-palace-dock>a>span:first-child{
+ color:var(--dock-jewel,#c6b4ff)!important;
+ text-shadow:0 0 12px color-mix(in srgb,var(--dock-jewel,#c6b4ff) 26%,transparent);
+}
+.palace-shell.daylight .mobile-palace-dock>a>span:first-child{
+ color:var(--dock-paper,#624299)!important;
+ text-shadow:none;
+}
+.palace-shell .mobile-palace-dock>a.active>span:first-child{
+ border-radius:10px;
+ background:color-mix(in srgb,var(--dock-jewel,#c6b4ff) 14%,transparent);
+}
+.palace-shell.daylight .mobile-palace-dock>a.active>span:first-child{
+ background:color-mix(in srgb,var(--dock-paper,#624299) 10%,transparent);
+}
+.palace-shell .mobile-palace-dock>button.mobile-palace-more>span:first-child{
+ color:#b9c4f9;
+}
+.palace-shell.daylight .mobile-palace-dock>button.mobile-palace-more>span:first-child{color:#4e5596}
+
+/* The secondary mobile doors should not all appear to be the same grey icon. */
+.palace-shell .mobile-more-grid>a:nth-child(1)>span{--grid-jewel:#9ce0d3}
+.palace-shell .mobile-more-grid>a:nth-child(2)>span{--grid-jewel:#b3baff}
+.palace-shell .mobile-more-grid>a:nth-child(3)>span{--grid-jewel:#dec0f8}
+.palace-shell .mobile-more-grid>a:nth-child(4)>span{--grid-jewel:#e4b8ec}
+.palace-shell .mobile-more-grid>a:nth-child(5)>span{--grid-jewel:#a2c5fe}
+.palace-shell .mobile-more-grid>a:nth-child(6)>span{--grid-jewel:#a4caff}
+.palace-shell .mobile-more-grid>a:nth-child(7)>span{--grid-jewel:#c6b4ff}
+.palace-shell .mobile-more-grid>a:nth-child(8)>span{--grid-jewel:#aacbdf}
+.palace-shell.nightfall .mobile-more-grid>a>span{
+ color:var(--grid-jewel,#c6b4ff)!important;
+ background:color-mix(in srgb,var(--grid-jewel,#c6b4ff) 13%,#211a37)!important;
+ border:1px solid color-mix(in srgb,var(--grid-jewel,#c6b4ff) 25%,transparent);
+}
+.palace-shell.daylight .mobile-more-grid>a>span{
+ color:#403360!important;
+ background:color-mix(in srgb,var(--grid-jewel,#b6a7e4) 26%,#fff)!important;
+ border:1px solid rgba(101,80,145,.18);
+}
+
+/* Clearly visible keyboard focus, no new navigation or motion dependence. */
+.palace-shell :is(.full-nav-room>a,.mobile-palace-dock>a,.mobile-palace-dock>button,.mobile-more-grid>a):focus-visible{
+ outline:2px solid #a4c8ff!important;
+ outline-offset:2px;
+}
+.palace-shell.daylight :is(.full-nav-room>a,.mobile-palace-dock>a,.mobile-palace-dock>button,.mobile-more-grid>a):focus-visible{
+ outline-color:#664b9c!important;
+}
+@media (prefers-reduced-motion:reduce){
+ .palace-shell :is(.room-sigil,.mobile-palace-dock>a>span:first-child,.mobile-more-grid>a>span){animation:none!important;transition:none!important}
+}
