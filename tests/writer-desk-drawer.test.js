@@ -46,7 +46,7 @@ describe('calmer manuscript workspace',()=>{
   const a=studio.indexOf('className="writer-recovery-alert"'),b=studio.indexOf('className="writer-desk-drawer"');
   expect(a).toBeGreaterThan(0);
   expect(b).toBeGreaterThan(a);
-  expect(studio).toContain('className="writer-toolbar-save-state');
+  expect(studio).toContain('writer-toolbar-save-state state-');
   expect(studio).toContain('className="legacy-goal-progress"');
   expect(studio).toContain('contentEditable suppressContentEditableWarning');
   expect(studio).toContain('createManuscriptSaveCoordinator(');
