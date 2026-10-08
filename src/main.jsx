@@ -17,6 +17,7 @@ import PalaceNewStories from './PalaceNewStories';
 import {safePalaceReturnPath} from './palaceReturnPath';
 import {palaceSignInDoor,palaceDoorDestinationMessage} from './palaceDoorway';
 import {shouldOfferManualPalaceRefresh} from './palaceUpdateSafety';
+import {isPalaceRoomVisuallyBlank} from './palaceBlankVisibility';
 import {usePalaceDialogFocusTrap} from './usePalaceDialogFocusTrap';
 import {shouldOpenPalaceQuickNavigation} from './palaceKeyboard';
 import {palaceRecentDoorKey,readPalaceRecentDoors,addPalaceRecentDoor} from './palaceRecentDoors';
@@ -466,17 +467,16 @@ function BlankScreenWatchdog(){
    const content=root.querySelector('#palace-content');
    const rootText=(root.textContent||'').trim();
    const contentText=(content?.textContent||'').trim();
-   const firstRoom=content?.firstElementChild||null;
    const blankRoot=root.childElementCount===0||rootText.length<3||root.getBoundingClientRect().height<40;
    const blankRoom=!!shell&&!!content&&content.childElementCount===0&&contentText.length<3;
-   const visuallyBlank=!!shell&&!!content&&!blankRoom&&(looksInvisible(content)||looksInvisible(firstRoom));
-   if(!(blankRoot||blankRoom||visuallyBlank)||loader||routeRecovery){if(!blankRoot&&!blankRoom&&!visuallyBlank)removeRecovery();return}
+   const visuallyBlank=!!shell&&!!content&&!blankRoom&&isPalaceRoomVisuallyBlank(content,looksInvisible);
+   if(!(blankRoot||blankRoom||visuallyBlank)||loader||routeRecovery){if(!blankRoot&&!blankRoom&&!visuallyBlank){content?.classList.remove('palace-visibility-rescue');removeRecovery()}return}
    if(visuallyBlank&&content){
     content.classList.add('palace-visibility-rescue');
     window.clearTimeout(rescueTimer);
     rescueTimer=window.setTimeout(()=>{
-     const stillBlank=looksInvisible(content)||looksInvisible(content.firstElementChild);
-     if(!stillBlank){removeRecovery();return}
+     const stillBlank=isPalaceRoomVisuallyBlank(content,looksInvisible);
+     if(!stillBlank){content.classList.remove('palace-visibility-rescue');removeRecovery();return}
      showRecovery();
      schedulePalaceReload('palace-blank-screen-reload:'+location.pathname,180);
     },180);
@@ -495,7 +495,7 @@ function BlankScreenWatchdog(){
   const onVisible=()=>{if(document.visibilityState==='visible')scheduleFollowup(180)};
   window.addEventListener('pageshow',onPageShow);
   document.addEventListener('visibilitychange',onVisible);
-  return()=>{window.clearTimeout(firstTimer);window.clearTimeout(secondTimer);window.clearTimeout(rescueTimer);followupTimers.forEach(timer=>window.clearTimeout(timer));followupTimers.clear();removeRecovery();window.removeEventListener('pageshow',onPageShow);document.removeEventListener('visibilitychange',onVisible)};
+  return()=>{window.clearTimeout(firstTimer);window.clearTimeout(secondTimer);window.clearTimeout(rescueTimer);followupTimers.forEach(timer=>window.clearTimeout(timer));followupTimers.clear();document.getElementById('palace-content')?.classList.remove('palace-visibility-rescue');removeRecovery();window.removeEventListener('pageshow',onPageShow);document.removeEventListener('visibilitychange',onVisible)};
  },[location.pathname,location.search]);
  return null;
 }
