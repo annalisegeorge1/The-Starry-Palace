@@ -16,7 +16,7 @@ describe('editor and reader daily-use guarantees',()=>{
  it('does not rebuild the entire chapter map on each typing event',()=>{
   expect(writer).toContain('createEditorMetricsScheduler(');
   expect(writer).toContain('editorMetricsRef.current?.schedule();queueSave(');
-  expect(writer).toContain('onInput={e=>{editorMetricsRef.current?.schedule();queueSave(');
+  expect(writer).toContain('onInput={e=>{rememberFormattingSelection();editorMetricsRef.current?.schedule();queueSave(');
   expect(writer).toContain('editorMetricsRef.current?.cancel()');
   expect(writer).toContain('if(countWords(editorRef.current?.innerHTML||\'\')<1)');
  });
