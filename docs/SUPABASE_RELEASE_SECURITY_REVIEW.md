@@ -17,7 +17,7 @@ This is a **triage record**, not a penetration test, user-data audit, or certifi
 
 These eight function names and their SQL definitions were inspected without reading table contents.
 
-- `get_work_lore` applies an owner check and, for non-owners, restricts lore to **published** works with an allowed visibility and non-private reveal mode. Its definition contains a publication check near the final query; the earlier declaration alone does not show the complete rule. No exposure was confirmed by this review.
+- **Confirmed policy mismatch in `get_work_lore` (requires fix):** The ordinary `works` SELECT policy allows non-owners to read a published work marked `members` only when `auth.uid()` is present. The earlier `SECURITY DEFINER` lore RPC admitted both `public` and `members` visibility without checking whether a non-owner was signed in. An anonymous caller who knew a members-only published work's UUID could potentially read its non-private lore despite the work's member-only restriction. This was established from policy/function definitions—not from any user work. The minimal replacement in [`database/guard-member-only-lore-rpc.sql`](../database/guard-member-only-lore-rpc.sql) requires a signed-in caller for members-only works while preserving owner and public access. **Verify that migration was actually applied before calling this resolved.**
 - `record_palace_share` checks for a signed-in caller and a published work before granting participation points. Although executable by the anonymous database role, its implementation raises on a missing authenticated user ID; consider reducing unnecessary role grants **only after** an RPC regression test.
 - `get_grand_palace_identity` checks profile visibility and whether the caller is the member.
 - `get_relay_balcony` checks whether a room permits audience access or the current user is a permitted host/member.
@@ -37,7 +37,7 @@ These are **code observations**, not adversarial verification of every parameter
 
 ## Actions taken
 
-**None on the live database.** This check did not add policies, revoke functions, touch passwords, upload files, query member content, edit user records or change Auth redirect settings.
+**Read-only audit and a narrowly scoped SQL correction prepared in GitHub.** Before marking this closed, verify the migration status against the live function definition. No member records, manuscripts, private messages, vote content or passwords were queried.
 
 ## Advisor references
 
