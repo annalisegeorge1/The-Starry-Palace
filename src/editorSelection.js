@@ -17,14 +17,14 @@ export function captureEditorSelection(editor,selection){
  if(!selection||!selection.rangeCount)return null;
  try{
   const range=selection.getRangeAt(0);
-  return rangeWithinEditor(editor,range)?range.cloneRange():null;
+  return rangeWithinEditor(editor,range)?{range:range.cloneRange(),start:range.startContainer,end:range.endContainer}:null;
  }catch{return null}
 }
 export function restoreEditorSelection(editor,range,selection){
- if(!selection||!rangeWithinEditor(editor,range))return false;
+ if(!selection||!range||!rangeWithinEditor(editor,range.range)||range.range.startContainer!==range.start||range.range.endContainer!==range.end)return false;
  try{
   selection.removeAllRanges();
-  selection.addRange(range.cloneRange());
+  selection.addRange(range.range.cloneRange());
   return true;
  }catch{return false}
 }
