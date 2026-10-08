@@ -24,8 +24,8 @@ describe('long-form classic reader',()=>{
   const text={...textFor(4),body_text:'CHAPTER I\n\nThe story begins.\n\nCHAPTER II\n\nA second chapter begins.',translations:[{translator_name:'The Translator',language:'English',scope:'complete',notes:'Historical translation'}]};
   render(<ArchiveClassicReader record={record} text={text}/>);
   expect(screen.getByLabelText('Jump to source chapter or section')).toBeTruthy();
-  expect(screen.getByText('CHAPTER I')).toBeTruthy();
-  expect(screen.getByText('Recorded translators:')).toBeTruthy();
+  expect(screen.getByRole('heading',{name:'CHAPTER I'})).toBeTruthy();
+  expect(screen.getByText(/Recorded translators:/)).toBeTruthy();
   fireEvent.click(screen.getByText('Edition, translation & source details'));
   expect(screen.getByText(/associated translation records/)).toBeTruthy();
  });
