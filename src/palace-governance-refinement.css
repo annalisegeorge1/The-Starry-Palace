@@ -1,0 +1,37 @@
+
+/* Council and voting refinement: independently scoped; preserves existing room styles. */
+.palace-governance .governance-tab-groups{display:grid;gap:14px;margin:24px 0}
+.palace-governance .governance-tab-group{padding:14px 16px 10px;background:var(--card,#26233c);border:1px solid #9181ae59;border-radius:20px;min-width:0}
+.palace-governance .governance-tab-group>small{display:block;margin:1px 0 12px;color:var(--text,#ece8ff);opacity:.8;font-size:.68rem;font-weight:800;letter-spacing:.16em}
+.palace-governance .governance-tab-group .governance-tabs{margin:0 0 4px;gap:8px}
+.palace-governance .governance-tab-group .governance-tabs button{min-height:42px;padding:9px 13px;flex:0 1 auto;transition:background .16s ease,border-color .16s ease,transform .16s ease}
+.palace-governance .governance-tab-group .governance-tabs button:hover:not(.active){border-color:#ad97e8;background:#9c81d01f}
+.palace-governance .governance-tab-group .governance-tabs button:focus-visible,
+.palace-governance .governance-entry-grid button:focus-visible{outline:3px solid #a885ed;outline-offset:2px}
+.palace-governance .governance-overview{display:grid;gap:22px}
+.palace-governance .governance-pulse{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.palace-governance .governance-pulse>div{padding:18px;border:1px solid #8e78b067;border-radius:19px;background:var(--card,#26233c);display:flex;flex-direction:column;gap:5px}
+.palace-governance .governance-pulse strong{color:var(--text,#ece8ff);font:700 clamp(1.75rem,4vw,2.4rem)/1.15 Georgia,serif}
+.palace-governance .governance-pulse span{font-size:.79rem;opacity:.85}
+.palace-governance .governance-entry-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.palace-governance .governance-entry-grid button{min-width:0;display:grid;justify-items:start;gap:9px;padding:22px;text-align:left;border-radius:21px;border:1px solid #a28dc572;background:radial-gradient(circle at 90% 0%,#9a7acf33,transparent 65%),var(--card,#26233c);color:var(--text,#f3ecff);cursor:pointer;transition:transform .16s ease,border-color .16s ease}
+.palace-governance .governance-entry-grid button:hover{transform:translateY(-2px);border-color:#b59bea}
+.palace-governance .governance-entry-grid button>span{display:grid;place-items:center;width:43px;height:43px;font-size:1.4rem;border-radius:13px;background:#8667c331}
+.palace-governance .governance-entry-grid button strong{font:700 1.3rem/1.2 Georgia,serif}
+.palace-governance .governance-entry-grid button small{line-height:1.5;opacity:.85;font-size:.82rem}
+.palace-governance .governance-entry-grid button b{font-size:.85rem;color:var(--text,#f0e4ff);text-decoration:underline;text-underline-offset:4px}
+.palace-governance .governance-recent{border:1px solid #a28dc572;border-radius:21px;padding:clamp(17px,3vw,25px);background:var(--card,#26233c);display:grid;gap:16px}
+.palace-governance .governance-recent h3{font:700 1.4rem Georgia,serif;margin:0}
+.palace-governance .governance-recent p{margin:5px 0 0;line-height:1.65}
+.palace-governance .governance-recent article{display:grid;gap:6px;border-top:1px solid #a28dc53c;padding-top:13px}
+.palace-governance .governance-recent article small{opacity:.75}
+.palace-governance .governance-recent article strong{font-size:1.05rem}
+.palace-governance .governance-recent>button{justify-self:start;background:#66509b;color:#fff;border:1px solid #b39ade;border-radius:12px;padding:11px 15px;cursor:pointer;font:inherit;font-weight:700}
+.palace-governance .governance-ballot-controls{display:flex;flex-wrap:wrap;gap:14px;margin:0 0 18px}
+.palace-governance .governance-ballot-controls label{display:grid;gap:6px;flex:1 1 215px;font-size:.83rem;font-weight:750}
+.palace-governance .governance-ballot-controls input,.palace-governance .governance-ballot-controls select{min-height:44px;min-width:0;border:1px solid #9286b2;border-radius:13px;padding:10px 12px;background:var(--card,#26233c);color:var(--text,#ece8ff);font:inherit;width:100%;box-sizing:border-box}
+.palace-governance .governance-ballot-controls input:focus-visible,.palace-governance .governance-ballot-controls select:focus-visible{outline:2px solid #a98be8;outline-offset:2px}
+.palace-governance .governance-choice.selected{box-shadow:inset 3px 0 #b29af6}
+@media(min-width:1000px){.palace-governance .governance-tab-groups{grid-template-columns:1fr 1fr 1fr}.palace-governance .governance-tab-group .governance-tabs button{flex:1 1 115px}}
+@media(max-width:600px){.palace-governance .governance-entry-grid{grid-template-columns:1fr}.palace-governance .governance-pulse{gap:7px}.palace-governance .governance-pulse>div{padding:13px 10px}.palace-governance .governance-tab-group{padding:12px}.palace-governance .governance-tab-group .governance-tabs button{min-width:0;flex:1 1 118px}.palace-governance .governance-entry-grid button{padding:18px}}
+@media(prefers-reduced-motion:reduce){.palace-governance .governance-entry-grid button,.palace-governance .governance-tab-group .governance-tabs button{transition:none}.palace-governance .governance-entry-grid button:hover{transform:none}}
