@@ -25,7 +25,7 @@ export function PalaceStartingPath({memberId}){
  }
  if(!memberId||state.hidden)return null;
  const count=state.visited.length;
- return <details className="palace-tour-fold"><summary><span>New here? Take a four-room tour <small>Optional · {"count"} of 4 doorways explored</small></span><span aria-hidden="true">⌄</span></summary><section className="palace-starting-path" aria-label="Optional Palace welcome tour">
+ return <details className="palace-tour-fold"><summary><span>New here? Take a four-room tour <small>Optional · {count} of 4 doorways explored</small></span><span aria-hidden="true">⌄</span></summary><section className="palace-starting-path" aria-label="Optional Palace welcome tour">
   <div className="palace-starting-copy"><p className="eyebrow">A GENTLE FIRST JOURNEY</p>
    <h2>Make yourself at home.</h2>
    <p>No need to learn the entire Palace in a day. Try a room at a time and return whenever you like.</p>
