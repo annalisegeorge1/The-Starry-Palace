@@ -1,8 +1,8 @@
 /**
- * Palace Life has six distinct member rooms. Keep URL navigation and rendered
+ * Palace Life has seven distinct member rooms. Keep URL navigation and rendered
  * room state in sync rather than mutating window.history behind React Router.
  */
-export const PALACE_LIFE_ROOMS=['commons','clubs','forum','moonlight','stars','highlights'];
+export const PALACE_LIFE_ROOMS=['commons','clubs','forum','moonlight','stars','highlights','history'];
 
 export function palaceLifeRoom(value){
  return PALACE_LIFE_ROOMS.includes(value)?value:'commons';
