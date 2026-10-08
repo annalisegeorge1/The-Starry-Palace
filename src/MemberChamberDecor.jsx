@@ -14,10 +14,9 @@ export default function MemberChamberDecor({decor,onSaved,own}){
  const catalogue=decor?.prism_catalogue||[];
  useEffect(()=>{if(decor){setPalette(decor.prism_palette||decor.backdrop||'midnight');setFinish(decor.prism_finish||'soft');setAccent(decor.prism_accent||'harmony');setOrnament(decor.ornament||'stars');setLayout(decor.gallery_layout||'classic')}},[decor?.prism_palette,decor?.prism_finish,decor?.prism_accent,decor?.ornament,decor?.gallery_layout]);
  const choice=catalogue.find(x=>x.slug===palette)||catalogue[0];
- const current=catalogue.find(x=>x.slug===decor?.prism_palette);
  const show=catalogue.filter(x=>(family==='All'||x.family===family)&&(category==='all'||category==='owned'&&(x.unlocked)||x.category===category));
  const preview=useMemo(()=>choice?{'--prism-primary':choice.primary,'--prism-secondary':choice.secondary,'--prism-accent':accents[accent]||choice.accent}:undefined,[choice?.slug,accent]);
- const run=async(fn,success)=>{if(busy)return;setBusy(true);setError('');setNotice('');try{const next=await fn();const updated=next?.prism_catalogue?next:await getPrismState(decor.user_id);onSaved(updated);setNotice(success||'Your chamber has been updated.')}catch(e){setError(e.message)}finally{setBusy(false)}};
+ const run=async(fn,success)=>{if(busy)return;setBusy(true);setError('');setNotice('');try{const next=await fn();const updated=await getPrismState(decor.user_id);onSaved(updated);setNotice(success||'Your chamber has been updated.')}catch(e){setError(e.message)}finally{setBusy(false)}};
  if(!own||!decor)return null;
  const buy=choice?.category==='treasury'&&!choice.unlocked;
  return <section className="chamber-decorator prism-atelier" aria-label="Prism Atelier"><header><div><p className="eyebrow">THE PRISM ATELIER · 41 CELESTIAL COLOURS</p><h2>Every colour tells a different story.</h2><p>Spin through the spectrum. Preview freely, unlock colours by creating, or collect special hues from the Treasury and tournaments.</p></div><button type="button" onClick={()=>setOpen(v=>!v)}>{open?'Close colour studio':'Open Prism Atelier ✧'}</button></header>
