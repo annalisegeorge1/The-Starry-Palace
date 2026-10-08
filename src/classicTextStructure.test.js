@@ -11,6 +11,11 @@ describe('classic literature typesetting',()=>{
    expect(restoreFlatClassicChapterHtml('<p>First.</p><p>Second.</p><p>Third.</p>')).toBe('<p>First.</p><p>Second.</p><p>Third.</p>');
   }
  });
+ it('does not strip intentional inline formatting from a source edition',()=>{
+  const prose='A deliberately long source paragraph. '.repeat(35);
+  const html='<p><em>'+prose+'</em></p>';
+  expect(restoreFlatClassicChapterHtml(html)).toBe(html);
+ });
  it('preserves source paragraph boundaries',()=>{
   expect(structureClassicText('First paragraph.\n\nSecond paragraph.').map(x=>x.text))
    .toEqual(['First paragraph.','Second paragraph.']);
