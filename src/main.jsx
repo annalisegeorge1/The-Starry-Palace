@@ -54,6 +54,10 @@ function safeLocalGet(key){try{return window.localStorage?.getItem(key)??null}ca
 function safeLocalSet(key,value){try{window.localStorage?.setItem(key,String(value));return true}catch{return false}}
 function schedulePalaceReload(key,delay=40){
  if(typeof window==='undefined')return false;
+ // All automatic recovery paths (chunk errors, preload failures and blank rooms)
+ // must honor the same work-in-progress guard as the new-build notice.
+ // A writer can still choose a deliberate reload after saving or exporting.
+ if(shouldOfferManualPalaceRefresh(window.location.pathname))return false;
  const last=Number(safeSessionGet(key)||0);
  if(Date.now()-last<=15000)return false;
  safeSessionSet(key,Date.now());
