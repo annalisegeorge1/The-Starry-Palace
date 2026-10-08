@@ -19,6 +19,18 @@ export function PalaceHomeWelcome({member=false}){
     <h3>{choice.title}</h3><p>{choice.id==='belong'?(member?'Step into the Commons, meet kindred readers and writers, and find a conversation that feels like yours.':'Browse public Palace events and see the kind of gatherings waiting inside.'):choice.description}</p><span className="palace-choice-action">{choice.id==='belong'?(member?'Enter Palace Life':'Explore public gatherings'):member&&choice.id==='write'?'Open my Writing Chamber':choice.action} <span aria-hidden="true">→</span></span>
    </Link>)}
   </div>
+  <nav className="palace-culture-paths" aria-label="Events and literary heritage">
+   <Link to="/events?tab=calendar" className="palace-culture-path palace-culture-events">
+    <span className="palace-culture-icon" aria-hidden="true">✧</span>
+    <span><strong>Festivals & gatherings</strong><small>Explore the calendar, cultural celebrations and creative events.</small></span>
+    <span className="palace-culture-arrow" aria-hidden="true">→</span>
+   </Link>
+   <Link to="/reading" className="palace-culture-path palace-culture-literature">
+    <span className="palace-culture-icon" aria-hidden="true">❖</span>
+    <span><strong>Literature across generations</strong><small>Discover classics, storytelling traditions and new voices side by side.</small></span>
+    <span className="palace-culture-arrow" aria-hidden="true">→</span>
+   </Link>
+  </nav>
  </section>;
 }
 const glyphs=['◈','▤','✎','♢','✧','♛','☄','☷'];
