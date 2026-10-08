@@ -117,3 +117,9 @@
 @media(prefers-reduced-motion:reduce){
  .palace-beta-compass button,.palace-beta-finished button{transition:none!important}
 }
+
+.palace-beta-hero .palace-beta-storage-warning{
+ max-width:100%;padding:11px 14px;margin:12px 0 0;border-radius:12px;
+ background:rgba(102,180,199,.19);border:1px solid rgba(171,232,245,.65);
+ color:#f0fcff;font-size:.88rem;line-height:1.6;
+}
