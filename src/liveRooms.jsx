@@ -1523,7 +1523,7 @@ function WorkStudioForWork({Frame,slug}){
   });
  },[selected,slug]);useEffect(()=>{document.body.classList.add('writing-desk-open');return()=>{if(saveTimerRef.current)clearTimeout(saveTimerRef.current);document.body.classList.remove('focus-editor');document.body.classList.remove('writing-desk-open')}},[]);useEffect(()=>{if(sprintRunning)return;setSprintRemaining(Math.max(1,sprintMinutes)*60)},[sprintMinutes]);useEffect(()=>{if(!sprintRunning)return;if(sprintRemaining<=0){setSprintRunning(false);setSprintNote('Sprint complete — '+Math.max(0,wordCount-sprintStartWords).toLocaleString()+' new words beneath the moon.');return}const timer=window.setTimeout(()=>setSprintRemaining(v=>Math.max(0,v-1)),1000);return()=>window.clearTimeout(timer)},[sprintRunning,sprintRemaining]);useEffect(()=>{setSprintRunning(false);setSprintRemaining(Math.max(1,sprintMinutes)*60);setSprintStartWords(0);setSprintNote('')},[chapter?.id]);useEffect(()=>{try{setMarginNote(chapter?.id?localStorage.getItem('palace-margin-note:'+chapter.id)||'':'')}catch{setMarginNote('')}},[chapter?.id]);useEffect(()=>{try{localStorage.setItem('palace-desk-mood',deskMood)}catch{}},[deskMood]);useEffect(()=>{try{localStorage.setItem('palace-writer-rail',railCollapsed?'collapsed':'open')}catch{}},[railCollapsed]);useEffect(()=>{try{localStorage.setItem('palace-clean-paste',String(cleanPaste))}catch{}},[cleanPaste]);
  useEffect(()=>{document.body.classList.toggle('focus-editor',focusMode);return()=>document.body.classList.remove('focus-editor')},[focusMode]);
- useEffect(()=>{const onKey=e=>{const mod=e.metaKey||e.ctrlKey;const key=e.key.toLowerCase();const inEditor=!!editorRef.current&&(document.activeElement===editorRef.current||editorRef.current.contains(document.activeElement));if(mod&&key==='s'&&chapter){e.preventDefault();const form=editorRef.current?.closest('form');if(form)persistChapter(form).catch(err=>{setSaved('Recovery copy kept on this device');setError(err.message)})}else if(mod&&inEditor&&key==='b'){e.preventDefault();exec('bold')}else if(mod&&inEditor&&key==='i'){e.preventDefault();exec('italic')}else if(mod&&inEditor&&key==='u'){e.preventDefault();exec('underline')}else if(mod&&inEditor&&key==='f'){e.preventDefault();openFindPanel()}else if(e.key==='Escape'&&focusMode){setFocusMode(false)}};window.addEventListener('keydown',onKey);return()=>window.removeEventListener('keydown',onKey)},[chapter?.id,focusMode]);
+ useEffect(()=>{const onKey=e=>{const mod=e.metaKey||e.ctrlKey;const key=e.key.toLowerCase();const inEditor=!!editorRef.current&&(document.activeElement===editorRef.current||editorRef.current.contains(document.activeElement));if(mod&&key==='s'&&chapter){e.preventDefault();quickSaveChapter()}else if(mod&&inEditor&&key==='b'){e.preventDefault();exec('bold')}else if(mod&&inEditor&&key==='i'){e.preventDefault();exec('italic')}else if(mod&&inEditor&&key==='u'){e.preventDefault();exec('underline')}else if(mod&&inEditor&&key==='f'){e.preventDefault();openFindPanel()}else if(e.key==='Escape'&&focusMode){setFocusMode(false)}};window.addEventListener('keydown',onKey);return()=>window.removeEventListener('keydown',onKey)},[chapter?.id,focusMode]);
  function add(){setStudioForm({title:'',name:'',category:'additional'});setStudioDialog('chapter')}
  async function persistChapterOrder(next){try{setError('');setSaved('Reordering chapters…');await reorderWorkChapters(data.id,next.map(x=>x.id));await load();setSaved('Chapter order saved.')}catch(e){setError(e.message);setSaved('Chapter order unchanged.')}}
  async function moveChapter(chapterId,delta){if(!access?.owner)return;const full=[...(data?.chapters||[])].sort((a,b)=>a.position-b.position);const index=full.findIndex(x=>x.id===chapterId);const target=index+delta;if(index<0||target<0||target>=full.length)return;const next=[...full];[next[index],next[target]]=[next[target],next[index]];await persistChapterOrder(next)}
@@ -1567,13 +1567,14 @@ function WorkStudioForWork({Frame,slug}){
   }
   return updated;
  }
+ function saveFailureNotice(){return recoveryStorageRef.current?'Recovery copy kept on this device':'Cloud save failed · export draft now'}
  async function saveCh(e){
   e.preventDefault();
   if(saveTimerRef.current){clearTimeout(saveTimerRef.current);saveTimerRef.current=null}
-  try{await persistChapter(e.currentTarget)}catch(e){setSaved('Recovery copy kept on this device');setError(e.message)}
+  try{await persistChapter(e.currentTarget)}catch(e){setSaved(saveFailureNotice());setError(e.message)}
  }
- function queueSave(form){snapshotDraft(form);setSaved('Saving to Palace…');if(saveTimerRef.current)clearTimeout(saveTimerRef.current);saveTimerRef.current=setTimeout(async()=>{try{await persistChapter(form)}catch(err){setSaved('Recovery copy kept on this device');setError(err.message)}},900)}
- async function quickSaveChapter(){const form=editorRef.current?.closest('form');if(!form||!chapter)return;if(saveTimerRef.current){clearTimeout(saveTimerRef.current);saveTimerRef.current=null}setSaved('Saving to Palace…');try{await persistChapter(form)}catch(err){setSaved('Recovery copy kept on this device');setError(err.message)}}
+ function queueSave(form){snapshotDraft(form);setSaved('Saving to Palace…');if(saveTimerRef.current)clearTimeout(saveTimerRef.current);saveTimerRef.current=setTimeout(async()=>{try{await persistChapter(form)}catch(err){setSaved(saveFailureNotice());setError(err.message)}},900)}
+ async function quickSaveChapter(){const form=editorRef.current?.closest('form');if(!form||!chapter)return;if(saveTimerRef.current){clearTimeout(saveTimerRef.current);saveTimerRef.current=null}setSaved('Saving to Palace…');try{await persistChapter(form)}catch(err){setSaved(saveFailureNotice());setError(err.message)}}
  async function switchChapterSafely(nextId){
   const next=nextId||null;
   if(next===selectedRef.current)return;
@@ -1587,7 +1588,7 @@ function WorkStudioForWork({Frame,slug}){
    try{await persistChapter(form)}
    catch(err){
     if(!switchGateRef.current.isCurrent(intent))return;
-    setSaved('Recovery copy kept on this device');setError(err.message);return;
+    setSaved(saveFailureNotice());setError(err.message);return;
    }
   }
   if(!switchGateRef.current.isCurrent(intent)||selectedRef.current!==original)return;
