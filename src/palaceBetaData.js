@@ -13,6 +13,9 @@ export const PALACE_BETA_CHECKS=[
  {id:'autosave',group:'Writing & publishing',name:'Save, close and reopen a test draft',url:'/writing',hint:'Check typing responsiveness, the save message, and whether test text remains.',roles:['writer','artist']},
  {id:'network',group:'Writing & publishing',name:'Optional: try a brief network interruption',url:'/writing',hint:'Advanced test: use disposable text and keep a separate backup; verify recovery is explained.',roles:['writer']},
  {id:'tags',group:'Writing & publishing',name:'Add several tags and save settings',url:'/writing',hint:'Can you add multiple tags without losing your place or earlier selections?',roles:['writer']},
+ {id:'events',group:'Events & heritage',name:'Find an upcoming gathering or event proposal',url:'/events',hint:'Check the calendar, event details and proposals. Is it clear which events are confirmed and which are only ideas?',roles:['reader','writer','artist','moderator']},
+ {id:'heritage',group:'Events & heritage',name:'Explore a cultural celebration or literary tradition',url:'/events?tab=calendar',hint:'Look for traditions and holidays from different communities. Are descriptions welcoming, accurate and easy to explore?',roles:['reader','writer','artist','moderator']},
+ {id:'commons',group:'Community & accessibility',name:'Find a conversation or creative community activity',url:'/palace-life',hint:'Can you understand how to participate, even without posting your own work?',roles:['reader','writer','artist','moderator']},
  {id:'palace',group:'Community & accessibility',name:'Explore a Grand Palace and creative room',url:'/grand-palaces',hint:'This may require an account. Can you understand the banners, activities and rules?',roles:['moderator','writer']},
  {id:'vote',group:'Community & accessibility',name:'Find the Council and read its voting rules',url:'/council/governance',hint:'Do not cast a consequential vote just to test. Check that limits and consent are clear.',roles:['moderator']},
  {id:'contrast',group:'Community & accessibility',name:'Check light mode, dark mode and readable controls',url:'/',hint:'Try keyboard navigation, mobile zoom and both themes if practical.',roles:['reader','writer','artist','moderator']}
@@ -108,5 +111,5 @@ export function betaInviteUrl(origin){
 export function betaInvitationText(origin){
  const url=betaInviteUrl(origin);
  if(!url)return '';
- return 'Would you like to help test The Starry Palace, a new home for stories? Try a few reader or writer tasks at '+url+'. No experience needed, no pressure to publish, and please use disposable text when testing drafts. Your notes stay on your device until you choose to share them.';
+ return 'Would you like to help test The Starry Palace, a creative home for readers, writers and artists? Explore stories, community events and cultural celebrations, then try a few simple tasks at '+url+'. No experience needed, no pressure to publish, and please use disposable text when testing drafts. Your notes stay on your device until you choose to share them.';
 }
