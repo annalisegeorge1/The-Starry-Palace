@@ -37,6 +37,9 @@ export const BETA_RESULTS=[
 export function betaChecksFor(role,showAll=false){
  return showAll?PALACE_BETA_CHECKS:PALACE_BETA_CHECKS.filter(item=>item.roles.includes(role));
 }
+export function nextBetaCheck(checks,results={}){
+ return checks.find(item=>!['passed','stuck','skipped'].includes(results?.[item.id]))||null;
+}
 export function betaCounts(checks,results={}){
  return checks.reduce((acc,item)=>{
   const status=results[item.id];
