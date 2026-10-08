@@ -1,0 +1,69 @@
+/* Tester-friendly beta guide: quiet cards, one clear action per task, no hidden uploads. */
+.palace-beta-guide{width:100%;box-sizing:border-box;max-width:1120px;min-width:0}
+.palace-beta-intro{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 24px}
+.palace-beta-intro>div{border:1px solid #9c87c661;border-radius:16px;padding:19px;background:var(--card,rgba(36,31,65,.86))}
+.palace-beta-intro span{display:inline-block;font:bold .79rem/1.1 sans-serif;letter-spacing:.08em;color:#a987eb;margin-bottom:12px}
+.palace-beta-intro strong{display:block;font:600 1.12rem/1.3 Georgia,serif}
+.palace-beta-intro p{font-size:.84rem;line-height:1.55;opacity:.83;margin:7px 0 0}
+.palace-beta-hero .palace-beta-privacy{padding:10px 13px;border:1px solid #d2c1ee76;border-radius:12px;background:#dbbfff15;font-size:.89rem;line-height:1.55}
+.palace-beta-controls{grid-template-columns:repeat(2,minmax(0,1fr))}
+.palace-beta-track-description{grid-column:1/-1;line-height:1.6;margin:0;opacity:.88}
+.palace-beta-controls .palace-beta-all-checks{grid-column:1/-1;display:flex;flex-direction:row;align-items:flex-start;gap:10px;font-size:.88rem;font-weight:600}
+.palace-beta-controls .palace-beta-all-checks input{height:19px;width:19px;flex:none;margin-top:2px;accent-color:#a184db}
+.palace-beta-safety{padding:17px 20px;border-radius:15px;border:1px solid #9f8ac582;background:rgba(157,120,205,.085);font-size:.91rem;line-height:1.68}
+.palace-beta-safety strong{display:block;margin-bottom:3px}
+.palace-beta-task-name{display:block;font:600 1.11rem/1.32 Georgia,serif}
+.palace-beta-checks article{min-width:0;display:flex;flex-direction:column;gap:9px}
+.palace-beta-checks article>p{flex:1;opacity:.82;font-size:.86rem;margin:0}
+.palace-beta-checks article>a{width:max-content;max-width:100%;min-height:38px;display:inline-flex;align-items:center}
+.palace-beta-checks article.palace-beta-had-trouble{border-color:#c5a3df}
+.palace-beta-result{border:0;min-width:0;padding:12px 0 0;margin:3px 0 0;border-top:1px solid #a292ba46}
+.palace-beta-result legend{padding:0;font-size:.8rem;font-weight:750}
+.palace-beta-result>div{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.palace-beta-result label{display:flex;align-items:center;gap:6px;min-height:39px;cursor:pointer;font-size:.78rem;line-height:1.2;padding:7px 9px;border-radius:10px;border:1px solid #a997c05c;background:rgba(129,106,171,.08);box-sizing:border-box}
+.palace-beta-result label.selected{border-color:#b9a0ee;background:rgba(136,112,188,.2);font-weight:800}
+.palace-beta-result input{accent-color:#9d79d5;margin:0;flex:none}
+.palace-beta-report-link{align-self:start;font:inherit;font-size:.82rem;font-weight:750;color:inherit;border:0;background:transparent;text-decoration:underline;text-underline-offset:4px;cursor:pointer;padding:8px 0}
+.palace-beta-report .eyebrow{margin:0;color:#b49be5}
+.palace-beta-report h2{margin:1px 0}
+.palace-beta-report h3{font:600 1.17rem Georgia,serif;margin:12px 0 0}
+.palace-beta-issue-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.palace-beta-issue-grid label{min-width:0;display:grid;gap:7px;font-weight:700;font-size:.86rem}
+.palace-beta-issue-grid textarea{resize:vertical}
+.palace-beta-save-issue{min-height:45px;padding:11px 16px;border:1px solid #bea7e7;color:#f5efff;background:#6a4f98;border-radius:12px;font:inherit;font-weight:800;cursor:pointer}
+.palace-beta-saved-issues{border-top:1px solid #a290bb59;margin-top:8px;padding-top:12px}
+.palace-beta-saved-issues>div{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #a290bb45}
+.palace-beta-saved-issues>div>div{flex:1;min-width:0}
+.palace-beta-saved-issues strong{display:block;font-size:.89rem}
+.palace-beta-saved-issues small{display:block;font-size:.78rem;opacity:.76;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.palace-beta-saved-issues button{flex:none;min-height:39px;padding:8px 13px;border:1px solid #b5a0c777;border-radius:9px;background:transparent;color:inherit;font:inherit;font-size:.79rem;cursor:pointer}
+.palace-beta-preview{border:1px solid #a594c96b;padding:12px 15px;border-radius:13px;background:rgba(137,114,169,.09)}
+.palace-beta-preview summary{cursor:pointer;font-weight:750}
+.palace-beta-preview textarea{margin-top:12px;font:normal .8rem/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;resize:vertical}
+.palace-beta-actions button{min-height:43px}
+.palace-beta-actions button:not(.quiet){background:#7458ad;color:#fff}
+.palace-beta-message{padding:10px 13px;border:1px solid #9a81d5;border-radius:9px;background:#8e70b01b}
+.palace-beta-invitation{display:flex;flex-wrap:wrap;align-items:center;gap:22px;padding:clamp(18px,3vw,30px);border-radius:19px;background:linear-gradient(125deg,#232241,#3c436f);color:#f5efff;border:1px solid #aa91dc82;margin:28px 0}
+.palace-beta-invitation>div{flex:1 1 270px}
+.palace-beta-invitation h2{font:600 1.65rem/1.3 Georgia,serif;margin:6px 0}
+.palace-beta-invitation p:not(.eyebrow){font-size:.88rem;line-height:1.6;margin:0}
+.palace-beta-invitation button{min-height:44px;border:1px solid #c1aeef;border-radius:11px;padding:10px 15px;background:#d7c6f7;color:#271b42;font:inherit;font-size:.85rem;font-weight:800;cursor:pointer}
+.palace-beta-guide :is(button,label,input,textarea,select,summary,a):focus-visible{outline:3px solid #b39bf0!important;outline-offset:3px!important}
+.palace-shell.daylight .palace-beta-guide{color:#29243c}
+.palace-shell.daylight .palace-beta-intro>div,
+.palace-shell.daylight .palace-beta-checks article,
+.palace-shell.daylight .palace-beta-report{background:#fff;color:#29243c;border-color:#a69abd}
+.palace-shell.daylight .palace-beta-intro span{color:#65458f}
+.palace-shell.daylight .palace-beta-safety{color:#312842;background:#f8f3ff;border-color:#aa9bc9}
+.palace-shell.daylight .palace-beta-result label{background:#f7f3fc;border-color:#b5a4ce;color:#35284d}
+.palace-shell.daylight .palace-beta-result label.selected{background:#e9dff7;border-color:#6e4da7}
+.palace-shell.daylight .palace-beta-issue-form .eyebrow,
+.palace-shell.daylight .palace-beta-report .eyebrow{color:#5d4089}
+.palace-shell.daylight .palace-beta-result{border-top-color:#beafc9}
+.palace-shell.daylight .palace-beta-report-link{color:#4e3374}
+.palace-shell.daylight .palace-beta-preview{background:#f7f4fd;color:#29243c;border-color:#ac9bc0}
+.palace-shell.daylight .palace-beta-save-issue{color:#fff;background:#604583;border-color:#604583}
+.palace-shell.daylight .palace-beta-message{background:#efe8fb;color:#312549}
+@media(max-width:800px){.palace-beta-intro{grid-template-columns:1fr}.palace-beta-intro>div{padding:14px 17px}.palace-beta-intro p{margin-top:4px}.palace-beta-intro span{margin-bottom:5px}}
+@media(max-width:700px){.palace-beta-controls,.palace-beta-issue-grid{grid-template-columns:1fr}.palace-beta-result label{min-height:44px}.palace-beta-actions button{flex:1 1 180px}.palace-beta-invitation button{width:100%}.palace-beta-guide{padding:13px}.palace-beta-checks{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.palace-beta-guide *{scroll-behavior:auto}}
