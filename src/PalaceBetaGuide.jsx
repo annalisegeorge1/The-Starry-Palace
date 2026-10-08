@@ -41,6 +41,7 @@ export default function PalaceBetaGuide({Frame}){
  const counts=betaCounts(checks,state.results);
  const report=buildBetaReport(state,checks);
  const nextCheck=nextBetaCheck(checks,state.results);
+ const hasReportContent=Boolean(Object.keys(state.results||{}).length||state.issues.length||state.notes.trim()||betaIssueHasContent(state.issueDraft)||(state.device||'').trim()||state.role!=='reader');
  const visibleChecks=state.showRemaining?checks.filter(item=>!['passed','skipped'].includes(state.results[item.id])):checks;
  const groups=[...new Set(visibleChecks.map(x=>x.group))];
  function update(patch){setState(prev=>({...prev,...(typeof patch==='function'?patch(prev):patch)}))}
@@ -57,7 +58,7 @@ export default function PalaceBetaGuide({Frame}){
   if(!betaIssueHasContent(issue)){setMessage('Please describe at least the page or what happened before adding an issue.');return}
   if(state.issues.length>=30){setMessage('This report holds up to 30 issues. Copy or save it, then begin a new report.');return}
   update({issues:[...state.issues,issue],issueDraft:{...EMPTY_ISSUE}});
-  setMessage(storageWarning?'Issue added. This browser cannot save feedback; export your report before leaving.':'Issue added to your private report on this device.');
+  setMessage(storageWarning?'Issue added. This browser cannot save feedback; export your report before leaving.':'Issue added to this browser’s report. It has not been sent to anyone.');
  }
  function troubleHere(item){
   updateIssue({page:item.url});
@@ -99,8 +100,9 @@ export default function PalaceBetaGuide({Frame}){
    <p className="eyebrow">THE PALACE TEST KITCHEN · FRIENDLY EARLY ACCESS</p>
    <h1>Help make the Palace feel effortless.</h1>
    <p>You don't need to be technical or finish every task. Tell us what felt lovely, what felt confusing, and where you got stuck.</p>
-   <p className="palace-beta-privacy">✦ Nothing on this page is automatically sent. {storageWarning?'Your browser is blocking local saving, so export your report before leaving.':'Your notes stay on this device until you choose to share a report.'}</p>
+   <p className="palace-beta-privacy">✦ Nothing on this page is automatically sent. {storageWarning?'Your browser is blocking local saving, so export your report before leaving.':'Your report is stored in this browser, not a private account. Someone else using this browser can see it until you clear it.'}</p>
    {storageWarning&&<p className="palace-beta-storage-warning" role="alert">Local saving is unavailable here. Your feedback may disappear when you leave or reload this page. Copy, share or save your report before you go.</p>}
+   {hasReportContent&&<div className="palace-beta-fresh-report"><p>Sharing this phone or computer with another tester? Export your report before starting theirs. A fresh report will replace the saved answers on this browser.</p><button type="button" onClick={clearAll}>Start a fresh tester report</button></div>}
    <div className="palace-beta-progress"><strong>{counts.marked}/{checks.length}</strong><span>checkpoints marked in your track</span><div role="progressbar" aria-valuemin={0} aria-valuemax={checks.length} aria-valuenow={counts.marked} aria-label="Beta checklist progress"><i style={{width:(checks.length?counts.marked/checks.length*100:0)+'%'}}/></div></div>
    <div className="palace-beta-compass">
     <span className="palace-beta-compass-sigil" aria-hidden="true">✧</span>
@@ -162,7 +164,7 @@ export default function PalaceBetaGuide({Frame}){
    </div>
    <details className="palace-beta-preview"><summary>Preview my full report</summary><textarea readOnly value={report} rows={12} aria-label="Complete beta report to copy manually" onFocus={e=>e.target.select()}/></details>
    {message&&<p className="palace-beta-message" role="status">{message}</p>}
-   <small>Share the report privately with the person who invited you. Copying or opening the share sheet does not guarantee delivery. {storageWarning?'Local storage is blocked; export your answers before leaving this page.':'All notes and checklist results are stored only in this browser.'}</small>
+   <small>Share the report privately with the person who invited you. Copying or opening the share sheet does not guarantee delivery. {storageWarning?'Local storage is blocked; export your answers before leaving this page.':'Anyone using this browser may see the saved report until you clear it. Export and clear the report before passing the device to another tester.'}</small>
   </section>
   <section className="palace-beta-invitation"><div><p className="eyebrow">INVITING A FRIEND?</p><h2>Make room for another voice.</h2><p>Anyone can explore the beta guide. You can share this invitation with someone who enjoys reading, writing, comics or thoughtful communities.</p>{inviteUrl?<p className="palace-beta-current-link">This invitation opens the Palace you are visiting: <strong>{inviteUrl}</strong></p>:<p className="palace-beta-current-link">This is a local or unshareable preview. Open the deployed Palace before inviting testers.</p>}</div><button type="button" disabled={!inviteUrl} onClick={()=>copyText(invite,'Invitation')}>Copy a friendly tester invitation</button></section>
  </main></Frame>;
