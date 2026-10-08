@@ -1,4 +1,5 @@
 import React,{useEffect,useState} from 'react';
+import './palace-council-results.css';
 import {getCouncilOutcomes,certifyCouncilElection,castRunoffVote,certifyRunoff,openTieBreak,submitCouncilMotion,getMyCouncilAppeals,submitCaseAppeal} from './palaceGovernanceApi';
 export function CouncilResults(){
  const [data,setData]=useState(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[electionId,setElectionId]=useState(''),[title,setTitle]=useState(''),[reason,setReason]=useState(''),[category,setCategory]=useState('community');
