@@ -32,3 +32,22 @@
 @media(max-width:850px){.palace-home-choices{grid-template-columns:1fr;gap:10px}.palace-choice-card{min-height:0}.palace-choice-card h3{margin-top:12px}}
 @media(max-width:550px){.palace-home-welcome,.palace-room-directory{margin:20px 10px}.palace-choice-card{padding:18px}.palace-home-welcome header{padding:0 4px}}
 @media(prefers-reduced-motion:reduce){.palace-choice-card,.palace-room-chevron{transition:none}.palace-choice-card:hover{transform:none}}
+
+/* Compact heritage and gathering paths, distinct from the three primary doors. */
+.palace-culture-paths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:13px}
+.palace-culture-path{display:flex;align-items:center;gap:14px;min-width:0;padding:16px 18px;border:1px solid #a491d071;border-radius:17px;color:inherit;text-decoration:none;background:linear-gradient(115deg,#8d70cc17,transparent 72%),var(--card,rgba(31,28,56,.87));transition:border-color .16s ease,transform .16s ease}
+.palace-culture-literature{background:linear-gradient(115deg,#6ea8bb1b,transparent 72%),var(--card,rgba(31,28,56,.87))}
+.palace-culture-path:hover{border-color:#b5a3ed;transform:translateY(-2px)}
+.palace-culture-icon{display:grid;place-items:center;flex:none;width:42px;height:42px;border-radius:13px;color:#c3b0f5;background:#9d85e12b;font-size:1.35rem}
+.palace-culture-literature .palace-culture-icon{color:#9cdbdd;background:#66b9c624}
+.palace-culture-path>span:nth-child(2){display:grid;gap:5px;min-width:0}
+.palace-culture-path strong{font:600 1.08rem Georgia,serif}
+.palace-culture-path small{font-size:.8rem;line-height:1.5;opacity:.83}
+.palace-culture-arrow{margin-left:auto;font-size:1.25rem}
+.palace-culture-path:focus-visible{outline:3px solid #b19af1;outline-offset:4px}
+.palace-shell.daylight .palace-culture-path{color:#27233f;background:#f8f6fd;border-color:#a99bc3}
+.palace-shell.daylight .palace-culture-literature{background:#f2f8fa}
+.palace-shell.daylight .palace-culture-icon{color:#55417e}
+.palace-shell.daylight .palace-culture-literature .palace-culture-icon{color:#245e71}
+@media(max-width:700px){.palace-culture-paths{grid-template-columns:1fr}.palace-culture-path{padding:14px 16px}}
+@media(prefers-reduced-motion:reduce){.palace-culture-path{transition:none}.palace-culture-path:hover{transform:none}}
