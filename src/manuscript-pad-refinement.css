@@ -1,0 +1,185 @@
+/* Manuscript Pad: colour, type and controls stay close to the actual chapter.
+   Presentation-only. Text stays in the established contenteditable autosave path. */
+body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar{
+  position:sticky!important;top:76px!important;z-index:90!important;overflow:visible!important;
+  display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+  gap:.4rem!important;isolation:isolate;
+  padding:.53rem .66rem!important;
+  border:1px solid rgba(187,170,248,.37)!important;
+  border-radius:17px!important;
+  background:linear-gradient(150deg,rgba(29,23,71,.985),rgba(21,31,66,.985))!important;
+  box-shadow:0 13px 31px rgba(4,9,30,.24),inset 0 1px rgba(237,226,255,.08)!important;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-chapter-jump{
+  padding-bottom:.38rem!important;
+  border-bottom:1px solid rgba(191,176,245,.20)!important;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-chapter-jump-main select{
+  background:rgba(30,33,80,.9)!important;
+  border:1px solid rgba(189,170,239,.35)!important;
+  color:#f2ecff!important;
+  font-size:.73rem!important;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-toolbar-save-state{
+  color:#e8e2fb!important;background:rgba(92,101,156,.16)!important;
+  border:1px solid rgba(186,179,243,.24)!important;
+  font-size:.66rem!important;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-toolbar-save-state i{
+  background:#8ce4d4!important;box-shadow:0 0 8px rgba(129,235,212,.5);
+}
+.manuscript-type-ribbon{
+  display:flex;align-items:center;flex-wrap:nowrap;gap:.42rem;min-width:0;
+  border:1px solid rgba(183,163,233,.24);border-radius:12px;
+  background:linear-gradient(100deg,rgba(111,85,174,.16),rgba(82,107,164,.09));
+  padding:.36rem .45rem;
+}
+.manuscript-type-label{
+  flex:none;white-space:nowrap;font-weight:800;font-size:.6rem;
+  letter-spacing:.1em;color:#d4c1fb;
+}
+.manuscript-type-label b{font:1rem Georgia,serif;color:#bca2ee;margin-right:.2rem}
+.manuscript-type-ribbon label{
+  display:flex;align-items:center;gap:.28rem;min-width:0;flex:0 1 auto;
+  font-size:.62rem;color:#c6c4e1;
+}
+.manuscript-type-ribbon label>span{white-space:nowrap}
+.manuscript-type-ribbon select{
+  max-width:140px;min-width:80px;min-height:34px;
+  padding:.3rem .48rem;
+  background:#272d60!important;color:#f5f0ff!important;
+  border:1px solid rgba(195,177,250,.34)!important;border-radius:9px;
+  font-size:.7rem;cursor:pointer;
+}
+.manuscript-size-control{
+  display:flex;align-items:center;gap:.16rem;
+  min-height:33px;border:1px solid rgba(199,175,236,.29);
+  border-radius:9px;padding:.1rem;background:rgba(42,37,91,.38);
+  white-space:nowrap;
+}
+.manuscript-size-control output{min-width:39px;text-align:center;font-size:.69rem;color:#efeafd}
+.manuscript-size-control button,.manuscript-type-ribbon>.manuscript-paper,.manuscript-type-ribbon>.manuscript-focus{
+  min-height:30px!important;min-width:31px;
+  display:grid;place-items:center;padding:.25rem .38rem!important;
+  font-size:.68rem!important;line-height:1.2!important;
+  border:1px solid rgba(179,167,237,.25)!important;border-radius:8px!important;
+  color:#e7def7!important;background:rgba(91,78,162,.14)!important;
+}
+.manuscript-type-ribbon>.manuscript-paper,.manuscript-type-ribbon>.manuscript-focus{
+  display:flex;gap:.25rem;white-space:nowrap;flex:none;
+}
+.manuscript-type-ribbon :is(button,select):focus-visible,
+.manuscript-sticky-toolbar .writer-format-scroll button:focus-visible{
+  outline:2px solid #b8deff;outline-offset:2px;
+}
+.manuscript-type-ribbon button.active{background:rgba(130,101,220,.37)!important;border-color:rgba(197,173,255,.62)!important;color:#fff!important}
+.manuscript-type-ribbon button:disabled{opacity:.38;cursor:not-allowed}
+.manuscript-sticky-toolbar .writer-format-scroll{
+  display:flex!important;gap:.28rem!important;
+  min-width:0;overflow-x:auto!important;overflow-y:hidden!important;
+  padding:.1rem 0 .25rem!important;
+  scrollbar-width:thin;scrollbar-color:rgba(195,166,238,.44) transparent;
+}
+.manuscript-sticky-toolbar .writer-format-scroll .editor-tool-group{flex:0 0 auto;gap:.23rem}
+.manuscript-sticky-toolbar .writer-format-scroll button{
+  min-height:36px!important;border-radius:9px!important;
+  color:#eadffe!important;
+  border:1px solid rgba(177,165,233,.27)!important;
+  background:rgba(73,74,133,.28)!important;
+  padding:.46rem .58rem!important;
+  font-size:.72rem!important;font-weight:650!important;
+}
+.manuscript-sticky-toolbar .writer-format-scroll button:hover{
+  color:#fff!important;
+  background:rgba(130,100,200,.35)!important;
+  border-color:rgba(202,180,251,.62)!important;
+}
+.manuscript-sticky-toolbar .editor-tool-group:nth-child(2) button{color:#efc5ff!important}
+.manuscript-sticky-toolbar .editor-tool-group:nth-child(3) button{color:#bce6ff!important}
+.manuscript-sticky-toolbar .editor-tool-group:nth-child(4) button{color:#c0f0e2!important}
+.manuscript-sticky-toolbar .editor-tool-group:nth-child(5) button{color:#d5ccff!important}
+.manuscript-toolbar-note{
+  display:flex;gap:.36rem;align-items:center;flex-wrap:wrap;min-width:0;
+  font-size:.59rem;line-height:1.5;color:#c4c0e4;
+}
+.manuscript-toolbar-note>span:first-child{color:#bda4fc;font-size:1rem}
+.manuscript-toolbar-note strong{color:#f1e8ff!important}
+.manuscript-sticky-toolbar .editor-shortcut-hint{display:none!important}
+body.writing-desk-open .manuscript-sheet-frame{position:relative!important}
+.manuscript-sheet-heading{
+  display:flex;justify-content:space-between;align-items:center;
+  width:min(840px,96%);margin:0 auto .35rem;
+  padding:.2rem .8rem;
+  font-size:.57rem;font-weight:700;
+  color:#b7b0db;letter-spacing:.12em;
+}
+.manuscript-sheet-heading span:last-child{font:1.2rem Georgia,serif;color:#bda7f5}
+body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas{
+  font-size:var(--writer-font-size,20px)!important;
+  min-height:640px!important;
+  text-wrap:pretty;
+  overflow-wrap:break-word;
+}
+body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas:focus-visible{
+  outline:2px solid rgba(200,182,253,.56)!important;outline-offset:2px;
+}
+body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas:empty:before{
+  color:#a9aacb!important;letter-spacing:.01em;font-style:italic;
+}
+body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas p{max-width:100%}
+body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas blockquote{
+  border-left:3px solid #b9a1f0!important;
+  background:linear-gradient(90deg,rgba(138,100,205,.08),transparent);
+  padding:.35rem 1rem!important;border-radius:0 9px 9px 0;
+}
+body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas h2,
+body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas h3{
+  color:#f4eafe!important;
+  text-wrap:balance;
+}
+body.writing-desk-open .manuscript-sheet-frame.mood-paper .legacy-writing-canvas h2,
+body.writing-desk-open .manuscript-sheet-frame.mood-paper .legacy-writing-canvas h3{color:#34293e!important}
+
+/* Daylight: legible white-papery editor with dark control labels. */
+body.writing-desk-open.daylight .chic-editor-form>.manuscript-sticky-toolbar,
+.daylight body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar,
+.daylight .chic-editor-form>.manuscript-sticky-toolbar{
+  background:linear-gradient(130deg,rgba(249,246,255,.98),rgba(235,241,250,.98))!important;
+  border-color:#bfb2de!important;
+  box-shadow:0 9px 23px rgba(54,51,112,.13)!important;
+}
+.daylight .manuscript-type-ribbon{background:#f4f0fb;border-color:#d9cdea}
+.daylight .manuscript-type-label,.daylight .manuscript-type-ribbon label{color:#54416d!important}
+.daylight .manuscript-type-ribbon select,.daylight .manuscript-sticky-toolbar .writer-chapter-jump-main select{background:#fff!important;color:#44345c!important;border-color:#ccc0df!important}
+.daylight .manuscript-size-control{background:#fff;border-color:#d0c5e3}
+.daylight .manuscript-size-control output{color:#45345e}
+.daylight .manuscript-size-control button,.daylight .manuscript-type-ribbon>.manuscript-paper,.daylight .manuscript-type-ribbon>.manuscript-focus{background:#ebe4f5!important;color:#503d70!important;border-color:#cec0e7!important}
+.daylight .manuscript-sticky-toolbar .writer-format-scroll button{background:#f3effb!important;color:#594372!important;border-color:#d8cdea!important}
+.daylight .manuscript-sticky-toolbar .writer-format-scroll button:hover{background:#e9def7!important;color:#322447!important}
+.daylight .manuscript-toolbar-note{color:#675d7b}
+.daylight .manuscript-toolbar-note strong{color:#4b3867!important}
+.daylight .manuscript-sticky-toolbar .writer-toolbar-save-state{color:#4e4265!important;background:#fff!important}
+.daylight .manuscript-sheet-heading{color:#6c6182}
+.daylight body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas{background:#fffdf9!important;color:#2f2b34!important}
+
+/* Keeping the bar narrow prevents it consuming the manuscript on mobile. */
+@media(max-width:1250px){
+ .manuscript-type-label{display:none}
+ .manuscript-type-ribbon{overflow-x:auto;scrollbar-width:thin;gap:.3rem}
+ .manuscript-type-ribbon label{flex:none}
+ .manuscript-type-ribbon>.manuscript-paper,.manuscript-type-ribbon>.manuscript-focus{flex:none}
+}
+@media(max-width:760px){
+ body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar{top:56px!important;z-index:90!important;padding:.4rem!important;gap:.3rem!important}
+ .manuscript-type-ribbon{padding:.29rem!important;max-width:100%;overflow-x:auto}
+ .manuscript-type-ribbon label>span{display:none}
+ .manuscript-type-ribbon select{min-width:84px;max-width:118px;min-height:32px}
+ .manuscript-type-ribbon>.manuscript-paper,.manuscript-type-ribbon>.manuscript-focus{font-size:.65rem!important}
+ .manuscript-toolbar-note{display:none}
+ .manuscript-sticky-toolbar .writer-format-scroll button{min-height:35px!important;padding:.35rem .48rem!important}
+ .manuscript-sheet-heading{font-size:.47rem;padding:.2rem .4rem}
+ body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas{font-size:var(--writer-font-size,20px)!important;min-height:65vh!important}
+}
+@media(min-width:761px) and (max-width:1279px){body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar{top:68px!important}}
+.focus-editor .chic-editor-form>.manuscript-sticky-toolbar{top:0!important}
+@media(prefers-reduced-motion:reduce){.manuscript-sticky-toolbar *, .manuscript-sheet-frame *{transition:none!important}}
