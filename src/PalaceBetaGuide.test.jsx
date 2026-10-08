@@ -74,3 +74,31 @@ it('shows the current preview host clearly and blocks local-only tester invitati
  expect(invite.disabled).toBe(true);
  expect(screen.getByText(/This is a local or unshareable preview/)).toBeTruthy();
 });
+
+
+it('tells volunteers that shared-browser reports are not private account records',()=>{
+ mount();
+ expect(screen.getByText(/not a private account/)).toBeTruthy();
+ expect(screen.getByText(/Anyone using this browser may see the saved report/)).toBeTruthy();
+ expect(screen.queryByRole('button',{name:'Start a fresh tester report'})).toBeNull();
+});
+it('offers a clear-confirmed fresh test and never discards another volunteer’s notes without approval',()=>{
+ const view=mount();
+ fireEvent.change(screen.getByPlaceholderText(/Samsung tablet/),{target:{value:'Android Chrome'}});
+ const start=screen.getByRole('button',{name:'Start a fresh tester report'});
+ expect(start).toBeTruthy();
+ const confirm=vi.spyOn(window,'confirm').mockReturnValue(false);
+ try{
+  fireEvent.click(start);
+  expect(JSON.parse(localStorage.getItem('palace-beta-feedback-v2')).device).toBe('Android Chrome');
+  confirm.mockReturnValue(true);
+  fireEvent.click(start);
+  const saved=JSON.parse(localStorage.getItem('palace-beta-feedback-v2'));
+  expect(saved.device).toBe('');
+  expect(saved.results).toEqual({});
+  expect(saved.issues).toEqual([]);
+  expect(saved.notes).toBe('');
+  expect(screen.queryByRole('button',{name:'Start a fresh tester report'})).toBeNull();
+  expect(screen.getByText('Your local beta feedback was cleared.')).toBeTruthy();
+ }finally{confirm.mockRestore();view.unmount()}
+});
