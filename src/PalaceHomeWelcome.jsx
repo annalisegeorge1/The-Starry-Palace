@@ -10,8 +10,8 @@ const CHOICES=[
 export function PalaceHomeWelcome({member=false}){
  return <section className="palace-home-welcome" aria-label="Choose how to begin">
   <header><div><p className="eyebrow">YOUR PALACE, AT YOUR PACE</p>
-    <h2>What would you like to do tonight?</h2>
-    <p>Three simple doorways. A whole world beyond them. You can explore freely without learning everything at once.</p></div></header>
+    <h2>Where would you like to begin?</h2>
+    <p>Read, write, or find your people. Every other Palace room is here when you're ready.</p></div></header>
   <div className="palace-home-choices">
    {CHOICES.map(choice=><Link className={'palace-choice-card palace-choice-'+choice.id}
     key={choice.id} to={member&&choice.id==='write'?'/writing':member&&choice.id==='belong'?'/palace-life':choice.url}>
