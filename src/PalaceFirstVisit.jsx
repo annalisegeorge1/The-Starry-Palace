@@ -16,11 +16,17 @@ function loadGuide(key){
  }}catch{return{visited:[],hidden:false}}
 }
 export function PalaceStartingPath({memberId}){
- const key='palace-first-visit:v1:'+memberId;
- const[state,setState]=useState(()=>loadGuide(key));
- useEffect(()=>setState(loadGuide(key)),[key]);
+ const key=memberId?'palace-first-visit:v1:'+memberId:null;
+ const[snapshot,setSnapshot]=useState(()=>({key,guide:key?loadGuide(key):{visited:[],hidden:false}}));
+ // Account changes can render before effects run. Never show the previous
+ // member's welcome progress, not even for a single frame.
+ const state=snapshot.key===key?snapshot.guide:(key?loadGuide(key):{visited:[],hidden:false});
+ useEffect(()=>{
+  setSnapshot(prev=>prev.key===key?prev:{key,guide:key?loadGuide(key):{visited:[],hidden:false}});
+ },[key]);
  function change(next){
-  setState(next);
+  if(!key)return;
+  setSnapshot({key,guide:next});
   try{localStorage.setItem(key,JSON.stringify(next))}catch{}
  }
  if(!memberId||state.hidden)return null;
