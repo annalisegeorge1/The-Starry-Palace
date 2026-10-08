@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { supabase } from './supabase';
+import {recordPalaceVisit} from './palaceGovernanceApi';
 const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
@@ -40,6 +41,7 @@ export function AuthProvider({ children }) {
     }
     return () => { active = false; window.clearTimeout(sessionTimeout); try { subscription?.unsubscribe?.(); } catch {} };
   }, []);
+  useEffect(()=>{if(!session?.user?.id)return;let cancelled=false;recordPalaceVisit().then(result=>{if(!cancelled&&result?.points_earned_today){window.dispatchEvent(new CustomEvent('palace:streak-earned',{detail:result}));}}).catch(()=>{});return()=>{cancelled=true}},[session?.user?.id]);
   return <AuthContext.Provider value={{ session, loading, error }}>{children}</AuthContext.Provider>;
 }
 export const useAuth = () => useContext(AuthContext);
