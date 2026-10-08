@@ -194,3 +194,26 @@
   transition:none!important;animation:none!important;
  }
 }
+
+/* Inline retry belongs to its message, not the tag card grid. */
+.palace-shell .studio-tag-results .studio-tag-empty button{
+ display:inline-flex;
+ width:auto;
+ min-width:0;
+ min-height:36px;
+ align-items:center;
+ padding:5px 12px;
+ margin:2px 4px;
+ border-radius:9px;
+ border:1px solid rgba(181,190,240,.5);
+ background:rgba(102,115,206,.2);
+ color:inherit;
+ font-weight:700;
+ font-size:inherit;
+ vertical-align:middle;
+}
+.palace-shell.daylight .studio-tag-results .studio-tag-empty button{
+ background:#e6e1f4;
+ border-color:#b7a6d7;
+ color:#453263;
+}
