@@ -7,7 +7,7 @@ const css=readFileSync('src/writer-statistics-title-path.css','utf8');
 
 describe('honest writer statistics and safely recoverable drafts',()=>{
  it('counts code points, non-whitespace characters and prose paragraphs',()=>{
-  expect(manuscriptTextStats('Moon and stars.\n\nNew paragraph!')).toEqual({characters:30,charactersNoSpaces:25,words:5,paragraphs:2,readingMinutes:1});
+  expect(manuscriptTextStats('Moon and stars.\n\nNew paragraph!')).toEqual({characters:31,charactersNoSpaces:26,words:5,paragraphs:2,readingMinutes:1});
   expect(manuscriptTextStats('')).toEqual({characters:0,charactersNoSpaces:0,words:0,paragraphs:0,readingMinutes:0});
   expect(manuscriptTextStats('😊')).toMatchObject({characters:1,words:1});
  });
