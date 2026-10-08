@@ -4,9 +4,9 @@ This is an **optional temporary preview path** when Render refuses builds becaus
 
 ## Package the current Palace from GitHub
 
-1. Open the repository **Actions** tab and select **Palace Cloudflare preview bundle**.
+1. Open the repository **Actions** tab and select **Palace Cloudflare preview bundle**. This separate build is necessary only for manual uploads; the easier **Git-connected Cloudflare Pages** setup in [CLOUDFLARE_PAGES_PREVIEW.md](./CLOUDFLARE_PAGES_PREVIEW.md) automatically builds on each merge, without any ZIP downloads.
 2. The workflow creates one initial package when introduced. For a later version, select **Run workflow** with branch `main`. Check that the run shows a green check.
-3. Under the completed workflow run's **Artifacts**, download `palace-cloudflare-preview-<commit-hash>`. GitHub downloads a ZIP containing the built website contents. The ZIP expires after two days; repeat the manual workflow to create another.
+3. Under the completed workflow run's **Artifacts**, download `palace-cloudflare-preview-<commit-hash>`. GitHub downloads a ZIP containing the built website contents. The ZIP expires after five days; repeat the manual workflow to create another.
 4. This output includes the same **browser-public** Supabase URL and publishable key already stored in `.env.example`, baked into the Vite frontend. It intentionally does **not** contain service-role credentials or passwords. Treat the ZIP as a publishable frontend, **not** a private database backup.
 5. The workflow runs `npm test` first, then produces a Cloudflare SPA build with **no root `404.html`**, preserving deep-link refresh behavior.
 
@@ -25,8 +25,8 @@ This is an **optional temporary preview path** when Render refuses builds becaus
 
 ## Limits and safeguards
 
-- GitHub stores the uploaded artifact for **2 days**; it may not be available forever.
-- Dashboard Direct Upload supports ZIP files, but individual Pages assets must be below Cloudflare's upload limit; the repo's public assets are expected to fit, and actual upload success must be verified in the dashboard.
+- GitHub stores the uploaded artifact for **5 days**; it may not be available forever.
+- Dashboard Direct Upload supports ZIP files. Cloudflare's documented drag-and-drop limits are **1,000 individual site files and 25 MiB per individual site asset**; the Palace's tracked static assets are below the per-file limit. The ZIP itself is much larger because the whole illustrated site is included. A successful upload must be confirmed in Cloudflare before sharing a preview URL.
 - This packaged build uses `.env.example` as its **current public Vite config**. Before shipping a future preview on a different Supabase project, update the workflow/source configuration deliberately; never commit any secret role key.
 - Downloading the ZIP alone does **not** deploy a website. Creating the Pages project and allowing the exact Supabase redirect require the account owner's action.
 - If you prefer automatic updates, use the **Git-integrated** setup in [CLOUDFLARE_PAGES_PREVIEW.md](./CLOUDFLARE_PAGES_PREVIEW.md) instead; do not confuse these two modes.

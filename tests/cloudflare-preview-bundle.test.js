@@ -22,7 +22,7 @@ describe('on-demand Cloudflare preview artifact',()=>{
   expect(workflow).toContain('test -e dist/404.html');
   expect(workflow).toContain('actions/upload-artifact@v4');
   expect(workflow).toContain('path: dist/');
-  expect(workflow).toContain('retention-days: 2');
+  expect(workflow).toContain('retention-days: 5');
  });
  it('uses only browser-public Supabase configuration from tracked example values',()=>{
   expect(workflow).toContain('cp .env.example .env.local');
@@ -30,7 +30,7 @@ describe('on-demand Cloudflare preview artifact',()=>{
   for(const secret of ['sb_secret_','SERVICE_ROLE_KEY','SUPABASE_SECRET_KEY','CLOUDFLARE_API_TOKEN'])expect(workflow).not.toContain(secret);
  });
  it('preserves the correct user expectations for an isolated preview',()=>{
-  for(const warning of ['Direct Upload','Supabase','Auth URL Configuration','main','2 days','Git-integrated','same Supabase backend']){
+  for(const warning of ['Direct Upload','Supabase','Auth URL Configuration','main','5 days','Git-integrated','same Supabase backend']){
    expect(doc).toContain(warning);
   }
  });
