@@ -146,3 +146,52 @@
  outline-offset:3px;
 }
 .palace-shell.daylight .palace-beta-invitation .palace-beta-current-link strong{color:#f4ecff}
+
+
+/* Shared-device honesty for volunteer reports: low-friction, not alarming. */
+.palace-beta-fresh-report{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:12px;
+ flex-wrap:wrap;
+ margin:12px 0;
+ padding:13px 15px;
+ border-radius:13px;
+ border:1px solid rgba(183,171,226,.4);
+ background:rgba(108,92,177,.12);
+}
+.palace-beta-fresh-report p{
+ flex:1 1 280px;
+ min-width:0;
+ margin:0;
+ line-height:1.5;
+ font-size:.8rem;
+}
+.palace-beta-fresh-report button{
+ flex:0 1 auto;
+ min-height:44px;
+ padding:10px 14px;
+ border:1px solid rgba(205,192,241,.6);
+ border-radius:10px;
+ background:rgba(65,55,116,.74);
+ color:#f6f0ff;
+ font-weight:650;
+ cursor:pointer;
+}
+.palace-beta-fresh-report button:focus-visible{
+ outline:3px solid #b2d9ff;
+ outline-offset:3px;
+}
+.palace-shell.daylight .palace-beta-fresh-report{
+ border-color:rgba(108,88,155,.28);
+ background:rgba(110,93,162,.07);
+}
+.palace-shell.daylight .palace-beta-fresh-report button{
+ background:#e8dff4;
+ border-color:#b8a9d7;
+ color:#38295d;
+}
+@media(max-width:600px){
+ .palace-beta-fresh-report button{width:100%}
+}
