@@ -5,6 +5,7 @@ import './manuscript-pad-refinement.css';
 import {FirstManuscriptGuide} from './WriterWelcome';
 import {createManuscriptSaveCoordinator} from './manuscriptSaveCoordinator';
 import {chooseWritingResumeTarget} from './writingReturnModel';
+import './effortless-reader-paths.css';
 import PrismWayfinder from './PrismWayfinder';
 import MemberChamberDecor,{useChamberDecor} from './MemberChamberDecor';
 import {arrangeMemberChamberArt} from './memberChamberDecorData';
