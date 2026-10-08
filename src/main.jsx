@@ -23,6 +23,7 @@ import {usePalaceDialogFocusTrap} from './usePalaceDialogFocusTrap';
 import {shouldOpenPalaceQuickNavigation} from './palaceKeyboard';
 import {palaceRecentDoorKey,readPalaceRecentDoors,addPalaceRecentDoor} from './palaceRecentDoors';
 import './palace-inviting-polish.css';
+import './palace-cohesive-experience.css';
 import {
  ChamberLive,OnboardingLive,ReadingLive,ClubLive,WritingLive,SettingsLive,ActivityLive,LibraryLive,
  PalaceLifeLive,LettersLive,EventsLive,TreasuryLive,LostWorksLive,MemberProfileLive,SearchLive,
