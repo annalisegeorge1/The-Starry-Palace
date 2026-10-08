@@ -14,6 +14,9 @@ describe('work settings and reader note visual flow',()=>{
   expect(live).toContain('aria-label="Tag family"');
   expect(live).toContain('disabled={tagBusy} onClick={()=>attachTagToWork(t)}');
   expect(live).toContain('No more matching tags in this family.');
+  expect(live).toContain('The tag shelf could not be loaded.');
+  expect(live).toContain('setTagSearchVersion(v=>v+1)');
+  expect(live).toContain('setTagSearchError(true)');
   expect(live).toContain('finally{setTagBusy(false)}');
  });
  it('loads creative styles last without changing core manuscript logic',()=>{
