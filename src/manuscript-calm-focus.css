@@ -1,0 +1,68 @@
+/* Long-form desk: make the manuscript itself calm and predictable.
+   Presentation only; never rerender or replace a contentEditable chapter. */
+body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas{
+ /* Balanced paragraph wrapping can trigger a costly full-layout pass while typing. */
+ text-wrap:wrap!important;
+ white-space:normal;
+ max-width:100%;
+ overflow-wrap:break-word;
+ tab-size:4;
+ -webkit-text-size-adjust:100%;
+}
+body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas :is(p,li,blockquote){
+ max-width:100%;
+ overflow-wrap:break-word;
+}
+body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas :is(h2,h3,p,blockquote){
+ scroll-margin-top:190px;
+}
+body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas > :first-child{
+ margin-top:0;
+}
+body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas :is(p,li){
+ hanging-punctuation:first;
+}
+body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas:focus-visible{
+ outline-offset:3px!important;
+}
+body.writing-desk-open .manuscript-sheet-heading{
+ max-width:min(780px,96%);
+ opacity:.86;
+ letter-spacing:.1em;
+}
+body.writing-desk-open .manuscript-sheet-frame .writing-page-rule{
+ opacity:.55;
+}
+@media(min-width:761px){
+ body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas{
+  padding-block-start:clamp(36px,4.5vw,62px)!important;
+  padding-block-end:clamp(65px,8vw,100px)!important;
+ }
+}
+@media(max-width:760px){
+ body.writing-desk-open .manuscript-sheet-frame{
+  padding-inline:clamp(6px,2.5vw,15px)!important;
+ }
+ body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas{
+  padding:clamp(23px,5vw,35px) clamp(17px,5vw,32px) 64px!important;
+  min-height:65vh!important;
+  line-height:1.72!important;
+ }
+ body.writing-desk-open .manuscript-sheet-heading{
+  letter-spacing:.04em;
+  padding-inline:6px;
+ }
+ body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas :is(h2,h3,p,blockquote){
+  scroll-margin-top:160px;
+ }
+}
+@media(max-height:620px) and (min-width:761px){
+ body.writing-desk-open .manuscript-sticky-toolbar .manuscript-toolbar-note{
+  display:none;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas{
+  scroll-behavior:auto!important;
+ }
+}
