@@ -2,8 +2,8 @@ import {describe,it,expect} from 'vitest';
 import {PALACE_LIFE_ROOMS,palaceLifeRoom,palaceLifeRoomFromSearch,palaceLifeRoomUrl} from './palaceLifeRoomNavigation';
 
 describe('Palace Life room navigation',()=>{
- it('permits exactly the six real Palace Life rooms',()=>{
-  expect(PALACE_LIFE_ROOMS).toEqual(['commons','clubs','forum','moonlight','stars','highlights']);
+ it('permits all seven Palace Life rooms',()=>{
+  expect(PALACE_LIFE_ROOMS).toEqual(['commons','clubs','forum','moonlight','stars','highlights','history']);
   for(const room of PALACE_LIFE_ROOMS){
    expect(palaceLifeRoom(room)).toBe(room);
    expect(palaceLifeRoomFromSearch('?room='+room)).toBe(room);
