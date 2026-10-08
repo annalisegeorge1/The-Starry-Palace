@@ -807,15 +807,17 @@ export async function getMemberProfile(username,viewerId){
  const{data:profile,error}=await needClient().from('profiles').select('id,username,display_name,title,bio,avatar_url,cover_url,visibility,message_policy,pronouns,status_line,availability,roles,featured_genres,featured_fandoms,accent,cover_position,support_enabled,support_label,support_url').eq('username',username).maybeSingle();
  if(error)throw error;if(!profile)return null;
  const own=viewerId===profile.id;
+ // Public Chambers must not expose private series or member-only series to guests.
+ const seriesVisibilities=own?['public','members','private']:viewerId?['public','members']:['public'];
  const {data:grandIdentity}=await needClient().rpc('get_grand_palace_identity',{p_member:profile.id});
  const [privacy,works,comics,series,workTotal,comicTotal,seriesTotal,follow,counting,clubCount,showA,showG]=await Promise.all([
   own?getMyPrivacy(profile.id):Promise.resolve(null),
   needClient().from('works').select('id,title,slug,summary,cover_url,completion_status,last_published_at').eq('author_id',profile.id).eq('publication_status','published').order('last_published_at',{ascending:false}).limit(12),
   needClient().from('comics').select('id,title,slug,summary,completion_status,cover_path,last_published_at').eq('creator_id',profile.id).eq('publication_status','published').order('last_published_at',{ascending:false}).limit(12),
-  needClient().from('series').select('id,title,slug,summary,visibility,updated_at,series_works(work_id,position,works(id,title,slug,publication_status,completion_status))').eq('owner_id',profile.id).order('updated_at',{ascending:false}).limit(12),
+  needClient().from('series').select('id,title,slug,summary,visibility,updated_at,series_works(work_id,position,works(id,title,slug,publication_status,completion_status))').eq('owner_id',profile.id).in('visibility',seriesVisibilities).order('updated_at',{ascending:false}).limit(12),
   needClient().from('works').select('id',{count:'exact',head:true}).eq('author_id',profile.id).eq('publication_status','published'),
   needClient().from('comics').select('id',{count:'exact',head:true}).eq('creator_id',profile.id).eq('publication_status','published'),
-  needClient().from('series').select('id',{count:'exact',head:true}).eq('owner_id',profile.id),
+  needClient().from('series').select('id',{count:'exact',head:true}).eq('owner_id',profile.id).in('visibility',seriesVisibilities),
   viewerId&&!own?needClient().from('member_follows').select('followed_id').eq('follower_id',viewerId).eq('followed_id',profile.id).maybeSingle():Promise.resolve({data:null,error:null}),
   needClient().from('member_follows').select('follower_id',{count:'exact',head:true}).eq('followed_id',profile.id),
   needClient().from('club_members').select('club_id',{count:'exact',head:true}).eq('user_id',profile.id).eq('status','active'),
