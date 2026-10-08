@@ -33,6 +33,7 @@ import {arrangeMemberChamberArt} from './memberChamberDecorData';
 import './member-chamber-atelier.css';
 import MemberPalaceShowcase from './MemberPalaceShowcase';
 import{beginPalaceReading,completePalaceReading}from'./creativePointsData';
+import {settleReadingChapterTransition} from './readingRewardTransition';
 import PalaceCalendar from './PalaceCalendar';
 import{PROMPT_ORRERY_RECIPES,randomOrreryRecipe}from'./promptOrreryData';
 import{filterInkDuels,duelPrizeProgress,drawDuelTwist}from'./inkDuelExperience';
@@ -1485,7 +1486,21 @@ function ReaderChapter({Frame,slug,chapterId}){
  const prev=readable.slice(0,idx).reverse().find(c=>c.status==='published'||session?.user?.id===data?.work.author_id);
  const progress=readable.length?Math.round(((idx+1)/readable.length)*100):0;
  const html=readerHtml;
- async function finish(done=false){if(session&&data)try{await recordReadingProgress(session.user.id,data.work.id,data.chapter.id,done?100:Math.max(5,Math.min(95,progress)),done,done?100:readerPlace);if(done&&earnSessionRef.current){const result=await completePalaceReading(earnSessionRef.current);if(result?.awarded)setReadingBonus('✦ +'+result.awarded+' personal Celestial Points earned for reading.');earnSessionRef.current=null}}catch(e){setError(e.message)}}
+ async function finish(done=false){
+  if(!session||!data)return;
+  // Capture before awaiting progress: Next chapter unmounts this reader while
+  // both requests may still be in flight. The ID must survive that transition.
+  const readingSessionId=earnSessionRef.current;
+  const result=await settleReadingChapterTransition({
+   sessionId:readingSessionId,
+   recordProgress:()=>recordReadingProgress(session.user.id,data.work.id,data.chapter.id,done?100:Math.max(5,Math.min(95,progress)),done,done?100:readerPlace),
+   completeReading:completePalaceReading,
+   onAward:awarded=>setReadingBonus('✦ +'+awarded+' personal Celestial Points earned for reading.'),
+   onTooSoon:()=>{if(done)setReadingBonus('To earn reading points, read an eligible chapter for at least 90 seconds before finishing.');},
+   onError:e=>setError(e.message)
+  });
+  if(result.completed&&earnSessionRef.current===readingSessionId)earnSessionRef.current=null;
+ }
  async function savePrivateNote(e){e.preventDefault();if(!session||!data||!noteBody.trim())return;try{setNoteBusy(true);await addReaderNote(session.user.id,{type:'chapter',id:data.chapter.id,workId:data.work.id},noteBody,noteLabel);try{writeReaderNoteDraft(window.sessionStorage,session.user.id,data.chapter.id,{body:'',label:''})}catch{}setNoteBody('');setNoteLabel('');setNotes(await getReaderNotesForChapter(session.user.id,data.chapter.id))}catch(e){setError(e.message)}finally{setNoteBusy(false)}}
  async function removePrivateNote(id){if(!session)return;try{await deleteReaderNote(session.user.id,id);setNotes(n=>n.filter(x=>x.id!==id))}catch(e){setError(e.message)}}
  async function praiseChapter(kind){if(!session){setPraiseNotice('Sign in to leave Palace praise.');return}if(session.user.id===data.work.author_id){setPraiseNotice('Palace praise is for another creator.');return}try{setPraiseBusy(kind);const result=await givePalacePraise('chapter',data.chapter.id,kind);setPraise({praise:result?.praise||kind,counts:result?.counts||praise.counts});const earned=Number(result?.giver_points_awarded_now||0);setPraiseNotice(earned?kind[0].toUpperCase()+kind.slice(1)+' sent · +'+earned+' Celestial Point'+(earned===1?'':'s')+'.':kind[0].toUpperCase()+kind.slice(1)+' sent.')}catch(e){setError(e.message)}finally{setPraiseBusy('')}}
@@ -1527,6 +1542,7 @@ function ReaderChapter({Frame,slug,chapterId}){
   <section ref={chapterTextRef} className="chapter-text restored" style={{fontSize:fontSize+'px'}} dangerouslySetInnerHTML={{__html:html}}/>
   <section id="palace-reader-chapters" className="reader-chapter-list"><p className="eyebrow">THIS WORK</p><div>{readable.map(ch=><Link className={ch.id===chapterId?'active':''} key={ch.id} to={"/work/"+slug+"/chapter/"+ch.id}><span>{String(ch.position).padStart(2,'0')}</span><strong>{ch.title}</strong><small>{ch.word_count.toLocaleString()} words</small></Link>)}</div></section>
   {!next&&<section className="reader-end-trail"><div><small>YOU REACHED THE LAST PUBLISHED CHAPTER</small><h2>Where do you want the story to lead?</h2></div><nav><Link to={"/work/"+data.work.slug}>✦ Story trail</Link>{session&&<Link to={"/palace-life?room=commons&kind=discussion&talk="+encodeURIComponent(data.work.title)}>♢ Discuss it</Link>}{data.work.profiles?.username&&<Link to={"/member/"+data.work.profiles.username}>☾ Visit the writer</Link>}<Link to="/lost-works">⌁ Read something older</Link></nav></section>}
+  {session?.user?.id!==data.work.author_id&&data.chapter.word_count>=200&&data.work.visibility==='public'&&<p className="reader-reward-hint">✦ Eligible public chapters can earn 2 Celestial Points after 90 seconds of reading. Choose Next chapter, or Mark work finished on the last chapter, to record completion. One reward per chapter; daily limits apply.</p>}
   <footer className="reader-nav"><div className="reader-nav-context"><a className="reader-return-top" href="#palace-reader-start">↑ Back to chapter start</a>{prev?<small>Previous · {prev.title}</small>:<small>Beginning of this work</small>}{next?<small>Next · {next.title}</small>:<small>Final published chapter</small>}</div><div className="reader-nav-actions">{prev?<Link to={"/work/"+slug+"/chapter/"+prev.id}>← Previous chapter</Link>:<span/>}{next?<Link onClick={()=>finish(false)} to={"/work/"+slug+"/chapter/"+next.id}>Next chapter →</Link>:session?<button onClick={()=>finish(true)}>Mark work finished ✦</button>:<Link to={"/login?next="+encodeURIComponent('/work/'+slug+'/chapter/'+chapterId)}>Sign in to track completion ✦</Link>}</div></footer>
  </article>}</State></Frame>
 }
