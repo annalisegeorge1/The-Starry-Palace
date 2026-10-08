@@ -1,4 +1,5 @@
 import React,{useEffect,useState} from 'react';
+import './palace-council-accountability.css';
 import {getCouncilService,updateCouncilService,logCouncilService,getMyRestoration,respondRestoration,getCouncilRestorationQueue,openRestorationCase,reviewRestoration} from './palaceGovernanceApi';
 import './palace-council-accountability.css';
 function ActionMessage({message}){return message?<p role="status" className="council-accountability-note">{message}</p>:null}
