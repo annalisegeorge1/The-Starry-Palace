@@ -207,6 +207,14 @@ export async function getPublishedWorks(){
  }
  return rows.map(x=>({...x,profiles:withIdentity(x.profiles,x.author_id,marks),reading_stats:stats[x.id]||null}));
 }
+/** Public aggregate only; never exposes which members saved a story. */
+export async function getPublicWorkBookmarkCount(workId){
+ if(!workId)return null;
+ const {data,error}=await needClient().rpc('get_reading_room_bookmark_counts',{p_work_ids:[workId]});
+ if(error)throw error;
+ const found=(data||[]).find(item=>item.work_id===workId);
+ return found?Math.max(0,Number(found.bookmark_count)||0):0;
+}
 export async function getMyWorks(userId){const{data,error}=await needClient().from('works').select('id,title,slug,summary,work_type,publication_status,completion_status,visibility,updated_at,chapters(id,title,position,status,word_count,scheduled_for,published_at,updated_at)').eq('author_id',userId).order('updated_at',{ascending:false});if(error)throw error;return(data||[]).map(w=>({...w,chapters:(w.chapters||[]).sort((a,b)=>a.position-b.position)}))}
 export async function createDraft(userId,title,options={}){
  const clean=title.trim();if(!clean)throw new Error('Give your work a title first.');
