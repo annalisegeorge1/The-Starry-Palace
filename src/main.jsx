@@ -29,6 +29,7 @@ import './palace-editorial-finish.css';
 import './palace-navigation-jewels.css';
 import './palace-regalia-rooms.css';
 import './palace-build-safety.css';
+import './palace-moonlit-curation.css';
 import './palace-creative-flow.css';
 
 
