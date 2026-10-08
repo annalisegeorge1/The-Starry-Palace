@@ -17,15 +17,15 @@ Do **not** ask participants for passwords, unpublished manuscripts, private mess
 
 ## Tester workflow
 1. Explain that this is a trial and which features may be unfinished. Let testers opt out of any task.
-2. Direct them to **/beta** for the optional, locally saved checklist.
+2. Direct them to **/beta**. They can choose a short reader, writer, artist or community track, with the option to show all tasks.
 3. Let them attempt tasks without coaching; watch where they stop, backtrack or refresh.
-4. Ask the participant to copy their report and send it privately through a channel they choose. The checklist does **not** auto-submit or upload personal notes.
+4. Ask the participant to mark **Worked**, **Had trouble**, or **Skipped**. They can add multiple structured issue reports, then copy, share, or save the complete text report and deliver it privately through a channel they choose. The checklist does **not** auto-submit or upload personal notes.
 5. Collect only minimal bug details: route, device/browser, approximate time, expected behaviour, observed behaviour, repeatability and severity.
 6. Triage problems by impact, fix them, repeat the exact failing steps and run regression tests.
 7. Have a second round of at least five volunteers try resolved issues without assistance.
 
-## The twelve beta checks
-The built-in checklist covers: first-arrival discovery, mobile navigation, story filters, resume-reading progress, saved/followed works, private drafts, autosave, recovery under network loss, multiple tags, Palace activities, Council voting, and accessibility/contrast.
+## The beta checkpoints
+The built-in tracks contain a subset of 13 optional checkpoints covering: first-arrival discovery, mobile navigation, story filters, resume-reading progress, saved/followed works, private drafts, autosave, recovery under network loss, multiple tags, comics, Palace activities, Council rules, and accessibility/contrast.
 
 ## Release gates
 **Blocking (must be zero unresolved):**
@@ -69,6 +69,9 @@ The built-in checklist covers: first-arrival discovery, mobile navigation, story
 
 ## Rules for further feature expansion
 No new major mechanics until **reliability blockers** are closed and new members can complete the primary reading and writing journeys. Prefer consolidating modules, removing obsolete CSS, and strengthening existing features before expanding the collectible catalogue.
+
+## Tester communications and issue triage
+See [TESTER_BRIEF_AND_TRIAGE.md](./TESTER_BRIEF_AND_TRIAGE.md) for permission-first invitation copy, realistic 20-minute sessions, severity categories and a private issue tracker template. Treat unshared reports as unknown outcomes—not successes.
 
 ## Follow-up
 At the end of the beta, summarize the **top five points of friction**, completion rates, accessibility findings and unresolved blockers. Re-test all blockers on actual devices before the release is declared ready.
