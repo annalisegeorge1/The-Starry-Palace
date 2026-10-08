@@ -1,0 +1,60 @@
+/* Transparent creative rewards without adding pressure to the writing desk. */
+.celestial-source-grid.treasury{
+ grid-template-columns:repeat(4,minmax(0,1fr))!important;
+}
+.celestial-source-grid.treasury>span{min-width:0}
+.celestial-source-grid.treasury>span small{overflow-wrap:anywhere;line-height:1.45}
+.celestial-earning-guide{
+ grid-column:1/-1;
+ margin:.8rem 0 1.15rem;
+ border:1px solid rgba(167,160,219,.32);
+ border-radius:15px;
+ padding:.9rem 1rem;
+ background:linear-gradient(120deg,rgba(99,75,163,.14),rgba(75,116,162,.08));
+ color:inherit;
+}
+.celestial-earning-guide summary{cursor:pointer;font-size:.91rem;font-weight:750;line-height:1.55;color:#e7dafa}
+.celestial-earning-guide summary:focus-visible{outline:3px solid #b6dcff;outline-offset:4px}
+.celestial-earning-guide[open] summary{margin-bottom:1rem}
+.celestial-earning-rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem}
+.celestial-earning-rules article{
+ min-width:0;border-radius:12px;padding:.8rem;
+ border:1px solid rgba(175,177,226,.22);
+ background:rgba(56,47,103,.24);
+}
+.celestial-earning-rules strong{font-size:.85rem;line-height:1.45;color:#e9dcff}
+.celestial-earning-guide p{font-size:.75rem;line-height:1.6;margin:.5rem 0;color:#c8c4df}
+.celestial-earning-guide a{color:#b9e0fa;margin-right:1rem;text-underline-offset:3px}
+.writing-earned-points-note{
+ display:flex;flex-wrap:wrap;align-items:center;gap:.65rem;
+ margin:.65rem 0 1.3rem;padding:.75rem 1rem;
+ border:1px solid rgba(171,162,234,.28);border-radius:13px;
+ background:linear-gradient(110deg,rgba(118,80,176,.12),rgba(70,147,167,.08));
+}
+.writing-earned-points-note>span{color:#c6b4ff;font-size:1.25rem}
+.writing-earned-points-note p{flex:1 1 340px;min-width:0;font-size:.78rem;line-height:1.5;margin:0;color:inherit}
+.writing-earned-points-note strong{color:#eadcfd}
+.writing-earned-points-note a{color:#b8e2fa;font-size:.77rem;font-weight:700;text-underline-offset:3px}
+.legacy-goal-progress small{
+ display:block;flex:1 1 100%;width:100%;
+ margin-top:.4rem;line-height:1.4;font-size:.7rem;
+ color:#c6c0e3;
+}
+.daylight .celestial-earning-guide{
+ background:linear-gradient(120deg,rgba(235,224,248,.82),rgba(226,238,251,.8));
+ border-color:#c7b9da;
+}
+.daylight .celestial-earning-guide summary,.daylight .celestial-earning-rules strong,.daylight .writing-earned-points-note strong{color:#453363}
+.daylight .celestial-earning-rules article{background:#fff9ff;border-color:#ded4eb}
+.daylight .celestial-earning-guide p,.daylight .legacy-goal-progress small{color:#60556f}
+.daylight .celestial-earning-guide a,.daylight .writing-earned-points-note a{color:#394d85}
+.daylight .writing-earned-points-note{background:#f1ecf9;border-color:#d2c6e8}
+@media(max-width:900px){
+ .celestial-source-grid.treasury{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .celestial-earning-rules{grid-template-columns:1fr}
+}
+@media(max-width:420px){
+ .celestial-source-grid.treasury{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+ .celestial-earning-guide{padding:.75rem}
+ .writing-earned-points-note a{width:100%}
+}
