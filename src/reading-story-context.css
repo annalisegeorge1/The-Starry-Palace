@@ -1,0 +1,13 @@
+/* One information hierarchy for featured works and catalogue rows.
+   Keep the story summary prose readable and metadata easy to scan. */
+.reading-story-context{min-width:0;margin:10px 0 0}
+.reading-story-context-facts{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;font:500 .76rem/1.5 system-ui,sans-serif}
+.reading-story-context-facts>span{min-width:0;overflow-wrap:anywhere}
+.reading-story-context-facts strong{font-weight:750}
+.reading-story-context-facts .reading-story-kind{border:1px solid rgba(180,161,225,.45);border-radius:99px;padding:3px 9px;background:rgba(140,124,207,.12);font-weight:750}
+.reading-story-context-summary{margin:12px 0 6px}
+.reading-story-context-summary>small{display:block;font:750 .66rem/1.5 system-ui,sans-serif;letter-spacing:.13em;opacity:.72;margin-bottom:4px}
+.reading-story-context-summary>p{margin:0;line-height:1.6;white-space:pre-line;overflow-wrap:anywhere;max-width:78ch}
+.reading-story-context-facts .reading-story-fandom{max-width:100%}
+.palace-shell.daylight .reading-story-context-facts .reading-story-kind{background:#ece7f9;border-color:#b9a9d5}
+@media(max-width:600px){.reading-story-context-facts{gap:6px 10px;font-size:.76rem}.reading-story-context-summary{margin:10px 0 4px}}
