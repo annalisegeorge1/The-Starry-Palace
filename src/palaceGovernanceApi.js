@@ -33,3 +33,6 @@ export const respondRestoration=(id,response,accept)=>rpc('respond_palace_restor
 export const getCouncilRestorationQueue=()=>rpc('get_council_restoration_queue');
 export const openRestorationCase=(report,subject,severity,notice,recommendation,restoration)=>rpc('open_palace_restoration_case',{p_report:report,p_subject:subject,p_severity:severity,p_notice:notice,p_recommendation:recommendation,p_restoration:restoration});
 export const reviewRestoration=(id,note)=>rpc('second_review_palace_restoration',{p_report:id,p_note:note});
+
+export const checkCouncilDeadlines=()=>rpc('check_my_palace_council_deadlines');
+export const getCouncilAppealQueue=()=>rpc('get_council_appeal_queue');
