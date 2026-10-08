@@ -34,13 +34,15 @@ describe('Profile screenshot regression: all six stats visible, aligned and read
   expect(css).toContain('.chamber-atelier-crown-ribbon>span:first-child');
   expect(css).toContain('grid-column:auto!important');
  });
- it('keeps navigation and gallery bounded by the content, with scrolling isolated to mobile tabs',()=>{
+ it('keeps navigation and gallery bounded by the content, with all five phone tabs visible',()=>{
   expect(css).toContain('width:min(100%,1180px)!important');
   expect(css).toContain('max-width:100%!important');
   expect(css).toContain('.chamber-atelier-palace-stage');
   expect(css).toContain('.chamber-atelier-gallery');
-  expect(css).toContain('overscroll-behavior-x:contain');
-  expect(css).toContain('scroll-snap-type:x proximity');
+  expect(css).toContain('grid-template-columns:repeat(5,minmax(0,1fr))!important');
+  expect(css).toContain('overflow-x:visible!important');
+  expect(css).toContain('flex-direction:column!important');
+  expect(css).toContain('min-height:48px!important');
   expect(css).toContain(':focus-visible');
  });
  it('preserves cover/art proportions and both palettes while avoiding motion dependence',()=>{
@@ -49,6 +51,9 @@ describe('Profile screenshot regression: all six stats visible, aligned and read
   expect(css).not.toContain('background-size:');
   expect(css).toContain('.palace-shell.daylight');
   expect(css).toContain('prefers-reduced-motion:reduce');
+  expect(css).toContain('.legacy-profile-actions :is(a,button)');
+  expect(css).toContain('.member-palace-heraldry:focus-visible');
+  expect(css).toContain('.chamber-atelier-gallery-filters button:focus-visible');
  });
  it('loads the final repair after all prior profile and mobile styles',()=>{
   const last="import './profile-grid-restoration.css';";
