@@ -103,6 +103,8 @@ async function newestPalaceAssetPath(){
 function PalaceBuildFreshnessWatch(){
  const location=useLocation();
  const [updateAvailable,setUpdateAvailable]=useState(false);
+ const [updateSnoozed,setUpdateSnoozed]=useState(false);
+ const offeredAssetRef=React.useRef('');
  React.useEffect(()=>{
   let alive=true;
   const check=async()=>{
@@ -117,7 +119,14 @@ function PalaceBuildFreshnessWatch(){
    const currentPath=new URL(current,window.location.origin).pathname;
    const newestPath=new URL(newest,window.location.origin).pathname;
    if(currentPath!==newestPath){
-    if(shouldOfferManualPalaceRefresh(location.pathname))setUpdateAvailable(true);
+    if(shouldOfferManualPalaceRefresh(location.pathname)){
+     // Only re-open a dismissed notice when a genuinely different build arrives.
+     if(offeredAssetRef.current!==newestPath){
+      offeredAssetRef.current=newestPath;
+      setUpdateSnoozed(false);
+     }
+     setUpdateAvailable(true);
+    }
     else schedulePalaceReload('palace-new-build-reload',80);
    }
   };
@@ -129,7 +138,8 @@ function PalaceBuildFreshnessWatch(){
   return()=>{alive=false;window.clearTimeout(routeTimer);window.clearInterval(interval);document.removeEventListener('visibilitychange',onVisible);window.removeEventListener('pageshow',onVisible)}
  },[location.pathname,location.search]);
  if(!updateAvailable||!shouldOfferManualPalaceRefresh(location.pathname))return null;
- return <aside className="palace-update-safety" role="status" aria-live="polite"><span aria-hidden="true">✦</span><div><strong>A newer Palace is ready.</strong><p>Finish saving your work before reloading. Your current page will stay open until you choose.</p></div><button type="button" onClick={()=>window.location.reload()}>Reload after saving</button></aside>
+ if(updateSnoozed)return <button type="button" className="palace-update-peek" onClick={()=>setUpdateSnoozed(false)} aria-label="Review the available Palace update">✦ Update waiting</button>;
+ return <aside className="palace-update-safety" role="status" aria-live="polite"><span aria-hidden="true">✦</span><div><strong>A newer Palace is ready.</strong><p>Finish saving your work before reloading. Your current page will stay open until you choose.</p><button type="button" className="palace-update-later" onClick={()=>setUpdateSnoozed(true)}>Later · keep writing</button></div><button type="button" onClick={()=>window.location.reload()}>Reload after saving</button></aside>
 }
 
 const TreasuryCatalogueLazy=React.lazy(()=>importWithRecovery(()=>import('./Treasury')));

@@ -4379,11 +4379,9 @@ body.reader-focus-mode .reader-chapter-head{
       "health health"
       "sprint sprint"
       "toolbar stats"
+      "alert alert"
+      "feedback feedback"
       "canvas view"
-      "canvas map"
-      "canvas notes"
-      "canvas find"
-      "canvas spell"
       "canvas goal"
       "canvas revision"
       "canvas status"
@@ -4400,6 +4398,11 @@ body.reader-focus-mode .reader-chapter-head{
   .chic-editor-form>.writer-sprint-orbit{grid-area:sprint}
   .chic-editor-form>.chic-editor-toolbar{grid-area:toolbar}
   .chic-editor-form>.chic-editor-stats{grid-area:stats}
+  /* The former separate map, notes, find and spelling controls now live
+     INSIDE one native Writing tools drawer, not four ghost grid rows. */
+  .chic-editor-form>.writer-desk-drawer{grid-area:view!important;min-width:0}
+  .chic-editor-form>.writer-recovery-alert{grid-area:alert;min-width:0}
+  .chic-editor-form>.writer-backup-feedback{grid-area:feedback;min-width:0}
   .chic-editor-form>.writer-view-controls{grid-area:view}
   .chic-editor-form>.writer-document-map{grid-area:map}
   .chic-editor-form>.writer-margin-notes{grid-area:notes}
