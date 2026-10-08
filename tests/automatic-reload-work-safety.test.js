@@ -27,7 +27,7 @@ function testScheduler(pathname){
 describe('one work-safe guard for every automatic refresh path',()=>{
  it('never schedules a full-page reload while a member may be editing',()=>{
   const protectedRooms=[
-   '/writing','/writing/first-draft','/comics/studio','/palace-life?ignored',
+   '/writing','/writing/first-draft','/comics/studio','/palace-life',
    '/club/moonlight','/member/thebluemoonjune','/settings',
    '/events','/letters','/council/governance','/grand-palaces','/treasury'
   ];
