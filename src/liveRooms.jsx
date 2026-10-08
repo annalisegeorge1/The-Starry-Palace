@@ -1831,7 +1831,7 @@ function WorkStudioForWork({Frame,slug}){
   recoverySchedulerRef.current?.cancel();
   const restore=stageManuscriptRestore({
    chapterId:chapter.id,draft:{title:value.title||chapter.title,body_html:value.body_html||'',revision_note:value.revision_note||''},
-   storage:window.localStorage,markChanged:id=>saveCoordinatorRef.current.markChanged(id)
+   storage:(()=>{try{return window.localStorage}catch{return null}})(),markChanged:id=>saveCoordinatorRef.current.markChanged(id)
   });
   recoveryStorageRef.current=restore.stored;setRecoveryStorageAvailable(restore.stored);
   setChapter({...chapter,...restore.draft});
