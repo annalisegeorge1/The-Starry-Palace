@@ -67,3 +67,10 @@
 @media(max-width:800px){.palace-beta-intro{grid-template-columns:1fr}.palace-beta-intro>div{padding:14px 17px}.palace-beta-intro p{margin-top:4px}.palace-beta-intro span{margin-bottom:5px}}
 @media(max-width:700px){.palace-beta-controls,.palace-beta-issue-grid{grid-template-columns:1fr}.palace-beta-result label{min-height:44px}.palace-beta-actions button{flex:1 1 180px}.palace-beta-invitation button{width:100%}.palace-beta-guide{padding:13px}.palace-beta-checks{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.palace-beta-guide *{scroll-behavior:auto}}
+
+/* Radio inputs must not inherit the full-width text-input rules. */
+.palace-beta-guide .palace-beta-result input[type="radio"]{
+ width:18px!important;min-width:18px!important;height:18px!important;
+ padding:0!important;margin:0!important;flex:0 0 18px;
+ appearance:auto;accent-color:#9d79d5;
+}
