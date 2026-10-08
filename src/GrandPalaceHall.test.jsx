@@ -51,7 +51,7 @@ describe('Grand Palace gifts and room navigation',()=>{
   fireEvent.click(screen.getByRole('button',{name:'Find member'}));
   fireEvent.click(await screen.findByRole('button',{name:/Star Gazer.*stargazer/i}));
   expect(screen.getByRole('textbox',{name:'Find a Palace member'}).value).toBe('Star Gazer');
-  expect(screen.getByText('Sending to')).toBeTruthy();
+  expect(screen.getByText(/Sending to/)).toBeTruthy();
   fireEvent.click(screen.getByRole('button',{name:'Send heart ✦'}));
   await waitFor(()=>expect(actions.send).toHaveBeenCalledWith(
    '11111111-1111-1111-1111-111111111111','heart',''
