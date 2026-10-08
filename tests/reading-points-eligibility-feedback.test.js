@@ -23,7 +23,7 @@ describe('Palace reader explains missing Celestial Points',()=>{
   expect(readingRewardEligibility(eligible,session)).toMatchObject({eligible:true,message:expect.stringContaining('Checking')});
  });
  it('does not promise points when the Supabase reading session never started',()=>{
-  expect(readingSessionStartFeedback(null,Error('network'))).toMatchObject({status:'failed',message:expect.stringContaining('could not start')});
+  expect(readingSessionStartFeedback(null,Error('network'))).toMatchObject({status:'failed',message:expect.stringContaining('Could not start')});
   expect(readingSessionStartFeedback(null,null).status).toBe('failed');
   expect(readingSessionStartFeedback('514ba2f1-29f6-456a-8e5d-d397a77ac430',null)).toMatchObject({status:'active',message:expect.stringContaining('90 seconds')});
  });
