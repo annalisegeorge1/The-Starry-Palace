@@ -1,5 +1,5 @@
 import React from 'react';
-import {afterEach,beforeEach,expect,it} from 'vitest';
+import {afterEach,beforeEach,expect,it,vi} from 'vitest';
 import {cleanup,fireEvent,render,screen} from '@testing-library/react';
 import {MemoryRouter} from 'react-router-dom';
 import PalaceBetaGuide,{PALACE_BETA_CHECKS} from './PalaceBetaGuide';
@@ -49,6 +49,15 @@ it('handles a finished track without hiding the report or making results irrever
  expect(document.activeElement?.id).toBe('palace-beta-final-report');
  fireEvent.click(screen.getByRole('button',{name:'Review all checkpoints'}));
  expect(screen.getByText('Find reading and writing from the home page')).toBeTruthy();
+});
+it('warns when feedback cannot be saved locally but keeps an export path available',()=>{
+ const blocked=vi.spyOn(Storage.prototype,'setItem').mockImplementation(()=>{throw new Error('Storage blocked')});
+ try{
+  mount();
+  expect(screen.getByRole('alert').textContent).toContain('Local saving is unavailable');
+  expect(screen.getByRole('button',{name:'Copy my report'})).toBeTruthy();
+  expect(screen.getByText(/export your report before leaving/)).toBeTruthy();
+ }finally{blocked.mockRestore()}
 });
 it('can show the full set on request',()=>{
  mount();
