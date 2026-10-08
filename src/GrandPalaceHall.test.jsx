@@ -1,6 +1,6 @@
 import React from 'react';
 import {afterEach,beforeEach,describe,expect,it,vi} from 'vitest';
-import {cleanup,fireEvent,render,screen,waitFor} from '@testing-library/react';
+import {act,cleanup,fireEvent,render,screen,waitFor} from '@testing-library/react';
 import {MemoryRouter} from 'react-router-dom';
 
 const actions=vi.hoisted(()=>({search:vi.fn(),send:vi.fn()}));
@@ -68,6 +68,34 @@ describe('Grand Palace gifts and room navigation',()=>{
   fireEvent.click(await screen.findByRole('button',{name:/Star Gazer.*stargazer/i}));
   expect(screen.getByRole('button',{name:'Send heart ✦'}).disabled).toBe(false);
   fireEvent.change(screen.getByRole('textbox',{name:'Find a Palace member'}),{target:{value:'Another reader'}});
+  expect(screen.getByRole('button',{name:'Send heart ✦'}).disabled).toBe(true);
+ });
+
+ it('explains an empty member search without enabling gifting',async()=>{
+  actions.search.mockResolvedValueOnce([]);
+  render(<MemoryRouter initialEntries={['/grand-palaces?tab=treasury']}>
+   <GrandPalaceHall Frame={({children})=><main>{children}</main>}/>
+  </MemoryRouter>);
+  await screen.findByRole('button',{name:'Find member'});
+  fireEvent.change(screen.getByRole('textbox',{name:'Find a Palace member'}),{target:{value:'Unknown person'}});
+  fireEvent.click(screen.getByRole('button',{name:'Find member'}));
+  expect(await screen.findByText(/No matching Palace member found/)).toBeTruthy();
+  expect(screen.getByRole('button',{name:'Send heart ✦'}).disabled).toBe(true);
+ });
+ it('discards search results when the member has already changed the query',async()=>{
+  let resolveOldSearch;
+  actions.search.mockImplementationOnce(()=>new Promise(resolve=>{resolveOldSearch=resolve}));
+  render(<MemoryRouter initialEntries={['/grand-palaces?tab=treasury']}>
+   <GrandPalaceHall Frame={({children})=><main>{children}</main>}/>
+  </MemoryRouter>);
+  await screen.findByRole('button',{name:'Find member'});
+  const search=screen.getByRole('textbox',{name:'Find a Palace member'});
+  fireEvent.change(search,{target:{value:'Star'}});
+  fireEvent.click(screen.getByRole('button',{name:'Find member'}));
+  fireEvent.change(search,{target:{value:'Different member'}});
+  await act(async()=>resolveOldSearch([{id:'11111111-1111-1111-1111-111111111111',username:'stargazer',display_name:'Star Gazer'}]));
+  expect(search.value).toBe('Different member');
+  expect(screen.queryByRole('button',{name:/Star Gazer.*stargazer/i})).toBeNull();
   expect(screen.getByRole('button',{name:'Send heart ✦'}).disabled).toBe(true);
  });
 });
