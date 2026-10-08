@@ -194,13 +194,13 @@ export async function getPublishedWorks(){
   const [chapters,comments,bookmarks]=await Promise.all([
    needClient().from('chapters').select('work_id,word_count,status').in('work_id',ids).eq('status','published'),
    needClient().from('comments').select('work_id,status').in('work_id',ids).eq('status','approved'),
-   needClient().from('saved_works').select('work_id').in('work_id',ids)
+   needClient().rpc('get_reading_room_bookmark_counts',{p_work_ids:ids})
   ]);
   for(const response of [chapters,comments,bookmarks])if(response.error)throw response.error;
   stats=Object.fromEntries(ids.map(id=>[id,{words:0,chapters:0,comments:0,bookmarks:0}]));
   for(const row of chapters.data||[]){const v=stats[row.work_id];if(v){v.chapters++;v.words+=Math.max(0,Number(row.word_count)||0)}}
   for(const row of comments.data||[]){const v=stats[row.work_id];if(v)v.comments++}
-  for(const row of bookmarks.data||[]){const v=stats[row.work_id];if(v)v.bookmarks++}
+  for(const row of bookmarks.data||[]){const v=stats[row.work_id];if(v)v.bookmarks=Math.max(0,Number(row.bookmark_count)||0)}
  }catch{
   // A missing public-count privilege must never break story discovery.
   // No numbers are displayed unless the aggregation succeeds.
