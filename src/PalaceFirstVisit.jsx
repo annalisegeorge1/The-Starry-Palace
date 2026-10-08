@@ -11,7 +11,7 @@ const WELCOME_STEPS=[
 ];
 function loadGuide(key){
  try{const parsed=JSON.parse(localStorage.getItem(key)||'{}');return{
-  visited:Array.isArray(parsed.visited)?parsed.visited.filter(x=>WELCOME_STEPS.some(s=>s.id===x)):[],
+  visited:Array.isArray(parsed.visited)?[...new Set(parsed.visited.filter(x=>WELCOME_STEPS.some(s=>s.id===x)))]:[],
   hidden:parsed.hidden===true
  }}catch{return{visited:[],hidden:false}}
 }
@@ -24,23 +24,44 @@ export function PalaceStartingPath({memberId}){
   try{localStorage.setItem(key,JSON.stringify(next))}catch{}
  }
  if(!memberId||state.hidden)return null;
+
  const count=state.visited.length;
- return <details className="palace-tour-fold"><summary><span>New here? Take a four-room tour <small>Optional · {count} of 4 doorways explored</small></span><span aria-hidden="true">⌄</span></summary><section className="palace-starting-path" aria-label="Optional Palace welcome tour">
-  <div className="palace-starting-copy"><p className="eyebrow">A GENTLE FIRST JOURNEY</p>
-   <h2>Make yourself at home.</h2>
-   <p>No need to learn the entire Palace in a day. Try a room at a time and return whenever you like.</p>
-   <div className="palace-starting-meter"><div className="palace-starting-track" role="progressbar" aria-label="Welcome rooms visited" aria-valuenow={count} aria-valuemin={0} aria-valuemax={4}><span style={{width:(count/4*100)+'%'}}/></div><small>{count} of 4 doorways explored</small></div>
-  </div>
-  <div className="palace-starting-doors">
-   {WELCOME_STEPS.map(step=><Link key={step.id} to={step.url}
-    onClick={()=>change({...state,visited:state.visited.includes(step.id)?state.visited:[...state.visited,step.id]})}>
-    <span className="palace-starting-icon" aria-hidden="true">{step.symbol}</span>
-    <span><strong>{step.name}</strong><small>{step.detail}</small></span>
-    <b>{state.visited.includes(step.id)?'✓ Visited':'Explore →'}</b>
-   </Link>)}
-  </div>
-  <button type="button" className="palace-tour-dismiss" onClick={()=>change({...state,hidden:true})}>Hide this introduction</button>
- </section></details>;
+ const nextStep=WELCOME_STEPS.find(step=>!state.visited.includes(step.id));
+ return <details className="palace-tour-fold">
+  <summary>
+   <span className="palace-tour-heading">
+    <span className="palace-tour-kicker">A LITTLE MAP OF THE PALACE</span>
+    <strong>{nextStep?'Your first four doorways':'All four doorways opened. Keep exploring.'}</strong>
+    <small>Optional · {count} of 4 doorways opened · No deadline</small>
+   </span>
+   <span className="palace-tour-toggle" aria-hidden="true">⌄</span>
+  </summary>
+  <section className="palace-starting-path" aria-label="Optional Palace welcome tour">
+   <div className="palace-starting-copy">
+    <p className="eyebrow">A GENTLE FIRST JOURNEY</p>
+    <h2>Make yourself at home.</h2>
+    <p>There's no need to learn every room at once. Open any doorway that interests you; this little map is here when you return.</p>
+    <p className="palace-starting-next">{nextStep?<>A place to start: <strong>{nextStep.name}</strong></>:<>You have opened every doorway on this map. Wander wherever curiosity takes you.</>}</p>
+    <div className="palace-starting-meter">
+     <div className="palace-starting-track" role="progressbar" aria-label="Welcome doorways opened" aria-valuenow={count} aria-valuemin={0} aria-valuemax={4}><span style={{width:(count/4*100)+'%'}}/></div>
+     <small>{count} of 4 doorways opened</small>
+    </div>
+   </div>
+   <div className="palace-starting-doors">
+    {WELCOME_STEPS.map(step=>{
+     const opened=state.visited.includes(step.id);
+     return <Link key={step.id} to={step.url}
+      className={'palace-starting-door palace-starting-door-'+step.id+(nextStep?.id===step.id?' is-next':'')+(opened?' is-opened':'')}
+      onClick={()=>change({...state,visited:opened?state.visited:[...state.visited,step.id]})}>
+      <span className="palace-starting-icon" aria-hidden="true">{step.symbol}</span>
+      <span><strong>{step.name}</strong><small>{step.detail}</small></span>
+      <b>{opened?'✓ Opened':nextStep?.id===step.id?'Start here →':'Explore →'}</b>
+     </Link>;
+    })}
+   </div>
+   <button type="button" className="palace-tour-dismiss" onClick={()=>change({...state,hidden:true})}>Hide this introduction</button>
+  </section>
+ </details>;
 }
 
 export function PalaceLiveGatherings(){
