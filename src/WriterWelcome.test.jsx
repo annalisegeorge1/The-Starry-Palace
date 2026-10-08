@@ -10,7 +10,7 @@ afterEach(cleanup);
 it('gives new writers a direct private-draft path without promising a following',()=>{
  render(<MemoryRouter><WriterWelcome/></MemoryRouter>);
  expect(screen.getByRole('heading',{name:'Your next chapter belongs here.'})).toBeTruthy();
- expect(screen.getByRole('link',{name:/Start my first draft/i}).getAttribute('href')).toBe('/writing');
+ expect(screen.getByRole('link',{name:/Create an account to write/i}).getAttribute('href')).toBe('/login?mode=signup&next=%2Fwriting');
  expect(screen.getByRole('link',{name:/Explore the Reading Rooms/i}).getAttribute('href')).toBe('/reading');
  expect(screen.getByText(/cannot promise followers, votes, rankings/i)).toBeTruthy();
 });
