@@ -16,12 +16,14 @@ function availableControls(dialog){
  * Keep keyboard navigation inside an open Palace overlay.
  * Restore focus to the invoking control when the panel disappears.
  */
-export function usePalaceDialogFocusTrap(isOpen,panelId){
+export function usePalaceDialogFocusTrap(isOpen,panelId,returnFocusSelector){
  useEffect(()=>{
   if(!isOpen||typeof document==='undefined')return;
   const panel=document.getElementById(panelId);
   if(!panel)return;
-  const previous=document.activeElement;
+  // React may have already focused an autoFocus input during the mount commit.
+  const active=document.activeElement;
+  const previous=panel.contains(active)&&returnFocusSelector?document.querySelector(returnFocusSelector):active;
   const initial=panel.querySelector('[autofocus]')||availableControls(panel)[0];
   initial?.focus?.({preventScroll:true});
   const onTab=event=>{
@@ -47,5 +49,5 @@ export function usePalaceDialogFocusTrap(isOpen,panelId){
    document.removeEventListener('keydown',onTab);
    if(previous&&previous.isConnected)previous.focus?.({preventScroll:true});
   };
- },[isOpen,panelId]);
+ },[isOpen,panelId,returnFocusSelector]);
 }
