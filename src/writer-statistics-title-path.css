@@ -1,0 +1,34 @@
+/* Gentle title progress and safe, readable recovery controls. */
+.celestial-next-title{
+ display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;
+ gap:.65rem 1rem;padding:1rem 1.15rem;margin:1rem 0 1.2rem;
+ border:1px solid rgba(165,164,228,.35);border-radius:17px;
+ background:linear-gradient(110deg,rgba(103,79,171,.18),rgba(62,127,169,.12));
+}
+.celestial-next-title>div:first-child{min-width:0}
+.celestial-next-title small{display:block;font-size:.61rem;letter-spacing:.12em;color:#bfafea}
+.celestial-next-title strong{display:block;font-size:1.06rem;color:#f0e7ff;line-height:1.3}
+.celestial-next-title p{color:#c9c7e2;font-size:.79rem;line-height:1.5;margin:.35rem 0 0}
+.celestial-next-title-actions{display:grid;justify-items:end;gap:.45rem}
+.celestial-next-title-actions span{font-size:.72rem;color:#cee5fa}
+.celestial-next-title-actions button{
+ border-radius:10px;border:1px solid rgba(182,201,246,.4);background:rgba(91,104,178,.2);
+ color:#e8f0ff;padding:.52rem .85rem;min-height:40px;cursor:pointer;
+}
+.celestial-next-title-actions button:focus-visible,.draft-recovery-banner button:focus-visible{
+ outline:3px solid #b6dbff;outline-offset:3px;
+}
+.celestial-next-progress{grid-column:1/-1;height:7px;overflow:hidden;border-radius:100px;background:rgba(171,172,211,.23)}
+.celestial-next-progress i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#9989d8,#83c9df)}
+.draft-recovery-banner>div:last-child{display:flex;align-items:center;flex-wrap:wrap;gap:.45rem;min-width:0}
+.draft-recovery-banner button{min-height:40px;max-width:100%;white-space:normal}
+.daylight .celestial-next-title{background:linear-gradient(110deg,#f0eafa,#e9f4fd);border-color:#c8b9df}
+.daylight .celestial-next-title small{color:#68538c}
+.daylight .celestial-next-title strong{color:#443166}
+.daylight .celestial-next-title p,.daylight .celestial-next-title-actions span{color:#625578}
+.daylight .celestial-next-title-actions button{color:#443266;background:#f9f6ff;border-color:#c8bbdf}
+@media(max-width:690px){
+ .celestial-next-title{grid-template-columns:minmax(0,1fr)}
+ .celestial-next-title-actions{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
+}
+@media(prefers-reduced-motion:reduce){.celestial-next-progress i{transition:none!important}}
