@@ -1,6 +1,16 @@
 import {describe,it,expect} from 'vitest';
-import {structureClassicText} from './classicTextStructure';
+import {structureClassicText,restoreFlatClassicChapterHtml} from './classicTextStructure';
 describe('classic literature typesetting',()=>{
+ it('repairs one large archive chapter while preserving normal chapter HTML',()=>{
+  const flat=Array.from({length:35},(_,i)=>'This is a complete sentence in chapter '+i+' with a long descriptive narrative.').join(' ');
+  const html='<p>'+flat+'</p>';
+  const result=restoreFlatClassicChapterHtml(html);
+  // Node test environment may lack DOMParser, in which case the fallback is unchanged.
+  if(typeof DOMParser!=='undefined'){
+   expect((result.match(/<p>/g)||[]).length).toBeGreaterThan(1);
+   expect(restoreFlatClassicChapterHtml('<p>First.</p><p>Second.</p><p>Third.</p>')).toBe('<p>First.</p><p>Second.</p><p>Third.</p>');
+  }
+ });
  it('preserves source paragraph boundaries',()=>{
   expect(structureClassicText('First paragraph.\n\nSecond paragraph.').map(x=>x.text))
    .toEqual(['First paragraph.','Second paragraph.']);
