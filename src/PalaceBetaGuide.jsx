@@ -47,7 +47,7 @@ export default function PalaceBetaGuide({Frame}){
  }
  function troubleHere(item){
   update({issueDraft:{...state.issueDraft,page:item.url}});
-  document.getElementById('palace-beta-issue-form')?.scrollIntoView({block:'start',behavior:'auto'});
+  document.getElementById('palace-beta-issue-form')?.scrollIntoView?.({block:'start',behavior:'auto'});
  }
  async function copyText(text,what){
   try{
