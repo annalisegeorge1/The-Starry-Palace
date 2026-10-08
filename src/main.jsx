@@ -19,6 +19,7 @@ import {palaceSignInDoor,palaceDoorDestinationMessage} from './palaceDoorway';
 import {shouldOfferManualPalaceRefresh} from './palaceUpdateSafety';
 import {usePalaceDialogFocusTrap} from './usePalaceDialogFocusTrap';
 import {shouldOpenPalaceQuickNavigation} from './palaceKeyboard';
+import {palaceRecentDoorKey,readPalaceRecentDoors,addPalaceRecentDoor} from './palaceRecentDoors';
 import './palace-inviting-polish.css';
 import {
  ChamberLive,OnboardingLive,ReadingLive,ClubLive,WritingLive,SettingsLive,ActivityLive,LibraryLive,
@@ -221,13 +222,16 @@ function FrameShell({children}){
  const [mobileMoreOpen,setMobileMoreOpen]=useState(false);
  const [commandQuery,setCommandQuery]=useState('');
  const [commandIndex,setCommandIndex]=useState(0);
- const [recentPalaceRoutes,setRecentPalaceRoutes]=useState(()=>{try{const rows=JSON.parse(safeLocalGet('palace-recent-routes')||'[]');return Array.isArray(rows)?rows.slice(0,5):[]}catch{return[]}});
+ const recentDoorsKey=palaceRecentDoorKey(session?.user?.id);
+ const [recentPalaceRoutes,setRecentPalaceRoutes]=useState(()=>({key:recentDoorsKey,items:readPalaceRecentDoors(safeLocalGet,recentDoorsKey)}));
  const [shellProfile,setShellProfile]=useState(null);
  const [letterBadge,setLetterBadge]=useState(0);
  const [activityBadge,setActivityBadge]=useState(0);
  const location=useLocation();const navigate=useNavigate();
  usePalaceDialogFocusTrap(commandOpen,'palace-command-dialog','.command-trigger');
  usePalaceDialogFocusTrap(mobileMoreOpen,'mobile-palace-more-sheet','.mobile-palace-more');
+ React.useEffect(()=>{setRecentPalaceRoutes({key:recentDoorsKey,items:readPalaceRecentDoors(safeLocalGet,recentDoorsKey)})},[recentDoorsKey]);
+ React.useEffect(()=>{if(recentPalaceRoutes.key)safeLocalSet(recentPalaceRoutes.key,JSON.stringify(recentPalaceRoutes.items))},[recentPalaceRoutes]);
  React.useEffect(()=>setNavOpen(false),[location.pathname,location.search]);
  React.useEffect(()=>{setCommandOpen(false);setMobileMoreOpen(false);setCommandQuery('');setCommandIndex(0)},[location.pathname,location.search]);
  React.useEffect(()=>{safeLocalSet('palace-theme',daylight?'daylight':'night')},[daylight]);
@@ -311,10 +315,10 @@ function FrameShell({children}){
  ];
  function wanderFromHere(){const choices=passageDoors.filter(x=>x.path!==currentHref&&!x.path.startsWith('/login'));const pick=choices[Math.floor(Math.random()*choices.length)];if(pick)navigate(pick.path)}
 
- const recentCommandItems=recentPalaceRoutes.filter(row=>row?.path&&row.path!==currentHref).slice(0,4);
+ const recentCommandItems=recentDoorsKey&&recentPalaceRoutes.key===recentDoorsKey?recentPalaceRoutes.items.filter(row=>row.path!==currentHref).slice(0,4):[];
  const defaultCommandItems=[...recentCommandItems,...quickDoors.filter(q=>!recentCommandItems.some(r=>r.path===q.path))].slice(0,8);
  const visibleCommandItems=commandNeedle?commandMatches:defaultCommandItems;
- React.useEffect(()=>{if(!activeRoom)return;const label=activeSection?.[0]||activeRoom.label;const item={label,path:currentHref,icon:activeRoom.icon,detail:activeSection?activeRoom.label+' · recently visited':'Recently visited',kind:'recent'};setRecentPalaceRoutes(prev=>{const next=[item,...prev.filter(x=>x.path!==item.path)].slice(0,5);safeLocalSet('palace-recent-routes',JSON.stringify(next));return next})},[currentHref,activeRoom?.id,activeSection?.[0]]);
+ React.useEffect(()=>{if(!activeRoom||!recentDoorsKey)return;const label=activeSection?.[0]||activeRoom.label;const item={label,path:currentHref,icon:activeRoom.icon,detail:activeSection?activeRoom.label+' · recently visited':'Recently visited',kind:'recent'};setRecentPalaceRoutes(prev=>({key:recentDoorsKey,items:addPalaceRecentDoor(prev.key===recentDoorsKey?prev.items:readPalaceRecentDoors(safeLocalGet,recentDoorsKey),item)}))},[currentHref,activeRoom?.id,activeSection?.[0],recentDoorsKey]);
  React.useEffect(()=>setCommandIndex(0),[commandQuery,commandOpen]);
  function togglePalaceNavigation(){
   if(typeof window!=='undefined'&&window.matchMedia('(min-width:981px)').matches){setSidebarCollapsed(v=>!v);setNavOpen(false);return}
