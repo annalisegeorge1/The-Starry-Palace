@@ -15,6 +15,13 @@ describe('effortless reading and writing regression protection',()=>{
   expect(reader).toContain('return()=>{active=false}');
   expect(reader).toContain('setData(undefined);setReaderPlace(0);setNotes([])');
  });
+ it('avoids re-sanitizing a long chapter and rebuilding landmarks on every scroll event',()=>{
+  expect(reader).toContain("const readerHtml=React.useMemo(");
+  expect(reader).toContain("const readerLandmarks=React.useMemo(");
+  expect(reader).toContain("[readerHtml]);");
+  expect(reader).toContain("setReaderPlace(prev=>Math.abs(prev-pct)>=1?pct:prev)");
+  expect(reader.indexOf('const readerHtml=React.useMemo(')).toBeLessThan(reader.indexOf('if(data===null)return'));
+ });
  it('offers explicit chapter wayfinding without extra overlays',()=>{
   expect(reader).toContain('id="palace-reader-start"');
   expect(reader).toContain('id="palace-reader-chapters"');
