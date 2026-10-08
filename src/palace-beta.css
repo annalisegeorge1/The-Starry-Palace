@@ -1,0 +1,23 @@
+.palace-beta-guide{max-width:1080px;margin:0 auto;padding:clamp(16px,4vw,46px);color:var(--text,#ece7fc)}
+.palace-beta-hero{padding:clamp(22px,5vw,44px);border-radius:24px;background:linear-gradient(135deg,#24203e,#504271);color:#f6f1ff;border:1px solid #a795c7a0}
+.palace-beta-hero h1{font:700 clamp(2rem,4vw,3.25rem)/1.12 Georgia,serif;margin:12px 0}
+.palace-beta-hero>p{max-width:680px;line-height:1.6}
+.palace-beta-progress{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:5px 12px;margin-top:18px}
+.palace-beta-progress strong{font-size:1.4rem}.palace-beta-progress div{grid-column:1/-1;background:#bcaad03c;height:8px;border-radius:20px;overflow:hidden}.palace-beta-progress i{display:block;height:100%;background:#c3aaf3;border-radius:inherit}
+.palace-beta-controls{margin:20px 0;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.palace-beta-controls label,.palace-beta-report>label{display:grid;gap:7px;font-weight:750;font-size:.85rem}
+.palace-beta-guide input:not([type=checkbox]),.palace-beta-guide select,.palace-beta-guide textarea{min-width:0;width:100%;box-sizing:border-box;padding:12px;border-radius:12px;background:var(--card,#29233e);color:inherit;border:1px solid #a18bc4;font:inherit}
+.palace-beta-group{margin:26px 0}.palace-beta-group h2,.palace-beta-report h2{font:700 1.6rem Georgia,serif}
+.palace-beta-checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.palace-beta-checks article,.palace-beta-report{border:1px solid #9d8eb06c;border-radius:18px;padding:18px;background:var(--card,#29233e)}
+.palace-beta-task{display:flex;align-items:start;gap:12px;line-height:1.45}
+.palace-beta-task input{width:20px;height:20px;margin-top:1px;flex:none;accent-color:#9772c9}
+.palace-beta-checks p,.palace-beta-report p{line-height:1.6;margin:9px 0}
+.palace-beta-checks a{color:inherit;text-decoration:underline;text-underline-offset:3px;font-size:.88rem}
+.palace-beta-report{margin-top:32px;display:grid;gap:12px}
+.palace-beta-actions{display:flex;flex-wrap:wrap;gap:10px}
+.palace-beta-actions button{padding:11px 18px;border-radius:11px;border:1px solid #a48bdd;background:#7156a3;color:white;font:inherit;font-weight:750;cursor:pointer}
+.palace-beta-actions button.quiet{background:transparent;color:inherit}
+.palace-beta-report small{line-height:1.5;opacity:.8}
+.palace-beta-guide a:focus-visible,.palace-beta-guide button:focus-visible,.palace-beta-guide input:focus-visible,.palace-beta-guide select:focus-visible,.palace-beta-guide textarea:focus-visible{outline:3px solid #aa92ec;outline-offset:2px}
+@media(max-width:700px){.palace-beta-controls,.palace-beta-checks{grid-template-columns:1fr}}
