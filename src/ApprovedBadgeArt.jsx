@@ -17,11 +17,14 @@ const duelArtAliases={
  'twin-quills-victor':'collaboration-scribe',
  'court-of-eight':'community-host'
 };
+// Real achievement families use database-generated IDs, not always catalogue slugs.
+// Fall back to the normalized displayed name before declaring their art missing.
+const duelArtAliasesByName=new Map(Object.entries(duelArtAliases).map(([id,art])=>[normalize(id),art]));
 const imagePromises=new Map();
 const cutoutPromises=new Map();
 
 export function approvedBadgeFrame(family,tier='bronze'){
- const sourceId=duelArtAliases[family?.id]||family?.id;const entry=sheets[sourceId]||sheets[names.get(normalize(family?.name))];
+ const sourceId=duelArtAliases[family?.id]||duelArtAliasesByName.get(normalize(family?.name))||family?.id;const entry=sheets[sourceId]||sheets[names.get(normalize(family?.name))];
  if(!entry)return null;
  const column=Math.max(0,tiers.indexOf(tier));
  return {...entry,box:entry.frames[column]};
