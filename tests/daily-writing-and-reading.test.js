@@ -25,7 +25,7 @@ describe('editor and reader daily-use guarantees',()=>{
   expect(writer).toContain('createManuscriptSaveCoordinator(');
   expect(writer).toContain('await persistChapter(form)');
   expect(writer).toContain('setSaved(saveFailureNotice())');
-  expect(writer).toContain("recoveryStorageRef.current?'Recovery copy kept on this device':'Cloud save failed · export draft now'");
+  expect(writer).toContain("recoveryStorageRef.current?'Cloud save failed · recovery copy kept on this device':'Cloud save failed · export draft now'");
   expect(writer).toContain('setRecoveryStorageAvailable(false)');
  });
  it('makes reader settings and the active reading tone identifiable',()=>{
