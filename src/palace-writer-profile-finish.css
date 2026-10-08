@@ -1,0 +1,19 @@
+/* Beta polish: save status must stay legible beside chapter navigation. */
+body.writing-desk-open .writer-chapter-jump-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-width:0}
+body.writing-desk-open .writer-toolbar-save-state{display:inline-flex;align-items:center;gap:6px;max-width:100%;min-width:0;white-space:normal;overflow-wrap:anywhere;line-height:1.4}
+body.writing-desk-open .writer-chapter-jump-actions :is(button,.writer-backup-action){min-height:42px}
+body.writing-desk-open .editor-save-cluster{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+body.writing-desk-open .legacy-save-state{overflow-wrap:anywhere;white-space:normal}
+.palace-shell .chic-member-profile{min-width:0}
+.palace-shell .chic-member-profile :is(.legacy-profile-copy,.legacy-profile-cover){min-width:0;max-width:100%}
+.palace-shell .chic-member-profile .legacy-profile-copy :is(h1,p,strong,small){overflow-wrap:anywhere}
+.palace-shell .chic-member-profile :is(img,video){max-width:100%}
+@media(max-width:700px){
+ body.writing-desk-open .writer-chapter-jump-actions{align-items:stretch}
+ body.writing-desk-open .writer-toolbar-save-state{flex:1 1 100%;padding:5px 0}
+ body.writing-desk-open .writer-chapter-jump-actions :is(button,.writer-backup-action){flex:1 1 auto}
+ .palace-shell .chic-member-profile .legacy-profile-copy h1{font-size:clamp(1.6rem,6vw,2.65rem);line-height:1.16}
+}
+@media(prefers-reduced-motion:reduce){
+ body.writing-desk-open .writer-chapter-jump-actions *{scroll-behavior:auto}
+}
