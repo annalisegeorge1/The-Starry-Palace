@@ -26,6 +26,7 @@ import {
  ComicLive,ComicEpisodeLive,ComicStudioLive,SeriesLive
 } from './liveRooms';
 import './palace-editorial-finish.css';
+import './palace-navigation-jewels.css';
 
 
 const chunkErrorPattern=/dynamically imported module|importing a module script failed|failed to fetch|chunkloaderror|loading chunk|room load timeout|networkerror/i;
