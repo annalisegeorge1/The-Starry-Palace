@@ -5,6 +5,7 @@ import './manuscript-pad-refinement.css';
 import {FirstManuscriptGuide} from './WriterWelcome';
 import {createManuscriptSaveCoordinator} from './manuscriptSaveCoordinator';
 import {chooseWritingResumeTarget} from './writingReturnModel';
+import {loadSelectedManuscript} from './chapterLoadController';
 import './palace-chapter-transitions.css';
 import './effortless-reader-paths.css';
 import PrismWayfinder from './PrismWayfinder';
@@ -1445,19 +1446,19 @@ export function WorkStudioLive({Frame}){
  useEffect(()=>{load();getTagConstellation().then(setTagOptions).catch(()=>{})},[slug,session.user.id]);
  useEffect(()=>{const t=setTimeout(()=>{setTagSearching(true);searchPalaceTags(tagQuery,tagCategory,60).then(setTagOptions).catch(()=>{}).finally(()=>setTagSearching(false))},180);return()=>clearTimeout(t)},[tagQuery,tagCategory]);
  useEffect(()=>{try{localStorage.setItem('palace-typewriter-mode',String(typewriterMode));localStorage.setItem('palace-page-width',pageWidth);localStorage.setItem('palace-writer-font',writerFont);localStorage.setItem('palace-writer-font-size',String(writerFontSize));localStorage.setItem('palace-line-spacing',lineSpacing)}catch{}},[typewriterMode,pageWidth,writerFont,writerFontSize,lineSpacing]);useEffect(()=>{
-  // Ignore late replies from an older chapter. Never let them replace the
-  // active manuscript or its private device recovery snapshot.
-  let active=true;
+  // A chapter selection owns its request. An older response cannot replace
+  // the chosen page or its saved recovery copy.
   setChapter(null);setSnapshots([]);setRecovery(null);setChapterMap([]);
   setSaved('');setError('');
-  if(!selected){setChapterLoading(false);return()=>{active=false}}
+  if(!selected){setChapterLoading(false);return}
   setChapterLoading(true);
-  Promise.all([getChapter(slug,selected),getChapterSnapshots(selected).catch(()=>[])])
-   .then(([result,revisions])=>{
-    if(!active)return;
-    const ch=result?.chapter?.id===selected?result.chapter:null;
+  return loadSelectedManuscript({
+   chapterId:selected,
+   loadChapter:id=>getChapter(slug,id),
+   loadRevisions:id=>getChapterSnapshots(id),
+   onReady:(ch,revisions)=>{
     setChapter(ch);
-    setSnapshots(revisions||[]);
+    setSnapshots(revisions);
     setWordCount(countWords(ch?.body_html||''));
     setChapterMap(mapFromHtml(ch?.body_html||''));
     setEditorVersion(v=>v+1);
@@ -1469,9 +1470,10 @@ export function WorkStudioLive({Frame}){
       if(snap&&(snap.body_html!==ch.body_html||snap.title!==ch.title||snap.revision_note!==(ch.revision_note||'')))setRecovery(snap);
      }catch{}
     }else setError('This chapter could not be opened. Select another chapter or reopen this work.');
-   }).catch(err=>{if(active)setError(err.message||'This chapter could not be loaded.')})
-   .finally(()=>{if(active)setChapterLoading(false)});
-  return()=>{active=false};
+   },
+   onError:err=>setError(err?.message||'This chapter could not be loaded.'),
+   onSettled:()=>setChapterLoading(false)
+  });
  },[selected,slug]);useEffect(()=>{document.body.classList.add('writing-desk-open');return()=>{if(saveTimerRef.current)clearTimeout(saveTimerRef.current);document.body.classList.remove('focus-editor');document.body.classList.remove('writing-desk-open')}},[]);useEffect(()=>{if(sprintRunning)return;setSprintRemaining(Math.max(1,sprintMinutes)*60)},[sprintMinutes]);useEffect(()=>{if(!sprintRunning)return;if(sprintRemaining<=0){setSprintRunning(false);setSprintNote('Sprint complete — '+Math.max(0,wordCount-sprintStartWords).toLocaleString()+' new words beneath the moon.');return}const timer=window.setTimeout(()=>setSprintRemaining(v=>Math.max(0,v-1)),1000);return()=>window.clearTimeout(timer)},[sprintRunning,sprintRemaining]);useEffect(()=>{setSprintRunning(false);setSprintRemaining(Math.max(1,sprintMinutes)*60);setSprintStartWords(0);setSprintNote('')},[chapter?.id]);useEffect(()=>{try{setMarginNote(chapter?.id?localStorage.getItem('palace-margin-note:'+chapter.id)||'':'')}catch{setMarginNote('')}},[chapter?.id]);useEffect(()=>{try{localStorage.setItem('palace-desk-mood',deskMood)}catch{}},[deskMood]);useEffect(()=>{try{localStorage.setItem('palace-writer-rail',railCollapsed?'collapsed':'open')}catch{}},[railCollapsed]);useEffect(()=>{try{localStorage.setItem('palace-clean-paste',String(cleanPaste))}catch{}},[cleanPaste]);
  useEffect(()=>{document.body.classList.toggle('focus-editor',focusMode);return()=>document.body.classList.remove('focus-editor')},[focusMode]);
  useEffect(()=>{const onKey=e=>{const mod=e.metaKey||e.ctrlKey;const key=e.key.toLowerCase();const inEditor=!!editorRef.current&&(document.activeElement===editorRef.current||editorRef.current.contains(document.activeElement));if(mod&&key==='s'&&chapter){e.preventDefault();const form=editorRef.current?.closest('form');if(form)persistChapter(form).catch(err=>{setSaved('Recovery copy kept on this device');setError(err.message)})}else if(mod&&inEditor&&key==='b'){e.preventDefault();exec('bold')}else if(mod&&inEditor&&key==='i'){e.preventDefault();exec('italic')}else if(mod&&inEditor&&key==='u'){e.preventDefault();exec('underline')}else if(mod&&inEditor&&key==='f'){e.preventDefault();openFindPanel()}else if(e.key==='Escape'&&focusMode){setFocusMode(false)}};window.addEventListener('keydown',onKey);return()=>window.removeEventListener('keydown',onKey)},[chapter?.id,focusMode]);
