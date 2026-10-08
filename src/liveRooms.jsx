@@ -41,6 +41,7 @@ import {structureClassicText,restoreFlatClassicChapterHtml} from './classicTextS
 import {storyHistoryDetails,storyHistoryLabel} from './storyHistoryModel';
 import ReadingStoryStats from './ReadingStoryStats';
 import {getPublicWorkBookmarkCount} from './palaceData';
+import {storyOverviewStats} from './storyOverviewStats';
 import ReadingStoryContext from './ReadingStoryContext';
 import {getStoryHistoryMetadata} from './palaceData';
 import './archive-classic-typesetting.css';
@@ -1376,8 +1377,8 @@ export function WorkLive({Frame}){
  const readable=data?.chapters.filter(ch=>ch.status==='published'||session?.user?.id===data.author_id)||[];
  const publicChapters=data?.chapters.filter(ch=>ch.status==='published')||[];
  const totalWords=readable.reduce((n,ch)=>n+Number(ch.word_count||0),0);
- const publicWords=publicChapters.reduce((n,ch)=>n+Math.max(0,Number(ch.word_count)||0),0);
- const overviewStats={words:publicWords,chapters:publicChapters.length,comments:communityLoaded?community.comments.filter(comment=>comment.status==='approved').length:null,bookmarks:bookmarkCount};
+ const overviewStats=storyOverviewStats(data,communityLoaded?community.comments:null,bookmarkCount);
+ const publicWords=overviewStats.words;
  const overviewWork={...data,work_tags:community.tags,reading_stats:overviewStats};
 
  const first=readable[0];
