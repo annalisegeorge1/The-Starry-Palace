@@ -49,6 +49,6 @@ export function ProtectedRoute({ children }) {
   const { session, loading } = useAuth();
   const location = useLocation();
   if (loading) return <p role="status">Restoring your session…</p>;
-  if (!session) return <Navigate to="/login" state={{ from: location.pathname }} replace />;
+  if (!session) return <Navigate to="/login" state={{ from: location.pathname+location.search+location.hash }} replace />;
   return children;
 }
