@@ -73,6 +73,11 @@ export default function ArchiveClassicReader({record,text}){
     {text?.first_publication_year&&<span>Source publication: {text.first_publication_year}</span>}
    </div>
    {record?.host_mode==='excerpt'&&<p className="archive-classic-excerpt-note">Only the hosted excerpt is available in this reader. The complete work is not implied.</p>}
+   <button type="button" className="archive-classic-edition-jump" onClick={()=>{
+    setEditionOpen(true);
+    const details=readerRef.current?.querySelector('.archive-classic-edition');
+    if(details&&typeof details.scrollIntoView==='function')details.scrollIntoView({block:'start',behavior:'auto'});
+   }}>✧ View edition, source and translator details ↓</button>
   </header>
   <div className="archive-classic-reader-toolbar" aria-label="Classic reading appearance">
    <label>Text size
