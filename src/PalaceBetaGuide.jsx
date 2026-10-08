@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useEffect,useState} from 'react';
 import {Link} from 'react-router-dom';
 import {
  PALACE_BETA_CHECKS,PALACE_BETA_TRACKS,BETA_RESULTS,BETA_SEVERITY,
@@ -29,17 +29,21 @@ function stored(){
   };
  }catch{return{role:'reader',device:'',showAll:false,showRemaining:false,results:{},notes:'',issues:[],issueDraft:{...EMPTY_ISSUE}}}
 }
-function store(next){try{localStorage.setItem(KEY,JSON.stringify(next))}catch{}}
 export default function PalaceBetaGuide({Frame}){
  const[state,setState]=useState(stored);
  const[message,setMessage]=useState('');
+ const[storageWarning,setStorageWarning]=useState(false);
+ useEffect(()=>{
+  try{localStorage.setItem(KEY,JSON.stringify(state));setStorageWarning(false)}
+  catch{setStorageWarning(true)}
+ },[state]);
  const checks=betaChecksFor(state.role,state.showAll);
  const counts=betaCounts(checks,state.results);
  const report=buildBetaReport(state,checks);
  const nextCheck=nextBetaCheck(checks,state.results);
  const visibleChecks=state.showRemaining?checks.filter(item=>!['passed','stuck','skipped'].includes(state.results[item.id])):checks;
  const groups=[...new Set(visibleChecks.map(x=>x.group))];
- function update(patch){setState(prev=>{const next={...prev,...(typeof patch==='function'?patch(prev):patch)};store(next);return next})}
+ function update(patch){setState(prev=>({...prev,...(typeof patch==='function'?patch(prev):patch)}))}
  function updateIssue(patch){update(prev=>({issueDraft:{...prev.issueDraft,...patch}}))}
  function jumpTo(id){
   const target=document.getElementById(id);
@@ -53,7 +57,7 @@ export default function PalaceBetaGuide({Frame}){
   if(!betaIssueHasContent(issue)){setMessage('Please describe at least the page or what happened before adding an issue.');return}
   if(state.issues.length>=30){setMessage('This report holds up to 30 issues. Copy or save it, then begin a new report.');return}
   update({issues:[...state.issues,issue],issueDraft:{...EMPTY_ISSUE}});
-  setMessage('Issue added to your private report on this device.');
+  setMessage(storageWarning?'Issue added. This browser cannot save feedback; export your report before leaving.':'Issue added to your private report on this device.');
  }
  function troubleHere(item){
   updateIssue({page:item.url});
@@ -93,7 +97,8 @@ export default function PalaceBetaGuide({Frame}){
    <p className="eyebrow">THE PALACE TEST KITCHEN · FRIENDLY EARLY ACCESS</p>
    <h1>Help make the Palace feel effortless.</h1>
    <p>You don't need to be technical or finish every task. Tell us what felt lovely, what felt confusing, and where you got stuck.</p>
-   <p className="palace-beta-privacy">✦ Nothing on this page is automatically sent. Your notes stay on this device until you choose to share a report.</p>
+   <p className="palace-beta-privacy">✦ Nothing on this page is automatically sent. {storageWarning?'Your browser is blocking local saving, so export your report before leaving.':'Your notes stay on this device until you choose to share a report.'}</p>
+   {storageWarning&&<p className="palace-beta-storage-warning" role="alert">Local saving is unavailable here. Your feedback may disappear when you leave or reload this page. Copy, share or save your report before you go.</p>}
    <div className="palace-beta-progress"><strong>{counts.marked}/{checks.length}</strong><span>checkpoints marked in your track</span><div role="progressbar" aria-valuemin={0} aria-valuemax={checks.length} aria-valuenow={counts.marked} aria-label="Beta checklist progress"><i style={{width:(checks.length?counts.marked/checks.length*100:0)+'%'}}/></div></div>
    <div className="palace-beta-compass">
     <span className="palace-beta-compass-sigil" aria-hidden="true">✧</span>
@@ -117,7 +122,7 @@ export default function PalaceBetaGuide({Frame}){
    <label className="palace-beta-all-checks"><input type="checkbox" checked={state.showRemaining} onChange={e=>update({showRemaining:e.target.checked})}/> Show only checkpoints I haven't marked yet</label>
   </section>
   <section className="palace-beta-safety" aria-label="Testing safety"><strong>Use a test story, not a treasured manuscript.</strong> Avoid private messages, passwords and personal information in screenshots or reports. Don't change live Council votes or moderation actions just to test them. If a task needs an account and you'd rather not register, choose Skipped.</section>
-  {groups.length===0&&<section className="palace-beta-finished"><strong>All caught up for this track.</strong><p>Your answers are saved on this device. Uncheck the unfinished-only filter to revisit any checkpoint.</p><button type="button" onClick={()=>update({showRemaining:false})}>Review all checkpoints</button></section>}
+  {groups.length===0&&<section className="palace-beta-finished"><strong>All caught up for this track.</strong><p>{storageWarning?'Your browser cannot store these answers after you leave. Export your report first.':'Your answers are saved on this device.'} Uncheck the unfinished-only filter to revisit any checkpoint.</p><button type="button" onClick={()=>update({showRemaining:false})}>Review all checkpoints</button></section>}
   {groups.map(group=><section className="palace-beta-group" key={group}><h2>{group}</h2><div className="palace-beta-checks">
    {visibleChecks.filter(x=>x.group===group).map(item=><article key={item.id} id={'palace-beta-task-'+item.id} tabIndex={-1} className={state.results[item.id]==='stuck'?'palace-beta-had-trouble':''}>
     <strong className="palace-beta-task-name">{item.name}</strong>
@@ -155,7 +160,7 @@ export default function PalaceBetaGuide({Frame}){
    </div>
    <details className="palace-beta-preview"><summary>Preview my full report</summary><textarea readOnly value={report} rows={12} aria-label="Complete beta report to copy manually" onFocus={e=>e.target.select()}/></details>
    {message&&<p className="palace-beta-message" role="status">{message}</p>}
-   <small>Share the report privately with the person who invited you. Copying or opening the share sheet does not guarantee delivery. All notes and checklist results are stored only in this browser.</small>
+   <small>Share the report privately with the person who invited you. Copying or opening the share sheet does not guarantee delivery. {storageWarning?'Local storage is blocked; export your answers before leaving this page.':'All notes and checklist results are stored only in this browser.'}</small>
   </section>
   <section className="palace-beta-invitation"><div><p className="eyebrow">INVITING A FRIEND?</p><h2>Make room for another voice.</h2><p>Anyone can explore the beta guide. You can share this invitation with someone who enjoys reading, writing, comics or thoughtful communities.</p></div><button type="button" onClick={()=>copyText(invite,'Invitation')}>Copy a friendly tester invitation</button></section>
  </main></Frame>;
