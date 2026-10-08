@@ -20,6 +20,13 @@ describe('Reading Room card information',()=>{
   const html=render(<ReadingStoryStats work={{slug:'untracked'}}/>);
   expect(html).toBe('');
  });
+ it('keeps a long summary compact until its expand button is selected',()=>{
+  const long='A wandering storyteller. '.repeat(28);
+  const html=render(<ReadingStoryContext work={{work_type:'original',summary:long}}/>);
+  expect(html).toContain('Read full summary');
+  expect(html).toContain('aria-expanded="false"');
+  expect(html).not.toContain(long.trim());
+ });
  it('shows stored summary and fandom on compact story cards',()=>{
   const html=render(<ReadingStoryContext work={{work_type:'fanwork',rating:'teen',completion_status:'complete',summary:'A road through the stars',work_tags:[{tags:{name:'Star Wars',category:'fandom',status:'canonical'}}]}}/>);
   expect(html).toContain('Star Wars');
