@@ -8,6 +8,7 @@ import {createChapterSwitchGate,createEditorMetricsScheduler} from './editorFlow
 import {chooseWritingResumeTarget} from './writingReturnModel';
 import {loadSelectedManuscript} from './chapterLoadController';
 import {readReaderNoteDraft,writeReaderNoteDraft} from './readerNoteDraft';
+import {rememberReaderPosition,readReaderPosition,chooseReaderResumePosition} from './readerPosition';
 import './palace-chapter-transitions.css';
 import './effortless-reader-paths.css';
 import './palace-desk-clarity.css';
@@ -1370,8 +1371,8 @@ function ReaderChapter({Frame,slug,chapterId}){
     ]);
     if(!active)return;
     setNotes(chapterNotes);
-    const savedPlace=readerState?.progress?.chapter_id===d.chapter.id
-      ?Math.max(0,Math.min(100,Number(readerState.progress.chapter_progress_percent)||0)):0;
+    const localPlace=(()=>{try{return readReaderPosition(window.localStorage,session.user.id,d.chapter.id)}catch{return null}})();
+    const savedPlace=chooseReaderResumePosition(readerState?.progress,localPlace,d.chapter.id);
     // Re-open once at the saved place. Subsequent scrolls belong to the reader.
     if(savedPlace<=1)restoredPlaceRef.current=d.chapter.id;
     setReaderPlace(savedPlace);
@@ -1380,13 +1381,13 @@ function ReaderChapter({Frame,slug,chapterId}){
     const index=Math.max(0,readable.findIndex(ch=>ch.id===d.chapter.id));
     const overall=Math.max(5,Math.min(95,Math.round((index/Math.max(1,readable.length))*100)));
     await recordReadingProgress(session.user.id,d.work.id,d.chapter.id,overall,false,savedPlace);
-   }catch{if(active){restoredPlaceRef.current=d.chapter.id;readingPlaceReadyRef.current=true}}
+   }catch{if(active){const fallback=(()=>{try{return readReaderPosition(window.localStorage,session.user.id,d.chapter.id)}catch{return null}})();setReaderPlace(fallback?.percent||0);if(!fallback||fallback.percent<=1)restoredPlaceRef.current=d.chapter.id;readingPlaceReadyRef.current=true}}
   }).catch(e=>{if(active)setError(e.message)});
   return()=>{active=false};
  },[slug,chapterId,session?.user?.id]);
  useEffect(()=>{let active=true;earnSessionRef.current=null;setReadingBonus('');if(!session||!data?.chapter?.id||session.user.id===data.work.author_id||data.chapter.status!=='published')return;beginPalaceReading(data.chapter.id).then(id=>{if(active)earnSessionRef.current=id}).catch(()=>{});return()=>{active=false;earnSessionRef.current=null}},[data?.chapter?.id,session?.user?.id]);
  useEffect(()=>{if(!data||!session||readerPlace<=1||!readingPlaceReadyRef.current)return;const restoreKey=data.chapter.id;if(restoredPlaceRef.current===restoreKey)return;restoredPlaceRef.current=restoreKey;const timer=window.setTimeout(()=>{const el=chapterTextRef.current;if(!el)return;const top=window.scrollY+el.getBoundingClientRect().top;const travel=Math.max(1,el.offsetHeight-window.innerHeight*.35);window.scrollTo({top:Math.max(0,top+(readerPlace/100)*travel),left:0,behavior:'auto'})},120);return()=>window.clearTimeout(timer)},[data?.chapter?.id,readerPlace,session?.user?.id]);
- useEffect(()=>{if(!data||!session)return;const readable=data.work.chapters.filter(ch=>ch.status==='published');const index=Math.max(0,readable.findIndex(ch=>ch.id===data.chapter.id));const overall=Math.max(5,Math.min(95,Math.round((index/Math.max(1,readable.length))*100)));const savePlace=()=>{if(!readingPlaceReadyRef.current||restoredPlaceRef.current!==data.chapter.id)return;const el=chapterTextRef.current;if(!el)return;const top=window.scrollY+el.getBoundingClientRect().top;const anchor=window.scrollY+window.innerHeight*.35;const pct=Math.max(0,Math.min(100,((anchor-top)/Math.max(1,el.offsetHeight))*100));setReaderPlace(prev=>Math.abs(prev-pct)>=1?pct:prev);try{localStorage.setItem('palace-reading-place:'+data.chapter.id,String(pct))}catch{}if(placeTimerRef.current)window.clearTimeout(placeTimerRef.current);placeTimerRef.current=window.setTimeout(()=>recordReadingProgress(session.user.id,data.work.id,data.chapter.id,overall,false,pct).catch(()=>{}),900)};window.addEventListener('scroll',savePlace,{passive:true});window.addEventListener('pagehide',savePlace);return()=>{window.removeEventListener('scroll',savePlace);window.removeEventListener('pagehide',savePlace);if(placeTimerRef.current)window.clearTimeout(placeTimerRef.current)}},[data?.chapter?.id,session?.user?.id]); useEffect(()=>{document.body.classList.toggle('reader-focus-mode',readerFocus);return()=>document.body.classList.remove('reader-focus-mode')},[readerFocus]);
+ useEffect(()=>{if(!data||!session)return;const readable=data.work.chapters.filter(ch=>ch.status==='published');const index=Math.max(0,readable.findIndex(ch=>ch.id===data.chapter.id));const overall=Math.max(5,Math.min(95,Math.round((index/Math.max(1,readable.length))*100)));const savePlace=()=>{if(!readingPlaceReadyRef.current||restoredPlaceRef.current!==data.chapter.id)return;const el=chapterTextRef.current;if(!el)return;const top=window.scrollY+el.getBoundingClientRect().top;const anchor=window.scrollY+window.innerHeight*.35;const pct=Math.max(0,Math.min(100,((anchor-top)/Math.max(1,el.offsetHeight))*100));setReaderPlace(prev=>Math.abs(prev-pct)>=1?pct:prev);try{rememberReaderPosition(window.localStorage,session.user.id,data.chapter.id,pct)}catch{}if(placeTimerRef.current)window.clearTimeout(placeTimerRef.current);placeTimerRef.current=window.setTimeout(()=>recordReadingProgress(session.user.id,data.work.id,data.chapter.id,overall,false,pct).catch(()=>{}),900)};window.addEventListener('scroll',savePlace,{passive:true});window.addEventListener('pagehide',savePlace);return()=>{window.removeEventListener('scroll',savePlace);window.removeEventListener('pagehide',savePlace);if(placeTimerRef.current)window.clearTimeout(placeTimerRef.current)}},[data?.chapter?.id,session?.user?.id]); useEffect(()=>{document.body.classList.toggle('reader-focus-mode',readerFocus);return()=>document.body.classList.remove('reader-focus-mode')},[readerFocus]);
  const readerHtml=React.useMemo(()=>data?safeReaderHtml(data.chapter.body_html||''):'',[data?.chapter?.id,data?.chapter?.body_html]);
  const readerLandmarks=React.useMemo(()=>{if(!readerHtml||typeof DOMParser==='undefined')return[];try{const doc=new DOMParser().parseFromString('<body>'+readerHtml+'</body>','text/html');let scene=0;return[...doc.body.querySelectorAll('h2,h3,p')].filter(node=>node.matches('h2,h3')||(node.tagName==='P'&&(node.textContent||'').trim()==='✦')).map((node,index)=>{const tag=node.tagName.toLowerCase();if(tag==='p')scene+=1;return{index,kind:tag==='p'?'scene':tag,label:tag==='p'?'Scene break '+scene:((node.textContent||'').trim()||'Untitled section')}})}catch{return[]}},[readerHtml]);
  if(data===null)return <Frame><div className="live-state">This chapter is not available.</div></Frame>;
