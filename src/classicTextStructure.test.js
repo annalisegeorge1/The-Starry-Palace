@@ -36,6 +36,28 @@ describe('classic literature typesetting',()=>{
   const poem='Upon the hill,\nBeneath the moon;\nAcross the lake,\nA quiet tune;';
   expect(structureClassicText(poem)).toEqual([{kind:'verse',text:poem}]);
  });
+ it('uses prose indentation and quoted dialogue as real paragraph evidence',()=>{
+  const prose='The garden was quiet.\n   “Do you hear it?” she whispered.\nThe wind moved through the trees.\n   “Only the rain,” he said.';
+  const blocks=structureClassicText(prose);
+  expect(blocks.map(x=>x.kind)).toEqual(['paragraph','paragraph','paragraph']);
+  expect(blocks[0].text).toBe('The garden was quiet.');
+  expect(blocks[1].text).toBe('“Do you hear it?” she whispered. The wind moved through the trees.');
+  expect(blocks[2].text).toBe('“Only the rain,” he said.');
+ });
+ it('keeps heading order relative to the surrounding source paragraphs',()=>{
+  const blocks=structureClassicText('A closing line.\nCHAPTER II\nThe next opening line.');
+  expect(blocks).toEqual([
+   {kind:'paragraph',text:'A closing line.'},
+   {kind:'heading',text:'CHAPTER II'},
+   {kind:'paragraph',text:'The next opening line.'}
+  ]);
+ });
+ it('does not invent paragraph boundaries inside evidenced long paragraphs',()=>{
+  const first='First long paragraph with a distinct source boundary. '.repeat(20).trim();
+  const second='Second long paragraph from the same edition. '.repeat(20).trim();
+  const blocks=structureClassicText(first+'\n\n'+second);
+  expect(blocks).toEqual([{kind:'paragraph',text:first},{kind:'paragraph',text:second}]);
+ });
  it('handles empty and CRLF source',()=>{
   expect(structureClassicText('')).toEqual([]);
   expect(structureClassicText('One.\r\n\r\nTwo.').map(x=>x.text)).toEqual(['One.','Two.']);
