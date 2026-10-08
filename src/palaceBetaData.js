@@ -40,11 +40,13 @@ export function betaChecksFor(role,showAll=false){
 export function betaCounts(checks,results={}){
  return checks.reduce((acc,item)=>{
   const status=results[item.id];
-  if(status==='passed'||status==='stuck'||status==='skipped')acc.explored++;
+  if(status==='passed'||status==='stuck'||status==='skipped')acc.marked++;
+  if(status==='passed'||status==='stuck')acc.attempted++;
   if(status==='passed')acc.passed++;
   if(status==='stuck')acc.stuck++;
+  if(status==='skipped')acc.skipped++;
   return acc;
- },{explored:0,passed:0,stuck:0});
+ },{marked:0,attempted:0,passed:0,stuck:0,skipped:0});
 }
 export function cleanBetaIssue(issue={}){
  const fields=['page','steps','expected','actual','frequency','severity'];
@@ -61,7 +63,7 @@ export function buildBetaReport(state,checks=betaChecksFor(state.role,state.show
   'THE STARRY PALACE — VOLUNTARY BETA FEEDBACK',
   'Track: '+(PALACE_BETA_TRACKS[state.role]?.label||'General'),
   'Device and browser: '+(state.device?.trim()||'Not specified'),
-  'Checkpoints explored: '+counts.explored+'/'+checks.length,
+  'Checkpoints attempted: '+counts.attempted+'/'+checks.length+' · Skipped: '+counts.skipped,
   'Worked: '+counts.passed+' · Trouble: '+counts.stuck,
   '',
   'CHECKPOINTS',
