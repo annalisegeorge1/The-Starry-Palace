@@ -1,0 +1,115 @@
+
+/* Palace Life: make the room rail feel navigable and let quiet rooms invite
+   action without inventing member activity or ranking people. */
+.palace-shell .legacy-life-page .life-tabs.restored{
+ display:flex!important;
+ align-items:center;
+ flex-wrap:nowrap!important;
+ gap:7px!important;
+ max-width:100%;
+ min-width:0;
+ overflow-x:auto!important;
+ overscroll-behavior-x:contain;
+ scrollbar-width:thin!important;
+ scrollbar-color:rgba(181,155,235,.55) transparent;
+ scroll-padding-inline:11px;
+ -webkit-overflow-scrolling:touch;
+}
+.palace-shell .legacy-life-page .life-tabs.restored::-webkit-scrollbar{
+ display:block!important;
+ height:5px;
+}
+.palace-shell .legacy-life-page .life-tabs.restored::-webkit-scrollbar-thumb{
+ background:rgba(181,155,235,.46);
+ border-radius:30px;
+}
+.palace-shell .legacy-life-page .life-tabs.restored :is(button,a){
+ flex:0 0 auto;
+ white-space:nowrap;
+ min-height:43px!important;
+ padding:9px 13px!important;
+ font-size:.76rem!important;
+ line-height:1.35;
+}
+.palace-shell .legacy-life-page .life-tabs.restored button[aria-current="page"]{
+ background:linear-gradient(126deg,rgba(120,104,204,.47),rgba(100,148,196,.27))!important;
+ border-color:rgba(192,181,250,.75)!important;
+ color:#faf7ff!important;
+ box-shadow:inset 0 1px rgba(236,226,255,.13);
+}
+.palace-shell .legacy-life-page .life-tabs.restored :is(button,a):focus-visible{
+ outline:3px solid #badbff!important;
+ outline-offset:2px!important;
+}
+.palace-shell .palace-life-empty-actions{
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ justify-content:center;
+ gap:9px;
+ margin:17px auto 0;
+}
+.palace-shell .palace-life-empty-actions button{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ min-height:44px;
+ max-width:100%;
+ padding:10px 16px;
+ border:1px solid rgba(191,174,247,.65);
+ border-radius:12px;
+ color:#f5eeff;
+ background:linear-gradient(138deg,rgba(114,90,194,.36),rgba(85,126,173,.26));
+ font-weight:750;
+ font-size:.79rem;
+ line-height:1.4;
+ cursor:pointer;
+}
+.palace-shell .palace-life-empty-actions button.quiet-button{
+ background:rgba(110,128,184,.11);
+}
+.palace-shell .palace-life-empty-actions button:hover{
+ background:rgba(126,106,211,.39);
+ border-color:rgba(218,204,255,.83);
+}
+.palace-shell .palace-life-empty-actions button:focus-visible{
+ outline:3px solid #b8deff;
+ outline-offset:3px;
+}
+.palace-shell.daylight .legacy-life-page .life-tabs.restored button[aria-current="page"]{
+ background:linear-gradient(120deg,#dfd5f5,#daeafa)!important;
+ color:#37234e!important;
+ border-color:#9679c0!important;
+}
+.palace-shell.daylight .palace-life-empty-actions button{
+ background:#e8e2f7;
+ color:#39294f;
+ border-color:#af98d3;
+}
+.palace-shell.daylight .palace-life-empty-actions button:hover{background:#dbd1f0}
+.palace-shell.daylight .palace-life-empty-actions button.quiet-button{
+ background:#eff2fa;
+ color:#36385d;
+}
+@media(max-width:650px){
+ .palace-shell .legacy-life-page .life-tabs.restored{
+  padding:5px 5px 10px!important;
+  margin-inline:0!important;
+ }
+ .palace-shell .legacy-life-page .life-tabs.restored :is(button,a){
+  min-height:46px!important;
+  font-size:.74rem!important;
+ }
+ .palace-shell .palace-life-empty-actions{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+ }
+ .palace-shell .palace-life-empty-actions button{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .legacy-life-page .life-tabs.restored,
+ .palace-shell .palace-life-empty-actions *{
+  scroll-behavior:auto!important;
+  transition:none!important;
+ }
+}
