@@ -24,3 +24,12 @@ export const openTieBreak=id=>rpc('open_palace_council_tiebreak',{p_runoff:id});
 export const submitCouncilMotion=(category,title,description)=>rpc('submit_palace_council_motion',{p_category:category,p_title:title,p_description:description});
 export const reviewCouncilMotion=(id,status,note)=>rpc('review_palace_council_motion',{p_motion:id,p_status:status,p_note:note});
 export const getMyCouncilAppeals=()=>rpc('get_my_palace_appeals');
+
+export const getCouncilService=()=>rpc('get_palace_council_service_registry');
+export const updateCouncilService=(priorities,availability)=>rpc('update_my_council_service_profile',{p_priorities:priorities,p_availability:availability});
+export const logCouncilService=(kind,title,summary)=>rpc('log_my_council_service',{p_kind:kind,p_title:title,p_summary:summary});
+export const getMyRestoration=()=>rpc('get_my_palace_restoration');
+export const respondRestoration=(id,response,accept)=>rpc('respond_palace_restoration',{p_report:id,p_response:response,p_accept:accept});
+export const getCouncilRestorationQueue=()=>rpc('get_council_restoration_queue');
+export const openRestorationCase=(report,subject,severity,notice,recommendation,restoration)=>rpc('open_palace_restoration_case',{p_report:report,p_subject:subject,p_severity:severity,p_notice:notice,p_recommendation:recommendation,p_restoration:restoration});
+export const reviewRestoration=(id,note)=>rpc('second_review_palace_restoration',{p_report:id,p_note:note});
