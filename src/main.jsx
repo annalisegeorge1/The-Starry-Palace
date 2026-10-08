@@ -193,7 +193,7 @@ function FrameShell({children}){
  const [letterBadge,setLetterBadge]=useState(0);
  const [activityBadge,setActivityBadge]=useState(0);
  const location=useLocation();const navigate=useNavigate();
- React.useEffect(()=>setNavOpen(false),[location.pathname]);
+ React.useEffect(()=>setNavOpen(false),[location.pathname,location.search]);
  React.useEffect(()=>{setCommandOpen(false);setMobileMoreOpen(false);setCommandQuery('');setCommandIndex(0)},[location.pathname,location.search]);
  React.useEffect(()=>{safeLocalSet('palace-theme',daylight?'daylight':'night')},[daylight]);
  React.useEffect(()=>{safeLocalSet('palace-sidebar-collapsed',sidebarCollapsed?'1':'0')},[sidebarCollapsed]);
@@ -377,7 +377,7 @@ function NavigationReset(){
   const reset=()=>{try{window.scrollTo({top:0,left:0,behavior:'auto'})}catch{try{window.scrollTo(0,0)}catch{}};if(document.documentElement)document.documentElement.scrollTop=0;if(document.body)document.body.scrollTop=0};
   const frame=requestAnimationFrame(reset);
   return()=>cancelAnimationFrame(frame);
- },[location.pathname,location.search]);
+ },[location.pathname]);
  return null;
 }
 function RouteStateReset(){
