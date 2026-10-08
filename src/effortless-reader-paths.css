@@ -1,0 +1,22 @@
+/* Small wayfinding cues within long chapters: accessible, calm, and unobtrusive. */
+.reader-page .reader-contents-jump,
+.reader-page .reader-return-top{
+ display:inline-flex;align-items:center;gap:6px;
+ border-radius:8px;padding:4px 6px;color:inherit;
+ text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;
+ font-size:.82rem;font-weight:700;
+}
+.reader-page :is(.reader-contents-jump,.reader-return-top):hover{
+ color:var(--palace-accent,#ae91df);
+}
+.reader-page :is(.reader-contents-jump,.reader-return-top):focus-visible{
+ outline:3px solid #a58ce8;outline-offset:3px;
+}
+.reader-page #palace-reader-chapters{scroll-margin-top:90px}
+.reader-page#palace-reader-start{scroll-margin-top:90px}
+.reader-page .reader-return-top{font-size:.76rem;margin-bottom:7px;opacity:.83}
+.palace-shell.daylight .reader-page :is(.reader-contents-jump,.reader-return-top){color:#49377c}
+@media(max-width:580px){
+ .reader-page .reader-contents-jump{min-height:40px}
+ .reader-page .reader-return-top{min-height:40px}
+}
