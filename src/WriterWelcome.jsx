@@ -25,7 +25,7 @@ const FIRST_CHAPTER=[
 
 export function WriterWelcome(){
  const {session}=useAuth();
- return <main className="writer-welcome" id="writer-welcome">
+ return <div className="writer-welcome" id="writer-welcome">
   <section className="writer-welcome-hero">
    <div className="writer-welcome-copy">
     <p className="writer-eyebrow">THE STARRY PALACE · A HOME FOR YOUR STORIES</p>
@@ -87,7 +87,7 @@ export function WriterWelcome(){
     <summary>{item.question}</summary><p>{item.answer}</p></details>)}</div>
    <p className="writer-terms-note">Please review the <Link to="/code">Palace Code</Link> and the writing settings before publishing. For help testing a feature, use the <Link to="/beta">beta feedback guide</Link>.</p>
   </section>
- </main>;
+ </div>;
 }
 
 export function FirstManuscriptGuide({works}){
