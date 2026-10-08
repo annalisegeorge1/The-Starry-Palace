@@ -32,10 +32,10 @@ export function WriterWelcome(){
     <h1>Your next chapter belongs here.</h1>
     <p>Write quietly. Publish when you're ready. Find other people who care about stories as much as you do.</p>
     <div className="writer-welcome-actions">
-     <Link className="writer-primary" to="/writing">{session?'Open my Writing Chamber':'Start my first draft'} <span aria-hidden="true">↗</span></Link>
+     <Link className="writer-primary" to={session?'/writing':'/login?mode=signup&next=%2Fwriting'}>{session?'Open my Writing Chamber':'Create an account to write'} <span aria-hidden="true">↗</span></Link>
      <Link className="writer-secondary" to="/reading">Explore the Reading Rooms →</Link>
     </div>
-    <small>Free to explore · No application needed to begin writing · No promise of an audience or earnings</small>
+    <small>Free to explore · A free account is required to save drafts · No promise of an audience or earnings</small>
    </div>
    <div className="writer-welcome-art" aria-hidden="true">
     <div className="writer-ink-orbit">✦</div>
@@ -68,7 +68,7 @@ export function WriterWelcome(){
     <span className="writer-step-number">{item.number}</span>
     <div><h3>{item.title}</h3><p>{item.description}</p></div>
    </li>)}</ol>
-   <Link className="writer-primary" to="/writing">Begin in the Writing Chamber →</Link>
+   <Link className="writer-primary" to={session?'/writing':'/login?mode=signup&next=%2Fwriting'}>{session?'Begin in the Writing Chamber →':'Create my free writing desk →'}</Link>
   </section>
 
   <section className="writer-early-circle" id="founding-writers">
@@ -77,7 +77,7 @@ export function WriterWelcome(){
     <h2>The Founding Writers Circle</h2>
     <p>We're preparing a small, voluntary early-writer community. The idea is simple: welcome writers, listen to their publishing experiences, run gentle reading and writing gatherings, and improve what isn't working.</p>
     <p>Start writing now. A separate Founding Writers enrollment or badge is not being promised through this page.</p>
-    <div className="writer-circle-actions"><Link to="/writing">Create a manuscript →</Link><Link to="/beta">Give feedback on the Palace →</Link></div>
+    <div className="writer-circle-actions"><Link to={session?'/writing':'/login?mode=signup&next=%2Fwriting'}>Create a manuscript →</Link><Link to="/beta">Give feedback on the Palace →</Link></div>
    </div>
   </section>
 
