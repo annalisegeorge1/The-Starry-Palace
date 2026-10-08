@@ -22,7 +22,7 @@ export default function ArchiveClassicReader({record,text}){
  const [leading,setLeading]=useState(()=>readPalaceChoice(LEADING_KEY,['compact','comfortable','airy'],'comfortable'));
  const readerRef=useRef(null);
  const pendingHeadingRef=useRef(null);
- const pendingPageTopRef=useRef(false);
+ const pendingPageTopRef=useRef(page>0);
  const [chosenHeading,setChosenHeading]=useState(null);
  const [editionOpen,setEditionOpen]=useState(false);
  const current=clampClassicPage(page,pages.length);
