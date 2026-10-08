@@ -24,3 +24,27 @@
 @media(prefers-reduced-motion:reduce){
  .reader-reward-hint{transition:none!important}
 }
+
+/* Clear state near completion, including non-eligible chapters.
+   Do not imply that a backend reward was granted just for opening a page. */
+.reader-reward-status{
+ box-sizing:border-box;
+ max-width:860px;
+ margin:1.2rem auto .5rem;
+ padding:.8rem 1rem;
+ border:1px solid rgba(168,170,228,.38);
+ border-radius:12px;
+ background:rgba(83,76,145,.12);
+ color:#d5ccef;
+ font-size:clamp(.82rem,.9vw,.94rem);
+ line-height:1.6;
+ overflow-wrap:anywhere;
+}
+.reader-reward-status+.reader-reward-hint{margin-top:.4rem}
+.daylight .reader-reward-status,
+.palace-shell.daylight .reader-reward-status{
+ background:#edf0fc;
+ border-color:#c6c2df;
+ color:#493967;
+}
+@media(max-width:680px){.reader-reward-status{margin-inline:0;padding:.75rem .85rem}}

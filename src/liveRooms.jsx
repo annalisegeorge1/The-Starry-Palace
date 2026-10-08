@@ -35,6 +35,7 @@ import './member-chamber-atelier.css';
 import MemberPalaceShowcase from './MemberPalaceShowcase';
 import{beginPalaceReading,completePalaceReading}from'./creativePointsData';
 import {settleReadingChapterTransition} from './readingRewardTransition';
+import {readingRewardEligibility,readingSessionStartFeedback,readingRewardResultFeedback} from './readingRewardEligibility';
 import PalaceCalendar from './PalaceCalendar';
 import{PROMPT_ORRERY_RECIPES,randomOrreryRecipe}from'./promptOrreryData';
 import{filterInkDuels,duelPrizeProgress,drawDuelTwist}from'./inkDuelExperience';
@@ -1426,7 +1427,7 @@ export function ChapterLive({Frame}){
  return <ReaderChapter key={(session?.user?.id||'guest')+':'+slug+':'+chapterId} Frame={Frame} slug={slug} chapterId={chapterId}/>;
 }
 function ReaderChapter({Frame,slug,chapterId}){
- const{session}=useAuth();const navigate=useNavigate();const[data,setData]=useState(undefined);const[readerPlace,setReaderPlace]=useState(0);const chapterTextRef=useRef(null);const placeTimerRef=useRef(null);const earnSessionRef=useRef(null);const[readingBonus,setReadingBonus]=useState('');const restoredPlaceRef=useRef('');const readingPlaceReadyRef=useRef(false);const[notes,setNotes]=useState([]);const[notesOpen,setNotesOpen]=useState(false);const[noteBody,setNoteBody]=useState(()=>{try{return readReaderNoteDraft(window.sessionStorage,session?.user?.id,chapterId).body}catch{return''}});const[noteLabel,setNoteLabel]=useState(()=>{try{return readReaderNoteDraft(window.sessionStorage,session?.user?.id,chapterId).label}catch{return''}});const[noteBusy,setNoteBusy]=useState(false);const[praise,setPraise]=useState({praise:null,counts:{heart:0,star:0,moon:0,crown:0}});const[praiseBusy,setPraiseBusy]=useState('');const[praiseNotice,setPraiseNotice]=useState('');const[error,setError]=useState('');const[fontSize,setFontSize]=useState(()=>readPalaceNumber('palace-reader-font',20,16,28));const[measure,setMeasure]=useState(()=>readPalaceChoice('palace-reader-measure',['narrow','standard','wide'],'standard'));const[readerFace,setReaderFace]=useState(()=>readPalaceChoice('palace-reader-face',['serif','sans'],'serif'));const[leading,setLeading]=useState(()=>readPalaceChoice('palace-reader-leading',['compact','comfortable','airy'],'comfortable'));const[readerTone,setReaderTone]=useState(()=>readPalaceChoice('palace-reader-tone',['palace','paper','soft'],'palace'));const[controlsOpen,setControlsOpen]=useState(false);const[readerFocus,setReaderFocus]=useState(false);const[readerSaved,setReaderSaved]=useState(null);const[readerSaveBusy,setReaderSaveBusy]=useState(false);const[readerSaveMessage,setReaderSaveMessage]=useState('');
+ const{session}=useAuth();const navigate=useNavigate();const[data,setData]=useState(undefined);const[readerPlace,setReaderPlace]=useState(0);const chapterTextRef=useRef(null);const placeTimerRef=useRef(null);const earnSessionRef=useRef(null);const earnSessionRequestRef=useRef(null);const[readingBonus,setReadingBonus]=useState('');const[readingRewardStatus,setReadingRewardStatus]=useState('');const restoredPlaceRef=useRef('');const readingPlaceReadyRef=useRef(false);const[notes,setNotes]=useState([]);const[notesOpen,setNotesOpen]=useState(false);const[noteBody,setNoteBody]=useState(()=>{try{return readReaderNoteDraft(window.sessionStorage,session?.user?.id,chapterId).body}catch{return''}});const[noteLabel,setNoteLabel]=useState(()=>{try{return readReaderNoteDraft(window.sessionStorage,session?.user?.id,chapterId).label}catch{return''}});const[noteBusy,setNoteBusy]=useState(false);const[praise,setPraise]=useState({praise:null,counts:{heart:0,star:0,moon:0,crown:0}});const[praiseBusy,setPraiseBusy]=useState('');const[praiseNotice,setPraiseNotice]=useState('');const[error,setError]=useState('');const[fontSize,setFontSize]=useState(()=>readPalaceNumber('palace-reader-font',20,16,28));const[measure,setMeasure]=useState(()=>readPalaceChoice('palace-reader-measure',['narrow','standard','wide'],'standard'));const[readerFace,setReaderFace]=useState(()=>readPalaceChoice('palace-reader-face',['serif','sans'],'serif'));const[leading,setLeading]=useState(()=>readPalaceChoice('palace-reader-leading',['compact','comfortable','airy'],'comfortable'));const[readerTone,setReaderTone]=useState(()=>readPalaceChoice('palace-reader-tone',['palace','paper','soft'],'palace'));const[controlsOpen,setControlsOpen]=useState(false);const[readerFocus,setReaderFocus]=useState(false);const[readerSaved,setReaderSaved]=useState(null);const[readerSaveBusy,setReaderSaveBusy]=useState(false);const[readerSaveMessage,setReaderSaveMessage]=useState('');
  useEffect(()=>{
   try{writeReaderNoteDraft(window.sessionStorage,session?.user?.id,chapterId,{body:noteBody,label:noteLabel})}catch{}
  },[session?.user?.id,chapterId,noteBody,noteLabel]);
@@ -1463,7 +1464,26 @@ function ReaderChapter({Frame,slug,chapterId}){
   }).catch(e=>{if(active)setError(e.message)});
   return()=>{active=false};
  },[slug,chapterId,session?.user?.id]);
- useEffect(()=>{let active=true;earnSessionRef.current=null;setReadingBonus('');if(!session||!data?.chapter?.id||session.user.id===data.work.author_id||data.chapter.status!=='published')return;beginPalaceReading(data.chapter.id).then(id=>{if(active)earnSessionRef.current=id}).catch(()=>{});return()=>{active=false;earnSessionRef.current=null}},[data?.chapter?.id,session?.user?.id]);
+ useEffect(()=>{
+  let active=true;
+  earnSessionRef.current=null;
+  earnSessionRequestRef.current=null;
+  setReadingBonus('');
+  const eligibility=readingRewardEligibility(data,session);
+  setReadingRewardStatus(eligibility.message);
+  if(!eligibility.eligible)return;
+  const request=beginPalaceReading(data.chapter.id);
+  earnSessionRequestRef.current=request;
+  request.then(id=>{
+   if(!active)return;
+   const feedback=readingSessionStartFeedback(id,null);
+   if(feedback.status==='active')earnSessionRef.current=id;
+   setReadingRewardStatus(feedback.message);
+  }).catch(error=>{
+   if(active)setReadingRewardStatus(readingSessionStartFeedback(null,error).message);
+  });
+  return()=>{active=false;earnSessionRef.current=null;earnSessionRequestRef.current=null};
+ },[data?.chapter?.id,session?.user?.id]);
  useEffect(()=>{if(!data||!session||readerPlace<=1||!readingPlaceReadyRef.current)return;const restoreKey=data.chapter.id;if(restoredPlaceRef.current===restoreKey)return;restoredPlaceRef.current=restoreKey;const timer=window.setTimeout(()=>{const el=chapterTextRef.current;if(!el)return;const top=window.scrollY+el.getBoundingClientRect().top;const travel=Math.max(1,el.offsetHeight-window.innerHeight*.35);window.scrollTo({top:Math.max(0,top+(readerPlace/100)*travel),left:0,behavior:'auto'})},120);return()=>window.clearTimeout(timer)},[data?.chapter?.id,readerPlace,session?.user?.id]);
  useEffect(()=>{if(!data||!session)return;const readable=data.work.chapters.filter(ch=>ch.status==='published');const index=Math.max(0,readable.findIndex(ch=>ch.id===data.chapter.id));const overall=Math.max(5,Math.min(95,Math.round((index/Math.max(1,readable.length))*100)));const savePlace=()=>{if(!readingPlaceReadyRef.current||restoredPlaceRef.current!==data.chapter.id)return;const el=chapterTextRef.current;if(!el)return;const top=window.scrollY+el.getBoundingClientRect().top;const anchor=window.scrollY+window.innerHeight*.35;const pct=Math.max(0,Math.min(100,((anchor-top)/Math.max(1,el.offsetHeight))*100));setReaderPlace(prev=>Math.abs(prev-pct)>=1?pct:prev);try{rememberReaderPosition(window.localStorage,session.user.id,data.chapter.id,pct)}catch{}if(placeTimerRef.current)window.clearTimeout(placeTimerRef.current);placeTimerRef.current=window.setTimeout(()=>recordReadingProgress(session.user.id,data.work.id,data.chapter.id,overall,false,pct).catch(()=>{}),900)};window.addEventListener('scroll',savePlace,{passive:true});window.addEventListener('pagehide',savePlace);return()=>{window.removeEventListener('scroll',savePlace);window.removeEventListener('pagehide',savePlace);if(placeTimerRef.current)window.clearTimeout(placeTimerRef.current)}},[data?.chapter?.id,session?.user?.id]); useEffect(()=>{document.body.classList.toggle('reader-focus-mode',readerFocus);return()=>document.body.classList.remove('reader-focus-mode')},[readerFocus]);
  const readerHtml=React.useMemo(()=>data?safeReaderHtml(data.chapter.body_html||''):'',[data?.chapter?.id,data?.chapter?.body_html]);
@@ -1491,7 +1511,10 @@ function ReaderChapter({Frame,slug,chapterId}){
   if(!session||!data)return;
   // Capture before awaiting progress: Next chapter unmounts this reader while
   // both requests may still be in flight. The ID must survive that transition.
-  const readingSessionId=earnSessionRef.current;
+  const pendingReadingSession=earnSessionRequestRef.current;
+  // A fast chapter transition can happen while begin_palace_reading is still
+  // in flight. Preserve its promise before the previous reader is unmounted.
+  const readingSessionId=earnSessionRef.current||(pendingReadingSession?await pendingReadingSession.catch(()=>null):null);
   const result=await settleReadingChapterTransition({
    sessionId:readingSessionId,
    recordProgress:()=>recordReadingProgress(session.user.id,data.work.id,data.chapter.id,done?100:Math.max(5,Math.min(95,progress)),done,done?100:readerPlace),
@@ -1500,6 +1523,7 @@ function ReaderChapter({Frame,slug,chapterId}){
    onTooSoon:()=>{if(done)setReadingBonus('To earn reading points, read an eligible chapter for at least 90 seconds before finishing.');},
    onError:e=>setError(e.message)
   });
+  if(done)setReadingBonus(readingRewardResultFeedback(result));
   if(result.completed&&earnSessionRef.current===readingSessionId)earnSessionRef.current=null;
  }
  async function savePrivateNote(e){e.preventDefault();if(!session||!data||!noteBody.trim())return;try{setNoteBusy(true);await addReaderNote(session.user.id,{type:'chapter',id:data.chapter.id,workId:data.work.id},noteBody,noteLabel);try{writeReaderNoteDraft(window.sessionStorage,session.user.id,data.chapter.id,{body:'',label:''})}catch{}setNoteBody('');setNoteLabel('');setNotes(await getReaderNotesForChapter(session.user.id,data.chapter.id))}catch(e){setError(e.message)}finally{setNoteBusy(false)}}
@@ -1543,6 +1567,7 @@ function ReaderChapter({Frame,slug,chapterId}){
   <section ref={chapterTextRef} className="chapter-text restored" style={{fontSize:fontSize+'px'}} dangerouslySetInnerHTML={{__html:html}}/>
   <section id="palace-reader-chapters" className="reader-chapter-list"><p className="eyebrow">THIS WORK</p><div>{readable.map(ch=><Link className={ch.id===chapterId?'active':''} key={ch.id} to={"/work/"+slug+"/chapter/"+ch.id}><span>{String(ch.position).padStart(2,'0')}</span><strong>{ch.title}</strong><small>{ch.word_count.toLocaleString()} words</small></Link>)}</div></section>
   {!next&&<section className="reader-end-trail"><div><small>YOU REACHED THE LAST PUBLISHED CHAPTER</small><h2>Where do you want the story to lead?</h2></div><nav><Link to={"/work/"+data.work.slug}>✦ Story trail</Link>{session&&<Link to={"/palace-life?room=commons&kind=discussion&talk="+encodeURIComponent(data.work.title)}>♢ Discuss it</Link>}{data.work.profiles?.username&&<Link to={"/member/"+data.work.profiles.username}>☾ Visit the writer</Link>}<Link to="/lost-works">⌁ Read something older</Link></nav></section>}
+   {readingRewardStatus&&<p className="reader-reward-status" role="status">{readingRewardStatus}</p>}
   {session?.user?.id&&session.user.id!==data.work.author_id&&data.chapter.word_count>=200&&data.work.visibility==='public'&&<p className="reader-reward-hint">✦ Eligible public chapters can earn 2 Celestial Points after 90 seconds of reading. Choose Next chapter, or Mark work finished on the last chapter, to record completion. One reward per chapter; daily limits apply.</p>}
   <footer className="reader-nav"><div className="reader-nav-context"><a className="reader-return-top" href="#palace-reader-start">↑ Back to chapter start</a>{prev?<small>Previous · {prev.title}</small>:<small>Beginning of this work</small>}{next?<small>Next · {next.title}</small>:<small>Final published chapter</small>}</div><div className="reader-nav-actions">{prev?<Link to={"/work/"+slug+"/chapter/"+prev.id}>← Previous chapter</Link>:<span/>}{next?<Link onClick={()=>finish(false)} to={"/work/"+slug+"/chapter/"+next.id}>Next chapter →</Link>:session?<button onClick={()=>finish(true)}>Mark work finished ✦</button>:<Link to={"/login?next="+encodeURIComponent('/work/'+slug+'/chapter/'+chapterId)}>Sign in to track completion ✦</Link>}</div></footer>
  </article>}</State></Frame>
