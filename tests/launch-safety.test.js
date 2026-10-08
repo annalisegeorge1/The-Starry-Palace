@@ -1788,7 +1788,8 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('Revision snapshots');
     expect(live).toContain('Create snapshot');
     expect(live).toContain('Restore to editor');
-    expect(live).toContain('save to Palace when ready');
+    expect(live).toContain('Restored locally · unsaved cloud edits. Choose Save now.');
+    expect(live).toContain('stageRecoveredEditor(snapshot)');
     expect(polish).toContain('.snapshot-list');
   });
 
