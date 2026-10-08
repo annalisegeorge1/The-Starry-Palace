@@ -1,0 +1,28 @@
+/* A quiet book-first layout, without changing saved reader preferences. */
+.palace-shell .reader-page .reader-back-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.palace-shell .reader-page .reader-head-actions{display:flex;flex-wrap:wrap;gap:7px;min-width:0}
+.palace-shell .reader-page .reader-head-actions button{min-height:42px;white-space:normal}
+.palace-shell .reader-page .reader-controls-panel.enhanced{box-sizing:border-box;max-width:100%;overflow-wrap:anywhere}
+.palace-shell .reader-page .reader-controls-panel.enhanced>div{min-width:0}
+.palace-shell .reader-page .reader-controls-panel.enhanced button{min-height:42px}
+.palace-shell .reader-page .reader-chapter-head h1{text-wrap:balance;overflow-wrap:anywhere}
+.palace-shell .reader-page .reader-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.palace-shell .reader-page .reader-quick-jump select{min-width:0;max-width:100%}
+.palace-shell .reader-page .chapter-text{max-width:74ch;overflow-wrap:break-word;hyphens:auto}
+.palace-shell .reader-page .chapter-text :is(h1,h2,h3){line-height:1.35;text-wrap:balance}
+.palace-shell .reader-page .chapter-text :is(pre,table){max-width:100%;overflow-x:auto}
+.palace-shell .reader-page .chapter-text img{max-width:100%;height:auto}
+.palace-shell .reader-page .reader-chapter-list a{min-width:0;overflow-wrap:anywhere}
+@media(max-width:640px){
+ .palace-shell .reader-page .reader-back-row{align-items:stretch;flex-direction:column}
+ .palace-shell .reader-page .reader-head-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .palace-shell .reader-page .reader-head-actions button{width:100%;padding:9px 8px;font-size:.83rem}
+ .palace-shell .reader-page .reader-controls-panel.enhanced{padding:12px}
+ .palace-shell .reader-page .reader-controls-panel.enhanced>div>div{display:flex;flex-wrap:wrap;gap:6px}
+ .palace-shell .reader-page .reader-controls-panel.enhanced button{flex:1 1 auto;min-width:0}
+ .palace-shell .reader-page .reader-meta{line-height:1.45}
+ .palace-shell .reader-page .chapter-text{width:100%;box-sizing:border-box;padding-inline:clamp(10px,3vw,20px)}
+}
+@media(max-width:380px){
+ .palace-shell .reader-page .reader-head-actions{grid-template-columns:1fr}
+}
