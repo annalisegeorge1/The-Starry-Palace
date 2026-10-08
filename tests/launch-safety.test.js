@@ -427,7 +427,8 @@ describe('Starry Palace launch safety',()=>{
     expect(data).toContain('const done=sameChapter?Boolean(current.data?.completed||completed):Boolean(completed)');
     expect(data).toContain('chapter_progress_percent:precise');
     expect(live).toContain('For Your Nightstand');
-    expect(live).toContain('palace-reading-place:');
+    expect(live).toContain('rememberReaderPosition(window.localStorage,session.user.id,data.chapter.id,pct)');
+    expect(read('src/readerPosition.js')).toContain('readerPositionKey(userId,chapterId)');
     expect(data).toContain('last_published_at');
     expect(live).toContain('storyReopened');
     expect(live).toContain('CONTINUE · NEW CHAPTER AHEAD');
