@@ -24,3 +24,10 @@
 .palace-chat-launch:focus-visible,.palace-chat-panel button:focus-visible,.palace-chat-panel a:focus-visible,.palace-chat-panel input:focus-visible,.palace-chat-panel textarea:focus-visible{outline:3px solid #c5e6fa;outline-offset:2px}
 @media(max-width:550px){.palace-chat-dock{right:10px;bottom:calc(12px + env(safe-area-inset-bottom,0px))}.palace-chat-panel{width:calc(100vw - 20px);height:min(72dvh,580px)}}
 @media(prefers-reduced-motion:reduce){.palace-chat-dock *{scroll-behavior:auto!important}}
+
+.palace-chat-dock.is-quiet:not(.is-open) .palace-chat-launch{padding:10px 12px;gap:5px;box-shadow:0 6px 18px #08091d55}
+.palace-chat-dock.is-quiet:not(.is-open) .palace-chat-launch>span:nth-child(2){font-size:0}
+.palace-chat-dock.is-quiet:not(.is-open) .palace-chat-launch>span:first-child{font-size:1.1rem}
+.palace-chat-header-actions{display:flex;align-items:center;gap:6px}
+.palace-chat-panel header .palace-chat-header-actions button{min-width:39px;min-height:39px}
+.palace-chat-panel header .palace-chat-header-actions button[aria-pressed=true]{border-color:#acd7ed;background:#9ccdeb39}
