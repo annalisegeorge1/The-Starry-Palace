@@ -41,7 +41,7 @@ export default function PalaceBetaGuide({Frame}){
  const counts=betaCounts(checks,state.results);
  const report=buildBetaReport(state,checks);
  const nextCheck=nextBetaCheck(checks,state.results);
- const visibleChecks=state.showRemaining?checks.filter(item=>!['passed','stuck','skipped'].includes(state.results[item.id])):checks;
+ const visibleChecks=state.showRemaining?checks.filter(item=>!['passed','skipped'].includes(state.results[item.id])):checks;
  const groups=[...new Set(visibleChecks.map(x=>x.group))];
  function update(patch){setState(prev=>({...prev,...(typeof patch==='function'?patch(prev):patch)}))}
  function updateIssue(patch){update(prev=>({issueDraft:{...prev.issueDraft,...patch}}))}
@@ -119,10 +119,10 @@ export default function PalaceBetaGuide({Frame}){
    <label>Device and browser (optional)<input value={state.device} maxLength={120} placeholder="e.g. Samsung tablet · Chrome" onChange={e=>update({device:e.target.value})}/></label>
    <p className="palace-beta-track-description">{PALACE_BETA_TRACKS[state.role].description}</p>
    <label className="palace-beta-all-checks"><input type="checkbox" checked={state.showAll} onChange={e=>update({showAll:e.target.checked})}/> Show all Palace checkpoints instead of just my track</label>
-   <label className="palace-beta-all-checks"><input type="checkbox" checked={state.showRemaining} onChange={e=>update({showRemaining:e.target.checked})}/> Show only checkpoints I haven't marked yet</label>
+   <label className="palace-beta-all-checks"><input type="checkbox" checked={state.showRemaining} onChange={e=>update({showRemaining:e.target.checked})}/> Focus on unfinished and troubled checkpoints</label>
   </section>
   <section className="palace-beta-safety" aria-label="Testing safety"><strong>Use a test story, not a treasured manuscript.</strong> Avoid private messages, passwords and personal information in screenshots or reports. Don't change live Council votes or moderation actions just to test them. If a task needs an account and you'd rather not register, choose Skipped.</section>
-  {groups.length===0&&<section className="palace-beta-finished"><strong>All caught up for this track.</strong><p>{storageWarning?'Your browser cannot store these answers after you leave. Export your report first.':'Your answers are saved on this device.'} Uncheck the unfinished-only filter to revisit any checkpoint.</p><button type="button" onClick={()=>update({showRemaining:false})}>Review all checkpoints</button></section>}
+  {groups.length===0&&<section className="palace-beta-finished"><strong>All caught up for this track.</strong><p>{storageWarning?'Your browser cannot store these answers after you leave. Export your report first.':'Your answers are saved on this device.'} Turn off the focus filter to revisit any checkpoint.</p><button type="button" onClick={()=>update({showRemaining:false})}>Review all checkpoints</button></section>}
   {groups.map(group=><section className="palace-beta-group" key={group}><h2>{group}</h2><div className="palace-beta-checks">
    {visibleChecks.filter(x=>x.group===group).map(item=><article key={item.id} id={'palace-beta-task-'+item.id} tabIndex={-1} className={state.results[item.id]==='stuck'?'palace-beta-had-trouble':''}>
     <strong className="palace-beta-task-name">{item.name}</strong>
