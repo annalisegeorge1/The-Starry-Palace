@@ -1,0 +1,84 @@
+/* Quiet polish for the two rooms where members spend the longest time.
+   This is intentionally restrained: more legibility, less visual noise. */
+body.writing-desk-open .manuscript-sticky-toolbar .writer-format-scroll{
+  scrollbar-width:thin;
+  scrollbar-color:rgba(171,149,212,.55) transparent;
+  overscroll-behavior-inline:contain;
+  -webkit-overflow-scrolling:touch;
+  scroll-padding-inline:14px;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-format-scroll :is(button,a):focus-visible,
+.reader-page.restored .reader-head-actions button:focus-visible,
+.reader-page.restored .reader-controls-panel button:focus-visible{
+  outline:3px solid #bea3f2!important;
+  outline-offset:2px!important;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-toolbar-save-state[role="status"]{
+  display:inline-flex;align-items:center;gap:6px;
+  min-width:0;line-height:1.45;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-chapter-jump-main select{
+  min-width:0;max-width:100%;
+  text-overflow:ellipsis;
+}
+.reader-page.restored .reader-controls-panel.enhanced{scroll-margin-top:108px}
+.reader-page.restored .reader-controls-panel.enhanced button[aria-pressed="true"]{
+  box-shadow:inset 0 0 0 1px rgba(203,183,249,.48);
+}
+.reader-page.restored .reader-controls-panel.enhanced button{
+  min-height:40px;
+  border-radius:10px;
+}
+.reader-page.restored .reader-head-actions button{
+  min-height:40px;
+  line-height:1.35;
+}
+.daylight .reader-page.restored .reader-controls-panel.enhanced button[aria-pressed="true"]{
+  border-color:#7a5ca6!important;
+  color:#443368!important;
+  background:#e9e1f5!important;
+  box-shadow:inset 0 0 0 1px #c3b5da!important;
+}
+@media(max-width:760px){
+ body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar .writer-format-scroll button,
+ body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar .writer-format-scroll a{
+   min-height:43px!important;
+   min-width:43px;
+   display:inline-flex;align-items:center;justify-content:center;
+   line-height:1.25;
+ }
+ body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar .writer-format-scroll{
+   overflow-x:auto!important;overflow-y:hidden!important;
+   scrollbar-width:thin;touch-action:pan-x;
+   max-width:100%;
+ }
+ body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar .writer-chapter-jump,
+ body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar .writer-chapter-jump-actions{
+   min-width:0;
+ }
+ .reader-page.restored .reader-head-actions{
+   display:flex;flex-wrap:wrap!important;overflow:visible!important;
+   gap:7px;width:100%;
+ }
+ .reader-page.restored .reader-head-actions button{
+   min-height:44px;flex:1 1 auto;
+   font-size:.8rem;
+   text-align:center;
+ }
+ .reader-page.restored .reader-controls-panel.enhanced button{min-height:44px}
+}
+@media(max-width:440px){
+  body.writing-desk-open .manuscript-sticky-toolbar .writer-toolbar-save-state{
+    font-size:.72rem;
+  }
+  .reader-page.restored .reader-chapter-head h1{
+    font-size:clamp(2.1rem,10vw,3rem);
+    overflow-wrap:anywhere;
+  }
+  .reader-page.restored .reader-controls-panel.enhanced>div{
+    min-width:0;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  body.writing-desk-open .manuscript-sticky-toolbar .writer-format-scroll{scroll-behavior:auto}
+}
