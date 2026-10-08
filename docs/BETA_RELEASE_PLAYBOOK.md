@@ -27,6 +27,10 @@ Do **not** ask participants for passwords, unpublished manuscripts, private mess
 ## The beta checkpoints
 The built-in tracks contain a subset of 13 optional checkpoints covering: first-arrival discovery, mobile navigation, story filters, resume-reading progress, saved/followed works, private drafts, autosave, recovery under network loss, multiple tags, comics, Palace activities, Council rules, and accessibility/contrast.
 
+## Database release review
+
+The October 8 read-only Supabase advisor scan is recorded in [SUPABASE_RELEASE_SECURITY_REVIEW.md](./SUPABASE_RELEASE_SECURITY_REVIEW.md). Treat missing direct RLS policies and exposed privileged functions as **review items**, not automatic permission fixes. Test private-draft, account, messaging, Council and rewards authorization under two unrelated test accounts before widening access or inviting the general public.
+
 ## Release gates
 **Blocking (must be zero unresolved):**
 - Loss of draft content, data corruption, overwriting newer edits with older cloud saves.
