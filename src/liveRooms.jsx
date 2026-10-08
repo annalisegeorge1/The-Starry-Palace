@@ -9,6 +9,7 @@ import {FirstManuscriptGuide} from './WriterWelcome';
 import {createManuscriptSaveCoordinator} from './manuscriptSaveCoordinator';
 import {ensureChapterSavedForRelease} from './manuscriptPublicationGuard';
 import {stageManuscriptRestore} from './manuscriptRestoreStage';
+import {shouldWarnOnWriterLink} from './manuscriptNavigationGuard';
 import {matchesManuscriptChapter,hasActiveManuscriptFilters} from './manuscriptChapterSearch';
 import {manuscriptTextStats,manuscriptPlainTextFromHtml} from './palaceWriterStats';
 import {nextCelestialTitleProgress} from './nextCelestialTitle';
@@ -1688,7 +1689,23 @@ function WorkStudioForWork({Frame,slug}){
    e.preventDefault();
    e.returnValue='';
   };
+  const warnOnPalaceLink=e=>{
+   if(e.defaultPrevented||e.button!==0)return;
+   const link=e.target?.closest?.('a[href]');
+   if(!link)return;
+   if(!shouldWarnOnWriterLink({
+    currentUrl:window.location.href,href:link.href,
+    dirty:saveCoordinatorRef.current?.hasUnsavedChanges(),
+    modified:e.ctrlKey||e.metaKey||e.altKey||e.shiftKey,
+    download:link.hasAttribute('download'),target:link.target
+   }))return;
+   flushRecovery();
+   if(!window.confirm('Your latest manuscript edits are not confirmed saved to the Palace. Leave this page anyway? A device recovery copy may be available.')){
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation?.();
+   }
+  };
   document.body.classList.add('writing-desk-open');
+  document.addEventListener('click',warnOnPalaceLink,true);
   window.addEventListener('beforeunload',warnBeforeClosing);
   window.addEventListener('pagehide',flushRecovery);
   document.addEventListener('visibilitychange',whenHidden);
@@ -1697,6 +1714,7 @@ function WorkStudioForWork({Frame,slug}){
    if(typewriterScrollFrameRef.current!==null)window.cancelAnimationFrame(typewriterScrollFrameRef.current);
    if(saveTimerRef.current)clearTimeout(saveTimerRef.current);
    window.removeEventListener('beforeunload',warnBeforeClosing);
+   document.removeEventListener('click',warnOnPalaceLink,true);
    window.removeEventListener('pagehide',flushRecovery);
    document.removeEventListener('visibilitychange',whenHidden);
    document.body.classList.remove('focus-editor');
