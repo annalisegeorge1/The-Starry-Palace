@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {PALACE_BETA_CHECKS,betaChecksFor,betaCounts,buildBetaReport,cleanBetaIssue,betaIssueHasContent} from './palaceBetaData';
+import {PALACE_BETA_CHECKS,betaChecksFor,betaCounts,nextBetaCheck,buildBetaReport,cleanBetaIssue,betaIssueHasContent} from './palaceBetaData';
 describe('volunteer testing model',()=>{
  it('offers a focused reader and writer track rather than requiring every task',()=>{
   const reader=betaChecksFor('reader');
@@ -15,6 +15,12 @@ describe('volunteer testing model',()=>{
   const checks=betaChecksFor('reader').slice(0,4);
   const checked={[checks[0].id]:'passed',[checks[1].id]:'stuck',[checks[2].id]:'skipped'};
   expect(betaCounts(checks,checked)).toEqual({marked:3,attempted:2,passed:1,stuck:1,skipped:1});
+ });
+ it('finds the next unmarked step without hiding past results',()=>{
+  const checks=betaChecksFor('reader').slice(0,4);
+  expect(nextBetaCheck(checks)?.id).toBe(checks[0].id);
+  expect(nextBetaCheck(checks,{[checks[0].id]:'passed',[checks[1].id]:'stuck',[checks[2].id]:'skipped'})?.id).toBe(checks[3].id);
+  expect(nextBetaCheck(checks,Object.fromEntries(checks.map(c=>[c.id,'skipped'])))).toBeNull();
  });
  it('builds a usable report with multiple problems but no private account data',()=>{
   const state={role:'writer',device:'Android Chrome',results:{draft:'passed',autosave:'stuck',tags:'skipped'},
