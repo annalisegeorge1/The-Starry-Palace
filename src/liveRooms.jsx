@@ -1901,7 +1901,7 @@ function WorkStudioForWork({Frame,slug}){
         <button type="button" className="writer-chapter-arrow" title="Next chapter" aria-label="Next chapter" disabled={!nextChapter} onClick={()=>nextChapter&&switchChapterSafely(nextChapter.id)}>→</button>
       </div>
       <div className="writer-chapter-jump-actions">
-        <span className={'writer-toolbar-save-state state-'+writerSavePhase(saved)} role="status" aria-live="polite"><i aria-hidden="true"/> {saved||'Chapter ready · cloud autosave'}</span>
+        <span className={'writer-toolbar-save-state state-'+writerSavePhase(saved)} role="status" aria-live="polite" aria-atomic="true" title="Autosave status for this chapter"><i aria-hidden="true"/> {saved||'Chapter ready · cloud autosave'}</span>
         <span className="writer-toolbar-wordcount">{wordCount.toLocaleString()} words</span>
         <button type="button" className="quiet-button" onClick={focusChapterTitle}>Rename</button>
         {access.owner&&<button type="button" className="quiet-button" onClick={add}>＋ Chapter</button>}
