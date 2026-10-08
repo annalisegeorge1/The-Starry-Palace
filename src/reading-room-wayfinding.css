@@ -1,0 +1,129 @@
+/* A quiet guide back to a story when a Reading Room shelf has no results. */
+.palace-shell .reading-filter-trail{
+ display:flex;flex-wrap:wrap;align-items:center;gap:12px;
+ margin:12px 0 22px;padding:13px clamp(14px,2vw,20px);
+ border:1px solid rgba(172,161,224,.44);border-radius:17px;
+ background:linear-gradient(130deg,rgba(83,81,153,.18),rgba(83,121,169,.10));
+ color:#f1eafd;
+}
+.palace-shell .reading-filter-title{
+ font:800 .67rem/1.5 system-ui,sans-serif;
+ letter-spacing:.14em;flex:0 0 auto;
+}
+.palace-shell .reading-filter-trail>div{display:flex;flex:1 1 230px;min-width:0;flex-wrap:wrap;gap:8px}
+.palace-shell .reading-filter-trail button{
+ display:inline-flex;align-items:center;justify-content:center;gap:9px;
+ min-height:42px;max-width:100%;padding:8px 12px;
+ border:1px solid rgba(194,179,237,.54);border-radius:999px;
+ background:rgba(89,88,164,.27);color:inherit;
+ font:700 .79rem/1.38 system-ui,sans-serif;cursor:pointer;
+ transition:border-color .16s ease,background-color .16s ease;
+}
+.palace-shell .reading-filter-trail button>span{overflow-wrap:anywhere;max-width:28ch;text-align:left}
+.palace-shell .reading-filter-trail button>b{font:800 1.1rem/1 Georgia,serif}
+.palace-shell .reading-filter-trail button:hover{background:rgba(140,130,205,.30);border-color:#d4bcfc}
+.palace-shell .reading-filter-trail .reading-filter-clear{
+ background:transparent;border:1px solid transparent;text-decoration:underline;
+ text-underline-offset:4px;font-weight:800;
+}
+.palace-shell .reading-catalogue-empty,
+.palace-shell .reading-advanced-empty{
+ width:100%;min-width:0;box-sizing:border-box;
+ display:flex;align-items:center;gap:clamp(17px,3vw,28px);
+ padding:clamp(20px,3.5vw,35px);
+ border:1px solid rgba(176,162,220,.45);border-radius:23px;
+ background:radial-gradient(circle at 100% 0%,rgba(135,120,206,.15),transparent 45%),
+ linear-gradient(133deg,rgba(46,44,91,.87),rgba(31,49,82,.84));
+ box-shadow:0 16px 37px rgba(13,13,46,.12);
+ color:#f5f0ff;
+}
+.palace-shell .reading-catalogue-empty>div,
+.palace-shell .reading-advanced-empty>div{min-width:0;flex:1}
+.palace-shell .reading-empty-star,
+.palace-shell .reading-advanced-empty>span{
+ display:grid;place-items:center;flex:0 0 80px;height:94px;
+ border-radius:20px;background:rgba(166,153,230,.12);
+ border:1px solid rgba(197,185,249,.4);
+ font:normal 1.55rem/1.2 Georgia,serif;color:#cfbffd;
+}
+.palace-shell .reading-catalogue-empty .eyebrow{
+ font:.76rem/1.5 system-ui,sans-serif;font-weight:800;
+ color:#cdbbfa;letter-spacing:.13em;
+}
+.palace-shell .reading-catalogue-empty h2,
+.palace-shell .reading-advanced-empty h3{
+ margin:5px 0 9px;
+ font:600 clamp(1.45rem,3vw,2.05rem)/1.25 "Playfair Display",Georgia,serif;
+ color:inherit;text-wrap:balance;
+}
+.palace-shell .reading-catalogue-empty p:not(.eyebrow),
+.palace-shell .reading-advanced-empty p{
+ max-width:62ch;margin:0;line-height:1.68;font-size:.9rem;color:#e5ddf6;
+ overflow-wrap:anywhere;
+}
+.palace-shell .reading-empty-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+.palace-shell .reading-empty-actions :is(a,button),
+.palace-shell .reading-advanced-empty button{
+ display:inline-flex;align-items:center;justify-content:center;
+ min-height:44px;padding:10px 16px;border-radius:12px;
+ border:1px solid rgba(191,174,234,.65);
+ background:rgba(157,141,222,.22);color:inherit;
+ font:800 .83rem/1.4 system-ui,sans-serif;
+ text-decoration:none;cursor:pointer;
+}
+.palace-shell .reading-empty-actions :is(a,button):first-child{
+ background:linear-gradient(115deg,#d4c6ff,#afd6ed);
+ border-color:#d7c9f8;color:#30274b;
+}
+.palace-shell .reading-empty-actions :is(a,button):hover,
+.palace-shell .reading-advanced-empty button:hover{filter:brightness(1.08)}
+.palace-shell .reading-advanced-empty{margin:14px 0 20px}
+.palace-shell .reading-advanced-empty button{margin-top:15px}
+.palace-shell .reading-advanced-empty>span{height:75px;flex-basis:75px}
+.palace-shell :is(.reading-filter-trail button,.reading-empty-actions a,.reading-empty-actions button,.reading-advanced-empty button):focus-visible{
+ outline:3px solid #d2bcff!important;outline-offset:3px!important;
+}
+.palace-shell.daylight .reading-filter-trail{
+ color:#38294e;background:linear-gradient(140deg,#fcfaff,#f1f5fc);
+ border-color:#b5a4d0;
+}
+.palace-shell.daylight .reading-filter-trail button{
+ color:#3f3059;background:#f4eefb;border-color:#b8a7d1;
+}
+.palace-shell.daylight .reading-filter-trail button:hover{background:#ebe1f6;border-color:#70569e}
+.palace-shell.daylight .reading-filter-trail .reading-filter-clear{background:transparent;border-color:transparent}
+.palace-shell.daylight :is(.reading-catalogue-empty,.reading-advanced-empty){
+ color:#2e2942;background:radial-gradient(circle at 100% 0%,rgba(167,158,229,.14),transparent 46%),linear-gradient(135deg,#fff,#f5f2fc);
+ border-color:#bcafd0;box-shadow:0 14px 33px rgba(62,55,106,.08);
+}
+.palace-shell.daylight .reading-catalogue-empty .eyebrow{color:#6a4e92}
+.palace-shell.daylight .reading-empty-star,
+.palace-shell.daylight .reading-advanced-empty>span{
+ color:#7252a3;background:#ede7f7;border-color:#b9a6d7;
+}
+.palace-shell.daylight .reading-catalogue-empty p:not(.eyebrow),
+.palace-shell.daylight .reading-advanced-empty p{color:#504661}
+.palace-shell.daylight .reading-empty-actions :is(a,button),
+.palace-shell.daylight .reading-advanced-empty button{background:#eee8fa;color:#403153;border-color:#9d89c0}
+.palace-shell.daylight .reading-empty-actions :is(a,button):first-child{background:#604b91;color:#fff}
+.palace-shell.daylight :is(.reading-filter-trail button,.reading-empty-actions a,.reading-empty-actions button,.reading-advanced-empty button):focus-visible{
+ outline-color:#604384!important;
+}
+@media(max-width:650px){
+ .palace-shell .reading-filter-trail{margin:12px 0 18px;padding:13px}
+ .palace-shell .reading-filter-title{flex-basis:100%}
+ .palace-shell .reading-filter-trail>div{flex-basis:100%}
+ .palace-shell .reading-filter-clear{width:100%}
+ .palace-shell .reading-catalogue-empty,
+ .palace-shell .reading-advanced-empty{align-items:flex-start;gap:13px;padding:19px}
+ .palace-shell .reading-empty-star,.palace-shell .reading-advanced-empty>span{
+  flex:0 0 43px;height:48px;border-radius:13px;font-size:1.07rem;
+ }
+ .palace-shell .reading-catalogue-empty h2,
+ .palace-shell .reading-advanced-empty h3{font-size:1.43rem}
+ .palace-shell .reading-empty-actions :is(a,button){flex:1 1 175px}
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .reading-filter-trail button{transition:none!important}
+ .palace-shell .reading-empty-actions :is(a,button):hover{transform:none!important}
+}
