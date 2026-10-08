@@ -20,9 +20,9 @@ export function PalaceHomeWelcome({member=false}){
    </Link>)}
   </div>
   <nav className="palace-culture-paths" aria-label="Events and literary heritage">
-   <Link to="/events?tab=calendar" className="palace-culture-path palace-culture-events">
+   <Link to="/events?tab=heritage" className="palace-culture-path palace-culture-events">
     <span className="palace-culture-icon" aria-hidden="true">✧</span>
-    <span><strong>Festivals & gatherings</strong><small>Explore the calendar, cultural celebrations and creative events.</small></span>
+    <span><strong>History, heritage & festivals</strong><small>Explore cultural histories, traditions, festivals and celebrations.</small></span>
     <span className="palace-culture-arrow" aria-hidden="true">→</span>
    </Link>
    <Link to="/reading" className="palace-culture-path palace-culture-literature">
