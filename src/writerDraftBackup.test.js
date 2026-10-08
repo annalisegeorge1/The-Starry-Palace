@@ -29,5 +29,7 @@ describe('writer draft backup',()=>{
   expect(writerSavePhase('Saved to Palace')).toBe('saved');
   expect(writerSavePhase('Recovery copy kept on this device')).toBe('recovery');
   expect(writerSavePhase('Cloud save failed · export draft now')).toBe('attention');
+  expect(writerSavePhase('Restored locally · unsaved cloud edits. Choose Save now.')).toBe('recovery');
+  expect(writerSavePhase('Publication was not completed. Your chapter remains available.')).toBe('attention');
  });
 });
