@@ -446,7 +446,8 @@ describe('Starry Palace launch safety',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
     expect(data).toContain('work_tags(tags(id,name,category,status))');
-    expect(live).toContain("const workTags=w=>(w.work_tags||[]).map(x=>x.tags).filter(t=>t?.status==='canonical')");
+    expect(live).toContain("const workTags=w=>(w.work_tags||[]).map(x=>x.tags)");
+    expect(live).toContain("['canonical','community'].includes(t.status)");
     expect(live).toContain('...workTags(w).flatMap(t=>[t.name,t.category])');
     expect(live).toContain('reading-card-tags');
     expect(live).toContain('Title, writer, fandom or tag…');
