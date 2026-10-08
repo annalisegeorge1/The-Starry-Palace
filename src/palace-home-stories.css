@@ -1,0 +1,10 @@
+.palace-first-shelf .palace-story-shelf-feedback{display:flex;align-items:center;gap:18px;min-height:88px;border:1px solid #a89ac46e;border-radius:18px;padding:20px 23px;margin-top:19px;background:linear-gradient(128deg,rgba(111,89,153,.14),rgba(77,123,166,.06));color:var(--palace-text,inherit);line-height:1.5}
+.palace-story-shelf-feedback strong{font:600 1.16rem/1.25 Georgia,serif}
+.palace-story-shelf-feedback p{font-size:.9rem;opacity:.84;line-height:1.55;margin:7px 0 10px}
+.palace-story-shelf-feedback a{color:inherit;text-decoration:underline;text-underline-offset:4px;font-size:.88rem;font-weight:700}
+.palace-story-shelf-feedback>div{min-width:0}
+.palace-first-story-mark{flex:none;width:64px;height:64px;border:1px solid #ab96d69c;border-radius:18px;display:grid;place-items:center;font-size:1.9rem;color:#c1a9ee;background:#9c7bc52b}
+.palace-first-story-actions{display:flex;flex-wrap:wrap;gap:9px 18px}
+.palace-shell.daylight .palace-story-shelf-feedback{background:#fbf9ff;border-color:#b5a7c7;color:#28263f}
+.palace-shell.daylight .palace-first-story-mark{color:#694897;background:#eee6f6;border-color:#ae9acb}
+@media(max-width:560px){.palace-first-shelf .palace-story-shelf-feedback{padding:17px;align-items:flex-start}.palace-first-story-mark{width:45px;height:45px;font-size:1.3rem}}
