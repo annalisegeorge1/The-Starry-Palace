@@ -527,7 +527,8 @@ describe('Starry Palace launch safety',()=>{
   it('keeps the global quick-navigation palette wired',()=>{
     const polish=read('src/polish.css');
     expect(main).toContain('commandOpen');
-    expect(main).toContain("e.key.toLowerCase()==='k'");
+    expect(main).toContain('shouldOpenPalaceQuickNavigation(e)');
+    expect(read('src/palaceKeyboard.js')).toContain("String(event.key||'').toLowerCase()!=='k'");
     expect(main).toContain('palace-command');
     expect(main).toContain('Open Palace quick navigation');
     expect(main).toContain('recentPalaceRoutes');
