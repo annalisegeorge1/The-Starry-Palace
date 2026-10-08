@@ -17,7 +17,7 @@ describe('manuscript format selection',()=>{
   document.body.appendChild(editor);
   const {selection}=selectionWithRange(editor,'A chapter with a lovely phrase',15,21);
   const saved=captureEditorSelection(editor,selection);
-  expect(saved?.toString()).toBe('lovely');
+  expect(saved?.range.toString()).toBe('lovely');
   selection.removeAllRanges();
   expect(restoreEditorSelection(editor,saved,selection)).toBe(true);
   expect(selection.toString()).toBe('lovely');
