@@ -1,0 +1,219 @@
+/* The Starry Palace · a quieter, more welcoming Commons.
+ * Real conversation filters stay chronological; no simulated popularity.
+ */
+.palace-shell .chic-commons .commons-conversation-path{
+ display:grid;
+ gap:.7rem;
+ padding:1rem clamp(.75rem,2vw,1.15rem);
+ margin:.65rem 0 .6rem;
+ min-width:0;
+ border:1px solid rgba(177,156,229,.3);
+ border-radius:18px;
+ color:#f2efff;
+ background:linear-gradient(130deg,rgba(58,51,114,.36),rgba(40,78,105,.18));
+ box-shadow:inset 0 1px rgba(228,224,255,.055);
+}
+.palace-shell .chic-commons .commons-path-heading{
+ display:flex;flex-wrap:wrap;align-items:center;gap:.65rem;min-width:0;
+}
+.palace-shell .chic-commons .commons-path-heading>span{
+ display:grid;place-items:center;flex:0 0 36px;
+ width:36px;height:36px;
+ border-radius:12px;
+ border:1px solid rgba(180,178,252,.44);
+ color:#dddaff;background:rgba(117,101,185,.17);
+ font:1.22rem Georgia,serif;
+}
+.palace-shell .chic-commons .commons-path-heading>div{
+ flex:1 1 145px;min-width:0;display:grid;gap:3px;
+}
+.palace-shell .chic-commons .commons-path-heading strong{
+ color:#f8f5ff;font-size:.9rem;font-weight:750;line-height:1.38;
+}
+.palace-shell .chic-commons .commons-path-heading small{
+ color:#cdc6e4;font-size:.7rem;line-height:1.5;
+}
+.palace-shell .chic-commons .commons-path-heading>button{
+ flex:0 0 auto;
+ min-height:43px;
+ padding:.55rem .84rem;
+ border-radius:12px;
+ border:1px solid rgba(192,177,250,.62);
+ background:linear-gradient(135deg,rgba(121,96,208,.45),rgba(71,116,169,.3));
+ color:#f8f6ff;
+ font-weight:750;font-size:.75rem;cursor:pointer;
+}
+.palace-shell .chic-commons .commons-moment-options{
+ display:flex;
+ flex-wrap:nowrap;
+ gap:7px;
+ min-width:0;
+ overflow-x:auto;
+ overscroll-behavior-inline:contain;
+ scrollbar-width:thin;
+ scrollbar-color:rgba(182,166,242,.5) transparent;
+ padding:.2rem .1rem .36rem;
+}
+.palace-shell .chic-commons .commons-moment-options button{
+ flex:0 0 auto;
+ min-height:40px;
+ padding:8px 13px;
+ border-radius:999px;
+ border:1px solid rgba(188,176,236,.38);
+ color:#ded9ed;
+ background:rgba(30,35,70,.37);
+ font-size:.72rem;font-weight:650;
+ cursor:pointer;
+}
+.palace-shell .chic-commons .commons-moment-options button[aria-pressed="true"]{
+ border-color:#c7bcfa;
+ color:#fff;
+ background:linear-gradient(125deg,rgba(109,85,188,.68),rgba(63,101,160,.54));
+ box-shadow:inset 0 1px rgba(246,234,255,.12);
+}
+.palace-shell .chic-commons .commons-moment-count{
+ color:#c5c6e2;
+ font-size:.69rem;line-height:1.45;
+ font-variant-numeric:tabular-nums;
+}
+.palace-shell .chic-commons .commons-compose-fold{
+ min-width:0;
+ margin:.3rem 0 .95rem;
+ border:1px solid rgba(184,170,238,.31);
+ border-radius:17px;
+ color:#f3eeff;
+ background:linear-gradient(135deg,rgba(43,40,88,.24),rgba(19,32,65,.24));
+}
+.palace-shell .chic-commons .commons-compose-fold>summary{
+ display:flex;align-items:center;gap:.7rem;
+ min-height:64px;
+ padding:.7rem .95rem;
+ border-radius:16px;
+ cursor:pointer;
+ list-style:none;
+}
+.palace-shell .chic-commons .commons-compose-fold>summary::-webkit-details-marker{display:none}
+.palace-shell .chic-commons .commons-compose-fold>summary::marker{content:''}
+.palace-shell .chic-commons .commons-compose-fold>summary:hover{background:rgba(139,118,202,.10)}
+.palace-shell .chic-commons .commons-compose-fold>summary>span:nth-child(2){
+ flex:1;min-width:0;display:grid;gap:3px;
+}
+.palace-shell .chic-commons .commons-compose-fold>summary strong{
+ font-size:.84rem;color:#f4f0ff;
+}
+.palace-shell .chic-commons .commons-compose-fold>summary small{
+ color:#c8c1dc;font-size:.67rem;line-height:1.44;
+}
+.palace-shell .chic-commons .commons-compose-summary-sigil{
+ flex:0 0 33px;width:33px;height:33px;
+ display:grid;place-items:center;
+ border:1px solid rgba(188,170,251,.42);
+ border-radius:11px;
+ color:#e6d9ff;
+ background:rgba(122,94,190,.15);
+}
+.palace-shell .chic-commons .commons-compose-summary-chevron{
+ font:1.5rem/1 Georgia,serif;
+ color:#d8d0f5;
+ transition:transform .17s ease;
+}
+.palace-shell .chic-commons .commons-compose-fold[open] .commons-compose-summary-chevron{
+ transform:rotate(180deg);
+}
+.palace-shell .chic-commons .commons-compose-fold[open]>summary{
+ border-bottom:1px solid rgba(194,171,239,.22);
+ border-radius:16px 16px 0 0;
+}
+.palace-shell .chic-commons .commons-compose-fold:not([open])>.thread-compose{
+ display:none;
+}
+.palace-shell .chic-commons .commons-compose-fold .thread-compose{
+ margin:0!important;
+ padding:clamp(.68rem,2vw,1.05rem)!important;
+ border:0!important;
+ border-radius:0 0 16px 16px!important;
+}
+.palace-shell .chic-commons :is(.commons-moment-options button,.commons-path-heading>button,.commons-compose-fold>summary,.commons-load-more button):focus-visible{
+ outline:3px solid #b9dfff!important;
+ outline-offset:3px!important;
+}
+.palace-shell .chic-commons .commons-load-more{
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ justify-content:center;
+ gap:10px 18px;
+ margin:1rem .8rem 1.5rem;
+ padding:.9rem;
+ border:1px dashed rgba(190,172,237,.35);
+ border-radius:14px;
+ color:#c9c3de;
+ font-size:.76rem;
+}
+.palace-shell .chic-commons .commons-load-more button{
+ min-height:44px;
+ padding:.52rem 1.1rem;
+ border:1px solid rgba(177,159,235,.62);
+ border-radius:11px;
+ background:rgba(111,100,195,.22);
+ color:#f1ecff;
+ font-weight:750;
+ cursor:pointer;
+}
+.palace-shell .forum-ledger-thread.open{
+ scroll-margin-top:130px;
+ border-color:rgba(165,179,249,.73);
+ box-shadow:0 0 0 2px rgba(122,142,230,.08);
+}
+.palace-shell .forum-ledger-thread:focus{outline:none}
+.palace-shell .forum-ledger-thread:focus-visible{
+ outline:3px solid #b5dcff;outline-offset:3px;
+}
+.palace-shell.daylight .chic-commons :is(.commons-conversation-path,.commons-compose-fold){
+ background:linear-gradient(135deg,#fcfaff,#f0f3fc);
+ border-color:#c4b4de;
+ color:#3b2f51;
+}
+.palace-shell.daylight .chic-commons :is(.commons-path-heading strong,.commons-compose-fold>summary strong){color:#3c2d5b}
+.palace-shell.daylight .chic-commons :is(.commons-path-heading small,.commons-compose-fold>summary small,.commons-moment-count){color:#625578}
+.palace-shell.daylight .chic-commons :is(.commons-path-heading>span,.commons-compose-summary-sigil){
+ background:#ede7fa;color:#61498c;border-color:#b3a4d2;
+}
+.palace-shell.daylight .chic-commons .commons-compose-summary-chevron{color:#634b8a}
+.palace-shell.daylight .chic-commons .commons-moment-options button{
+ color:#51436a;
+ background:#faf8ff;
+ border-color:#c4b6dd;
+}
+.palace-shell.daylight .chic-commons .commons-moment-options button[aria-pressed="true"]{
+ color:#2e2450;
+ background:linear-gradient(120deg,#e7ddfb,#dceafa);
+ border-color:#8b71bb;
+}
+.palace-shell.daylight .chic-commons .commons-path-heading>button,
+.palace-shell.daylight .chic-commons .commons-load-more button{
+ background:#e8e2f8;color:#382651;border-color:#a391ce;
+}
+.palace-shell.daylight .chic-commons .commons-load-more{color:#655674;border-color:#b8a7d2}
+@media(max-width:650px){
+ .palace-shell .chic-commons .commons-conversation-path{padding:.8rem .66rem;gap:.5rem}
+ .palace-shell .chic-commons .commons-path-heading>button{
+  flex:1 1 100%;width:100%;min-height:44px;
+ }
+ .palace-shell .chic-commons .commons-moment-options button{
+  min-height:44px;
+ }
+ .palace-shell .chic-commons .commons-compose-fold>summary{
+  min-height:66px;padding:.75rem .7rem;
+ }
+ .palace-shell .chic-commons .commons-load-more{
+  flex-direction:column;
+  margin:.75rem .25rem 1.25rem;
+  text-align:center;
+ }
+ .palace-shell .chic-commons .commons-load-more button{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .chic-commons .commons-compose-summary-chevron{transition:none!important}
+ .palace-shell .chic-commons .commons-moment-options{scroll-behavior:auto!important}
+}
