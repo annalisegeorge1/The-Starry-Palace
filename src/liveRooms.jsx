@@ -8,6 +8,7 @@ import {writerBackupFilename,writerBackupText,writerSavePhase} from './writerDra
 import {createChapterSwitchGate,createEditorMetricsScheduler} from './editorFlow';
 import {createDraftRecoveryScheduler} from './draftRecoveryScheduler';
 import {palaceLifeRoom,palaceLifeRoomFromSearch,palaceLifeRoomUrl,PALACE_LIFE_ROOMS} from './palaceLifeRoomNavigation';
+import {COMMONS_MOMENTS,commonsMoment,matchesCommonsMoment,commonsVisiblePage} from './commonsDiscovery';
 import {captureEditorSelection,restoreEditorSelection,toolbarScrollAmount} from './editorSelection';
 import {chooseWritingResumeTarget} from './writingReturnModel';
 import {readingFilterChips,chooseReadingSurprise} from './readingDiscovery';
@@ -732,7 +733,7 @@ export function SeriesLive({Frame}){
  </section></Frame>
 }
 export function PalaceLifeLive({Frame}){
- const{session}=useAuth();const location=useLocation();const navigate=useNavigate();const initialRoom=palaceLifeRoomFromSearch(location.search);const[data,setData]=useState(null);const[followingPosts,setFollowingPosts]=useState([]);const[introForm,setIntroForm]=useState({title:'',body:'',tags:'',visibility:'members'});const[introBusy,setIntroBusy]=useState(false);const[highlightDialog,setHighlightDialog]=useState(false);const[highlightQuery,setHighlightQuery]=useState('');const[highlightCandidates,setHighlightCandidates]=useState([]);const[highlightTarget,setHighlightTarget]=useState(null);const[highlightReason,setHighlightReason]=useState('');const[highlightBusy,setHighlightBusy]=useState(false);const[error,setError]=useState('');const[actionError,setActionError]=useState('');const[clubDialog,setClubDialog]=useState(false);const[clubForm,setClubForm]=useState({name:'',clubType:'reading',privacy:'open',description:'',guidelines:''});const[clubCreated,setClubCreated]=useState(null);const[chat,setChat]=useState(()=>{try{return localStorage.getItem('palace-moonlight-draft')||''}catch{return''}});const[thread,setThread]=useState(()=>{try{const saved=JSON.parse(localStorage.getItem('palace-commons-compose')||'null');return saved&&typeof saved==='object'?{title:'',body:'',kind:'discussion',source:'',...saved}:{title:'',body:'',kind:'discussion',source:''}}catch{return{title:'',body:'',kind:'discussion',source:''}}});const[pollOptions,setPollOptions]=useState(['','']);const[pollBusy,setPollBusy]=useState('');const[room,setRoom]=useState(initialRoom);const[threadView,setThreadView]=useState('all');const[threadQuery,setThreadQuery]=useState('');const[starView,setStarView]=useState('all');const[starQuery,setStarQuery]=useState('');const[clubQuery,setClubQuery]=useState('');const[clubType,setClubType]=useState('all');const[clubDoor,setClubDoor]=useState('all');const[clubSort,setClubSort]=useState('active');const[joiningClub,setJoiningClub]=useState('');const[clubRequest,setClubRequest]=useState(null);const[clubRequestNote,setClubRequestNote]=useState('');const[forumOpen,setForumOpen]=useState(null);const[forumReply,setForumReply]=useState('');const[moonLiveState,setMoonLiveState]=useState('connecting');const[moonUnseen,setMoonUnseen]=useState(0);const threadComposeRef=useRef(null);const moonScrollRef=useRef(null);const moonPinnedRef=useRef(true);
+ const{session}=useAuth();const location=useLocation();const navigate=useNavigate();const initialRoom=palaceLifeRoomFromSearch(location.search);const[data,setData]=useState(null);const[followingPosts,setFollowingPosts]=useState([]);const[introForm,setIntroForm]=useState({title:'',body:'',tags:'',visibility:'members'});const[introBusy,setIntroBusy]=useState(false);const[highlightDialog,setHighlightDialog]=useState(false);const[highlightQuery,setHighlightQuery]=useState('');const[highlightCandidates,setHighlightCandidates]=useState([]);const[highlightTarget,setHighlightTarget]=useState(null);const[highlightReason,setHighlightReason]=useState('');const[highlightBusy,setHighlightBusy]=useState(false);const[error,setError]=useState('');const[actionError,setActionError]=useState('');const[clubDialog,setClubDialog]=useState(false);const[clubForm,setClubForm]=useState({name:'',clubType:'reading',privacy:'open',description:'',guidelines:''});const[clubCreated,setClubCreated]=useState(null);const[chat,setChat]=useState(()=>{try{return localStorage.getItem('palace-moonlight-draft')||''}catch{return''}});const[thread,setThread]=useState(()=>{try{const saved=JSON.parse(localStorage.getItem('palace-commons-compose')||'null');return saved&&typeof saved==='object'?{title:'',body:'',kind:'discussion',source:'',...saved}:{title:'',body:'',kind:'discussion',source:''}}catch{return{title:'',body:'',kind:'discussion',source:''}}});const[pollOptions,setPollOptions]=useState(['','']);const[pollBusy,setPollBusy]=useState('');const[room,setRoom]=useState(initialRoom);const[threadView,setThreadView]=useState('all');const[threadQuery,setThreadQuery]=useState('');const[threadMoment,setThreadMoment]=useState('all');const[threadPage,setThreadPage]=useState(1);const[starView,setStarView]=useState('all');const[starQuery,setStarQuery]=useState('');const[clubQuery,setClubQuery]=useState('');const[clubType,setClubType]=useState('all');const[clubDoor,setClubDoor]=useState('all');const[clubSort,setClubSort]=useState('active');const[joiningClub,setJoiningClub]=useState('');const[clubRequest,setClubRequest]=useState(null);const[clubRequestNote,setClubRequestNote]=useState('');const[forumOpen,setForumOpen]=useState(null);const[forumReply,setForumReply]=useState('');const[moonLiveState,setMoonLiveState]=useState('connecting');const[moonUnseen,setMoonUnseen]=useState(0);const threadComposeRef=useRef(null);const composePanelRef=useRef(null);const postingThreadRef=useRef(false);const[postingThread,setPostingThread]=useState(false);const moonScrollRef=useRef(null);const moonPinnedRef=useRef(true);
  const load=()=>{setError('');Promise.all([getPalaceLife(session.user.id),getFollowingProfilePosts(session.user.id),getEventsHeritage(session.user.id)]).then(([life,posts,almanac])=>{setData({...life,almanac});setFollowingPosts(posts||[]);const own=(life.communityIntroductions||[]).find(i=>i.member_id===session.user.id);setIntroForm(own?{title:own.title||'',body:own.body||'',tags:(own.tags||[]).join(', '),visibility:own.visibility||'members'}:{title:'',body:'',tags:'',visibility:'members'})}).catch(e=>setError(e.message))};useEffect(()=>{load()},[session.user.id]);useEffect(()=>{const timer=window.setTimeout(()=>{try{if(thread.title||thread.body||thread.kind!=='discussion'||thread.source)localStorage.setItem('palace-commons-compose',JSON.stringify(thread));else localStorage.removeItem('palace-commons-compose')}catch{}},220);return()=>window.clearTimeout(timer)},[thread]);useEffect(()=>{const timer=window.setTimeout(()=>{try{if(chat)localStorage.setItem('palace-moonlight-draft',chat);else localStorage.removeItem('palace-moonlight-draft')}catch{}},160);return()=>window.clearTimeout(timer)},[chat]);useEffect(()=>{if(!forumOpen){setForumReply('');return}try{setForumReply(localStorage.getItem('palace-forum-reply:'+forumOpen)||'')}catch{setForumReply('')}},[forumOpen]);useEffect(()=>{if(!forumOpen)return;const timer=window.setTimeout(()=>{try{const key='palace-forum-reply:'+forumOpen;if(forumReply)localStorage.setItem(key,forumReply);else localStorage.removeItem(key)}catch{}},160);return()=>window.clearTimeout(timer)},[forumReply,forumOpen]);useEffect(()=>{const params=new URLSearchParams(location.search);const next=palaceLifeRoomFromSearch(location.search);if(next!==room)setRoom(next);const talk=params.get('talk');const kind=params.get('kind');if(talk&&next==='commons'){setThread(current=>{const untouched=!current.title&&!current.body&&current.kind==='discussion'&&!current.source;if(!untouched)return current;return{title:'Let’s talk about '+talk,body:'',kind:['discussion','question','recommendation','poll','salon'].includes(kind)?kind:'discussion',source:'Reading Rooms · '+talk}});window.requestAnimationFrame(()=>threadComposeRef.current?.scrollIntoView({behavior:'smooth',block:'center'}))}},[location.search]);function chooseRoom(next){
   const target=palaceLifeRoom(next);
   if(target!==room)setRoom(target);
@@ -741,8 +742,27 @@ export function PalaceLifeLive({Frame}){
   window.scrollTo({top:0,left:0,behavior:'auto'});
  }
  function wanderPalaceLife(){const rooms=PALACE_LIFE_ROOMS.filter(x=>x!==room);chooseRoom(rooms[Math.floor(Math.random()*rooms.length)]||'commons')}
+ function openCommonsComposer(){
+  if(composePanelRef.current)composePanelRef.current.open=true;
+ }
+ function openForumConversation(id){
+  setForumOpen(id);
+  chooseRoom('forum');
+ }
+ useEffect(()=>{
+  if(room!=='forum'||!forumOpen)return;
+  const frame=window.requestAnimationFrame(()=>{
+   const el=document.getElementById('palace-forum-thread-'+forumOpen);
+   if(!el)return;
+   const reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+   el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});
+   el.focus({preventScroll:true});
+  });
+  return()=>window.cancelAnimationFrame(frame);
+ },[room,forumOpen]);
  function useSalonPrompt(prompt){
   chooseRoom('commons');
+  openCommonsComposer();
   setThread({title:prompt.title,body:prompt.opening,kind:'salon',source:prompt.kind});
   window.requestAnimationFrame(()=>window.requestAnimationFrame(()=>threadComposeRef.current?.scrollIntoView({behavior:'smooth',block:'start'})));
  }
@@ -774,6 +794,8 @@ export function PalaceLifeLive({Frame}){
   const q=threadQuery.trim().toLowerCase();const queryOk=!q||[t.title,t.body,t.room,t.profiles?.display_name,t.profiles?.username].filter(Boolean).join(' ').toLowerCase().includes(q);
   return viewOk&&queryOk&&!t.muted;
  });
+ const commonsThreads=visibleThreads.filter(t=>matchesCommonsMoment(t,threadMoment));
+ const displayedCommonsThreads=commonsVisiblePage(commonsThreads,threadPage,12);
  const clubPulseScore=cl=>new Date(cl.pulse?.last_activity_at||cl.created_at||0).getTime();
  const visibleDiscovery=(data?.discoverableClubs||[]).filter(cl=>{
   const q=clubQuery.trim().toLowerCase();const queryOk=!q||[cl.name,cl.description,cl.club_type].filter(Boolean).join(' ').toLowerCase().includes(q);
@@ -802,7 +824,7 @@ export function PalaceLifeLive({Frame}){
  function enterPalaceRitual(){
   if(palaceRitual.action==='moonlight'||palaceRitual.action==='stars'){chooseRoom(palaceRitual.action);return}
   if(palaceRitual.action==='salon'){useSalonPrompt(salonPromptBank[Math.floor(Date.now()/3600000)%salonPromptBank.length]);return}
-  chooseRoom('commons');setThread(v=>({...v,kind:palaceRitual.action,source:''}));window.requestAnimationFrame(()=>threadComposeRef.current?.scrollIntoView({behavior:'smooth',block:'start'}))
+  chooseRoom('commons');openCommonsComposer();setThread(v=>({...v,kind:palaceRitual.action,source:''}));window.requestAnimationFrame(()=>threadComposeRef.current?.scrollIntoView({behavior:'smooth',block:'start'}))
  }
  const salonPromptBank=[
   {kind:'READING TABLE',glyph:'▤',title:'A story you wish you could read again for the first time',opening:'What story would you choose, and what made the first encounter with it unforgettable?'},
