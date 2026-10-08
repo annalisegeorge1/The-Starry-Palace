@@ -265,3 +265,43 @@
 .palace-shell.daylight .chamber-atelier-gallery .chamber-atelier-gallery-filters button:focus-visible{
  outline-color:#5d47ae!important;
 }
+
+/* Small-phone Chamber navigation: 3 welcoming doors, then 2 balanced doors.
+ * At <=460px, five tiny tabs in one line were legible only at reduced type.
+ * Keep every room visible and let finger-sized touch targets breathe. */
+@media(max-width:460px){
+ .palace-shell .chamber-atelier-tabs.chic-chamber-tabs{
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  gap:6px!important;
+  padding:6px!important;
+  overflow:visible!important;
+ }
+ .palace-shell .chamber-atelier-tabs.chic-chamber-tabs a{
+  grid-column:span 2!important;
+  flex:none!important;
+  min-width:0!important;
+  min-height:52px!important;
+  padding:7px 4px!important;
+  gap:4px!important;
+  font-size:clamp(.68rem,2.7vw,.78rem)!important;
+  line-height:1.25!important;
+  white-space:normal!important;
+  text-align:center!important;
+ }
+ .palace-shell .chamber-atelier-tabs.chic-chamber-tabs a:nth-child(n+4){
+  grid-column:span 3!important;
+ }
+ .palace-shell #chamber-palace,
+ .palace-shell #chamber-about,
+ .palace-shell #chamber-notes,
+ .palace-shell #chamber-honours,
+ .palace-shell #chamber-worlds{scroll-margin-top:194px}
+}
+@media(max-width:460px) and (max-height:550px){
+ .palace-shell .chamber-atelier-tabs.chic-chamber-tabs{position:static!important}
+ .palace-shell #chamber-palace,
+ .palace-shell #chamber-about,
+ .palace-shell #chamber-notes,
+ .palace-shell #chamber-honours,
+ .palace-shell #chamber-worlds{scroll-margin-top:80px}
+}
