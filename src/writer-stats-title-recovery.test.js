@@ -26,7 +26,10 @@ describe('honest writer statistics and safely recoverable drafts',()=>{
   expect(live).toContain('function downloadRecoveryCopy()');
   expect(live).toContain('body:manuscriptPlainTextFromHtml(recovery.body_html||\'\')');
   expect(live).toContain('Download recovery .txt');
-  expect(live).toContain("window.confirm('Discard the unsaved device recovery copy");
+  expect(live).toContain('if(!recoveryDiscardArmed)');
+  expect(live).toContain("recoveryDiscardArmed?'Confirm discard':'Discard'");
+  expect(live).toContain('Keep copy');
+  expect(live).not.toContain('window.confirm(');
   expect(live).toContain('Restore copy');
   expect(live).toContain("localStorage.removeItem(recoveryKey())");
  });
