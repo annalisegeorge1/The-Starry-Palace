@@ -59,6 +59,9 @@ export function restoreFlatClassicChapterHtml(html=''){
   const doc=new DOMParser().parseFromString('<body>'+original+'</body>','text/html');
   const nodes=[...doc.body.querySelectorAll('p,h2,h3,blockquote,li,pre')];
   if(nodes.length>2||nodes.some(x=>['H2','H3','PRE','BLOCKQUOTE','LI'].includes(x.tagName)))return original;
+  // Do not erase inline emphasis, links, line breaks or intentional layout.
+  // Repair only truly flattened plain-text paragraphs.
+  if(doc.body.querySelector('strong,b,em,i,u,a,br,span,img,ul,ol,table,hr'))return original;
   const text=doc.body.textContent||'';
   if(text.trim().length<700)return original;
   const blocks=structureClassicText(text);
