@@ -40,3 +40,24 @@ body.writing-desk-open :is(.writer-filter-context button,.writing-chapter-manage
 @media(max-width:380px){
  body.writing-desk-open .writing-chapter-manager-tools{grid-template-columns:1fr}
 }
+
+/* A failed save must not throw the writer out of the manuscript. */
+body.writing-desk-open .writer-inline-error{
+ display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
+ margin:0 0 15px;padding:14px 16px;border:1px solid rgba(213,148,145,.75);
+ border-radius:14px;background:rgba(167,85,84,.14);color:inherit;
+}
+body.writing-desk-open .writer-inline-error>div{min-width:0}
+body.writing-desk-open .writer-inline-error strong{display:block;font-size:.9rem}
+body.writing-desk-open .writer-inline-error p{margin:5px 0 3px;line-height:1.5;overflow-wrap:anywhere}
+body.writing-desk-open .writer-inline-error small{font-size:.75rem;line-height:1.5;opacity:.86}
+body.writing-desk-open .writer-inline-error button{flex:0 0 auto;min-height:42px}
+.palace-dialog .writer-release-error{
+ padding:12px 14px;border:1px solid rgba(206,131,128,.7);
+ border-radius:12px;background:rgba(177,92,90,.15);
+ font:700 .83rem/1.55 system-ui,sans-serif;overflow-wrap:anywhere;
+}
+@media(max-width:580px){
+ body.writing-desk-open .writer-inline-error{flex-direction:column}
+ body.writing-desk-open .writer-inline-error button{align-self:flex-start}
+}
