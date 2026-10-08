@@ -49,6 +49,7 @@ import './palace-writer-profile-finish.css';
 import './profile-grid-restoration.css';
 import './chamber-creative-shelf-polish.css';
 import './reader-journey-path.css';
+import './reader-chapter-flow.css';
 import './work-overview-story-info.css';
 import './reader-comfort-finish.css';
 
