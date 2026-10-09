@@ -1,0 +1,2088 @@
+/* Additive, curated Palace-only entries; not an AO3 catalogue import. */
+export const FANDOM_EXPANSION_V2=[
+ {
+  "name": "Cowboy Bebop",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Space western",
+  "aliases": [
+   "カウボーイビバップ",
+   "Cowboy Bebop Anime"
+  ],
+  "franchise": "Cowboy Bebop"
+ },
+ {
+  "name": "Neon Genesis Evangelion",
+  "media_categories": [
+   "anime_manga",
+   "movies"
+  ],
+  "subcategory": "Mecha psychological drama",
+  "aliases": [
+   "NGE",
+   "Evangelion",
+   "Shin Seiki Evangelion"
+  ],
+  "franchise": "Neon Genesis Evangelion"
+ },
+ {
+  "name": "Code Geass",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Mecha political thriller",
+  "aliases": [
+   "Code Geass Lelouch of the Rebellion"
+  ],
+  "franchise": "Code Geass"
+ },
+ {
+  "name": "Bungo Stray Dogs",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Supernatural action",
+  "aliases": [
+   "BSD",
+   "Bungou Stray Dogs"
+  ],
+  "franchise": "Bungo Stray Dogs"
+ },
+ {
+  "name": "Gintama",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Action comedy",
+  "aliases": [
+   "Gin Tama"
+  ],
+  "franchise": "Gintama"
+ },
+ {
+  "name": "Black Clover",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Shōnen fantasy",
+  "aliases": [
+   "Black Clover Anime"
+  ],
+  "franchise": "Black Clover"
+ },
+ {
+  "name": "Fairy Tail",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Shōnen fantasy",
+  "aliases": [
+   "Fairy Tail Anime"
+  ],
+  "franchise": "Fairy Tail"
+ },
+ {
+  "name": "Dandadan",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Paranormal comedy",
+  "aliases": [
+   "Dan Da Dan"
+  ],
+  "franchise": "Dandadan"
+ },
+ {
+  "name": "Delicious in Dungeon",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Fantasy adventure",
+  "aliases": [
+   "Dungeon Meshi"
+  ],
+  "franchise": "Delicious in Dungeon"
+ },
+ {
+  "name": "Oshi no Ko",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Idol drama",
+  "aliases": [
+   "【Oshi no Ko】"
+  ],
+  "franchise": "Oshi no Ko"
+ },
+ {
+  "name": "Blue Exorcist",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Supernatural fantasy",
+  "aliases": [
+   "Ao no Exorcist"
+  ],
+  "franchise": "Blue Exorcist"
+ },
+ {
+  "name": "Black Lagoon",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Crime action",
+  "aliases": [
+   "Black Lagoon Anime"
+  ],
+  "franchise": "Black Lagoon"
+ },
+ {
+  "name": "Hellsing",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Gothic action",
+  "aliases": [
+   "Hellsing Ultimate"
+  ],
+  "franchise": "Hellsing"
+ },
+ {
+  "name": "Trigun",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Science fiction western",
+  "aliases": [
+   "Trigun Stampede"
+  ],
+  "franchise": "Trigun"
+ },
+ {
+  "name": "Yu Yu Hakusho",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Supernatural action",
+  "aliases": [
+   "YuYu Hakusho"
+  ],
+  "franchise": "Yu Yu Hakusho"
+ },
+ {
+  "name": "The Promised Neverland",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Dark fantasy",
+  "aliases": [
+   "Yakusoku no Neverland"
+  ],
+  "franchise": "The Promised Neverland"
+ },
+ {
+  "name": "Tokyo Revengers",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Time-travel action",
+  "aliases": [
+   "Tokyo Revengers Anime"
+  ],
+  "franchise": "Tokyo Revengers"
+ },
+ {
+  "name": "Dr. Stone",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Science fiction adventure",
+  "aliases": [
+   "Dr Stone"
+  ],
+  "franchise": "Dr. Stone"
+ },
+ {
+  "name": "Kuroko's Basketball",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Sports anime",
+  "aliases": [
+   "Kuroko no Basket"
+  ],
+  "franchise": "Kuroko's Basketball"
+ },
+ {
+  "name": "Pokémon",
+  "media_categories": [
+   "anime_manga",
+   "cartoons_comics",
+   "video_games"
+  ],
+  "subcategory": "Creature-collecting adventure",
+  "aliases": [
+   "Pokemon",
+   "Pocket Monsters",
+   "Pokémon Anime"
+  ],
+  "franchise": "Pokémon"
+ },
+ {
+  "name": "A Sign of Affection",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Romance manga",
+  "aliases": [
+   "Yubisaki to Renren"
+  ],
+  "franchise": "A Sign of Affection"
+ },
+ {
+  "name": "Mushishi",
+  "media_categories": [
+   "anime_manga"
+  ],
+  "subcategory": "Supernatural fantasy",
+  "aliases": [
+   "Mushi-Shi"
+  ],
+  "franchise": "Mushishi"
+ },
+ {
+  "name": "Your Name",
+  "media_categories": [
+   "anime_manga",
+   "movies"
+  ],
+  "subcategory": "Romantic fantasy film",
+  "aliases": [
+   "Kimi no Na wa"
+  ],
+  "franchise": "Your Name"
+ },
+ {
+  "name": "Violet Evergarden",
+  "media_categories": [
+   "anime_manga",
+   "tv_shows"
+  ],
+  "subcategory": "Animated drama",
+  "aliases": [
+   "Violet Evergarden Anime"
+  ],
+  "franchise": "Violet Evergarden"
+ },
+ {
+  "name": "The Poppy War",
+  "media_categories": [
+   "books_literature"
+  ],
+  "subcategory": "Military fantasy",
+  "aliases": [
+   "The Poppy War Trilogy"
+  ],
+  "franchise": "The Poppy War"
+ },
+ {
+  "name": "Fourth Wing",
+  "media_categories": [
+   "books_literature"
+  ],
+  "subcategory": "Romantasy",
+  "aliases": [
+   "The Empyrean",
+   "Rebecca Yarros"
+  ],
+  "franchise": "The Empyrean"
+ },
+ {
+  "name": "Crescent City",
+  "media_categories": [
+   "books_literature"
+  ],
+  "subcategory": "Urban romantasy",
+  "aliases": [
+   "House of Earth and Blood",
+   "Sarah J Maas"
+  ],
+  "franchise": "Crescent City"
+ },
+ {
+  "name": "Shadow and Bone",
+  "media_categories": [
+   "books_literature",
+   "tv_shows"
+  ],
+  "subcategory": "Fantasy adventure",
+  "aliases": [
+   "Grishaverse",
+   "Leigh Bardugo"
+  ],
+  "franchise": "Grishaverse"
+ },
+ {
+  "name": "The Raven Cycle",
+  "media_categories": [
+   "books_literature"
+  ],
+  "subcategory": "Urban fantasy",
+  "aliases": [
+   "The Raven Boys"
+  ],
+  "franchise": "The Raven Cycle"
+ },
+ {
+  "name": "The Song of Achilles",
+  "media_categories": [
+   "books_literature"
+  ],
+  "subcategory": "Mythological romance",
+  "aliases": [
+   "Madeline Miller Achilles"
+  ],
+  "franchise": "The Song of Achilles"
+ },
+ {
+  "name": "Circe",
+  "media_categories": [
+   "books_literature"
+  ],
+  "subcategory": "Mythological fantasy",
+  "aliases": [
+   "Madeline Miller Circe"
+  ],
+  "franchise": "Circe"
+ },
+ {
+  "name": "The Priory of the Orange Tree",
+  "media_categories": [
+   "books_literature"
+  ],
+  "subcategory": "Epic fantasy",
+  "aliases": [
+   "Priory of the Orange Tree"
+  ],
+  "franchise": "The Priory of the Orange Tree"
+ },
+ {
+  "name": "The Seven Husbands of Evelyn Hugo",
+  "media_categories": [
+   "books_literature"
+  ],
+  "subcategory": "Historical romance",
+  "aliases": [
+   "Evelyn Hugo"
+  ],
+  "franchise": "The Seven Husbands of Evelyn Hugo"
+ },
+ {
+  "name": "The Atlas Six",
+  "media_categories": [
+   "books_literature"
+  ],
+  "subcategory": "Dark academia",
+  "aliases": [
+   "Alexandrian Society"
+  ],
+  "franchise": "The Atlas Six"
+ },
+ {
+  "name": "The Broken Earth",
+  "media_categories": [
+   "books_literature"
+  ],
+  "subcategory": "Science fantasy",
+  "aliases": [
+   "The Fifth Season",
+   "N K Jemisin"
+  ],
+  "franchise": "The Broken Earth"
+ },
+ {
+  "name": "Discworld",
+  "media_categories": [
+   "books_literature"
+  ],
+  "subcategory": "Comic fantasy",
+  "aliases": [
+   "Terry Pratchett",
+   "Ankh-Morpork"
+  ],
+  "franchise": "Discworld"
+ },
+ {
+  "name": "His Dark Materials",
+  "media_categories": [
+   "books_literature",
+   "tv_shows"
+  ],
+  "subcategory": "Fantasy adventure",
+  "aliases": [
+   "The Golden Compass",
+   "Northern Lights"
+  ],
+  "franchise": "His Dark Materials"
+ },
+ {
+  "name": "A Series of Unfortunate Events",
+  "media_categories": [
+   "books_literature",
+   "tv_shows"
+  ],
+  "subcategory": "Gothic children's fiction",
+  "aliases": [
+   "ASOUE",
+   "Lemony Snicket"
+  ],
+  "franchise": "A Series of Unfortunate Events"
+ },
+ {
+  "name": "The Dark Tower",
+  "media_categories": [
+   "books_literature",
+   "movies"
+  ],
+  "subcategory": "Dark fantasy",
+  "aliases": [
+   "Stephen King Dark Tower"
+  ],
+  "franchise": "The Dark Tower"
+ },
+ {
+  "name": "The Inheritance Cycle",
+  "media_categories": [
+   "books_literature",
+   "movies"
+  ],
+  "subcategory": "Epic fantasy",
+  "aliases": [
+   "Eragon"
+  ],
+  "franchise": "The Inheritance Cycle"
+ },
+ {
+  "name": "The Kingkiller Chronicle",
+  "media_categories": [
+   "books_literature"
+  ],
+  "subcategory": "Epic fantasy",
+  "aliases": [
+   "The Name of the Wind",
+   "Patrick Rothfuss"
+  ],
+  "franchise": "The Kingkiller Chronicle"
+ },
+ {
+  "name": "Warriors (Erin Hunter)",
+  "media_categories": [
+   "books_literature"
+  ],
+  "subcategory": "Animal fantasy",
+  "aliases": [
+   "Warrior Cats",
+   "Warriors Cats"
+  ],
+  "franchise": "Warriors (Erin Hunter)"
+ },
+ {
+  "name": "Wings of Fire",
+  "media_categories": [
+   "books_literature",
+   "cartoons_comics"
+  ],
+  "subcategory": "Dragon fantasy",
+  "aliases": [
+   "Wings of Fire Dragons"
+  ],
+  "franchise": "Wings of Fire"
+ },
+ {
+  "name": "Vampire Academy",
+  "media_categories": [
+   "books_literature",
+   "movies",
+   "tv_shows"
+  ],
+  "subcategory": "Vampire fantasy",
+  "aliases": [
+   "Richelle Mead Vampire Academy"
+  ],
+  "franchise": "Vampire Academy"
+ },
+ {
+  "name": "Divergent",
+  "media_categories": [
+   "books_literature",
+   "movies"
+  ],
+  "subcategory": "Dystopian fiction",
+  "aliases": [
+   "Divergent Trilogy"
+  ],
+  "franchise": "Divergent"
+ },
+ {
+  "name": "The Lunar Chronicles",
+  "media_categories": [
+   "books_literature"
+  ],
+  "subcategory": "Science fiction fairy tale",
+  "aliases": [
+   "Cinder",
+   "Marissa Meyer"
+  ],
+  "franchise": "The Lunar Chronicles"
+ },
+ {
+  "name": "A Little Life",
+  "media_categories": [
+   "books_literature"
+  ],
+  "subcategory": "Literary drama",
+  "aliases": [
+   "Hanya Yanagihara"
+  ],
+  "franchise": "A Little Life"
+ },
+ {
+  "name": "Call Me by Your Name",
+  "media_categories": [
+   "books_literature",
+   "movies"
+  ],
+  "subcategory": "Romantic drama",
+  "aliases": [
+   "CMBYN"
+  ],
+  "franchise": "Call Me by Your Name"
+ },
+ {
+  "name": "The Earthsea Cycle",
+  "media_categories": [
+   "books_literature",
+   "anime_manga"
+  ],
+  "subcategory": "Epic fantasy",
+  "aliases": [
+   "Ursula K Le Guin",
+   "Earthsea"
+  ],
+  "franchise": "The Earthsea Cycle"
+ },
+ {
+  "name": "The Night Circus",
+  "media_categories": [
+   "books_literature"
+  ],
+  "subcategory": "Magical realism",
+  "aliases": [
+   "Erin Morgenstern"
+  ],
+  "franchise": "The Night Circus"
+ },
+ {
+  "name": "She-Ra and the Princesses of Power",
+  "media_categories": [
+   "cartoons_comics",
+   "tv_shows"
+  ],
+  "subcategory": "Animated fantasy",
+  "aliases": [
+   "SPOP",
+   "She Ra Reboot"
+  ],
+  "franchise": "She-Ra and the Princesses of Power"
+ },
+ {
+  "name": "The Dragon Prince",
+  "media_categories": [
+   "cartoons_comics",
+   "tv_shows"
+  ],
+  "subcategory": "Animated fantasy",
+  "aliases": [
+   "TDP",
+   "The Dragon Prince Netflix"
+  ],
+  "franchise": "The Dragon Prince"
+ },
+ {
+  "name": "Miraculous Ladybug",
+  "media_categories": [
+   "cartoons_comics",
+   "tv_shows"
+  ],
+  "subcategory": "Animated superhero",
+  "aliases": [
+   "Miraculous Tales of Ladybug and Cat Noir",
+   "MLB"
+  ],
+  "franchise": "Miraculous Ladybug"
+ },
+ {
+  "name": "Batman: The Animated Series",
+  "media_categories": [
+   "cartoons_comics",
+   "tv_shows"
+  ],
+  "subcategory": "Superhero animation",
+  "aliases": [
+   "BTAS",
+   "Batman TAS"
+  ],
+  "franchise": "DC Comics"
+ },
+ {
+  "name": "Young Justice",
+  "media_categories": [
+   "cartoons_comics",
+   "tv_shows"
+  ],
+  "subcategory": "Superhero animation",
+  "aliases": [
+   "Young Justice Cartoon"
+  ],
+  "franchise": "DC Comics"
+ },
+ {
+  "name": "The Powerpuff Girls",
+  "media_categories": [
+   "cartoons_comics",
+   "tv_shows"
+  ],
+  "subcategory": "Animated comedy",
+  "aliases": [
+   "PPG"
+  ],
+  "franchise": "The Powerpuff Girls"
+ },
+ {
+  "name": "Scooby-Doo",
+  "media_categories": [
+   "cartoons_comics",
+   "tv_shows",
+   "movies"
+  ],
+  "subcategory": "Animated mystery",
+  "aliases": [
+   "Scooby Doo",
+   "Mystery Incorporated"
+  ],
+  "franchise": "Scooby-Doo"
+ },
+ {
+  "name": "Amphibia",
+  "media_categories": [
+   "cartoons_comics",
+   "tv_shows"
+  ],
+  "subcategory": "Animated fantasy",
+  "aliases": [
+   "Amphibia Disney"
+  ],
+  "franchise": "Amphibia"
+ },
+ {
+  "name": "DuckTales",
+  "media_categories": [
+   "cartoons_comics",
+   "tv_shows"
+  ],
+  "subcategory": "Animated adventure",
+  "aliases": [
+   "Duck Tales"
+  ],
+  "franchise": "DuckTales"
+ },
+ {
+  "name": "Nimona",
+  "media_categories": [
+   "cartoons_comics",
+   "books_literature",
+   "movies"
+  ],
+  "subcategory": "Graphic novel fantasy",
+  "aliases": [
+   "Nimona Graphic Novel"
+  ],
+  "franchise": "Nimona"
+ },
+ {
+  "name": "Lore Olympus",
+  "media_categories": [
+   "cartoons_comics",
+   "other_media"
+  ],
+  "subcategory": "Webtoon romance",
+  "aliases": [
+   "Lore Olympus Webtoon"
+  ],
+  "franchise": "Lore Olympus"
+ },
+ {
+  "name": "Scott Pilgrim",
+  "media_categories": [
+   "cartoons_comics",
+   "movies",
+   "tv_shows"
+  ],
+  "subcategory": "Graphic novel comedy",
+  "aliases": [
+   "Scott Pilgrim Takes Off"
+  ],
+  "franchise": "Scott Pilgrim"
+ },
+ {
+  "name": "Hellboy",
+  "media_categories": [
+   "cartoons_comics",
+   "movies"
+  ],
+  "subcategory": "Occult superhero",
+  "aliases": [
+   "Hellboy Comics"
+  ],
+  "franchise": "Hellboy"
+ },
+ {
+  "name": "Teenage Mutant Ninja Turtles",
+  "media_categories": [
+   "cartoons_comics",
+   "tv_shows",
+   "movies"
+  ],
+  "subcategory": "Superhero animation",
+  "aliases": [
+   "TMNT",
+   "Ninja Turtles"
+  ],
+  "franchise": "Teenage Mutant Ninja Turtles"
+ },
+ {
+  "name": "The Legend of Vox Machina",
+  "media_categories": [
+   "cartoons_comics",
+   "tv_shows",
+   "other_media"
+  ],
+  "subcategory": "Adult fantasy animation",
+  "aliases": [
+   "Vox Machina Animation"
+  ],
+  "franchise": "Critical Role"
+ },
+ {
+  "name": "Castlevania (Animation)",
+  "media_categories": [
+   "cartoons_comics",
+   "tv_shows",
+   "video_games"
+  ],
+  "subcategory": "Dark fantasy animation",
+  "aliases": [
+   "Castlevania Netflix"
+  ],
+  "franchise": "Castlevania"
+ },
+ {
+  "name": "Beyoncé",
+  "media_categories": [
+   "celebrities_real_people",
+   "music_bands"
+  ],
+  "subcategory": "Pop and R&B music",
+  "aliases": [
+   "Beyonce",
+   "BeyHive"
+  ],
+  "franchise": "Beyoncé"
+ },
+ {
+  "name": "Rihanna",
+  "media_categories": [
+   "celebrities_real_people",
+   "music_bands"
+  ],
+  "subcategory": "Pop and R&B music",
+  "aliases": [
+   "Rihanna Fenty",
+   "Navy"
+  ],
+  "franchise": "Rihanna"
+ },
+ {
+  "name": "Zendaya",
+  "media_categories": [
+   "celebrities_real_people"
+  ],
+  "subcategory": "Actor fandom",
+  "aliases": [
+   "Zendaya Coleman"
+  ],
+  "franchise": "Zendaya"
+ },
+ {
+  "name": "Pedro Pascal",
+  "media_categories": [
+   "celebrities_real_people"
+  ],
+  "subcategory": "Actor fandom",
+  "aliases": [
+   "Pedro Pascal Actor"
+  ],
+  "franchise": "Pedro Pascal"
+ },
+ {
+  "name": "Bad Bunny",
+  "media_categories": [
+   "celebrities_real_people",
+   "music_bands"
+  ],
+  "subcategory": "Latin music",
+  "aliases": [
+   "Benito Antonio Martínez Ocasio"
+  ],
+  "franchise": "Bad Bunny"
+ },
+ {
+  "name": "Megan Thee Stallion",
+  "media_categories": [
+   "celebrities_real_people",
+   "music_bands"
+  ],
+  "subcategory": "Hip-hop music",
+  "aliases": [
+   "Megan Pete"
+  ],
+  "franchise": "Megan Thee Stallion"
+ },
+ {
+  "name": "The Kardashians",
+  "media_categories": [
+   "celebrities_real_people",
+   "tv_shows"
+  ],
+  "subcategory": "Reality television",
+  "aliases": [
+   "Keeping Up with the Kardashians"
+  ],
+  "franchise": "The Kardashians"
+ },
+ {
+  "name": "Formula 1",
+  "media_categories": [
+   "celebrities_real_people",
+   "tv_shows"
+  ],
+  "subcategory": "Motorsport fandom",
+  "aliases": [
+   "F1",
+   "Formula One"
+  ],
+  "franchise": "Formula 1"
+ },
+ {
+  "name": "Barbie (Movie)",
+  "media_categories": [
+   "movies"
+  ],
+  "subcategory": "Fantasy comedy film",
+  "aliases": [
+   "Barbie 2023"
+  ],
+  "franchise": "Barbie (Movie)"
+ },
+ {
+  "name": "Oppenheimer (Film)",
+  "media_categories": [
+   "movies"
+  ],
+  "subcategory": "Historical drama",
+  "aliases": [
+   "Oppenheimer 2023"
+  ],
+  "franchise": "Oppenheimer (Film)"
+ },
+ {
+  "name": "Everything Everywhere All at Once",
+  "media_categories": [
+   "movies"
+  ],
+  "subcategory": "Science fiction comedy",
+  "aliases": [
+   "EEAAO"
+  ],
+  "franchise": "Everything Everywhere All at Once"
+ },
+ {
+  "name": "Knives Out",
+  "media_categories": [
+   "movies"
+  ],
+  "subcategory": "Mystery film",
+  "aliases": [
+   "Glass Onion",
+   "Benoit Blanc"
+  ],
+  "franchise": "Knives Out"
+ },
+ {
+  "name": "Mission: Impossible",
+  "media_categories": [
+   "movies"
+  ],
+  "subcategory": "Action thriller franchise",
+  "aliases": [
+   "Mission Impossible Films"
+  ],
+  "franchise": "Mission: Impossible"
+ },
+ {
+  "name": "John Wick",
+  "media_categories": [
+   "movies"
+  ],
+  "subcategory": "Action thriller",
+  "aliases": [
+   "John Wick Movies"
+  ],
+  "franchise": "John Wick"
+ },
+ {
+  "name": "The Devil Wears Prada",
+  "media_categories": [
+   "movies",
+   "books_literature"
+  ],
+  "subcategory": "Workplace comedy",
+  "aliases": [
+   "Devil Wears Prada"
+  ],
+  "franchise": "The Devil Wears Prada"
+ },
+ {
+  "name": "Titanic (1997)",
+  "media_categories": [
+   "movies"
+  ],
+  "subcategory": "Romantic drama",
+  "aliases": [
+   "Titanic Movie 1997"
+  ],
+  "franchise": "Titanic (1997)"
+ },
+ {
+  "name": "The Princess Bride",
+  "media_categories": [
+   "movies",
+   "books_literature"
+  ],
+  "subcategory": "Fantasy romance",
+  "aliases": [
+   "Princess Bride Film"
+  ],
+  "franchise": "The Princess Bride"
+ },
+ {
+  "name": "Kill Bill",
+  "media_categories": [
+   "movies"
+  ],
+  "subcategory": "Action thriller",
+  "aliases": [
+   "Kill Bill Vol 1",
+   "Kill Bill Vol 2"
+  ],
+  "franchise": "Kill Bill"
+ },
+ {
+  "name": "Fast & Furious",
+  "media_categories": [
+   "movies"
+  ],
+  "subcategory": "Action franchise",
+  "aliases": [
+   "Fast and Furious",
+   "The Fast and the Furious"
+  ],
+  "franchise": "Fast & Furious"
+ },
+ {
+  "name": "James Bond",
+  "media_categories": [
+   "movies",
+   "books_literature",
+   "video_games"
+  ],
+  "subcategory": "Spy thriller",
+  "aliases": [
+   "007",
+   "Bond Films"
+  ],
+  "franchise": "James Bond"
+ },
+ {
+  "name": "The Godfather",
+  "media_categories": [
+   "movies",
+   "books_literature"
+  ],
+  "subcategory": "Crime drama",
+  "aliases": [
+   "Godfather Trilogy"
+  ],
+  "franchise": "The Godfather"
+ },
+ {
+  "name": "The Conjuring",
+  "media_categories": [
+   "movies"
+  ],
+  "subcategory": "Supernatural horror",
+  "aliases": [
+   "Conjuring Universe"
+  ],
+  "franchise": "The Conjuring"
+ },
+ {
+  "name": "The Craft",
+  "media_categories": [
+   "movies"
+  ],
+  "subcategory": "Supernatural horror",
+  "aliases": [
+   "The Craft 1996"
+  ],
+  "franchise": "The Craft"
+ },
+ {
+  "name": "The Addams Family",
+  "media_categories": [
+   "tv_shows",
+   "movies",
+   "cartoons_comics"
+  ],
+  "subcategory": "Gothic comedy",
+  "aliases": [
+   "Addams Family Movies",
+   "Wednesday Addams"
+  ],
+  "franchise": "The Addams Family"
+ },
+ {
+  "name": "Ariana Grande",
+  "media_categories": [
+   "music_bands",
+   "celebrities_real_people"
+  ],
+  "subcategory": "Pop music",
+  "aliases": [
+   "Arianators"
+  ],
+  "franchise": "Ariana Grande"
+ },
+ {
+  "name": "Lady Gaga",
+  "media_categories": [
+   "music_bands",
+   "celebrities_real_people"
+  ],
+  "subcategory": "Pop music",
+  "aliases": [
+   "Little Monsters",
+   "Stefani Germanotta"
+  ],
+  "franchise": "Lady Gaga"
+ },
+ {
+  "name": "Olivia Rodrigo",
+  "media_categories": [
+   "music_bands",
+   "celebrities_real_people"
+  ],
+  "subcategory": "Pop-rock music",
+  "aliases": [
+   "Livies"
+  ],
+  "franchise": "Olivia Rodrigo"
+ },
+ {
+  "name": "Billie Eilish",
+  "media_categories": [
+   "music_bands",
+   "celebrities_real_people"
+  ],
+  "subcategory": "Alternative pop",
+  "aliases": [
+   "Billie Eilish Pirate Baird O'Connell"
+  ],
+  "franchise": "Billie Eilish"
+ },
+ {
+  "name": "Sabrina Carpenter",
+  "media_categories": [
+   "music_bands",
+   "celebrities_real_people"
+  ],
+  "subcategory": "Pop music",
+  "aliases": [
+   "Sabrina Carpenter Music"
+  ],
+  "franchise": "Sabrina Carpenter"
+ },
+ {
+  "name": "Lana Del Rey",
+  "media_categories": [
+   "music_bands",
+   "celebrities_real_people"
+  ],
+  "subcategory": "Alternative pop",
+  "aliases": [
+   "Elizabeth Grant"
+  ],
+  "franchise": "Lana Del Rey"
+ },
+ {
+  "name": "Paramore",
+  "media_categories": [
+   "music_bands"
+  ],
+  "subcategory": "Alternative rock",
+  "aliases": [
+   "Hayley Williams Paramore"
+  ],
+  "franchise": "Paramore"
+ },
+ {
+  "name": "Radiohead",
+  "media_categories": [
+   "music_bands"
+  ],
+  "subcategory": "Alternative rock",
+  "aliases": [
+   "Thom Yorke Radiohead"
+  ],
+  "franchise": "Radiohead"
+ },
+ {
+  "name": "Nirvana (Band)",
+  "media_categories": [
+   "music_bands"
+  ],
+  "subcategory": "Grunge rock",
+  "aliases": [
+   "Kurt Cobain Nirvana"
+  ],
+  "franchise": "Nirvana (Band)"
+ },
+ {
+  "name": "Twenty One Pilots",
+  "media_categories": [
+   "music_bands"
+  ],
+  "subcategory": "Alternative music",
+  "aliases": [
+   "Twenty Øne Piløts",
+   "TØP",
+   "Clancy"
+  ],
+  "franchise": "Twenty One Pilots"
+ },
+ {
+  "name": "ATEEZ",
+  "media_categories": [
+   "music_bands"
+  ],
+  "subcategory": "K-pop",
+  "aliases": [
+   "ATINY",
+   "Ateez Kpop"
+  ],
+  "franchise": "ATEEZ"
+ },
+ {
+  "name": "ENHYPEN",
+  "media_categories": [
+   "music_bands"
+  ],
+  "subcategory": "K-pop",
+  "aliases": [
+   "ENGENE",
+   "Enhypen Kpop"
+  ],
+  "franchise": "ENHYPEN"
+ },
+ {
+  "name": "TWICE (K-pop)",
+  "media_categories": [
+   "music_bands"
+  ],
+  "subcategory": "K-pop",
+  "aliases": [
+   "ONCE",
+   "Twice Girl Group"
+  ],
+  "franchise": "TWICE (K-pop)"
+ },
+ {
+  "name": "EXO (K-pop)",
+  "media_categories": [
+   "music_bands"
+  ],
+  "subcategory": "K-pop",
+  "aliases": [
+   "EXO-L",
+   "Exo Boy Group"
+  ],
+  "franchise": "EXO (K-pop)"
+ },
+ {
+  "name": "Måneskin",
+  "media_categories": [
+   "music_bands"
+  ],
+  "subcategory": "Rock band",
+  "aliases": [
+   "Maneskin"
+  ],
+  "franchise": "Måneskin"
+ },
+ {
+  "name": "The Adventure Zone",
+  "media_categories": [
+   "other_media"
+  ],
+  "subcategory": "Actual-play podcast",
+  "aliases": [
+   "TAZ",
+   "The Adventure Zone Podcast"
+  ],
+  "franchise": "The Adventure Zone"
+ },
+ {
+  "name": "The Penumbra Podcast",
+  "media_categories": [
+   "other_media"
+  ],
+  "subcategory": "Audio fiction",
+  "aliases": [
+   "Penumbra Podcast",
+   "Juno Steel"
+  ],
+  "franchise": "The Penumbra Podcast"
+ },
+ {
+  "name": "Friends at the Table",
+  "media_categories": [
+   "other_media"
+  ],
+  "subcategory": "Actual-play podcast",
+  "aliases": [
+   "FatT"
+  ],
+  "franchise": "Friends at the Table"
+ },
+ {
+  "name": "Homestuck",
+  "media_categories": [
+   "other_media",
+   "cartoons_comics"
+  ],
+  "subcategory": "Webcomic",
+  "aliases": [
+   "MS Paint Adventures",
+   "MSPA"
+  ],
+  "franchise": "Homestuck"
+ },
+ {
+  "name": "SCP Foundation",
+  "media_categories": [
+   "other_media"
+  ],
+  "subcategory": "Collaborative fiction",
+  "aliases": [
+   "SCP Wiki",
+   "SCP Universe"
+  ],
+  "franchise": "SCP Foundation"
+ },
+ {
+  "name": "Creepypasta",
+  "media_categories": [
+   "other_media"
+  ],
+  "subcategory": "Internet horror fiction",
+  "aliases": [
+   "Creepypasta Stories"
+  ],
+  "franchise": "Creepypasta"
+ },
+ {
+  "name": "The Backrooms",
+  "media_categories": [
+   "other_media"
+  ],
+  "subcategory": "Internet horror fiction",
+  "aliases": [
+   "Backrooms Wiki",
+   "Backrooms"
+  ],
+  "franchise": "The Backrooms"
+ },
+ {
+  "name": "The Mandela Catalogue",
+  "media_categories": [
+   "other_media"
+  ],
+  "subcategory": "Analog horror",
+  "aliases": [
+   "Mandela Catalogue"
+  ],
+  "franchise": "The Mandela Catalogue"
+ },
+ {
+  "name": "The Magnus Protocol",
+  "media_categories": [
+   "other_media"
+  ],
+  "subcategory": "Audio drama horror",
+  "aliases": [
+   "TMP",
+   "Magnus Protocol"
+  ],
+  "franchise": "The Magnus Archives"
+ },
+ {
+  "name": "The Mechanisms",
+  "media_categories": [
+   "music_bands",
+   "other_media"
+  ],
+  "subcategory": "Narrative music",
+  "aliases": [
+   "Mechs",
+   "The Mechanisms Band"
+  ],
+  "franchise": "The Mechanisms"
+ },
+ {
+  "name": "Beetlejuice (Musical)",
+  "media_categories": [
+   "theater"
+  ],
+  "subcategory": "Stage musical",
+  "aliases": [
+   "Beetlejuice the Musical"
+  ],
+  "franchise": "Beetlejuice (Musical)"
+ },
+ {
+  "name": "Dear Evan Hansen",
+  "media_categories": [
+   "theater"
+  ],
+  "subcategory": "Stage musical",
+  "aliases": [
+   "DEH",
+   "Dear Evan Hansen Musical"
+  ],
+  "franchise": "Dear Evan Hansen"
+ },
+ {
+  "name": "Heathers (Musical)",
+  "media_categories": [
+   "theater"
+  ],
+  "subcategory": "Stage musical",
+  "aliases": [
+   "Heathers the Musical"
+  ],
+  "franchise": "Heathers (Musical)"
+ },
+ {
+  "name": "The Book of Mormon (Musical)",
+  "media_categories": [
+   "theater"
+  ],
+  "subcategory": "Stage musical",
+  "aliases": [
+   "Book of Mormon Broadway"
+  ],
+  "franchise": "The Book of Mormon (Musical)"
+ },
+ {
+  "name": "Moulin Rouge! (Musical)",
+  "media_categories": [
+   "theater"
+  ],
+  "subcategory": "Stage musical",
+  "aliases": [
+   "Moulin Rouge Broadway"
+  ],
+  "franchise": "Moulin Rouge! (Musical)"
+ },
+ {
+  "name": "Chicago (Musical)",
+  "media_categories": [
+   "theater"
+  ],
+  "subcategory": "Stage musical",
+  "aliases": [
+   "Chicago Broadway"
+  ],
+  "franchise": "Chicago (Musical)"
+ },
+ {
+  "name": "The Great Gatsby (Musical)",
+  "media_categories": [
+   "theater"
+  ],
+  "subcategory": "Stage musical",
+  "aliases": [
+   "Great Gatsby Broadway"
+  ],
+  "franchise": "The Great Gatsby (Musical)"
+ },
+ {
+  "name": "Natasha, Pierre & the Great Comet of 1812",
+  "media_categories": [
+   "theater"
+  ],
+  "subcategory": "Stage musical",
+  "aliases": [
+   "The Great Comet"
+  ],
+  "franchise": "Natasha, Pierre & the Great Comet of 1812"
+ },
+ {
+  "name": "The Rocky Horror Show",
+  "media_categories": [
+   "theater",
+   "movies"
+  ],
+  "subcategory": "Stage musical",
+  "aliases": [
+   "Rocky Horror Picture Show"
+  ],
+  "franchise": "The Rocky Horror Show"
+ },
+ {
+  "name": "Newsies (Musical)",
+  "media_categories": [
+   "theater",
+   "movies"
+  ],
+  "subcategory": "Stage musical",
+  "aliases": [
+   "Newsies Broadway"
+  ],
+  "franchise": "Newsies (Musical)"
+ },
+ {
+  "name": "9-1-1 (TV)",
+  "media_categories": [
+   "tv_shows"
+  ],
+  "subcategory": "First responder drama",
+  "aliases": [
+   "911 TV",
+   "9-1-1 Fox"
+  ],
+  "franchise": "9-1-1 (TV)"
+ },
+ {
+  "name": "9-1-1: Lone Star",
+  "media_categories": [
+   "tv_shows"
+  ],
+  "subcategory": "First responder drama",
+  "aliases": [
+   "911 Lone Star"
+  ],
+  "franchise": "9-1-1"
+ },
+ {
+  "name": "Station 19",
+  "media_categories": [
+   "tv_shows"
+  ],
+  "subcategory": "Firefighter drama",
+  "aliases": [
+   "Station Nineteen"
+  ],
+  "franchise": "Grey's Anatomy"
+ },
+ {
+  "name": "The Rookie",
+  "media_categories": [
+   "tv_shows"
+  ],
+  "subcategory": "Police procedural",
+  "aliases": [
+   "The Rookie ABC"
+  ],
+  "franchise": "The Rookie"
+ },
+ {
+  "name": "Gilmore Girls",
+  "media_categories": [
+   "tv_shows"
+  ],
+  "subcategory": "Comedy drama",
+  "aliases": [
+   "Stars Hollow"
+  ],
+  "franchise": "Gilmore Girls"
+ },
+ {
+  "name": "Gossip Girl",
+  "media_categories": [
+   "tv_shows",
+   "books_literature"
+  ],
+  "subcategory": "Teen drama",
+  "aliases": [
+   "Gossip Girl CW"
+  ],
+  "franchise": "Gossip Girl"
+ },
+ {
+  "name": "Pretty Little Liars",
+  "media_categories": [
+   "tv_shows",
+   "books_literature"
+  ],
+  "subcategory": "Teen mystery",
+  "aliases": [
+   "PLL",
+   "Pretty Little Liars Original Sin"
+  ],
+  "franchise": "Pretty Little Liars"
+ },
+ {
+  "name": "Teen Wolf (TV)",
+  "media_categories": [
+   "tv_shows",
+   "movies"
+  ],
+  "subcategory": "Supernatural teen drama",
+  "aliases": [
+   "Teen Wolf MTV"
+  ],
+  "franchise": "Teen Wolf (TV)"
+ },
+ {
+  "name": "Riverdale",
+  "media_categories": [
+   "tv_shows",
+   "cartoons_comics"
+  ],
+  "subcategory": "Teen mystery",
+  "aliases": [
+   "Riverdale CW",
+   "Archie Comics"
+  ],
+  "franchise": "Archie Comics"
+ },
+ {
+  "name": "The Umbrella Academy",
+  "media_categories": [
+   "tv_shows",
+   "cartoons_comics"
+  ],
+  "subcategory": "Superhero drama",
+  "aliases": [
+   "Umbrella Academy Netflix"
+  ],
+  "franchise": "The Umbrella Academy"
+ },
+ {
+  "name": "The Mandalorian",
+  "media_categories": [
+   "tv_shows"
+  ],
+  "subcategory": "Space western",
+  "aliases": [
+   "Mando",
+   "Din Djarin"
+  ],
+  "franchise": "Star Wars"
+ },
+ {
+  "name": "Andor",
+  "media_categories": [
+   "tv_shows"
+  ],
+  "subcategory": "Science fiction thriller",
+  "aliases": [
+   "Cassian Andor"
+  ],
+  "franchise": "Star Wars"
+ },
+ {
+  "name": "Loki (TV)",
+  "media_categories": [
+   "tv_shows"
+  ],
+  "subcategory": "Superhero science fiction",
+  "aliases": [
+   "Loki Series"
+  ],
+  "franchise": "Marvel Cinematic Universe"
+ },
+ {
+  "name": "WandaVision",
+  "media_categories": [
+   "tv_shows"
+  ],
+  "subcategory": "Superhero mystery",
+  "aliases": [
+   "Wandavision Marvel"
+  ],
+  "franchise": "Marvel Cinematic Universe"
+ },
+ {
+  "name": "Queen Charlotte: A Bridgerton Story",
+  "media_categories": [
+   "tv_shows"
+  ],
+  "subcategory": "Period romance",
+  "aliases": [
+   "Queen Charlotte Netflix"
+  ],
+  "franchise": "Bridgerton"
+ },
+ {
+  "name": "The Rings of Power",
+  "media_categories": [
+   "tv_shows",
+   "books_literature"
+  ],
+  "subcategory": "Epic fantasy",
+  "aliases": [
+   "Rings of Power Amazon"
+  ],
+  "franchise": "Middle-earth"
+ },
+ {
+  "name": "The Haunting of Hill House (TV)",
+  "media_categories": [
+   "tv_shows",
+   "books_literature"
+  ],
+  "subcategory": "Gothic horror",
+  "aliases": [
+   "Hill House Netflix"
+  ],
+  "franchise": "The Haunting of Hill House (TV)"
+ },
+ {
+  "name": "The Haunting of Bly Manor",
+  "media_categories": [
+   "tv_shows",
+   "books_literature"
+  ],
+  "subcategory": "Gothic horror",
+  "aliases": [
+   "Bly Manor Netflix"
+  ],
+  "franchise": "The Haunting of Bly Manor"
+ },
+ {
+  "name": "Sex Education",
+  "media_categories": [
+   "tv_shows"
+  ],
+  "subcategory": "Comedy drama",
+  "aliases": [
+   "Sex Education Netflix"
+  ],
+  "franchise": "Sex Education"
+ },
+ {
+  "name": "Heartbreak High (2022)",
+  "media_categories": [
+   "tv_shows"
+  ],
+  "subcategory": "Teen drama",
+  "aliases": [
+   "Heartbreak High Netflix"
+  ],
+  "franchise": "Heartbreak High (2022)"
+ },
+ {
+  "name": "Black Mirror",
+  "media_categories": [
+   "tv_shows"
+  ],
+  "subcategory": "Science fiction anthology",
+  "aliases": [
+   "Black Mirror Netflix"
+  ],
+  "franchise": "Black Mirror"
+ },
+ {
+  "name": "Squid Game",
+  "media_categories": [
+   "tv_shows"
+  ],
+  "subcategory": "Survival thriller",
+  "aliases": [
+   "Squid Game Netflix",
+   "Ojingeo Geim"
+  ],
+  "franchise": "Squid Game"
+ },
+ {
+  "name": "Alice in Borderland",
+  "media_categories": [
+   "tv_shows",
+   "anime_manga"
+  ],
+  "subcategory": "Survival thriller",
+  "aliases": [
+   "Alice in Borderland Netflix",
+   "Imawa no Kuni no Alice"
+  ],
+  "franchise": "Alice in Borderland"
+ },
+ {
+  "name": "What We Do in the Shadows",
+  "media_categories": [
+   "tv_shows",
+   "movies"
+  ],
+  "subcategory": "Vampire comedy",
+  "aliases": [
+   "WWDITS"
+  ],
+  "franchise": "What We Do in the Shadows"
+ },
+ {
+  "name": "Star Trek: Strange New Worlds",
+  "media_categories": [
+   "tv_shows"
+  ],
+  "subcategory": "Science fiction adventure",
+  "aliases": [
+   "SNW",
+   "Strange New Worlds"
+  ],
+  "franchise": "Star Trek"
+ },
+ {
+  "name": "Star Trek: The Next Generation",
+  "media_categories": [
+   "tv_shows"
+  ],
+  "subcategory": "Science fiction adventure",
+  "aliases": [
+   "TNG",
+   "STTNG"
+  ],
+  "franchise": "Star Trek"
+ },
+ {
+  "name": "Animal Crossing",
+  "media_categories": [
+   "video_games"
+  ],
+  "subcategory": "Life simulation",
+  "aliases": [
+   "Animal Crossing New Horizons",
+   "ACNH"
+  ],
+  "franchise": "Animal Crossing"
+ },
+ {
+  "name": "Splatoon",
+  "media_categories": [
+   "video_games"
+  ],
+  "subcategory": "Action game",
+  "aliases": [
+   "Splatoon 3"
+  ],
+  "franchise": "Splatoon"
+ },
+ {
+  "name": "Super Mario",
+  "media_categories": [
+   "video_games",
+   "movies",
+   "cartoons_comics"
+  ],
+  "subcategory": "Platform adventure",
+  "aliases": [
+   "Mario Bros",
+   "Super Mario Bros"
+  ],
+  "franchise": "Super Mario"
+ },
+ {
+  "name": "Sonic the Hedgehog",
+  "media_categories": [
+   "video_games",
+   "movies",
+   "cartoons_comics"
+  ],
+  "subcategory": "Platform adventure",
+  "aliases": [
+   "Sonic Games"
+  ],
+  "franchise": "Sonic the Hedgehog"
+ },
+ {
+  "name": "Overwatch",
+  "media_categories": [
+   "video_games",
+   "cartoons_comics"
+  ],
+  "subcategory": "Hero shooter",
+  "aliases": [
+   "Overwatch 2",
+   "OW2"
+  ],
+  "franchise": "Overwatch"
+ },
+ {
+  "name": "Valorant",
+  "media_categories": [
+   "video_games"
+  ],
+  "subcategory": "Tactical shooter",
+  "aliases": [
+   "VALORANT Riot"
+  ],
+  "franchise": "Valorant"
+ },
+ {
+  "name": "League of Legends",
+  "media_categories": [
+   "video_games",
+   "tv_shows"
+  ],
+  "subcategory": "Multiplayer battle arena",
+  "aliases": [
+   "LoL",
+   "League of Legends Game"
+  ],
+  "franchise": "Runeterra"
+ },
+ {
+  "name": "Doki Doki Literature Club",
+  "media_categories": [
+   "video_games"
+  ],
+  "subcategory": "Psychological horror visual novel",
+  "aliases": [
+   "DDLC"
+  ],
+  "franchise": "Doki Doki Literature Club"
+ },
+ {
+  "name": "The Sims 3",
+  "media_categories": [
+   "video_games"
+  ],
+  "subcategory": "Life simulation",
+  "aliases": [
+   "TS3",
+   "Sims3"
+  ],
+  "franchise": "The Sims"
+ },
+ {
+  "name": "The Sims 2",
+  "media_categories": [
+   "video_games"
+  ],
+  "subcategory": "Life simulation",
+  "aliases": [
+   "TS2",
+   "Sims2"
+  ],
+  "franchise": "The Sims"
+ },
+ {
+  "name": "The Sims Medieval",
+  "media_categories": [
+   "video_games"
+  ],
+  "subcategory": "Life simulation",
+  "aliases": [
+   "Sims Medieval"
+  ],
+  "franchise": "The Sims"
+ },
+ {
+  "name": "Dead by Daylight",
+  "media_categories": [
+   "video_games"
+  ],
+  "subcategory": "Survival horror",
+  "aliases": [
+   "DBD"
+  ],
+  "franchise": "Dead by Daylight"
+ },
+ {
+  "name": "Until Dawn",
+  "media_categories": [
+   "video_games",
+   "movies"
+  ],
+  "subcategory": "Interactive horror",
+  "aliases": [
+   "Until Dawn Game"
+  ],
+  "franchise": "Until Dawn"
+ },
+ {
+  "name": "The Quarry (Video Game)",
+  "media_categories": [
+   "video_games"
+  ],
+  "subcategory": "Interactive horror",
+  "aliases": [
+   "The Quarry Supermassive"
+  ],
+  "franchise": "The Quarry (Video Game)"
+ },
+ {
+  "name": "Alan Wake",
+  "media_categories": [
+   "video_games"
+  ],
+  "subcategory": "Survival horror",
+  "aliases": [
+   "Alan Wake 2",
+   "Alan Wake II"
+  ],
+  "franchise": "Remedy Connected Universe"
+ },
+ {
+  "name": "Control (Video Game)",
+  "media_categories": [
+   "video_games"
+  ],
+  "subcategory": "Paranormal action",
+  "aliases": [
+   "Control Remedy"
+  ],
+  "franchise": "Remedy Connected Universe"
+ },
+ {
+  "name": "Red Dead Redemption",
+  "media_categories": [
+   "video_games"
+  ],
+  "subcategory": "Western action",
+  "aliases": [
+   "RDR",
+   "RDR2",
+   "Red Dead Redemption 2"
+  ],
+  "franchise": "Red Dead Redemption"
+ },
+ {
+  "name": "Grand Theft Auto",
+  "media_categories": [
+   "video_games"
+  ],
+  "subcategory": "Open-world action",
+  "aliases": [
+   "GTA",
+   "GTA V",
+   "GTA 5",
+   "Grand Theft Auto V"
+  ],
+  "franchise": "Grand Theft Auto"
+ },
+ {
+  "name": "World of Warcraft",
+  "media_categories": [
+   "video_games"
+  ],
+  "subcategory": "Massively multiplayer RPG",
+  "aliases": [
+   "WoW"
+  ],
+  "franchise": "World of Warcraft"
+ },
+ {
+  "name": "Fortnite",
+  "media_categories": [
+   "video_games"
+  ],
+  "subcategory": "Battle royale",
+  "aliases": [
+   "Fortnite Battle Royale"
+  ],
+  "franchise": "Fortnite"
+ },
+ {
+  "name": "Roblox",
+  "media_categories": [
+   "video_games"
+  ],
+  "subcategory": "Game platform",
+  "aliases": [
+   "Roblox Experiences"
+  ],
+  "franchise": "Roblox"
+ },
+ {
+  "name": "Tomb Raider",
+  "media_categories": [
+   "video_games",
+   "movies"
+  ],
+  "subcategory": "Adventure game",
+  "aliases": [
+   "Lara Croft",
+   "Tomb Raider Games"
+  ],
+  "franchise": "Tomb Raider"
+ },
+ {
+  "name": "Uncharted",
+  "media_categories": [
+   "video_games",
+   "movies"
+  ],
+  "subcategory": "Adventure game",
+  "aliases": [
+   "Nathan Drake",
+   "Uncharted Games"
+  ],
+  "franchise": "Uncharted"
+ },
+ {
+  "name": "Disco Elysium",
+  "media_categories": [
+   "video_games"
+  ],
+  "subcategory": "Role-playing",
+  "aliases": [
+   "DE",
+   "Revachol"
+  ],
+  "franchise": "Disco Elysium"
+ },
+ {
+  "name": "Dragon's Dogma",
+  "media_categories": [
+   "video_games"
+  ],
+  "subcategory": "Action RPG",
+  "aliases": [
+   "Dragons Dogma"
+  ],
+  "franchise": "Dragon's Dogma"
+ }
+];
