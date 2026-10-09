@@ -32,3 +32,8 @@ export function readerChapterPage(chapters=[],page=0,size=READER_CHAPTER_PAGE_SI
   page:current,pages,total:rows.length,
   start:rows.length?current*perPage+1:0,end:Math.min(rows.length,(current+1)*perPage)};
 }
+
+/** The chapter shelf opens automatically for short books or an explicit anchor visit. */
+export function shouldOpenReaderChapterShelf(chapterCount,hash=''){
+ return Number(chapterCount)<=12||hash==='#palace-reader-chapters';
+}
