@@ -12,25 +12,26 @@ export default function PalaceInfoMark({title='How it works',variant='help',chil
  const [hovered,setHovered]=useState(false);
  const [focused,setFocused]=useState(false);
  const [pinned,setPinned]=useState(false);
- const open=hovered||focused||pinned;
+ const [dismissed,setDismissed]=useState(false);
+ const open=!dismissed&&(hovered||focused||pinned);
  useEffect(()=>{
   if(!pinned)return;
   const closeOutside=event=>{if(root.current&&!root.current.contains(event.target))setPinned(false)};
   document.addEventListener('pointerdown',closeOutside);
   return()=>document.removeEventListener('pointerdown',closeOutside);
  },[pinned]);
- const close=()=>{setPinned(false);setHovered(false);setFocused(false)};
+ const close=()=>{setDismissed(true);setPinned(false);setHovered(false);setFocused(false)};
  return <div ref={root} className={'palace-info-mark '+(variant==='warning'?'is-warning ':'')+className}
-  onPointerEnter={event=>{if(event.pointerType==='mouse')setHovered(true)}}
+  onPointerEnter={event=>{if(event.pointerType==='mouse'){setDismissed(false);setHovered(true)}}}
   onPointerLeave={event=>{if(event.pointerType==='mouse')setHovered(false)}}
-  onFocus={()=>setFocused(true)}
-  onBlur={event=>{if(!event.currentTarget.contains(event.relatedTarget))setFocused(false)}}
+  onFocus={()=>{if(!dismissed)setFocused(true)}}
+  onBlur={event=>{if(!event.currentTarget.contains(event.relatedTarget)){setFocused(false);setDismissed(false)}}}
   onKeyDown={event=>{if(event.key==='Escape'){event.stopPropagation();close();root.current?.querySelector('button')?.focus()}}}>
   <button type="button" className="palace-info-mark-trigger"
    aria-label={(variant==='warning'?'Important: ':'About: ')+title}
    aria-expanded={open}
    aria-controls={id}
-   onClick={()=>setPinned(value=>!value)}>{variant==='warning'?'!':'?'}</button>
+   onClick={()=>{setDismissed(false);setHovered(false);setFocused(false);setPinned(value=>!value)}}>{variant==='warning'?'!':'?'}</button>
   {open&&<div id={id} role="group" aria-label={title} className="palace-info-mark-popover">
    <strong>{title}</strong><div className="palace-info-mark-body">{children}</div>
   </div>}
