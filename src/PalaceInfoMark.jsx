@@ -30,7 +30,7 @@ export default function PalaceInfoMark({title='How it works',variant='help',chil
   <button type="button" className="palace-info-mark-trigger"
    aria-label={(variant==='warning'?'Important: ':'About: ')+title}
    aria-expanded={open}
-   aria-controls={id}
+   aria-controls={open?id:undefined}
    onClick={()=>{setDismissed(false);setHovered(false);setFocused(false);setPinned(value=>!value)}}>{variant==='warning'?'!':'?'}</button>
   {open&&<div id={id} role="group" aria-label={title} className="palace-info-mark-popover">
    <strong>{title}</strong><div className="palace-info-mark-body">{children}</div>
