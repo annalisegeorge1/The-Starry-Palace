@@ -449,7 +449,9 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain("const workTags=w=>(w.work_tags||[]).map(x=>x.tags)");
     expect(live).toContain("['canonical','community'].includes(t.status)");
     expect(live).toContain('...workTags(w).flatMap(t=>[t.name,t.category])');
-    expect(live).toContain('reading-card-tags');
+    expect(live).toContain('<ReadingCardTags tags={workTags(w)} limit={3}/>');
+    expect(read('src/ReadingCardTags.jsx')).toContain('className="reading-card-tags reading-card-tags-reveal"');
+    expect(read('src/ReadingCardTags.jsx')).toContain("'/tags?q='+encodeURIComponent(tag.name)");
     expect(live).toContain('Title, writer, fandom or tag…');
     expect(polish).toContain('/* Reading Room canonical tag hints */');
   });
