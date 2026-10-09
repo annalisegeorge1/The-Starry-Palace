@@ -1,0 +1,27 @@
+/* Source captions in scanned historical books are notes, not prose or invented images. */
+.archive-classic-experience .archive-classic-page p.archive-classic-illustration-note{
+ box-sizing:border-box;
+ max-width:58ch;
+ margin:1.4em auto;
+ padding:.65em .85em;
+ border-inline-start:2px solid rgba(155,139,205,.56);
+ border-radius:0 9px 9px 0;
+ background:rgba(146,126,205,.09);
+ color:var(--archive-ink);
+ opacity:.82;
+ font:italic 500 .78em/1.55 system-ui,sans-serif;
+ text-align:left;
+ white-space:normal;
+ overflow-wrap:anywhere;
+}
+.archive-classic-experience.tone-paper .archive-classic-page p.archive-classic-illustration-note{
+ background:rgba(146,121,85,.07);
+ border-inline-start-color:#ab9674;
+}
+.archive-classic-experience.tone-soft .archive-classic-page p.archive-classic-illustration-note{
+ background:rgba(84,105,141,.08);
+ border-inline-start-color:#92a1bd;
+}
+@media(max-width:620px){
+ .archive-classic-experience .archive-classic-page p.archive-classic-illustration-note{padding:.6em .7em;font-size:.76em}
+}
