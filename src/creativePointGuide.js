@@ -31,3 +31,19 @@ export const CELESTIAL_ECONOMY_EXPLAINERS=[
  {id:'season',name:'Quarterly Grand Palace score',detail:'Your Grand Palace receives competition credit from verified participation, with a maximum of 30 team-score points per member per UTC day. Team scores reset when a new quarter begins.'},
  {id:'integrity',name:'Fair rewards',detail:'Duplicate ledger keys do not award twice. Reading your own chapters, repeatedly clicking, writing private drafts, commenting on your own work or empty competitions do not qualify for activity rewards.'}
 ];
+
+/** Points are earned in a lifetime ledger and separately credited to a spendable wallet.
+ * Seasonal Palace competition points are a capped subset of eligible participation.
+ * A spent point never erases lifetime achievements or title progress. */
+export const CELESTIAL_ECONOMY_LAYERS=[
+ {id:'lifetime',name:'Lifetime Celestial Points',detail:'Your lifetime record: title unlocks and progress never decrease when points are spent.'},
+ {id:'wallet',name:'Spendable Palace Points',detail:'Earned ledger awards also fund a spendable wallet for Palace colours, boxes and eligible purchases.'},
+ {id:'seasonal',name:'Grand Palace competition credit',detail:'Verified participation adds up to 30 team points per person per UTC day. Praise exchanges and bonus prizes do not count.'}
+];
+export const CELESTIAL_FAIRNESS_NOTES=[
+ 'Publishing awards require public chapters with at least 150 words; up to 60 writing points per UTC day.',
+ 'Chapter reading awards require another author, a published chapter, at least 90 seconds and daily limits.',
+ 'Own-work comments, private-work comments and repeat events do not mint comment rewards.',
+ 'Competitive Ink Duel prizes require qualifying independent votes; a tie or empty contest never mints a victory gift.',
+ 'Every award uses a unique ledger deduplication key and existing awards remain intact.'
+];
