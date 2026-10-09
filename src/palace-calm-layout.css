@@ -51,3 +51,90 @@
 .palace-shell.daylight .palace-home-more>summary .palace-home-more-arrow{background:#e9e4f7;color:#40346d}
 @media(max-width:550px){.palace-home-more{margin:22px 10px}.palace-home-more>summary{min-height:72px;padding:16px}.palace-home-more-inner{padding:0 10px 13px}.palace-home-more>summary small{font-size:.74rem}}
 @media(prefers-reduced-motion:reduce){.palace-home-more[open]>summary .palace-home-more-arrow{transition:none}}
+
+
+/* Restore Palace character without returning to an overcrowded menu.
+   Colour is used to distinguish the four main doors, not every tiny control. */
+.palace-shell.nightfall .full-sidebar .palace-calm-primary>.palace-calm-room>a{
+ border:1px solid rgba(169,154,230,.22);
+ background:linear-gradient(110deg,rgba(100,82,173,.17),rgba(47,69,118,.09));
+ color:#f3f0ff;
+ border-radius:13px;
+}
+.palace-shell.nightfall .full-sidebar .palace-calm-primary>.palace-calm-room>a:hover,
+.palace-shell.nightfall .full-sidebar .palace-calm-primary>.palace-calm-room>a.active{
+ border-color:rgba(203,177,255,.65);
+ background:linear-gradient(110deg,rgba(114,82,205,.38),rgba(43,100,160,.23));
+ color:white;
+ box-shadow:inset 3px 0 0 #c0a2ff;
+}
+.palace-shell .full-sidebar .palace-calm-primary .room-sigil{
+ display:inline-grid;place-items:center;flex:none;
+ border-radius:11px;min-width:34px;min-height:34px;
+ background:rgba(143,124,230,.22);color:#d9b7ff;
+}
+.palace-shell .full-sidebar .palace-calm-primary .room-sigil-reading{
+ color:#a8dcff;background:linear-gradient(140deg,rgba(61,141,208,.27),rgba(67,91,173,.24));
+}
+.palace-shell .full-sidebar .palace-calm-primary .room-sigil-writing{
+ color:#ecc2ff;background:linear-gradient(140deg,rgba(163,93,194,.27),rgba(89,74,174,.24));
+}
+.palace-shell .full-sidebar .palace-calm-primary .room-sigil-life{
+ color:#a5ebde;background:linear-gradient(140deg,rgba(56,157,148,.28),rgba(75,102,172,.2));
+}
+.palace-shell .full-sidebar .palace-calm-primary .room-sigil-palace{
+ color:#d7c5ff;background:linear-gradient(140deg,rgba(155,119,221,.3),rgba(79,77,170,.2));
+}
+.palace-shell .full-sidebar .palace-nav-fold>summary{
+ border-color:rgba(168,158,224,.39);
+ background:linear-gradient(110deg,rgba(98,74,162,.19),rgba(52,104,145,.13));
+}
+.palace-shell .full-sidebar .palace-nav-fold>summary:hover{
+ border-color:rgba(197,167,242,.73);
+ background:linear-gradient(110deg,rgba(125,87,189,.29),rgba(54,133,167,.19));
+}
+.palace-shell.daylight .full-sidebar .palace-calm-primary>.palace-calm-room>a{
+ border:1px solid #c4b5df;border-radius:13px;
+ background:linear-gradient(110deg,#f5edff,#edf6fc);color:#2b2750;
+}
+.palace-shell.daylight .full-sidebar .palace-calm-primary>.palace-calm-room>a.active,
+.palace-shell.daylight .full-sidebar .palace-calm-primary>.palace-calm-room>a:hover{
+ border-color:#8f70c8;background:linear-gradient(110deg,#ede3ff,#def2fc);color:#30244f;
+ box-shadow:inset 3px 0 0 #8760c1;
+}
+.palace-shell.daylight .full-sidebar .palace-calm-primary .room-sigil-reading{color:#1d638e;background:#d8ebff}
+.palace-shell.daylight .full-sidebar .palace-calm-primary .room-sigil-writing{color:#78419d;background:#efdafa}
+.palace-shell.daylight .full-sidebar .palace-calm-primary .room-sigil-life{color:#226d67;background:#d2f1e9}
+.palace-shell.daylight .full-sidebar .palace-calm-primary .room-sigil-palace{color:#634b98;background:#e9ddff}
+.palace-shell .palace-home-more{
+ border-color:rgba(178,145,236,.63);
+ background:linear-gradient(115deg,rgba(115,68,177,.22),rgba(58,122,174,.17));
+ box-shadow:0 11px 34px rgba(11,13,46,.12);
+}
+.palace-shell .palace-home-more>summary{
+ position:relative;overflow:hidden;
+ border-left:4px solid #b49df5;
+}
+.palace-shell .palace-home-more>summary strong{
+ color:inherit;letter-spacing:-.013em;
+}
+.palace-shell .palace-home-more>summary .palace-home-more-arrow{
+ background:linear-gradient(140deg,#7153aa,#3e789c);color:#ffffff;
+ border:1px solid rgba(203,208,255,.45);
+}
+.palace-shell .palace-home-more>summary:hover{
+ background:linear-gradient(105deg,rgba(144,99,213,.15),rgba(70,148,202,.13));
+}
+.palace-shell.daylight .palace-home-more{
+ border-color:#af92d0;background:linear-gradient(115deg,#f3eafe,#e7f4fc);
+ box-shadow:0 9px 23px rgba(38,34,80,.08);
+}
+.palace-shell.daylight .palace-home-more>summary{
+ border-left-color:#8058bf;color:#30244f;
+}
+.palace-shell.daylight .palace-home-more>summary .palace-home-more-arrow{
+ background:linear-gradient(135deg,#8161b8,#3d7fac);color:#fff;
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .palace-home-more>summary .palace-home-more-arrow{transition:none}
+}

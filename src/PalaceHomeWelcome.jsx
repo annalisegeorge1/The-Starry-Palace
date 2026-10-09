@@ -38,12 +38,17 @@ export function PalaceHomeCulturePaths(){
  </nav>;
 }
 export function PalaceHomeMore({children}){
- return <details className="palace-home-more">
-  <summary>
-   <span><strong>Discover more of the Palace</strong><small>New stories, gatherings, classics, collections and every other room are still here.</small></span>
+ // Details only conceal DOM. Defer mounting discovery components until the
+ // visitor first opens them, avoiding hidden story/event queries on arrival.
+ const [visited,setVisited]=React.useState(false);
+ return <details className="palace-home-more" onToggle={event=>{
+  if(event.currentTarget.open)setVisited(true);
+ }}>
+  <summary onClick={()=>setVisited(true)}>
+   <span><strong><span aria-hidden="true">✧</span> <span>Discover more of the Palace</span></strong><small>New stories, gatherings, classics, collections and every other room are still here.</small></span>
    <span className="palace-home-more-arrow" aria-hidden="true">＋</span>
   </summary>
-  <div className="palace-home-more-inner">{children}</div>
+  <div className="palace-home-more-inner">{visited?children:null}</div>
  </details>;
 }
 
