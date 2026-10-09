@@ -1,0 +1,222 @@
+/* The Starry Palace — a readable Classics wing, not a separate theme. */
+.palace-shell .reading-classics-hall.palace-classics-library{
+ display:grid;gap:14px;padding:clamp(15px,2.5vw,24px);
+ background:radial-gradient(ellipse at 93% 3%,rgba(107,147,209,.16),transparent 43%),
+ linear-gradient(135deg,rgba(48,37,91,.68),rgba(25,54,92,.65));
+ border-color:rgba(157,156,225,.43);
+ border-radius:21px;box-shadow:inset 0 1px rgba(233,220,255,.06);
+ color:#ede8f9;
+}
+.palace-shell .reading-classics-hall .palace-classics-intro{
+ display:flex;align-items:flex-start;justify-content:space-between;
+ flex-wrap:wrap;gap:13px 18px;margin:0;min-width:0;
+}
+.palace-shell .reading-classics-hall .palace-classics-intro>div:first-child{
+ min-width:0;flex:1 1 320px;max-width:68ch;
+}
+.palace-shell .reading-classics-hall .palace-classics-intro .eyebrow{
+ font-size:.67rem;letter-spacing:.12em;color:#cbb8f4;margin:0 0 7px;
+}
+.palace-shell .reading-classics-hall .palace-classics-intro h2{
+ margin:0 0 8px;font:600 clamp(1.55rem,2.6vw,2.05rem)/1.19 Georgia,serif;
+ color:#faf5ff;overflow-wrap:break-word;
+}
+.palace-shell .reading-classics-hall .palace-classics-intro p:last-child{
+ color:#ddd5ee;font-size:.83rem;line-height:1.56;max-width:59ch;
+}
+.palace-shell .reading-classics-hall .palace-classics-head-actions{
+ display:flex;align-items:center;flex:0 1 auto;flex-wrap:wrap;justify-content:flex-end;
+ gap:8px;min-width:0;
+}
+.palace-shell .reading-classics-hall .palace-classics-head-actions :is(a,button.quiet-button){
+ display:inline-flex;align-items:center;justify-content:center;min-height:42px;
+ padding:9px 13px;border-radius:12px;
+ border:1px solid rgba(194,177,236,.43);
+ background:rgba(115,103,173,.19);color:#f0e8ff;
+ font:750 .77rem/1.3 system-ui,sans-serif;text-decoration:none;
+}
+.palace-shell .reading-classics-hall .palace-classics-head-actions button:disabled{opacity:.54;cursor:default}
+.palace-shell .reading-classics-hall .classic-hall-lenses{
+ display:flex;gap:8px;min-width:0;overflow-x:auto;overflow-y:hidden;
+ padding:3px 3px 10px;scrollbar-width:thin;
+ scrollbar-color:rgba(174,151,220,.38) transparent;
+ scroll-snap-type:x proximity;
+}
+.palace-shell .reading-classics-hall .classic-hall-lenses button{
+ border-radius:999px;border:1px solid rgba(178,160,224,.38);
+ background:rgba(88,81,148,.21);color:#e2d8f7;
+ min-height:42px;padding:8px 13px;scroll-snap-align:start;
+}
+.palace-shell .reading-classics-hall .classic-hall-lenses button span{color:#cdb7f6;font-size:.95rem}
+.palace-shell .reading-classics-hall .classic-hall-lenses button strong{font-size:.78rem;line-height:1.2}
+.palace-shell .reading-classics-hall .classic-hall-lenses button.active{
+ border-color:#bfa7f2;background:linear-gradient(125deg,rgba(116,81,191,.65),rgba(55,112,153,.42));
+ color:#fff;box-shadow:0 3px 13px rgba(13,9,43,.14);
+}
+.palace-shell .reading-classics-hall .palace-classics-controls{
+ display:grid;grid-template-columns:minmax(170px,1fr) minmax(140px,200px) auto;
+ gap:10px;align-items:end;min-width:0;
+}
+.palace-shell .reading-classics-hall .palace-classics-controls label{
+ display:grid;gap:6px;min-width:0;color:#e1d5f3;
+ font:750 .75rem/1.3 system-ui,sans-serif;
+}
+.palace-shell .reading-classics-hall .palace-classics-controls :is(input,select){
+ box-sizing:border-box;width:100%;min-height:45px;min-width:0;
+ border-radius:12px;border:1px solid rgba(196,180,239,.5);
+ background:#272a4d;color:#fff;padding:10px 12px;
+ font:500 .84rem/1.35 system-ui,sans-serif;
+}
+.palace-shell .reading-classics-hall .palace-classics-controls input::placeholder{color:#c3bad7;opacity:1}
+.palace-shell .reading-classics-hall .palace-classics-count{
+ min-height:45px;display:flex;align-items:center;justify-content:flex-end;
+ gap:5px;white-space:nowrap;font-size:.76rem;color:#ded4f2;
+}
+.palace-shell .reading-classics-hall .palace-classics-count strong{font-size:1rem;color:#fff}
+.palace-shell .reading-classics-hall .classic-hall-rail.palace-classics-bookcase{
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:13px;overflow:visible!important;scroll-snap-type:none;
+ padding:2px;min-width:0;
+}
+.palace-shell .reading-classics-hall .palace-classics-bookcase .classic-hall-card{
+ display:grid;grid-template-columns:clamp(92px,10vw,132px) minmax(0,1fr)!important;
+ flex:none;min-width:0;width:100%;min-height:198px;
+ background:linear-gradient(125deg,rgba(111,94,166,.15),rgba(51,84,134,.17));
+ border:1px solid rgba(168,149,211,.37);border-radius:16px;
+ box-shadow:0 8px 20px rgba(11,12,37,.13);overflow:hidden;
+}
+.palace-shell .reading-classics-hall .palace-classics-bookcase .classic-hall-card:hover{
+ border-color:#b8a3ed;background:linear-gradient(120deg,rgba(127,94,191,.25),rgba(70,127,177,.18));
+}
+.palace-shell .reading-classics-hall .classic-hall-card:focus-visible{
+ outline:3px solid #b1e9ff;outline-offset:3px;
+}
+.palace-shell .reading-classics-hall .palace-classics-bookcase .classic-hall-card>.palace-classic-book-cover{
+ min-width:0;width:100%;height:100%;aspect-ratio:auto;
+ border:0;border-right:1px solid rgba(184,167,235,.28);border-radius:0;
+ box-shadow:none;
+}
+.palace-shell .reading-classics-hall .palace-classics-bookcase .classic-hall-card>.palace-classic-book-cover img{
+ object-fit:contain;
+}
+.palace-shell .reading-classics-hall .classic-hall-card>.classic-hall-card-copy{
+ display:flex;flex-direction:column;gap:6px;padding:15px 14px;min-width:0;
+}
+.palace-shell .reading-classics-hall .classic-hall-card .classic-hall-card-copy>small{
+ font-size:.7rem;line-height:1.35;letter-spacing:.025em;
+ color:#c5b5e8;overflow-wrap:anywhere;
+ text-transform:none;
+}
+.palace-shell .reading-classics-hall .classic-hall-card .classic-hall-card-copy h3{
+ margin:0;font:600 clamp(1.02rem,1.5vw,1.23rem)/1.24 Georgia,serif;
+ color:#fff;overflow-wrap:anywhere;
+}
+.palace-shell .reading-classics-hall .classic-hall-card .classic-hall-card-copy p{
+ margin:0;color:#ded6f0;font-size:.79rem;line-height:1.47;
+ -webkit-line-clamp:3;
+}
+.palace-shell .reading-classics-hall .classic-hall-card .classic-hall-card-copy b{
+ margin-top:auto;color:#bde7f8;font:750 .78rem/1.25 system-ui,sans-serif;
+}
+.palace-shell .reading-classics-hall .palace-classics-footer{
+ display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+ gap:12px;padding:4px 2px;color:#d7cceb;font-size:.78rem;
+}
+.palace-shell .reading-classics-hall .palace-classics-footer nav{display:flex;gap:8px;flex-wrap:wrap}
+.palace-shell .reading-classics-hall .palace-classics-footer button,
+.palace-shell .reading-classics-hall .palace-classics-reset,
+.palace-shell .reading-classics-hall .palace-classics-empty button{
+ min-height:43px;padding:9px 14px;border:1px solid rgba(180,170,237,.48);
+ border-radius:11px;background:rgba(94,81,159,.28);color:#f4edff;
+ font:750 .78rem/1.25 system-ui,sans-serif;
+}
+.palace-shell .reading-classics-hall button:disabled{opacity:.48;cursor:default}
+.palace-shell .reading-classics-hall .palace-classics-reset{justify-self:start;background:transparent}
+.palace-shell .reading-classics-hall .palace-classics-empty{
+ display:flex;flex-wrap:wrap;align-items:center;gap:14px;
+ padding:18px;border:1px dashed rgba(173,160,219,.47);border-radius:15px;
+}
+.palace-shell .reading-classics-hall .palace-classics-empty>span{font-size:1.8rem;color:#c5b0ec}
+.palace-shell .reading-classics-hall .palace-classics-empty>div{flex:1 1 180px}
+.palace-shell .reading-classics-hall .palace-classics-empty strong{font-size:.95rem;color:#fff}
+.palace-shell .reading-classics-hall .palace-classics-empty p{font-size:.78rem;line-height:1.5;margin:6px 0 0}
+.palace-shell .reading-classics-hall :is(input,select,button,a):focus-visible{
+ outline:3px solid #b3e5ff;outline-offset:2px;
+}
+/* Daylight keeps the same bookcase with ink-dark text and cool accents. */
+.palace-shell.daylight .reading-classics-hall.palace-classics-library{
+ background:radial-gradient(ellipse at 94% 5%,rgba(154,189,237,.22),transparent 41%),
+ linear-gradient(125deg,#f8f3ff,#eaf0fc 68%,#e5f5f5);
+ border-color:#c2b0d9;color:#302b4e;
+}
+.palace-shell.daylight .reading-classics-hall .palace-classics-intro :is(h2),
+.palace-shell.daylight .reading-classics-hall .classic-hall-card .classic-hall-card-copy h3,
+.palace-shell.daylight .reading-classics-hall .palace-classics-empty strong{color:#30244b}
+.palace-shell.daylight .reading-classics-hall .palace-classics-intro .eyebrow{color:#684d8e}
+.palace-shell.daylight .reading-classics-hall .palace-classics-intro p:last-child{color:#57476d}
+.palace-shell.daylight .reading-classics-hall .palace-classics-head-actions :is(a,button.quiet-button),
+.palace-shell.daylight .reading-classics-hall .classic-hall-lenses button{
+ color:#44345c;background:rgba(255,255,255,.68);border-color:#b7a2d1;
+}
+.palace-shell.daylight .reading-classics-hall .classic-hall-lenses button.active{
+ color:#fff;background:linear-gradient(125deg,#6e51a4,#407ca4);
+}
+.palace-shell.daylight .reading-classics-hall .classic-hall-lenses button span{color:inherit}
+.palace-shell.daylight .reading-classics-hall .palace-classics-controls label,
+.palace-shell.daylight .reading-classics-hall .palace-classics-count,
+.palace-shell.daylight .reading-classics-hall .palace-classics-footer{color:#57456a}
+.palace-shell.daylight .reading-classics-hall .palace-classics-count strong{color:#30244b}
+.palace-shell.daylight .reading-classics-hall .palace-classics-controls :is(input,select){
+ background:#fff;color:#35294c;border-color:#bba7d1;
+}
+.palace-shell.daylight .reading-classics-hall .palace-classics-controls input::placeholder{color:#746584}
+.palace-shell.daylight .reading-classics-hall .palace-classics-bookcase .classic-hall-card{
+ background:linear-gradient(125deg,rgba(255,255,255,.8),rgba(228,236,252,.66));
+ border-color:#c2b3d7;box-shadow:0 6px 21px rgba(55,41,105,.075);
+}
+.palace-shell.daylight .reading-classics-hall .classic-hall-card .classic-hall-card-copy>small{color:#634b7a}
+.palace-shell.daylight .reading-classics-hall .classic-hall-card .classic-hall-card-copy p{color:#544966}
+.palace-shell.daylight .reading-classics-hall .classic-hall-card .classic-hall-card-copy b{color:#276789}
+.palace-shell.daylight .reading-classics-hall .palace-classics-footer button,
+.palace-shell.daylight .reading-classics-hall .palace-classics-reset,
+.palace-shell.daylight .reading-classics-hall .palace-classics-empty button{
+ color:#3f315e;background:#f5edfc;border-color:#b9a6d3;
+}
+@container palace-reading-room (max-width:930px){
+ .palace-shell .reading-classics-hall .classic-hall-rail.palace-classics-bookcase{
+  grid-template-columns:minmax(0,1fr);
+ }
+}
+@media(max-width:860px){
+ .palace-shell .reading-classics-hall .palace-classics-controls{
+  grid-template-columns:minmax(0,1fr) minmax(135px,210px);
+ }
+ .palace-shell .reading-classics-hall .palace-classics-count{
+  grid-column:1/-1;justify-content:flex-start;
+  min-height:0;
+ }
+}
+@media(max-width:620px){
+ .palace-shell .reading-classics-hall .palace-classics-intro{display:grid}
+ .palace-shell .reading-classics-hall .palace-classics-head-actions{justify-content:flex-start}
+ .palace-shell .reading-classics-hall .palace-classics-controls{
+  grid-template-columns:minmax(0,1fr);
+ }
+ .palace-shell .reading-classics-hall .palace-classics-count{grid-column:1}
+ .palace-shell .reading-classics-hall .classic-hall-rail.palace-classics-bookcase{
+  grid-template-columns:minmax(0,1fr);gap:10px;
+ }
+ .palace-shell .reading-classics-hall .palace-classics-bookcase .classic-hall-card{
+  grid-template-columns:94px minmax(0,1fr)!important;min-height:174px;
+ }
+ .palace-shell .reading-classics-hall .classic-hall-card>.classic-hall-card-copy{
+  padding:11px;gap:5px;
+ }
+ .palace-shell .reading-classics-hall .classic-hall-card .classic-hall-card-copy h3{font-size:1.06rem}
+ .palace-shell .reading-classics-hall .classic-hall-card .classic-hall-card-copy p{font-size:.76rem}
+ .palace-shell .reading-classics-hall .palace-classics-footer nav{width:100%}
+ .palace-shell .reading-classics-hall .palace-classics-footer nav button{flex:1 1 0}
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .reading-classics-hall .classic-hall-card{transition:none}
+}

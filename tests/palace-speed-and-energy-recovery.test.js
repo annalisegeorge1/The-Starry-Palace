@@ -4,6 +4,7 @@ import {resolve} from 'node:path';
 const read=path=>readFileSync(resolve(process.cwd(),path),'utf8');
 const shell=read('src/main.jsx');
 const life=read('src/liveRooms.jsx');
+const classics=read('src/ClassicsLibraryHall.jsx');
 const chat=read('src/PalaceChatDrawer.jsx');
 const home=read('src/PalaceHomeWelcome.jsx');
 const nav=read('src/palace-calm-layout.css');
@@ -11,7 +12,9 @@ const nav=read('src/palace-calm-layout.css');
 describe('Palace responsiveness and personality recovery',()=>{
  it('restores rich rooms instead of repeatedly folding the writing, reading and Palace Life tools',()=>{
   expect(life).toContain('className="reading-mood-doors"');
-  expect(life).toContain('className="reading-classics-hall"');
+  expect(life).toContain('<ClassicsLibraryHall works={archiveWorks} storyHref={storyHref}/>');
+  expect(classics).toContain('reading-classics-hall palace-classics-library');
+  expect(classics).toContain('classic-hall-rail palace-classics-bookcase');
   expect(life).toContain('className="prompt-orrery"');
   expect(life).toContain('className="community-pulse-row restored social-pulse"');
   expect(life).toContain('legacy-showcase-wall chamber-atelier-gallery gallery-layout-');
