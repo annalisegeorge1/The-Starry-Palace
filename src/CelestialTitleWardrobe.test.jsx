@@ -12,7 +12,7 @@ const options=[
 describe('The Treasury Celestial changing room',()=>{
  it('shows the current title and only public or owned choices',()=>{
   render(<CelestialTitleWardrobe options={options} currentTitle="Palace Member"/>);
-  expect(screen.getByText('Palace Member')).toBeTruthy();
+  expect(screen.getByText('Palace Member',{selector:'strong'})).toBeTruthy();
   expect(screen.getByRole('option',{name:/Golden Maiden/})).toBeTruthy();
   expect(screen.queryByRole('option',{name:'Veiled Crown'})).toBeNull();
   expect(screen.getByRole('button',{name:'Currently worn'}).disabled).toBe(true);
