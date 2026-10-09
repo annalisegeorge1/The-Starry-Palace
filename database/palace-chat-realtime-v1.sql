@@ -2,6 +2,10 @@
 -- Existing group and direct chat data remain unchanged.
 -- Supabase Realtime authorizes each event against the authenticated member's
 -- SELECT RLS policy on the source table.
+-- Direct correspondence must not be exposed to signed-out visitors, even if
+-- policies were ever broadened. Authenticated member policies stay in force.
+REVOKE SELECT ON public.messages FROM anon;
+
 DO $palace$
 BEGIN
  IF NOT EXISTS (
