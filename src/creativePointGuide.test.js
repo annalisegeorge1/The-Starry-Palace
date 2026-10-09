@@ -1,7 +1,7 @@
 import {describe,it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
 import {cleanManuscriptGoal,manuscriptGoalProgress} from './manuscriptGoalModel';
-import {celestialPointBreakdown,CELESTIAL_CREATIVE_RULES} from './creativePointGuide';
+import {celestialPointBreakdown,CELESTIAL_CREATIVE_RULES,CELESTIAL_ECONOMY_EXPLAINERS} from './creativePointGuide';
 
 const live=readFileSync('src/liveRooms.jsx','utf8');
 const css=readFileSync('src/palace-creative-points-polish.css','utf8');
@@ -25,9 +25,15 @@ describe('chapter word goals and transparent Celestial Points',()=>{
   expect(celestialPointBreakdown(null).every(x=>x.points===0)).toBe(true);
  });
  it('describes verified public publication, revision and reading safeguards',()=>{
-  expect(CELESTIAL_CREATIVE_RULES.map(x=>x.reward)).toEqual(['+20','+10','+2']);
+  expect(CELESTIAL_CREATIVE_RULES.map(x=>x.reward)).toEqual(['+20','+10','+2','+2','+1']);
   const all=CELESTIAL_CREATIVE_RULES.map(x=>x.detail).join(' ');
   for(const phrase of ['150 words','150 additional words','60 per UTC day','24 hours','90 seconds','200 words','20 reading points'])expect(all).toContain(phrase);
+ });
+ it('explains all three point channels and genuine-activity safeguards',()=>{
+  expect(CELESTIAL_ECONOMY_EXPLAINERS.map(x=>x.id)).toEqual(['lifetime','wallet','season','integrity']);
+  const all=CELESTIAL_ECONOMY_EXPLAINERS.map(x=>x.detail).join(' ');
+  for(const term of ['permanent','wallet','30 team-score points','quarter','own work','dedupe'])expect(all.toLowerCase()).toContain(term.toLowerCase());
+  expect(live).toContain('CELESTIAL_ECONOMY_EXPLAINERS.map(');
  });
  it('integrates safe saved goals, truthful points guide and responsive designs',()=>{
   expect(live).toContain("writePalacePreference('chapter-goal:'+chapter.id,next)");
