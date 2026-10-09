@@ -1,11 +1,12 @@
 import {describe,it,expect} from 'vitest';
+import {ORRERY_DARK_ORBITS,ORRERY_DARK_RECIPES} from './promptOrreryDarkOrbits';
 import {ORRERY_NEW_ORBITS,ORRERY_NEW_ORBIT_RECIPES} from './promptOrreryNewOrbits';
 import {PROMPT_ORRERY_RECIPES,ORRERY_EXPANSION_FAMILIES,randomOrreryRecipe} from './promptOrreryData';
 
 describe('Prompt Orrery expansion',()=>{
- it('ships exactly 6,012 constellations with unique ids',()=>{
-  expect(PROMPT_ORRERY_RECIPES).toHaveLength(6012);
-  expect(new Set(PROMPT_ORRERY_RECIPES.map(prompt=>prompt.id)).size).toBe(6012);
+ it('ships exactly 7,012 constellations with unique ids',()=>{
+  expect(PROMPT_ORRERY_RECIPES).toHaveLength(7012);
+  expect(new Set(PROMPT_ORRERY_RECIPES.map(prompt=>prompt.id)).size).toBe(7012);
  });
  it('adds exactly 2,000 themed constellations across the seven new story families',()=>{
   const families=Object.keys(ORRERY_EXPANSION_FAMILIES);
@@ -35,8 +36,24 @@ describe('Prompt Orrery expansion',()=>{
   expect(unique.size).toBe(2000);
   expect(PROMPT_ORRERY_RECIPES.at(-1).id).toBe('orrery-6012');
  });
+ it('adds exactly 1,000 mature, violent fictional constellations with unique stable IDs',()=>{
+  expect(Object.keys(ORRERY_DARK_ORBITS)).toHaveLength(5);
+  expect(ORRERY_DARK_RECIPES).toHaveLength(1000);
+  const descriptions=new Set();
+  for(const recipe of ORRERY_DARK_RECIPES){
+   expect(recipe.intensity).toBe('Mature / Violent');
+   expect(recipe.id).toMatch(/^orrery-6\d{3}$|^orrery-701[012]$/);
+   for(const field of ['genre','object','twist','mood','character','relationship','setting','conflict']){
+    expect(typeof recipe[field]).toBe('string');
+    expect(recipe[field].length).toBeGreaterThan(8);
+   }
+   descriptions.add([recipe.genre,recipe.object,recipe.twist,recipe.setting,recipe.conflict].join('|'));
+  }
+  expect(descriptions.size).toBe(1000);
+  expect(PROMPT_ORRERY_RECIPES.at(-1).id).toBe('orrery-7012');
+ });
  it('keeps the family filter compatible with random pulls',()=>{
-  for(const flavour of [...Object.keys(ORRERY_EXPANSION_FAMILIES),...Object.keys(ORRERY_NEW_ORBITS)]){
+  for(const flavour of [...Object.keys(ORRERY_EXPANSION_FAMILIES),...Object.keys(ORRERY_NEW_ORBITS),...Object.keys(ORRERY_DARK_ORBITS)]){
    const prompt=randomOrreryRecipe('',{flavour});
    expect(prompt).toBeTruthy();
    expect(prompt.flavour).toBe(flavour);
