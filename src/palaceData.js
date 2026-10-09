@@ -357,6 +357,9 @@ export async function getPalaceFandomDirectory(){
   pages.push(...(result.data||[]));
   if((result.data||[]).length<250)break;
  }
+ let counts=[];
+ try{counts=await searchPalaceTags('','fandom',250)}catch{}
+ const usage=new Map(counts.map(tag=>[tag.id,Number(tag.usage_count||0)]));
  let metadata=[];
  try{
   const result=await client.from('fandom_directory')
@@ -367,7 +370,7 @@ export async function getPalaceFandomDirectory(){
  const catalogue=new Map(INITIAL_FANDOM_DIRECTORY.map(row=>[row.name.toLowerCase(),row]));
  return pages.map(tag=>{
   const extra=known.get(tag.id)||catalogue.get(String(tag.name).toLowerCase())||{};
-  return{...tag,media_categories:extra.media_categories||['uncategorized'],
+  return{...tag,usage_count:usage.get(tag.id)||0,media_categories:extra.media_categories||['uncategorized'],
    subcategory:extra.subcategory||'',aliases:extra.aliases||[],
    franchise:extra.franchise||''};
  });
@@ -396,7 +399,7 @@ export async function getStoriesForFandoms(tagIds=[],mode='any'){
  if(!workIds.length)return[];
  const result=await client.from('works')
   .select('id,title,slug,summary,rating,completion_status,cover_url,last_published_at,profiles!works_author_id_fkey(username,display_name)')
-  .in('id',workIds).eq('publication_status','published')
+  .in('id',workIds).eq('publication_status','published').eq('visibility','public')
   .order('last_published_at',{ascending:false}).limit(100);
  if(result.error)throw result.error;
  return result.data||[];
