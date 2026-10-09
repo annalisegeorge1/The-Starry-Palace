@@ -17,3 +17,20 @@ export function storyHistoryDetails(work,chapters=[]){
   changeKind:event?.kind||'unknown',chapterTitle:event?.chapter||null};
 }
 export const storyHistoryLabel=details=>details.changeKind==='updated'?'Chapter updated':details.changeKind==='chapter'?'New chapter published':'Latest change not recorded';
+
+/**
+ * One shared story-history selection for both the visible list and the empty
+ * state: an active Story updates filter must not report "no moments" while
+ * matching published stories are on the page.
+ */
+export function selectStoryHistory(works=[],chapterMap={},kind='all',query=''){
+ if(kind!=='all'&&kind!=='stories')return [];
+ const needle=String(query||'').trim().toLowerCase();
+ return (Array.isArray(works)?works:[])
+  .filter(work=>work?.id)
+  .map(work=>({work,details:storyHistoryDetails(work,chapterMap?.[work.id]||[])}))
+  .filter(({work,details})=>!needle||[
+   work.title,work.summary,work.profiles?.display_name,work.profiles?.username,details.chapterTitle
+  ].filter(Boolean).join(' ').toLowerCase().includes(needle))
+  .sort((a,b)=>validDate(b.details.lastChangedAt||b.work.last_published_at)-validDate(a.details.lastChangedAt||a.work.last_published_at));
+}
