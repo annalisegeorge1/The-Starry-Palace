@@ -82,15 +82,18 @@ export default function PalaceChatDrawer({userId}){
    setDataOwner(userId);
   };
   refresh();
-  const timer=window.setInterval(()=>{if(document.visibilityState==='visible')refresh()},open?16000:60000);
-  return()=>{alive=false;window.clearInterval(timer)};
+  // Keep the launcher badge from the initial fetch, but do not run costly
+  // letters, membership and profile queries every minute when chat is closed.
+  const timer=open?window.setInterval(()=>{if(document.visibilityState==='visible')refresh()},60000):null;
+  return()=>{alive=false;if(timer!==null)window.clearInterval(timer)};
  },[open,userId]);
  useEffect(()=>{
   if(!open||tab!=='groups'||!selectedGroup)return;
   let alive=true;
   const refresh=()=>getPalaceGroupMessages(selectedGroup).then(rows=>{if(alive)setGroupMessages({chatId:selectedGroup,items:rows})}).catch(e=>{if(alive)setError(errorText(e))});
   setGroupMessages({chatId:selectedGroup,items:[]});refresh();
-  const timer=window.setInterval(()=>{if(document.visibilityState==='visible')refresh()},12000);
+  // Realtime handles arrivals while connected; this is a slower safety net.
+  const timer=window.setInterval(()=>{if(document.visibilityState==='visible')refresh()},60000);
   return()=>{alive=false;window.clearInterval(timer)};
  },[open,tab,selectedGroup]);
  // RLS-protected live events wake a fresh fetch. Polling remains a fallback
