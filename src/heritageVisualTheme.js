@@ -1,5 +1,5 @@
 /** Content labels supply visual themes; this never infers anyone's identity. */
-const QUEER_TERMS=/\b(?:lgbtqia?|lgbtq\+|lgbt\+?|queer|sapphic|achillean|lesbian|gay|bisexual|pansexual|asexual|aromantic|aroace|transgender|trans|nonbinary|non-binary|genderfluid|genderqueer|intersex|two-spirit|same-sex|rainbow families|pride month|pride parade|pride festival|world pride)\b/i;
+const QUEER_TERMS=/\b(?:lgbtqia?|lgbtq|lgbt|queer|sapphic|achillean|lesbian|gay|bisexual|pansexual|asexual|aromantic|aroace|transgender|trans|nonbinary|non-binary|genderfluid|genderqueer|intersex|two-spirit|same-sex|rainbow families|pride month|pride parade|pride festival|world pride)\b\+?/i;
 
 function flattenLabels(input){
  if(Array.isArray(input))return input.flatMap(flattenLabels);
