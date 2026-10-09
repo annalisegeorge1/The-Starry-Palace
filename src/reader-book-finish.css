@@ -1,0 +1,182 @@
+/* Finishing pass for the Palace reading experience.
+ * These refinements preserve reader-selected type size, measure, face, leading and tone.
+ * Headings should feel literary without crowding narrow screens. */
+.palace-shell .reader-page.restored,
+.palace-shell .work-page.restored{box-sizing:border-box;min-width:0}
+.palace-shell .reader-page .reader-chapter-head{
+ min-width:0;
+ max-width:900px;
+ padding:clamp(10px,2vw,18px) 0 clamp(16px,2.4vw,24px);
+ margin-bottom:clamp(15px,2.6vw,28px);
+}
+.palace-shell .reader-page .reader-chapter-head h1{
+ max-width:22ch;
+ margin:clamp(8px,1.5vw,16px) 0 14px;
+ font:600 clamp(2rem,4.8vw,4.3rem)/1.11 Georgia,'Times New Roman',serif;
+ letter-spacing:-.025em;
+ text-wrap:balance;
+ overflow-wrap:break-word;
+}
+.palace-shell .reader-page .reader-back-row{display:flex;align-items:center;flex-wrap:wrap;gap:10px;min-width:0}
+.palace-shell .reader-page .reader-back-row>a{min-width:0;overflow-wrap:anywhere;line-height:1.5}
+.palace-shell .reader-page .reader-head-actions{
+ display:flex;align-items:center;flex-wrap:wrap;gap:7px;
+ min-width:0;max-width:100%;width:auto;overflow:visible;
+}
+.palace-shell .reader-page .reader-head-actions button{
+ min-height:42px;padding:8px 12px;border-radius:11px;
+ white-space:normal;overflow-wrap:break-word;text-align:center;
+}
+.palace-shell .reader-page .reader-meta{gap:7px 14px;font-size:.78rem;line-height:1.55}
+.palace-shell .reader-page .reader-meta>span{white-space:normal}
+.palace-shell .reader-page .reader-quick-jump{
+ box-sizing:border-box;grid-template-columns:auto minmax(0,320px);
+ max-width:100%;gap:9px;font-size:.77rem
+}
+.palace-shell .reader-page .reader-quick-jump select{
+ box-sizing:border-box;min-width:0;min-height:44px;max-width:100%;
+ border:1px solid rgba(170,154,219,.5);border-radius:11px;
+ color:inherit;background:rgba(119,99,167,.1);
+}
+.palace-shell .reader-page .reader-start-text-link{display:inline-flex;align-items:center;min-height:42px;line-height:1.5}
+.palace-shell .reader-page .reader-story-passage{max-width:900px}
+.palace-shell .reader-page .chapter-text.restored{
+ box-sizing:border-box;width:100%;min-width:0;
+ border-radius:clamp(13px,2vw,22px);
+ -webkit-font-smoothing:antialiased;
+ font-kerning:normal;
+ text-rendering:optimizeLegibility;
+ overflow-wrap:break-word;
+}
+.palace-shell .reader-page .chapter-text.restored :is(p,li,blockquote){
+ hanging-punctuation:first last;
+ max-width:100%;
+}
+.palace-shell .reader-page .chapter-text.restored :is(h2,h3,h4){
+ overflow-wrap:break-word;line-height:1.3;
+ text-wrap:pretty;
+}
+.palace-shell .reader-page .chapter-text.restored :is(img,svg,video,canvas){
+ display:block;max-width:100%;height:auto;object-fit:contain
+}
+.palace-shell .reader-page .chapter-text.restored :is(pre,table){
+ max-width:100%;overflow-x:auto;overscroll-behavior-x:contain
+}
+.palace-shell .reader-page .chapter-text.restored table{display:block;border-collapse:collapse}
+.palace-shell .reader-page .chapter-text.restored pre{
+ box-sizing:border-box;padding:14px;border-radius:10px;
+ background:rgba(118,99,171,.08);white-space:pre;tab-size:3
+}
+.palace-shell .reader-page .chapter-text.restored :is(a,code){
+ overflow-wrap:anywhere
+}
+.palace-shell .reader-page .reader-afterword-praise,
+.palace-shell .reader-page .reader-chapter-shelf,
+.palace-shell .reader-page .reader-end-trail,
+.palace-shell .reader-page .reader-nav{
+ box-sizing:border-box;max-width:900px;margin-left:auto;margin-right:auto;min-width:0
+}
+.palace-shell .reader-page :is(.reader-quick-jump select,.reader-head-actions button,.reader-start-text-link):focus-visible{
+ outline:3px solid #9cdcf3;outline-offset:3px
+}
+/* Story presentation: leave the book cover visible but keep its text and actions fluid. */
+.palace-shell .work-page .work-entry-hero{
+ grid-template-columns:minmax(165px,235px) minmax(0,1fr);
+ column-gap:clamp(18px,3vw,46px);
+ padding-top:clamp(14px,2vw,25px)
+}
+.palace-shell .work-page .work-cover.restored{
+ width:100%;max-width:235px;margin-inline:auto;
+ border-radius:17px;
+ box-shadow:0 14px 38px rgba(5,8,32,.26),0 0 0 1px rgba(169,147,224,.22);
+}
+.palace-shell .work-page .work-entry-copy{min-width:0}
+.palace-shell .work-page .work-entry-copy h1{
+ margin:6px 0 13px;max-width:22ch;
+ font:600 clamp(2.05rem,4.5vw,4.35rem)/1.1 Georgia,'Times New Roman',serif;
+ letter-spacing:-.025em;overflow-wrap:break-word
+}
+.palace-shell .work-page .reading-story-context-summary>p{
+ max-width:70ch;line-height:1.7;font-size:clamp(.9rem,1.4vw,1rem)
+}
+.palace-shell .work-page .palace-story-statline{margin-block:15px;padding-block:11px}
+.palace-shell .work-page .work-actions.restored{align-items:stretch;gap:8px}
+.palace-shell .work-page .work-actions.restored>:is(a,button){
+ box-sizing:border-box;min-width:0;min-height:44px;padding:10px 14px;
+ white-space:normal;text-align:center;overflow-wrap:anywhere
+}
+.palace-shell .work-page .work-actions.restored .primary-read-action{
+ background:linear-gradient(117deg,#6750a5,#387fa4);
+ color:#fff;border:1px solid rgba(177,202,241,.32)
+}
+.palace-shell .work-page .work-actions.restored .primary-read-action:hover{
+ background:linear-gradient(117deg,#7960ba,#3e94b7)
+}
+.palace-shell .work-page :is(.creator-doorway,.work-resume-strip,.work-tag-row,.work-rights-panel,.publication-glance){min-width:0}
+.palace-shell .work-page .work-resume-strip strong{white-space:normal;overflow-wrap:anywhere}
+.palace-shell .work-page .work-resume-strip>a{display:inline-flex;align-items:center;min-height:42px}
+.palace-shell .work-page .work-entry-copy :is(a,button,select):focus-visible{
+ outline:3px solid #a9d6fb;outline-offset:3px
+}
+.palace-shell.daylight .work-page .work-cover.restored{
+ box-shadow:0 13px 29px rgba(67,55,115,.14),0 0 0 1px #c1b2d7
+}
+.palace-shell.daylight .reader-page .reader-quick-jump select,
+.palace-shell .reader-page.tone-paper .reader-quick-jump select,
+.palace-shell .reader-page.tone-soft .reader-quick-jump select{
+ background:#f6f3fc;color:#302742;border-color:#b7a8d1
+}
+@media(max-width:760px){
+ .palace-shell .work-page .work-entry-hero{
+  grid-template-columns:minmax(0,1fr);gap:clamp(12px,3vw,21px)
+ }
+ .palace-shell .work-page .work-cover.restored{
+  width:min(170px,47vw);max-width:100%;margin:0 auto;
+ }
+ .palace-shell .work-page .work-entry-copy h1{
+  max-width:100%;font-size:clamp(2rem,7vw,3rem);line-height:1.12
+ }
+ .palace-shell .work-page .work-actions.restored{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr))
+ }
+ .palace-shell .work-page .work-actions.restored .primary-read-action{
+  grid-column:1/-1;min-height:48px
+ }
+ .palace-shell .reader-page .reader-back-row{align-items:flex-start;flex-direction:column}
+ .palace-shell .reader-page .reader-head-actions{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  width:100%;max-width:100%;gap:6px
+ }
+ .palace-shell .reader-page .reader-head-actions button{
+  min-width:0;min-height:44px;padding:9px 6px;
+  font-size:clamp(.68rem,2.5vw,.78rem)
+ }
+ .palace-shell .reader-page .reader-chapter-head h1{
+  max-width:100%;font-size:clamp(1.9rem,8.7vw,3.1rem);line-height:1.14
+ }
+ .palace-shell .reader-page .reader-quick-jump{
+  width:100%;grid-template-columns:minmax(0,1fr);gap:7px
+ }
+ .palace-shell .reader-page .chapter-text.restored{
+  padding:clamp(17px,4.5vw,26px)
+ }
+}
+@media(max-width:430px){
+ .palace-shell .reader-page.restored{padding-left:clamp(8px,3vw,13px);padding-right:clamp(8px,3vw,13px)}
+ .palace-shell .reader-page .reader-head-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .palace-shell .reader-page .reader-head-actions button:first-child{grid-column:1/-1}
+ .palace-shell .reader-page .reader-chapter-head h1{font-size:clamp(1.8rem,8.3vw,2.45rem)}
+ .palace-shell .reader-page .chapter-text.restored{padding:clamp(15px,4vw,19px)}
+ .palace-shell .reader-page .chapter-text.restored>p:first-child:first-letter{
+  float:none;margin:0;font:inherit;color:inherit
+ }
+ .palace-shell .work-page .work-actions.restored{grid-template-columns:minmax(0,1fr)}
+ .palace-shell .work-page .work-actions.restored .primary-read-action{grid-column:auto}
+ .palace-shell .work-page .work-entry-copy h1{font-size:clamp(1.85rem,8vw,2.45rem)}
+ .palace-shell .work-page .work-resume-strip{flex-wrap:wrap}
+ .palace-shell .work-page .work-resume-strip>a{margin-left:auto}
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .work-page .work-cover.restored,
+ .palace-shell .reader-page .chapter-text.restored{transition:none}
+}
