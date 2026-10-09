@@ -67,3 +67,15 @@ describe('Shared random Ink Duel basis',()=>{
   expect(suggestedDuelBasis('fiction',0)).toBeNull();
  });
 });
+
+describe('Shared random duel basis',()=>{
+ it('offers topic and word prompts while leaving fiction hosts free to choose',async()=>{
+  const {drawDuelBasis,duelBasisPrompt,suggestedDuelBasis}=await import('./inkDuelExperience');
+  expect(drawDuelBasis('word',0).value).toBe('harbour');
+  expect(drawDuelBasis('topic',0).value).toBe('The price of keeping a promise');
+  expect(duelBasisPrompt(drawDuelBasis('word',0),'haiku')).toContain('harbour');
+  expect(suggestedDuelBasis('fiction',0)).toBeNull();
+  expect(suggestedDuelBasis('haiku',0).kind).toBe('word');
+  expect(suggestedDuelBasis('poetry',0).kind).toBe('topic');
+ });
+});
