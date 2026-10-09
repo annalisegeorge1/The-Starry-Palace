@@ -71,3 +71,49 @@
 }
 @media(max-height:530px){.palace-chat-v2 .palace-chat-panel{height:calc(100dvh - 20px)}}
 @media(prefers-reduced-motion:reduce){.palace-chat-v2 *{scroll-behavior:auto!important;transition:none!important}}
+
+/* Palace Circles: purposeful colour, subtle glow, and compact writing tools. */
+.palace-chat-v2[data-circle-colour="moonlit"]{--circle-a:#7460b6;--circle-b:#4b598e;--circle-light:#c9b8ff}
+.palace-chat-v2[data-circle-colour="lilac"]{--circle-a:#9b78c3;--circle-b:#7064a9;--circle-light:#efcfff}
+.palace-chat-v2[data-circle-colour="glacier"]{--circle-a:#4c91c5;--circle-b:#45628e;--circle-light:#caeaff}
+.palace-chat-v2[data-circle-colour="tide"]{--circle-a:#378f9f;--circle-b:#315c83;--circle-light:#b8f4ed}
+.palace-chat-v2[data-circle-colour="orchid"]{--circle-a:#9852b5;--circle-b:#603b95;--circle-light:#f1c3ff}
+.palace-chat-v2[data-circle-colour="emerald"]{--circle-a:#397f7b;--circle-b:#315f83;--circle-light:#b7f0d8}
+.palace-chat-v2[data-circle-colour="slate"]{--circle-a:#7183a0;--circle-b:#404e74;--circle-light:#dfebff}
+.palace-chat-v2[data-circle-colour="aurora"]{--circle-a:#6885c9;--circle-b:#7262b7;--circle-light:#c5f4fc}
+.palace-chat-v2[data-circle-colour] .palace-chat-correspondent{background:linear-gradient(110deg,var(--circle-a),var(--circle-b));color:#fff}
+.palace-chat-v2 .palace-chat-circle-description{margin:3px 0 0;font-size:.76rem;line-height:1.5;max-height:4.5em;overflow-y:auto;color:#f8f4ff}
+.palace-chat-v2 .palace-chat-settings .palace-chat-identity-form{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;padding:10px;border:1px solid #a3a5da4f;border-radius:12px;background:#1d243c}
+.palace-chat-v2 .palace-chat-settings .palace-chat-identity-form label{display:grid;gap:5px;min-width:0}
+.palace-chat-v2 .palace-chat-settings .palace-chat-identity-form :is(input,select,textarea){min-width:0;width:100%;box-sizing:border-box;border:1px solid #b1b9dd83;border-radius:9px;background:#f5f4ff;color:#262641;font:inherit;font-size:.8rem;padding:9px;resize:vertical}
+.palace-chat-v2 .palace-chat-settings .palace-chat-identity-form button{justify-self:start;min-height:40px;background:#6360a7}
+.palace-chat-v2 .palace-chat-pinned{display:flex;flex:none;gap:9px;align-items:start;max-height:110px;overflow-y:auto;padding:9px 12px;border-bottom:1px solid #baa5ed5c;background:linear-gradient(110deg,#343357,#273d59);font-size:.75rem}
+.palace-chat-v2 .palace-chat-pinned>span{flex:none;color:var(--circle-light,#c9b8ff);font-size:1.1rem}
+.palace-chat-v2 .palace-chat-pinned>div{flex:1;min-width:0}
+.palace-chat-v2 .palace-chat-pinned strong{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:#f2eaff}
+.palace-chat-v2 .palace-chat-pinned p{margin:4px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+.palace-chat-v2 .palace-chat-pinned button{flex:none;border:1px solid #b1b6d77d;border-radius:8px;background:#534878;color:#fff;cursor:pointer;padding:6px}
+.palace-chat-v2 .palace-chat-sharing-actions{flex:none;display:flex;justify-content:flex-end;padding:6px 12px;background:#222740}
+.palace-chat-v2 .palace-chat-sharing-actions button{border:1px solid #aca3d08a;border-radius:999px;background:#514f8777;color:#e3e8ff;padding:6px 10px;font-size:.71rem;font-weight:750;cursor:pointer}
+.palace-chat-v2 .palace-chat-sharing-actions button[aria-expanded=true]{border-color:#cff1fa;background:#52768a}
+.palace-chat-v2 .palace-chat-share-shelf{display:grid;gap:8px;max-height:210px;overflow:auto;padding:10px 12px;flex:none;background:#242945;border-bottom:1px solid #a5aad46e}
+.palace-chat-v2 .palace-chat-share-shelf form{display:flex;gap:7px}
+.palace-chat-v2 .palace-chat-share-shelf form input{flex:1;min-width:0;border:1px solid #a9afd4;border-radius:9px;background:#f7f6ff;color:#252743;padding:9px;font-size:.78rem}
+.palace-chat-v2 .palace-chat-share-shelf form button{border:1px solid #adb9e6;border-radius:9px;padding:8px 12px;background:#6164a2;color:#fff;font-weight:750;cursor:pointer}
+.palace-chat-v2 .palace-chat-share-shelf>div{display:grid;gap:5px}
+.palace-chat-v2 .palace-chat-share-shelf>div button{display:grid;gap:3px;text-align:left;border:1px solid #8d9ac65d;border-radius:10px;background:#303d5d;color:#f7f7ff;padding:9px 12px;cursor:pointer}
+.palace-chat-v2 .palace-chat-share-shelf>div button:hover{border-color:#c7eafa}
+.palace-chat-v2 .palace-chat-share-shelf>small{color:#c4c6df;font-size:.69rem}
+.palace-chat-v2 .palace-chat-reply-quote{margin-bottom:8px;padding:7px 9px;border-left:3px solid var(--circle-light,#bdb2f1);border-radius:7px;background:#18253a76}
+.palace-chat-v2 .palace-chat-reply-quote small{display:block;margin:0 0 2px;text-align:left;color:#dbddff}
+.palace-chat-v2 .palace-chat-reply-quote p{font-size:.74rem;line-height:1.4;opacity:.9;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.palace-chat-v2 .palace-chat-shared-story{display:flex;align-items:center;gap:8px;border:1px solid #b6b6e49a;border-radius:10px;margin:8px 0 0;padding:9px;color:#f4f6ff!important;background:#27334c;text-decoration:none}
+.palace-chat-v2 .palace-chat-shared-story span:nth-child(2){flex:1;min-width:0;display:grid;gap:2px;overflow-wrap:anywhere}
+.palace-chat-v2 .palace-chat-shared-story strong{font-size:.8rem}.palace-chat-v2 .palace-chat-shared-story small{margin:0;text-align:left;font-size:.62rem;color:#c6dff4}
+.palace-chat-v2 .palace-chat-bubble-actions{display:flex;justify-content:flex-end;gap:5px;margin-top:5px}
+.palace-chat-v2 .palace-chat-bubble-actions button{border:0;border-radius:7px;background:#dae3fc1b;color:#e0edff;padding:5px 7px;font-size:.66rem;cursor:pointer}
+.palace-chat-v2 .palace-chat-bubble-actions button:hover{background:#d8deff3d}
+.palace-chat-v2 .palace-chat-replying{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:none;padding:8px 12px;background:#37416a;color:#f6efff;font-size:.73rem}
+.palace-chat-v2 .palace-chat-replying span{min-width:0;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+.palace-chat-v2 .palace-chat-replying button{flex:none;border:1px solid #c6b8f4;border-radius:8px;background:#463966;color:#fff;min-width:28px;min-height:28px;cursor:pointer}
+@media(max-width:550px){.palace-chat-v2 .palace-chat-pinned{max-height:90px}.palace-chat-v2 .palace-chat-share-shelf{max-height:175px}}

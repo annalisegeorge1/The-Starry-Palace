@@ -4,7 +4,7 @@ import {cleanup,fireEvent,render,screen,waitFor} from '@testing-library/react';
 import {MemoryRouter} from 'react-router-dom';
 import PalaceChatDrawer from './PalaceChatDrawer';
 import {getLetters,searchMembers} from './palaceData';
-import {getPalaceGroupChatOverview,getPalaceGroupMessages,createPalaceGroupChat,respondPalaceGroupInvite,sendPalaceGroupMessage} from './palaceGroupChatData';
+import {getPalaceGroupChatOverview,getPalaceGroupMessages,createPalaceGroupChat,respondPalaceGroupInvite,sendPalaceGroupMessage,setPalaceGroupIdentity,pinPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
 
 vi.mock('./palaceData',()=>({
  getLetters:vi.fn(),sendLetter:vi.fn(),searchMembers:vi.fn(),setConversationPreference:vi.fn().mockResolvedValue(undefined)
@@ -13,11 +13,13 @@ vi.mock('./palaceGroupChatData',()=>({
  getPalaceGroupChatOverview:vi.fn(),getPalaceGroupMessages:vi.fn(),createPalaceGroupChat:vi.fn(),
  sendPalaceGroupMessage:vi.fn(),respondPalaceGroupInvite:vi.fn(),
  invitePalaceGroupMember:vi.fn(),removePalaceGroupMember:vi.fn(),leavePalaceGroupChat:vi.fn(),
- renamePalaceGroupChat:vi.fn(),setPalaceGroupMuted:vi.fn(),markPalaceGroupRead:vi.fn().mockResolvedValue(undefined)
+ renamePalaceGroupChat:vi.fn(),setPalaceGroupMuted:vi.fn(),markPalaceGroupRead:vi.fn().mockResolvedValue(undefined),
+ PALACE_GROUP_COLOURS:[{key:'moonlit',label:'Moonlit violet'},{key:'glacier',label:'Glacier blue'}],
+ setPalaceGroupIdentity:vi.fn(),pinPalaceGroupMessage:vi.fn(),getPinnedPalaceGroupMessage:vi.fn(),searchShareablePalaceStories:vi.fn()
 }));
 const user='member-one';
 const direct={conversations:[{conversation_id:'direct-one',conversations:{kind:'direct'},correspondent:{id:'member-two',display_name:'River'},preference:{archived:false,muted:false},unread:false}],messages:[],requests:[]};
-const groups={groups:[{id:'group-one',title:'Moonlight Readers',ownerId:user,members:[{id:user,display_name:'Host'},{id:'member-two',display_name:'River'}],muted:false,lastReadAt:null,lastMessageAt:null}],invitations:[{id:'group-invite',title:'Poetry Circle'}]};
+const groups={groups:[{id:'group-one',title:'Moonlight Readers',description:'For gentle stories',colorKey:'glacier',pinnedMessageId:null,ownerId:user,members:[{id:user,display_name:'Host'},{id:'member-two',display_name:'River'}],muted:false,lastReadAt:null,lastMessageAt:null}],invitations:[{id:'group-invite',title:'Poetry Circle'}]};
 function mount(){return render(<MemoryRouter><PalaceChatDrawer userId={user}/></MemoryRouter>)}
 beforeEach(()=>{
  vi.clearAllMocks();
@@ -28,6 +30,8 @@ beforeEach(()=>{
  createPalaceGroupChat.mockResolvedValue('group-created');
  respondPalaceGroupInvite.mockResolvedValue(undefined);
  sendPalaceGroupMessage.mockResolvedValue({id:'m2'});
+ setPalaceGroupIdentity.mockResolvedValue(undefined);pinPalaceGroupMessage.mockResolvedValue(undefined);
+ searchShareablePalaceStories.mockResolvedValue([{id:'work-1',title:'Blue River',slug:'blue-river'}]);
 });
 afterEach(cleanup);
 describe('Palace quick chat',()=>{
@@ -61,12 +65,54 @@ describe('Palace quick chat',()=>{
   fireEvent.click(screen.getByRole('button',{name:'Join'}));
   await waitFor(()=>expect(respondPalaceGroupInvite).toHaveBeenCalledWith('group-invite',true));
  });
+ it('replies to a specific group message and clears the reply after sending',async()=>{
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(screen.getByRole('button',{name:/Groups/}));
+  await screen.findByText('Welcome to the circle');
+  fireEvent.click(screen.getByRole('button',{name:/Reply/}));
+  expect(screen.getByText(/Replying to: Welcome to the circle/)).toBeTruthy();
+  fireEvent.change(screen.getByRole('textbox',{name:'Write a group message'}),{target:{value:'I will bring the tea.'}});
+  fireEvent.click(screen.getByRole('button',{name:/Send/}));
+  await waitFor(()=>expect(sendPalaceGroupMessage).toHaveBeenCalledWith('group-one',user,'I will bring the tea.',{replyToId:'m1'}));
+  await waitFor(()=>expect(screen.queryByText(/Replying to:/)).toBeNull());
+ });
+ it('lets the host save a description and group colour',async()=>{
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(screen.getByRole('button',{name:/Groups/}));
+  await screen.findAllByText('Moonlight Readers');
+  fireEvent.click(screen.getByRole('button',{name:/Members & settings/}));
+  expect(screen.getAllByText('For gentle stories').length).toBeGreaterThan(0);
+  fireEvent.change(screen.getByRole('textbox',{name:'Group description'}),{target:{value:'Poems, tales and tea.'}});
+  fireEvent.change(screen.getByRole('combobox',{name:'Group colour'}),{target:{value:'moonlit'}});
+  fireEvent.click(screen.getByRole('button',{name:'Save appearance'}));
+  await waitFor(()=>expect(setPalaceGroupIdentity).toHaveBeenCalledWith('group-one',{
+   title:'Moonlight Readers',description:'Poems, tales and tea.',colorKey:'moonlit'
+  }));
+ });
+ it('shares only a selected published story with a structured story reference',async()=>{
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(screen.getByRole('button',{name:/Groups/}));
+  await screen.findAllByText('Moonlight Readers');
+  fireEvent.click(screen.getByRole('button',{name:/Share a Palace story/}));
+  fireEvent.change(screen.getByRole('textbox',{name:'Find a published story to share'}),{target:{value:'Blue'}});
+  fireEvent.click(screen.getByRole('button',{name:'Find'}));
+  await screen.findByText('Blue River');
+  fireEvent.click(screen.getByRole('button',{name:/Blue River/}));
+  await waitFor(()=>expect(sendPalaceGroupMessage).toHaveBeenCalledWith('group-one',user,'✧ A Palace story to read: Blue River',{sharedWorkId:'work-1'}));
+ });
+ it('allows only the host to pin a group message',async()=>{
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(screen.getByRole('button',{name:/Groups/}));
+  await screen.findByText('Welcome to the circle');
+  fireEvent.click(screen.getByRole('button',{name:'Pin'}));
+  await waitFor(()=>expect(pinPalaceGroupMessage).toHaveBeenCalledWith('group-one','m1'));
+ });
  it('sends the selected group message without exposing it in Direct chat',async()=>{
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
   fireEvent.click(screen.getByRole('button',{name:/Groups/}));
   await screen.findAllByText('Moonlight Readers');
   fireEvent.change(screen.getByRole('textbox',{name:'Write a group message'}),{target:{value:'We are gathering tonight.'}});
   fireEvent.click(screen.getByRole('button',{name:/Send/}));
-  await waitFor(()=>expect(sendPalaceGroupMessage).toHaveBeenCalledWith('group-one',user,'We are gathering tonight.'));
+  await waitFor(()=>expect(sendPalaceGroupMessage).toHaveBeenCalledWith('group-one',user,'We are gathering tonight.',{}));
  });
 });
