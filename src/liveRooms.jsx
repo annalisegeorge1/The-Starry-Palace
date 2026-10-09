@@ -1313,7 +1313,8 @@ export function SearchLive({Frame}){
   try{
    const result=await searchPalace(clean);
    if(version!==requestVersion.current)return;
-   setData(result);setQ(clean);
+   // Keep a member's in-progress input untouched while results arrive.
+   setData(result);
    setRecentSearches(previous=>{
     const next=[clean,...previous.filter(x=>String(x).toLowerCase()!==clean.toLowerCase())].slice(0,6);
     try{localStorage.setItem('palace-recent-searches',JSON.stringify(next))}catch{}
