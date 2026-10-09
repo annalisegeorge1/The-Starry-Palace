@@ -23,6 +23,31 @@ describe('long-form classic reader',()=>{
   expect(screen.getByText('Reading page 1 of 3')).toBeTruthy();
   resumed.unmount();
  });
+ it('keeps each book\'s saved page separate when navigating between classics',()=>{
+  const first={...record,id:'reader-first-book',title:'First book'};
+  const second={...record,id:'reader-second-book',title:'Second book'};
+  const originalPage=window.localStorage.getItem('palace-classic-reading-page:reader-first-book');
+  const secondPage=window.localStorage.getItem('palace-classic-reading-page:reader-second-book');
+  window.localStorage.removeItem('palace-classic-reading-page:reader-first-book');
+  window.localStorage.removeItem('palace-classic-reading-page:reader-second-book');
+  try{
+   const view=render(<ArchiveClassicReader record={first} text={textFor(85)}/>);
+   fireEvent.click(screen.getByRole('button',{name:'Next page →'}));
+   expect(screen.getByText('Reading page 2 of 3')).toBeTruthy();
+   view.rerender(<ArchiveClassicReader record={second} text={textFor(2)}/>);
+   expect(screen.getByText('Reading page 1 of 1')).toBeTruthy();
+   expect(screen.getByRole('heading',{name:'Second book'})).toBeTruthy();
+   expect(screen.queryByText('Paragraph 85 of a public-domain source text.')).toBeNull();
+   view.rerender(<ArchiveClassicReader record={first} text={textFor(85)}/>);
+   expect(screen.getByText('Reading page 2 of 3')).toBeTruthy();
+   view.unmount();
+  }finally{
+   if(originalPage===null)window.localStorage.removeItem('palace-classic-reading-page:reader-first-book');
+   else window.localStorage.setItem('palace-classic-reading-page:reader-first-book',originalPage);
+   if(secondPage===null)window.localStorage.removeItem('palace-classic-reading-page:reader-second-book');
+   else window.localStorage.setItem('palace-classic-reading-page:reader-second-book',secondPage);
+  }
+ });
  it('uses authentic source chapter headings and never hides translation credit',()=>{
   const text={...textFor(4),body_text:'CHAPTER I\n\nThe story begins.\n\nCHAPTER II\n\nA second chapter begins.',translations:[{translator_name:'The Translator',language:'English',scope:'complete',notes:'Historical translation'}]};
   render(<ArchiveClassicReader record={record} text={text}/>);
