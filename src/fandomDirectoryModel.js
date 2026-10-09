@@ -5,12 +5,14 @@ export function normalizeFandomName(input=''){
  return String(input||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'')
   .toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
 }
-export function visibleFandoms(rows=[],{media='all',query='',sort='alpha'}={}){
+export function visibleFandoms(rows=[],{media='all',query='',sort='alpha',subcategory='all',franchise='all'}={}){
  const needle=normalizeFandomName(query);
  const filtered=(Array.isArray(rows)?rows:[]).filter(row=>{
   if(!row||NON_FANDOM_CLASSIFICATIONS.some(name=>normalizeFandomName(name)===normalizeFandomName(row.name)))return false;
   const kinds=Array.isArray(row.media_categories)&&row.media_categories.length?row.media_categories:['uncategorized'];
   if(media!=='all'&&!kinds.includes(media))return false;
+  if(subcategory!=='all'&&normalizeFandomName(row.subcategory)!==normalizeFandomName(subcategory))return false;
+  if(franchise!=='all'&&normalizeFandomName(row.franchise||row.name)!==normalizeFandomName(franchise))return false;
   if(!needle)return true;
   const hay=[row.name,row.subcategory,row.franchise,...(row.aliases||[])].map(normalizeFandomName);
   return needle.split(' ').every(word=>hay.some(field=>field.includes(word)));
@@ -33,4 +35,16 @@ export function fandomMediaLabel(id){
 export function safeFandomSelection(ids=[],available=[],max=5){
  const known=new Set((available||[]).map(row=>row.id));
  return [...new Set((ids||[]).filter(id=>typeof id==='string'&&known.has(id)))].slice(0,max);
+}
+
+/** Derived only from actual registered fandoms, not invented placeholder categories. */
+export function fandomFacetOptions(rows=[],media='all'){
+ const eligible=(Array.isArray(rows)?rows:[]).filter(row=>
+  row&&Array.isArray(row.media_categories)
+   &&(media==='all'||row.media_categories.includes(media)));
+ const categories=[...new Set(eligible.map(x=>String(x.subcategory||'').trim()).filter(Boolean))]
+  .sort((a,b)=>a.localeCompare(b,undefined,{sensitivity:'base'}));
+ const franchises=[...new Set(eligible.map(x=>String(x.franchise||x.name||'').trim()).filter(Boolean))]
+  .sort((a,b)=>a.localeCompare(b,undefined,{sensitivity:'base'}));
+ return {categories,franchises};
 }
