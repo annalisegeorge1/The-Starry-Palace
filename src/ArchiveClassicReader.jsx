@@ -5,6 +5,8 @@ import {paginateClassicBlocks,classicContents,clampClassicPage,classicPageKey,fi
 import {readPalaceChoice,readPalaceNumber,writePalacePreference,removePalacePreference} from './browserPreferences';
 import './archive-classic-reader.css';
 import './archive-classic-open-story.css';
+import {classicChapterChoices,classicNumericPage,CLASSIC_NUMERIC_PAGE_THRESHOLD} from './classicNavigatorModel';
+import './classic-fast-navigation.css';
 
 const FONT_KEY='palace-classic-font';
 const TONE_KEY='palace-classic-tone';
@@ -39,14 +41,18 @@ function ArchiveClassicReaderEdition({record,text}){
  const pendingHeadingRef=useRef(null);
  const pendingPageTopRef=useRef(true);
  const [chosenHeading,setChosenHeading]=useState(null);
+ const [chapterQuery,setChapterQuery]=useState('');
+ const pageFieldId=React.useId();
  const [editionOpen,setEditionOpen]=useState(false);
  const current=clampClassicPage(page,pages.length);
  const total=pages.length;
+ const [pageEntry,setPageEntry]=useState(()=>String(current+1));
  const translations=(text?.translations||[]).filter(item=>item?.translator_name);
  const translators=[...new Set(translations.map(item=>String(item.translator_name).trim()).filter(Boolean))];
  const sourceUrl=String(text?.source_url||'');
  const safeSource=/^https:\/\/[^\s]+$/i.test(sourceUrl)?sourceUrl:null;
  useEffect(()=>{writePalacePreference(pageKey,current)},[pageKey,current]);
+ useEffect(()=>{setPageEntry(String(current+1))},[current]);
  useEffect(()=>{
   if(pendingHeadingRef.current!==null){
    const heading=readerRef.current?.querySelector('[data-classic-heading="'+pendingHeadingRef.current+'"]');
@@ -83,6 +89,14 @@ function ArchiveClassicReaderEdition({record,text}){
   for(const key of [FONT_KEY,TONE_KEY,WIDTH_KEY,LEADING_KEY])removePalacePreference(key);
  }
  const activeHeading=[...contents].reverse().find(item=>item.pageIndex<=current);
+ const activeSourceIndex=chosenHeading!==null?chosenHeading:activeHeading?.sourceIndex??null;
+ const chapterChoices=useMemo(()=>classicChapterChoices(contents,chapterQuery,activeSourceIndex),[contents,chapterQuery,activeSourceIndex]);
+ function submitDirectPage(e){
+  e.preventDefault();
+  const target=classicNumericPage(pageEntry,total);
+  if(target!==null)changePage(target);
+ }
+
  return <article ref={readerRef} className={'archive-reader-sheet archive-classic-experience tone-'+tone+' width-'+width+' leading-'+leading} style={{'--classic-font-size':fontSize+'px'}}>
   <header className="archive-classic-frontmatter archive-classic-compact-heading">
    <p className="archive-classic-kicker">PALACE CLASSICS · {record?.host_mode==='excerpt'?'HOSTED EXCERPT':'HOSTED EDITION'}</p>
@@ -115,19 +129,29 @@ function ArchiveClassicReaderEdition({record,text}){
    <button type="button" className="archive-classic-reset" onClick={resetSettings}>Reset appearance</button>
   </div>
   <div className="archive-classic-locator">
-   {contents.length>0?<label>Contents
-    <select aria-label="Jump to source chapter or section" value={chosenHeading!==null?String(chosenHeading):activeHeading?String(activeHeading.sourceIndex):''} onChange={e=>{const item=contents.find(section=>String(section.sourceIndex)===e.target.value);if(item)jumpToHeading(item)}}>
-     {!activeHeading&&<option value="">Choose a section</option>}
-     {contents.map(item=><option key={item.sourceIndex} value={String(item.sourceIndex)}>{item.title}</option>)}
-    </select>
-   </label>:<span className="archive-classic-no-contents">This edition has no detected chapter headings. Navigate by reading page.</span>}
-   <label>Reading page
+   {contents.length>0?<div className="archive-classic-chapter-controls">
+    {contents.length>36&&<label className="archive-classic-chapter-search">Find a chapter
+     <input type="search" aria-label="Find a chapter or section in this edition" value={chapterQuery} placeholder="Chapter number or title…" onChange={e=>setChapterQuery(e.target.value)}/>
+    </label>}
+    <label>Contents
+     <select aria-label="Jump to source chapter or section" value={activeSourceIndex!==null?String(activeSourceIndex):''} onChange={e=>{const item=contents.find(section=>String(section.sourceIndex)===e.target.value);if(item)jumpToHeading(item)}}>
+      {activeSourceIndex===null&&<option value="">Choose a section</option>}
+      {chapterChoices.items.map(item=><option key={item.sourceIndex} value={String(item.sourceIndex)}>{item.title}</option>)}
+     </select>
+    </label>
+    {chapterChoices.hasMore&&<span className="archive-classic-chapter-hint">Showing {chapterChoices.items.length} of {chapterChoices.matched} matching sections. Search to reach the rest.</span>}
+    {!chapterChoices.matched&&<span className="archive-classic-chapter-hint" role="status">No matching chapters. Try a different title or number.</span>}
+   </div>:<span className="archive-classic-no-contents">This edition has no detected chapter headings. Navigate by reading page.</span>}
+   {total>CLASSIC_NUMERIC_PAGE_THRESHOLD?<form className="archive-classic-page-direct" onSubmit={submitDirectPage}>
+    <label htmlFor={pageFieldId}>Reading page <small>of {total}</small></label>
+    <div><input id={pageFieldId} type="number" inputMode="numeric" min="1" max={total} step="1" value={pageEntry} onChange={e=>setPageEntry(e.target.value)} aria-label="Reading page number"/><button type="submit" disabled={classicNumericPage(pageEntry,total)===null}>Go →</button></div>
+   </form>:<label>Reading page
     <select aria-label="Jump to reading page" value={current} onChange={e=>changePage(e.target.value)}>{pages.map((_,index)=><option key={index} value={index}>{index+1} of {total}</option>)}</select>
-   </label>
+   </label>}
    <span className="archive-classic-progress" aria-live="polite">{total?Math.round(((current+1)/total)*100):0}% through this hosted text{storyPage>0&&current<storyPage?' · Opening material':''}</span>
   </div>
   <section className="archive-reader-copy archive-classic-page" aria-label={'Hosted text — reading page '+(current+1)}>
-   {(pages[current]||[]).map(block=>block.kind==='heading'?<h2 key={block.sourceIndex} data-classic-heading={block.sourceIndex}>{block.text}</h2>:block.kind==='verse'?<p key={block.sourceIndex} className="archive-classic-verse">{block.text}</p>:<p key={block.sourceIndex}>{block.text}</p>)}
+   {(pages[current]||[]).map(block=>block.kind==='heading'?<h2 className={/^(?:book|volume|part)\b/i.test(block.text)?'archive-classic-book-heading':'archive-classic-chapter-heading'} key={block.sourceIndex} data-classic-heading={block.sourceIndex}>{block.text}</h2>:block.kind==='verse'?<p key={block.sourceIndex} className="archive-classic-verse">{block.text}</p>:<p key={block.sourceIndex}>{block.text}</p>)}
    {total===0&&<p>There is no readable text in this edition yet.</p>}
   </section>
   <nav className="archive-classic-page-nav" aria-label="Classic reading pages">
