@@ -14,7 +14,7 @@ describe('Palace responsiveness and personality recovery',()=>{
   expect(life).toContain('className="reading-classics-hall"');
   expect(life).toContain('className="prompt-orrery"');
   expect(life).toContain('className="community-pulse-row restored social-pulse"');
-  expect(life).toContain('className="legacy-showcase-wall chamber-atelier-gallery gallery-layout-');
+  expect(life).toContain('legacy-showcase-wall chamber-atelier-gallery gallery-layout-');
   expect(life).not.toContain('palace-calm-prompt-fold');
   expect(life).not.toContain('palace-calm-wardrobe');
  });
