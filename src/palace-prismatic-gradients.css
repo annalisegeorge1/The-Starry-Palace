@@ -1,0 +1,219 @@
+/*
+ * The Starry Palace · Prismatic Court
+ * A deliberate gradient pass: colour lives on entrances, select editorial panels,
+ * major actions and ACTIVE tabs. No moving backgrounds, blur layers, or image masks.
+ * Room content, badge watercolours, manuscript canvas and cover photos are untouched.
+ */
+.palace-shell.nightfall{
+ --prismatic-edge:rgba(182,154,251,.53);
+ --prismatic-highlight:#d9c0ff;
+ --prismatic-warm:#e2b5ee;
+ --prismatic-cool:#a8e1ff;
+ --prismatic-sea:#a4ecdc;
+}
+.palace-shell.daylight{
+ --prismatic-edge:#a38ac9;
+ --prismatic-highlight:#684b9e;
+ --prismatic-warm:#7e417f;
+ --prismatic-cool:#245981;
+ --prismatic-sea:#1d6e66;
+}
+/* Three doors: unmistakably distinct, with dark interior ink for legibility. */
+.palace-shell.nightfall .palace-home-welcome .palace-choice-read{
+ background:linear-gradient(135deg,#314e86 0%,#2c376a 48%,#382e65 100%);
+ border-color:rgba(151,199,255,.73);color:#f8f7ff;
+}
+.palace-shell.nightfall .palace-home-welcome .palace-choice-write{
+ background:linear-gradient(135deg,#543770 0%,#453475 47%,#2f3f80 100%);
+ border-color:rgba(220,174,250,.73);color:#fff5ff;
+}
+.palace-shell.nightfall .palace-home-welcome .palace-choice-belong{
+ background:linear-gradient(130deg,#225e6b 0%,#2c5675 46%,#493a80 100%);
+ border-color:rgba(140,227,219,.74);color:#f1fcff;
+}
+.palace-shell.nightfall .palace-home-welcome .palace-choice-card .palace-choice-kicker{
+ color:#f1e9ff;opacity:.93;
+}
+.palace-shell.nightfall .palace-home-welcome .palace-choice-card p{color:#f1eafa;opacity:.93}
+.palace-shell.nightfall .palace-home-welcome .palace-choice-card .palace-choice-sigil{
+ border-color:rgba(231,226,255,.63);
+ background:linear-gradient(145deg,rgba(239,231,255,.27),rgba(133,212,244,.12));
+ color:#f6ecff;box-shadow:inset 0 1px rgba(255,255,255,.21);
+}
+.palace-shell.nightfall .palace-home-welcome .palace-choice-card .palace-choice-action{
+ color:#f8f3ff;text-decoration-color:rgba(236,217,255,.9);
+}
+.palace-shell.daylight .palace-home-welcome .palace-choice-read{
+ background:linear-gradient(140deg,#e0edff,#edf0ff 56%,#eee7ff);
+ border-color:#9eb7e2;color:#27345e;
+}
+.palace-shell.daylight .palace-home-welcome .palace-choice-write{
+ background:linear-gradient(140deg,#f4dcf8,#ece5ff 58%,#dfebff);
+ border-color:#bb8fcf;color:#462c60;
+}
+.palace-shell.daylight .palace-home-welcome .palace-choice-belong{
+ background:linear-gradient(140deg,#d7f5ed,#e1efff 58%,#eee4ff);
+ border-color:#7dbdb0;color:#234c55;
+}
+.palace-shell.daylight .palace-home-welcome .palace-choice-card .palace-choice-sigil{
+ background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(216,213,250,.75));
+ color:#44346e;border-color:#a58bcf;
+}
+.palace-shell.daylight .palace-home-welcome .palace-choice-card .palace-choice-action{
+ color:#392967;text-decoration-color:#9171c7;
+}
+
+/* Editorial entrances: broad colour with restrained size and legible copy. */
+.palace-shell.nightfall .legacy-reading-page>.legacy-reading-intro{
+ background:linear-gradient(118deg,rgba(69,49,119,.86),rgba(37,66,114,.87) 60%,rgba(29,95,110,.71));
+ border:1px solid rgba(170,164,242,.5);
+ border-radius:22px;padding:clamp(19px,2.9vw,34px);
+ color:#f8f5ff;
+}
+.palace-shell.nightfall .writing-head{
+ background:linear-gradient(115deg,rgba(93,50,117,.80),rgba(57,53,122,.85) 51%,rgba(38,89,120,.74));
+ border:1px solid rgba(212,166,245,.47);
+ border-radius:22px;padding:clamp(19px,2.8vw,31px);
+ color:#fbf4ff;
+}
+.palace-shell.nightfall .legacy-life-page>.legacy-life-head{
+ background:linear-gradient(118deg,rgba(43,84,119,.86),rgba(53,60,132,.84) 51%,rgba(83,53,127,.75));
+ border:1px solid rgba(151,199,245,.49);
+ border-radius:22px;padding:clamp(18px,2.8vw,31px);
+ color:#f5f7ff;
+}
+.palace-shell.nightfall .legacy-treasury-page>.legacy-treasury-head{
+ background:linear-gradient(121deg,rgba(78,52,120,.86),rgba(58,57,132,.82) 54%,rgba(34,106,124,.65));
+ border:1px solid rgba(200,170,245,.53);
+ border-radius:22px;padding:clamp(18px,2.7vw,30px);
+ color:#faf4ff;
+}
+.palace-shell.nightfall :is(.legacy-reading-intro,.writing-head,.legacy-life-head,.legacy-treasury-head) :is(h1,h2){
+ color:#ffffff;text-shadow:0 2px 10px rgba(17,12,47,.15);
+}
+.palace-shell.nightfall :is(.legacy-reading-intro,.writing-head,.legacy-life-head,.legacy-treasury-head) :is(.lede,p:not(.eyebrow)){
+ color:#f1eafa;
+}
+.palace-shell.daylight .legacy-reading-page>.legacy-reading-intro{
+ background:linear-gradient(122deg,#e6e4ff,#e1effd 61%,#def6f2);
+ border:1px solid #a3a9d9;border-radius:22px;padding:clamp(19px,2.9vw,34px);
+ color:#282a52;
+}
+.palace-shell.daylight .writing-head{
+ background:linear-gradient(120deg,#f5e1f6,#e9e6ff 55%,#e1f2fa);
+ border:1px solid #b7a1d2;border-radius:22px;padding:clamp(19px,2.8vw,31px);color:#372b55;
+}
+.palace-shell.daylight .legacy-life-page>.legacy-life-head{
+ background:linear-gradient(125deg,#dff2f9,#e6e8ff 60%,#f0e0fa);
+ border:1px solid #a0afd2;border-radius:22px;padding:clamp(18px,2.8vw,31px);color:#2f355b;
+}
+.palace-shell.daylight .legacy-treasury-page>.legacy-treasury-head{
+ background:linear-gradient(125deg,#eee2fa,#e4eaff 52%,#dff3f2);
+ border:1px solid #b5a3d5;border-radius:22px;padding:clamp(18px,2.7vw,30px);color:#382850;
+}
+.palace-shell.daylight :is(.legacy-reading-intro,.writing-head,.legacy-life-head,.legacy-treasury-head) :is(.lede,p:not(.eyebrow)){
+ color:#393651;
+}
+
+/* The creative and discovery features receive different gradient identities. */
+.palace-shell.nightfall .writing-pad-launch{
+ background:linear-gradient(122deg,rgba(98,53,147,.84),rgba(56,69,150,.84) 54%,rgba(32,114,134,.71));
+ border-color:rgba(202,170,255,.7);
+}
+.palace-shell.nightfall .prompt-orrery{
+ background:linear-gradient(145deg,rgba(73,43,126,.60),rgba(49,72,120,.55) 60%,rgba(34,93,115,.39));
+ border-color:rgba(188,162,248,.44);
+}
+.palace-shell.nightfall .reading-mood-doors{
+ background:linear-gradient(120deg,rgba(69,48,116,.57),rgba(33,72,117,.52),rgba(28,91,108,.34));
+ border-color:rgba(153,173,243,.48);
+}
+.palace-shell.nightfall .reading-classics-hall{
+ background:linear-gradient(140deg,rgba(60,56,116,.58),rgba(31,73,116,.53) 62%,rgba(57,47,113,.38));
+ border-color:rgba(170,165,244,.45);
+}
+.palace-shell.nightfall .legacy-life-page .commons-compose-fold{
+ background:linear-gradient(135deg,rgba(69,47,124,.65),rgba(32,69,115,.54) 63%,rgba(34,99,109,.38));
+ border-color:rgba(176,167,238,.5);
+}
+.palace-shell.nightfall .legacy-treasury-page .treasury-wardrobe{
+ background:linear-gradient(119deg,rgba(87,54,134,.63),rgba(43,74,130,.59) 56%,rgba(32,94,100,.40));
+ border-color:rgba(191,172,244,.53);
+}
+.palace-shell.daylight .writing-pad-launch{
+ background:linear-gradient(124deg,#f1dcfa,#e4e7ff 53%,#dbf2fa);
+ border-color:#af95cd;color:#2d2b52;
+}
+.palace-shell.daylight .prompt-orrery{
+ background:linear-gradient(145deg,#f5e9ff,#e8edff 58%,#e4f6f5);
+ border-color:#b5a4d5;color:#342a4f;
+}
+.palace-shell.daylight .reading-mood-doors{
+ background:linear-gradient(120deg,#f0e9ff,#e5efff,#e2f6ef);
+ border-color:#a3acd6;color:#283956;
+}
+.palace-shell.daylight .reading-classics-hall{
+ background:linear-gradient(138deg,#f2edff,#e2ecff 62%,#ecedff);
+ border-color:#aeb0d9;color:#2f3257;
+}
+.palace-shell.daylight .legacy-life-page .commons-compose-fold{
+ background:linear-gradient(135deg,#f3eaff,#e3ebff 62%,#e1f5f3);
+ border-color:#ae9bd4;color:#312d51;
+}
+.palace-shell.daylight .legacy-treasury-page .treasury-wardrobe{
+ background:linear-gradient(118deg,#f1e9ff,#e4edff 56%,#e1f7f0);
+ border-color:#b49dce;color:#302a4e;
+}
+
+/* Bright, readable active controls: colours distinguish action from surroundings. */
+.palace-shell.nightfall .reading-mode-tabs a.active,
+.palace-shell.nightfall .chic-reading-kind-tabs button.active,
+.palace-shell.nightfall .chic-writing-tabs button.active,
+.palace-shell.nightfall .legacy-life-page .life-tabs.restored button[aria-current="page"],
+.palace-shell.nightfall .legacy-treasury-page .treasury-tabs button.active{
+ background:linear-gradient(118deg,#7660bd,#516ca5 57%,#337a90)!important;
+ color:#ffffff!important;border-color:rgba(213,197,255,.83)!important;
+}
+.palace-shell.daylight .reading-mode-tabs a.active,
+.palace-shell.daylight .chic-reading-kind-tabs button.active,
+.palace-shell.daylight .chic-writing-tabs button.active,
+.palace-shell.daylight .legacy-life-page .life-tabs.restored button[aria-current="page"],
+.palace-shell.daylight .legacy-treasury-page .treasury-tabs button.active{
+ background:linear-gradient(115deg,#e7d7fa,#dce8fe 58%,#d4f0e9)!important;
+ color:#302347!important;border-color:#9277bd!important;
+}
+.palace-shell.nightfall .writing-pad-primary{
+ background:linear-gradient(110deg,#bd96ef,#94bcf5 56%,#84e2d5);
+ border-color:#d9c4ff;color:#212744;
+}
+.palace-shell.daylight .writing-pad-primary{
+ background:linear-gradient(110deg,#b492e5,#96b7ec 55%,#8bd6c9);
+ border-color:#7761ab;color:#202544;
+}
+/* Pages for people and artwork retain their chosen custom backdrops. Only
+   navigation tabs receive a gradient; no user-uploaded image is covered. */
+.palace-shell.nightfall .chamber-section-nav :is(a.active,button.active){
+ background:linear-gradient(115deg,rgba(130,94,202,.77),rgba(66,127,167,.70));
+ color:#ffffff;border-color:rgba(216,199,252,.74);
+}
+.palace-shell.daylight .chamber-section-nav :is(a.active,button.active){
+ background:linear-gradient(110deg,#e6d8fa,#d6eefa);
+ color:#30234f;border-color:#9e83c8;
+}
+.palace-shell :is(.reading-mode-tabs,.chic-reading-kind-tabs,.chic-writing-tabs,.treasury-tabs,.chamber-section-nav) :is(a,button):focus-visible,
+.palace-shell .legacy-life-page .life-tabs.restored button:focus-visible{
+ outline:3px solid #cce9ff;outline-offset:3px;
+}
+.palace-shell.daylight :is(.reading-mode-tabs,.chic-reading-kind-tabs,.chic-writing-tabs,.treasury-tabs,.chamber-section-nav) :is(a,button):focus-visible{
+ outline-color:#6448a3;
+}
+@media(max-width:600px){
+ .palace-shell :is(
+ .legacy-reading-page>.legacy-reading-intro,.writing-head,
+ .legacy-life-page>.legacy-life-head,.legacy-treasury-page>.legacy-treasury-head
+ ){padding:16px;border-radius:17px}
+}
+@media(prefers-reduced-motion:reduce){
+ /* Static gradients are intentional; no glowing loop or moving backdrop. */
+ .palace-shell .palace-home-welcome .palace-choice-card:hover{transform:none}
+}
