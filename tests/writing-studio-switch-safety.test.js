@@ -23,6 +23,13 @@ describe('writing desk selection and cloud status protection',()=>{
   expect(studio).toContain('setSaved(\'Saved to Palace\');');
   expect(studio).toContain('if(selectedRef.current===chapterId){\n   setSaved(\'New edits waiting to save…\');');
  });
+ it('does not promote a recovery snapshot to a new cloud edit revision',()=>{
+  const snapshot=studio.split('function snapshotDraft(form){')[1]?.split('recoveryWriteRef.current=')[0]||'';
+  expect(snapshot).toContain('saveCoordinatorRef.current.currentRevision(chapter.id)');
+  expect(snapshot).not.toContain('saveCoordinatorRef.current.markChanged(chapter.id)');
+  const onTyping=studio.split('function queueSave(form){')[1]?.split('async function quickSaveChapter()')[0]||'';
+  expect(onTyping).toContain('saveCoordinatorRef.current.markChanged(chapter.id)');
+ });
  it('continues to retain on-device recovery during slow and failed cloud saves',()=>{
   expect(studio).toContain("localStorage.setItem(recoveryKey(),JSON.stringify(snap))");
   expect(studio).toContain('setSaved(saveFailureNotice())');
