@@ -1,4 +1,5 @@
 import {ORRERY_NEW_ORBIT_RECIPES} from './promptOrreryNewOrbits';
+import {ORRERY_DARK_RECIPES} from './promptOrreryDarkOrbits';
 export const ORRERY_GENRES=[
 'Gothic romance','Cyberpunk comedy','Cozy mystery','Mythic horror','Court intrigue','Solarpunk adventure','Literary ghost story','Space opera melodrama','Magical realism','Historical fantasy','Domestic thriller','Absurdist fairytale',
 'Afrofuturist epic','Caribbean gothic','Diaspora family drama','Queer coming-of-age','Sapphic sword-and-sorcery','Achillean court romance','Trans magical realism','Nonbinary space opera','Hopepunk rebellion','Dark academia mystery','Light academia romance','Urban fantasy noir',
@@ -714,7 +715,7 @@ const ORRERY_EXPANSION_RECIPES=Array.from({length:2000},(_,i)=>{
  }
 });
 
-export const PROMPT_ORRERY_RECIPES=[...ORRERY_CLASSIC_RECIPES,...ORRERY_EXPANSION_RECIPES,...ORRERY_NEW_ORBIT_RECIPES];
+export const PROMPT_ORRERY_RECIPES=[...ORRERY_CLASSIC_RECIPES,...ORRERY_EXPANSION_RECIPES,...ORRERY_NEW_ORBIT_RECIPES,...ORRERY_DARK_RECIPES];
 
 function matchesFilters(recipe,filters={}){
  return Object.entries(filters||{}).every(([key,value])=>!value||value==='all'||recipe?.[key]===value)

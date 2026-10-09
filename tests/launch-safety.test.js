@@ -873,8 +873,8 @@ describe('Starry Palace launch safety',()=>{
     expect(data).toContain("rpc('respond_micro_duel_invitation'");
     expect(data).toContain("rpc('start_micro_duel'");
     expect(live).toContain('INK DUELS · CREATIVE ARENA');
-    expect(live).toContain('VICTORY TREASURY');
-    expect(live).toContain('Win a real Palace gift');
+    expect(live).toContain('className="duel-prize-house palace-duel-prize-minimal"');
+    expect(live).toContain('title="When a duel earns a gift" variant="warning"');
     expect(live).toContain('1 vs 1');
     expect(live).toContain('Court Duel');
     expect(live).toContain('Haiku');
@@ -1505,7 +1505,7 @@ describe('Starry Palace launch safety',()=>{
     const polish=read('src/polish.css');
     const next=read('src/palace-next.css');
     const orrery=read('src/promptOrreryData.js');
-    expect(live).toContain('PROMPT ORRERY · 4,012 CONSTELLATIONS · ZERO STAKES');
+    expect(live).toContain('PROMPT ORRERY · {PROMPT_ORRERY_RECIPES.length.toLocaleString()} CONSTELLATIONS · ZERO STAKES');
     expect(live).toContain('Pull the lever');
     expect(live).toContain('Shape the orbit');
     expect(live).toContain('promptFilterKeys');

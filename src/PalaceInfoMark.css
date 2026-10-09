@@ -1,0 +1,96 @@
+/* Small contextual guidance. No permanent informational cards or animated overlays. */
+.palace-info-mark{display:inline-flex;align-items:center;position:relative;vertical-align:middle;flex:none;isolation:isolate}
+.palace-info-mark-trigger{
+ width:33px;height:33px;min-width:33px;border-radius:50%;
+ border:1px solid #9da8e0;background:linear-gradient(135deg,#6851a0,#376b9b);
+ color:#fff;font-size:1rem;font-weight:800;cursor:pointer;line-height:1;
+ display:inline-grid;place-items:center;padding:0;box-shadow:0 2px 8px rgba(20,20,60,.18);
+}
+.palace-info-mark.is-warning .palace-info-mark-trigger{
+ border-color:#deabd5;background:linear-gradient(135deg,#83436e,#754b9f);color:#fff;
+}
+.palace-info-mark-trigger:hover,.palace-info-mark-trigger[aria-expanded="true"]{
+ border-color:#e2c9ff;box-shadow:0 0 0 2px rgba(186,152,246,.24);
+}
+.palace-info-mark-trigger:focus-visible{
+ outline:3px solid #aedffa;outline-offset:3px;
+}
+.palace-info-mark-popover{
+ display:block;position:absolute;z-index:150;inset-inline-end:0;top:calc(100% + 9px);
+ width:max-content;max-width:min(360px,calc(100vw - 36px));min-width:min(260px,calc(100vw - 36px));
+ padding:16px 17px;border-radius:15px;border:1px solid rgba(191,163,245,.67);
+ background:linear-gradient(140deg,#242647,#30244e 62%,#1a3b53);
+ color:#faf7ff;box-shadow:0 14px 36px rgba(8,10,30,.36);
+ font-size:.88rem;text-align:start;line-height:1.55;white-space:normal;
+}
+.palace-info-mark-popover>strong{
+ display:block;font-size:.98rem;font-weight:800;color:#fff;margin-bottom:7px;
+}
+.palace-info-mark-body{display:block;color:#f0eaff;overflow-wrap:anywhere}
+.palace-info-mark-body :is(p,ul,ol){margin:7px 0;line-height:1.5;color:inherit}
+.palace-info-mark-body li{margin:5px 0}
+.palace-info-mark-body :is(strong,b){color:#fff}
+.palace-info-mark-body :is(a){color:#b7ddff;text-decoration:underline}
+.palace-shell.daylight .palace-info-mark-popover{
+ border-color:#9e85c8;background:linear-gradient(135deg,#faf4ff,#edf1fe 65%,#e2f5f5);
+ color:#292b52;box-shadow:0 12px 31px rgba(47,31,86,.18);
+}
+.palace-shell.daylight .palace-info-mark-popover>strong,
+.palace-shell.daylight .palace-info-mark-body,
+.palace-shell.daylight .palace-info-mark-body :is(b,strong){color:#2b2852}
+.palace-shell.daylight .palace-info-mark-body a{color:#44328d}
+.palace-shell.daylight .palace-info-mark-trigger:focus-visible{outline-color:#6449a7}
+/* Tooltip placement is predictable on mobile, avoiding full-width takeovers. */
+@media(max-width:550px){
+ .palace-info-mark-trigger{width:38px;height:38px;min-width:38px}
+ .palace-info-mark-popover{max-width:calc(100vw - 40px);min-width:min(240px,calc(100vw - 40px));}
+}
+/* There is no entrance animation to compete with route changes or card rendering. */
+
+
+/* Keep lengthy point rules scrollable without covering the entire page. */
+.palace-info-mark-popover{max-height:min(490px,72dvh);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.palace-info-heading{display:flex;align-items:center;flex-wrap:wrap;gap:8px 13px;min-width:0}
+.palace-info-heading> :is(h1,h2,h3,strong){min-width:0;max-width:100%;flex:0 1 auto;margin-block:0}
+.palace-shell .prompt-orrery:has(.palace-info-mark-trigger){overflow:visible!important}
+.palace-shell .prompt-orrery .prompt-orrery-copy{min-width:0}
+.palace-shell .prompt-filter-drawer>div,
+.palace-shell .prompt-filter-drawer>footer{overflow:visible}
+.palace-shell .duel-hero:has(.palace-info-mark-trigger),
+.palace-shell .duel-seal-note:has(.palace-info-mark-trigger),
+.palace-shell .duel-prize-house:has(.palace-info-mark-trigger),
+.palace-shell .treasury-celestial-chamber:has(.palace-info-mark-trigger){overflow:visible!important}
+.palace-shell .duel-prize-house.palace-duel-prize-minimal{
+ display:flex;align-items:center;justify-content:flex-start;min-height:58px;
+ padding:12px 15px;border-radius:15px;
+ background:linear-gradient(115deg,rgba(92,59,142,.31),rgba(35,91,122,.19));
+ border:1px solid rgba(173,145,235,.39);
+}
+.palace-shell .duel-prize-house.palace-duel-prize-minimal .palace-info-heading>strong{font-size:1rem;line-height:1.3}
+.palace-shell .palace-info-mark-popover .duel-prize-tiers,
+.palace-shell .palace-info-mark-popover .celestial-earning-rules,
+.palace-shell .palace-info-mark-popover .celestial-economy-guide{
+ display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:8px!important;
+}
+.palace-shell .palace-info-mark-popover .duel-prize-tiers article,
+.palace-shell .palace-info-mark-popover .celestial-earning-rules article,
+.palace-shell .palace-info-mark-popover .celestial-economy-guide article{
+ min-width:0;padding:8px 10px;border-radius:8px;border:1px solid rgba(182,172,244,.25);
+}
+.palace-shell .palace-info-mark-popover :is(h4,p,small){line-height:1.5;margin-top:6px;margin-bottom:6px;color:inherit}
+.palace-shell .duel-basis-draw{display:flex;align-items:center;flex-wrap:wrap;gap:8px 11px;min-width:0}
+.palace-shell .duel-seal-note:has(.palace-info-mark-trigger){display:flex;align-items:center;justify-content:flex-start;min-height:44px}
+.palace-shell .palace-duel-competition-info{margin-bottom:9px;gap:10px}
+.palace-shell .palace-celestial-info{display:flex;align-items:center;justify-content:flex-start}
+.palace-shell .palace-celestial-info>.palace-info-heading{align-items:center}
+.palace-shell.daylight .duel-prize-house.palace-duel-prize-minimal{
+ background:linear-gradient(110deg,#f3e7ff,#dff2f7);border-color:#b6a3d5;
+}
+@media(max-width:550px){
+ .palace-info-mark-popover{
+  position:fixed;inset-inline:16px;width:auto;min-width:0;max-width:none;
+  top:auto;bottom:calc(20px + env(safe-area-inset-bottom,0px));
+  max-height:min(500px,65dvh);z-index:2000;
+ }
+ .palace-shell .palace-duel-competition-info{align-items:center}
+}
