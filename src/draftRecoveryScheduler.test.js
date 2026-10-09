@@ -1,5 +1,6 @@
 import {beforeEach,afterEach,describe,it,expect,vi} from 'vitest';
 import {createDraftRecoveryScheduler} from './draftRecoveryScheduler';
+import {createManuscriptSaveCoordinator} from './manuscriptSaveCoordinator';
 
 describe('long-form on-device recovery scheduler',()=>{
  beforeEach(()=>vi.useFakeTimers());
@@ -33,6 +34,26 @@ describe('long-form on-device recovery scheduler',()=>{
   expect(scheduler.flush()).toBe(false);
   vi.runAllTimers();
   expect(write).toHaveBeenCalledOnce();
+ });
+ it('does not invalidate an in-flight save when an ordinary recovery snapshot finishes',async()=>{
+  let resolveCloud;
+  const queue=createManuscriptSaveCoordinator(()=>new Promise(resolve=>{resolveCloud=resolve}));
+  const chapter='chapter-A';
+  // The writer typed once. Saving a copy to this device is not another edit.
+  const revision=queue.markChanged(chapter);
+  const snapshotRevisions=[];
+  const scheduler=createDraftRecoveryScheduler(()=>snapshotRevisions.push(queue.currentRevision(chapter)));
+  scheduler.schedule();
+  const save=queue.persist(chapter,{body_html:'one edit'},revision);
+  await Promise.resolve();await Promise.resolve();
+  vi.advanceTimersByTime(325);
+  expect(snapshotRevisions).toEqual([revision]);
+  expect(queue.currentRevision(chapter)).toBe(revision);
+  resolveCloud({id:chapter,body_html:'one edit'});
+  const result=await save;
+  expect(result.isCurrent).toBe(true);
+  expect(queue.hasUnsavedChanges()).toBe(false);
+  scheduler.cancel();
  });
  it('cancels stale scheduled snapshots after saving or switching chapters',()=>{
   const write=vi.fn(),scheduler=createDraftRecoveryScheduler(write);
