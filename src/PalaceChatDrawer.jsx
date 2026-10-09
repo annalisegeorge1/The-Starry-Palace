@@ -1,5 +1,7 @@
 import React,{useEffect,useRef,useState} from 'react';
 import {Link} from 'react-router-dom';
+import {supabase} from './supabase';
+import {watchPalaceChatRoom} from './palaceChatRealtime';
 import {getLetters,sendLetter,searchMembers,setConversationPreference} from './palaceData';
 import {createPalaceGroupChat,getPalaceGroupChatOverview,getPalaceGroupMessages,sendPalaceGroupMessage,respondPalaceGroupInvite,invitePalaceGroupMember,removePalaceGroupMember,leavePalaceGroupChat,setPalaceGroupMuted,markPalaceGroupRead,PALACE_GROUP_COLOURS,setPalaceGroupIdentity,pinPalaceGroupMessage,getPinnedPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
 import './palace-chat-drawer.css';
@@ -22,6 +24,8 @@ export default function PalaceChatDrawer({userId}){
  const[groupMessages,setGroupMessages]=useState({chatId:'',items:[]});
  const[drafts,setDrafts]=useState({});
  const[busy,setBusy]=useState(false);
+ const[liveStatus,setLiveStatus]=useState('polling');
+ const[newWhileAway,setNewWhileAway]=useState(false);
  const[error,setError]=useState('');
  const[notice,setNotice]=useState('');
  const[search,setSearch]=useState('');
@@ -41,11 +45,14 @@ export default function PalaceChatDrawer({userId}){
  const[pinnedPreview,setPinnedPreview]=useState({chatId:'',messageId:'',message:null});
  const messageRef=useRef(null);
  const scrollPinned=useRef(true);
+ const lastAcknowledgedRef=useRef({roomId:'',messageId:''});
  const activeDirect=direct?.conversations?.find(c=>c.conversation_id===selectedDirect&&!c.preference?.archived&&c.conversations?.kind==='direct');
  const activeGroup=groupData.groups.find(g=>g.id===selectedGroup);
  const active=tab==='direct'?activeDirect:activeGroup;
  const roomId=tab==='direct'?activeDirect?.conversation_id:activeGroup?.id;
  const messages=tab==='direct'?(direct?.messages||[]).filter(m=>m.conversation_id===roomId).slice().reverse():groupMessages.chatId===roomId?groupMessages.items:[];
+ const latestMessage=messages[messages.length-1]||null;
+ const latestMessageId=latestMessage?.id||'';
  const pinnedMessage=tab==='groups'&&activeGroup?.pinnedMessageId?(messages.find(m=>m.id===activeGroup.pinnedMessageId)||((pinnedPreview.chatId===roomId&&pinnedPreview.messageId===activeGroup.pinnedMessageId)?pinnedPreview.message:null)):null;
  const draftsKey=roomId?draftKey(userId,tab,roomId):'';
  const currentDraft=roomId?(drafts[draftsKey]??(()=>{try{return localStorage.getItem(draftsKey)||''}catch{return ''}})()):'';
@@ -57,7 +64,7 @@ export default function PalaceChatDrawer({userId}){
  const unread=directUnread+groupUnread+groupData.invitations.length;
  const openedRoomName=tab==='direct'?nameOf(activeDirect?.correspondent):activeGroup?.title;
 
- useEffect(()=>{setOpen(false);setTab('direct');setDirect(null);setGroupData({groups:[],invitations:[]});setSelectedDirect('');setSelectedGroup('');setGroupMessages({chatId:'',items:[]});setReplyTarget(null);setStorySharing(false);setPinnedPreview({chatId:'',messageId:'',message:null});setDrafts({});setError('');setNotice('');setCreating(false);setManaging(false)},[userId]);
+ useEffect(()=>{setOpen(false);setTab('direct');setDirect(null);setGroupData({groups:[],invitations:[]});setSelectedDirect('');setSelectedGroup('');setGroupMessages({chatId:'',items:[]});setNewWhileAway(false);setLiveStatus('polling');lastAcknowledgedRef.current={roomId:'',messageId:''};setReplyTarget(null);setStorySharing(false);setPinnedPreview({chatId:'',messageId:'',message:null});setDrafts({});setError('');setNotice('');setCreating(false);setManaging(false)},[userId]);
  useEffect(()=>{
   if(!userId)return;
   let alive=true;
@@ -86,6 +93,44 @@ export default function PalaceChatDrawer({userId}){
   const timer=window.setInterval(()=>{if(document.visibilityState==='visible')refresh()},12000);
   return()=>{alive=false;window.clearInterval(timer)};
  },[open,tab,selectedGroup]);
+ // RLS-protected live events wake a fresh fetch. Polling remains a fallback
+ // when a connection is lost or an older client cannot subscribe.
+ useEffect(()=>{
+  if(!open||!roomId||!userId){setLiveStatus('polling');return}
+  let active=true;
+  let fetching=false;
+  let repeat=false;
+  setLiveStatus('connecting');
+  const refresh=async()=>{
+   if(!active||document.visibilityState==='hidden')return;
+   if(fetching){repeat=true;return}
+   fetching=true;
+   try{
+    if(tab==='groups'){
+     const [rows,overview]=await Promise.all([getPalaceGroupMessages(roomId),getPalaceGroupChatOverview(userId)]);
+     if(active){setGroupMessages({chatId:roomId,items:rows});setGroupData(overview)}
+    }else{
+     const letters=await getLetters(userId);
+     if(active)setDirect(letters);
+    }
+   }catch{if(active)setLiveStatus('polling')}
+   finally{
+    fetching=false;
+    if(active&&repeat){repeat=false;refresh()}
+   }
+  };
+  const unsubscribe=watchPalaceChatRoom(supabase,{
+   userId,kind:tab,roomId,onChange:refresh,
+   onStatus:status=>{
+    if(!active)return;
+    if(status==='SUBSCRIBED'){setLiveStatus('live');refresh()}
+    else if(['CHANNEL_ERROR','TIMED_OUT','CLOSED'].includes(status))setLiveStatus('polling');
+   }
+  });
+  const onVisibility=()=>{if(document.visibilityState==='visible')refresh()};
+  document.addEventListener('visibilitychange',onVisibility);
+  return()=>{active=false;unsubscribe();document.removeEventListener('visibilitychange',onVisibility)};
+ },[open,tab,roomId,userId]);
  useEffect(()=>{
   const g=groupData.groups.find(item=>item.id===selectedGroup);
   setIdentity({title:g?.title||'',description:g?.description||'',colorKey:g?.colorKey||'moonlit'});
@@ -102,20 +147,49 @@ export default function PalaceChatDrawer({userId}){
  },[open,tab,selectedGroup,activeGroup?.pinnedMessageId]);
  useEffect(()=>{
   if(!open||!roomId)return;
-  scrollPinned.current=true;
-  if(tab==='groups'){markPalaceGroupRead(roomId,userId).then(()=>setGroupData(d=>({...d,groups:d.groups.map(g=>g.id===roomId?{...g,lastReadAt:new Date().toISOString()}:g)}))).catch(()=>{});}
-  else if(activeDirect?.unread){
+  scrollPinned.current=true;setNewWhileAway(false);
+  if(tab==='direct'&&activeDirect?.unread){
    setConversationPreference(userId,roomId,{...{starred:!!activeDirect.preference?.starred,archived:false,muted:!!activeDirect.preference?.muted},last_read_at:new Date().toISOString()}).then(()=>setDirect(d=>d?({...d,conversations:d.conversations.map(c=>c.conversation_id===roomId?{...c,unread:false}:c)}):d)).catch(()=>{});
   }
  },[open,tab,roomId,userId]);
  useEffect(()=>{
   const el=messageRef.current;
-  if(el&&scrollPinned.current)el.scrollTop=el.scrollHeight;
- },[messages.length,roomId,tab,open]);
+  if(!el||!open||!roomId)return;
+  if(scrollPinned.current){
+   el.scrollTop=el.scrollHeight;
+   setNewWhileAway(false);
+   if(tab==='groups'&&latestMessageId)acknowledgeVisibleGroupMessage();
+   else if(tab==='direct'&&activeDirect?.unread&&latestMessageId)acknowledgeVisibleDirectMessage();
+  }else if(latestMessageId)setNewWhileAway(true);
+ },[latestMessageId,roomId,tab,open]);
  useEffect(()=>{const update=()=>setQuiet(document.body.classList.contains('reader-focus-mode')||document.body.classList.contains('writer-focus-mode'));update();const obs=new MutationObserver(update);obs.observe(document.body,{attributes:true,attributeFilter:['class']});return()=>obs.disconnect()},[]);
  useEffect(()=>{const handle=e=>{if(e.key==='Escape'&&open){if(creating){setCreating(false)}else if(managing)setManaging(false);else setOpen(false)}};window.addEventListener('keydown',handle);return()=>window.removeEventListener('keydown',handle)},[open,creating,managing]);
  if(!userId||dataOwner!==userId)return null;
 
+ function acknowledgeVisibleGroupMessage(){
+  if(tab!=='groups'||!roomId||!latestMessageId)return;
+  const previous=lastAcknowledgedRef.current;
+  if(previous.roomId===roomId&&previous.messageId===latestMessageId)return;
+  lastAcknowledgedRef.current={roomId,messageId:latestMessageId};
+  markPalaceGroupRead(roomId,userId).then(()=>{
+   const readAt=new Date().toISOString();
+   setGroupData(d=>({...d,groups:d.groups.map(g=>g.id===roomId?{...g,lastReadAt:readAt}:g)}));
+  }).catch(()=>{if(lastAcknowledgedRef.current.messageId===latestMessageId)lastAcknowledgedRef.current={roomId:'',messageId:''}});
+ }
+ function acknowledgeVisibleDirectMessage(){
+  if(tab!=='direct'||!roomId||!activeDirect?.unread)return;
+  const preference=activeDirect.preference||{};
+  setConversationPreference(userId,roomId,{
+   starred:!!preference.starred,archived:false,muted:!!preference.muted,last_read_at:new Date().toISOString()
+  }).then(()=>setDirect(d=>d?({...d,conversations:d.conversations.map(c=>c.conversation_id===roomId?{...c,unread:false}:c)}):d)).catch(()=>{});
+ }
+ function jumpToLatest(){
+  const el=messageRef.current;
+  if(el)el.scrollTop=el.scrollHeight;
+  scrollPinned.current=true;setNewWhileAway(false);
+  if(tab==='groups')acknowledgeVisibleGroupMessage();
+  if(tab==='direct')acknowledgeVisibleDirectMessage();
+ }
  function setDraft(value){
   if(!roomId)return;
   setDrafts(p=>({...p,[draftsKey]:value}));
@@ -237,7 +311,7 @@ export default function PalaceChatDrawer({userId}){
      {tab==='direct'?visibleDirect.map(c=><button type="button" key={c.conversation_id} onClick={()=>{setSelectedDirect(c.conversation_id);setManaging(false)}} aria-pressed={activeDirect?.conversation_id===c.conversation_id}>{c.unread?'● ':''}{nameOf(c.correspondent)}</button>):
       groupRows.map(g=><button type="button" key={g.id} onClick={()=>{setSelectedGroup(g.id);setManaging(false);setIdentity({title:g.title,description:g.description||'',colorKey:g.colorKey||'moonlit'})}} aria-pressed={activeGroup?.id===g.id}>{g.lastMessageAt&&(!g.lastReadAt||Date.parse(g.lastMessageAt)>Date.parse(g.lastReadAt))?'● ':''}{g.title}</button>)}
     </div>
-    {active?<><div className="palace-chat-correspondent"><div><strong>{openedRoomName}</strong><small>{tab==='groups'?activeGroup.members.length+' members · Invitation-only group':'Private correspondence · Palace boundaries apply'}</small>{tab==='groups'&&activeGroup.description&&<p className="palace-chat-circle-description">{activeGroup.description}</p>}</div>{tab==='groups'&&<button type="button" aria-expanded={managing} onClick={()=>{setManaging(v=>!v);setIdentity({title:activeGroup.title,description:activeGroup.description||'',colorKey:activeGroup.colorKey||'moonlit'})}}>Members & settings ⚙</button>}</div>
+    {active?<><div className="palace-chat-correspondent"><div><strong>{openedRoomName}</strong><small>{tab==='groups'?activeGroup.members.length+' members · Invitation-only group':'Private correspondence · Palace boundaries apply'}</small><small className="palace-chat-connection" role="status"><i aria-hidden="true" className={liveStatus==='live'?'is-live':''}/>{liveStatus==='live'?'Live updates':'Refreshes automatically'}</small>{tab==='groups'&&activeGroup.description&&<p className="palace-chat-circle-description">{activeGroup.description}</p>}</div>{tab==='groups'&&<button type="button" aria-expanded={managing} onClick={()=>{setManaging(v=>!v);setIdentity({title:activeGroup.title,description:activeGroup.description||'',colorKey:activeGroup.colorKey||'moonlit'})}}>Members & settings ⚙</button>}</div>
      {tab==='groups'&&managing&&<section className="palace-chat-settings" aria-label="Group settings">
       <div className="palace-chat-settings-top"><strong>Members</strong><button type="button" disabled={busy} onClick={()=>mutate(()=>setPalaceGroupMuted(activeGroup.id,userId,!activeGroup.muted),activeGroup.muted?'Group unmuted.':'Group muted.')}>{activeGroup.muted?'Unmute':'Mute'}</button></div>
       <ul>{activeGroup.members.map(m=><li key={m.id}><span>{nameOf(m)} {m.id===activeGroup.ownerId?'· host':''}</span>{owner&&m.id!==userId&&<button type="button" disabled={busy} onClick={()=>{if(window.confirm('Remove '+nameOf(m)+' from this group?'))mutate(()=>removePalaceGroupMember(activeGroup.id,m.id),'Member removed.')}}>Remove</button>}</li>)}</ul>
@@ -249,7 +323,7 @@ export default function PalaceChatDrawer({userId}){
      {tab==='groups'&&activeGroup.pinnedMessageId&&<div className="palace-chat-pinned" role="note"><span aria-hidden="true">✦</span><div><strong>Pinned in this circle</strong><p>{pinnedMessage?.body||'A message is pinned from an earlier part of this conversation.'}</p></div>{owner&&<button type="button" disabled={busy} aria-label="Unpin group message" onClick={()=>mutate(()=>pinPalaceGroupMessage(activeGroup.id,null),'Pin removed.')}>Unpin</button>}</div>}
      {tab==='groups'&&<div className="palace-chat-sharing-actions"><button type="button" aria-expanded={storySharing} onClick={()=>{setStorySharing(v=>!v);setStoryResults([]);setStoryQuery('')}}>✧ {storySharing?'Close story shelf':'Share a Palace story'}</button></div>}
      {tab==='groups'&&storySharing&&<section className="palace-chat-share-shelf" aria-label="Share a published Palace story"><form onSubmit={findStories}><input aria-label="Find a published story to share" placeholder="Search published story titles…" value={storyQuery} onChange={e=>setStoryQuery(e.target.value)} minLength={2} maxLength={90}/><button disabled={busy||storyQuery.trim().length<2}>Find</button></form><div>{storyResults.map(w=><button type="button" key={w.id} disabled={busy} onClick={()=>shareStory(w)}><strong>{w.title}</strong><small>Share with this circle ↗</small></button>)}</div><small>Only published Palace stories can be shared.</small></section>}
-     <div className="palace-chat-messages" ref={messageRef} role="log" aria-label="Conversation messages" aria-live="polite" onScroll={e=>{const el=e.currentTarget;scrollPinned.current=el.scrollHeight-el.scrollTop-el.clientHeight<80}}>
+     <div className="palace-chat-messages" ref={messageRef} role="log" aria-label="Conversation messages" aria-live="polite" onScroll={e=>{const el=e.currentTarget;const pinned=el.scrollHeight-el.scrollTop-el.clientHeight<80;scrollPinned.current=pinned;if(pinned){setNewWhileAway(false);if(tab==='groups')acknowledgeVisibleGroupMessage();else acknowledgeVisibleDirectMessage()}}}
       {messages.length?messages.map(m=><div key={m.id} className={'palace-chat-bubble'+(m.sender_id===userId?' mine':'')}>
        {tab==='groups'&&m.sender_id!==userId&&<strong className="palace-chat-sender">{nameOf(m.profiles)}</strong>}
        {tab==='groups'&&m.reply_to_id&&<div className="palace-chat-reply-quote"><small>Reply to</small><p>{messages.find(item=>item.id===m.reply_to_id)?.body?.slice(0,145)||'An earlier group message'}</p></div>}
@@ -259,6 +333,7 @@ export default function PalaceChatDrawer({userId}){
        {tab==='groups'&&<div className="palace-chat-bubble-actions"><button type="button" onClick={()=>{setReplyTarget({id:m.id,body:m.body,chatId:roomId});setStorySharing(false)}}>↩ Reply</button>{owner&&<button type="button" disabled={busy} onClick={()=>togglePin(m)}>{activeGroup.pinnedMessageId===m.id?'Unpin':'Pin'}</button>}</div>}
       </div>):<p className="palace-chat-empty">Nothing written here yet. Begin with a hello. ✦</p>}
      </div>
+     {newWhileAway&&messages.length>0&&<button type="button" className="palace-chat-jump-latest" onClick={jumpToLatest}>New messages · Jump to latest ↓</button>}
      {tab==='groups'&&replyTarget?.chatId===roomId&&<div className="palace-chat-replying"><span>Replying to: {replyTarget.body.slice(0,96)}{replyTarget.body.length>96?'…':''}</span><button type="button" aria-label="Cancel group reply" onClick={()=>setReplyTarget(null)}>×</button></div>}
      <form className="palace-chat-compose" onSubmit={send}><label className="sr-only" htmlFor="palace-quick-chat-message">Your message</label><textarea id="palace-quick-chat-message" aria-label={tab==='groups'?'Write a group message':'Write a private message'} placeholder={tab==='groups'?'Write to your circle…':'Write a little note…'} rows={2} maxLength={3000} value={currentDraft} onChange={e=>setDraft(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();if(currentDraft.trim())e.currentTarget.form?.requestSubmit()}}}/><button type="submit" disabled={busy||!currentDraft.trim()}>{busy?'Sending…':'Send ↗'}</button></form>
      <small className="palace-chat-draft-hint">{currentDraft?'Draft kept on this device':'Ctrl/⌘ + Enter to send · Enter for a new line'}</small>
