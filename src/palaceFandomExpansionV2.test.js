@@ -59,7 +59,12 @@ describe('Expanded Palace canon and media discovery',()=>{
  });
  it('gives writers more results rather than an unscrollable selector',()=>{
   const mini=read('src/PalaceFandomMiniPicker.jsx'),atlas=read('src/PalaceFandomAtlas.jsx');
-  expect(mini).toContain('setLimit(n=>n+16)');
+  expect(mini).toContain('pageFandoms(matching,page,12)');
+  expect(mini).toContain('fandomFacetOptions(rows,media)');
+  expect(mini).toContain('Sort fandom choices');
+  expect(mini).toContain('Filter fandoms by subcategory');
+  expect(mini).toContain('Filter fandoms by franchise');
+  expect(mini).toContain('shelf.total');
   expect(mini).toContain('tag.aliases.slice(0,2)');
   expect(mini).toContain('onChoose?.(tag)');
   expect(atlas).toContain('mediaCounts');
