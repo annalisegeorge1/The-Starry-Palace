@@ -45,7 +45,7 @@ export function PalaceHomeMore({children}){
   if(event.currentTarget.open)setVisited(true);
  }}>
   <summary onClick={()=>setVisited(true)}>
-   <span><strong>✧ Discover more of the Palace</strong><small>New stories, gatherings, classics, collections and every other room are still here.</small></span>
+   <span><strong><span aria-hidden="true">✧</span> <span>Discover more of the Palace</span></strong><small>New stories, gatherings, classics, collections and every other room are still here.</small></span>
    <span className="palace-home-more-arrow" aria-hidden="true">＋</span>
   </summary>
   <div className="palace-home-more-inner">{visited?children:null}</div>
