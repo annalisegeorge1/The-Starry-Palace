@@ -169,6 +169,7 @@ const TreasuryCatalogueLazy=React.lazy(()=>importWithRecovery(()=>import('./Trea
 const GrandPalaceHall=React.lazy(()=>importWithRecovery(()=>import('./GrandPalaceHall')));
 const PalaceGovernance=React.lazy(()=>importWithRecovery(()=>import('./PalaceGovernance')));
 const PalaceBetaGuide=React.lazy(()=>importWithRecovery(()=>import('./PalaceBetaGuide')));
+const PalaceFandomAtlas=React.lazy(()=>importWithRecovery(()=>import('./PalaceFandomAtlas')));
 // Core Palace rooms are imported eagerly for navigation reliability.
 
 const rooms=[
@@ -202,7 +203,7 @@ const fullPalaceRooms=[
   ['Home','/chamber'],['My chamber','/member'],['Notifications','/activity'],['Messages','/letters'],['Invitations','/events?tab=calendar']
  ]},
  {id:'reading',icon:'◈',label:'Reading Rooms',path:'/reading',sections:[
-  ['All works','/reading'],['Advanced search','/reading?view=search'],['Comics','/comics'],['Lost Works','/lost-works'],['Series','/series'],['Tags room','/tags']
+  ['All works','/reading'],['Advanced search','/reading?view=search'],['Fandoms','/fandoms'],['Comics','/comics'],['Lost Works','/lost-works'],['Series','/series'],['Tags room','/tags']
  ]},
  {id:'library',icon:'▧',label:'My Library',path:'/library',private:true,sections:[
   ['Saved Stories','/library'],['Comics Shelf','/library?tab=comics'],['Collections & Readers’ Choice','/library?tab=collections'],['Reading lists','/library?tab=lists'],['History','/library?tab=history'],['Notes & Bookmarks','/library?tab=notes'],['Lost Works Shelf','/lost-works'],['Subscriptions','/library?tab=following'],['Writers I Follow','/library?tab=writers']
@@ -599,6 +600,7 @@ function App(){return <AuthProvider><PalaceBuildFreshnessWatch/><NavigationReset
  <Route path="/library" element={<ProtectedRoute><LibraryLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/letters" element={<ProtectedRoute><LettersLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/tags" element={<TagSearchLive Frame={Frame}/>}/>
+  <Route path="/fandoms" element={<React.Suspense fallback={<RouteLoading/>}><Frame><PalaceFandomAtlas/></Frame></React.Suspense>}/>
  <Route path="/search" element={<SearchLive Frame={Frame}/>}/><Route path="/honour" element={<HonourLive Frame={Frame}/>}/><Route path="/council" element={<ProtectedRoute><CouncilLive Frame={Frame}/></ProtectedRoute>}/><Route path="/council/governance" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><PalaceGovernance Frame={Frame}/></React.Suspense></ProtectedRoute>}/><Route path="/code" element={<CodeLive Frame={Frame}/>}/><Route path="/beta" element={<React.Suspense fallback={<RouteLoading/>}><PalaceBetaGuide Frame={Frame}/></React.Suspense>}/>
  <Route path="/member/:username" element={<MemberProfileLive Frame={Frame}/>}/>
  <Route path="*" element={<Frame><section className="lost-gates-page"><div className="lost-gates-orbit"><span>☾</span><i>✦</i></div><p className="eyebrow">BEYOND THE GATES</p><h1>You left palace grounds.</h1><p>The path thinned, the lamps disappeared, and somehow you wandered beyond the Palace walls.</p><div className="lost-gates-actions"><Link className="button" to="/">Return to the Palace</Link><Link to="/search">Search for a room →</Link></div></section></Frame>}/>
