@@ -1,7 +1,12 @@
 import {describe,it,expect} from 'vitest';
-import {orderedReaderChapters,matchReaderChapters,initialReaderChapterPage,readerChapterPage} from './readerChapterShelfModel';
+import {orderedReaderChapters,matchReaderChapters,initialReaderChapterPage,readerChapterPage,shouldOpenReaderChapterShelf} from './readerChapterShelfModel';
 const chapters=Array.from({length:47},(_,i)=>({id:'ch'+(i+1),position:i+1,title:i===29?'The Falling Star':'Chapter '+(i+1),word_count:800,status:'published'}));
 describe('Compact long-work chapter shelf',()=>{
+ it('opens directly from the Chapter list anchor, even for long books',()=>{
+  expect(shouldOpenReaderChapterShelf(8,'')).toBe(true);
+  expect(shouldOpenReaderChapterShelf(47,'')).toBe(false);
+  expect(shouldOpenReaderChapterShelf(47,'#palace-reader-chapters')).toBe(true);
+ });
  it('orders readable chapters without mutating the input',()=>{
   const scrambled=[chapters[2],chapters[0],chapters[1]];
   expect(orderedReaderChapters(scrambled).map(x=>x.id)).toEqual(['ch1','ch2','ch3']);
@@ -21,5 +26,16 @@ describe('Compact long-work chapter shelf',()=>{
   expect(readerChapterPage(chapters,2).items.map(x=>x.id)).toEqual(chapters.slice(40).map(x=>x.id));
   expect(readerChapterPage(chapters,99)).toMatchObject({page:2,start:41,end:47});
   expect(readerChapterPage([],0).items).toEqual([]);
+ });
+});
+
+const fs=await import('node:fs');
+const source=fs.readFileSync(new URL('./ReaderChapterShelf.jsx',import.meta.url),'utf8');
+describe('Reader chapter anchor wiring',()=>{
+ it('opens on repeated link activations and direct hash navigation',()=>{
+  expect(source).toContain('onChapterListClick');
+  expect(source).toContain("window.addEventListener('hashchange',openFromHash)");
+  expect(source).toContain("document.addEventListener('click',onChapterListClick)");
+  expect(source).toContain("document.removeEventListener('click',onChapterListClick)");
  });
 });
