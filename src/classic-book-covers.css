@@ -1,0 +1,48 @@
+/* Physical-book style for real Project Gutenberg covers and graceful placeholders. */
+.palace-classic-book-cover{
+ display:block;position:relative;isolation:isolate;overflow:hidden;
+ width:100%;min-width:0;aspect-ratio:2/3;
+ border-radius:10px;border:1px solid rgba(190,170,227,.46);
+ background:#252644;box-shadow:0 11px 23px rgba(9,8,33,.21);
+}
+.palace-classic-book-cover>img{
+ display:block;width:100%;height:100%;object-fit:cover;object-position:center;
+}
+.palace-classic-fallback{
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+ gap:10px;width:100%;height:100%;min-height:0;overflow:hidden;
+ padding:15px;box-sizing:border-box;color:#fbf3ff;
+ background:radial-gradient(ellipse at 50% 28%,rgba(168,155,226,.23),transparent 58%),linear-gradient(155deg,#342b56,#141c41);
+ box-shadow:inset 6px 0 0 rgba(12,10,33,.19),inset 0 0 0 8px rgba(226,209,251,.05);
+}
+.palace-classic-book-cover.palette-ocean .palace-classic-fallback{background:linear-gradient(140deg,#204d6b,#182442)}
+.palace-classic-book-cover.palette-plum .palace-classic-fallback{background:linear-gradient(140deg,#644575,#29254c)}
+.palace-classic-book-cover.palette-slate .palace-classic-fallback{background:linear-gradient(140deg,#43546d,#292c47)}
+.palace-classic-book-cover.palette-aqua .palace-classic-fallback{background:linear-gradient(140deg,#236c77,#26304c)}
+.palace-classic-fallback>small{font:800 clamp(.48rem,.65vw,.7rem)/1.45 system-ui,sans-serif;letter-spacing:.12em;color:#c4c2e6}
+.palace-classic-fallback>strong{font:600 clamp(.84rem,1.2vw,1.2rem)/1.22 Georgia,serif;color:#fff;overflow-wrap:anywhere}
+.palace-classic-fallback>em{font:italic clamp(.62rem,.8vw,.87rem)/1.35 Georgia,serif;color:#e3d8f1;overflow-wrap:anywhere}
+.palace-classic-fallback-glyph{font-size:1.4rem;color:#d7c5f6}
+.palace-classic-book-cover.compact .palace-classic-fallback{padding:8px;gap:5px}
+.palace-classic-book-cover.compact .palace-classic-fallback>small{font-size:.43rem}
+.palace-classic-book-cover.compact .palace-classic-fallback>strong{font-size:.72rem}
+.palace-classic-book-cover.compact .palace-classic-fallback>em{font-size:.58rem}
+.palace-classic-book-cover.compact .palace-classic-fallback-glyph{font-size:.95rem}
+.palace-classic-book-cover .palace-story-rating{font-size:.63rem!important}
+.reading-classics-hall .classic-hall-card>.palace-classic-book-cover{
+ width:clamp(90px,11vw,142px);height:auto;min-width:90px;flex:0 0 auto;
+ border-radius:11px;
+}
+.lost-work-card>.archive-book-cover{width:124px;max-width:100%;margin:0 0 13px;aspect-ratio:2/3}
+.archive-classic-frontmatter-cover{width:135px;max-width:38%;margin:0 0 15px}
+.palace-classic-story .story-cover>.palace-classic-book-cover,
+.legacy-constellation-cover>.palace-classic-book-cover{
+ width:100%;height:100%;min-height:0;border-radius:inherit;box-shadow:none;border:0;
+}
+.palace-classic-story .story-cover>.palace-classic-book-cover>img,
+.legacy-constellation-cover>.palace-classic-book-cover>img{object-fit:cover}
+@media(max-width:650px){
+ .reading-classics-hall .classic-hall-card>.palace-classic-book-cover{width:96px;min-width:96px}
+ .lost-work-card>.archive-book-cover{width:104px}
+ .archive-classic-frontmatter-cover{width:108px}
+}
