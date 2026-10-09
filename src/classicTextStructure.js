@@ -5,7 +5,7 @@
 // Historical editions use numerals and spelled-out chapter numbers.
 // Keep the recognition conservative: sentences are not chapter titles.
 const standaloneHeading=/^(?:chapter|book|part|volume|act|scene|prologue|epilogue|preface|introduction|contents|conclusion)$/i;
-const numberedHeading=/^(?:chapter|book|part|volume|act|scene)\s+(?:the\s+)?(?:[ivxlcdm]+|\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|eleventh|twelfth)(?:([ \t]*[:.\-–—][ \t]*|[ \t]+)(.+))?$/i;
+const numberedHeading=/^(?:chapter|book|part|volume|act|scene)\s+(?:the\s+)?(?:[ivxlcdm]+|\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|eleventh|twelfth)(?:([ \t]*[:.\-–—][ \t]*|[ \t]+)(.*))?$/i;
 function isClassicHeading(value){
  if(value.length>=100||!value.trim())return false;
  if(standaloneHeading.test(value))return true;
