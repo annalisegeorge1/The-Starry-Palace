@@ -40,10 +40,7 @@ export function filterPalaceSearchGroups(data,{rating='all',completion='all',sor
 export function countPalaceSearchGroups(groups,scope='all'){
  if(!groups)return 0;
  return scope==='all'
-  ?Object.values(palaceSearchEmptyGroups()).reduce((sum,_,index)=>{
-    const key=Object.keys(palaceSearchEmptyGroups())[index];
-    return sum+(Array.isArray(groups[key])?groups[key].length:0);
-   },0)
+  ?Object.keys(palaceSearchEmptyGroups()).reduce((sum,key)=>sum+(Array.isArray(groups[key])?groups[key].length:0),0)
   :(Array.isArray(groups[scope])?groups[scope].length:0);
 }
 export function activePalaceSearchFacets({rating='all',completion='all'}={}){
