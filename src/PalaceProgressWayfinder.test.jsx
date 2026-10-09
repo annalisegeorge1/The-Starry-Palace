@@ -30,8 +30,10 @@ describe('A connected Grand Palace progress journey',()=>{
   fireEvent.click(screen.getByRole('button',{name:'About: How Palace recognition connects'}));
   expect(screen.getByText(/Spendable Palace Points:/)).toBeTruthy();
   expect(screen.getByText(/Grand Palace competition credit:/)).toBeTruthy();
-  expect(screen.queryByText(/Own-work comments, private-work comments/)).toBeNull();
+  const fairness=screen.getByText('Read the fairness essentials').closest('details');
+  expect(fairness.open).toBe(false);
   fireEvent.click(screen.getByText('Read the fairness essentials'));
+  expect(fairness.open).toBe(true);
   expect(screen.getByText(/Own-work comments, private-work comments/)).toBeTruthy();
  });
 });
