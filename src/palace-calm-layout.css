@@ -154,6 +154,7 @@
 }
 .palace-shell .full-sidebar .palace-sidebar-complete{
  display:grid;
+ flex:0 0 auto;
  gap:8px;
  min-width:0;
 }
