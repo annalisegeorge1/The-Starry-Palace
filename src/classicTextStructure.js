@@ -2,7 +2,20 @@
  * Display-only structure for imperfectly imported classic texts.
  * Never change the original archive text; editions and verse require care.
  */
-const heading=/^(?:chapter|book|part|volume|act|scene|prologue|epilogue|preface|introduction|contents|conclusion)\b(?:\s+[ivxlcdm\d]+)?(?:\s*[:.\-–—].*)?$/i;
+// Historical editions use numerals and spelled-out chapter numbers.
+// Keep the recognition conservative: sentences are not chapter titles.
+const standaloneHeading=/^(?:chapter|book|part|volume|act|scene|prologue|epilogue|preface|introduction|contents|conclusion)$/i;
+const prefixedHeading=/^(?:chapter|book|part|volume|act|scene|prologue|epilogue|preface|introduction|contents|conclusion)\s*[:.\-–—].*$/i;
+const numberedHeading=/^(?:chapter|book|part|volume|act|scene)\s+(?:the\s+)?(?:[ivxlcdm]+|\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|eleventh|twelfth)(?:([ \t]*[:.\-–—][ \t]*|[ \t]+)(.*))?$/i;
+function isClassicHeading(value){
+ if(value.length>=100||!value.trim())return false;
+ if(standaloneHeading.test(value)||prefixedHeading.test(value))return true;
+ const found=numberedHeading.exec(value);
+ if(!found)return false;
+ if(!found[2])return true;
+ const title=found[2].trim();
+ return !!title&&(/[:.\-–—]/.test(found[1])||/^[A-Z0-9]/.test(title));
+}
 const verseHint=/^(?:\s{2,}|[—–])|[;,:]$/;
 function segmentLongProse(value){
  const words=value.trim();
@@ -54,7 +67,7 @@ export function structureClassicText(source=''){
    paragraph=[];
   };
   for(let i=0;i<lines.length;i++){
-   if(heading.test(lines[i])&&lines[i].length<100){
+   if(isClassicHeading(lines[i])){
     flush();
     result.push({kind:'heading',text:lines[i]});
     continue;

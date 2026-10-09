@@ -25,6 +25,22 @@ describe('classic literature typesetting',()=>{
   expect(result[0]).toEqual({kind:'heading',text:'CHAPTER I'});
   expect(result[1].text).toBe('The first page begins. More of the same paragraph.');
  });
+ it('recognizes spelled-out chapter and book headings without treating prose as a heading',()=>{
+  const sample='CHAPTER ONE\nThe first scene begins.\n\nBOOK THE SECOND\nAnother scene.\n\nCHAPTER III: A New Morning\nThe third scene.\n\nChapter one follows the events of the previous page.';
+  const blocks=structureClassicText(sample);
+  expect(blocks.filter(item=>item.kind==='heading').map(item=>item.text)).toEqual([
+   'CHAPTER ONE','BOOK THE SECOND','CHAPTER III: A New Morning'
+  ]);
+  expect(blocks.at(-1)).toEqual({kind:'paragraph',text:'Chapter one follows the events of the previous page.'});
+ });
+ it('keeps punctuation-only chapter markers and section order intact',()=>{
+  const blocks=structureClassicText('CHAPTER IV.\nThe tale continues.\n\nCHAPTER V:');
+  expect(blocks.map(item=>item.kind)).toEqual(['heading','paragraph','heading']);
+ });
+ it('continues to recognize prefatory headings used in older editions',()=>{
+  const blocks=structureClassicText('PREFACE: To the Reader\nA note about this edition.');
+  expect(blocks.map(item=>item.kind)).toEqual(['heading','paragraph']);
+ });
  it('recovers readable blocks from an overly long flattened prose import',()=>{
   const flat=Array.from({length:25},(_,i)=>'This is the rather lengthy sentence number '+i+' with a beginning middle and an ending.').join(' ');
   const blocks=structureClassicText(flat);
