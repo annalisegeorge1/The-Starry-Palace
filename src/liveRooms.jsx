@@ -57,6 +57,7 @@ import ArchiveClassicReader from './ArchiveClassicReader';
 import {storyHistoryDetails,storyHistoryLabel,selectStoryHistory} from './storyHistoryModel';
 import {shouldFetchStoryHistory,canShowHistoryChapterDetails} from './storyHistoryLoading';
 import ReadingStoryStats from './ReadingStoryStats';
+import ReaderChapterShelf from './ReaderChapterShelf';
 import {getPublicWorkBookmarkCount} from './palaceData';
 import {storyOverviewStats} from './storyOverviewStats';
 import ReadingStoryContext from './ReadingStoryContext';
@@ -1703,7 +1704,7 @@ function ReaderChapter({Frame,slug,chapterId}){
    <small>Reader preferences stay only on this device.</small>
   </section>}
   <section id="palace-reading-text" ref={chapterTextRef} className="chapter-text restored" aria-label="Chapter text" tabIndex={-1} style={{fontSize:fontSize+'px'}} dangerouslySetInnerHTML={{__html:html}}/>
-  <section id="palace-reader-chapters" className="reader-chapter-list"><p className="eyebrow">THIS WORK</p><div>{readable.map(ch=><Link className={ch.id===chapterId?'active':''} key={ch.id} to={"/work/"+slug+"/chapter/"+ch.id}><span>{String(ch.position).padStart(2,'0')}</span><strong>{ch.title}</strong><small>{ch.word_count.toLocaleString()} words</small></Link>)}</div></section>
+  <ReaderChapterShelf chapters={readable} chapterId={chapterId} workSlug={slug}/>
   {!next&&<section className="reader-end-trail"><div><small>YOU REACHED THE LAST PUBLISHED CHAPTER</small><h2>Where do you want the story to lead?</h2></div><nav><Link to={"/work/"+data.work.slug}>✦ Story trail</Link>{session&&<Link to={"/palace-life?room=commons&kind=discussion&talk="+encodeURIComponent(data.work.title)}>♢ Discuss it</Link>}{data.work.profiles?.username&&<Link to={"/member/"+data.work.profiles.username}>☾ Visit the writer</Link>}<Link to="/lost-works">⌁ Read something older</Link></nav></section>}
    {readingRewardStatus&&<p className="reader-reward-status" role="status">{readingRewardStatus}</p>}
   {session?.user?.id&&session.user.id!==data.work.author_id&&data.chapter.word_count>=200&&data.work.visibility==='public'&&<p className="reader-reward-hint">✦ Eligible public chapters can earn 2 Celestial Points after 90 seconds of reading. Choose Next chapter, or Mark work finished on the last chapter, to record completion. One reward per chapter; daily limits apply.</p>}
