@@ -1,0 +1,104 @@
+/* The Starry Palace · Search Room quality pass.
+ * Fast, static gradients; existing main search and result card design unchanged.
+ */
+.palace-shell .legacy-search-page .search-gathering{
+ display:flex;align-items:center;gap:11px;
+ margin:11px 0 15px;padding:13px 16px;
+ border:1px solid rgba(167,147,224,.48);border-radius:14px;
+ background:linear-gradient(114deg,rgba(93,65,148,.22),rgba(48,119,151,.16));
+ color:#eee6ff;font-size:.87rem;font-weight:700;
+}
+.palace-shell .legacy-search-page .search-gathering-orb{
+ display:grid;place-items:center;width:29px;height:29px;flex:none;
+ border:1px solid rgba(188,173,243,.53);border-radius:50%;
+ color:#d9c6ff;font-size:1.2rem;
+}
+.palace-shell .legacy-search-page .palace-search-refinements{
+ margin:13px 0;overflow:visible;border:1px solid rgba(174,156,225,.43);
+ border-radius:16px;
+ background:linear-gradient(122deg,rgba(94,64,157,.21),rgba(42,101,153,.16));
+ color:#e7dffa;
+}
+.palace-shell .legacy-search-page .palace-search-refinements>summary{
+ display:flex;align-items:center;flex-wrap:wrap;gap:8px 10px;
+ padding:12px 16px;cursor:pointer;font-weight:800;font-size:.84rem;
+ list-style:none;
+}
+.palace-shell .legacy-search-page .palace-search-refinements>summary::-webkit-details-marker{display:none}
+.palace-shell .legacy-search-page .palace-search-refinements>summary::after{
+ content:'⌄';margin-left:auto;font-size:1.15rem;color:#d6bbfd;
+}
+.palace-shell .legacy-search-page .palace-search-refinements[open]>summary::after{content:'⌃'}
+.palace-shell .legacy-search-page .palace-search-refinements>summary em{
+ padding:3px 8px;border-radius:999px;
+ border:1px solid rgba(195,176,234,.48);
+ background:rgba(102,88,165,.26);
+ color:#e2d5f5;font:750 .69rem/1.25 system-ui,sans-serif;
+}
+.palace-shell .legacy-search-page .palace-search-refinement-grid{
+ display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px;
+ margin:0 15px 10px;
+ padding:15px 0 4px;
+ border-top:1px solid rgba(175,160,227,.25);
+}
+.palace-shell .legacy-search-page .palace-search-refinement-grid label{
+ display:grid;gap:6px;flex:1 1 160px;min-width:0;
+ color:#d8cef0;font-weight:750;font-size:.73rem;
+}
+.palace-shell .legacy-search-page .palace-search-refinement-grid select{
+ box-sizing:border-box;width:100%;min-width:0;min-height:42px;
+ padding:8px 11px;border:1px solid #9888bb;border-radius:10px;
+ background:#292849;color:#f8f5ff;
+ font:600 .82rem/1.3 system-ui,sans-serif;
+}
+.palace-shell .legacy-search-page .palace-search-refinement-grid>button,
+.palace-shell .legacy-search-page .palace-search-empty-actions :is(button,a){
+ display:inline-flex;align-items:center;justify-content:center;
+ min-height:42px;padding:9px 13px;border-radius:10px;
+ border:1px solid rgba(192,169,238,.55);
+ background:rgba(107,79,165,.29);
+ color:#f4ecff;
+ font:750 .77rem/1.3 system-ui,sans-serif;text-decoration:none;
+}
+.palace-shell .legacy-search-page .palace-search-refinements>p{
+ margin:0 15px 13px;max-width:90ch;line-height:1.55;
+ font-size:.74rem;color:#cfc5e6;
+}
+.palace-shell .legacy-search-page .palace-search-empty-actions{
+ display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:13px;
+}
+.palace-shell .legacy-search-page .palace-search-refinements :is(summary,select,button):focus-visible,
+.palace-shell .legacy-search-page .palace-search-empty-actions :is(button,a):focus-visible{
+ outline:3px solid #b9e7ff;outline-offset:3px;
+}
+.palace-shell.daylight .legacy-search-page .search-gathering,
+.palace-shell.daylight .legacy-search-page .palace-search-refinements{
+ background:linear-gradient(120deg,#efe6fd,#e4effd 61%,#e1f4f0);
+ border-color:#b5a3d5;color:#342847;
+}
+.palace-shell.daylight .legacy-search-page .search-gathering-orb{color:#7851a9;border-color:#ba9cd3}
+.palace-shell.daylight .legacy-search-page .palace-search-refinements>summary::after{color:#7654a0}
+.palace-shell.daylight .legacy-search-page .palace-search-refinements>summary em{
+ background:#f5ebfa;color:#644780;border-color:#baa8d1;
+}
+.palace-shell.daylight .legacy-search-page .palace-search-refinement-grid{border-color:#c8b5da}
+.palace-shell.daylight .legacy-search-page .palace-search-refinement-grid label{color:#4b3d65}
+.palace-shell.daylight .legacy-search-page .palace-search-refinement-grid select{
+ color:#302442;background:#fff;border-color:#aa95c4;
+}
+.palace-shell.daylight .legacy-search-page .palace-search-refinements>p{color:#514363}
+.palace-shell.daylight .legacy-search-page .palace-search-refinement-grid>button,
+.palace-shell.daylight .legacy-search-page .palace-search-empty-actions :is(button,a){
+ color:#45325f;border-color:#ac94c9;background:linear-gradient(110deg,#f5eafa,#e5eff9);
+}
+@media(max-width:600px){
+ .palace-shell .legacy-search-page .palace-search-refinements>summary{padding:13px}
+ .palace-shell .legacy-search-page .palace-search-refinement-grid{
+  display:grid;grid-template-columns:minmax(0,1fr);margin-inline:13px;
+ }
+ .palace-shell .legacy-search-page .palace-search-refinement-grid label{min-width:0}
+ .palace-shell .legacy-search-page .palace-search-refinement-grid select{font-size:1rem}
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .legacy-search-page .search-gathering-orb{animation:none}
+}

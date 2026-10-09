@@ -40,6 +40,7 @@ import PrismWayfinder from './PrismWayfinder';
 import ClassicBookCover from './ClassicBookCover';
 import ClassicsLibraryHall from './ClassicsLibraryHall';
 import StoryRatingBadge from './StoryRatingBadge';
+import {filterPalaceSearchGroups,countPalaceSearchGroups,activePalaceSearchFacets,SEARCH_RESULT_KINDS,SEARCH_RATINGS,SEARCH_COMPLETION} from './palaceSearchResults';
 import MemberChamberDecor,{useChamberDecor} from './MemberChamberDecor';
 import {arrangeMemberChamberArt} from './memberChamberDecorData';
 import './member-chamber-atelier.css';
@@ -1284,38 +1285,89 @@ export function MemberProfileLive({Frame}){
  </Frame>
 }
 export function SearchLive({Frame}){
- const navigate=useNavigate();
- const initial=new URLSearchParams(window.location.search).get('q')||'';
- const[q,setQ]=useState(initial);const[data,setData]=useState(null);const[busy,setBusy]=useState(false);const[error,setError]=useState('');const[scope,setScope]=useState('all');
- const[suggestions,setSuggestions]=useState(null);const[suggestBusy,setSuggestBusy]=useState(false);const[searchFocused,setSearchFocused]=useState(false);const lastRun=useRef('');
- const[recentSearches,setRecentSearches]=useState(()=>{try{return JSON.parse(localStorage.getItem('palace-recent-searches')||'[]').slice(0,6)}catch{return[]}});
- async function run(term=q){
-  const clean=String(term||'').trim();if(!clean){setData(null);setSuggestions(null);return}
-  setBusy(true);setError('');setSuggestions(null);lastRun.current=clean;
+ const navigate=useNavigate(),location=useLocation();
+ const routeQ=new URLSearchParams(location.search).get('q')?.trim()||'';
+ const[q,setQ]=useState(routeQ);
+ const[data,setData]=useState(null);
+ const[busy,setBusy]=useState(false);
+ const[error,setError]=useState('');
+ const[scope,setScope]=useState('all');
+ const[rating,setRating]=useState('all');
+ const[completion,setCompletion]=useState('all');
+ const[sort,setSort]=useState('best');
+ const[suggestions,setSuggestions]=useState(null);
+ const[suggestBusy,setSuggestBusy]=useState(false);
+ const[searchFocused,setSearchFocused]=useState(false);
+ const lastRun=useRef('');
+ const requestVersion=useRef(0);
+ const[recentSearches,setRecentSearches]=useState(()=>{
+  try{return JSON.parse(localStorage.getItem('palace-recent-searches')||'[]').slice(0,6)}
+  catch{return[]}
+ });
+ async function run(term){
+  const clean=String(term||'').trim();
+  const version=++requestVersion.current;
+  if(!clean){setData(null);setSuggestions(null);setBusy(false);return}
+  setBusy(true);setError('');setData(null);setSuggestions(null);
+  lastRun.current=clean;
   try{
-   const result=await searchPalace(clean);setData(result);setQ(clean);
-   history.replaceState(null,'','/search?q='+encodeURIComponent(clean));
-   const next=[clean,...recentSearches.filter(x=>x.toLowerCase()!==clean.toLowerCase())].slice(0,6);setRecentSearches(next);
-   try{localStorage.setItem('palace-recent-searches',JSON.stringify(next))}catch{}
-  }catch(e){setError(e.message)}finally{setBusy(false)}
+   const result=await searchPalace(clean);
+   if(version!==requestVersion.current)return;
+   // Keep a member's in-progress input untouched while results arrive.
+   setData(result);
+   setRecentSearches(previous=>{
+    const next=[clean,...previous.filter(x=>String(x).toLowerCase()!==clean.toLowerCase())].slice(0,6);
+    try{localStorage.setItem('palace-recent-searches',JSON.stringify(next))}catch{}
+    return next;
+   });
+  }catch(e){if(version===requestVersion.current)setError(e.message||'Search could not be completed. Please try again.')}
+  finally{if(version===requestVersion.current)setBusy(false)}
  }
- useEffect(()=>{if(initial)run(initial)},[]);
+ useEffect(()=>{
+  // Router owns the URL. New header searches and browser back/forward must
+  // refresh this room, even when the path remains /search.
+  setQ(routeQ);setScope('all');setRating('all');setCompletion('all');setSort('best');
+  setSearchFocused(false);setSuggestions(null);
+  if(routeQ)run(routeQ);
+  else{requestVersion.current++;setData(null);setBusy(false);setError('');lastRun.current=''}
+  return()=>{requestVersion.current++};
+ },[routeQ]);
  useEffect(()=>{
   const clean=q.trim();
-  if(!searchFocused||clean.length<2||clean.toLowerCase()===String(lastRun.current||'').toLowerCase()){setSuggestions(null);return}
+  if(!searchFocused||clean.length<2||clean.toLowerCase()===String(lastRun.current||'').toLowerCase()){
+   setSuggestions(null);setSuggestBusy(false);return;
+  }
   let alive=true;
-  const t=setTimeout(()=>{setSuggestBusy(true);suggestPalaceSearch(clean).then(rows=>{if(alive)setSuggestions(rows)}).catch(()=>{if(alive)setSuggestions(null)}).finally(()=>{if(alive)setSuggestBusy(false)})},220);
-  return()=>{alive=false;clearTimeout(t)}
+  const timer=setTimeout(()=>{
+   setSuggestBusy(true);
+   suggestPalaceSearch(clean)
+    .then(rows=>{if(alive)setSuggestions(rows)})
+    .catch(()=>{if(alive)setSuggestions(null)})
+    .finally(()=>{if(alive)setSuggestBusy(false)});
+  },260);
+  return()=>{alive=false;clearTimeout(timer)}
  },[q,searchFocused]);
- const groups=data?{works:data.works||[],comics:data.comics||[],members:data.members||[],tags:data.tags||[],clubs:data.clubs||[],archive:data.archive||[]}:null;
- const total=groups?(scope==='all'?Object.values(groups).reduce((n,v)=>n+v.length,0):(groups[scope]?.length||0)):0;
+ const submitSearch=(term=q)=>{
+  const clean=String(term||'').trim();
+  setSearchFocused(false);
+  if(!clean)return;
+  setQ(clean);
+  if(clean===routeQ)run(clean);
+  else navigate('/search?q='+encodeURIComponent(clean));
+ };
+ const groups=data?filterPalaceSearchGroups(data,{rating,completion,sort}):null;
+ const total=countPalaceSearchGroups(groups,scope);
+ const rawTotal=countPalaceSearchGroups(data,'all');
  const showGroup=key=>scope==='all'||scope===key;
  const suggestionCount=suggestions?Object.values(suggestions).reduce((n,v)=>n+(v?.length||0),0):0;
- const chooseSearch=term=>{setSearchFocused(false);setQ(term);run(term)};
+ const chooseSearch=term=>submitSearch(term);
+ const facetControlsVisible=!!data&&(scope==='all'||scope==='works'||scope==='comics')
+   &&((data.works?.length||0)+(data.comics?.length||0)>0);
+ const clearFacets=()=>{setRating('all');setCompletion('all');setSort('best')};
  return <Frame><section className="legacy-search-page">
   <section className="room-title"><p className="eyebrow">SEARCH WITHOUT A POPULARITY LADDER</p><h1>Search the Palace</h1><p className="lede">Search stories, comics, writers, tags, clubs and preserved works together. Multi-part searches are treated as ideas to combine, not one brittle exact phrase.</p></section>
   <div className="palace-search-wrap">
-   <form className="palace-search restored" role="search" onSubmit={e=>{e.preventDefault();setSearchFocused(false);run()}}><span aria-hidden="true">⌕</span><input aria-label="Search the Palace" autoComplete="off" value={q} onFocus={()=>setSearchFocused(true)} onBlur={()=>setTimeout(()=>setSearchFocused(false),140)} onChange={e=>setQ(e.target.value)} placeholder="Try: Caribbean vampire romance, slow burn rivals, Mary Seacole…"/><button disabled={busy||!q.trim()}>{busy?'Searching…':'Search'}</button></form>
+   <form className="palace-search restored" role="search" onSubmit={e=>{e.preventDefault();submitSearch()}}><span aria-hidden="true">⌕</span><input aria-label="Search the Palace" autoComplete="off" value={q} onFocus={()=>setSearchFocused(true)} onBlur={()=>setTimeout(()=>setSearchFocused(false),140)} onChange={e=>setQ(e.target.value)} placeholder="Try: Caribbean vampire romance, slow burn rivals, Mary Seacole…"/><button disabled={busy||!q.trim()}>{busy?'Searching…':'Search'}</button></form>
    {searchFocused&&q.trim().length>=2&&<section className="palace-search-suggest" aria-label="Search suggestions">
     <header><span>{suggestBusy?'Gathering…':'SUGGESTIONS'}</span><button type="button" onMouseDown={e=>e.preventDefault()} onClick={()=>chooseSearch(q)}>Search “{q.trim()}” →</button></header>
     {!suggestBusy&&suggestionCount===0&&<p>Keep typing, or press Search to look across every room.</p>}
@@ -1326,19 +1378,30 @@ export function SearchLive({Frame}){
    </section>}
   </div>
   {data?.query?.concepts?.length>1&&<section className="search-interpretation"><span>SEARCH READ AS</span><div>{data.query.concepts.map(concept=><button key={concept} onClick={()=>chooseSearch(concept)}>{concept}</button>)}</div><p>Results covering more of these ideas rise first; they do not need to appear as one exact phrase.</p></section>}
-  <section className="search-lenses" aria-label="Search result types">{[['all','All rooms'],['works','Stories'],['comics','Comics'],['members','Members'],['tags','Tags'],['clubs','Clubs'],['archive','Lost Works']].map(([k,l])=><button key={k} className={scope===k?'active':''} aria-pressed={scope===k} onClick={()=>setScope(k)}>{l}{groups&&k!=='all'&&<span>{groups[k]?.length||0}</span>}</button>)}</section>
+  <section className="search-lenses" aria-label="Search result types">{SEARCH_RESULT_KINDS.map(([k,l])=><button key={k} className={scope===k?'active':''} aria-pressed={scope===k} onClick={()=>setScope(k)}>{l}{groups&&k!=='all'&&<span>{groups[k]?.length||0}</span>}</button>)}</section>
+  {busy&&<div className="search-gathering" role="status" aria-live="polite"><span className="search-gathering-orb" aria-hidden="true">✧</span><span>Searching across the Palace…</span></div>}
   {recentSearches.length>0&&<section className="recent-searches"><span>RECENT</span>{recentSearches.map(term=><button key={term} onClick={()=>chooseSearch(term)}>{term}</button>)}<button className="clear-recent" onClick={()=>{setRecentSearches([]);try{localStorage.removeItem('palace-recent-searches')}catch{}}}>Clear</button></section>}
-  {error&&<div className="live-state error-state">{error}</div>}
-  {data&&<><div className="search-summary"><strong>{total}</strong><span>result{total===1?'':'s'} gathered across the Palace</span></div>
+  {error&&<div className="live-state error-state" role="alert">{error} <button type="button" onClick={()=>submitSearch(routeQ)}>Try again</button></div>}
+  {facetControlsVisible&&<details className="palace-search-refinements" aria-label="Refine story and comic results">
+   <summary><span>✧ Refine stories & comics</span>{activePalaceSearchFacets({rating,completion})&&<em>Filters active</em>}{sort!=='best'&&<em>Sorted: {sort==='recent'?'newest':'A–Z'}</em>}</summary>
+   <div className="palace-search-refinement-grid">
+    <label>Content rating<select value={rating} aria-label="Filter search by content rating" onChange={e=>setRating(e.target.value)}>{SEARCH_RATINGS.map(([k,label])=><option key={k} value={k}>{label}</option>)}</select></label>
+    <label>Story progress<select value={completion} aria-label="Filter search by completion" onChange={e=>setCompletion(e.target.value)}>{SEARCH_COMPLETION.map(([k,label])=><option key={k} value={k}>{label}</option>)}</select></label>
+    <label>Arrange results<select value={sort} aria-label="Sort search results" onChange={e=>setSort(e.target.value)}><option value="best">Best match</option><option value="recent">Recently updated</option><option value="title">Title A–Z</option></select></label>
+    {(activePalaceSearchFacets({rating,completion})||sort!=='best')&&<button type="button" onClick={clearFacets}>Clear refinements ×</button>}
+   </div>
+   <p>Rating and progress narrow stories and comics only. Writers, tags, clubs and archive records stay visible. Sorting rearranges the results already gathered.</p>
+  </details>}
+  {data&&<><div className="search-summary" aria-live="polite"><strong>{total}</strong><span>matching result{total===1?'':'s'} shown{total<rawTotal?' · refined from '+rawTotal+' results':''}</span></div>
    <section className="search-groups">
-    {showGroup('works')&&data.works.length>0&&<div className="search-group"><div className="search-group-head"><div><p className="eyebrow">STORIES</p><h2>Published worlds.</h2></div><Link to="/reading">Reading Rooms →</Link></div><div className="search-card-grid">{data.works.map(w=><Link className="search-result-card" to={"/work/"+w.slug} key={w.id}><div className="search-cover palace-rating-anchor">{w.cover_url?<img loading="lazy" decoding="async" src={w.cover_url} alt=""/>:<span>✦</span>}<StoryRatingBadge rating={w.rating}/></div><div><small>{w.rating} · {w.completion_status?.replaceAll('_',' ')}</small><h3>{w.title}</h3><p>{w.summary||'No summary yet.'}</p>{data.query?.concepts?.length>1&&w.concept_coverage>0&&<span className="search-coverage">{w.concept_coverage}/{data.query.concepts.length} ideas matched</span>}{w.matched_tags?.length>0&&<div className="search-match-signals">{w.matched_tags.slice(0,3).map(t=><span key={t.id}>matched #{t.name}</span>)}</div>}<b>{w.profiles?.display_name||w.profiles?.username||'Palace writer'} <IdentityMarks profile={w.profiles} className="inline"/> →</b></div></Link>)}</div></div>}
-    {showGroup('comics')&&data.comics.length>0&&<div className="search-group"><div className="search-group-head"><div><p className="eyebrow">COMICS</p><h2>Illustrated worlds.</h2></div><Link to="/comics">Comics →</Link></div><div className="search-card-grid">{data.comics.map(c=><Link className="search-result-card" to={"/comic/"+c.slug} key={c.id}><div className="search-cover">{c.cover_url?<img loading="lazy" decoding="async" src={c.cover_url} alt=""/>:<span>▤</span>}</div><div><small>{c.rating} · {c.completion_status?.replaceAll('_',' ')}</small><h3>{c.title}</h3><p>{c.summary||'No summary yet.'}</p>{data.query?.concepts?.length>1&&c.concept_coverage>0&&<span className="search-coverage">{c.concept_coverage}/{data.query.concepts.length} ideas matched</span>}{c.matched_tags?.length>0&&<div className="search-match-signals">{c.matched_tags.slice(0,3).map(t=><span key={t.id}>matched #{t.name}</span>)}</div>}<b>{c.creator?.display_name||c.creator?.username||'Comic creator'}{c.creator?.title?' · '+c.creator.title:''} <IdentityMarks profile={c.creator} className="inline"/> →</b></div></Link>)}</div></div>}
-    {showGroup('members')&&data.members.length>0&&<div className="search-group"><div className="search-group-head"><div><p className="eyebrow">MEMBERS</p><h2>People beneath the same sky.</h2></div></div><div className="people-results restored">{data.members.map(p=><Link to={'/member/'+encodeURIComponent(p.username)} key={p.id}><div className="mini-avatar">{p.avatar_url?<img src={p.avatar_url} alt=""/>:(p.display_name||p.username).slice(0,1).toUpperCase()}</div><div><strong>{p.display_name||p.username}</strong><span>@{p.username} · {p.title||'Palace Member'} <IdentityMarks profile={p} className="inline"/></span></div></Link>)}</div></div>}
-    {showGroup('tags')&&data.tags.length>0&&<div className="search-group"><div className="search-group-head"><div><p className="eyebrow">TAG CONSTELLATION</p><h2>Threads between worlds.</h2></div><Link to="/tags">Browse tags →</Link></div><div className="search-tag-cloud">{data.tags.map(tag=><Link to={"/tags?q="+encodeURIComponent(tag.name)} key={tag.id}><strong>{tag.name}</strong><span>{tag.category}{tag.matched_concepts?.length?' · '+tag.matched_concepts.length+' idea'+(tag.matched_concepts.length===1?'':'s'):''}</span></Link>)}</div></div>}
-    {showGroup('clubs')&&data.clubs.length>0&&<div className="search-group"><div className="search-group-head"><div><p className="eyebrow">CLUBS</p><h2>Rooms built for continuity.</h2></div><Link to="/palace-life">Palace Life →</Link></div><div className="search-club-grid">{data.clubs.map(c=><article key={c.id}><span>✦</span><small>{c.club_type} · {c.privacy}</small><h3>{c.name}</h3><p>{c.description||'A Palace club.'}</p><Link to={"/club/"+c.slug}>Enter circle →</Link></article>)}</div></div>}
-    {showGroup('archive')&&data.archive.length>0&&<div className="search-group"><div className="search-group-head"><div><p className="eyebrow">LOST WORKS</p><h2>Preserved records.</h2></div><Link to="/lost-works">Open archive →</Link></div><div className="search-archive-list">{data.archive.map(r=><Link className="search-archive-result" to={"/lost-works?open="+encodeURIComponent(r.slug)} key={r.id}><span>⌁</span><div><small>{r.category?.replaceAll('_',' ')||r.host_mode}</small><h3>{r.title}</h3><p>by {r.creator_name} · {r.rights_status||'rights status not recorded'}</p></div><b>Read →</b></Link>)}</div></div>}
+    {showGroup('works')&&groups.works.length>0&&<div className="search-group"><div className="search-group-head"><div><p className="eyebrow">STORIES</p><h2>Published worlds.</h2></div><Link to="/reading">Reading Rooms →</Link></div><div className="search-card-grid">{groups.works.map(w=><Link className="search-result-card" to={"/work/"+w.slug} key={w.id}><div className="search-cover palace-rating-anchor">{w.cover_url?<img loading="lazy" decoding="async" src={w.cover_url} alt=""/>:<span>✦</span>}<StoryRatingBadge rating={w.rating}/></div><div><small>{w.rating} · {w.completion_status?.replaceAll('_',' ')}</small><h3>{w.title}</h3><p>{w.summary||'No summary yet.'}</p>{data.query?.concepts?.length>1&&w.concept_coverage>0&&<span className="search-coverage">{w.concept_coverage}/{data.query.concepts.length} ideas matched</span>}{w.matched_tags?.length>0&&<div className="search-match-signals">{w.matched_tags.slice(0,3).map(t=><span key={t.id}>matched #{t.name}</span>)}</div>}<b>{w.profiles?.display_name||w.profiles?.username||'Palace writer'} <IdentityMarks profile={w.profiles} className="inline"/> →</b></div></Link>)}</div></div>}
+    {showGroup('comics')&&groups.comics.length>0&&<div className="search-group"><div className="search-group-head"><div><p className="eyebrow">COMICS</p><h2>Illustrated worlds.</h2></div><Link to="/comics">Comics →</Link></div><div className="search-card-grid">{groups.comics.map(c=><Link className="search-result-card" to={"/comic/"+c.slug} key={c.id}><div className="search-cover palace-rating-anchor">{c.cover_url?<img loading="lazy" decoding="async" src={c.cover_url} alt=""/>:<span>▤</span>}<StoryRatingBadge rating={c.rating}/></div><div><small>{c.rating} · {c.completion_status?.replaceAll('_',' ')}</small><h3>{c.title}</h3><p>{c.summary||'No summary yet.'}</p>{data.query?.concepts?.length>1&&c.concept_coverage>0&&<span className="search-coverage">{c.concept_coverage}/{data.query.concepts.length} ideas matched</span>}{c.matched_tags?.length>0&&<div className="search-match-signals">{c.matched_tags.slice(0,3).map(t=><span key={t.id}>matched #{t.name}</span>)}</div>}<b>{c.creator?.display_name||c.creator?.username||'Comic creator'}{c.creator?.title?' · '+c.creator.title:''} <IdentityMarks profile={c.creator} className="inline"/> →</b></div></Link>)}</div></div>}
+    {showGroup('members')&&groups.members.length>0&&<div className="search-group"><div className="search-group-head"><div><p className="eyebrow">MEMBERS</p><h2>People beneath the same sky.</h2></div></div><div className="people-results restored">{groups.members.map(p=><Link to={'/member/'+encodeURIComponent(p.username)} key={p.id}><div className="mini-avatar">{p.avatar_url?<img src={p.avatar_url} alt=""/>:(p.display_name||p.username).slice(0,1).toUpperCase()}</div><div><strong>{p.display_name||p.username}</strong><span>@{p.username} · {p.title||'Palace Member'} <IdentityMarks profile={p} className="inline"/></span></div></Link>)}</div></div>}
+    {showGroup('tags')&&groups.tags.length>0&&<div className="search-group"><div className="search-group-head"><div><p className="eyebrow">TAG CONSTELLATION</p><h2>Threads between worlds.</h2></div><Link to="/tags">Browse tags →</Link></div><div className="search-tag-cloud">{groups.tags.map(tag=><Link to={"/tags?q="+encodeURIComponent(tag.name)} key={tag.id}><strong>{tag.name}</strong><span>{tag.category}{tag.matched_concepts?.length?' · '+tag.matched_concepts.length+' idea'+(tag.matched_concepts.length===1?'':'s'):''}</span></Link>)}</div></div>}
+    {showGroup('clubs')&&groups.clubs.length>0&&<div className="search-group"><div className="search-group-head"><div><p className="eyebrow">CLUBS</p><h2>Rooms built for continuity.</h2></div><Link to="/palace-life">Palace Life →</Link></div><div className="search-club-grid">{groups.clubs.map(c=><article key={c.id}><span>✦</span><small>{c.club_type} · {c.privacy}</small><h3>{c.name}</h3><p>{c.description||'A Palace club.'}</p><Link to={"/club/"+c.slug}>Enter circle →</Link></article>)}</div></div>}
+    {showGroup('archive')&&groups.archive.length>0&&<div className="search-group"><div className="search-group-head"><div><p className="eyebrow">LOST WORKS</p><h2>Preserved records.</h2></div><Link to="/lost-works">Open archive →</Link></div><div className="search-archive-list">{groups.archive.map(r=><Link className="search-archive-result" to={"/lost-works?open="+encodeURIComponent(r.slug)} key={r.id}><span>⌁</span><div><small>{r.category?.replaceAll('_',' ')||r.host_mode}</small><h3>{r.title}</h3><p>by {r.creator_name} · {r.rights_status||'rights status not recorded'}</p></div><b>Read →</b></Link>)}</div></div>}
    </section>
-   {total===0&&<div className="life-empty large"><span>⌕</span><h3>{scope==='all'?'No matching rooms gathered.':'Nothing in this room matches yet.'}</h3><p>{scope==='all'?'Try a broader idea, another spelling, a tag, creator name or classic title.':'Try All rooms or remove one idea from the search.'}</p></div>}
+   {total===0&&<div className="life-empty large"><span>⌕</span><h3>{scope==='all'?'No matching rooms gathered.':'Nothing in this room matches yet.'}</h3><p>{activePalaceSearchFacets({rating,completion})?'Try clearing rating or progress refinements.':'Try another spelling, a shorter title, a writer name, a fandom or an archive book.'}</p><div className="palace-search-empty-actions">{activePalaceSearchFacets({rating,completion})&&<button type="button" onClick={clearFacets}>Clear refinements</button>}{scope!=='all'&&<button type="button" onClick={()=>setScope('all')}>Search all rooms</button>}<Link to="/reading?view=search">Advanced search →</Link></div></div>}
   </>}
  </section></Frame>
 }
