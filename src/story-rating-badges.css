@@ -2,10 +2,11 @@
 .palace-story-rating{
  --rating-bg:#c5b3e8;--rating-text:#27203d;
  display:inline-flex;align-items:center;justify-content:center;
- padding:5px 9px;border-radius:9px;
+ min-width:27px;min-height:25px;box-sizing:border-box;
+ padding:4px 7px;border-radius:8px;
  background:var(--rating-bg);color:var(--rating-text);
  border:1px solid rgba(16,18,39,.18);
- font:800 .7rem/1.2 system-ui,sans-serif!important;
+ font:800 .72rem/1.15 system-ui,sans-serif!important;
  letter-spacing:.015em;white-space:nowrap;max-width:calc(100% - 12px);
  box-shadow:0 2px 10px rgba(5,6,23,.19);
  text-transform:none;pointer-events:none;
@@ -25,6 +26,6 @@
 .palace-shell.daylight .palace-story-rating{border-color:rgba(26,32,62,.19);box-shadow:0 2px 8px rgba(39,27,83,.14)}
 /* Keep overlay legible even over artwork on narrow screens. */
 @media(max-width:600px){
- .palace-story-rating{font-size:.66rem!important;padding:4px 7px;max-width:calc(100% - 10px)}
+ .palace-story-rating{font-size:.68rem!important;min-width:25px;min-height:23px;padding:3px 6px;max-width:calc(100% - 10px)}
  .palace-rating-anchor>.palace-story-rating{top:6px!important;left:6px!important}
 }
