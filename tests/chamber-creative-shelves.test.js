@@ -13,7 +13,8 @@ const chamber=rooms.slice(rooms.indexOf('export function MemberProfileLive('),ro
 describe('Member Chamber visual polish and truthful discovery',()=>{
  it('uses only real author uploads as cover imagery and a decorative fallback',()=>{
   expect(chamber).toContain('className="chamber-story-card"');
-  expect(chamber).toContain('className="chamber-story-cover"');
+  expect(chamber).toContain('className="chamber-story-cover palace-rating-anchor"');
+  expect(chamber).toContain('<StoryRatingBadge rating={w.rating}/>');
   expect(chamber).toContain('w.cover_url?<img src={w.cover_url} alt="" loading="lazy" decoding="async"/>');
   expect(styles).toContain('object-fit:contain;');
   expect(styles).not.toContain('aspect-ratio:');
