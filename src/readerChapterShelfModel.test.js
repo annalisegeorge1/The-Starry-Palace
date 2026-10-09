@@ -1,5 +1,6 @@
 import {describe,it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
+import {resolve} from 'node:path';
 import {orderedReaderChapters,matchReaderChapters,initialReaderChapterPage,readerChapterPage,shouldOpenReaderChapterShelf} from './readerChapterShelfModel';
 const chapters=Array.from({length:47},(_,i)=>({id:'ch'+(i+1),position:i+1,title:i===29?'The Falling Star':'Chapter '+(i+1),word_count:800,status:'published'}));
 describe('Compact long-work chapter shelf',()=>{
@@ -30,7 +31,7 @@ describe('Compact long-work chapter shelf',()=>{
  });
 });
 
-const source=readFileSync(new URL('./ReaderChapterShelf.jsx',import.meta.url),'utf8');
+const source=readFileSync(resolve(process.cwd(),'src/ReaderChapterShelf.jsx'),'utf8');
 describe('Reader chapter anchor wiring',()=>{
  it('opens on repeated link activations and direct hash navigation',()=>{
   expect(source).toContain('onChapterListClick');
