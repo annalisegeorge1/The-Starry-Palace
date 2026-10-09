@@ -1,13 +1,14 @@
 import React,{useEffect,useMemo,useRef,useState} from 'react';
-import {structureClassicText} from './classicTextStructure';
+import {loadClassicReading} from './classicBackgroundLoader';
 import ClassicBookCover from './ClassicBookCover';
-import {paginateClassicBlocks,classicContents,clampClassicPage,classicPageKey,firstClassicStoryBlock,classicStoryPage} from './archiveReaderModel';
+import {clampClassicPage,classicPageKey} from './archiveReaderModel';
 import {readPalaceChoice,readPalaceNumber,writePalacePreference,removePalacePreference} from './browserPreferences';
 import './archive-classic-reader.css';
 import './archive-classic-open-story.css';
 import {classicChapterChoices,classicNumericPage,CLASSIC_NUMERIC_PAGE_THRESHOLD} from './classicNavigatorModel';
 import './classic-fast-navigation.css';
 import './classic-edition-caption.css';
+import './classic-mobile-reader.css';
 
 const FONT_KEY='palace-classic-font';
 const TONE_KEY='palace-classic-tone';
@@ -19,15 +20,22 @@ const FONT_MIN=16,FONT_MAX=28;
 // when its identity changes prevents a previous book's page or contents
 // selection from leaking into the next book during in-app navigation.
 export default function ArchiveClassicReader({record,text}){
- return <ArchiveClassicReaderEdition key={record?.id||'unselected-classic'} record={record} text={text}/>;
+ return <ArchiveClassicReaderLoader key={record?.id||'unselected-classic'} record={record} text={text}/>;
 }
-function ArchiveClassicReaderEdition({record,text}){
- const blocks=useMemo(()=>structureClassicText(text?.body_text||''),[text?.body_text]);
- // Keep the original text intact, but make the first story chapter its own page.
- const storyBlock=useMemo(()=>firstClassicStoryBlock(blocks),[blocks]);
- const pages=useMemo(()=>paginateClassicBlocks(blocks,36,storyBlock),[blocks,storyBlock]);
- const storyPage=useMemo(()=>classicStoryPage(pages,storyBlock),[pages,storyBlock]);
- const contents=useMemo(()=>classicContents(pages,storyBlock),[pages,storyBlock]);
+function ArchiveClassicReaderLoader({record,text}){
+ const [prepared,setPrepared]=useState(null);
+ const [error,setError]=useState('');
+ useEffect(()=>{
+  setPrepared(null);
+  setError('');
+  return loadClassicReading(text?.body_text||'',setPrepared,()=>setError('This hosted edition could not be prepared for reading.'));
+ },[text?.body_text]);
+ if(error)return <section className="archive-classic-loading" role="alert"><strong>Unable to open this edition</strong><p>{error}</p></section>;
+ if(!prepared)return <section className="archive-classic-loading" role="status" aria-live="polite"><span aria-hidden="true" className="archive-classic-loading-sigil">✦</span><strong>Opening {record?.title||'the hosted edition'}…</strong><p>Preparing the book’s original chapters and readable pages.</p></section>;
+ return <ArchiveClassicReaderEdition record={record} text={text} prepared={prepared}/>;
+}
+function ArchiveClassicReaderEdition({record,text,prepared}){
+ const {pages,storyPage,contents}=prepared;
  const pageKey=classicPageKey(record?.id);
  const [page,setPage]=useState(()=>{
   const saved=readPalaceNumber(pageKey,-1,-1,Math.max(0,pages.length-1));
@@ -151,6 +159,11 @@ function ArchiveClassicReaderEdition({record,text}){
    </label>}
    <span className="archive-classic-progress" aria-live="polite">{total?Math.round(((current+1)/total)*100):0}% through this hosted text{storyPage>0&&current<storyPage?' · Opening material':''}</span>
   </div>
+  <nav className="archive-classic-mobile-bar" aria-label="Quick classic reading page navigation">
+   <button type="button" aria-label="Previous reading page" disabled={current===0} onClick={()=>changePage(current-1)}>‹ <span>Previous</span></button>
+   <strong aria-live="off">Page {total?current+1:0} / {total}</strong>
+   <button type="button" aria-label="Next reading page" disabled={current>=total-1} onClick={()=>changePage(current+1)}><span>Next</span> ›</button>
+  </nav>
   <section className="archive-reader-copy archive-classic-page" aria-label={'Hosted text — reading page '+(current+1)}>
    {(pages[current]||[]).map(block=>block.kind==='heading'?<h2 className={/^(?:book|volume|part)\b/i.test(block.text)?'archive-classic-book-heading':'archive-classic-chapter-heading'} key={block.sourceIndex} data-classic-heading={block.sourceIndex}>{block.text}</h2>:block.kind==='verse'?<p key={block.sourceIndex} className="archive-classic-verse">{block.text}</p>:block.kind==='illustration'?<p key={block.sourceIndex} className="archive-classic-illustration-note" role="note" aria-label="Original-edition illustration description">{block.text}</p>:<p key={block.sourceIndex}>{block.text}</p>)}
    {total===0&&<p>There is no readable text in this edition yet.</p>}
