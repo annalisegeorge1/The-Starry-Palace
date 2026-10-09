@@ -20,7 +20,7 @@ export default function PalaceInfoMark({title='How it works',variant='help',chil
   return()=>document.removeEventListener('pointerdown',closeOutside);
  },[pinned]);
  const close=()=>{setPinned(false);setHovered(false);setFocused(false)};
- return <span ref={root} className={'palace-info-mark '+(variant==='warning'?'is-warning ':'')+className}
+ return <div ref={root} className={'palace-info-mark '+(variant==='warning'?'is-warning ':'')+className}
   onPointerEnter={event=>{if(event.pointerType==='mouse')setHovered(true)}}
   onPointerLeave={event=>{if(event.pointerType==='mouse')setHovered(false)}}
   onFocus={()=>setFocused(true)}
@@ -31,8 +31,8 @@ export default function PalaceInfoMark({title='How it works',variant='help',chil
    aria-expanded={open}
    aria-controls={id}
    onClick={()=>setPinned(value=>!value)}>{variant==='warning'?'!':'?'}</button>
-  {open&&<span id={id} role="group" aria-label={title} className="palace-info-mark-popover">
-   <strong>{title}</strong><span className="palace-info-mark-body">{children}</span>
-  </span>}
- </span>;
+  {open&&<div id={id} role="group" aria-label={title} className="palace-info-mark-popover">
+   <strong>{title}</strong><div className="palace-info-mark-body">{children}</div>
+  </div>}
+ </div>;
 }
