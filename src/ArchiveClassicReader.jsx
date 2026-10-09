@@ -151,7 +151,7 @@ function ArchiveClassicReaderEdition({record,text}){
    <span className="archive-classic-progress" aria-live="polite">{total?Math.round(((current+1)/total)*100):0}% through this hosted text{storyPage>0&&current<storyPage?' · Opening material':''}</span>
   </div>
   <section className="archive-reader-copy archive-classic-page" aria-label={'Hosted text — reading page '+(current+1)}>
-   {(pages[current]||[]).map(block=>block.kind==='heading'?<h2 className={/^(?:book|volume|part)\b/i.test(block.text)?'archive-classic-book-heading':'archive-classic-chapter-heading'} key={block.sourceIndex} data-classic-heading={block.sourceIndex}>{block.text}</h2>:block.kind==='verse'?<p key={block.sourceIndex} className="archive-classic-verse">{block.text}</p>:<p key={block.sourceIndex}>{block.text}</p>)}
+   {(pages[current]||[]).map(block=>block.kind==='heading'?<h2 className={/^(?:book|volume|part)\b/i.test(block.text)?'archive-classic-book-heading':'archive-classic-chapter-heading'} key={block.sourceIndex} data-classic-heading={block.sourceIndex}>{block.text}</h2>:block.kind==='verse'?<p key={block.sourceIndex} className="archive-classic-verse">{block.text}</p>:block.kind==='illustration'?<p key={block.sourceIndex} className="archive-classic-illustration-note" role="note" aria-label="Original-edition illustration description">{block.text}</p>:<p key={block.sourceIndex}>{block.text}</p>)}
    {total===0&&<p>There is no readable text in this edition yet.</p>}
   </section>
   <nav className="archive-classic-page-nav" aria-label="Classic reading pages">
