@@ -1,0 +1,71 @@
+/*
+ * Palace visual consistency · screenshot review, 9 October 2026.
+ * Search, Write, both Wander buttons share the same soft three-stop
+ * lilac / blue / aqua gradient as the selected All Stories room tab.
+ * Appearance only — do not alter sizes, positions, routes or interactions.
+ */
+.full-palace-shell.daylight{
+ --palace-unified-action-gradient:linear-gradient(115deg,#e7d7fa,#dce8fe 58%,#d4f0e9);
+ --palace-unified-action-hover:linear-gradient(115deg,#dbc6f3,#cedffc 58%,#c6e9df);
+ --palace-unified-action-ink:#302347;
+ --palace-unified-action-border:#9277bd;
+ --palace-unified-action-shadow:0 3px 11px rgba(79,61,137,.14);
+}
+.full-palace-shell.nightfall{
+ --palace-unified-action-gradient:linear-gradient(118deg,#7660bd,#516ca5 57%,#337a90);
+ --palace-unified-action-hover:linear-gradient(118deg,#866cc7,#607bb7 57%,#3f889c);
+ --palace-unified-action-ink:#ffffff;
+ --palace-unified-action-border:rgba(213,197,255,.83);
+ --palace-unified-action-shadow:0 3px 11px rgba(12,10,45,.21);
+}
+/*
+ * The shared gradient applies to the exact four annotated controls.
+ * Keep each existing component's responsive dimensions and border radius.
+ * Explicit backgrounds override earlier neon / saturated !important rules.
+ */
+.full-palace-shell .full-topbar .global-search-live>button[type="submit"],
+.full-palace-shell .full-topbar .full-top-actions .write-action,
+.full-palace-shell .palace-passage .palace-passage-wander,
+.full-palace-shell .legacy-reading-page .reading-compass .reading-compass-wander{
+ background:var(--palace-unified-action-gradient)!important;
+ background-image:var(--palace-unified-action-gradient)!important;
+ color:var(--palace-unified-action-ink)!important;
+ border-color:var(--palace-unified-action-border)!important;
+ box-shadow:var(--palace-unified-action-shadow)!important;
+ text-shadow:none!important;
+}
+/* Preserve readable labels and the moon symbol on the long Wander card. */
+.full-palace-shell .full-topbar .full-top-actions .write-action span,
+.full-palace-shell .palace-passage .palace-passage-wander span,
+.full-palace-shell .legacy-reading-page .reading-compass .reading-compass-wander :is(span,b,small){
+ color:inherit!important;
+ text-shadow:none!important;
+}
+.full-palace-shell .full-topbar .global-search-live>button[type="submit"]:hover:not(:disabled),
+.full-palace-shell .full-topbar .full-top-actions .write-action:hover,
+.full-palace-shell .palace-passage .palace-passage-wander:hover,
+.full-palace-shell .legacy-reading-page .reading-compass .reading-compass-wander:hover:not(:disabled){
+ background:var(--palace-unified-action-hover)!important;
+ background-image:var(--palace-unified-action-hover)!important;
+ color:var(--palace-unified-action-ink)!important;
+}
+.full-palace-shell .full-topbar .global-search-live>button[type="submit"]:focus-visible,
+.full-palace-shell .full-topbar .full-top-actions .write-action:focus-visible,
+.full-palace-shell .palace-passage .palace-passage-wander:focus-visible,
+.full-palace-shell .legacy-reading-page .reading-compass .reading-compass-wander:focus-visible{
+ outline:3px solid var(--palace-unified-action-border)!important;
+ outline-offset:3px;
+}
+/* Retain clear disabled states; an unavailable Wander is not clickable. */
+.full-palace-shell .legacy-reading-page .reading-compass .reading-compass-wander:disabled{
+ cursor:not-allowed;
+ opacity:.55;
+}
+@media(prefers-reduced-motion:reduce){
+ .full-palace-shell .full-topbar .global-search-live>button[type="submit"],
+ .full-palace-shell .full-topbar .full-top-actions .write-action,
+ .full-palace-shell .palace-passage .palace-passage-wander,
+ .full-palace-shell .legacy-reading-page .reading-compass .reading-compass-wander{
+  transition:none!important;
+ }
+}
