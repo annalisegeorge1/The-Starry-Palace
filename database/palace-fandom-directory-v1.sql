@@ -17,13 +17,18 @@ CREATE INDEX IF NOT EXISTS fandom_directory_media_gin
 CREATE INDEX IF NOT EXISTS fandom_directory_franchise_idx
  ON public.fandom_directory (lower(franchise));
 ALTER TABLE public.fandom_directory ENABLE ROW LEVEL SECURITY;
-DROP POLICY IF EXISTS "public can browse registered fandoms" ON public.fandom_directory;
-CREATE POLICY "public can browse registered fandoms" ON public.fandom_directory
- FOR SELECT TO anon, authenticated
- USING (
-  EXISTS (SELECT 1 FROM public.tags t WHERE t.id=tag_id
-          AND t.category='fandom' AND t.status IN ('canonical','community'))
- );
+DO $fandom_policy$
+BEGIN
+ IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE schemaname='public'
+  AND tablename='fandom_directory' AND policyname='public can browse registered fandoms') THEN
+  CREATE POLICY "public can browse registered fandoms" ON public.fandom_directory
+   FOR SELECT TO anon, authenticated
+   USING (
+    EXISTS (SELECT 1 FROM public.tags t WHERE t.id=tag_id
+     AND t.category='fandom' AND t.status IN ('canonical','community'))
+   );
+ END IF;
+END $fandom_policy$;
 GRANT SELECT ON public.fandom_directory TO anon, authenticated;
 
 -- Add independent fandom vocabulary only where no existing tag matches.
