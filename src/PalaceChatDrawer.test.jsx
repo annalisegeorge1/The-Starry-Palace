@@ -37,14 +37,14 @@ describe('Palace quick chat',()=>{
   expect(await screen.findByText('River')).toBeTruthy();
   fireEvent.click(screen.getByRole('button',{name:/Groups/}));
   expect(await screen.findByText('Poetry Circle')).toBeTruthy();
-  expect(screen.getByText('Moonlight Readers')).toBeTruthy();
+  expect(screen.getAllByText('Moonlight Readers').length).toBeGreaterThan(0);
   expect(await screen.findByText('Welcome to the circle')).toBeTruthy();
   expect(screen.getByText('2 members · Invitation-only group')).toBeTruthy();
  });
  it('starts groups with selected invitees rather than silently adding members',async()=>{
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
   fireEvent.click(screen.getByRole('button',{name:/Groups/}));
-  fireEvent.click(screen.getByRole('button',{name:/Group/}));
+  fireEvent.click(screen.getByRole('button',{name:'＋ Group'}));
   fireEvent.change(screen.getByRole('textbox',{name:'Group name'}),{target:{value:'Writers Tea Room'}});
   fireEvent.change(screen.getByRole('textbox',{name:'Search people to invite'}),{target:{value:'Night'}});
   fireEvent.click(screen.getByRole('button',{name:'Find'}));
@@ -64,7 +64,7 @@ describe('Palace quick chat',()=>{
  it('sends the selected group message without exposing it in Direct chat',async()=>{
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
   fireEvent.click(screen.getByRole('button',{name:/Groups/}));
-  await screen.findByText('Moonlight Readers');
+  await screen.findAllByText('Moonlight Readers');
   fireEvent.change(screen.getByRole('textbox',{name:'Write a group message'}),{target:{value:'We are gathering tonight.'}});
   fireEvent.click(screen.getByRole('button',{name:/Send/}));
   await waitFor(()=>expect(sendPalaceGroupMessage).toHaveBeenCalledWith('group-one',user,'We are gathering tonight.'));
