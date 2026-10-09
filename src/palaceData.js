@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import {INITIAL_FANDOM_DIRECTORY} from './palaceFandomCatalogue';
 
 function needClient(){if(!supabase) throw new Error('The Palace data connection is not configured.');return supabase}
 const identityMarkCache=new Map();
@@ -339,6 +340,72 @@ export async function getStoryHistoryMetadata(workIds=[]){
  }
  return Object.fromEntries(ids.map(id=>[id,results.filter(c=>c.work_id===id)]));
 }
+/**
+ * Fandom directory is additive to the existing community tag system.
+ * Early deployments gracefully fall back to the curated client catalogue
+ * until the new public metadata table has been migrated.
+ */
+export async function getPalaceFandomDirectory(){
+ const client=needClient();
+ const pages=[];
+ for(let offset=0;offset<1500;offset+=250){
+  const result=await client.from('tags')
+   .select('id,name,category,status')
+   .eq('category','fandom').in('status',['canonical','community'])
+   .order('name').range(offset,offset+249);
+  if(result.error)throw result.error;
+  pages.push(...(result.data||[]));
+  if((result.data||[]).length<250)break;
+ }
+ let counts=[];
+ try{counts=await searchPalaceTags('','fandom',250)}catch{}
+ const usage=new Map(counts.map(tag=>[tag.id,Number(tag.usage_count||0)]));
+ let metadata=[];
+ try{
+  const result=await client.from('fandom_directory')
+   .select('tag_id,media_categories,subcategory,aliases,franchise').limit(1500);
+  if(!result.error)metadata=result.data||[];
+ }catch{}
+ const known=new Map(metadata.map(row=>[row.tag_id,row]));
+ const catalogue=new Map(INITIAL_FANDOM_DIRECTORY.map(row=>[row.name.toLowerCase(),row]));
+ return pages.map(tag=>{
+  const extra=known.get(tag.id)||catalogue.get(String(tag.name).toLowerCase())||{};
+  return{...tag,usage_count:usage.get(tag.id)||0,media_categories:extra.media_categories||['uncategorized'],
+   subcategory:extra.subcategory||'',aliases:extra.aliases||[],
+   franchise:extra.franchise||''};
+ });
+}
+/** Read only eligible, published stories connected to one or more real fandom IDs. */
+export async function getStoriesForFandoms(tagIds=[],mode='any'){
+ const cleanIds=(tagIds||[]).filter(id=>/^[a-f0-9-]{36}$/i.test(String(id)));
+ const chosen=[...new Set(cleanIds)].slice(0,5);
+ if(!chosen.length)return[];
+ const client=needClient();
+ const valid=await client.from('tags').select('id').in('id',chosen)
+  .eq('category','fandom').in('status',['canonical','community']);
+ if(valid.error)throw valid.error;
+ const ids=(valid.data||[]).map(x=>x.id);
+ if(!ids.length||mode==='all'&&ids.length!==chosen.length)return[];
+ const links=await client.from('work_tags').select('work_id,tag_id')
+  .in('tag_id',ids).limit(3000);
+ if(links.error)throw links.error;
+ const matches=new Map();
+ for(const row of links.data||[]){
+  if(!matches.has(row.work_id))matches.set(row.work_id,new Set());
+  matches.get(row.work_id).add(row.tag_id);
+ }
+ const workIds=[...matches.entries()]
+  .filter(([,set])=>mode==='all'?ids.every(id=>set.has(id)):set.size>0)
+  .map(([id])=>id).slice(0,100);
+ if(!workIds.length)return[];
+ const result=await client.from('works')
+  .select('id,title,slug,summary,rating,completion_status,cover_url,last_published_at,profiles!works_author_id_fkey(username,display_name)')
+  .in('id',workIds).eq('publication_status','published').eq('visibility','public')
+  .order('last_published_at',{ascending:false}).limit(100);
+ if(result.error)throw result.error;
+ return result.data||[];
+}
+
 export async function getTagConstellation(){return searchPalaceTags('','all',120)}
 export async function searchPalaceTags(query='',category='all',limit=100){const args={p_query:String(query||''),p_category:category==='all'?null:category,p_limit:limit};const modern=await needClient().rpc('search_palace_tags_v2',args);if(!modern.error)return modern.data||[];const legacy=await needClient().rpc('search_palace_tags',args);if(legacy.error)throw modern.error||legacy.error;return legacy.data||[]}
 export async function getTagFamilyCounts(){const{data,error}=await needClient().rpc('get_tag_family_counts');if(error)throw error;return data||[]}
