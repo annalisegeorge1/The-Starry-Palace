@@ -1,9 +1,10 @@
 import React,{useEffect,useMemo,useRef,useState} from 'react';
 import {structureClassicText} from './classicTextStructure';
 import ClassicBookCover from './ClassicBookCover';
-import {paginateClassicBlocks,classicContents,clampClassicPage,classicPageKey} from './archiveReaderModel';
+import {paginateClassicBlocks,classicContents,clampClassicPage,classicPageKey,firstClassicStoryBlock,classicStoryPage} from './archiveReaderModel';
 import {readPalaceChoice,readPalaceNumber,writePalacePreference,removePalacePreference} from './browserPreferences';
 import './archive-classic-reader.css';
+import './archive-classic-open-story.css';
 
 const FONT_KEY='palace-classic-font';
 const TONE_KEY='palace-classic-tone';
@@ -19,17 +20,24 @@ export default function ArchiveClassicReader({record,text}){
 }
 function ArchiveClassicReaderEdition({record,text}){
  const blocks=useMemo(()=>structureClassicText(text?.body_text||''),[text?.body_text]);
- const pages=useMemo(()=>paginateClassicBlocks(blocks),[blocks]);
+ // Keep the original text intact, but make the first story chapter its own page.
+ const storyBlock=useMemo(()=>firstClassicStoryBlock(blocks),[blocks]);
+ const pages=useMemo(()=>paginateClassicBlocks(blocks,36,storyBlock),[blocks,storyBlock]);
+ const storyPage=useMemo(()=>classicStoryPage(pages,storyBlock),[pages,storyBlock]);
  const contents=useMemo(()=>classicContents(pages),[pages]);
  const pageKey=classicPageKey(record?.id);
- const [page,setPage]=useState(()=>clampClassicPage(readPalaceNumber(pageKey,0,0,Math.max(0,pages.length-1)),pages.length));
+ const [page,setPage]=useState(()=>{
+  const saved=readPalaceNumber(pageKey,-1,-1,Math.max(0,pages.length-1));
+  // Older sessions left on an opening-page/TOC should reopen at the story.
+  return clampClassicPage(saved<=0?storyPage:saved,pages.length);
+ });
  const [fontSize,setFontSize]=useState(()=>readPalaceNumber(FONT_KEY,19,FONT_MIN,FONT_MAX));
  const [tone,setTone]=useState(()=>readPalaceChoice(TONE_KEY,['palace','paper','soft'],'palace'));
  const [width,setWidth]=useState(()=>readPalaceChoice(WIDTH_KEY,['narrow','standard','wide'],'standard'));
  const [leading,setLeading]=useState(()=>readPalaceChoice(LEADING_KEY,['compact','comfortable','airy'],'comfortable'));
  const readerRef=useRef(null);
  const pendingHeadingRef=useRef(null);
- const pendingPageTopRef=useRef(page>0);
+ const pendingPageTopRef=useRef(true);
  const [chosenHeading,setChosenHeading]=useState(null);
  const [editionOpen,setEditionOpen]=useState(false);
  const current=clampClassicPage(page,pages.length);
@@ -76,7 +84,7 @@ function ArchiveClassicReaderEdition({record,text}){
  }
  const activeHeading=[...contents].reverse().find(item=>item.pageIndex<=current);
  return <article ref={readerRef} className={'archive-reader-sheet archive-classic-experience tone-'+tone+' width-'+width+' leading-'+leading} style={{'--classic-font-size':fontSize+'px'}}>
-  <header className="archive-classic-frontmatter">
+  <header className="archive-classic-frontmatter archive-classic-compact-heading">
    <p className="archive-classic-kicker">PALACE CLASSICS · {record?.host_mode==='excerpt'?'HOSTED EXCERPT':'HOSTED EDITION'}</p>
    <ClassicBookCover record={record} className="archive-classic-frontmatter-cover"/>
    <h3>{record?.title||'Untitled archive work'}</h3>
@@ -87,6 +95,10 @@ function ArchiveClassicReaderEdition({record,text}){
     {text?.first_publication_year&&<span>Source publication: {text.first_publication_year}</span>}
    </div>
    {record?.host_mode==='excerpt'&&<p className="archive-classic-excerpt-note">Only the hosted excerpt is available in this reader. The complete work is not implied.</p>}
+   <div className="archive-classic-opening-actions">
+    <button type="button" className="archive-classic-start-story" onClick={()=>changePage(storyPage)} disabled={storyPage===current}>✦ {storyPage===current?'You are at the story':'Start the actual story →'}</button>
+    {storyPage>0&&<button type="button" className="archive-classic-opening-pages" onClick={()=>changePage(0)} disabled={current===0}>Opening pages &amp; contents</button>}
+   </div>
    <button type="button" className="archive-classic-edition-jump" onClick={()=>{
     setEditionOpen(true);
     const details=readerRef.current?.querySelector('.archive-classic-edition');
@@ -112,7 +124,7 @@ function ArchiveClassicReaderEdition({record,text}){
    <label>Reading page
     <select aria-label="Jump to reading page" value={current} onChange={e=>changePage(e.target.value)}>{pages.map((_,index)=><option key={index} value={index}>{index+1} of {total}</option>)}</select>
    </label>
-   <span className="archive-classic-progress" aria-live="polite">{total?Math.round(((current+1)/total)*100):0}% through this hosted text</span>
+   <span className="archive-classic-progress" aria-live="polite">{total?Math.round(((current+1)/total)*100):0}% through this hosted text{storyPage>0&&current<storyPage?' · Opening material':''}</span>
   </div>
   <section className="archive-reader-copy archive-classic-page" aria-label={'Hosted text — reading page '+(current+1)}>
    {(pages[current]||[]).map(block=>block.kind==='heading'?<h2 key={block.sourceIndex} data-classic-heading={block.sourceIndex}>{block.text}</h2>:block.kind==='verse'?<p key={block.sourceIndex} className="archive-classic-verse">{block.text}</p>:<p key={block.sourceIndex}>{block.text}</p>)}
