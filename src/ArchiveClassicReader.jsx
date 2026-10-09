@@ -10,7 +10,13 @@ const WIDTH_KEY='palace-classic-width';
 const LEADING_KEY='palace-classic-leading';
 const FONT_MIN=16,FONT_MAX=28;
 
+// Each hosted classic has its own reading session. Remounting the edition
+// when its identity changes prevents a previous book's page or contents
+// selection from leaking into the next book during in-app navigation.
 export default function ArchiveClassicReader({record,text}){
+ return <ArchiveClassicReaderEdition key={record?.id||'unselected-classic'} record={record} text={text}/>;
+}
+function ArchiveClassicReaderEdition({record,text}){
  const blocks=useMemo(()=>structureClassicText(text?.body_text||''),[text?.body_text]);
  const pages=useMemo(()=>paginateClassicBlocks(blocks),[blocks]);
  const contents=useMemo(()=>classicContents(pages),[pages]);
