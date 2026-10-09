@@ -4,7 +4,7 @@ import {initialReaderChapterPage,matchReaderChapters,readerChapterPage,READER_CH
 import './reader-chapter-shelf.css';
 
 /** Calm, searchable chapter shelf after the text. Pages only the chapters already allowed by the reader. */
-export default function ReaderChapterShelf({chapters=[],chapterId,workSlug}){
+function ReaderChapterShelf({chapters=[],chapterId,workSlug}){
  const [open,setOpen]=useState(()=>chapters.length<=12);
  const [query,setQuery]=useState('');
  const [page,setPage]=useState(()=>initialReaderChapterPage(chapters,chapterId));
@@ -34,3 +34,5 @@ export default function ReaderChapterShelf({chapters=[],chapterId,workSlug}){
   </details>
  </section>;
 }
+
+export default React.memo(ReaderChapterShelf);
