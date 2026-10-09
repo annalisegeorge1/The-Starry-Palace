@@ -54,6 +54,7 @@ import './reader-journey-path.css';
 import './reader-chapter-flow.css';
 import './work-overview-story-info.css';
 import './reader-comfort-finish.css';
+import './palace-prismatic-gradients.css';
 
 
 const chunkErrorPattern=/dynamically imported module|importing a module script failed|failed to fetch|chunkloaderror|loading chunk|room load timeout|networkerror/i;
