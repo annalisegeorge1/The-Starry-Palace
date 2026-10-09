@@ -64,6 +64,20 @@ export async function getPalaceTitleOptions(userId){
  const entitled=new Set((entitlements.data||[]).map(x=>x.title));
  return (catalogue.data||[]).filter(x=>x.public_selectable||entitled.has(x.title)).map(x=>({...x,entitled:entitled.has(x.title)}))
 }
+/**
+ * Change only the signed-in member's displayed title. Do not rewrite their
+ * onboarding choices, discovery settings, or pen name.
+ * Palace title entitlements are enforced again by the database trigger.
+ */
+export async function wearMyPalaceTitle(userId,title){
+ const choice=String(title||'').trim();
+ if(!userId||!choice)throw new Error('Choose a Palace title first.');
+ const available=await getPalaceTitleOptions(userId);
+ if(!available.some(row=>row.title===choice))throw new Error('This title is not available to your Palace account yet.');
+ const {data,error}=await needClient().from('profiles').update({title:choice}).eq('id',userId).select('title').single();
+ if(error)throw error;
+ return data.title;
+}
 export async function getMyCelestialPoints(){
  const{data,error}=await needClient().rpc('get_my_celestial_points');if(error)throw error;
  return data?.[0]||{lifetime_points:0,giving_points:0,receiving_points:0,participation_points:0}
