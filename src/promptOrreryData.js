@@ -721,10 +721,14 @@ function matchesFilters(recipe,filters={}){
  return Object.entries(filters||{}).every(([key,value])=>!value||value==='all'||recipe?.[key]===value)
 }
 
-export function randomOrreryRecipe(previousId='',filters={}){
+export function randomOrreryRecipe(previousId='',filters={},recentIds=[]){
  const pool=PROMPT_ORRERY_RECIPES.filter(recipe=>matchesFilters(recipe,filters));
  if(!pool.length)return null;
- let next=pool[Math.floor(Math.random()*pool.length)];
- if(pool.length>1&&next.id===previousId)next=pool[(pool.indexOf(next)+1)%pool.length];
- return next;
+ const avoid=new Set(Array.isArray(recentIds)?recentIds.slice(0,12):[]);
+ if(previousId)avoid.add(previousId);
+ // Prefer a new orbit, but allow reuse when a narrow filter contains very few choices.
+ const fresh=pool.filter(recipe=>!avoid.has(recipe.id));
+ const candidates=fresh.length?fresh:pool.filter(recipe=>recipe.id!==previousId);
+ const available=candidates.length?candidates:pool;
+ return available[Math.floor(Math.random()*available.length)];
 }
