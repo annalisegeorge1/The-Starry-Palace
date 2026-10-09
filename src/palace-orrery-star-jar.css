@@ -1,0 +1,53 @@
+/* Saved constellations: quiet until opened, no animations or image downloads. */
+.palace-shell .prompt-orrery .prompt-star-save[aria-pressed="true"]{
+ border-color:#b4a7fb;background:linear-gradient(115deg,rgba(108,65,177,.44),rgba(41,119,144,.33));color:#fff;
+}
+.palace-shell .prompt-star-jar{
+ margin-top:13px;border:1px solid rgba(163,145,225,.34);border-radius:15px;
+ background:linear-gradient(120deg,rgba(64,42,104,.18),rgba(34,99,131,.13));overflow:hidden;
+}
+.palace-shell .prompt-star-jar>summary{
+ cursor:pointer;padding:13px 16px;font-weight:750;letter-spacing:.01em;list-style-position:inside;
+ display:list-item;color:inherit;
+}
+.palace-shell .prompt-star-jar>summary small{
+ display:inline-block;margin-inline-start:10px;color:inherit;opacity:.79;font-weight:500;
+}
+.palace-shell .prompt-star-items{display:grid;gap:8px;padding:0 12px 13px}
+.palace-shell .prompt-star-items article{
+ display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+ padding:11px 13px;border-radius:11px;border:1px solid rgba(167,154,220,.24);
+ background:linear-gradient(125deg,rgba(83,70,142,.18),rgba(42,118,139,.10));
+}
+.palace-shell .prompt-star-items article>div:first-child{display:grid;gap:4px;min-width:0;flex:1 1 220px}
+.palace-shell .prompt-star-items strong{font-size:.94rem;overflow-wrap:anywhere}
+.palace-shell .prompt-star-items small{font-size:.77rem;opacity:.85;overflow-wrap:anywhere}
+.palace-shell .prompt-star-actions{display:flex;gap:7px;flex-wrap:wrap}
+.palace-shell .prompt-star-actions button{
+ border:1px solid rgba(163,164,221,.50);border-radius:9px;background:rgba(94,85,150,.2);
+ padding:7px 10px;color:inherit;cursor:pointer;font:inherit;font-size:.8rem;min-height:35px;
+}
+.palace-shell .prompt-star-actions button:hover{border-color:#bdabed}
+.palace-shell .prompt-star-actions button:focus-visible,
+.palace-shell .prompt-star-jar>summary:focus-visible{outline:3px solid #90d7ef;outline-offset:2px}
+.palace-shell.daylight .prompt-star-jar{
+ background:linear-gradient(125deg,rgba(220,204,248,.52),rgba(201,237,241,.53));border-color:#c3b2dc;color:#2c3155;
+}
+.palace-shell.daylight .prompt-star-items article{
+ background:rgba(255,255,255,.53);border-color:#cfc1e4;color:#2c3155;
+}
+.palace-shell.daylight .prompt-orrery .prompt-star-save[aria-pressed="true"]{
+ background:linear-gradient(110deg,#dfd4fa,#cceef2);border-color:#7761b6;color:#2c2752;
+}
+.palace-shell.daylight .prompt-star-actions button{background:#f6f2ff;color:#302857;border-color:#b4a0d3}
+.palace-shell .writing-earned-points-note.palace-contextual-points{
+ display:flex;align-items:center;flex-wrap:wrap;gap:9px 13px;
+}
+.palace-shell .writing-earned-points-note.palace-contextual-points>strong{font-size:.94rem}
+.palace-shell .writing-earned-points-note.palace-contextual-points>a{margin-inline-start:auto}
+@media(max-width:600px){
+ .palace-shell .prompt-star-jar>summary small{display:block;margin:4px 0 0 20px}
+ .palace-shell .prompt-star-actions{width:100%}
+ .palace-shell .prompt-star-actions button{flex:1 1 auto;min-height:42px}
+ .palace-shell .writing-earned-points-note.palace-contextual-points>a{margin-inline-start:0}
+}

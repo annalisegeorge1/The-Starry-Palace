@@ -52,6 +52,15 @@ describe('Prompt Orrery expansion',()=>{
   expect(descriptions.size).toBe(1000);
   expect(PROMPT_ORRERY_RECIPES.at(-1).id).toBe('orrery-7012');
  });
+ it('avoids recent constellations until narrow filters exhaust the pool',()=>{
+  const pool=PROMPT_ORRERY_RECIPES.filter(recipe=>recipe.flavour==='Slasher & Survival');
+  expect(pool.length).toBeGreaterThan(10);
+  const recent=pool.slice(0,12).map(recipe=>recipe.id);
+  for(let n=0;n<6;n++)expect(recent).not.toContain(randomOrreryRecipe('',{flavour:'Slasher & Survival'},recent).id);
+  const only=pool[0];
+  expect(randomOrreryRecipe(only.id,{flavour:only.flavour,genre:only.genre,object:only.object,twist:only.twist,mood:only.mood,character:only.character,setting:only.setting,relationship:only.relationship,conflict:only.conflict,difficulty:only.difficulty}).id).toBe(only.id);
+  expect(randomOrreryRecipe('',{flavour:'Not a real family'})).toBeNull();
+ });
  it('keeps the family filter compatible with random pulls',()=>{
   for(const flavour of [...Object.keys(ORRERY_EXPANSION_FAMILIES),...Object.keys(ORRERY_NEW_ORBITS),...Object.keys(ORRERY_DARK_ORBITS)]){
    const prompt=randomOrreryRecipe('',{flavour});
