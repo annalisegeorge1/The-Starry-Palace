@@ -35,6 +35,14 @@ describe('volunteer testing model',()=>{
   }
   expect(betaChecksFor('writer').find(x=>x.id==='network')?.hint).toContain('disposable text');
  });
+ it('checks private manuscript previews and publication visibility without publishing',()=>{
+  for(const role of ['writer','artist']){
+   const checks=betaChecksFor(role);
+   expect(checks.some(item=>item.id==='draft-preview')).toBe(true);
+   expect(checks.some(item=>item.id==='release-visibility')).toBe(true);
+   expect(checks.find(item=>item.id==='release-visibility').hint).toContain('without confirming');
+  }
+ });
  it('separates success, trouble, and skipped tasks instead of counting them all as passed',()=>{
   const checks=betaChecksFor('reader').slice(0,4);
   const checked={[checks[0].id]:'passed',[checks[1].id]:'stuck',[checks[2].id]:'skipped'};
