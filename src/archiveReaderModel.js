@@ -52,7 +52,10 @@ export function firstClassicStoryBlock(blocks=[]){
   const block=blocks[i];
   if(block?.kind!=='heading')continue;
   const heading=String(block.text||'').trim();
-  const chapter=/^(?:chapter\s+(?:[ivxlcdm]+|\d+|one|two|three|four|five|six|seven|eight|nine|ten|first|second|third)\b|prologue\b|act\s+\w+|scene\s+\w+)/i.test(heading);
+  // Chapter labels differ across historical editions: numbered all-caps
+  // headings in Dumas, Roman numeral titles in Dickens, and an introductory
+  // Prelude in Eliot's Middlemarch are all genuine literary entry points.
+  const chapter=/^(?:chapter\s+(?:[ivxlcdm]+|\d+|one|two|three|four|five|six|seven|eight|nine|ten|first|second|third)\b|prologue\b|prelude\b|overture\b|interlude\b|act\s+\w+|scene\s+\w+|[IVXLCDM]{1,7}\.\s+[A-Z]|[1-9]\d{0,2}\s+[A-Z])/i.test(heading);
   const book=/^(?:book\s+\w+|part\s+\w+|volume\s+\w+)/i.test(heading);
   if(!chapter&&!book)continue;
   let meaningfulLength=0,paragraphs=0;
