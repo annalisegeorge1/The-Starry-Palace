@@ -29,6 +29,24 @@ describe('inviting Palace entrance',()=>{
   expect(document.querySelectorAll('.palace-choice-card')).toHaveLength(3);
   expect(screen.queryByRole('navigation',{name:'Events and literary heritage'})).toBeNull();
  });
+ it('does not mount hidden discovery content until the section is opened and remembers the first opening',()=>{
+  let mounts=0;
+  function DiscoveryProbe(){React.useEffect(()=>{mounts+=1},[]);return <div>Ancient story archives are ready</div>}
+  const {container}=render(<MemoryRouter><PalaceHomeMore><DiscoveryProbe/></PalaceHomeMore></MemoryRouter>);
+  const fold=container.querySelector('.palace-home-more');
+  expect(fold.open).toBe(false);
+  expect(mounts).toBe(0);
+  expect(screen.queryByText('Ancient story archives are ready')).toBeNull();
+  fireEvent.click(screen.getByText('Discover more of the Palace'));
+  expect(fold.open).toBe(true);
+  expect(screen.getByText('Ancient story archives are ready')).toBeTruthy();
+  expect(mounts).toBe(1);
+  fireEvent.click(screen.getByText('Discover more of the Palace'));
+  expect(fold.open).toBe(false);
+  fireEvent.click(screen.getByText('Discover more of the Palace'));
+  expect(fold.open).toBe(true);
+  expect(mounts).toBe(1);
+ });
  it('keeps every discovery destination inside a single accessible, expandable section',()=>{
   const {container}=render(<MemoryRouter>
    <PalaceHomeMore>
