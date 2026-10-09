@@ -1,0 +1,138 @@
+/* The observance itself is the artwork: no boxed date tile or generic rectangle. */
+.palace-shell .heritage-grid.enriched .heritage-card,
+.palace-shell .palace-month-calendar.heritage .calendar-selection li{
+ --holiday-wash:linear-gradient(125deg,rgba(53,74,117,.47),rgba(58,42,101,.48),rgba(18,22,45,.79));
+ --holiday-ink:#f5efff;
+ --holiday-light:#baabd9;
+}
+.heritage-theme-winter{--holiday-wash:linear-gradient(120deg,rgba(34,105,94,.72),rgba(50,88,108,.57) 52%,rgba(136,67,81,.53)),radial-gradient(circle at 93% 5%,rgba(246,209,154,.24),transparent 45%)}
+.heritage-theme-spring{--holiday-wash:linear-gradient(120deg,rgba(125,97,165,.68),rgba(111,157,158,.54),rgba(215,134,155,.38))}
+.heritage-theme-carnival{--holiday-wash:linear-gradient(122deg,rgba(128,62,147,.77),rgba(44,133,152,.58) 55%,rgba(161,100,52,.56))}
+.heritage-theme-lamplight{--holiday-wash:linear-gradient(125deg,rgba(105,59,137,.78),rgba(160,101,62,.61),rgba(122,64,123,.69))}
+.heritage-theme-crescent{--holiday-wash:linear-gradient(115deg,rgba(30,93,108,.79),rgba(49,91,99,.67),rgba(50,65,119,.75))}
+.heritage-theme-lunar{--holiday-wash:linear-gradient(123deg,rgba(143,65,93,.78),rgba(147,91,62,.61),rgba(48,111,99,.6))}
+.heritage-theme-twilight{--holiday-wash:linear-gradient(122deg,rgba(69,57,135,.78),rgba(90,69,120,.65),rgba(20,31,67,.82))}
+.heritage-theme-midnight{--holiday-wash:linear-gradient(122deg,rgba(47,69,141,.80),rgba(85,62,137,.62),rgba(32,104,123,.64))}
+.heritage-theme-olive{--holiday-wash:linear-gradient(120deg,rgba(41,101,85,.79),rgba(40,70,65,.72),rgba(113,61,75,.61))}
+.heritage-theme-river{--holiday-wash:linear-gradient(118deg,rgba(30,105,147,.79),rgba(37,108,92,.64),rgba(81,79,132,.62))}
+.heritage-theme-horizon{--holiday-wash:linear-gradient(118deg,rgba(71,101,154,.73),rgba(129,87,133,.56),rgba(40,100,113,.7))}
+.heritage-theme-festival{--holiday-wash:linear-gradient(120deg,rgba(116,64,142,.76),rgba(58,100,153,.64),rgba(130,74,117,.69))}
+.heritage-theme-heritage{--holiday-wash:linear-gradient(120deg,rgba(52,93,103,.79),rgba(67,85,118,.67),rgba(84,77,126,.73))}
+.heritage-theme-sepia{--holiday-wash:linear-gradient(122deg,rgba(102,77,85,.79),rgba(121,91,73,.64),rgba(75,65,101,.74))}
+.heritage-theme-sapphire{--holiday-wash:linear-gradient(122deg,rgba(45,80,126,.79),rgba(51,112,129,.65),rgba(70,67,135,.72))}
+.heritage-theme-mint{--holiday-wash:linear-gradient(120deg,rgba(39,99,88,.72),rgba(66,107,107,.65),rgba(72,82,132,.69))}
+.heritage-theme-rainbow{
+ --holiday-wash:linear-gradient(115deg,
+  rgba(223,88,141,.68) 0%,rgba(202,134,90,.59) 17%,
+  rgba(129,154,78,.57) 34%,rgba(53,153,152,.62) 52%,
+  rgba(72,108,193,.65) 70%,rgba(161,95,193,.65) 88%,
+  rgba(216,95,160,.65) 100%)
+}
+/* Override the legacy festival/family rectangles with a theme covering the entire card. */
+.palace-shell .heritage-grid.enriched .heritage-card{
+ background:var(--holiday-wash)!important;
+ border:1px solid rgba(187,177,230,.32)!important;
+ border-radius:20px!important;isolation:isolate;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 12px 30px rgba(7,9,29,.13)!important;
+ min-width:0
+}
+.palace-shell .heritage-grid.enriched .heritage-card::after{
+ display:none!important; /* remove the old solid rectangle/stripe accent */
+}
+.palace-shell .heritage-grid.enriched .heritage-card .heritage-date,
+.palace-shell .heritage-grid.enriched .heritage-card.heritage-prism .heritage-date{
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ min-width:0;padding:6px 1px!important;
+ border:0!important;border-radius:0!important;
+ background:transparent!important;box-shadow:none!important;
+ backdrop-filter:none!important;-webkit-backdrop-filter:none!important
+}
+.palace-shell .heritage-grid.enriched .heritage-card .heritage-date :is(.heritage-month,strong,b){
+ color:#fff!important;
+ text-shadow:0 2px 10px rgba(11,18,42,.29);
+}
+.palace-shell .heritage-grid.enriched .heritage-card .heritage-date>strong{
+ font:650 clamp(1.7rem,3vw,2.4rem)/1 Georgia,serif!important
+}
+.palace-shell .heritage-grid.enriched .heritage-card :is(h2,p,small,blockquote,.heritage-context){
+ color:#f9f5ff!important;overflow-wrap:anywhere
+}
+.palace-shell .heritage-grid.enriched .heritage-card h2{
+ font-size:clamp(1.08rem,1.65vw,1.42rem);line-height:1.28
+}
+.palace-shell .heritage-grid.enriched .heritage-card p,
+.palace-shell .heritage-grid.enriched .heritage-card .heritage-context{
+ opacity:.94;line-height:1.62
+}
+.palace-shell .heritage-grid.enriched .heritage-card :is(button,a):focus-visible,
+.palace-shell .palace-month-calendar.heritage :is(button,a):focus-visible{outline:3px solid #c7e8ff;outline-offset:3px}
+/* Rainbow treatment must reach all explicitly LGBTQ+ content, not only one card type. */
+.palace-shell .chic-story-catalogue .story-row.prism-story,
+.palace-shell .chic-discovery-court .legacy-constellation-list article.prism-story,
+.palace-shell .comic-card.prism-comic,
+.palace-shell .heritage-grid.enriched .heritage-card.heritage-prism{
+ background:linear-gradient(116deg,
+  rgba(228,89,143,.31),rgba(226,148,94,.27) 17%,
+  rgba(126,164,92,.25) 33%,rgba(60,176,160,.27) 50%,
+  rgba(75,127,214,.3) 68%,rgba(163,100,212,.34) 85%,rgba(231,96,162,.3)),
+  linear-gradient(145deg,#28213e,#182442)!important;
+ background-size:180% 180%,100% 100%!important;
+ border-color:rgba(216,182,238,.58)!important;
+ box-shadow:0 15px 40px rgba(31,16,74,.21),inset 0 1px 0 rgba(255,255,255,.1)!important
+}
+.palace-shell .chic-discovery-court .legacy-constellation-list article.prism-story h3,
+.palace-shell .chic-discovery-court .legacy-constellation-list article.prism-story h3 a{
+ color:#fff6fe!important
+}
+.palace-shell .palace-month-calendar.heritage .palace-calendar-days>button[class*="has-theme-"]{
+ background:var(--holiday-wash)!important;
+ border-color:rgba(185,173,227,.32)!important;color:#fff!important
+}
+.palace-shell .palace-month-calendar.heritage .palace-calendar-days>button.has-theme-rainbow{
+ background:linear-gradient(120deg,rgba(231,107,156,.44),rgba(233,163,93,.35) 17%,rgba(149,195,110,.33) 34%,rgba(90,194,172,.37) 52%,rgba(102,152,227,.42) 70%,rgba(185,115,220,.44) 88%,rgba(225,113,181,.44)),linear-gradient(145deg,#292342,#1e2b4d)!important;
+ border-color:rgba(236,189,233,.6)!important
+}
+.palace-shell .palace-month-calendar.heritage .calendar-selection li[class*="heritage-theme-"]{
+ background:var(--holiday-wash)!important;border-radius:13px;
+ border:1px solid rgba(172,169,229,.26)!important;
+ padding:12px 14px;color:#fff!important
+}
+.palace-shell .palace-month-calendar.heritage .calendar-selection li :is(strong,p,small){
+ color:inherit!important
+}
+.palace-shell.daylight .heritage-grid.enriched .heritage-card{
+ filter:none;color:#fff!important
+}
+.palace-shell.daylight .chic-story-catalogue .story-row.prism-story,
+.palace-shell.daylight .chic-discovery-court .legacy-constellation-list article.prism-story,
+.palace-shell.daylight .comic-card.prism-comic{
+ background:linear-gradient(116deg,
+  rgba(255,190,215,.73),rgba(255,215,174,.56) 17%,
+  rgba(211,237,184,.56) 34%,rgba(184,240,223,.63) 52%,
+  rgba(191,214,249,.71) 70%,rgba(223,194,246,.68) 87%,rgba(249,192,225,.69))!important;
+ border-color:#a87ebd!important;color:#392d4e!important
+}
+.palace-shell.daylight .heritage-grid.enriched .heritage-card.heritage-prism{
+ background:linear-gradient(118deg,rgba(188,86,143,.9),rgba(187,128,75,.85) 17%,rgba(88,139,86,.81) 34%,rgba(49,126,125,.89) 52%,rgba(64,100,160,.87) 70%,rgba(141,83,165,.88) 88%,rgba(179,84,142,.88))!important
+}
+.palace-shell.daylight .palace-month-calendar.heritage .palace-calendar-days>button[class*="has-theme-"]{
+ background:linear-gradient(140deg,#e8e3f4,#d9eaf4)!important;color:#302c4a!important
+}
+.palace-shell.daylight .palace-month-calendar.heritage .palace-calendar-days>button.has-theme-rainbow{
+ background:linear-gradient(120deg,#f9d7e4,#f8e7cb 18%,#dfefd7 36%,#d4f0e8 52%,#d9e8fc 70%,#ead9f6 87%,#f7d8ec)!important
+}
+.palace-shell.daylight .palace-month-calendar.heritage .calendar-selection li[class*="heritage-theme-"]{
+ background:linear-gradient(122deg,#eee8f8,#e1f0f5)!important;color:#33294b!important
+}
+@media(max-width:660px){
+ .palace-shell .heritage-grid.enriched .heritage-card{padding:14px!important}
+ .palace-shell .heritage-grid.enriched .heritage-card .heritage-date{padding:3px 0!important}
+ .palace-shell .heritage-grid.enriched .heritage-card .heritage-date>strong{font-size:1.8rem!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .heritage-grid.enriched .heritage-card.heritage-prism,
+ .palace-shell .chic-story-catalogue .story-row.prism-story,
+ .palace-shell .chic-discovery-court .legacy-constellation-list article.prism-story,
+ .palace-shell .comic-card.prism-comic,
+ .palace-shell .palace-month-calendar.heritage .palace-calendar-days>button.has-theme-rainbow{animation:none!important;transition:none!important}
+}
