@@ -58,6 +58,7 @@ import {storyHistoryDetails,storyHistoryLabel,selectStoryHistory} from './storyH
 import {shouldFetchStoryHistory,canShowHistoryChapterDetails} from './storyHistoryLoading';
 import ReadingStoryStats from './ReadingStoryStats';
 import ReaderChapterShelf from './ReaderChapterShelf';
+import './reader-afterword.css';
 import {getPublicWorkBookmarkCount} from './palaceData';
 import {storyOverviewStats} from './storyOverviewStats';
 import ReadingStoryContext from './ReadingStoryContext';
@@ -1633,8 +1634,9 @@ function ReaderChapter({Frame,slug,chapterId}){
    setReaderSaveMessage('Unable to update My Library right now. Please try again.');
   }finally{setReaderSaveBusy(false)}
  }
+ // Keep the readable list stable across scroll-driven position updates.
+ const readable=React.useMemo(()=>data?.work?.chapters?.filter(c=>c.status==='published'||session?.user?.id===data.work.author_id)||[],[data?.work?.chapters,data?.work?.author_id,session?.user?.id]);
  if(data===null)return <Frame><div className="live-state">This chapter is not available.</div></Frame>;
- const readable=data?.work.chapters.filter(c=>c.status==='published'||session?.user?.id===data.work.author_id)||[];
  const idx=readable.findIndex(c=>c.id===chapterId);
  const next=readable.slice(idx+1).find(c=>c.status==='published'||session?.user?.id===data?.work.author_id);
  const prev=readable.slice(0,idx).reverse().find(c=>c.status==='published'||session?.user?.id===data?.work.author_id);
@@ -1682,8 +1684,7 @@ function ReaderChapter({Frame,slug,chapterId}){
    {readerSaveMessage&&<p className="reader-story-passage-status" role="status">{readerSaveMessage}</p>}
    <p className="eyebrow">CHAPTER {data.chapter.position} OF {readable.length||data.work.chapters.length}</p>
    <h1>{data.chapter.title}</h1>
-   {readingBonus&&<p className="reader-earned-points" role="status">{readingBonus}</p>}<div className="reader-meta"><span>{data.chapter.word_count.toLocaleString()} words</span><span>About {Math.max(1,Math.ceil(data.chapter.word_count/220))} min</span><span>{progress}% through this work</span>{session&&readerPlace>1&&<span>Private place saved</span>}<a className="reader-contents-jump" href="#palace-reader-chapters">Chapter list ↓</a></div><div className="chapter-praise-room"><div><small>LEAVE A LITTLE LIGHT ON THIS CHAPTER</small><strong>Heart · Star · Moon · Crown</strong></div><div className="chapter-praise-actions">{[['heart','♡','Heart'],['star','☆','Star'],['moon','☾','Moon'],['crown','♕','Crown']].map(([k,icon,label])=><button key={k} type="button" className={(praise.praise===k?'active ':'')+'praise-'+k} aria-pressed={praise.praise===k} disabled={praiseBusy===k||session?.user?.id===data.work.author_id} onClick={()=>praiseChapter(k)}>{icon}<span>{label}</span><em>{Number(praise.counts?.[k]||0).toLocaleString()}</em></button>)}<button type="button" className="share-light" onClick={shareChapter}>↗<span>Share</span></button></div>{praiseNotice&&<p role="status">{praiseNotice}</p>}</div>
-   <div className="reader-progress-track" aria-label={progress+' percent through this work'}><i style={{width:progress+'%'}}/></div>
+   {readingBonus&&<p className="reader-earned-points" role="status">{readingBonus}</p>}<div className="reader-meta"><span>{data.chapter.word_count.toLocaleString()} words</span><span>About {Math.max(1,Math.ceil(data.chapter.word_count/220))} min</span><span>{progress}% through this work</span>{session&&readerPlace>1&&<span>Private place saved</span>}<a className="reader-contents-jump" href="#palace-reader-chapters">Chapter list ↓</a></div><div className="reader-progress-track" aria-label={progress+' percent through this work'}><i style={{width:progress+'%'}}/></div>
    {session&&readerPlace>1&&<div className="reader-place-status"><span>YOUR PLACE IN THIS CHAPTER</span><div><i><b style={{width:Math.min(100,Math.max(0,readerPlace))+'%'}}/></i><em>{Math.round(readerPlace)}%</em></div></div>}
    <label className="reader-quick-jump"><span>Jump to chapter</span><select value={chapterId} onChange={e=>jumpChapter(e.target.value)}>{readable.map(ch=><option value={ch.id} key={ch.id}>{String(ch.position).padStart(2,'0')} · {ch.title}</option>)}</select></label>{readerLandmarks.length>0&&<details className="reader-landmark-map"><summary><span>⌑ Chapter map</span><small>{readerLandmarks.length} landmark{readerLandmarks.length===1?'':'s'}</small></summary><nav aria-label="Chapter landmarks">{readerLandmarks.map(item=><button type="button" key={item.index+'-'+item.label} className={item.kind} onClick={()=>jumpReaderLandmark(item)}><i>{item.kind==='h2'?'H':item.kind==='h3'?'↳':'✦'}</i><span>{item.label}</span></button>)}</nav></details>}
    <nav className="reader-chapter-steps" aria-label="Move between story chapters">
@@ -1704,6 +1705,9 @@ function ReaderChapter({Frame,slug,chapterId}){
    <small>Reader preferences stay only on this device.</small>
   </section>}
   <section id="palace-reading-text" ref={chapterTextRef} className="chapter-text restored" aria-label="Chapter text" tabIndex={-1} style={{fontSize:fontSize+'px'}} dangerouslySetInnerHTML={{__html:html}}/>
+  <aside className="reader-afterword-praise" aria-label="Chapter appreciation">
+   <div className="chapter-praise-room"><div><small>LEAVE A LITTLE LIGHT ON THIS CHAPTER</small><strong>Heart · Star · Moon · Crown</strong></div><div className="chapter-praise-actions">{[['heart','♡','Heart'],['star','☆','Star'],['moon','☾','Moon'],['crown','♕','Crown']].map(([k,icon,label])=><button key={k} type="button" className={(praise.praise===k?'active ':'')+'praise-'+k} aria-pressed={praise.praise===k} disabled={praiseBusy===k||session?.user?.id===data.work.author_id} onClick={()=>praiseChapter(k)}>{icon}<span>{label}</span><em>{Number(praise.counts?.[k]||0).toLocaleString()}</em></button>)}<button type="button" className="share-light" onClick={shareChapter}>↗<span>Share</span></button></div>{praiseNotice&&<p role="status">{praiseNotice}</p>}</div>
+  </aside>
   <ReaderChapterShelf chapters={readable} chapterId={chapterId} workSlug={slug}/>
   {!next&&<section className="reader-end-trail"><div><small>YOU REACHED THE LAST PUBLISHED CHAPTER</small><h2>Where do you want the story to lead?</h2></div><nav><Link to={"/work/"+data.work.slug}>✦ Story trail</Link>{session&&<Link to={"/palace-life?room=commons&kind=discussion&talk="+encodeURIComponent(data.work.title)}>♢ Discuss it</Link>}{data.work.profiles?.username&&<Link to={"/member/"+data.work.profiles.username}>☾ Visit the writer</Link>}<Link to="/lost-works">⌁ Read something older</Link></nav></section>}
    {readingRewardStatus&&<p className="reader-reward-status" role="status">{readingRewardStatus}</p>}
