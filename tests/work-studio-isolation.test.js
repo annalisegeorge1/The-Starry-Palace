@@ -12,10 +12,10 @@ describe('isolated Palace writing desks',()=>{
   expect(live).toContain('const initialChapterResolvedRef=useRef(false)');
  });
  it('does not let a slow tag search replace newer suggestions',()=>{
-  expect(live).toContain('searchPalaceTags(tagQuery,tagCategory,60)');
+  expect(live).toContain('searchPalaceTags(tagQuery,tagCategory,100)');
   expect(live).toContain('.then(options=>{if(active)setTagOptions(options)})');
   expect(live).toContain('return()=>{active=false;clearTimeout(t)};');
-  expect(live).not.toContain('searchPalaceTags(tagQuery,tagCategory,60).then(setTagOptions)');
+  expect(live).not.toContain('searchPalaceTags(tagQuery,tagCategory,100).then(setTagOptions)');
  });
  it('keeps the tag picker open and focused after attaching or removing a tag',()=>{
   expect(live).toContain("setSaved('#'+tag.name+' added · keep choosing tags.')");
