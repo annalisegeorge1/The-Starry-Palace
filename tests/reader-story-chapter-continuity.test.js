@@ -39,7 +39,8 @@ describe('Reader continuity from story to chapter, writer and private Library',(
   expect(chapter).toContain('<Link to="/library?tab=continue">');
   expect(chapter).toContain('Sign in to save</Link>');
   expect(chapter).toContain("encodeURIComponent('/work/'+data.work.slug+'/chapter/'+data.chapter.id)");
-  expect(chapter).toContain('id="palace-reader-chapters"');
+  expect(chapter).toContain('<ReaderChapterShelf chapters={readable} chapterId={chapterId} workSlug={slug}/>');
+  expect(read('src/ReaderChapterShelf.jsx')).toContain('id="palace-reader-chapters"');
   expect(chapter).toContain('Back to chapter start');
  });
  it('turns guest Save/Follow controls on the story overview into a working sign-in link',()=>{
