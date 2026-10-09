@@ -13,6 +13,7 @@ describe('Book art and story content ratings',()=>{
   expect(markup).toContain('Pride and Prejudice — Project Gutenberg edition');
   expect(markup).toContain('rating-not_rated');
   expect(markup).toContain('Content rating: Not rated');
+  expect(markup).toContain('>NR</span>');
  });
  it('shows a tasteful book-specific fallback when external art cannot load',()=>{
   const record={title:'Dracula',creator_name:'Bram Stoker',rights_status:'public_domain_verified',source_url:'https://www.gutenberg.org/ebooks/345'};
@@ -30,6 +31,9 @@ describe('Book art and story content ratings',()=>{
   const markup=renderToStaticMarkup(<>{['general','teen','mature','explicit','not_rated'].map(r=><StoryRatingBadge key={r} rating={r}/>)}</>);
   for(const kind of ['general','teen','mature','explicit','not_rated'])expect(markup).toContain('rating-'+kind);
   expect(markup).toContain('Content rating: Explicit');
+  for(const mark of ['G','T','M','E','NR'])expect(markup).toContain('>'+mark+'</span>');
+  expect(markup).not.toContain('>General</span>');
+  expect(markup).not.toContain('>Explicit</span>');
   expect(markup).toContain('Content rating: Not rated');
  });
 });

@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {storyRatingInfo} from './storyRatingModel';
+import {storyRatingInfo,storyRatingMark} from './storyRatingModel';
 import {gutenbergEditionId,classicBookCoverInfo,classicCoverPalette} from './classicBookCoverModel';
 describe('Story content rating palette',()=>{
  it('has five unique categories and never mislabels absent ratings',()=>{
@@ -8,6 +8,8 @@ describe('Story content rating palette',()=>{
   expect(storyRatingInfo(null)).toEqual({key:'not_rated',label:'Not rated'});
   expect(storyRatingInfo('not rated').key).toBe('not_rated');
   expect(storyRatingInfo('unknown').key).toBe('not_rated');
+  expect(['general','teen','mature','explicit','not_rated'].map(storyRatingMark)).toEqual(['G','T','M','E','NR']);
+  expect(storyRatingMark(null)).toBe('NR');
  });
 });
 describe('Genuine source-edition classic covers',()=>{
