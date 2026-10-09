@@ -34,7 +34,7 @@ describe('Palace quick chat',()=>{
  it('keeps Direct and private Groups separate and displays group sender names',async()=>{
   mount();
   fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
-  expect(await screen.findByText('River')).toBeTruthy();
+  expect((await screen.findAllByText('River')).length).toBeGreaterThan(0);
   fireEvent.click(screen.getByRole('button',{name:/Groups/}));
   expect(await screen.findByText('Poetry Circle')).toBeTruthy();
   expect(screen.getAllByText('Moonlight Readers').length).toBeGreaterThan(0);
