@@ -1,0 +1,65 @@
+/* A hosted novel should open as a book, not a catalogue of front pages. */
+.archive-classic-experience .archive-classic-compact-heading{
+ box-sizing:border-box;display:grid;grid-template-columns:52px minmax(0,1fr);
+ column-gap:15px;row-gap:6px;align-items:center;
+ max-width:74ch;padding:8px 0 13px;margin:0 auto 10px;
+ border-bottom:1px solid rgba(158,137,211,.32);
+ text-align:left
+}
+.archive-classic-experience .archive-classic-compact-heading .archive-classic-frontmatter-cover{
+ grid-column:1;grid-row:1 / span 3;
+ width:52px;max-width:52px;height:75px;aspect-ratio:2/3;
+ margin:0;align-self:start;overflow:hidden;border-radius:8px
+}
+.archive-classic-experience .archive-classic-compact-heading .archive-classic-kicker{
+ grid-column:2;margin:0;opacity:.76;font-size:.63rem
+}
+.archive-classic-experience .archive-classic-compact-heading h3{
+ grid-column:2;margin:0;font-size:clamp(1.1rem,2vw,1.5rem);line-height:1.25
+}
+.archive-classic-experience .archive-classic-compact-heading>p:not(.archive-classic-kicker){
+ grid-column:2;margin:0;font-size:.76rem;line-height:1.45
+}
+.archive-classic-experience .archive-classic-compact-heading .archive-classic-brief,
+.archive-classic-experience .archive-classic-compact-heading .archive-classic-excerpt-note,
+.archive-classic-experience .archive-classic-compact-heading .archive-classic-opening-actions,
+.archive-classic-experience .archive-classic-compact-heading .archive-classic-edition-jump{
+ grid-column:1 / -1;margin:0
+}
+.archive-classic-experience .archive-classic-compact-heading .archive-classic-brief{
+ display:flex;justify-content:flex-start;gap:4px 14px;
+ padding:2px 0;font-size:.7rem
+}
+.archive-classic-experience .archive-classic-opening-actions{
+ display:flex;align-items:center;gap:9px;flex-wrap:wrap
+}
+.archive-classic-experience .archive-classic-opening-actions button{
+ min-height:42px;display:inline-flex;align-items:center;justify-content:center;
+ padding:8px 12px;border:1px solid rgba(155,178,225,.57);border-radius:11px;
+ background:linear-gradient(115deg,#6553aa,#327fa8);color:#fff;
+ font:700 .77rem/1.35 system-ui,sans-serif
+}
+.archive-classic-experience .archive-classic-opening-actions .archive-classic-opening-pages{
+ border-color:rgba(162,141,208,.35);background:rgba(123,98,174,.16);color:inherit
+}
+.archive-classic-experience .archive-classic-opening-actions button:disabled{
+ opacity:.7;cursor:default
+}
+.archive-classic-experience .archive-classic-compact-heading .archive-classic-edition-jump{
+ min-height:38px;border:0;border-radius:0;background:transparent;
+ display:inline-flex;justify-content:flex-start;padding:4px 0;
+ font-size:.7rem;text-decoration:underline;text-underline-offset:3px
+}
+.archive-classic-experience .archive-classic-page{
+ scroll-margin-top:14px
+}
+@media(max-width:640px){
+ .archive-classic-experience .archive-classic-compact-heading{
+  grid-template-columns:44px minmax(0,1fr);column-gap:11px
+ }
+ .archive-classic-experience .archive-classic-compact-heading .archive-classic-frontmatter-cover{
+  width:44px;max-width:44px;height:65px
+ }
+ .archive-classic-experience .archive-classic-opening-actions button{flex:1 1 150px}
+ .archive-classic-experience .archive-classic-compact-heading h3{font-size:1.12rem}
+}
