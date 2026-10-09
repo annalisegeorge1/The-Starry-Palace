@@ -1,0 +1,9 @@
+/* The prose gets first place; chapter praise belongs after the last paragraph. */
+.reader-page .reader-afterword-praise{box-sizing:border-box;margin:clamp(20px,4vw,36px) 0 16px;padding:clamp(12px,2vw,22px);border:1px solid rgba(164,146,215,.34);border-radius:17px;background:linear-gradient(115deg,rgba(111,81,177,.11),rgba(52,132,175,.09));scroll-margin-top:90px}
+.reader-page .reader-afterword-praise .chapter-praise-room{margin:0;min-width:0}
+.reader-page .reader-afterword-praise .chapter-praise-room>div{min-width:0}
+.reader-page .reader-afterword-praise .chapter-praise-actions{max-width:100%;flex-wrap:wrap}
+.reader-page .reader-afterword-praise .chapter-praise-actions button{min-height:40px}
+.palace-shell.daylight .reader-page .reader-afterword-praise{background:linear-gradient(112deg,#f5edfb,#e9f4f9);border-color:#bcb0d9;color:#30254d}
+@media(max-width:640px){.reader-page .reader-afterword-praise{padding:12px;margin-top:22px}.reader-page .reader-afterword-praise .chapter-praise-actions{gap:6px}.reader-page .reader-afterword-praise .chapter-praise-actions button{min-height:44px}}
+.reader-page .reader-afterword-praise :is(a,button):focus-visible{outline:3px solid #9bd7ed;outline-offset:2px}
