@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection} from './fandomDirectoryModel';
+import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection,fandomFacetOptions} from './fandomDirectoryModel';
 const input=[
  {id:'1',name:'Naruto',media_categories:['anime_manga'],aliases:['Naruto Shippuden'],subcategory:'Shōnen fantasy',franchise:'Naruto'},
  {id:'2',name:'Bridgerton',media_categories:['books_literature','tv_shows'],aliases:['Bridgerton Netflix'],usage_count:12},
@@ -26,6 +26,14 @@ describe('Fandom directory media and alias discovery',()=>{
   expect(ordered[0].id).toBe('2');
   expect(input[0].id).toBe('1');
   expect(fandomMediaLabel('theater')).toBe('Theater');
+ });
+ it('narrows actual registered fandoms by franchise and type without inventing results',()=>{
+  const facets=fandomFacetOptions(input,'anime_manga');
+  expect(facets.categories).toEqual(['Shōnen fantasy']);
+  expect(facets.franchises).toEqual(['Naruto']);
+  expect(visibleFandoms(input,{media:'anime_manga',subcategory:'Shōnen fantasy',franchise:'Naruto'}).map(x=>x.name)).toEqual(['Naruto']);
+  expect(visibleFandoms(input,{media:'tv_shows',franchise:'Naruto'})).toEqual([]);
+  expect(visibleFandoms(input,{media:'anime_manga',subcategory:'Unknown'})).toEqual([]);
  });
  it('paginates and limits crossover selections without trusting URL IDs',()=>{
   const all=visibleFandoms(input);
