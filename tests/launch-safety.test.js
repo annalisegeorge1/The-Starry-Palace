@@ -1493,7 +1493,8 @@ describe('Starry Palace launch safety',()=>{
   it('keeps prism glass selective and Palace navigation iconography custom',()=>{
     const polish=read('src/polish.css');
     expect(main).toContain('function PalaceRoomIcon');
-    expect(main).toContain('room-sigil room-sigil-');
+    expect(read('src/PalaceSidebarNavigation.jsx')).toContain('room-sigil room-sigil-');
+    expect(main).toContain('renderIcon={name=><PalaceRoomIcon name={name}/> }'.replace(' }','}'));
     expect(live).toContain('prism-glass prism-story');
     expect(live).toContain('prism-glass prism-comic');
     expect(live).toContain('heritage-prism');
