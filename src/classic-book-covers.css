@@ -6,7 +6,8 @@
  background:#252644;box-shadow:0 11px 23px rgba(9,8,33,.21);
 }
 .palace-classic-book-cover>img{
- display:block;width:100%;height:100%;object-fit:cover;object-position:center;
+ display:block;width:100%;height:100%;object-fit:contain;object-position:center;
+ background:#211d35;
 }
 .palace-classic-fallback{
  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
@@ -48,4 +49,33 @@
  .reading-classics-hall .classic-hall-card>.palace-classic-book-cover{width:96px;min-width:96px}
  .lost-work-card>.archive-book-cover{width:104px}
  .archive-classic-frontmatter-cover{width:108px}
+}
+
+/* The Classics rail previously reserved only 42px for a decorative spine.
+   Give a genuine book cover enough room to remain recognizable. */
+.reading-classics-hall .classic-hall-card{
+ grid-template-columns:minmax(78px,96px) minmax(0,1fr)!important;
+ min-height:193px;
+}
+.reading-classics-hall .classic-hall-card>.palace-classic-book-cover{
+ width:100%;height:100%;min-width:0;aspect-ratio:auto;border-radius:0;
+ border:0;border-right:1px solid rgba(183,161,215,.4);
+ box-shadow:none;
+}
+.reading-classics-hall .classic-hall-card>.palace-classic-book-cover>img{
+ object-fit:contain;object-position:center;
+}
+.reading-classics-hall .classic-hall-card>.palace-classic-book-cover .palace-classic-fallback{
+ padding:7px;gap:6px;
+}
+.reading-classics-hall .classic-hall-card>.palace-classic-book-cover .palace-classic-fallback strong{
+ font-size:.72rem;
+}
+.reading-classics-hall .classic-hall-card>.palace-classic-book-cover .palace-classic-fallback small{
+ font-size:.42rem;
+}
+@media(max-width:650px){
+ .reading-classics-hall .classic-hall-card{
+  grid-template-columns:78px minmax(0,1fr)!important;min-height:174px;
+ }
 }
