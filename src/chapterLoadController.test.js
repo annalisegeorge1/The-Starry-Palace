@@ -31,6 +31,36 @@ describe('selected chapter request isolation',()=>{
   expect(ready).toHaveBeenCalledWith({id:'chapter'},[]);
   expect(error).not.toHaveBeenCalled();expect(settled).toHaveBeenCalledOnce();
  });
+ it('opens chapter text before optional revision history finishes',async()=>{
+  const slowHistory=deferred();
+  const onReady=vi.fn(),onRevisions=vi.fn(),onSettled=vi.fn();
+  loadSelectedManuscript({
+   chapterId:'chapter-9',
+   loadChapter:async()=>({chapter:{id:'chapter-9',body_html:'<p>Begin writing.</p>'}}),
+   loadRevisions:()=>slowHistory.promise,
+   onReady,onRevisions,onError:vi.fn(),onSettled
+  });
+  await flush();
+  expect(onReady).toHaveBeenCalledWith({id:'chapter-9',body_html:'<p>Begin writing.</p>'},[]);
+  expect(onSettled).toHaveBeenCalledOnce();
+  expect(onRevisions).not.toHaveBeenCalled();
+  slowHistory.resolve([{id:'revision-1'}]);
+  await flush();
+  expect(onRevisions).toHaveBeenCalledWith([{id:'revision-1'}]);
+ });
+ it('ignores late revision-history responses after the writer switches chapters',async()=>{
+  const slowHistory=deferred(),onRevisions=vi.fn();
+  const cancel=loadSelectedManuscript({
+   chapterId:'old',loadChapter:async()=>({chapter:{id:'old'}}),
+   loadRevisions:()=>slowHistory.promise,
+   onReady:vi.fn(),onRevisions,onError:vi.fn(),onSettled:vi.fn()
+  });
+  await flush();
+  cancel();
+  slowHistory.resolve([{id:'old-snapshot'}]);
+  await flush();
+  expect(onRevisions).not.toHaveBeenCalled();
+ });
  it('rejects mismatched server data instead of showing another manuscript',async()=>{
   const ready=vi.fn();
   loadSelectedManuscript({chapterId:'one',loadChapter:async()=>({chapter:{id:'other'}}),loadRevisions:async()=>[],onReady:ready,onError:vi.fn(),onSettled:vi.fn()});
