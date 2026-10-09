@@ -57,6 +57,7 @@ import './reader-comfort-finish.css';
 import './palace-prismatic-gradients.css';
 import './treasury-daylight-tablet-clarity.css';
 import './palace-unified-action-gradients.css';
+import './palace-search-room-refinement.css';
 
 
 const chunkErrorPattern=/dynamically imported module|importing a module script failed|failed to fetch|chunkloaderror|loading chunk|room load timeout|networkerror/i;
