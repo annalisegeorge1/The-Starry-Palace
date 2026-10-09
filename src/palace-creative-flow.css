@@ -227,18 +227,18 @@
  background:linear-gradient(115deg,rgba(103,68,165,.3),rgba(52,119,157,.22));
  color:#f5edff;
 }
-.palace-shell .duel-basis-draw>span{
+.palace-shell .duel-basis-draw>span:not(.palace-info-mark){
  flex:1 1 100%;font-weight:800;font-size:.72rem;
  letter-spacing:.09em;
 }
-.palace-shell .duel-basis-draw button{
+.palace-shell .duel-basis-draw>button{
  flex:1 1 150px;max-width:100%;min-height:42px;
  border:1px solid rgba(210,191,254,.7);border-radius:10px;
  background:linear-gradient(115deg,#6e54aa,#497cac);
  color:#fff;font-weight:750;cursor:pointer;
 }
-.palace-shell .duel-basis-draw button:hover{background:linear-gradient(115deg,#8763be,#4e92af)}
-.palace-shell .duel-basis-draw button:focus-visible{outline:3px solid #c6eaff;outline-offset:2px}
+.palace-shell .duel-basis-draw>button:hover{background:linear-gradient(115deg,#8763be,#4e92af)}
+.palace-shell .duel-basis-draw>button:focus-visible{outline:3px solid #c6eaff;outline-offset:2px}
 .palace-shell .duel-basis-draw small{flex:1 1 100%;line-height:1.5;font-size:.73rem;color:#dedbf3}
 .palace-shell.daylight .duel-basis-draw{
  background:linear-gradient(115deg,#f2e9fe,#e5f1fa);
@@ -247,5 +247,5 @@
 .palace-shell.daylight .duel-basis-draw small{color:#4f4568}
 @media(max-width:520px){
  .palace-shell .duel-basis-draw{padding:11px}
- .palace-shell .duel-basis-draw button{flex-basis:100%}
+ .palace-shell .duel-basis-draw>button{flex-basis:100%}
 }
