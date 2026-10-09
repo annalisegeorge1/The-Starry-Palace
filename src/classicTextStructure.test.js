@@ -26,7 +26,7 @@ describe('classic literature typesetting',()=>{
   expect(result[1].text).toBe('The first page begins. More of the same paragraph.');
  });
  it('recognizes spelled-out chapter and book headings without treating prose as a heading',()=>{
-  const sample='CHAPTER ONE\\nThe first scene begins.\\n\\nBOOK THE SECOND\\nAnother scene.\\n\\nCHAPTER III: A New Morning\\nThe third scene.\\n\\nChapter one follows the events of the previous page.';
+  const sample='CHAPTER ONE\nThe first scene begins.\n\nBOOK THE SECOND\nAnother scene.\n\nCHAPTER III: A New Morning\nThe third scene.\n\nChapter one follows the events of the previous page.';
   const blocks=structureClassicText(sample);
   expect(blocks.filter(item=>item.kind==='heading').map(item=>item.text)).toEqual([
    'CHAPTER ONE','BOOK THE SECOND','CHAPTER III: A New Morning'
@@ -34,7 +34,7 @@ describe('classic literature typesetting',()=>{
   expect(blocks.at(-1)).toEqual({kind:'paragraph',text:'Chapter one follows the events of the previous page.'});
  });
  it('keeps punctuation-only chapter markers and section order intact',()=>{
-  const blocks=structureClassicText('CHAPTER IV.\\nThe tale continues.\\n\\nCHAPTER V:');
+  const blocks=structureClassicText('CHAPTER IV.\nThe tale continues.\n\nCHAPTER V:');
   expect(blocks.map(item=>item.kind)).toEqual(['heading','paragraph','heading']);
  });
  it('recovers readable blocks from an overly long flattened prose import',()=>{
