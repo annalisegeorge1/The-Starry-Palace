@@ -7,7 +7,7 @@ const CHOICES=[
  {id:'write',sigil:'✎',kicker:'CREATE',title:'Tell your story',description:'Begin a private draft, find your rhythm and publish when you are ready.',url:'/writers',action:'Explore the Writer’s Door'},
  {id:'belong',sigil:'☾',kicker:'GATHER',title:'Find your people',description:'Meet kindred readers and writers, discover events and explore the Grand Palaces.',url:'/events',action:'Explore Palace gatherings'}
 ];
-export function PalaceHomeWelcome({member=false}){
+export function PalaceHomeWelcome({member=false,showCulture=true}){
  return <section className="palace-home-welcome" aria-label="Choose how to begin">
   <header><div><p className="eyebrow">YOUR PALACE, AT YOUR PACE</p>
     <h2>Where would you like to begin?</h2>
@@ -19,7 +19,12 @@ export function PalaceHomeWelcome({member=false}){
     <h3>{choice.title}</h3><p>{choice.id==='belong'?(member?'Step into the Commons, meet kindred readers and writers, and find a conversation that feels like yours.':'Browse public Palace events and see the kind of gatherings waiting inside.'):choice.description}</p><span className="palace-choice-action">{choice.id==='belong'?(member?'Enter Palace Life':'Explore public gatherings'):member&&choice.id==='write'?'Open my Writing Chamber':choice.action} <span aria-hidden="true">→</span></span>
    </Link>)}
   </div>
-  <nav className="palace-culture-paths" aria-label="Events and literary heritage">
+  {showCulture&&<PalaceHomeCulturePaths/>}
+ </section>;
+}
+
+export function PalaceHomeCulturePaths(){
+ return <nav className="palace-culture-paths" aria-label="Events and literary heritage">
    <Link to="/events?tab=heritage" className="palace-culture-path palace-culture-events">
     <span className="palace-culture-icon" aria-hidden="true">✧</span>
     <span><strong>History, heritage & festivals</strong><small>Explore cultural histories, traditions, festivals and celebrations.</small></span>
@@ -30,9 +35,18 @@ export function PalaceHomeWelcome({member=false}){
     <span><strong>Literature across generations</strong><small>Discover classics, storytelling traditions and new voices side by side.</small></span>
     <span className="palace-culture-arrow" aria-hidden="true">→</span>
    </Link>
-  </nav>
- </section>;
+ </nav>;
 }
+export function PalaceHomeMore({children}){
+ return <details className="palace-home-more">
+  <summary>
+   <span><strong>Discover more of the Palace</strong><small>New stories, gatherings, classics, collections and every other room are still here.</small></span>
+   <span className="palace-home-more-arrow" aria-hidden="true">＋</span>
+  </summary>
+  <div className="palace-home-more-inner">{children}</div>
+ </details>;
+}
+
 const glyphs=['◈','▤','✎','♢','✧','♛','☄','☷'];
 export function PalaceRoomDirectory({rooms}){
  return <details className="palace-room-directory">

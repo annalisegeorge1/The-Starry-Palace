@@ -10,7 +10,9 @@ describe('Palace editorial finish',()=>{
   expect(main).toContain('/assets/palace/palace-belonging.gif');
   expect(home).toContain('Where would you like to begin?');
   expect(home).toContain('Read, write, or find your people.');
-  expect(main).toContain("<PalaceHomeWelcome member={!!session}/>");
+  expect(main).toContain("<PalaceHomeWelcome member={!!session} showCulture={false}/>");
+  expect(main).toContain("<PalaceHomeMore>");
+  expect(main).toContain("<PalaceHomeCulturePaths/>");
  });
  it('keeps nightfall and daylight design systems distinct and legible',()=>{
   for(const selector of [
