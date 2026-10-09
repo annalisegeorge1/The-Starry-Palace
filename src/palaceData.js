@@ -377,7 +377,8 @@ export async function getPalaceFandomDirectory(){
 }
 /** Read only eligible, published stories connected to one or more real fandom IDs. */
 export async function getStoriesForFandoms(tagIds=[],mode='any'){
- const chosen=[...new Set(tagIds.filter(id=>/^[a-f0-9-]{36}$/i.test(String(id)))].slice(0,5);
+ const cleanIds=(tagIds||[]).filter(id=>/^[a-f0-9-]{36}$/i.test(String(id)));
+ const chosen=[...new Set(cleanIds)].slice(0,5);
  if(!chosen.length)return[];
  const client=needClient();
  const valid=await client.from('tags').select('id').in('id',chosen)
