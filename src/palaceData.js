@@ -825,11 +825,20 @@ export async function removeProfileAchievementShowcase(achievementId){
  const{data,error}=await needClient().rpc('remove_profile_achievement_showcase',{p_achievement_id:achievementId});if(error)throw error;return data
 }
 export async function getArchive(userId=null){
- const{data,error}=await needClient().from('archive_records').select('id,accession_number,slug,title,creator_name,record_nature,category,summary,original_language,languages,surviving_extent,known_gaps,provenance_summary,rights_status,hosting_basis,host_mode,continuation_status,verified_at,updated_at').eq('publication_status','published').order('updated_at',{ascending:false}).limit(100);
- if(error)throw error;const rows=data||[];if(!userId||!rows.length)return rows;
+ const{data,error}=await needClient().from('archive_records').select('id,accession_number,slug,title,creator_name,record_nature,category,summary,original_language,languages,surviving_extent,known_gaps,provenance_summary,rights_status,hosting_basis,host_mode,continuation_status,verified_at,updated_at').eq('publication_status','published').order('updated_at',{ascending:false}).limit(250);
+ if(error)throw error;const rows=data||[];if(!rows.length)return rows;
+ // Read only citation metadata, never the potentially large hosted text.
+ // A cover lookup problem must not prevent the archive from opening.
+ let sources=new Map();
+ try{
+  const result=await needClient().from('archive_texts').select('record_id,source_url').in('record_id',rows.map(r=>r.id));
+  if(!result.error)sources=new Map((result.data||[]).map(r=>[r.record_id,r.source_url]));
+ }catch{}
+ const illustrated=rows.map(r=>({...r,archive_source_url:sources.get(r.id)||null}));
+ if(!userId)return illustrated;
  const saved=await needClient().from('user_archive_records').select('record_id,saved,visited_at').eq('user_id',userId).eq('saved',true);
  if(saved.error)throw saved.error;const byId=new Map((saved.data||[]).map(x=>[x.record_id,x]));
- return rows.map(r=>({...r,saved:byId.has(r.id),visited_at:byId.get(r.id)?.visited_at||null}))
+ return illustrated.map(r=>({...r,saved:byId.has(r.id),visited_at:byId.get(r.id)?.visited_at||null}))
 }
 export async function getArchiveText(recordId){
  const[{data,error},{data:translations,error:translationError}]=await Promise.all([
