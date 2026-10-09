@@ -1,5 +1,5 @@
 import{describe,it,expect}from'vitest';
-import{filterInkDuels,duelPrizeProgress,drawDuelTwist}from'./inkDuelExperience';
+import{filterInkDuels,duelPrizeProgress,drawDuelTwist,drawDuelBasis,duelBasisPrompt,suggestedDuelBasis,DUEL_RANDOM_TOPICS,DUEL_RANDOM_WORDS}from'./inkDuelExperience';
 
 describe('Ink Duel discovery',()=>{
  const duels=[
@@ -41,5 +41,41 @@ describe('Ink Duel reward preview',()=>{
    expect(drawDuelTwist(type,1).length).toBeGreaterThan(12);
    expect(drawDuelTwist(type,1000)).toBeTruthy();
   }
+ });
+});
+
+
+describe('Shared random Ink Duel basis',()=>{
+ it('supplies strong word and topic pools that draw consistently',()=>{
+  expect(DUEL_RANDOM_WORDS.length).toBeGreaterThanOrEqual(50);
+  expect(DUEL_RANDOM_TOPICS.length).toBeGreaterThanOrEqual(35);
+  expect(drawDuelBasis('word',0).value).toBe('harbour');
+  expect(drawDuelBasis('topic',0).value).toBe('The price of keeping a promise');
+  expect(drawDuelBasis('word',-1).value).toBe('moonrise');
+ });
+ it('saves one common prompt for every competitor, including artwork',()=>{
+  expect(duelBasisPrompt(drawDuelBasis('word',2),'haiku')).toContain('Random word: ember.');
+  expect(duelBasisPrompt(drawDuelBasis('topic',2),'art')).toContain('original artwork');
+  expect(duelBasisPrompt(drawDuelBasis('word',2),'haiku')).toContain('Every duelist receives the same basis.');
+ });
+ it('suggests a constraint for poetry, haiku, drabble, dialogue and wildcard formats',()=>{
+  expect(suggestedDuelBasis('poetry',0).kind).toBe('topic');
+  expect(suggestedDuelBasis('dialogue',0).kind).toBe('topic');
+  expect(suggestedDuelBasis('haiku',0).kind).toBe('word');
+  expect(suggestedDuelBasis('drabble',0).kind).toBe('word');
+  expect(suggestedDuelBasis('wildcard',0).kind).toBe('topic');
+  expect(suggestedDuelBasis('fiction',0)).toBeNull();
+ });
+});
+
+describe('Shared random duel basis',()=>{
+ it('offers topic and word prompts while leaving fiction hosts free to choose',async()=>{
+  const {drawDuelBasis,duelBasisPrompt,suggestedDuelBasis}=await import('./inkDuelExperience');
+  expect(drawDuelBasis('word',0).value).toBe('harbour');
+  expect(drawDuelBasis('topic',0).value).toBe('The price of keeping a promise');
+  expect(duelBasisPrompt(drawDuelBasis('word',0),'haiku')).toContain('harbour');
+  expect(suggestedDuelBasis('fiction',0)).toBeNull();
+  expect(suggestedDuelBasis('haiku',0).kind).toBe('word');
+  expect(suggestedDuelBasis('poetry',0).kind).toBe('topic');
  });
 });

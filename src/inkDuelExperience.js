@@ -39,3 +39,50 @@ export function duelPrizeProgress(duel={}){
  const missing=Object.entries(match.bronze).filter(([k,count])=>current[k]<count).map(([key,count])=>({key,need:count,have:current[key],remaining:count-current[key]}));
  return{earned,missing,bronze:match.bronze,tiers:match};
 }
+
+// Shared theme/word challenges: drawn before the duel opens and stored in its
+// existing published prompt so every participant receives the same constraint.
+// Hosts can still type their own prompt; these suggestions are never a paid draw.
+export const DUEL_RANDOM_WORDS=[
+ 'harbour','mercy','ember','reckoning','tide','courage','ribbon','silence','orchid','disguise',
+ 'inheritance','threshold','starlight','homecoming','mischief','echo','lighthouse','promise',
+ 'memory','rainfall','labyrinth','solstice','betrayal','wonder','exile','lantern',
+ 'afterglow','rivalry','belonging','tempest','gravity','wildflower','map','lastlight',
+ 'forgiveness','reunion','mask','legacy','reflection','crossroads','rebellion','tea',
+ 'feather','horizon','secret','mirror','anchor','midnight','revelation','garden',
+ 'arrival','comet','bloom','shadow','cinnamon','festival','oath','departure','hush','moonrise'
+];
+export const DUEL_RANDOM_TOPICS=[
+ 'The price of keeping a promise','A celebration interrupted by a secret','A stranger who remembers you',
+ 'A town with one impossible law','A goodbye mistaken for an invitation','Two enemies trapped on the same journey',
+ 'An inheritance nobody wants','A family dinner at the end of the world','A lost message that arrives at last',
+ 'The last train through a sleeping city','A royal decree nobody understands','What the ocean refuses to return',
+ 'A quiet act of rebellion','The day the stars went silent','A home that remembers its residents',
+ 'An apology without an explanation','The first hour after a great victory','A borrowed identity',
+ 'The most important thing not said','A forgotten birthday','A community that must choose its future',
+ 'An ordinary person asked to judge a miracle','The consequences of one small kindness',
+ 'The letter under the floorboards','A map to the wrong destination','An ancient rivalry ending at dawn',
+ 'A spell that only works in the rain','A choice between truth and belonging','The secret life of a lighthouse',
+ 'A musician who has lost one sound','The witness who will not speak','A haunting at a seaside hotel',
+ 'The first step through a forbidden door','A festival of impossible guests','A new ruler who wants to resign',
+ 'The last surviving photograph','A time traveller at a wedding','A childhood friendship under strain',
+ 'A poem found inside a library book','The cost of a second chance'
+];
+export const DUEL_TYPES_WITH_SUGGESTED_BASIS=new Set(['poetry','haiku','drabble','dialogue','wildcard']);
+export function drawDuelBasis(kind='word',index=0){
+ const values=kind==='topic'?DUEL_RANDOM_TOPICS:DUEL_RANDOM_WORDS;
+ const position=((Math.trunc(Number(index)||0)%values.length)+values.length)%values.length;
+ return {kind:kind==='topic'?'topic':'word',value:values[position]};
+}
+export function duelBasisPrompt(basis,contentType='fiction'){
+ if(!basis?.value)return '';
+ const lead=basis.kind==='topic'?'Random topic':'Random word';
+ const guidance=['art','comic'].includes(contentType)
+  ?'Interpret this through your original artwork; it must be recognisable in your piece.'
+  :'Make this the central idea of your entry. Every duelist receives the same basis.';
+ return lead+': '+basis.value+'. '+guidance;
+}
+export function suggestedDuelBasis(contentType,index=0){
+ if(!DUEL_TYPES_WITH_SUGGESTED_BASIS.has(contentType))return null;
+ return drawDuelBasis(contentType==='haiku'||contentType==='drabble'?'word':'topic',index);
+}

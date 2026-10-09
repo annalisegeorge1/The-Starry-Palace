@@ -58,3 +58,14 @@
  .celestial-earning-guide{padding:.75rem}
  .writing-earned-points-note a{width:100%}
 }
+
+/* Explain the complete lifetime, spendable and season economy clearly. */
+.celestial-earning-guide .celestial-economy-heading{font-size:.84rem;line-height:1.45;margin:1.3rem 0 .55rem;color:#e9dcff}
+.celestial-economy-guide{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
+.celestial-economy-guide article{min-width:0;border:1px solid rgba(175,177,226,.25);border-radius:12px;padding:.85rem;background:linear-gradient(125deg,rgba(89,58,148,.22),rgba(42,109,148,.15))}
+.celestial-economy-guide article strong{font-size:.8rem;line-height:1.45;color:#e7dcff}
+.celestial-economy-guide article p{margin:.45rem 0 0;color:#d3cae9}
+.daylight .celestial-economy-guide article{background:linear-gradient(125deg,#f8f0ff,#eaf5fb);border-color:#c0add6}
+.daylight .celestial-earning-guide .celestial-economy-heading,.daylight .celestial-economy-guide article strong{color:#453363}
+.daylight .celestial-economy-guide article p{color:#5a4f6b}
+@media(max-width:750px){.celestial-economy-guide{grid-template-columns:1fr}}
