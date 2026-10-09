@@ -50,6 +50,7 @@ export default function PalaceChatDrawer({userId}){
  const[pinnedPreview,setPinnedPreview]=useState({chatId:'',messageId:'',message:null});
  const messageRef=useRef(null);
  const historyScrollRef=useRef(null);
+ const exhaustedHistoryRef=useRef(new Set());
  const selectedGroupRef=useRef(selectedGroup);
  selectedGroupRef.current=selectedGroup;
  const scrollPinned=useRef(true);
@@ -72,7 +73,7 @@ export default function PalaceChatDrawer({userId}){
  const unread=directUnread+groupUnread+groupData.invitations.length;
  const openedRoomName=tab==='direct'?nameOf(activeDirect?.correspondent):activeGroup?.title;
 
- useEffect(()=>{setOpen(false);setTab('direct');setDirect(null);setGroupData({groups:[],invitations:[]});setSelectedDirect('');setSelectedGroup('');setGroupMessages({chatId:'',items:[]});setNewWhileAway(false);setLiveStatus('polling');lastAcknowledgedRef.current={roomId:'',messageId:''};setReplyTarget(null);setStorySharing(false);setPinnedPreview({chatId:'',messageId:'',message:null});setDrafts({});setError('');setNotice('');setCreating(false);setManaging(false);setSearch('');setUnreadOnly(false);setHistoryLoading(false);setHasOlder(false);historyScrollRef.current=null},[userId]);
+ useEffect(()=>{setOpen(false);setTab('direct');setDirect(null);setGroupData({groups:[],invitations:[]});setSelectedDirect('');setSelectedGroup('');setGroupMessages({chatId:'',items:[]});setNewWhileAway(false);setLiveStatus('polling');lastAcknowledgedRef.current={roomId:'',messageId:''};setReplyTarget(null);setStorySharing(false);setPinnedPreview({chatId:'',messageId:'',message:null});setDrafts({});setError('');setNotice('');setCreating(false);setManaging(false);setSearch('');setUnreadOnly(false);setHistoryLoading(false);setHasOlder(false);historyScrollRef.current=null;exhaustedHistoryRef.current.clear()},[userId]);
  useEffect(()=>{
   if(!userId)return;
   let alive=true;
@@ -101,7 +102,7 @@ export default function PalaceChatDrawer({userId}){
   const refresh=()=>getPalaceGroupMessages(selectedGroup).then(rows=>{
    if(!alive)return;
    setGroupMessages(previous=>({chatId:selectedGroup,items:previous.chatId===selectedGroup?mergePalaceGroupMessages(previous.items,rows):rows}));
-   setHasOlder(value=>value||rows.length>=100);
+   setHasOlder(value=>!exhaustedHistoryRef.current.has(selectedGroup)&&(value||rows.length>=100));
   }).catch(e=>{if(alive)setError(errorText(e))});
   setHasOlder(false);setHistoryLoading(false);historyScrollRef.current=null;
   setGroupMessages({chatId:selectedGroup,items:[]});refresh();
@@ -227,6 +228,7 @@ export default function PalaceChatDrawer({userId}){
    const older=await getPalaceGroupMessages(chatId,GROUP_HISTORY_PAGE_SIZE,cursor);
    if(selectedGroupRef.current!==chatId)return;
    setGroupMessages(previous=>previous.chatId===chatId?{chatId,items:mergePalaceGroupMessages(previous.items,older)}:previous);
+   if(older.length<GROUP_HISTORY_PAGE_SIZE)exhaustedHistoryRef.current.add(chatId);
    setHasOlder(older.length===GROUP_HISTORY_PAGE_SIZE);
    if(!older.length)historyScrollRef.current=null;
   }catch(e){
