@@ -308,8 +308,8 @@ export async function setNoticeSaved(userId,id,saved){const{data,error}=await ne
 export async function dismissNotice(userId,id){const{error}=await needClient().from('notifications').update({dismissed:true,unread:false,read_at:new Date().toISOString()}).eq('id',id).eq('user_id',userId);if(error)throw error;return true}
 
 export async function getLibrary(userId){const [saved,progress,subs,savedComics,comicProgress,comicSubs,follows]=await Promise.all([
- needClient().from('saved_works').select('saved_at,works(id,title,slug,summary,cover_url,completion_status,last_published_at,profiles!works_author_id_fkey(username,display_name))').eq('user_id',userId).order('saved_at',{ascending:false}),
- needClient().from('reading_progress').select('work_id,chapter_id,progress_percent,chapter_progress_percent,completed,updated_at,works(id,title,slug,summary,cover_url,last_published_at)').eq('user_id',userId).order('updated_at',{ascending:false}),
+ needClient().from('saved_works').select('saved_at,works(id,title,slug,summary,cover_url,rating,completion_status,last_published_at,profiles!works_author_id_fkey(username,display_name))').eq('user_id',userId).order('saved_at',{ascending:false}),
+ needClient().from('reading_progress').select('work_id,chapter_id,progress_percent,chapter_progress_percent,completed,updated_at,works(id,title,slug,summary,cover_url,rating,last_published_at)').eq('user_id',userId).order('updated_at',{ascending:false}),
  needClient().from('story_subscriptions').select('work_id,enabled,frequency,works(id,title,slug,last_published_at)').eq('user_id',userId).eq('enabled',true),
  needClient().from('saved_comics').select('saved_at,comics(id,title,slug,summary,completion_status,cover_path)').eq('user_id',userId).order('saved_at',{ascending:false}),
  needClient().from('comic_reading_progress').select('comic_id,episode_id,page_id,completed,updated_at,comics(id,title,slug,cover_path,last_published_at)').eq('user_id',userId).order('updated_at',{ascending:false}),
@@ -825,11 +825,20 @@ export async function removeProfileAchievementShowcase(achievementId){
  const{data,error}=await needClient().rpc('remove_profile_achievement_showcase',{p_achievement_id:achievementId});if(error)throw error;return data
 }
 export async function getArchive(userId=null){
- const{data,error}=await needClient().from('archive_records').select('id,accession_number,slug,title,creator_name,record_nature,category,summary,original_language,languages,surviving_extent,known_gaps,provenance_summary,rights_status,hosting_basis,host_mode,continuation_status,verified_at,updated_at').eq('publication_status','published').order('updated_at',{ascending:false}).limit(100);
- if(error)throw error;const rows=data||[];if(!userId||!rows.length)return rows;
+ const{data,error}=await needClient().from('archive_records').select('id,accession_number,slug,title,creator_name,record_nature,category,summary,original_language,languages,surviving_extent,known_gaps,provenance_summary,rights_status,hosting_basis,host_mode,continuation_status,verified_at,updated_at').eq('publication_status','published').order('updated_at',{ascending:false}).limit(250);
+ if(error)throw error;const rows=data||[];if(!rows.length)return rows;
+ // Read only citation metadata, never the potentially large hosted text.
+ // A cover lookup problem must not prevent the archive from opening.
+ let sources=new Map();
+ try{
+  const result=await needClient().from('archive_texts').select('record_id,source_url').in('record_id',rows.map(r=>r.id));
+  if(!result.error)sources=new Map((result.data||[]).map(r=>[r.record_id,r.source_url]));
+ }catch{}
+ const illustrated=rows.map(r=>({...r,archive_source_url:sources.get(r.id)||null}));
+ if(!userId)return illustrated;
  const saved=await needClient().from('user_archive_records').select('record_id,saved,visited_at').eq('user_id',userId).eq('saved',true);
  if(saved.error)throw saved.error;const byId=new Map((saved.data||[]).map(x=>[x.record_id,x]));
- return rows.map(r=>({...r,saved:byId.has(r.id),visited_at:byId.get(r.id)?.visited_at||null}))
+ return illustrated.map(r=>({...r,saved:byId.has(r.id),visited_at:byId.get(r.id)?.visited_at||null}))
 }
 export async function getArchiveText(recordId){
  const[{data,error},{data:translations,error:translationError}]=await Promise.all([
@@ -880,7 +889,7 @@ export async function getMemberProfile(username,viewerId){
  const {data:grandIdentity}=await needClient().rpc('get_grand_palace_identity',{p_member:profile.id});
  const [privacy,works,comics,series,workTotal,comicTotal,seriesTotal,follow,counting,clubCount,showA,showG]=await Promise.all([
   own?getMyPrivacy(profile.id):Promise.resolve(null),
-  needClient().from('works').select('id,title,slug,summary,cover_url,completion_status,last_published_at').eq('author_id',profile.id).eq('publication_status','published').order('last_published_at',{ascending:false}).limit(12),
+  needClient().from('works').select('id,title,slug,summary,cover_url,rating,completion_status,last_published_at').eq('author_id',profile.id).eq('publication_status','published').order('last_published_at',{ascending:false}).limit(12),
   needClient().from('comics').select('id,title,slug,summary,completion_status,cover_path,last_published_at').eq('creator_id',profile.id).eq('publication_status','published').order('last_published_at',{ascending:false}).limit(12),
   needClient().from('series').select('id,title,slug,summary,visibility,updated_at,series_works(work_id,position,works(id,title,slug,publication_status,completion_status))').eq('owner_id',profile.id).in('visibility',seriesVisibilities).order('updated_at',{ascending:false}).limit(12),
   needClient().from('works').select('id',{count:'exact',head:true}).eq('author_id',profile.id).eq('publication_status','published'),

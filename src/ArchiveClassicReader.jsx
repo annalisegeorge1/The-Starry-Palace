@@ -1,5 +1,6 @@
 import React,{useEffect,useMemo,useRef,useState} from 'react';
 import {structureClassicText} from './classicTextStructure';
+import ClassicBookCover from './ClassicBookCover';
 import {paginateClassicBlocks,classicContents,clampClassicPage,classicPageKey} from './archiveReaderModel';
 import {readPalaceChoice,readPalaceNumber,writePalacePreference,removePalacePreference} from './browserPreferences';
 import './archive-classic-reader.css';
@@ -77,6 +78,7 @@ function ArchiveClassicReaderEdition({record,text}){
  return <article ref={readerRef} className={'archive-reader-sheet archive-classic-experience tone-'+tone+' width-'+width+' leading-'+leading} style={{'--classic-font-size':fontSize+'px'}}>
   <header className="archive-classic-frontmatter">
    <p className="archive-classic-kicker">PALACE CLASSICS · {record?.host_mode==='excerpt'?'HOSTED EXCERPT':'HOSTED EDITION'}</p>
+   <ClassicBookCover record={record} className="archive-classic-frontmatter-cover"/>
    <h3>{record?.title||'Untitled archive work'}</h3>
    <p>By <strong>{record?.creator_name||'Author not recorded'}</strong>{translators.length>0&&<> · Recorded translators: <strong>{translators.join(', ')}</strong></>}</p>
    <div className="archive-classic-brief">
