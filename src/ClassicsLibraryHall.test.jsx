@@ -53,7 +53,7 @@ describe('Palace Classics library hall',()=>{
   expect(screen.queryByText(/not necessarily the first printing/)).toBeNull();
   fireEvent.click(screen.getByRole('button',{name:'About: About these Classic editions'}));
   expect(screen.getByText(/not necessarily the first printing/)).toBeTruthy();
-  expect(screen.getByText(/Not rated/)).toBeTruthy();
+  expect(screen.getByText(/means no separate content classification/)).toBeTruthy();
  });
  it('shows no hall without archived works',()=>{
   setup([]);
