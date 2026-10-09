@@ -4,6 +4,7 @@ import ClassicBookCover from './ClassicBookCover';
 import {paginateClassicBlocks,classicContents,clampClassicPage,classicPageKey,firstClassicStoryBlock,classicStoryPage} from './archiveReaderModel';
 import {readPalaceChoice,readPalaceNumber,writePalacePreference,removePalacePreference} from './browserPreferences';
 import './archive-classic-reader.css';
+import './archive-classic-open-story.css';
 
 const FONT_KEY='palace-classic-font';
 const TONE_KEY='palace-classic-tone';
