@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react';
 import {Link} from 'react-router-dom';
 import {configured,supabase} from './supabase';
 import './palace-home-stories.css';
+import StoryRatingBadge from './StoryRatingBadge';
 
 /** An honest, chronological public shelf—not a popularity ranking. */
 export default function PalaceNewStories(){
@@ -13,7 +14,7 @@ export default function PalaceNewStories(){
   async function load(){
    try{
     const{data,error}=await supabase.from('works')
-     .select('id,title,slug,summary,cover_url,last_published_at,profiles!works_author_id_fkey(username,display_name)')
+     .select('id,title,slug,summary,rating,cover_url,last_published_at,profiles!works_author_id_fkey(username,display_name)')
      .eq('publication_status','published')
      .order('last_published_at',{ascending:false}).limit(4);
     if(!active)return;
@@ -44,7 +45,7 @@ export default function PalaceNewStories(){
   </div>}
   {status==='ready'&&works.length>0&&<div className="home-world-grid">
    {works.map(w=><Link to={'/work/'+w.slug} key={w.id}>
-    <div className="home-world-cover">{w.cover_url?<img loading="lazy" decoding="async" src={w.cover_url} alt=""/>:<span aria-hidden="true">☾<b>✦</b></span>}</div>
+    <div className="home-world-cover palace-rating-anchor">{w.cover_url?<img loading="lazy" decoding="async" src={w.cover_url} alt=""/>:<span aria-hidden="true">☾<b>✦</b></span>}<StoryRatingBadge rating={w.rating}/></div>
     <div><small>{w.last_published_at?new Date(w.last_published_at).toLocaleDateString(undefined,{month:'short',day:'numeric'}):'New'}</small>
      <h3>{w.title}</h3><p>{w.summary||'Enter this world to begin reading.'}</p>
      <b>by {w.profiles?.display_name||w.profiles?.username||'Palace writer'} →</b></div>
