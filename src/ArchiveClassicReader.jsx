@@ -24,7 +24,7 @@ function ArchiveClassicReaderEdition({record,text}){
  const storyBlock=useMemo(()=>firstClassicStoryBlock(blocks),[blocks]);
  const pages=useMemo(()=>paginateClassicBlocks(blocks,36,storyBlock),[blocks,storyBlock]);
  const storyPage=useMemo(()=>classicStoryPage(pages,storyBlock),[pages,storyBlock]);
- const contents=useMemo(()=>classicContents(pages),[pages]);
+ const contents=useMemo(()=>classicContents(pages,storyBlock),[pages,storyBlock]);
  const pageKey=classicPageKey(record?.id);
  const [page,setPage]=useState(()=>{
   const saved=readPalaceNumber(pageKey,-1,-1,Math.max(0,pages.length-1));

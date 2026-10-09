@@ -18,11 +18,11 @@ export function paginateClassicBlocks(blocks=[],limit=CLASSIC_READER_PAGE_SIZE,b
  }
  return pages;
 }
-export function classicContents(pages=[]){
+export function classicContents(pages=[],firstNarrativeBlock=0){
  const items=[];
  pages.forEach((page,pageIndex)=>{
   (page||[]).forEach(block=>{
-   if(block?.kind==='heading'&&String(block.text||'').trim())
+   if(block?.kind==='heading'&&block.sourceIndex>=firstNarrativeBlock&&String(block.text||'').trim())
     items.push({title:String(block.text).trim(),pageIndex,sourceIndex:block.sourceIndex});
   });
  });

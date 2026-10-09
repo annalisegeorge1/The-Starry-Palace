@@ -2,6 +2,12 @@ import {describe,it,expect} from 'vitest';
 import {paginateClassicBlocks,classicContents,clampClassicPage,classicPageKey} from './archiveReaderModel';
 
 describe('full-length classics reader',()=>{
+ it('does not put table-of-contents chapter titles into the live reading selector',()=>{
+  const blocks=[{kind:'heading',text:'CONTENTS'},{kind:'heading',text:'CHAPTER I'}, {kind:'heading',text:'CHAPTER II'}, {kind:'heading',text:'CHAPTER I'}, {kind:'paragraph',text:'The actual story begins.'}];
+  const pages=paginateClassicBlocks(blocks,2,3);
+  expect(classicContents(pages,3).map(x=>x.title)).toEqual(['CHAPTER I']);
+  expect(pages.flat().map(x=>x.text)).toEqual(blocks.map(x=>x.text));
+ });
  const paragraph=i=>({kind:'paragraph',text:'Source paragraph '+i});
  it('preserves every block and its order through display pages',()=>{
   const source=Array.from({length:95},(_,i)=>paragraph(i));
