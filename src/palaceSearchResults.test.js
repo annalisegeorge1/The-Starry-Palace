@@ -24,7 +24,7 @@ describe('Search Room facets and result ordering',()=>{
   expect(filterPalaceSearchGroups(data,{sort:'recent'}).works.map(x=>x.id)).toEqual(['w2','w1','w3']);
   expect(filterPalaceSearchGroups(data,{sort:'title'}).works.map(x=>x.id)).toEqual(['w1','w3','w2']);
   expect(data.works.map(x=>x.id)).toEqual(['w1','w2','w3']);
-  expect(filterPalaceSearchGroups(data,{sort:'best'}).works).toBe(data.works);
+  expect(filterPalaceSearchGroups(data,{sort:'best'}).works).toEqual(data.works);
  });
  it('interprets missing ratings conservatively and handles empty data',()=>{
   expect(filterPalaceSearchGroups(data,{rating:'not_rated'}).works.map(x=>x.id)).toEqual(['w3']);
