@@ -48,7 +48,7 @@ export function structureClassicText(source=''){
   if(!lines.length)continue;
   // Gutenberg sometimes substitutes a bracketed transcription for a printed
   // illustration. It is a source note, not an ordinary narrative paragraph.
-  if(lines.length===1&&/^\\[(?:illustration|frontispiece|plate)(?:\\s*:\\s*[^\\]]+)?\\]$/i.test(lines[0])){
+  if(lines.length===1&&/^\[(?:illustration|frontispiece|plate)(?:\s*:\s*[^\]]+)?\]$/i.test(lines[0])){
    result.push({kind:'illustration',text:lines[0]});
    continue;
   }
