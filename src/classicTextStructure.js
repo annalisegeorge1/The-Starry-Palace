@@ -7,20 +7,20 @@
 const standaloneHeading=/^(?:chapter|book|part|volume|act|scene|prologue|epilogue|prelude|overture|interlude|afterword|postscript|preface|introduction|contents|conclusion)$/i;
 const prefixedHeading=/^(?:chapter|book|part|volume|act|scene|prologue|epilogue|prelude|overture|interlude|afterword|postscript|preface|introduction|contents|conclusion)\s*[:.\-–—].*$/i;
 const numberedHeading=/^(?:chapter|book|part|volume|act|scene)\s+(?:the\s+)?(?:[ivxlcdm]+|\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|eleventh|twelfth)(?:([ \t]*[:.\-–—][ \t]*|[ \t]+)(.*))?$/i;
+// Historical sources also use number-only chapter headers and named prefaces.
+// Keep the formats narrow so ordinary prose is never promoted to a heading.
+const romanTitledHeading=/^[IVXLCDM]{1,7}\.\s+[A-Z][^.!?]{3,88}$/;
+const uppercaseArabicHeading=/^[1-9]\d{0,2}\s+[A-Z][^a-z\n]{8,92}$/;
+const editionPrefaceHeading=/^(?:(?:author['’]s|translator['’]s)\s+preface|preface\s+to\s+.{3,68})$/i;
 function isClassicHeading(value){
  if(value.length>=100||!value.trim())return false;
- if(standaloneHeading.test(value)||prefixedHeading.test(value)||romanTitledHeading.test(value)||uppercaseArabicHeading.test(value))return true;
+ if(standaloneHeading.test(value)||prefixedHeading.test(value)||romanTitledHeading.test(value)||uppercaseArabicHeading.test(value)||editionPrefaceHeading.test(value))return true;
  const found=numberedHeading.exec(value);
  if(!found)return false;
  if(!found[2])return true;
  const title=found[2].trim();
  return !!title&&(/[:.\-–—]/.test(found[1])||/^[A-Z0-9]/.test(title));
 }
-// Edition-specific chapter headings may be numbered without the word 'chapter'.
- // Accept only unambiguous Roman-number + title lines or Arabic-numbered
- // ALL-CAPS labels; a sentence such as '1 person walked...' is not a heading.
-const romanTitledHeading=/^[IVXLCDM]{1,7}\.\s+[A-Z][^.!?]{3,88}$/;
-const uppercaseArabicHeading=/^[1-9]\d{0,2}\s+[A-Z][^a-z\n]{8,92}$/;
 const verseHint=/^(?:\s{2,}|[—–])|[;,:]$/;
 function segmentLongProse(value){
  const words=value.trim();
