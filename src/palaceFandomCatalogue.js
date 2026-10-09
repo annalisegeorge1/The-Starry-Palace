@@ -1,4 +1,5 @@
 /* Independently curated Palace media shelves, not an AO3 data mirror. */
+import {FANDOM_EXPANSION_V2} from './palaceFandomExpansionV2';
 export const FANDOM_MEDIA_SHELVES=[
  {
   "id": "all",
@@ -2390,5 +2391,6 @@ export const INITIAL_FANDOM_DIRECTORY=[
   ],
   "franchise": "Five Nights at Freddy's"
  }
+,...FANDOM_EXPANSION_V2
 ];
 export const NON_FANDOM_CLASSIFICATIONS=['Fanwork','Original Work'];

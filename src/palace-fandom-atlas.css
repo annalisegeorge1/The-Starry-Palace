@@ -134,3 +134,18 @@
  .palace-fandom-atlas .palace-fandom-searchbar{grid-template-columns:minmax(0,1fr)}
  .palace-fandom-atlas .palace-fandom-searchbar label:first-child{grid-column:1}
 }
+
+/* A count beside each media shelf makes a large canon browsable, not endless. */
+.palace-fandom-media button .palace-fandom-media-count{
+ display:inline-flex;align-items:center;justify-content:center;min-width:23px;
+ min-height:22px;padding:2px 6px;box-sizing:border-box;
+ border:1px solid rgba(186,161,229,.32);border-radius:999px;
+ background:rgba(115,91,169,.22);color:inherit;
+ font:800 .67rem/1 system-ui,sans-serif;
+}
+.palace-shell.daylight .palace-fandom-media button .palace-fandom-media-count{
+ background:rgba(242,237,255,.87);border-color:#bca6d7;color:#4d3c72;
+}
+.palace-shell.daylight .palace-fandom-media button.active .palace-fandom-media-count{
+ background:rgba(40,40,78,.12);color:#fff;border-color:rgba(242,224,255,.54);
+}

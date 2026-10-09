@@ -25,6 +25,8 @@ export default function PalaceFandomAtlas(){
  const validFranchise=facets.franchises.includes(franchise)?franchise:'all';
  const filtered=useMemo(()=>visibleFandoms(rows,{media:validMedia,query:keyword,sort,subcategory:validSubcategory,franchise:validFranchise}),[rows,validMedia,keyword,sort,validSubcategory,validFranchise]);
  const list=pageFandoms(filtered,page);
+ const mediaCounts=useMemo(()=>Object.fromEntries(FANDOM_MEDIA_SHELVES.map(item=>
+  [item.id,visibleFandoms(rows,{media:item.id}).length])),[rows]);
  function changeParams(patch,{replace=true}={}){
   const next=new URLSearchParams(location.search);
   Object.entries(patch).forEach(([key,value])=>value?next.set(key,value):next.delete(key));
@@ -59,13 +61,14 @@ export default function PalaceFandomAtlas(){
     <p>A fandom can appear on more than one media shelf. For example, a book adapted for television can be found in both places. These are browsing categories—not age ratings or content warnings.</p>
     <p>Community-made fandoms remain visible while they await media classification. Character names, relationships and story tropes live in the Tag Constellation instead.</p>
     <p>To find crossovers, select several fandoms and choose whether stories must match any or all of them. No story or existing author tag is moved by browsing here.</p>
+    <p>Use the subcategory and franchise filters to distinguish an adaptation, a spin-off, or a game from its parent universe. Alternate names help find the correct fandom but do not automatically merge different canons.</p>
    </PalaceInfoMark>
   </header>
   <nav className="palace-fandom-media" aria-label="Fandom media shelves">
    {FANDOM_MEDIA_SHELVES.map(item=><button type="button" key={item.id} aria-pressed={validMedia===item.id}
     className={validMedia===item.id?'active':''}
     onClick={()=>changeParams({media:item.id==='all'?null:item.id,kind:null,world:null})}>
-    <span aria-hidden="true">{item.glyph}</span>{item.label}
+    <span aria-hidden="true">{item.glyph}</span>{item.label}<small className="palace-fandom-media-count" aria-label={mediaCounts[item.id]+' fandoms'}>{loading?'·':mediaCounts[item.id]||0}</small>
    </button>)}
   </nav>
   <div className="palace-fandom-searchbar">
