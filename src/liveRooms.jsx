@@ -1740,7 +1740,11 @@ function WorkStudioForWork({Frame,slug}){
   recoverySchedulerRef.current?.cancel();
   const f=new FormData(form);
   const snap={title:String(f.get('title')||chapter.title||''),body_html:editorRef.current?.innerHTML||'',revision_note:String(f.get('revision_note')||''),saved_at:new Date().toISOString()};
-  const revision=saveCoordinatorRef.current.markChanged(chapter.id);
+  // Device recovery copies are observations, not new keystrokes.
+  // Only actual edits (and explicit restores) advance the cloud revision.
+  // Otherwise a recovery timer can make a successful in-flight save appear
+  // stale even though the writer has not changed a single word.
+  const revision=saveCoordinatorRef.current.currentRevision(chapter.id);
   try{localStorage.setItem(recoveryKey(),JSON.stringify(snap));recoveryStorageRef.current=true;setRecoveryStorageAvailable(true)}
   catch{recoveryStorageRef.current=false;setRecoveryStorageAvailable(false)}
   return{...snap,_saveRevision:revision};
