@@ -2,7 +2,7 @@ import React,{useEffect,useMemo,useState} from 'react';
 import {Link,useLocation,useNavigate} from 'react-router-dom';
 import {getPalaceFandomDirectory,getStoriesForFandoms} from './palaceData';
 import {FANDOM_MEDIA_SHELVES} from './palaceFandomCatalogue';
-import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection} from './fandomDirectoryModel';
+import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection,fandomFacetOptions} from './fandomDirectoryModel';
 import StoryRatingBadge from './StoryRatingBadge';
 import PalaceInfoMark from './PalaceInfoMark';
 import './palace-fandom-atlas.css';
@@ -11,6 +11,7 @@ export default function PalaceFandomAtlas(){
  const navigate=useNavigate(),location=useLocation();
  const params=new URLSearchParams(location.search);
  const selectedMedia=params.get('media')||'all',keyword=params.get('q')||'';
+ const subcategory=params.get('kind')||'all',franchise=params.get('world')||'all';
  const urlIds=(params.get('ids')||'').split(',').filter(Boolean);
  const mode=params.get('match')==='all'?'all':'any';
  const [rows,setRows]=useState([]);
@@ -19,7 +20,10 @@ export default function PalaceFandomAtlas(){
  const [stories,setStories]=useState([]),[storyBusy,setStoryBusy]=useState(false),[storyError,setStoryError]=useState('');
  const validMedia=FANDOM_MEDIA_SHELVES.some(x=>x.id===selectedMedia)?selectedMedia:'all';
  const selected=safeFandomSelection(urlIds,rows);
- const filtered=useMemo(()=>visibleFandoms(rows,{media:validMedia,query:keyword,sort}),[rows,validMedia,keyword,sort]);
+ const facets=useMemo(()=>fandomFacetOptions(rows,validMedia),[rows,validMedia]);
+ const validSubcategory=facets.categories.includes(subcategory)?subcategory:'all';
+ const validFranchise=facets.franchises.includes(franchise)?franchise:'all';
+ const filtered=useMemo(()=>visibleFandoms(rows,{media:validMedia,query:keyword,sort,subcategory:validSubcategory,franchise:validFranchise}),[rows,validMedia,keyword,sort,validSubcategory,validFranchise]);
  const list=pageFandoms(filtered,page);
  function changeParams(patch,{replace=true}={}){
   const next=new URLSearchParams(location.search);
@@ -32,7 +36,7 @@ export default function PalaceFandomAtlas(){
     .finally(()=>{if(active)setLoading(false)});
   return()=>{active=false};
  },[]);
- useEffect(()=>{setPage(0)},[keyword,validMedia,sort]);
+ useEffect(()=>{setPage(0)},[keyword,validMedia,sort,validSubcategory,validFranchise]);
  const selectionKey=selected.join(',')+'|'+mode;
  useEffect(()=>{let active=true;if(!selected.length){setStories([]);setStoryError('');setStoryBusy(false);return};
   setStoryBusy(true);setStoryError('');
@@ -60,7 +64,7 @@ export default function PalaceFandomAtlas(){
   <nav className="palace-fandom-media" aria-label="Fandom media shelves">
    {FANDOM_MEDIA_SHELVES.map(item=><button type="button" key={item.id} aria-pressed={validMedia===item.id}
     className={validMedia===item.id?'active':''}
-    onClick={()=>changeParams({media:item.id==='all'?null:item.id})}>
+    onClick={()=>changeParams({media:item.id==='all'?null:item.id,kind:null,world:null})}>
     <span aria-hidden="true">{item.glyph}</span>{item.label}
    </button>)}
   </nav>
@@ -71,6 +75,14 @@ export default function PalaceFandomAtlas(){
    </label>
    <label><span>Order</span><select aria-label="Sort fandom directory" value={sort} onChange={e=>setSort(e.target.value)}>
     <option value="alpha">A–Z</option><option value="used">Used in stories</option>
+   </select></label>
+   <label><span>Type of fandom</span><select aria-label="Narrow fandoms by type" value={validSubcategory}
+    onChange={e=>changeParams({kind:e.target.value==='all'?null:e.target.value})}>
+    <option value="all">Every type</option>{facets.categories.map(kind=><option key={kind} value={kind}>{kind}</option>)}
+   </select></label>
+   <label><span>Franchise / world</span><select aria-label="Narrow fandoms by franchise" value={validFranchise}
+    onChange={e=>changeParams({world:e.target.value==='all'?null:e.target.value})}>
+    <option value="all">Every world</option>{facets.franchises.map(world=><option key={world} value={world}>{world}</option>)}
    </select></label>
    <span className="palace-fandom-total" role="status" aria-live="polite">{loading?'Gathering the directory…':filtered.length+' fandom'+(filtered.length===1?'':'s')}</span>
   </div>
@@ -95,7 +107,7 @@ export default function PalaceFandomAtlas(){
      <button type="button" disabled={list.page===list.pages-1} onClick={()=>setPage(list.page+1)}>Next →</button></div>
    </footer>
   </>:<div className="palace-fandom-empty"><strong>No matching fandom on this shelf yet.</strong><p>Try a different name, return to All Fandoms, or create the community tag in the Tag Constellation.</p>
-   <button type="button" onClick={()=>changeParams({q:null,media:null})}>All Fandoms →</button><Link to="/tags">Add a community tag →</Link>
+   <button type="button" onClick={()=>changeParams({q:null,media:null,kind:null,world:null})}>All Fandoms →</button><Link to="/tags">Add a community tag →</Link>
   </div>)}
   <section className="palace-fandom-crossovers" aria-label="Fandom crossover search">
    <div className="palace-fandom-crossovers-head"><div><small>YOUR FANDOM CONSTELLATION</small><h2>{selected.length?'Find works between worlds.':'Choose a world to begin.'}</h2>
