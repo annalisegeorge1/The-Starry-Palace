@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import {INITIAL_FANDOM_DIRECTORY} from './palaceFandomCatalogue';
 
 function needClient(){if(!supabase) throw new Error('The Palace data connection is not configured.');return supabase}
 const identityMarkCache=new Map();
