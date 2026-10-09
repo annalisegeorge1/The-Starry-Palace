@@ -1,0 +1,123 @@
+/* A dedicated media-organised Palace Fandom Atlas, without crowded controls. */
+.palace-fandom-atlas{max-width:1240px;margin:0 auto 32px;padding:0 1px;display:grid;gap:19px;min-width:0}
+.palace-fandom-hero{display:flex;align-items:flex-start;gap:18px;justify-content:space-between;
+ padding:clamp(20px,3vw,32px);border:1px solid rgba(185,166,226,.45);border-radius:22px;
+ background:linear-gradient(120deg,rgba(103,78,174,.26),rgba(59,111,170,.18),rgba(69,158,161,.1))}
+.palace-fandom-hero>div{flex:1 1 320px;max-width:68ch;min-width:0}
+.palace-fandom-hero h1{font:600 clamp(1.8rem,3.2vw,2.55rem)/1.16 Georgia,serif;margin:.2em 0 .34em;color:#f8f3ff}
+.palace-fandom-hero p:not(.eyebrow){font-size:.88rem;line-height:1.65;color:#e1d8f3;margin:0}
+.palace-fandom-hero .eyebrow{color:#cdb9f5;letter-spacing:.11em;font-size:.72rem}
+.palace-fandom-media{display:flex;flex-wrap:wrap;gap:8px}
+.palace-fandom-media button{display:flex;gap:7px;align-items:center;min-height:39px;
+ padding:8px 12px;border-radius:999px;border:1px solid rgba(185,166,223,.4);
+ background:rgba(103,87,159,.14);color:#ddd2ef;font:700 .77rem/1.35 system-ui,sans-serif}
+.palace-fandom-media button span{color:#c5b4e9;font-size:1.05rem}
+.palace-fandom-media button.active{border-color:#b9a5ea;color:#fff;
+ background:linear-gradient(115deg,rgba(128,95,191,.6),rgba(56,111,155,.55))}
+.palace-fandom-searchbar{display:grid;grid-template-columns:minmax(0,1fr) minmax(130px,220px) auto;gap:12px;align-items:end}
+.palace-fandom-searchbar label{display:grid;gap:6px;font-size:.75rem;font-weight:800;color:#ded3f0;min-width:0}
+.palace-fandom-searchbar :is(input,select){min-height:44px;min-width:0;width:100%;box-sizing:border-box;
+ border-radius:12px;border:1px solid rgba(178,158,227,.63);background:#282747;color:#fff;
+ padding:10px 12px;font:600 .87rem/1.35 system-ui,sans-serif}
+.palace-fandom-searchbar input::placeholder{color:#c4b7db;opacity:1}
+.palace-fandom-total{white-space:nowrap;color:#d6ccec;font-size:.77rem;padding-bottom:13px}
+.palace-fandom-cardgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.palace-fandom-card{display:flex;flex-direction:column;gap:8px;min-width:0;padding:16px;
+ border:1px solid rgba(176,162,224,.39);border-radius:17px;
+ background:linear-gradient(129deg,rgba(105,80,156,.18),rgba(50,91,149,.15))}
+.palace-fandom-card.picked{border-color:#bca7ef;box-shadow:inset 0 0 0 1px rgba(195,174,236,.27)}
+.palace-fandom-card-top{display:flex;align-items:center;gap:8px;min-width:0;color:#d4c4f4}
+.palace-fandom-card-top>span{font-size:1.3rem}
+.palace-fandom-card-top small{font-size:.67rem;line-height:1.4;letter-spacing:.025em;overflow-wrap:anywhere}
+.palace-fandom-card h2{font:600 1.25rem/1.28 Georgia,serif;color:#fff;margin:0;overflow-wrap:anywhere}
+.palace-fandom-card p{margin:0;font-size:.8rem;line-height:1.5;color:#e3dced}
+.palace-fandom-card .palace-fandom-franchise,.palace-fandom-card .palace-fandom-aliases{
+ display:block;font-size:.7rem;line-height:1.47;color:#c9bfe0;overflow-wrap:anywhere}
+.palace-fandom-card button{margin-top:auto;min-height:42px;padding:9px 12px;border-radius:11px;
+ border:1px solid rgba(170,157,217,.58);background:rgba(116,96,173,.17);
+ color:#f0e9ff;font-weight:800;font-size:.77rem}
+.palace-fandom-card button[aria-pressed=true]{background:linear-gradient(113deg,#755bae,#3a8297);border-color:#bfaaf3;color:#fff}
+.palace-fandom-card button:disabled{opacity:.46;cursor:default}
+.palace-fandom-pages{display:flex;align-items:center;justify-content:space-between;gap:11px;
+ flex-wrap:wrap;color:#d9cceb;font-size:.77rem}
+.palace-fandom-pages>div{display:flex;gap:8px}
+.palace-fandom-pages button,.palace-fandom-empty button,
+.palace-fandom-crossovers-head button{min-height:42px;border-radius:10px;border:1px solid rgba(185,165,224,.5);
+ padding:9px 14px;background:rgba(113,91,166,.2);color:#f4ebff;font-weight:750}
+.palace-fandom-pages button:disabled{opacity:.4;cursor:default}
+.palace-fandom-empty{padding:20px;border:1px dashed rgba(192,173,223,.43);border-radius:15px;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.palace-fandom-empty strong{font-size:1.05rem}.palace-fandom-empty p{flex:1 1 240px;color:#d8d0e9;font-size:.85rem}
+.palace-fandom-empty a,.palace-fandom-crossovers a{color:#caecfa;font-weight:750}
+.palace-fandom-crossovers{padding:18px;border-radius:18px;border:1px solid rgba(184,170,234,.45);
+ background:linear-gradient(115deg,rgba(90,63,156,.16),rgba(53,126,146,.12));min-width:0}
+.palace-fandom-crossovers-head{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap}
+.palace-fandom-crossovers-head h2{font:600 1.45rem/1.2 Georgia,serif;color:#fbf5ff;margin:4px 0}
+.palace-fandom-crossovers-head small{font-size:.67rem;letter-spacing:.11em;color:#c9b8ed}
+.palace-fandom-crossovers-head p{font-size:.78rem;line-height:1.5;color:#dcd1ed;margin:5px 0}
+.palace-fandom-selected{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0}
+.palace-fandom-selected button{border-radius:999px;padding:8px 11px;border:1px solid #bca9e0;background:rgba(118,91,186,.3);color:#fff;font-size:.78rem}
+.palace-fandom-match{display:flex;gap:11px 20px;align-items:center;flex-wrap:wrap;border:0;margin:12px 0;padding:0}
+.palace-fandom-match legend{font-size:.77rem;font-weight:800;margin-bottom:8px}
+.palace-fandom-match label{display:flex;gap:6px;align-items:center;font-size:.8rem;cursor:pointer}
+.palace-fandom-match input{accent-color:#9f8fe6;min-width:17px;min-height:17px}
+.palace-fandom-stories{margin-top:15px}
+.palace-fandom-stories>p{font-size:.81rem;color:#ddd4ec}
+.palace-fandom-stories>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.palace-fandom-story{display:grid;grid-template-columns:58px minmax(0,1fr);gap:12px;
+ border:1px solid rgba(184,169,235,.31);border-radius:12px;padding:10px;
+ text-decoration:none;background:rgba(88,73,145,.2);min-width:0}
+.palace-fandom-story-cover{position:relative;display:grid;place-items:center;width:58px;min-height:84px;
+ background:#3e345f;border-radius:8px;overflow:hidden;color:#dbd0ff}
+.palace-fandom-story-cover img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover}
+.palace-fandom-story>span:last-child{display:grid;align-content:center;gap:5px;min-width:0}
+.palace-fandom-story strong{font:600 1rem/1.3 Georgia,serif;color:#fff;overflow-wrap:anywhere}
+.palace-fandom-story small{font-size:.72rem;color:#d1c6e9}
+.palace-fandom-story em{font:400 .76rem/1.4 system-ui,sans-serif;color:#d9d4e9;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.palace-fandom-crossovers footer{display:flex;gap:11px;flex-wrap:wrap;margin-top:19px;font-size:.77rem}
+.palace-fandom-atlas :is(a,button,input,select):focus-visible{outline:3px solid #a7e0ff;outline-offset:3px}
+.palace-shell.daylight .palace-fandom-hero,.palace-shell.daylight .palace-fandom-crossovers{
+ background:linear-gradient(120deg,#f5eafa,#e5effb 63%,#e0f4f0);border-color:#b8a4d6;color:#36274f}
+.palace-shell.daylight .palace-fandom-hero h1,
+.palace-shell.daylight .palace-fandom-card h2,
+.palace-shell.daylight .palace-fandom-crossovers h2,
+.palace-shell.daylight .palace-fandom-story strong{color:#342446}
+.palace-shell.daylight .palace-fandom-hero p:not(.eyebrow),
+.palace-shell.daylight .palace-fandom-crossovers-head p,
+.palace-shell.daylight .palace-fandom-empty p{color:#534365}
+.palace-shell.daylight .palace-fandom-card,.palace-shell.daylight .palace-fandom-story{
+ background:rgba(255,255,255,.76);border-color:#c7b6dd}
+.palace-shell.daylight .palace-fandom-card p,
+.palace-shell.daylight .palace-fandom-franchise,
+.palace-shell.daylight .palace-fandom-aliases,
+.palace-shell.daylight .palace-fandom-story small,
+.palace-shell.daylight .palace-fandom-story em{color:#55476a}
+.palace-shell.daylight .palace-fandom-media button,
+.palace-shell.daylight .palace-fandom-card button,
+.palace-shell.daylight .palace-fandom-pages button,
+.palace-shell.daylight .palace-fandom-empty button,
+.palace-shell.daylight .palace-fandom-crossovers-head button{
+ background:#f8f1ff;border-color:#c1a8d5;color:#47375e}
+.palace-shell.daylight .palace-fandom-media button.active,
+.palace-shell.daylight .palace-fandom-card button[aria-pressed=true]{
+ background:linear-gradient(115deg,#e7d7fa,#dce8fe 58%,#d4f0e9);color:#302347;border-color:#9277bd}
+.palace-shell.daylight .palace-fandom-card-top,.palace-shell.daylight .palace-fandom-hero .eyebrow,
+.palace-shell.daylight .palace-fandom-crossovers-head small{color:#665083}
+.palace-shell.daylight .palace-fandom-searchbar label,
+.palace-shell.daylight .palace-fandom-total,
+.palace-shell.daylight .palace-fandom-pages{color:#554467}
+.palace-shell.daylight .palace-fandom-searchbar :is(input,select){background:white;color:#312544;border-color:#b7a0cc}
+.palace-shell.daylight .palace-fandom-searchbar input::placeholder{color:#82718e}
+.palace-shell.daylight .palace-fandom-crossovers a,.palace-shell.daylight .palace-fandom-empty a{color:#316480}
+.palace-shell.daylight .palace-fandom-crossovers .palace-fandom-selected button{background:#eaddf9;color:#47345d}
+.palace-shell.daylight .palace-fandom-stories>p{color:#514365}
+@media(max-width:980px){.palace-fandom-cardgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:690px){
+ .palace-fandom-cardgrid,.palace-fandom-stories>div{grid-template-columns:minmax(0,1fr)}
+ .palace-fandom-searchbar{grid-template-columns:minmax(0,1fr)}
+ .palace-fandom-media{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;padding-bottom:8px}
+ .palace-fandom-media button{flex:0 0 auto}
+ .palace-fandom-hero{padding:17px}
+ .palace-fandom-card{padding:15px}
+ .palace-fandom-crossovers{padding:14px}
+ .palace-fandom-total{padding:0}
+}
