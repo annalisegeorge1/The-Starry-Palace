@@ -14,11 +14,12 @@ export default function PalaceChatDrawer({userId}){
  const[open,setOpen]=useState(false);
  const[tab,setTab]=useState('direct');
  const[direct,setDirect]=useState(null);
+ const[dataOwner,setDataOwner]=useState(userId);
  const[groupData,setGroupData]=useState({groups:[],invitations:[]});
  const[groupAvailable,setGroupAvailable]=useState(true);
  const[selectedDirect,setSelectedDirect]=useState('');
  const[selectedGroup,setSelectedGroup]=useState('');
- const[groupMessages,setGroupMessages]=useState([]);
+ const[groupMessages,setGroupMessages]=useState({chatId:'',items:[]});
  const[drafts,setDrafts]=useState({});
  const[busy,setBusy]=useState(false);
  const[error,setError]=useState('');
@@ -39,7 +40,7 @@ export default function PalaceChatDrawer({userId}){
  const activeGroup=groupData.groups.find(g=>g.id===selectedGroup);
  const active=tab==='direct'?activeDirect:activeGroup;
  const roomId=tab==='direct'?activeDirect?.conversation_id:activeGroup?.id;
- const messages=tab==='direct'?(direct?.messages||[]).filter(m=>m.conversation_id===roomId).slice().reverse():groupMessages;
+ const messages=tab==='direct'?(direct?.messages||[]).filter(m=>m.conversation_id===roomId).slice().reverse():groupMessages.chatId===roomId?groupMessages.items:[];
  const draftsKey=roomId?draftKey(userId,tab,roomId):'';
  const currentDraft=roomId?(drafts[draftsKey]??(()=>{try{return localStorage.getItem(draftsKey)||''}catch{return ''}})()):'';
  const directRows=(direct?.conversations||[]).filter(c=>!c.preference?.archived&&c.conversations?.kind==='direct');
@@ -50,7 +51,7 @@ export default function PalaceChatDrawer({userId}){
  const unread=directUnread+groupUnread+groupData.invitations.length;
  const openedRoomName=tab==='direct'?nameOf(activeDirect?.correspondent):activeGroup?.title;
 
- useEffect(()=>{setOpen(false);setTab('direct');setDirect(null);setGroupData({groups:[],invitations:[]});setSelectedDirect('');setSelectedGroup('');setGroupMessages([]);setDrafts({});setError('');setNotice('');setCreating(false);setManaging(false)},[userId]);
+ useEffect(()=>{setOpen(false);setTab('direct');setDirect(null);setGroupData({groups:[],invitations:[]});setSelectedDirect('');setSelectedGroup('');setGroupMessages({chatId:'',items:[]});setDrafts({});setError('');setNotice('');setCreating(false);setManaging(false)},[userId]);
  useEffect(()=>{
   if(!userId)return;
   let alive=true;
@@ -60,11 +61,12 @@ export default function PalaceChatDrawer({userId}){
    if(letters.status==='fulfilled'){
     setDirect(letters.value);
     setSelectedDirect(previous=>letters.value.conversations.some(c=>c.conversation_id===previous&&!c.preference?.archived&&c.conversations?.kind==='direct')?previous:(letters.value.conversations.find(c=>!c.preference?.archived&&c.conversations?.kind==='direct')?.conversation_id||''));
-   }else setError(errorText(letters.reason));
+   }else{setDirect(null);setError(errorText(letters.reason))}
    if(groups.status==='fulfilled'){
     setGroupAvailable(true);setGroupData(groups.value);
     setSelectedGroup(previous=>groups.value.groups.some(g=>g.id===previous)?previous:(groups.value.groups[0]?.id||''));
-   }else setGroupAvailable(false);
+   }else{setGroupAvailable(false);setGroupData({groups:[],invitations:[]})}
+   setDataOwner(userId);
   };
   refresh();
   const timer=window.setInterval(()=>{if(document.visibilityState==='visible')refresh()},open?16000:60000);
@@ -73,8 +75,8 @@ export default function PalaceChatDrawer({userId}){
  useEffect(()=>{
   if(!open||tab!=='groups'||!selectedGroup)return;
   let alive=true;
-  const refresh=()=>getPalaceGroupMessages(selectedGroup).then(rows=>{if(alive)setGroupMessages(rows)}).catch(e=>{if(alive)setError(errorText(e))});
-  setGroupMessages([]);refresh();
+  const refresh=()=>getPalaceGroupMessages(selectedGroup).then(rows=>{if(alive)setGroupMessages({chatId:selectedGroup,items:rows})}).catch(e=>{if(alive)setError(errorText(e))});
+  setGroupMessages({chatId:selectedGroup,items:[]});refresh();
   const timer=window.setInterval(()=>{if(document.visibilityState==='visible')refresh()},12000);
   return()=>{alive=false;window.clearInterval(timer)};
  },[open,tab,selectedGroup]);
@@ -92,7 +94,7 @@ export default function PalaceChatDrawer({userId}){
  },[messages.length,roomId,tab,open]);
  useEffect(()=>{const update=()=>setQuiet(document.body.classList.contains('reader-focus-mode')||document.body.classList.contains('writer-focus-mode'));update();const obs=new MutationObserver(update);obs.observe(document.body,{attributes:true,attributeFilter:['class']});return()=>obs.disconnect()},[]);
  useEffect(()=>{const handle=e=>{if(e.key==='Escape'&&open){if(creating){setCreating(false)}else if(managing)setManaging(false);else setOpen(false)}};window.addEventListener('keydown',handle);return()=>window.removeEventListener('keydown',handle)},[open,creating,managing]);
- if(!userId)return null;
+ if(!userId||dataOwner!==userId)return null;
 
  function setDraft(value){
   if(!roomId)return;
@@ -107,7 +109,7 @@ export default function PalaceChatDrawer({userId}){
    if(tab==='groups'){
     await sendPalaceGroupMessage(roomId,userId,text);
     await markPalaceGroupRead(roomId,userId);
-    setGroupMessages(await getPalaceGroupMessages(roomId));
+    setGroupMessages({chatId:roomId,items:await getPalaceGroupMessages(roomId)});
     setGroupData(await getPalaceGroupChatOverview(userId));
    }else{
     await sendLetter(userId,roomId,text);
