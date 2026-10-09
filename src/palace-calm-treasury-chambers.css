@@ -1,0 +1,89 @@
+/* A quieter Royal Treasury and personal Chamber.
+   Native disclosure keeps collections, artwork and editing actions accessible. */
+.palace-shell :is(.palace-calm-treasury-overview,.palace-calm-wardrobe,.palace-calm-profile-stats,.palace-calm-chamber-studio,.palace-calm-member-gallery,.palace-calm-edit-advanced){
+ min-width:0;max-width:100%;margin:clamp(11px,2vw,21px) 0;border:1px solid rgba(178,164,229,.43);
+ border-radius:17px;background:linear-gradient(125deg,rgba(99,83,164,.13),rgba(54,97,148,.075));color:inherit;overflow:hidden;
+}
+.palace-shell :is(.palace-calm-treasury-overview,.palace-calm-wardrobe,.palace-calm-profile-stats,.palace-calm-chamber-studio,.palace-calm-member-gallery,.palace-calm-edit-advanced)>summary{
+ list-style:none;display:flex;align-items:center;gap:10px;justify-content:space-between;min-height:55px;flex-wrap:wrap;
+ padding:13px clamp(13px,2.2vw,23px);cursor:pointer;font:750 .83rem/1.45 system-ui,sans-serif;letter-spacing:.006em;
+}
+.palace-shell :is(.palace-calm-treasury-overview,.palace-calm-wardrobe,.palace-calm-profile-stats,.palace-calm-chamber-studio,.palace-calm-member-gallery,.palace-calm-edit-advanced)>summary::-webkit-details-marker{display:none}
+.palace-shell :is(.palace-calm-treasury-overview,.palace-calm-wardrobe,.palace-calm-profile-stats,.palace-calm-chamber-studio,.palace-calm-member-gallery,.palace-calm-edit-advanced)>summary::after{
+ content:'＋';margin-left:auto;flex:none;line-height:1;font:600 1.18rem Georgia,serif;
+}
+.palace-shell :is(.palace-calm-treasury-overview,.palace-calm-wardrobe,.palace-calm-profile-stats,.palace-calm-chamber-studio,.palace-calm-member-gallery,.palace-calm-edit-advanced)[open]>summary::after{content:'−'}
+.palace-shell :is(.palace-calm-treasury-overview,.palace-calm-wardrobe,.palace-calm-profile-stats,.palace-calm-chamber-studio,.palace-calm-member-gallery,.palace-calm-edit-advanced)>summary small{
+ font:500 .71rem/1.5 system-ui,sans-serif;opacity:.75;
+}
+.palace-shell :is(.palace-calm-treasury-overview,.palace-calm-wardrobe,.palace-calm-profile-stats,.palace-calm-chamber-studio,.palace-calm-member-gallery,.palace-calm-edit-advanced)>summary:focus-visible{
+ outline:3px solid #b6defb;outline-offset:-3px;
+}
+.palace-shell :is(.palace-calm-treasury-overview,.palace-calm-wardrobe,.palace-calm-profile-stats,.palace-calm-chamber-studio,.palace-calm-member-gallery,.palace-calm-edit-advanced)>summary:hover{
+ background:rgba(132,110,194,.12);
+}
+.palace-shell :is(.palace-calm-treasury-overview,.palace-calm-wardrobe,.palace-calm-profile-stats,.palace-calm-chamber-studio,.palace-calm-member-gallery,.palace-calm-edit-advanced)[open]>summary{
+ border-bottom:1px solid rgba(177,160,223,.30);
+}
+.palace-shell .treasury-head .palace-calm-treasury-overview{margin:15px 0 0}
+.palace-shell .treasury-head .palace-calm-treasury-overview .treasury-summary{
+ margin:0!important;border:0!important;border-radius:0;padding:13px!important;background:transparent!important;box-shadow:none!important;
+}
+.palace-shell .palace-calm-wardrobe{margin:14px 0 22px}
+.palace-shell .palace-calm-wardrobe>.treasury-wardrobe{
+ margin:0!important;border:0!important;box-shadow:none!important;border-radius:0!important;
+ background:transparent!important;
+}
+.palace-shell .palace-calm-collection-more{
+ display:flex;align-items:center;justify-content:center;gap:10px;width:min(100%,420px);
+ margin:18px auto 22px;padding:11px 16px;min-height:47px;border-radius:12px;
+ border:1px solid rgba(189,172,242,.64);background:linear-gradient(115deg,rgba(112,93,177,.30),rgba(67,110,151,.25));
+ color:inherit;font:750 .84rem/1.4 system-ui,sans-serif;cursor:pointer;
+}
+.palace-shell .palace-calm-collection-more:hover{border-color:rgba(215,205,255,.95);background:rgba(130,113,196,.37)}
+.palace-shell .palace-calm-collection-more:focus-visible{outline:3px solid #b9dcfa;outline-offset:3px}
+.palace-shell .palace-calm-collection-more span{font-size:1.05rem}
+.palace-shell .palace-calm-profile-stats{margin:12px 0 0;background:rgba(80,72,140,.10)}
+.palace-shell .palace-calm-profile-stats .legacy-profile-stats{
+ display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;min-width:0;
+ margin:0!important;padding:11px!important;border:0!important;box-shadow:none!important;background:transparent!important;
+}
+.palace-shell .palace-calm-profile-stats .legacy-profile-stats>div{min-width:0}
+.palace-shell .palace-calm-chamber-studio{margin:13px auto 24px}
+.palace-shell .palace-calm-chamber-studio>.chamber-decorator{
+ margin:0!important;border:0!important;box-shadow:none!important;border-radius:0!important;background:transparent!important;
+}
+.palace-shell .palace-calm-member-gallery{scroll-margin-top:100px;margin:clamp(18px,3vw,36px) 0}
+.palace-shell .palace-calm-member-gallery>.chamber-atelier-gallery{
+ margin:0!important;border:0!important;box-shadow:none!important;border-radius:0!important;background:transparent!important;
+}
+.palace-shell .palace-calm-edit-grid>.palace-calm-edit-advanced{
+ grid-column:1/-1;width:100%;box-sizing:border-box;margin:3px 0 5px;
+}
+.palace-shell .palace-calm-edit-advanced-grid{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 15px;
+ min-width:0;padding:15px;align-items:start;
+}
+.palace-shell .palace-calm-edit-advanced-grid>*{min-width:0}
+.palace-shell .palace-calm-edit-advanced-grid>.wide{grid-column:1/-1}
+.palace-shell .palace-calm-edit-advanced-grid :is(input,textarea,select){max-width:100%;box-sizing:border-box}
+.palace-shell.daylight :is(.palace-calm-treasury-overview,.palace-calm-wardrobe,.palace-calm-profile-stats,.palace-calm-chamber-studio,.palace-calm-member-gallery,.palace-calm-edit-advanced){
+ color:#292440;background:linear-gradient(125deg,#f9f6fe,#f2f7fa);border-color:#ae9cc8;
+}
+.palace-shell.daylight .palace-calm-collection-more{
+ color:#2c2647;background:#efebfa;border-color:#a48ac5;
+}
+@media(max-width:650px){
+ .palace-shell :is(.palace-calm-treasury-overview,.palace-calm-wardrobe,.palace-calm-profile-stats,.palace-calm-chamber-studio,.palace-calm-member-gallery,.palace-calm-edit-advanced)>summary{
+  min-height:51px;padding:12px;gap:4px 10px;font-size:.8rem;
+ }
+ .palace-shell :is(.palace-calm-treasury-overview,.palace-calm-wardrobe,.palace-calm-profile-stats,.palace-calm-chamber-studio,.palace-calm-member-gallery,.palace-calm-edit-advanced)>summary small{
+  order:3;flex-basis:100%;font-size:.69rem;
+ }
+ .palace-shell .palace-calm-profile-stats .legacy-profile-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .palace-shell .palace-calm-edit-advanced-grid{grid-template-columns:minmax(0,1fr)}
+ .palace-shell .palace-calm-collection-more{width:calc(100% - 20px)}
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .palace-calm-collection-more{transition:none}
+}

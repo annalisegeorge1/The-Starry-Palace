@@ -5,7 +5,10 @@ const read=(path)=>readFileSync(resolve(process.cwd(),path),'utf8');
 const live=read('src/liveRooms.jsx');
 const sql=read('database/member-chamber-decoration-and-arrangement.sql');
 const css=read('src/chamber-creative-shelf-polish.css');
-const gallery=live.slice(live.indexOf('<section id="chamber-honours"'),live.indexOf('<section id="chamber-worlds"'));
+const start=live.indexOf('<details id="chamber-honours"');
+const end=live.indexOf('<section id="chamber-worlds"',start);
+if(start<0||end<start)throw new Error('Member Gallery must remain linked to its section and contain its original actions.');
+const gallery=live.slice(start,end);
 
 describe('Accessible member Gallery arrangement',()=>{
  it('retains both collections and their original backend actions',()=>{
