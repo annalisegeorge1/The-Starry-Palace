@@ -36,8 +36,14 @@ export function duelPrizeProgress(duel={}){
  const current={entries:Number(duel.entry_count||0),ballots:Number(duel.vote_count||0),outside:Number(duel.external_vote_count||0)};
  const tiers=['gold','silver','bronze'];
  const earned=tiers.find(t=>Object.keys(match[t]).every(k=>current[k]>=match[t][k]))||null;
- const missing=Object.entries(match.bronze).filter(([k,count])=>current[k]<count).map(([key,count])=>({key,need:count,have:current[key],remaining:count-current[key]}));
- return{earned,missing,bronze:match.bronze,tiers:match};
+ const gaps=criteria=>Object.entries(criteria).filter(([key,need])=>current[key]<need)
+  .map(([key,need])=>({key,need,have:current[key],remaining:need-current[key]}));
+ const missing=gaps(match.bronze);
+ // Participation status only, not a prediction or a grant of an actual gift.
+ // The server still decides winners, ties, ballot eligibility and final rewards.
+ const readiness=Object.fromEntries(['bronze','silver','gold'].map(tier=>
+  [tier,{ready:gaps(match[tier]).length===0,missing:gaps(match[tier]),criteria:match[tier]}]));
+ return{earned,missing,bronze:match.bronze,tiers:match,readiness};
 }
 
 // Shared theme/word challenges: drawn before the duel opens and stored in its

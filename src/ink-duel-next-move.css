@@ -1,0 +1,87 @@
+/* The Starry Palace · Ink Duel next moves. Quiet until there is a useful task. */
+.palace-shell .palace-duel-spotlight{
+ display:flex;align-items:center;flex-wrap:wrap;gap:12px 16px;
+ padding:15px 18px;margin:14px 0 18px;border-radius:19px;
+ border:1px solid rgba(173,155,240,.54);
+ background:linear-gradient(112deg,rgba(101,67,161,.46),rgba(39,100,145,.32));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 7px 25px rgba(14,14,49,.12);
+ color:#f5f0ff;min-width:0;
+}
+.palace-shell .palace-duel-spotlight-sigil{
+ display:grid;place-items:center;flex:0 0 45px;height:45px;
+ border:1px solid rgba(208,184,255,.49);border-radius:14px;
+ background:linear-gradient(125deg,rgba(138,95,218,.35),rgba(48,138,177,.24));
+ font-size:1.65rem;color:#e4c9ff;
+}
+.palace-shell .palace-duel-spotlight-copy{flex:1 1 250px;min-width:0;display:grid;gap:3px}
+.palace-shell .palace-duel-spotlight-copy small{
+ font-size:.66rem;font-weight:800;letter-spacing:.12em;color:#d7cafa;
+}
+.palace-shell .palace-duel-spotlight-copy strong{
+ font-family:Georgia,serif;font-weight:700;font-size:1.22rem;line-height:1.2;
+ color:#fff;overflow-wrap:anywhere;
+}
+.palace-shell .palace-duel-spotlight-copy p{
+ margin:2px 0 0;font-size:.78rem;line-height:1.5;color:#e7dcfa;
+}
+.palace-shell .palace-duel-spotlight-action{
+ flex:none;max-width:100%;padding:10px 16px;min-height:44px;
+ border-radius:12px;border:1px solid rgba(210,207,255,.58);
+ background:linear-gradient(115deg,#7658b4,#3681a5);color:#fff;
+ font:inherit;font-size:.85rem;font-weight:800;cursor:pointer;
+}
+.palace-shell .palace-duel-spotlight-action:focus-visible{
+ outline:3px solid #b7e6ff;outline-offset:2px;
+}
+.palace-shell .palace-duel-treasure-preview{
+ display:grid;gap:7px;min-width:0;
+}
+.palace-shell .palace-duel-treasure-head{
+ display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+}
+.palace-shell .palace-duel-treasure-head>small{
+ letter-spacing:.11em;font-size:.66rem;font-weight:800;
+}
+.palace-shell .palace-duel-treasure-head .palace-info-mark-trigger{
+ width:31px;height:31px;min-width:31px;max-width:31px;
+}
+.palace-shell .palace-duel-treasure-preview>span{
+ overflow-wrap:anywhere;line-height:1.5;
+}
+.palace-duel-tier-list{display:grid;gap:8px;margin-top:12px}
+.palace-duel-tier-list article{
+ display:grid;gap:5px;padding:9px 11px;
+ border:1px solid rgba(173,153,225,.41);border-radius:12px;
+ background:rgba(95,77,153,.2);
+}
+.palace-duel-tier-list strong{
+ display:flex;align-items:center;justify-content:space-between;
+ flex-wrap:wrap;gap:6px;font-size:.85rem;
+}
+.palace-duel-tier-list strong span{
+ font-size:.70rem;font-family:inherit;font-weight:600;
+ color:inherit;opacity:.85;
+}
+.palace-duel-tier-list small{display:block;line-height:1.5;font-size:.72rem}
+.palace-info-floating.daylight .palace-duel-tier-list article{
+ background:rgba(255,255,255,.69);border-color:#c7b2e0;
+}
+.palace-shell.daylight .palace-duel-spotlight{
+ background:linear-gradient(120deg,#eee2fa,#d9f0f4);border-color:#bba6d8;color:#30294e;
+}
+.palace-shell.daylight .palace-duel-spotlight-sigil{
+ background:linear-gradient(120deg,#e9d7fb,#ccecf4);
+ border-color:#b9a3d9;color:#6c48a2;
+}
+.palace-shell.daylight .palace-duel-spotlight-copy strong,
+.palace-shell.daylight .palace-duel-spotlight-copy small{color:#392c5c}
+.palace-shell.daylight .palace-duel-spotlight-copy p{color:#504465}
+@media(max-width:640px){
+ .palace-shell .palace-duel-spotlight{padding:13px 14px;gap:10px 12px}
+ .palace-shell .palace-duel-spotlight-sigil{flex-basis:38px;height:38px}
+ .palace-shell .palace-duel-spotlight-copy{flex:1 1 160px}
+ .palace-shell .palace-duel-spotlight-copy strong{font-size:1.07rem}
+ .palace-shell .palace-duel-spotlight-action{
+  flex:1 1 100%;width:100%;min-width:0;text-align:center;
+ }
+}

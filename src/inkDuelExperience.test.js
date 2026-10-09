@@ -36,6 +36,17 @@ describe('Ink Duel reward preview',()=>{
   expect(duelPrizeProgress({match_type:'one_v_one',entry_count:2,vote_count:15,external_vote_count:6}).earned).toBe('bronze');
   expect(duelPrizeProgress({match_type:'one_v_one',entry_count:2,vote_count:15,external_vote_count:15}).earned).toBe('gold');
  });
+ it('shows independent Bronze, Silver and Gold thresholds without awarding a prize',()=>{
+  const initial=duelPrizeProgress({match_type:'group',entry_count:5,vote_count:8,external_vote_count:3});
+  expect(initial.readiness.bronze.ready).toBe(true);
+  expect(initial.readiness.silver.ready).toBe(false);
+  expect(initial.readiness.silver.missing).toEqual([{key:'outside',need:4,have:3,remaining:1}]);
+  expect(initial.readiness.gold.ready).toBe(false);
+  expect(initial.readiness.gold.criteria).toEqual({entries:7,ballots:12,outside:6});
+  const ready=duelPrizeProgress({match_type:'group',entry_count:7,vote_count:12,external_vote_count:6});
+  expect(ready.readiness.gold.ready).toBe(true);
+  expect(ready.readiness.gold.missing).toEqual([]);
+ });
  it('draws creative, bounded twists for every format',()=>{
   for(const type of ['fiction','poetry','haiku','drabble','dialogue','art','comic','wildcard']){
    expect(drawDuelTwist(type,1).length).toBeGreaterThan(12);

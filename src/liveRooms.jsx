@@ -54,6 +54,8 @@ import {getStoryHistoryMetadata} from './palaceData';
 import './archive-classic-typesetting.css';
 import{PROMPT_ORRERY_RECIPES,randomOrreryRecipe}from'./promptOrreryData';
 import PalaceInfoMark from './PalaceInfoMark';
+import InkDuelSpotlight from './InkDuelSpotlight';
+import DuelTreasurePreview from './DuelTreasurePreview';
 import {ORRERY_STAR_JAR_STORAGE_KEY,starJarKey,addStarJarPrompt,removeStarJarPrompt,readStarJar} from './palaceOrreryStarJar';
 import './palace-orrery-star-jar.css';
 import{filterInkDuels,duelPrizeProgress,drawDuelTwist,drawDuelBasis,duelBasisPrompt,suggestedDuelBasis}from'./inkDuelExperience';
@@ -438,11 +440,6 @@ export function WritingLive({Frame}){
   setDuelForm(v=>({...v,prompt:duelBasisPrompt(basis,v.contentType),
    title:v.title||((kind==='word'?'One Word: ':'The Theme: ')+basis.value).slice(0,100)}));
  }
- function duelPrizeRule(duel){
-  if(duel.match_type==='one_v_one')return{bronze:'2 entries · 3 outside ballots',silver:'7 outside ballots',gold:'15 outside ballots'};
-  if(duel.match_type==='group')return{bronze:'3 entries · 4 ballots · 2 outside',silver:'5 entries · 8 ballots · 4 outside',gold:'7 entries · 12 ballots · 6 outside'};
-  return{bronze:'3 entries · 4 ballots · 2 outside',silver:'6 entries · 8 ballots · 4 outside',gold:'10 entries · 15 ballots · 8 outside'}
- }
  function applyDuelPreset(mode){const preset=duelPreset(mode);setDuelForm(v=>({...v,...preset}))}
  function remixDuel(duel){
   setDuelForm({title:(String(duel.title||'Ink Duel').slice(0,85)+' · Remix').slice(0,100),prompt:duel.prompt||'',limit:duel.word_limit||500,mode:duel.duel_mode||'classic',writingMinutes:duel.writing_minutes||15,votingMinutes:duel.voting_minutes||720,promptFamily:duel.prompt_family||'Open',contentType:duel.content_type||'fiction',matchType:'open',maxEntries:12,invites:'',ruleNote:duel.rule_note||''});
@@ -470,6 +467,14 @@ export function WritingLive({Frame}){
  const scheduledChapters=(works||[]).flatMap(w=>(w.chapters||[]).filter(ch=>ch.scheduled_for&&ch.status!=='published').map(ch=>({work:w,chapter:ch}))).sort((a,b)=>new Date(a.chapter.scheduled_for)-new Date(b.chapter.scheduled_for));
  const workHasScheduled=w=>(w.chapters||[]).some(ch=>ch.scheduled_for&&ch.status!=='published');
  const duelPromptFamilies=useMemo(()=>['Open',...[...new Set(PROMPT_ORRERY_RECIPES.map(x=>x.flavour).filter(Boolean))].filter(x=>x!=='Classic Orbit').sort()],[]);
+ function returnToInkDuel(id){
+  setDuelView('all');setDuelScope('all');setDuelSearch('');setDuelFormat('all');
+  if(!id)return;
+  window.requestAnimationFrame(()=>{
+   const target=document.getElementById('palace-duel-'+id);
+   target?.scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches?'auto':'smooth',block:'start'});
+  });
+ }
  const duelVisible=filterInkDuels(duels,{view:duelView,search:duelSearch,format:duelFormat,scope:duelScope});
  const duelWritingCount=duels.filter(d=>d.phase==='writing').length;const duelVotingCount=duels.filter(d=>d.phase==='voting').length;
  const duelCountdown=target=>{const ms=Math.max(0,new Date(target).getTime()-duelNow);const total=Math.ceil(ms/1000);const h=Math.floor(total/3600);const m=Math.floor(total%3600/60);const s=total%60;return h?String(h)+'h '+String(m).padStart(2,'0')+'m':String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')};
@@ -489,7 +494,7 @@ export function WritingLive({Frame}){
   <div><p className="eyebrow">INK DUELS · CREATIVE ARENA</p><div className="palace-info-heading"><h2>One prompt. Many forms. Let the Palace decide.</h2><PalaceInfoMark title="How Ink Duels work"><p>Challenge one rival, invite a small court, or open the arena. Fiction, poetry, haiku, drabbles, dialogue, art and comics all compete from one shared prompt.</p><ol><li>Choose your craft and prompt.</li><li>Submit a sealed entry before the deadline.</li><li>Independent readers judge blind.</li><li>Entries and qualified treasures are revealed after voting.</li></ol></PalaceInfoMark></div></div>
   <button className="button-starlight" type="button" onClick={()=>setDuelOpen(true)}>Open an Ink Duel ✦</button>
  </section>
- 
+ <InkDuelSpotlight duels={duels} onGoToDuel={returnToInkDuel}/>
  {duelRecord&&<section className="duel-record-strip" aria-label="My Ink Duel record">
   <div><small>MY DUEL RECORD</small><strong>{duelRecord.wins||0}</strong><span>qualified victories</span></div>
   <div><strong>{duelRecord.prizes||0}</strong><span>victory treasures</span></div>
@@ -524,9 +529,9 @@ export function WritingLive({Frame}){
   <div className="duel-focus-filter"><span>MY ARENA</span><div role="group" aria-label="Duel participation filter">{[['all','Everyone'],['mine','My challenges'],['judge','Ready for my vote']].map(([key,label])=><button key={key} type="button" aria-pressed={duelScope===key} className={duelScope===key?'active':''} onClick={()=>setDuelScope(key)}>{label}</button>)}</div></div>
   <footer><span aria-live="polite"><b>{duelVisible.length}</b> matching duel{duelVisible.length===1?'':'s'}</span>{(duelSearch||duelFormat!=='all'||duelScope!=='all'||duelView!=='active')&&<button type="button" onClick={()=>{setDuelSearch('');setDuelFormat('all');setDuelScope('all');setDuelView('active')}}>Clear filters ↺</button>}</footer>
  </section>
- {duelVisible.length?<div className="duel-list">{duelVisible.map(duel=>{const waiting=duel.phase==='waiting';const writing=duel.phase==='writing';const voting=duel.phase==='voting';const results=duel.phase==='results';const mine=duel.my_entry;const draft=duelDrafts[duel.id]??mine?.body??'';const words=String(draft).trim().split(/\s+/).filter(Boolean).length;const visual=['art','comic'].includes(duel.content_type);const type=duelTypePresets[duel.content_type]||duelTypePresets.fiction;const prizePath=duelPrizeProgress(duel);return <article className={"duel-card "+duel.phase+" mode-"+(duel.duel_mode||'classic')+" type-"+(duel.content_type||'fiction')} key={duel.id}>
+ {duelVisible.length?<div className="duel-list">{duelVisible.map(duel=>{const waiting=duel.phase==='waiting';const writing=duel.phase==='writing';const voting=duel.phase==='voting';const results=duel.phase==='results';const mine=duel.my_entry;const draft=duelDrafts[duel.id]??mine?.body??'';const words=String(draft).trim().split(/\s+/).filter(Boolean).length;const visual=['art','comic'].includes(duel.content_type);const type=duelTypePresets[duel.content_type]||duelTypePresets.fiction;return <article id={'palace-duel-'+duel.id} className={"duel-card "+duel.phase+" mode-"+(duel.duel_mode||'classic')+" type-"+(duel.content_type||'fiction')} key={duel.id}>
    <header>
-    <div><div className="duel-meta-row"><small>{waiting?'CHALLENGE LOBBY':writing?'WRITING WINDOW':voting?'BLIND GALLERY':'THE REVEAL'} · {type.label.toUpperCase()}</small><em>{duel.match_type==='one_v_one'?'1 VS 1':duel.match_type==='group'?'GROUP DUEL':'OPEN ARENA'} · {duel.prompt_family||'Open'}</em></div><h3>{duel.title}</h3><p>{duel.prompt}</p>{duel.rule_note&&<blockquote className="duel-rule-note">{duel.rule_note}</blockquote>}<div className="duel-counts"><span>{duel.participant_count||0}/{duel.max_entries||12} duelists</span><span>{duel.entry_count||0} sealed entr{Number(duel.entry_count||0)===1?'y':'ies'}</span>{!writing&&!waiting&&<span>{duel.vote_count||0} ballot{Number(duel.vote_count||0)===1?'':'s'}</span>}{!writing&&!waiting&&<span>{duel.external_vote_count||0} outside judge{Number(duel.external_vote_count||0)===1?'':'s'}</span>}</div>{!waiting&&<div className="duel-stakes-line"><small>VICTORY TREASURE</small>{duel.reward?<strong className={"tier-"+duel.reward.gift_tier}>{duel.reward.gift_tier.toUpperCase()} · {duel.reward.gift?.name||'Comet Quill'}</strong>:results?<strong>No prize minted</strong>:<span>Bronze: {duelPrizeRule(duel).bronze} · Silver: {duelPrizeRule(duel).silver} · Gold: {duelPrizeRule(duel).gold}</span>}</div>}{!waiting&&!results&&!duel.reward&&<div className="duel-prize-progress"><small>PATH TO BRONZE</small><span>{prizePath.missing.length?prizePath.missing.map(item=>item.remaining+' more '+(item.key==='entries'?'sealed '+(item.remaining===1?'entry':'entries'):item.key==='outside'?'outside '+(item.remaining===1?'ballot':'ballots'):(item.remaining===1?'ballot':'ballots'))).join(' · '):'Participation threshold met — a unique top-voted entry is still required.'}</span></div>}</div>
+    <div><div className="duel-meta-row"><small>{waiting?'CHALLENGE LOBBY':writing?'WRITING WINDOW':voting?'BLIND GALLERY':'THE REVEAL'} · {type.label.toUpperCase()}</small><em>{duel.match_type==='one_v_one'?'1 VS 1':duel.match_type==='group'?'GROUP DUEL':'OPEN ARENA'} · {duel.prompt_family||'Open'}</em></div><h3>{duel.title}</h3><p>{duel.prompt}</p>{duel.rule_note&&<blockquote className="duel-rule-note">{duel.rule_note}</blockquote>}<div className="duel-counts"><span>{duel.participant_count||0}/{duel.max_entries||12} duelists</span><span>{duel.entry_count||0} sealed entr{Number(duel.entry_count||0)===1?'y':'ies'}</span>{!writing&&!waiting&&<span>{duel.vote_count||0} ballot{Number(duel.vote_count||0)===1?'':'s'}</span>}{!writing&&!waiting&&<span>{duel.external_vote_count||0} outside judge{Number(duel.external_vote_count||0)===1?'':'s'}</span>}</div>{!waiting&&<div className="duel-stakes-line"><small>VICTORY TREASURE</small>{duel.reward?<strong className={"tier-"+duel.reward.gift_tier}>{duel.reward.gift_tier.toUpperCase()} · {duel.reward.gift?.name||'Comet Quill'}</strong>:results?<strong>No prize minted</strong>:<span>Bronze · Silver · Gold · participation verified at reveal</span>}</div>}{!waiting&&!results&&!duel.reward&&<DuelTreasurePreview duel={duel}/>}</div>
     <div className="duel-clock"><small>{waiting?'LOBBY':writing?'WRITE':voting?'VOTE':'REVEALED'}</small><strong>{waiting?'WAITING':writing?duelCountdown(duel.closes_at):voting?duelCountdown(duel.voting_closes_at):'OPEN'}</strong>{duel.is_host&&!results&&<button type="button" className="duel-host-close" disabled={duelBusy==='close'+duel.id} onClick={()=>closeDuel(duel.id)}>Close</button>}</div>
    </header>
    {waiting?<section className="duel-lobby">
