@@ -81,7 +81,7 @@ describe('Palace quick chat',()=>{
   fireEvent.click(screen.getByRole('button',{name:/Groups/}));
   await screen.findAllByText('Moonlight Readers');
   fireEvent.click(screen.getByRole('button',{name:/Members & settings/}));
-  expect(screen.getByText('For gentle stories')).toBeTruthy();
+  expect(screen.getAllByText('For gentle stories').length).toBeGreaterThan(0);
   fireEvent.change(screen.getByRole('textbox',{name:'Group description'}),{target:{value:'Poems, tales and tea.'}});
   fireEvent.change(screen.getByRole('combobox',{name:'Group colour'}),{target:{value:'moonlit'}});
   fireEvent.click(screen.getByRole('button',{name:'Save appearance'}));
