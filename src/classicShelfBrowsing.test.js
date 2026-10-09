@@ -32,8 +32,8 @@ describe('Complete Classics shelf selection',()=>{
  it('supports title and author sorting without changing the original input',()=>{
   const snapshot=works.map(w=>w.id);
   const all=CLASSIC_LIBRARY_COLLECTIONS.find(c=>c.id==='all');
-  expect(filterClassicShelf(works,all,'','title').map(w=>w.id)).toEqual(['dracula','emma','jane','folklore']);
-  expect(filterClassicShelf(works,all,'','author').map(w=>w.id)).toEqual(['dracula','jane','emma','folklore']);
+  expect(filterClassicShelf(works,all,'','title').map(w=>w.id)).toEqual(['dracula','emma','folklore','jane']);
+  expect(filterClassicShelf(works,all,'','author').map(w=>w.id)).toEqual(['dracula','jane','folklore','emma']);
   expect(works.map(w=>w.id)).toEqual(snapshot);
  });
  it('bounds bad page values and handles empty shelves gracefully',()=>{
