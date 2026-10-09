@@ -37,6 +37,10 @@ describe('classic literature typesetting',()=>{
   const blocks=structureClassicText('CHAPTER IV.\nThe tale continues.\n\nCHAPTER V:');
   expect(blocks.map(item=>item.kind)).toEqual(['heading','paragraph','heading']);
  });
+ it('continues to recognize prefatory headings used in older editions',()=>{
+  const blocks=structureClassicText('PREFACE: To the Reader\nA note about this edition.');
+  expect(blocks.map(item=>item.kind)).toEqual(['heading','paragraph']);
+ });
  it('recovers readable blocks from an overly long flattened prose import',()=>{
   const flat=Array.from({length:25},(_,i)=>'This is the rather lengthy sentence number '+i+' with a beginning middle and an ending.').join(' ');
   const blocks=structureClassicText(flat);
