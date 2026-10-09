@@ -40,6 +40,7 @@ import PrismWayfinder from './PrismWayfinder';
 import ClassicBookCover from './ClassicBookCover';
 import ClassicsLibraryHall from './ClassicsLibraryHall';
 import StoryRatingBadge from './StoryRatingBadge';
+import {filterPalaceSearchGroups,countPalaceSearchGroups,activePalaceSearchFacets,SEARCH_RESULT_KINDS,SEARCH_RATINGS,SEARCH_COMPLETION} from './palaceSearchResults';
 import MemberChamberDecor,{useChamberDecor} from './MemberChamberDecor';
 import {arrangeMemberChamberArt} from './memberChamberDecorData';
 import './member-chamber-atelier.css';
@@ -1284,34 +1285,84 @@ export function MemberProfileLive({Frame}){
  </Frame>
 }
 export function SearchLive({Frame}){
- const navigate=useNavigate();
- const initial=new URLSearchParams(window.location.search).get('q')||'';
- const[q,setQ]=useState(initial);const[data,setData]=useState(null);const[busy,setBusy]=useState(false);const[error,setError]=useState('');const[scope,setScope]=useState('all');
- const[suggestions,setSuggestions]=useState(null);const[suggestBusy,setSuggestBusy]=useState(false);const[searchFocused,setSearchFocused]=useState(false);const lastRun=useRef('');
- const[recentSearches,setRecentSearches]=useState(()=>{try{return JSON.parse(localStorage.getItem('palace-recent-searches')||'[]').slice(0,6)}catch{return[]}});
- async function run(term=q){
-  const clean=String(term||'').trim();if(!clean){setData(null);setSuggestions(null);return}
-  setBusy(true);setError('');setSuggestions(null);lastRun.current=clean;
+ const navigate=useNavigate(),location=useLocation();
+ const routeQ=new URLSearchParams(location.search).get('q')?.trim()||'';
+ const[q,setQ]=useState(routeQ);
+ const[data,setData]=useState(null);
+ const[busy,setBusy]=useState(false);
+ const[error,setError]=useState('');
+ const[scope,setScope]=useState('all');
+ const[rating,setRating]=useState('all');
+ const[completion,setCompletion]=useState('all');
+ const[sort,setSort]=useState('best');
+ const[suggestions,setSuggestions]=useState(null);
+ const[suggestBusy,setSuggestBusy]=useState(false);
+ const[searchFocused,setSearchFocused]=useState(false);
+ const lastRun=useRef('');
+ const requestVersion=useRef(0);
+ const[recentSearches,setRecentSearches]=useState(()=>{
+  try{return JSON.parse(localStorage.getItem('palace-recent-searches')||'[]').slice(0,6)}
+  catch{return[]}
+ });
+ async function run(term){
+  const clean=String(term||'').trim();
+  const version=++requestVersion.current;
+  if(!clean){setData(null);setSuggestions(null);setBusy(false);return}
+  setBusy(true);setError('');setData(null);setSuggestions(null);
+  lastRun.current=clean;
   try{
-   const result=await searchPalace(clean);setData(result);setQ(clean);
-   history.replaceState(null,'','/search?q='+encodeURIComponent(clean));
-   const next=[clean,...recentSearches.filter(x=>x.toLowerCase()!==clean.toLowerCase())].slice(0,6);setRecentSearches(next);
-   try{localStorage.setItem('palace-recent-searches',JSON.stringify(next))}catch{}
-  }catch(e){setError(e.message)}finally{setBusy(false)}
+   const result=await searchPalace(clean);
+   if(version!==requestVersion.current)return;
+   setData(result);setQ(clean);
+   setRecentSearches(previous=>{
+    const next=[clean,...previous.filter(x=>String(x).toLowerCase()!==clean.toLowerCase())].slice(0,6);
+    try{localStorage.setItem('palace-recent-searches',JSON.stringify(next))}catch{}
+    return next;
+   });
+  }catch(e){if(version===requestVersion.current)setError(e.message||'Search could not be completed. Please try again.')}
+  finally{if(version===requestVersion.current)setBusy(false)}
  }
- useEffect(()=>{if(initial)run(initial)},[]);
+ useEffect(()=>{
+  // Router owns the URL. New header searches and browser back/forward must
+  // refresh this room, even when the path remains /search.
+  setQ(routeQ);setScope('all');setRating('all');setCompletion('all');setSort('best');
+  setSearchFocused(false);setSuggestions(null);
+  if(routeQ)run(routeQ);
+  else{requestVersion.current++;setData(null);setBusy(false);setError('');lastRun.current=''}
+  return()=>{requestVersion.current++};
+ },[routeQ]);
  useEffect(()=>{
   const clean=q.trim();
-  if(!searchFocused||clean.length<2||clean.toLowerCase()===String(lastRun.current||'').toLowerCase()){setSuggestions(null);return}
+  if(!searchFocused||clean.length<2||clean.toLowerCase()===String(lastRun.current||'').toLowerCase()){
+   setSuggestions(null);setSuggestBusy(false);return;
+  }
   let alive=true;
-  const t=setTimeout(()=>{setSuggestBusy(true);suggestPalaceSearch(clean).then(rows=>{if(alive)setSuggestions(rows)}).catch(()=>{if(alive)setSuggestions(null)}).finally(()=>{if(alive)setSuggestBusy(false)})},220);
-  return()=>{alive=false;clearTimeout(t)}
+  const timer=setTimeout(()=>{
+   setSuggestBusy(true);
+   suggestPalaceSearch(clean)
+    .then(rows=>{if(alive)setSuggestions(rows)})
+    .catch(()=>{if(alive)setSuggestions(null)})
+    .finally(()=>{if(alive)setSuggestBusy(false)});
+  },260);
+  return()=>{alive=false;clearTimeout(timer)}
  },[q,searchFocused]);
- const groups=data?{works:data.works||[],comics:data.comics||[],members:data.members||[],tags:data.tags||[],clubs:data.clubs||[],archive:data.archive||[]}:null;
- const total=groups?(scope==='all'?Object.values(groups).reduce((n,v)=>n+v.length,0):(groups[scope]?.length||0)):0;
+ const submitSearch=(term=q)=>{
+  const clean=String(term||'').trim();
+  setSearchFocused(false);
+  if(!clean)return;
+  setQ(clean);
+  if(clean===routeQ)run(clean);
+  else navigate('/search?q='+encodeURIComponent(clean));
+ };
+ const groups=data?filterPalaceSearchGroups(data,{rating,completion,sort}):null;
+ const total=countPalaceSearchGroups(groups,scope);
+ const rawTotal=countPalaceSearchGroups(data,'all');
  const showGroup=key=>scope==='all'||scope===key;
  const suggestionCount=suggestions?Object.values(suggestions).reduce((n,v)=>n+(v?.length||0),0):0;
- const chooseSearch=term=>{setSearchFocused(false);setQ(term);run(term)};
+ const chooseSearch=term=>submitSearch(term);
+ const facetControlsVisible=!!data&&(scope==='all'||scope==='works'||scope==='comics')
+   &&((data.works?.length||0)+(data.comics?.length||0)>0);
+ const clearFacets=()=>{setRating('all');setCompletion('all');setSort('best')};
  return <Frame><section className="legacy-search-page">
   <section className="room-title"><p className="eyebrow">SEARCH WITHOUT A POPULARITY LADDER</p><h1>Search the Palace</h1><p className="lede">Search stories, comics, writers, tags, clubs and preserved works together. Multi-part searches are treated as ideas to combine, not one brittle exact phrase.</p></section>
   <div className="palace-search-wrap">
