@@ -205,16 +205,16 @@ const fullPalaceRooms=[
   ['Saved Stories','/library'],['Comics Shelf','/library?tab=comics'],['Collections & Readers’ Choice','/library?tab=collections'],['Reading lists','/library?tab=lists'],['History','/library?tab=history'],['Notes & Bookmarks','/library?tab=notes'],['Lost Works Shelf','/lost-works'],['Subscriptions','/library?tab=following'],['Writers I Follow','/library?tab=writers']
  ]},
  {id:'writing',icon:'✎',label:'Writing Chamber',path:'/writing',private:true,sections:[
-  ['Editor & drafts','/writing'],['Comic studio','/comics/studio'],['Co-writing','/writing?tab=collab'],['Comment review','/writing?tab=comments'],['Requests & permissions','/writing?tab=permissions']
+  ['Editor & drafts','/writing'],['Comic studio','/comics/studio'],['Co-writing','/writing?tab=collab'],['Relay Writing Rooms','/writing?tab=relay'],['Ink Duels','/writing?tab=duels'],['Comment review','/writing?tab=comments'],['Requests & permissions','/writing?tab=permissions'],['For Writers','/writers']
  ]},
  {id:'life',icon:'♢',label:'Palace Life',path:'/palace-life',sections:[
-  ['Grand Palace Hall','/grand-palaces'],['Commons','/palace-life?room=commons'],['Clubs','/palace-life?room=clubs'],['Forum','/palace-life?room=forum'],['Moonlight Chat','/palace-life?room=moonlight'],['New Stars','/palace-life?room=stars'],['Introductions & highlights','/palace-life?room=highlights'],['Activities','/activity'],['Throne of Honour','/honour']
+  ['Grand Palace Hall','/grand-palaces'],['Commons','/palace-life?room=commons'],['Clubs','/palace-life?room=clubs'],['Forum','/palace-life?room=forum'],['Moonlight Chat','/palace-life?room=moonlight'],['New Stars','/palace-life?room=stars'],['Introductions & highlights','/palace-life?room=highlights'],['History','/palace-life?room=history'],['Activities','/activity'],['Throne of Honour','/honour']
  ]},
  {id:'events',icon:'✧',label:'Events & Heritage',path:'/events',sections:[
   ['Writing calendar','/events?tab=writing'],['Heritage calendar','/events?tab=heritage'],['My calendar','/events?tab=calendar'],['Event proposals','/events?tab=proposals'],['Member ballots','/events?tab=ballots']
  ]},
  {id:'treasury',icon:'♛',label:'Royal Treasury',path:'/treasury',private:true,sections:[
-  ['Badges & gifts','/treasury'],['Full catalogue · 175 badges + 600 treasures','/treasury/catalogue'],['Lucky draw & 600 treasures','/treasury?tab=draw'],['Monthly rankings','/treasury?tab=rankings']
+  ['Badges & achievements','/treasury'],['Celestial titles','/treasury?tab=titles'],['Gift cabinet','/treasury?tab=gifts'],['Full catalogue · 175 badges + 600 treasures','/treasury/catalogue'],['Lucky draw & 600 treasures','/treasury?tab=draw'],['Monthly rankings','/treasury?tab=rankings']
  ]},
  {id:'settings',icon:'⚙',label:'Settings & Safety',path:'/settings',private:true,sections:[
   ['Notifications & comfort','/settings?tab=notifications'],['Storage & uploads','/settings?tab=storage'],['Quiet corners','/settings?tab=quiet'],['Privacy','/settings?tab=privacy'],['Account & downloads','/settings?tab=account'],['System status','/settings?tab=system'],['Welcome guide','/settings?tab=guide'],['Testing room','/settings?tab=testing']
