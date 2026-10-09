@@ -1,11 +1,26 @@
-import React,{useMemo,useState} from 'react';
+import React,{useEffect,useMemo,useState} from 'react';
 import {Link} from 'react-router-dom';
-import {initialReaderChapterPage,matchReaderChapters,readerChapterPage,READER_CHAPTER_PAGE_SIZE} from './readerChapterShelfModel';
+import {initialReaderChapterPage,matchReaderChapters,readerChapterPage,READER_CHAPTER_PAGE_SIZE,shouldOpenReaderChapterShelf} from './readerChapterShelfModel';
 import './reader-chapter-shelf.css';
 
 /** Calm, searchable chapter shelf after the text. Pages only the chapters already allowed by the reader. */
 function ReaderChapterShelf({chapters=[],chapterId,workSlug}){
- const [open,setOpen]=useState(()=>chapters.length<=12);
+ const [open,setOpen]=useState(()=>shouldOpenReaderChapterShelf(chapters.length,typeof window!=='undefined'?window.location.hash:''));
+ useEffect(()=>{
+  if(typeof window==='undefined'||typeof document==='undefined')return;
+  // A direct deep link or activation of "Chapter list ↓" should never land on a folded shelf.
+  const openFromHash=()=>{if(window.location.hash==='#palace-reader-chapters')setOpen(true)};
+  const onChapterListClick=event=>{
+   if(event.target?.closest?.('a[href="#palace-reader-chapters"]'))setOpen(true);
+  };
+  openFromHash();
+  window.addEventListener('hashchange',openFromHash);
+  document.addEventListener('click',onChapterListClick);
+  return()=>{
+   window.removeEventListener('hashchange',openFromHash);
+   document.removeEventListener('click',onChapterListClick);
+  };
+ },[]);
  const [query,setQuery]=useState('');
  const [page,setPage]=useState(()=>initialReaderChapterPage(chapters,chapterId));
  const matches=useMemo(()=>matchReaderChapters(chapters,query),[chapters,query]);
