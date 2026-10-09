@@ -1482,7 +1482,9 @@ describe('Starry Palace launch safety',()=>{
     const calendar=read('src/PalaceCalendar.jsx');
     expect(live).toContain('prism-glass prism-story');
     expect(live).toContain('prism-glass prism-comic');
-    expect(live).toContain('bisexual|bi\\b|lesbian|gay\\b|asexual|aromantic|aroace|intersex|genderfluid');
+    expect(live).toContain('isLgbtqContent(w.title,w.summary,workTags(w))');
+    const theme=read('src/heritageVisualTheme.js');
+    expect(theme).toContain('bisexual|pansexual|asexual|aromantic|aroace|transgender');
     expect(calendar).toContain("prism?'has-prism':'");
     expect(polish).toContain('LGBTQ+ prism glass system · October 6 2026');
     expect(polish).toContain('.heritage-card.heritage-prism');
