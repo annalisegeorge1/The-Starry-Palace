@@ -23,7 +23,7 @@ export function heritageVisualTheme(record={}){
  if(/\b(?:lunar new year|chinese new year|seollal|tết|tet nguyen dan|spring festival)\b/.test(source))return 'lunar';
  if(/\b(?:halloween|all hallows|samhain|day of the dead|día de muertos)\b/.test(source))return 'twilight';
  if(/\b(?:new year|new year's|new years|watch night)\b/.test(source))return 'midnight';
- if(/\b(?:palestin|nakba|gaza|west bank)\b/.test(source))return 'olive';
+ if(/\b(?:palestin\w*|nakba|gaza|west bank)\b/.test(source))return 'olive';
  if(/\b(?:congo|congolese|kinshasa)\b/.test(source))return 'river';
  if(/\b(?:independence|emancipation|freedom day|republic day)\b/.test(source))return 'horizon';
  const type=String(record.observance_type||'heritage').toLowerCase();
