@@ -138,3 +138,112 @@
 @media(prefers-reduced-motion:reduce){
  .palace-shell .palace-home-more>summary .palace-home-more-arrow{transition:none}
 }
+
+
+/* Full Palace directory: always-visible destinations, with native scrolling.
+   A full sidebar replaces the old nested "More" / "All sections" drawers. */
+.palace-shell .full-sidebar{
+ overflow-y:auto;
+ overscroll-behavior-y:contain;
+ scrollbar-width:thin;
+ scrollbar-color:rgba(182,165,229,.48) transparent;
+}
+.palace-shell .full-sidebar .palace-all-rooms-label{
+ margin-top:20px;
+ margin-bottom:8px;
+}
+.palace-shell .full-sidebar .palace-sidebar-complete{
+ display:grid;
+ gap:8px;
+ min-width:0;
+}
+.palace-shell .full-sidebar .palace-sidebar-complete>.full-nav-room{
+ min-width:0;
+ padding-bottom:5px;
+}
+.palace-shell .full-sidebar .palace-sidebar-complete .palace-all-sections{
+ display:grid;
+ min-width:0;
+ gap:2px;
+ margin:5px 0 9px clamp(22px,2vw,35px);
+ padding:4px 0 3px 10px;
+ border-left:1px solid rgba(175,163,226,.44);
+}
+.palace-shell .full-sidebar .palace-sidebar-complete .palace-all-sections>small{
+ letter-spacing:.12em;
+ font-size:.62rem;
+ font-weight:750;
+ margin-bottom:4px;
+ color:#c4b7ec;
+}
+.palace-shell .full-sidebar .palace-sidebar-complete .palace-all-sections>a{
+ display:block;
+ min-height:35px;
+ padding:8px 10px;
+ border-radius:9px;
+ color:#cbd2ef;
+ font-size:.78rem;
+ line-height:1.38;
+ text-decoration:none;
+ overflow-wrap:anywhere;
+}
+.palace-shell .full-sidebar .palace-sidebar-complete .palace-all-sections>a:hover{
+ background:linear-gradient(110deg,rgba(127,90,203,.28),rgba(55,121,166,.14));
+ color:#fff;
+}
+.palace-shell .full-sidebar .palace-sidebar-complete .palace-all-sections>a.active{
+ background:linear-gradient(110deg,rgba(135,100,215,.38),rgba(60,134,178,.23));
+ border-left:2px solid #baa1f5;
+ color:#fff;
+ font-weight:750;
+}
+.palace-shell .full-sidebar .palace-sidebar-complete .palace-all-sections>a:focus-visible{
+ outline:3px solid #b4e5ff;
+ outline-offset:2px;
+}
+.palace-shell .full-sidebar .palace-sidebar-complete .palace-all-sections>.restored-static{
+ padding:5px 10px;
+ line-height:1.4;
+ color:#bac1d6;
+}
+.palace-shell.daylight .full-sidebar .palace-sidebar-complete .palace-all-sections{
+ border-left-color:#a99ac5;
+}
+.palace-shell.daylight .full-sidebar .palace-sidebar-complete .palace-all-sections>small{
+ color:#604f83;
+}
+.palace-shell.daylight .full-sidebar .palace-sidebar-complete .palace-all-sections>a{
+ color:#403757;
+}
+.palace-shell.daylight .full-sidebar .palace-sidebar-complete .palace-all-sections>a:hover{
+ color:#2c2851;
+ background:linear-gradient(110deg,#eae0fa,#dfedf9);
+}
+.palace-shell.daylight .full-sidebar .palace-sidebar-complete .palace-all-sections>a.active{
+ color:#30214d;
+ background:linear-gradient(110deg,#e3d4f9,#d4eaf7);
+ border-left-color:#7658b3;
+}
+.palace-shell.daylight .full-sidebar .palace-sidebar-complete .palace-all-sections>.restored-static{
+ color:#655b74;
+}
+@media(max-width:980px){
+ .palace-shell.nav-open .full-sidebar{
+  height:100dvh;
+  max-height:100dvh;
+  overflow-y:auto!important;
+  padding-bottom:calc(30px + env(safe-area-inset-bottom,0px))!important;
+  -webkit-overflow-scrolling:touch;
+ }
+}
+@media(max-width:550px){
+ .palace-shell .full-sidebar .palace-sidebar-complete .palace-all-sections{
+  margin-left:38px!important;
+  padding-left:12px!important;
+ }
+ .palace-shell .full-sidebar .palace-sidebar-complete .palace-all-sections>a{
+  min-height:42px;
+  font-size:.82rem!important;
+  padding:10px 12px!important;
+ }
+}
