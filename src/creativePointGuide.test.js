@@ -32,7 +32,7 @@ describe('chapter word goals and transparent Celestial Points',()=>{
  it('explains all three point channels and genuine-activity safeguards',()=>{
   expect(CELESTIAL_ECONOMY_EXPLAINERS.map(x=>x.id)).toEqual(['lifetime','wallet','season','integrity']);
   const all=CELESTIAL_ECONOMY_EXPLAINERS.map(x=>x.detail).join(' ');
-  for(const term of ['permanent','wallet','30 team-score points','quarter','own work','dedupe'])expect(all.toLowerCase()).toContain(term.toLowerCase());
+  for(const term of ['permanent','wallet','30 team-score points','quarter','own work','Duplicate ledger keys'])expect(all.toLowerCase()).toContain(term.toLowerCase());
   expect(live).toContain('CELESTIAL_ECONOMY_EXPLAINERS.map(');
  });
  it('integrates safe saved goals, truthful points guide and responsive designs',()=>{
