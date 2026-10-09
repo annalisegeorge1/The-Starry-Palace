@@ -85,7 +85,7 @@
  padding:clamp(13px,1.7vw,20px);
 }
 .palace-shell .treasury-room :is(.achievement-card,.gift-card) :is(img,svg){
- max-width:100%;height:auto;
+ max-width:100%;
 }
 .palace-shell .chamber-atelier-gallery .legacy-showcase-grid>article{
  min-width:0;max-width:100%;box-sizing:border-box;
@@ -224,6 +224,6 @@
  .palace-shell .chic-story-catalogue>.story-row,
  .palace-shell .treasury-room :is(.achievement-card,.gift-card),
  .palace-shell .creator-worlds-room .creator-work-grid>article{
-  transition:none!important;transform:none!important;
+  transition:none!important;
  }
 }
