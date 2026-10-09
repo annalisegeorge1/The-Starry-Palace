@@ -46,6 +46,12 @@ export function structureClassicText(source=''){
   const rawLines=group.split('\n').filter(s=>s.trim());
   const lines=rawLines.map(s=>s.trim());
   if(!lines.length)continue;
+  // Gutenberg sometimes substitutes a bracketed transcription for a printed
+  // illustration. It is a source note, not an ordinary narrative paragraph.
+  if(lines.length===1&&/^\\[(?:illustration|frontispiece|plate)(?:\\s*:\\s*[^\\]]+)?\\]$/i.test(lines[0])){
+   result.push({kind:'illustration',text:lines[0]});
+   continue;
+  }
   // Indented prose/dialogue in plain-text editions may encode paragraph
   // boundaries even without a blank line. Preserve that evidence first.
   const average=lines.reduce((n,line)=>n+line.length,0)/lines.length;
@@ -111,6 +117,7 @@ export function restoreFlatClassicChapterHtml(html=''){
   const escape=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   return blocks.map(b=>b.kind==='heading'?'<h2>'+escape(b.text)+'</h2>':
    b.kind==='verse'?'<p class="archive-classic-verse">'+escape(b.text)+'</p>':
+   b.kind==='illustration'?'<p class="archive-classic-illustration-note">'+escape(b.text)+'</p>':
    '<p>'+escape(b.text)+'</p>').join('');
  }catch{return original}
 }
