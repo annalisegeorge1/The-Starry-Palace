@@ -121,3 +121,16 @@
  .palace-fandom-crossovers{padding:14px}
  .palace-fandom-total{padding:0}
 }
+
+/* Four precise Atlas controls instead of overflowed dropdowns. */
+.palace-fandom-atlas .palace-fandom-searchbar{grid-template-columns:repeat(4,minmax(0,1fr))}
+.palace-fandom-atlas .palace-fandom-searchbar label:first-child{grid-column:span 2}
+.palace-fandom-atlas .palace-fandom-total{grid-column:1/-1;padding-bottom:0}
+@media(max-width:920px){
+ .palace-fandom-atlas .palace-fandom-searchbar{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .palace-fandom-atlas .palace-fandom-searchbar label:first-child{grid-column:1/-1}
+}
+@media(max-width:560px){
+ .palace-fandom-atlas .palace-fandom-searchbar{grid-template-columns:minmax(0,1fr)}
+ .palace-fandom-atlas .palace-fandom-searchbar label:first-child{grid-column:1}
+}
