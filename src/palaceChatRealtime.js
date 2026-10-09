@@ -8,8 +8,8 @@ export function watchPalaceChatRoom(client,{userId,kind,roomId,onChange,onStatus
  const channel=client.channel('palace-chat-live-'+kind+'-'+roomId+'-'+userId)
   .on('postgres_changes',{
    event:'INSERT',schema:'public',table,filter:column+'=eq.'+roomId
-  },()=>{if(active)onChange?.()})
-  .subscribe(status=>{if(active)onStatus?.(status)});
+  },()=>{if(active)onChange?.()});
+ channel.subscribe(status=>{if(active)onStatus?.(status)});
  return ()=>{
   active=false;
   // Do not await removal in a React effect cleanup.
