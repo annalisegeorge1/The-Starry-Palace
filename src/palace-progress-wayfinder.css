@@ -1,0 +1,63 @@
+/* Grand Palace overview · practical cross-room journey, not a new scoring system */
+.grand-palace-hall .grand-progress-wayfinder{
+ display:grid;gap:14px;min-width:0;
+ padding:19px;border:1px solid rgba(167,155,232,.37);
+ border-radius:21px;background:
+ radial-gradient(ellipse at 95% 10%,rgba(105,161,212,.17),transparent 47%),
+ linear-gradient(120deg,rgba(66,48,120,.23),rgba(26,69,115,.23));
+ color:#f4f1ff;
+}
+.grand-progress-wayfinder-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;min-width:0}
+.grand-progress-wayfinder-head>div{min-width:0;flex:1}
+.grand-progress-wayfinder-head .eyebrow{margin:0 0 4px;font-size:.67rem;letter-spacing:.13em;color:#c7bbfa}
+.grand-progress-wayfinder-head h2{margin:0 0 5px;font:600 clamp(1.43rem,2.8vw,1.85rem)/1.16 Georgia,serif;color:#f8f1ff}
+.grand-progress-wayfinder-head p:not(.eyebrow){margin:0;max-width:69ch;font-size:.79rem;line-height:1.55;color:#ded7f0}
+.grand-progress-wayfinder-head .palace-info-mark{flex:none}
+.grand-progress-wayfinder-doors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.grand-progress-wayfinder-door{
+ display:flex;align-items:flex-start;gap:12px;min-width:0;text-decoration:none;
+ border-radius:15px;border:1px solid rgba(170,167,242,.32);
+ background:linear-gradient(132deg,rgba(103,80,159,.19),rgba(43,94,142,.2));
+ padding:15px;color:#f4edff;transition:border-color .16s,background .16s;
+}
+.grand-progress-wayfinder-door:hover{border-color:#b7a7f3;background:linear-gradient(132deg,rgba(124,94,181,.36),rgba(55,123,161,.31))}
+.grand-progress-wayfinder-door:focus-visible{outline:3px solid #b2e4f9;outline-offset:3px}
+.grand-progress-wayfinder-icon{
+ display:grid;place-items:center;flex:0 0 41px;height:41px;border-radius:13px;
+ border:1px solid rgba(181,185,246,.32);background:linear-gradient(135deg,rgba(128,112,208,.29),rgba(65,137,170,.19));
+ color:#d8cbff;font-size:1.3rem;
+}
+.grand-progress-wayfinder-door.door-duels .grand-progress-wayfinder-icon{color:#e6c7fa}
+.grand-progress-wayfinder-door.door-achievements .grand-progress-wayfinder-icon{color:#b9edfc}
+.grand-progress-wayfinder-door.door-titles .grand-progress-wayfinder-icon{color:#d3ccff}
+.grand-progress-wayfinder-copy{display:grid;gap:4px;min-width:0}
+.grand-progress-wayfinder-copy small{font-size:.64rem;font-weight:800;letter-spacing:.11em;color:#c9c4f4}
+.grand-progress-wayfinder-copy strong{font:600 1.08rem/1.25 Georgia,serif;color:#fff;overflow-wrap:anywhere}
+.grand-progress-wayfinder-copy>span{font-size:.73rem;line-height:1.5;color:#dcd6f3}
+.grand-progress-wayfinder-copy em{margin-top:7px;font:750 .75rem/1.3 system-ui,sans-serif;color:#c0e6f9}
+.palace-shell.daylight .grand-progress-wayfinder{
+ color:#302545;border-color:#bfabd9;
+ background:linear-gradient(120deg,#f5eaff,#e4f3f9);
+}
+.palace-shell.daylight .grand-progress-wayfinder-head h2{color:#33224b}
+.palace-shell.daylight .grand-progress-wayfinder-head .eyebrow{color:#675093}
+.palace-shell.daylight .grand-progress-wayfinder-head p:not(.eyebrow){color:#4e4268}
+.palace-shell.daylight .grand-progress-wayfinder-door{
+ border-color:#c5b4dc;background:rgba(255,255,255,.69);color:#2e2447;
+}
+.palace-shell.daylight .grand-progress-wayfinder-door:hover{background:#fff;border-color:#8d70b3}
+.palace-shell.daylight .grand-progress-wayfinder-copy small{color:#665084}
+.palace-shell.daylight .grand-progress-wayfinder-copy strong{color:#302346}
+.palace-shell.daylight .grand-progress-wayfinder-copy>span{color:#554965}
+.palace-shell.daylight .grand-progress-wayfinder-copy em{color:#2b6584}
+.palace-shell.daylight .grand-progress-wayfinder-icon{background:linear-gradient(135deg,#eee0fb,#daedf7);border-color:#b6a7d9;color:#604491}
+@media(max-width:1000px){
+ .grand-progress-wayfinder-doors{grid-template-columns:minmax(0,1fr)}
+ .grand-progress-wayfinder-door{min-height:76px}
+}
+@media(max-width:550px){
+ .grand-palace-hall .grand-progress-wayfinder{padding:14px;gap:13px}
+ .grand-progress-wayfinder-door{padding:13px}
+ .grand-progress-wayfinder-head h2{font-size:1.4rem}
+}
+@media(prefers-reduced-motion:reduce){.grand-progress-wayfinder-door{transition:none}}
