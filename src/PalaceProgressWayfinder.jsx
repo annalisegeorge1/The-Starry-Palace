@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import PalaceInfoMark from './PalaceInfoMark';
-import {CELESTIAL_ECONOMY_LAYERS,CELESTIAL_FAIRNESS_NOTES} from './creativePointsData';
+import {CELESTIAL_ECONOMY_LAYERS,CELESTIAL_FAIRNESS_NOTES} from './creativePointGuide';
 import './palace-progress-wayfinder.css';
 
 /* Navigation only: this component neither awards points nor assumes a badge
