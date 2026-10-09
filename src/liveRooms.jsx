@@ -839,7 +839,7 @@ export function PalaceLifeLive({Frame}){
    el.focus({preventScroll:true});
   });
   return()=>window.cancelAnimationFrame(frame);
- },[room,forumOpen,forumPage]);
+ },[room,forumOpen,forumPage,data?.threads]);
  function useSalonPrompt(prompt){
   chooseRoom('commons');
   openCommonsComposer();
