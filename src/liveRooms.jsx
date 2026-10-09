@@ -59,6 +59,7 @@ import {shouldFetchStoryHistory,canShowHistoryChapterDetails} from './storyHisto
 import ReadingStoryStats from './ReadingStoryStats';
 import ReaderChapterShelf from './ReaderChapterShelf';
 import './reader-afterword.css';
+import './reader-book-finish.css';
 import {getPublicWorkBookmarkCount} from './palaceData';
 import {storyOverviewStats} from './storyOverviewStats';
 import ReadingStoryContext from './ReadingStoryContext';
