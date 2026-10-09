@@ -1,0 +1,16 @@
+.studio-tag-batch-tools{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:9px 0}
+.studio-tag-batch-toggle,.studio-tag-batch-actions button,.studio-tag-more{min-height:40px;padding:8px 12px;border-radius:10px;border:1px solid rgba(170,151,220,.5);background:linear-gradient(115deg,rgba(123,92,183,.17),rgba(66,151,191,.13));color:inherit;font:750 .77rem/1.25 system-ui,sans-serif;cursor:pointer}
+.studio-tag-batch-toggle[aria-pressed=true],.studio-tag-results button.tag-queued{border-color:#97cce9;background:linear-gradient(120deg,rgba(136,114,221,.35),rgba(57,173,192,.22))}
+.studio-tag-batch-selection{flex:1 1 250px;min-width:0;display:grid;gap:8px;border-radius:12px;border:1px solid rgba(161,143,208,.28);padding:10px 12px}
+.studio-tag-batch-selection>span,.studio-tag-count{font-size:.74rem;font-weight:750;opacity:.83}
+.studio-tag-batch-chips{display:flex;flex-wrap:wrap;gap:6px}
+.studio-tag-batch-chips button{max-width:100%;overflow-wrap:anywhere;border:1px solid rgba(169,151,218,.45);border-radius:999px;padding:6px 10px;background:rgba(112,92,169,.15);color:inherit;font:650 .72rem system-ui,sans-serif}
+.studio-tag-batch-actions{display:flex;align-items:center;flex-wrap:wrap;gap:7px}
+.studio-tag-batch-actions button:first-child{background:linear-gradient(110deg,#6857aa,#368aa8);color:white}
+.studio-tag-batch-actions button:disabled{opacity:.5;cursor:not-allowed}
+.studio-tag-more{display:block;margin:8px 0 0;width:100%;text-align:center}
+.studio-tag-results button.tag-queued em{font-weight:800}
+.palace-shell.daylight .studio-tag-batch-toggle,.palace-shell.daylight .studio-tag-batch-actions button,.palace-shell.daylight .studio-tag-more{background:linear-gradient(110deg,#f0e7fc,#dceff6);border-color:#b6a4d2;color:#36264f}
+.palace-shell.daylight .studio-tag-batch-actions button:first-child{background:linear-gradient(110deg,#7156ae,#307a9b);color:#fff}
+.studio-tag-desk :is(.studio-tag-batch-toggle,.studio-tag-batch-actions button,.studio-tag-more,.studio-tag-batch-chips button):focus-visible{outline:3px solid #93d5ef;outline-offset:2px}
+@media(max-width:640px){.studio-tag-batch-selection{flex-basis:100%}.studio-tag-batch-actions button{flex:1 1 auto}}

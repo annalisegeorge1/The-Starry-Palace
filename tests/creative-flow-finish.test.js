@@ -12,7 +12,9 @@ describe('work settings and reader note visual flow',()=>{
   expect(live).toContain('const availableTagOptions=tagOptions.filter(');
   expect(live).toContain('aria-label="Search work tags"');
   expect(live).toContain('aria-label="Tag family"');
-  expect(live).toContain('disabled={tagBusy} onClick={()=>attachTagToWork(t)}');
+  expect(live).toContain('disabled={tagBusy} className={tagBatchMode');
+  expect(live).toContain('onClick={()=>tagBatchMode?setTagBatch(items=>toggleQueuedTag(items,t)):attachTagToWork(t)}');
+  expect(live).toContain('onClick={addSelectedWorkTags}');
   expect(live).toContain('No more matching tags in this family.');
   expect(live).toContain('The tag shelf could not be loaded.');
   expect(live).toContain('setTagSearchVersion(v=>v+1)');

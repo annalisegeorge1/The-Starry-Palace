@@ -1746,7 +1746,8 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('attachTagToWork');
     expect(live).toContain('detachTagFromWork');
     expect(live).toContain('keep choosing tags.');
-    expect(live).toContain('Adding or removing a tag no longer closes this page');
+    expect(live).toContain('Your Work Settings will stay open.');
+    expect(live).toContain('Select multiple tags');
     expect(next).toContain('Work worlds + uninterrupted tag constellation');
     expect(next).toContain('.work-world-settings');
     expect(next).toContain('.new-work-fandom-builder');
