@@ -1,0 +1,73 @@
+/* A single compact chat surface for direct Palace Letters and private circles. */
+.palace-chat-v2{--palace-chat-ink:#f6f3ff;--palace-chat-border:rgba(190,185,236,.26)}
+.palace-chat-v2 .palace-chat-launch{min-height:49px;padding:11px 18px;background:linear-gradient(125deg,#56539b,#374b83 57%,#246678);border-color:#aaa9e9;box-shadow:0 16px 36px #0b112b82}
+.palace-chat-v2 .palace-chat-panel{width:min(420px,calc(100vw - 24px));height:min(660px,calc(100dvh - 85px));border-radius:22px;border:1px solid rgba(180,173,239,.51);background:radial-gradient(circle at 94% -8%,rgba(116,93,204,.22),transparent 42%),#171b30;color:var(--palace-chat-ink);box-shadow:0 28px 90px #080b1fc4}
+.palace-chat-v2 .palace-chat-heading{flex:none;padding:15px 16px;background:linear-gradient(120deg,#34295c,#233e60)}
+.palace-chat-v2 .palace-chat-heading strong{font:600 1.23rem Georgia,serif;letter-spacing:.01em}.palace-chat-v2 .palace-chat-heading strong span{color:#a8c8ff}
+.palace-chat-v2 .palace-chat-heading small{color:#d5d0f7}
+.palace-chat-v2 .palace-chat-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:9px 12px 6px;background:#1d213a;flex:none}
+.palace-chat-v2 .palace-chat-tabs button{display:flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:7px 8px;border:1px solid transparent;border-radius:11px;background:transparent;color:#c3c8e2;font-size:.82rem;font-weight:750;cursor:pointer}
+.palace-chat-v2 .palace-chat-tabs button[aria-pressed=true]{color:white;background:linear-gradient(120deg,#6653a1,#3b6881);border-color:#abb5f58c}
+.palace-chat-v2 .palace-chat-tabs span{min-width:18px;padding:1px 5px;border-radius:99px;background:#a9e1ed;color:#172742;font-size:.66rem}
+.palace-chat-v2 .palace-chat-tools{padding:9px 12px;border-color:var(--palace-chat-border);flex:none}
+.palace-chat-v2 .palace-chat-tools input,.palace-chat-v2 .palace-chat-group-form input,.palace-chat-v2 .palace-chat-settings input{min-height:41px;box-sizing:border-box;border:1px solid #8d91bc9c;border-radius:10px;background:#262e49;color:white;padding:9px 11px;font:inherit;font-size:.82rem}
+.palace-chat-v2 input::placeholder{color:#bcc2d8}
+.palace-chat-v2 .palace-chat-tools button,.palace-chat-v2 .palace-chat-member-search button,.palace-chat-v2 .palace-chat-settings button,.palace-chat-v2 .palace-chat-invitations button{border:1px solid #b8b6e277;border-radius:10px;color:#eaf3ff;background:#47547b61;padding:8px 10px;font-size:.75rem;font-weight:700;cursor:pointer}
+.palace-chat-v2 .palace-chat-people{gap:7px;padding:10px 12px;scrollbar-width:thin;border-color:var(--palace-chat-border)}
+.palace-chat-v2 .palace-chat-people button{flex:none;max-width:180px;overflow:hidden;text-overflow:ellipsis;padding:8px 12px;background:#333a5a76;border-color:#a5a9d055}
+.palace-chat-v2 .palace-chat-people button[aria-pressed=true]{background:#7771bb66;border-color:#d2c2ff}
+.palace-chat-v2 .palace-chat-correspondent{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;background:#222741;flex:none}
+.palace-chat-v2 .palace-chat-correspondent>div{display:grid;gap:3px;min-width:0}
+.palace-chat-v2 .palace-chat-correspondent strong{font:600 1rem Georgia,serif;overflow-wrap:anywhere}
+.palace-chat-v2 .palace-chat-correspondent small{font-size:.71rem;color:#bfc8e6}
+.palace-chat-v2 .palace-chat-correspondent button{flex:none;max-width:48%;border:1px solid #aaa7d872;padding:8px;border-radius:9px;background:#59628a50;color:#f2f0ff;font-size:.71rem;cursor:pointer}
+.palace-chat-v2 .palace-chat-messages{background:linear-gradient(180deg,#1a1e33,#181c31);padding:15px 13px}
+.palace-chat-v2 .palace-chat-bubble{background:#303b5d;border:1px solid #a2aed028;border-radius:15px 15px 15px 5px;max-width:87%;padding:10px 12px}
+.palace-chat-v2 .palace-chat-bubble.mine{background:linear-gradient(140deg,#6553a6,#495887);border-color:#c2b2fa38}
+.palace-chat-v2 .palace-chat-bubble p{font-size:.86rem;line-height:1.58}
+.palace-chat-v2 .palace-chat-sender{display:block;margin-bottom:5px;font:700 .7rem system-ui,sans-serif;color:#bfdaff}
+.palace-chat-v2 .palace-chat-bubble small{opacity:.8;font-size:.67rem}
+.palace-chat-v2 .palace-chat-compose{padding:9px 11px 3px;background:#222741;border-color:#ffffff26}
+.palace-chat-v2 .palace-chat-compose textarea{min-height:53px;max-height:125px;resize:vertical;border:1px solid #a49bce;border-radius:13px;background:#f4f2ff;color:#252544;padding:11px 12px;line-height:1.5;font-size:.86rem}
+.palace-chat-v2 .palace-chat-compose button,.palace-chat-v2 .palace-chat-primary{border:1px solid #b8eafa;border-radius:11px;background:linear-gradient(120deg,#9fdbec,#b1b2f8);color:#15263e;font-weight:800;min-height:45px;cursor:pointer}
+.palace-chat-v2 .palace-chat-compose button{padding:10px 14px}
+.palace-chat-v2 .palace-chat-draft-hint{display:block;flex:none;background:#222741;padding:1px 12px 8px;text-align:left;color:#c3c8de;font-size:.66rem}
+.palace-chat-v2 .palace-chat-panel footer{flex:none;background:#1a1f34;border-color:var(--palace-chat-border);padding:8px 11px}
+.palace-chat-v2 .palace-chat-empty{margin:auto;line-height:1.55;color:#d9dff5}
+.palace-chat-v2 .palace-chat-empty button{display:inline-flex;min-height:38px;border:1px solid #aea4f8;border-radius:10px;padding:9px 12px;background:#565399;color:white;cursor:pointer}
+.palace-chat-v2 .palace-chat-notice{margin:5px 12px;padding:8px 10px;border:1px solid #8bb5be8c;border-radius:10px;background:#255b6175;color:#e8fcfc;font-size:.77rem}
+.palace-chat-v2 .palace-chat-error{margin:5px 12px;padding:8px 10px;border-radius:10px;background:#572e4d;color:#fff1fa}
+.palace-chat-v2 .palace-chat-invitations{flex:none;max-height:145px;overflow-y:auto;padding:9px 12px;background:#33335a;border-bottom:1px solid #b6a5f34d}
+.palace-chat-v2 .palace-chat-invitations>small{font-size:.65rem;letter-spacing:.12em;color:#d3d0ff}
+.palace-chat-v2 .palace-chat-invitations>div{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px}
+.palace-chat-v2 .palace-chat-invitations strong{font-size:.8rem;min-width:0;overflow-wrap:anywhere}
+.palace-chat-v2 .palace-chat-invitations>div>div{display:flex;gap:5px}
+.palace-chat-v2 .palace-chat-invitations button:first-child{background:#38667d}
+.palace-chat-v2 .palace-chat-group-form{display:flex;flex-direction:column;gap:11px;min-height:0;overflow-y:auto;padding:17px 14px 20px;flex:1}
+.palace-chat-v2 .palace-chat-group-form label,.palace-chat-v2 .palace-chat-settings label{display:grid;gap:6px;font-size:.77rem;font-weight:700}
+.palace-chat-v2 .palace-chat-group-form p{font-size:.75rem;color:#d0ccea;line-height:1.6;margin:0}
+.palace-chat-v2 .palace-chat-selected{display:flex;flex-wrap:wrap;gap:6px}
+.palace-chat-v2 .palace-chat-selected button{border:1px solid #b2a5eb8c;border-radius:99px;background:#57528d;color:#fff;padding:6px 10px;font-size:.75rem;cursor:pointer}
+.palace-chat-v2 .palace-chat-member-search{display:flex;gap:7px}.palace-chat-v2 .palace-chat-member-search input{min-width:0;flex:1}
+.palace-chat-v2 .palace-chat-member-results{display:grid;gap:5px;max-height:160px;overflow-y:auto}
+.palace-chat-v2 .palace-chat-member-results button{display:flex;justify-content:space-between;gap:8px;align-items:center;text-align:left;border:1px solid #a3abd151;border-radius:9px;background:#303854;color:#f7f4ff;padding:9px;font-size:.76rem;cursor:pointer}
+.palace-chat-v2 .palace-chat-member-results button[aria-pressed=true]{border-color:#beddfa;background:#3b5b77}
+.palace-chat-v2 .palace-chat-member-results small{color:#bcc6e3}
+.palace-chat-v2 .palace-chat-primary{flex:none;padding:11px}
+.palace-chat-v2 .palace-chat-settings{padding:12px 13px;max-height:250px;overflow-y:auto;flex:none;background:#282941;border-bottom:1px solid #a7a5d56b;display:grid;gap:11px}
+.palace-chat-v2 .palace-chat-settings-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.palace-chat-v2 .palace-chat-settings ul{list-style:none;padding:0;margin:0;max-height:95px;overflow-y:auto;display:grid;gap:6px}
+.palace-chat-v2 .palace-chat-settings li{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.75rem}
+.palace-chat-v2 .palace-chat-settings form{display:flex;align-items:end;gap:8px}.palace-chat-v2 .palace-chat-settings form label{flex:1}
+.palace-chat-v2 .palace-chat-settings .palace-chat-leave{justify-self:start;border-color:#eaa3c0;color:#ffd6e6;background:#64344e}
+.palace-chat-v2 button:disabled{cursor:not-allowed;opacity:.55}
+.palace-chat-v2 :is(button,input,textarea,a):focus-visible{outline:3px solid #c7ecfa;outline-offset:2px}
+.palace-chat-v2 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:550px){
+ .palace-chat-v2.palace-chat-dock{right:8px;bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+ .palace-chat-v2 .palace-chat-panel{width:calc(100vw - 16px);height:min(80dvh,690px);border-radius:18px}
+ .palace-chat-v2 .palace-chat-correspondent button{font-size:.69rem}
+ .palace-chat-v2 .palace-chat-tabs button{min-height:44px}
+}
+@media(max-height:530px){.palace-chat-v2 .palace-chat-panel{height:calc(100dvh - 20px)}}
+@media(prefers-reduced-motion:reduce){.palace-chat-v2 *{scroll-behavior:auto!important;transition:none!important}}
