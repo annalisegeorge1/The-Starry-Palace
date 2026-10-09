@@ -1677,6 +1677,7 @@ function WorkStudioForWork({Frame,slug}){
      }catch{}
     }else setError('This chapter could not be opened. Select another chapter or reopen this work.');
    },
+   onRevisions:revisions=>setSnapshots(revisions),
    onError:err=>setError(err?.message||'This chapter could not be loaded.'),
    onSettled:()=>setChapterLoading(false)
   });
