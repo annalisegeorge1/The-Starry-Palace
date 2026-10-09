@@ -25,7 +25,9 @@ describe('effortless reading and writing regression protection',()=>{
  });
  it('offers explicit chapter wayfinding without extra overlays',()=>{
   expect(reader).toContain('id="palace-reader-start"');
-  expect(reader).toContain('id="palace-reader-chapters"');
+  expect(reader).toContain('<ReaderChapterShelf chapters={readable} chapterId={chapterId} workSlug={slug}/>');
+  const shelf=readFileSync(resolve(process.cwd(),'src/ReaderChapterShelf.jsx'),'utf8');
+  expect(shelf).toContain('id="palace-reader-chapters"');
   expect(reader).toContain('Back to chapter start');
   expect(reader).toContain('Chapter list ↓');
  });
