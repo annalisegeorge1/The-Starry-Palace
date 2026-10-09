@@ -1,0 +1,25 @@
+import {describe,it,expect} from 'vitest';
+import {orderedReaderChapters,matchReaderChapters,initialReaderChapterPage,readerChapterPage} from './readerChapterShelfModel';
+const chapters=Array.from({length:47},(_,i)=>({id:'ch'+(i+1),position:i+1,title:i===29?'The Falling Star':'Chapter '+(i+1),word_count:800,status:'published'}));
+describe('Compact long-work chapter shelf',()=>{
+ it('orders readable chapters without mutating the input',()=>{
+  const scrambled=[chapters[2],chapters[0],chapters[1]];
+  expect(orderedReaderChapters(scrambled).map(x=>x.id)).toEqual(['ch1','ch2','ch3']);
+  expect(scrambled[0].id).toBe('ch3');
+ });
+ it('finds titles or exact chapter numbers, not drafts beyond the provided list',()=>{
+  expect(matchReaderChapters(chapters,'falling star').map(c=>c.id)).toEqual(['ch30']);
+  expect(matchReaderChapters(chapters,'#30').map(c=>c.id)).toEqual(['ch30']);
+  expect(matchReaderChapters(chapters,'chapter 7').map(c=>c.id)).toEqual(['ch7']);
+  expect(matchReaderChapters(chapters.slice(0,20),'chapter 35')).toEqual([]);
+  expect(matchReaderChapters(chapters,'missing')).toEqual([]);
+ });
+ it('opens the page containing the current chapter and paginates safely',()=>{
+  expect(initialReaderChapterPage(chapters,'ch30')).toBe(1);
+  expect(initialReaderChapterPage(chapters,'missing')).toBe(0);
+  expect(readerChapterPage(chapters,1)).toMatchObject({page:1,pages:3,total:47,start:21,end:40});
+  expect(readerChapterPage(chapters,2).items.map(x=>x.id)).toEqual(chapters.slice(40).map(x=>x.id));
+  expect(readerChapterPage(chapters,99)).toMatchObject({page:2,start:41,end:47});
+  expect(readerChapterPage([],0).items).toEqual([]);
+ });
+});
