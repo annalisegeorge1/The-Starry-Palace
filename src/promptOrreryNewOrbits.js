@@ -1,7 +1,7 @@
 /*
  * The Starry Palace · 2,000 new Prompt Orrery constellations.
  * Exactly 250 deliberately varied combinations in each of eight craft orbits.
- * Static seeded recipe data: no network requests, generated image assets, or AI.
+ * Static seeded recipe data: no network requests, generated image assets, or external generation services.
  */
 export const ORRERY_NEW_ORBITS={
  'Folklore & Legends':{
