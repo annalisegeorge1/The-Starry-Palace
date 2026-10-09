@@ -7,6 +7,7 @@ import './archive-classic-reader.css';
 import './archive-classic-open-story.css';
 import {classicChapterChoices,classicNumericPage,CLASSIC_NUMERIC_PAGE_THRESHOLD} from './classicNavigatorModel';
 import './classic-fast-navigation.css';
+import './classic-edition-caption.css';
 
 const FONT_KEY='palace-classic-font';
 const TONE_KEY='palace-classic-tone';
