@@ -1,11 +1,13 @@
 import React from 'react';
 import {afterEach,beforeEach,describe,expect,it,vi} from 'vitest';
-import {cleanup,fireEvent,render,screen,waitFor} from '@testing-library/react';
+import {act,cleanup,fireEvent,render,screen,waitFor} from '@testing-library/react';
 import {MemoryRouter} from 'react-router-dom';
 import PalaceChatDrawer from './PalaceChatDrawer';
+import {watchPalaceChatRoom} from './palaceChatRealtime';
 import {getLetters,searchMembers} from './palaceData';
 import {getPalaceGroupChatOverview,getPalaceGroupMessages,createPalaceGroupChat,respondPalaceGroupInvite,sendPalaceGroupMessage,setPalaceGroupIdentity,pinPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
 
+vi.mock('./palaceChatRealtime',()=>({watchPalaceChatRoom:vi.fn(()=>()=>{})}));
 vi.mock('./palaceData',()=>({
  getLetters:vi.fn(),sendLetter:vi.fn(),searchMembers:vi.fn(),setConversationPreference:vi.fn().mockResolvedValue(undefined)
 }));
@@ -32,6 +34,7 @@ beforeEach(()=>{
  sendPalaceGroupMessage.mockResolvedValue({id:'m2'});
  setPalaceGroupIdentity.mockResolvedValue(undefined);pinPalaceGroupMessage.mockResolvedValue(undefined);
  searchShareablePalaceStories.mockResolvedValue([{id:'work-1',title:'Blue River',slug:'blue-river'}]);
+ watchPalaceChatRoom.mockReturnValue(()=>{});
 });
 afterEach(cleanup);
 describe('Palace quick chat',()=>{
@@ -106,6 +109,43 @@ describe('Palace quick chat',()=>{
   await screen.findByText('Welcome to the circle');
   fireEvent.click(screen.getByRole('button',{name:'Pin'}));
   await waitFor(()=>expect(pinPalaceGroupMessage).toHaveBeenCalledWith('group-one','m1'));
+ });
+ it('subscribes only while a selected chat is open and labels an active connection honestly',async()=>{
+  mount();
+  expect(watchPalaceChatRoom).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  await waitFor(()=>expect(watchPalaceChatRoom).toHaveBeenCalledWith(null,expect.objectContaining({
+   kind:'direct',roomId:'direct-one',userId:user
+  })));
+  const directConfig=watchPalaceChatRoom.mock.calls.find(call=>call[1]?.kind==='direct')?.[1];
+  await act(async()=>{directConfig.onStatus('SUBSCRIBED')});
+  expect(await screen.findByText('Live updates')).toBeTruthy();
+  fireEvent.click(screen.getByRole('button',{name:/Groups/}));
+  await waitFor(()=>expect(watchPalaceChatRoom).toHaveBeenCalledWith(null,expect.objectContaining({
+   kind:'groups',roomId:'group-one',userId:user
+  })));
+ });
+ it('does not drag readers to new messages when they are scrolled up, and offers a jump button',async()=>{
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(screen.getByRole('button',{name:/Groups/}));
+  await screen.findByText('Welcome to the circle');
+  const log=screen.getByRole('log',{name:'Conversation messages'});
+  Object.defineProperties(log,{
+   scrollHeight:{configurable:true,value:900},
+   clientHeight:{configurable:true,value:100},
+   scrollTop:{configurable:true,writable:true,value:0}
+  });
+  fireEvent.scroll(log);
+  getPalaceGroupMessages.mockResolvedValue([
+   {id:'m1',chat_id:'group-one',sender_id:'member-two',body:'Welcome to the circle',created_at:'2026-10-08T13:00:00Z',profiles:{display_name:'River'}},
+   {id:'m2',chat_id:'group-one',sender_id:'member-two',body:'Another story to read',created_at:'2026-10-08T13:03:00Z',profiles:{display_name:'River'}}
+  ]);
+  const groupConfig=watchPalaceChatRoom.mock.calls.find(call=>call[1]?.kind==='groups')?.[1];
+  await act(async()=>{await groupConfig.onChange();});
+  expect(await screen.findByText('Another story to read')).toBeTruthy();
+  const jump=await screen.findByRole('button',{name:/Jump to latest/});
+  fireEvent.click(jump);
+  expect(screen.queryByRole('button',{name:/Jump to latest/})).toBeNull();
  });
  it('sends the selected group message without exposing it in Direct chat',async()=>{
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
