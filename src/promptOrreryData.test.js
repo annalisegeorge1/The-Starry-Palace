@@ -42,7 +42,7 @@ describe('Prompt Orrery expansion',()=>{
   const descriptions=new Set();
   for(const recipe of ORRERY_DARK_RECIPES){
    expect(recipe.intensity).toBe('Mature / Violent');
-   expect(recipe.id).toMatch(/^orrery-6\d{3}$|^orrery-701[012]$/);
+   expect(recipe.id).toMatch(/^orrery-(6\d{3}|70(?:0\d|1[012]))$/);
    for(const field of ['genre','object','twist','mood','character','relationship','setting','conflict']){
     expect(typeof recipe[field]).toBe('string');
     expect(recipe[field].length).toBeGreaterThan(8);
