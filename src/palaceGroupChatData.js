@@ -36,11 +36,19 @@ export async function getPalaceGroupChatOverview(userId){
   }))
  };
 }
-export async function getPalaceGroupMessages(chatId,limit=100){
+export async function getPalaceGroupMessages(chatId,limit=100,before=null){
  if(!cleanId(chatId))return [];
- const data=result(await client().from('palace_group_chat_messages')
+ let query=client().from('palace_group_chat_messages')
   .select('id,chat_id,sender_id,body,created_at,reply_to_id,shared_work_id,profiles!palace_group_chat_messages_sender_id_fkey(id,username,display_name),works!palace_group_chat_messages_shared_work_id_fkey(id,title,slug)')
-  .eq('chat_id',chatId).order('created_at',{ascending:false}).limit(Math.min(120,Math.max(1,limit))));
+  .eq('chat_id',chatId);
+ // An exclusive, server-side timestamp cursor only retrieves earlier RLS-
+ // authorized messages. Never download the entire history in one request.
+ if(before){
+  const cursor=String(before).trim();
+  if(!Number.isFinite(Date.parse(cursor)))throw new Error('Invalid conversation history position.');
+  query=query.lt('created_at',cursor);
+ }
+ const data=result(await query.order('created_at',{ascending:false}).limit(Math.min(120,Math.max(1,limit))));
  return (data||[]).reverse();
 }
 export async function createPalaceGroupChat(title,userIds){

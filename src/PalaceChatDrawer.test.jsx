@@ -38,6 +38,43 @@ beforeEach(()=>{
 });
 afterEach(cleanup);
 describe('Palace quick chat',()=>{
+ it('filters circles by a member name and can focus on unread groups without hiding chat features',async()=>{
+  const older={...groups.groups[0],lastMessageAt:'2026-10-09T14:00:00Z',lastReadAt:'2026-10-09T13:00:00Z'};
+  const quiet={...older,id:'quiet-two',title:'Quiet Writers',description:'Writers only',members:[{id:user,display_name:'Host'}],lastMessageAt:null};
+  getPalaceGroupChatOverview.mockResolvedValue({groups:[older,quiet],invitations:[]});
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(screen.getByRole('button',{name:/Groups/}));
+  expect(await screen.findByRole('button',{name:/Quiet Writers/})).toBeTruthy();
+  fireEvent.change(screen.getByRole('textbox',{name:'Find a conversation'}),{target:{value:'River'}});
+  expect(screen.getByRole('button',{name:/Moonlight Readers/})).toBeTruthy();
+  expect(screen.queryByRole('button',{name:/Quiet Writers/})).toBeNull();
+  fireEvent.change(screen.getByRole('textbox',{name:'Find a conversation'}),{target:{value:''}});
+  fireEvent.click(screen.getByRole('button',{name:'Unread only'}));
+  expect(screen.getByRole('button',{name:/Moonlight Readers/})).toBeTruthy();
+  expect(screen.queryByRole('button',{name:/Quiet Writers/})).toBeNull();
+  fireEvent.click(screen.getByRole('button',{name:'Clear filters'}));
+  expect(screen.getByRole('button',{name:/Quiet Writers/})).toBeTruthy();
+ });
+ it('loads earlier group messages, preserves them on a fresh live fetch and stops at history end',async()=>{
+  const latest=Array.from({length:100},(_,index)=>({
+   id:'recent-'+index,chat_id:'group-one',sender_id:'member-two',
+   body:'Recent group message '+index,created_at:new Date(Date.UTC(2026,9,9,12,0,index)).toISOString(),
+   profiles:{display_name:'River'}
+  }));
+  const older=[{id:'older-1',chat_id:'group-one',sender_id:'member-two',
+   body:'An earlier memory of our first discussion',created_at:'2026-10-07T09:00:00.000Z',profiles:{display_name:'River'}}];
+  getPalaceGroupMessages.mockImplementation((chatId,limit,before)=>Promise.resolve(before?older:latest));
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(screen.getByRole('button',{name:/Groups/}));
+  const fetchMore=await screen.findByRole('button',{name:'Load earlier group messages'});
+  fireEvent.click(fetchMore);
+  expect(await screen.findByText('An earlier memory of our first discussion')).toBeTruthy();
+  expect(getPalaceGroupMessages).toHaveBeenCalledWith('group-one',60,latest[0].created_at);
+  const connection=watchPalaceChatRoom.mock.calls.find(call=>call[1]?.kind==='groups')?.[1];
+  await act(async()=>{await connection.onChange()});
+  expect(screen.getByText('An earlier memory of our first discussion')).toBeTruthy();
+  expect(screen.queryByRole('button',{name:'Load earlier group messages'})).toBeNull();
+ });
  it('keeps Direct and private Groups separate and displays group sender names',async()=>{
   mount();
   fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
