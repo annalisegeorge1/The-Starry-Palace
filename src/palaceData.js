@@ -309,7 +309,7 @@ export async function dismissNotice(userId,id){const{error}=await needClient().f
 
 export async function getLibrary(userId){const [saved,progress,subs,savedComics,comicProgress,comicSubs,follows]=await Promise.all([
  needClient().from('saved_works').select('saved_at,works(id,title,slug,summary,cover_url,completion_status,last_published_at,profiles!works_author_id_fkey(username,display_name))').eq('user_id',userId).order('saved_at',{ascending:false}),
- needClient().from('reading_progress').select('work_id,chapter_id,progress_percent,chapter_progress_percent,completed,updated_at,works(id,title,slug,summary,cover_url,last_published_at)').eq('user_id',userId).order('updated_at',{ascending:false}),
+ needClient().from('reading_progress').select('work_id,chapter_id,progress_percent,chapter_progress_percent,completed,updated_at,works(id,title,slug,summary,cover_url,rating,last_published_at)').eq('user_id',userId).order('updated_at',{ascending:false}),
  needClient().from('story_subscriptions').select('work_id,enabled,frequency,works(id,title,slug,last_published_at)').eq('user_id',userId).eq('enabled',true),
  needClient().from('saved_comics').select('saved_at,comics(id,title,slug,summary,completion_status,cover_path)').eq('user_id',userId).order('saved_at',{ascending:false}),
  needClient().from('comic_reading_progress').select('comic_id,episode_id,page_id,completed,updated_at,comics(id,title,slug,cover_path,last_published_at)').eq('user_id',userId).order('updated_at',{ascending:false}),
@@ -889,7 +889,7 @@ export async function getMemberProfile(username,viewerId){
  const {data:grandIdentity}=await needClient().rpc('get_grand_palace_identity',{p_member:profile.id});
  const [privacy,works,comics,series,workTotal,comicTotal,seriesTotal,follow,counting,clubCount,showA,showG]=await Promise.all([
   own?getMyPrivacy(profile.id):Promise.resolve(null),
-  needClient().from('works').select('id,title,slug,summary,cover_url,completion_status,last_published_at').eq('author_id',profile.id).eq('publication_status','published').order('last_published_at',{ascending:false}).limit(12),
+  needClient().from('works').select('id,title,slug,summary,cover_url,rating,completion_status,last_published_at').eq('author_id',profile.id).eq('publication_status','published').order('last_published_at',{ascending:false}).limit(12),
   needClient().from('comics').select('id,title,slug,summary,completion_status,cover_path,last_published_at').eq('creator_id',profile.id).eq('publication_status','published').order('last_published_at',{ascending:false}).limit(12),
   needClient().from('series').select('id,title,slug,summary,visibility,updated_at,series_works(work_id,position,works(id,title,slug,publication_status,completion_status))').eq('owner_id',profile.id).in('visibility',seriesVisibilities).order('updated_at',{ascending:false}).limit(12),
   needClient().from('works').select('id',{count:'exact',head:true}).eq('author_id',profile.id).eq('publication_status','published'),
