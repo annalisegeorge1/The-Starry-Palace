@@ -1,0 +1,27 @@
+/* An optional install guide, not another compulsory pop-up or navigation level. */
+.palace-install-page{width:min(100%,950px);box-sizing:border-box;margin:20px auto 55px;padding:0 clamp(14px,3vw,26px);color:var(--text,#e9e8fb)}
+.palace-install-hero{position:relative;overflow:hidden;padding:clamp(23px,5vw,53px);border:1px solid rgba(181,161,246,.36);border-radius:26px;background:radial-gradient(circle at 85% 4%,rgba(121,113,220,.28),transparent 47%),linear-gradient(132deg,#171638,#17274a 55%,#163348);box-shadow:0 24px 65px rgba(10,11,36,.22)}
+.palace-install-sigil{display:block;font:3.2rem/1 Georgia,serif;letter-spacing:-.6rem;color:#ddd8ff;margin:0 0 23px}
+.palace-install-sigil i{font-style:normal;font-size:1.6rem;color:#8bdcf2;vertical-align:top;letter-spacing:0}
+.palace-install-kicker{margin:0 0 12px;letter-spacing:.14em;font:750 .7rem/1.5 system-ui,sans-serif;color:#c5c1f8}
+.palace-install-hero h1{margin:0 0 15px;color:#fbfaff;font:600 clamp(2.1rem,5vw,3.6rem)/1.12 Georgia,serif;text-wrap:balance}
+.palace-install-hero>p:not(.palace-install-kicker):not(.palace-install-notice){max-width:63ch;color:#e2e0f6;font:450 clamp(.96rem,1.7vw,1.1rem)/1.7 system-ui,sans-serif}
+.palace-install-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:25px}
+.palace-install-actions button,.palace-install-actions a{display:inline-flex;justify-content:center;align-items:center;min-height:46px;border:1px solid #c2c6ff;border-radius:12px;padding:11px 17px;font:750 .85rem/1.35 system-ui,sans-serif;cursor:pointer;text-decoration:none}
+.palace-install-actions button{background:linear-gradient(110deg,#b5b4f9,#9cdbef);color:#152241}
+.palace-install-actions a{background:rgba(184,164,246,.14);color:#f8f6ff}
+.palace-install-actions>span{max-width:55ch;color:#ddd9fa;font:.85rem/1.6 system-ui,sans-serif}
+.palace-install-installed{padding:11px 16px;border-radius:12px;background:rgba(103,201,174,.2);color:#d9fff6}
+.palace-install-notice{margin:12px 0 0;color:#cdebee;font:.84rem/1.5 system-ui,sans-serif}
+.palace-install-platforms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:17px 0 20px}
+.palace-install-platforms article{min-width:0;padding:20px;border:1px solid rgba(165,163,224,.3);border-radius:17px;background:linear-gradient(140deg,rgba(100,83,166,.13),rgba(62,120,158,.08))}
+.palace-install-platforms article>span{font:1.5rem Georgia,serif;color:#aaa4f3}
+.palace-install-platforms h2{font:600 1.26rem/1.3 Georgia,serif;margin:10px 0}
+.palace-install-platforms p{margin:0;font:.85rem/1.65 system-ui,sans-serif;overflow-wrap:anywhere}
+.palace-install-note{font:.8rem/1.7 system-ui,sans-serif;opacity:.84;max-width:78ch}
+.palace-install-page :is(button,a):focus-visible{outline:3px solid #addaff;outline-offset:3px}
+.palace-shell.daylight .palace-install-page{color:#30264c}
+.palace-shell.daylight .palace-install-platforms article{background:linear-gradient(130deg,#f2edfe,#e9f5fc);border-color:#bdaed9}
+.palace-shell.daylight .palace-install-note{color:#493f5c}
+@media(max-width:720px){.palace-install-platforms{grid-template-columns:1fr}.palace-install-actions>*{max-width:100%}.palace-install-actions button,.palace-install-actions a{flex:1 1 210px}}
+@media(prefers-reduced-motion:reduce){.palace-install-page *{transition:none!important}}
