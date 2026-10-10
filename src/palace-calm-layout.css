@@ -248,3 +248,19 @@
   padding:10px 12px!important;
  }
 }
+
+/* Touch and keyboard reach for the existing full Palace sidebar. */
+@media(max-width:980px){
+ .palace-shell.nav-open .full-sidebar{
+  overscroll-behavior:contain;
+  scrollbar-gutter:stable;
+  touch-action:pan-y;
+ }
+ .palace-shell.nav-open .full-sidebar :is(a,button,summary):focus-visible{
+  outline:3px solid #b7d5ff;
+  outline-offset:2px;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .full-sidebar{scroll-behavior:auto}
+}

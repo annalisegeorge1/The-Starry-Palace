@@ -304,8 +304,9 @@ export function ReadingLive({Frame}){
   }
   return()=>{active=false};
  },[session?.user?.id]);
- const allReadingWorks=[...(works||[]),...(archiveWorks||[])];
- const roomWorks=allReadingWorks.filter(w=>origin==='all'?true:origin==='fandom'?w.work_type==='fanwork':w.work_type!=='fanwork');
+ // Stable book collections: typing in search must not rebuild every Classics list.
+ const allReadingWorks=useMemo(()=>[...(works||[]),...(archiveWorks||[])],[works,archiveWorks]);
+ const roomWorks=useMemo(()=>allReadingWorks.filter(w=>origin==='all'?true:origin==='fandom'?w.work_type==='fanwork':w.work_type!=='fanwork'),[allReadingWorks,origin]);
  const stateFor=w=>readerState[w.id]||{};
  const workTags=w=>(w.work_tags||[]).map(x=>x.tags).filter(t=>t&&['canonical','community'].includes(t.status));const moodDoors=[
   {id:'yearn',glyph:'☾',label:'Make me yearn',copy:'longing, slow burns & impossible feelings',terms:['yearn','yearning','slow burn','pining','longing','romance','love']},
@@ -340,7 +341,7 @@ export function ReadingLive({Frame}){
    default:break;
   }
  }
- const livingRoomWorks=roomWorks.filter(w=>!w.is_archive);
+ const livingRoomWorks=useMemo(()=>roomWorks.filter(w=>!w.is_archive),[roomWorks]);
  const updated=[...livingRoomWorks].sort((a,b)=>new Date(b.last_published_at||0)-new Date(a.last_published_at||0));
  const debuts=[...livingRoomWorks].sort((a,b)=>new Date(b.first_published_at||b.last_published_at||0)-new Date(a.first_published_at||a.last_published_at||0));
  const following=[...livingRoomWorks].filter(w=>stateFor(w).following).sort((a,b)=>new Date(b.last_published_at||0)-new Date(a.last_published_at||0));

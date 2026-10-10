@@ -23,6 +23,7 @@ import {shouldOfferManualPalaceRefresh} from './palaceUpdateSafety';
 import {isPalaceRoomVisuallyBlank} from './palaceBlankVisibility';
 import {usePalaceDialogFocusTrap} from './usePalaceDialogFocusTrap';
 import {shouldOpenPalaceQuickNavigation} from './palaceKeyboard';
+import {shouldRefreshShellBadges} from './palaceShellRefreshPolicy';
 import {palaceRecentDoorKey,readPalaceRecentDoors,addPalaceRecentDoor} from './palaceRecentDoors';
 import './palace-inviting-polish.css';
 import './palace-cohesive-experience.css';
@@ -264,6 +265,7 @@ function FrameShell({children}){
  const location=useLocation();const navigate=useNavigate();
  usePalaceDialogFocusTrap(commandOpen,'palace-command-dialog','.command-trigger');
  usePalaceDialogFocusTrap(mobileMoreOpen,'mobile-palace-more-sheet','.mobile-palace-more');
+ usePalaceDialogFocusTrap(navOpen,'palace-sidebar','.nav-toggle');
  React.useEffect(()=>{try{window.localStorage?.removeItem('palace-recent-routes')}catch{}},[]);
  React.useEffect(()=>{setRecentPalaceRoutes({key:recentDoorsKey,items:readPalaceRecentDoors(safeLocalGet,recentDoorsKey)})},[recentDoorsKey]);
  React.useEffect(()=>{if(recentPalaceRoutes.key)safeLocalSet(recentPalaceRoutes.key,JSON.stringify(recentPalaceRoutes.items))},[recentPalaceRoutes]);
@@ -281,7 +283,46 @@ function FrameShell({children}){
   return()=>window.removeEventListener('palace:profile-title-changed',syncTitle);
  },[session?.user?.id]);
  React.useEffect(()=>{if(!(navOpen||mobileMoreOpen||commandOpen))return;const previous=document.body.style.overflow;document.body.style.overflow='hidden';return()=>{document.body.style.overflow=previous}},[navOpen,mobileMoreOpen,commandOpen]);
- React.useEffect(()=>{let alive=true;if(!session?.user?.id){setShellProfile(null);setLetterBadge(0);setActivityBadge(0);return;}Promise.all([supabase.from('profiles').select('username,display_name,title,avatar_url,cover_url').eq('id',session.user.id).maybeSingle(),supabase.from('message_requests').select('id',{count:'exact',head:true}).eq('recipient_id',session.user.id).eq('status','pending'),supabase.from('notifications').select('id',{count:'exact',head:true}).eq('user_id',session.user.id).eq('unread',true).eq('dismissed',false)]).then(([profileReq,letterReq,activityReq])=>{if(!alive)return;setShellProfile(profileReq.data||null);setLetterBadge(letterReq.count||0);setActivityBadge(activityReq.count||0)}).catch(error=>{if(!alive)return;console.warn('Palace shell counters unavailable',error);setLetterBadge(0);setActivityBadge(0)});return()=>{alive=false}},[session?.user?.id,location.pathname]);
+
+ // Stable member identity: do not re-fetch the same profile on every route.
+ React.useEffect(()=>{
+  const id=session?.user?.id;let active=true;
+  setShellProfile(null);
+  if(!id)return;
+  supabase.from('profiles').select('username,display_name,title,avatar_url,cover_url').eq('id',id).maybeSingle()
+   .then(({data,error})=>{if(active&&!error)setShellProfile(data||null)})
+   .catch(error=>{if(active)console.warn('Palace identity unavailable',error)});
+  return()=>{active=false};
+ },[session?.user?.id]);
+ // Only unread counters require occasional refreshes, not the member profile.
+ const badgeRefreshRef=React.useRef(null);
+ React.useEffect(()=>{
+  const id=session?.user?.id;let active=true,pending=false,lastAttempt=0;
+  setLetterBadge(0);setActivityBadge(0);
+  if(!id){badgeRefreshRef.current=null;return}
+  const refresh=()=>{
+   if(document.visibilityState==='hidden'||pending)return;
+   const now=Date.now();
+   if(!shouldRefreshShellBadges(lastAttempt,now))return;
+   lastAttempt=now;pending=true;
+   Promise.allSettled([
+    supabase.from('message_requests').select('id',{count:'exact',head:true}).eq('recipient_id',id).eq('status','pending'),
+    supabase.from('notifications').select('id',{count:'exact',head:true}).eq('user_id',id).eq('unread',true).eq('dismissed',false)
+   ]).then(([letters,activity])=>{
+    if(!active)return;
+    if(letters.status==='fulfilled'&&!letters.value.error)setLetterBadge(letters.value.count||0);
+    if(activity.status==='fulfilled'&&!activity.value.error)setActivityBadge(activity.value.count||0);
+   }).catch(error=>{if(active)console.warn('Palace unread counters unavailable',error)})
+    .finally(()=>{pending=false});
+  };
+  badgeRefreshRef.current=refresh;
+  refresh();
+  const onVisible=()=>{if(document.visibilityState==='visible')refresh()};
+  window.addEventListener('focus',refresh);
+  document.addEventListener('visibilitychange',onVisible);
+  return()=>{active=false;badgeRefreshRef.current=null;window.removeEventListener('focus',refresh);document.removeEventListener('visibilitychange',onVisible)};
+ },[session?.user?.id]);
+ React.useEffect(()=>{badgeRefreshRef.current?.()},[location.pathname]);
  const visibleRooms=fullPalaceRooms.filter(r=>!r.private||session);
  const resolveRoomPath=p=>p==='/member'?(shellProfile?.username?'/member/'+shellProfile.username:'/chamber'):p;
  const quickDoors=[
@@ -372,7 +413,7 @@ function FrameShell({children}){
  function searchCommand(){const q=commandQuery.trim();if(!q)return;setCommandOpen(false);setCommandQuery('');setCommandIndex(0);navigate('/search?q='+encodeURIComponent(q))}
  return <div data-palace-frame="ready" className={"palace-shell full-palace-shell "+(navOpen?'nav-open ':'')+(sidebarCollapsed?'sidebar-collapsed ':'')+(daylight?'daylight':'nightfall')}>
   <a className="skip-to-content" href="#palace-content">Skip to main content</a>
-  <aside id="palace-sidebar" className="sidebar full-sidebar" aria-label="Palace navigation">
+  <aside id="palace-sidebar" className="sidebar full-sidebar" aria-label="Palace navigation" role={navOpen?'dialog':undefined} aria-modal={navOpen?'true':undefined} tabIndex={navOpen?-1:undefined}>
    <div className="palace-cover-live restored-cover dusk-gif-cover"><img src="/assets/palace/palace-belonging.gif" alt="" aria-hidden="true" loading="lazy" decoding="async"/><div className="dusk-cover-glass" aria-hidden="true"/><button className="sidebar-retract" type="button" onClick={()=>setSidebarCollapsed(true)} aria-label="Retract Palace sidebar" title="Retract sidebar">‹</button><button className="nav-close" onClick={()=>setNavOpen(false)} aria-label="Close Palace navigation">×</button></div>
    {session?<Link className="identity-card-live restored-identity" to={shellProfile?.username?"/member/"+shellProfile.username:"/chamber"}><div className={"identity-avatar "+(!shellProfile?.avatar_url?'sigil-fallback':'')}>{shellProfile?.avatar_url?<img src={shellProfile.avatar_url} alt=""/>:<span aria-hidden="true">☾<b>✦</b></span>}</div><div><strong>{shellProfile?.display_name||shellProfile?.username||'Your Chamber'}</strong><span>{shellProfile?.title||'Palace member'}</span></div></Link>:<Link className="identity-card-live guest" to="/login"><div className="identity-avatar">✦</div><div><strong>Enter the Palace</strong><span>Sign in or create your chamber</span></div></Link>}
    <PalaceSidebarNavigation rooms={visibleRooms} activeRoom={activeRoom}
