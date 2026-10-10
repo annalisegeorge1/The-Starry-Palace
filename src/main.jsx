@@ -62,6 +62,7 @@ import './treasury-daylight-tablet-clarity.css';
 import './palace-unified-action-gradients.css';
 import './palace-search-room-refinement.css';
 import './mobile-member-chamber-finish.css';
+import './palace-mobile-theme-parity.css';
 import './member-chamber-journey.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
@@ -273,7 +274,11 @@ function FrameShell({children}){
  React.useEffect(()=>{if(recentPalaceRoutes.key)safeLocalSet(recentPalaceRoutes.key,JSON.stringify(recentPalaceRoutes.items))},[recentPalaceRoutes]);
  React.useEffect(()=>setNavOpen(false),[location.pathname,location.search]);
  React.useEffect(()=>{setCommandOpen(false);setMobileMoreOpen(false);setCommandQuery('');setCommandIndex(0)},[location.pathname,location.search]);
- React.useEffect(()=>{safeLocalSet('palace-theme',daylight?'daylight':'night')},[daylight]);
+ React.useEffect(()=>{
+  const theme=daylight?'daylight':'nightfall';
+  document.documentElement.dataset.palaceTheme=theme;
+  safeLocalSet('palace-theme',daylight?'daylight':'night');
+ },[daylight]);
  React.useEffect(()=>{safeLocalSet('palace-sidebar-collapsed',sidebarCollapsed?'1':'0')},[sidebarCollapsed]);
  React.useEffect(()=>{const onKey=e=>{if(shouldOpenPalaceQuickNavigation(e)){e.preventDefault();setCommandOpen(v=>!v)}else if(e.key==='Escape'){setCommandOpen(false);setMobileMoreOpen(false);setNavOpen(false)}};window.addEventListener('keydown',onKey);return()=>window.removeEventListener('keydown',onKey)},[]);
  React.useEffect(()=>{

@@ -1,0 +1,147 @@
+/*
+ * Mobile colour parity · 10 October 2026
+ * Phones use the same Nightfall and Daylight palettes as the larger Palace.
+ * The mobile dock is a compact version of the site, not a third colour theme.
+ * Keep member artwork, holiday gradients, user colours and Palace sigils intact.
+ */
+@media(max-width:720px), (max-width:950px) and (max-height:600px) and (pointer:coarse){
+ .palace-shell.nightfall .full-topbar{
+  background:linear-gradient(95deg,rgba(29,23,62,.96),rgba(32,35,79,.95) 60%,rgba(30,52,84,.94))!important;
+  border-bottom-color:rgba(188,175,233,.23)!important;
+ }
+ .palace-shell.daylight .full-topbar{
+  background:linear-gradient(100deg,rgba(239,230,248,.97),rgba(229,237,252,.96) 60%,rgba(225,243,244,.95))!important;
+  border-bottom-color:rgba(113,94,155,.22)!important;
+ }
+ .palace-shell.nightfall .global-search-live{
+  background:rgba(22,24,58,.81)!important;
+  border-color:rgba(167,155,220,.44)!important;
+ }
+ .palace-shell.daylight .global-search-live{
+  background:rgba(255,255,255,.90)!important;
+  border-color:rgba(152,140,190,.45)!important;
+ }
+ .palace-shell.nightfall .full-top-actions :is(.command-trigger,.top-icon-link){
+  background:linear-gradient(140deg,rgba(80,66,136,.30),rgba(45,75,114,.30))!important;
+  color:#eae7ff!important;
+ }
+ .palace-shell.daylight .full-top-actions :is(.command-trigger,.top-icon-link){
+  background:linear-gradient(130deg,#f4eefa,#e9effb)!important;
+  border-color:#c8bcdf!important;
+  color:#49386e!important;
+ }
+ .palace-shell.nightfall .mobile-palace-dock{
+  background:linear-gradient(105deg,rgba(40,29,82,.97),rgba(33,35,81,.97) 53%,rgba(27,51,83,.97))!important;
+  border-color:rgba(181,169,235,.39)!important;
+  box-shadow:0 14px 35px rgba(7,8,26,.30),inset 0 1px 0 rgba(255,255,255,.08)!important;
+ }
+ .palace-shell.daylight .mobile-palace-dock{
+  background:linear-gradient(108deg,rgba(237,224,249,.98),rgba(226,236,253,.98) 55%,rgba(226,244,244,.98))!important;
+  border-color:rgba(135,116,171,.35)!important;
+  box-shadow:0 12px 32px rgba(62,48,100,.15),inset 0 1px 0 rgba(255,255,255,.80)!important;
+ }
+ .palace-shell.nightfall .mobile-palace-dock :is(a,button){color:#dfdaf4!important}
+ .palace-shell.daylight .mobile-palace-dock :is(a,button){color:#483e67!important}
+ .palace-shell.nightfall .mobile-palace-dock :is(a,button).active{
+  background:linear-gradient(135deg,rgba(143,114,211,.30),rgba(88,125,179,.19))!important;
+ }
+ .palace-shell.daylight .mobile-palace-dock :is(a,button).active{
+  background:linear-gradient(135deg,rgba(205,181,235,.66),rgba(178,217,244,.56))!important;
+  color:#332a52!important;
+ }
+ .palace-shell.nightfall .mobile-palace-dock .mobile-dock-write{
+  background:linear-gradient(140deg,#7159ac,#536bab 60%,#407c9b)!important;
+  border-color:#c6b2ec!important;
+  box-shadow:0 9px 20px rgba(27,26,75,.33),0 0 0 4px rgba(27,25,63,.60)!important;
+  color:#fff!important;
+ }
+ .palace-shell.daylight .mobile-palace-dock .mobile-dock-write{
+  background:linear-gradient(135deg,#d3bdeb,#b7d4f5 60%,#b3e5e4)!important;
+  border-color:#987fbf!important;
+  box-shadow:0 9px 20px rgba(77,67,124,.18),0 0 0 4px rgba(245,243,251,.84)!important;
+  color:#30244e!important;
+ }
+ .palace-shell.daylight .mobile-palace-dock .mobile-dock-write :is(span,small){
+  color:#30244e!important;
+ }
+ .palace-shell.nightfall .mobile-palace-dock .mobile-dock-write :is(span,small){
+  color:#f8f4ff!important;
+ }
+ .palace-shell.nightfall .restored-floating-controls .theme-orb{
+  background:linear-gradient(140deg,#6859a9,#486b9e 68%,#357f93)!important;
+  border-color:#c4b8ec!important;
+ }
+ .palace-shell.daylight .restored-floating-controls .theme-orb{
+  background:linear-gradient(140deg,#e7dcf6,#d0dffa 61%,#caecec)!important;
+  color:#4b3973!important;
+  border-color:#a996cf!important;
+ }
+ .palace-shell.nightfall .chic-writing-head{
+  background:linear-gradient(118deg,rgba(75,50,129,.83),rgba(52,57,123,.85) 54%,rgba(33,79,115,.74))!important;
+ }
+ .palace-shell.daylight .chic-writing-head{
+  background:linear-gradient(120deg,#f2e4f9,#e9edfd 57%,#e0f4f4)!important;
+ }
+ .palace-shell .chic-writing-summary{
+  box-sizing:border-box!important;
+  min-width:0!important;
+  max-width:100%!important;
+  overflow-x:visible!important;
+  gap:8px!important;
+ }
+ .palace-shell .chic-writing-summary>span{
+  box-sizing:border-box!important;
+  min-width:0!important;
+  width:100%!important;
+  display:flex!important;
+  flex-direction:column;
+  align-items:flex-start!important;
+  justify-content:center;
+  gap:5px!important;
+  padding:11px 12px!important;
+ }
+ .palace-shell .chic-writing-summary>span strong{
+  display:block!important;
+  font-size:clamp(1.15rem,3vw,1.45rem)!important;
+  line-height:1.12!important;
+  overflow-wrap:normal!important;
+ }
+ .palace-shell .chic-writing-summary>span small{
+  display:block!important;
+  font-size:clamp(.72rem,1.9vw,.82rem)!important;
+  line-height:1.35!important;
+  letter-spacing:0!important;
+  white-space:normal!important;
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+ }
+ .palace-shell.nightfall .chic-writing-summary>span{
+  background:linear-gradient(138deg,rgba(47,40,93,.9),rgba(27,46,83,.87))!important;
+  border-color:rgba(185,169,231,.38)!important;
+ }
+ .palace-shell.nightfall .chic-writing-summary :is(strong,small){color:#eeeaff!important}
+ .palace-shell.daylight .chic-writing-summary>span{
+  background:linear-gradient(135deg,rgba(255,255,255,.87),rgba(233,228,248,.9))!important;
+  border-color:#c6badf!important;
+ }
+ .palace-shell.daylight .chic-writing-summary strong{color:#30294a!important}
+ .palace-shell.daylight .chic-writing-summary small{color:#56516e!important}
+ /* A floating theme orb should never obscure the open chat's close control. */
+ body:has(.palace-chat-v2.palace-chat-dock.is-open) .restored-floating-controls{
+  display:none!important;
+ }
+}
+@media(max-width:720px){
+ .palace-shell .chic-writing-summary{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ }
+}
+@media(min-width:721px) and (max-width:950px) and (max-height:600px) and (pointer:coarse){
+ .palace-shell .chic-writing-summary{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+ }
+ .palace-shell .chic-writing-summary>span{padding:9px 10px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .mobile-palace-dock :is(a,button){transition:none!important}
+}

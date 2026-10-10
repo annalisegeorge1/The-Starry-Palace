@@ -9,6 +9,7 @@ import './palace-chat-groups.css';
 import {GROUP_HISTORY_PAGE_SIZE,mergePalaceGroupMessages,oldestPalaceGroupMessage,palaceChatUnreadGroup,palaceChatMatchesGroup} from './palaceChatHistory';
 import './palace-chat-discovery.css';
 import './palace-chat-mobile-viewport.css';
+import './palace-chat-theme-parity.css';
 
 const draftKey=(user,kind,id)=>'palace-chat-draft:'+user+':'+kind+':'+id;
 const nameOf=p=>p?.display_name||p?.username||'Palace member';
