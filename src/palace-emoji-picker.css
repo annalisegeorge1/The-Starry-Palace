@@ -1,0 +1,20 @@
+/* Shared compact emoji controls: existing Palace day/night variables inherit. */
+.palace-emoji-picker{position:relative;display:inline-flex;flex:none;min-width:0}
+.palace-emoji-toggle{display:inline-flex!important;align-items:center;justify-content:center;gap:6px;min-height:40px!important;padding:7px 11px!important;white-space:nowrap;border:1px solid rgba(172,159,225,.58)!important;border-radius:12px!important;background:rgba(111,98,175,.18)!important;color:inherit!important;font:600 .8rem/1.2 inherit!important;cursor:pointer}
+.palace-emoji-toggle[aria-expanded=true]{outline:2px solid #aebde8;outline-offset:1px}
+.palace-emoji-panel{box-sizing:border-box;position:absolute;z-index:30;left:0;bottom:calc(100% + 8px);width:min(325px,calc(100vw - 28px));max-height:min(370px,55dvh);display:flex;flex-direction:column;overflow:hidden;padding:10px;border-radius:17px;border:1px solid rgba(197,182,242,.70);background:#252441;color:#f8f5ff;box-shadow:0 15px 34px #10102588}
+.palace-emoji-panel header{display:flex!important;flex:0 0 auto;align-items:center;justify-content:space-between;gap:8px;padding:0 4px 7px!important;background:transparent!important;font-size:.83rem}
+.palace-emoji-panel header button{display:grid;place-items:center;min-width:35px;min-height:35px;padding:0!important;border-radius:9px;border:1px solid #ccc2e04d;background:transparent;color:inherit;cursor:pointer}
+.palace-emoji-panel input{box-sizing:border-box;width:100%;min-height:38px;border-radius:10px;padding:7px 10px;border:1px solid #a89dcc75;background:#15162a;color:#fff;font:inherit;font-size:.83rem}
+.palace-emoji-scroll{overflow-y:auto;overscroll-behavior:contain;min-height:0;scrollbar-width:thin}
+.palace-emoji-scroll section{margin:10px 0}
+.palace-emoji-scroll section small{display:block;margin:0 4px 7px;letter-spacing:.08em;text-transform:uppercase;font-size:.68rem;color:#d0c4ef}
+.palace-emoji-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}
+.palace-emoji-grid button{display:grid;place-items:center;padding:0;border:0;min-height:38px;min-width:0;background:transparent;color:inherit;border-radius:9px;font:1.35rem/1.2 system-ui,sans-serif;cursor:pointer}
+.palace-emoji-grid button:hover,.palace-emoji-grid button:focus-visible{background:#a09ad047;outline:0}
+.palace-emoji-scroll p{font-size:.8rem}
+html[data-palace-theme="daylight"] .palace-emoji-panel{background:#f9f5ff;color:#292445;border-color:#b7a4dc;box-shadow:0 15px 36px #4a39774a}
+html[data-palace-theme="daylight"] .palace-emoji-panel input{background:#fff;color:#252138;border-color:#aca0cb}
+html[data-palace-theme="daylight"] .palace-emoji-scroll section small{color:#675881}
+html[data-palace-theme="daylight"] .palace-emoji-grid button:hover{background:#ded7f6}
+@media(max-width:460px){.palace-emoji-grid button{min-height:42px}.palace-emoji-panel{max-height:min(335px,45dvh)}}
