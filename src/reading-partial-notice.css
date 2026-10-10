@@ -1,0 +1,5 @@
+/* An optional shelf can fail without turning the whole Reading Room into an error page. */
+.palace-shell .reading-partial-notice{margin:9px 0 15px;padding:11px 14px;
+ border-radius:12px;border:1px solid rgba(171,156,222,.4);
+ background:linear-gradient(110deg,rgba(88,80,156,.17),rgba(84,118,170,.1));
+ color:inherit;font:500 .8rem/1.5 system-ui,sans-serif}

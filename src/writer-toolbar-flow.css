@@ -77,3 +77,21 @@ body.daylight.writing-desk-open .manuscript-sticky-toolbar .writer-format-arrow:
   transition:none!important;
  }
 }
+
+/* Compact writer's tools: keep the navigation touchable without narrowing the
+   manuscript or forcing horizontal overflow at 320–600px. */
+@media(max-width:600px){
+ body.writing-desk-open .manuscript-sticky-toolbar{
+  max-width:100%;min-width:0;box-sizing:border-box;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-format-navigator{
+  width:100%;max-width:100%;min-width:0;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-format-navigator>.writer-format-scroll{
+  overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;
+  -webkit-overflow-scrolling:touch;scrollbar-width:thin;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-toolbar-save-state{
+  overflow-wrap:anywhere;white-space:normal;
+ }
+}
