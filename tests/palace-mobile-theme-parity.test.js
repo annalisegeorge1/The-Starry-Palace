@@ -17,8 +17,11 @@ describe('Shared Palace colours on phones, tablets and desktops',()=>{
    .toBeGreaterThan(chat.indexOf("import './palace-chat-mobile-viewport.css';"));
  });
  it('keeps both modes distinct but uses restrained mobile versions of the same palettes',()=>{
-  expect(mobile).toContain('.palace-shell.nightfall .full-topbar');
-  expect(mobile).toContain('.palace-shell.daylight .full-topbar');
+  // The header and Writing Chamber hero inherit the same theme on every device.
+  expect(mobile).not.toContain('.palace-shell.nightfall .full-topbar{');
+  expect(mobile).not.toContain('.palace-shell.daylight .full-topbar{');
+  expect(mobile).not.toContain('.palace-shell.nightfall .chic-writing-head{');
+  expect(mobile).not.toContain('.palace-shell.daylight .chic-writing-head{');
   expect(mobile).toContain('.palace-shell.nightfall .mobile-palace-dock');
   expect(mobile).toContain('.palace-shell.daylight .mobile-palace-dock');
   expect(mobile).toContain('.palace-shell.daylight .mobile-palace-dock .mobile-dock-write');
