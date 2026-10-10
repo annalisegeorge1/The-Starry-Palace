@@ -51,3 +51,14 @@
  .palace-shell .prompt-star-actions button{flex:1 1 auto;min-height:42px}
  .palace-shell .writing-earned-points-note.palace-contextual-points>a{margin-inline-start:0}
 }
+
+/* Optional large Orrery catalogue must not block a member's writing desk. */
+.prompt-orrery-deferred{display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:8px;box-sizing:border-box;min-height:145px;margin:12px 0 18px;padding:18px;
+ text-align:center;border:1px solid rgba(165,143,214,.38);border-radius:19px;
+ background:linear-gradient(130deg,rgba(111,91,174,.13),rgba(87,129,175,.09));}
+.prompt-orrery-deferred>span{font-size:23px;color:#c7b1ef}
+.prompt-orrery-deferred>strong{font:600 clamp(15px,2.3vw,20px)/1.3 Georgia,serif;color:inherit}
+.prompt-orrery-deferred p{margin:0;line-height:1.5;font-size:13px;opacity:.85}
+.prompt-orrery-deferred button{min-height:42px;margin-top:3px}
+@media(prefers-reduced-motion:reduce){.prompt-orrery-deferred>span{animation:none}}
