@@ -86,3 +86,23 @@
   animation:none!important;transition:none!important;
  }
 }
+
+/* The chat is portalled to the body instead of living inside a scrolling room.
+ * Keep it above the Palace's sticky navigation, but below true modal dialogs. */
+.palace-chat-v2.palace-chat-dock{z-index:1400!important}
+
+/* When the reader has not entered a conversation, avoid a giant blank
+ * full-screen inbox. Actual messages and group creation keep their roomy
+ * viewport-aware editor; short landscapes retain the original safe layout. */
+@media(max-width:720px) and (min-height:600px){
+ .palace-chat-v2.palace-chat-dock.is-open.is-inbox-empty{
+  top:auto!important;
+  bottom:calc(89px + env(safe-area-inset-bottom,0px))!important;
+  height:min(68dvh,590px)!important;
+  max-height:calc(100dvh - 110px - env(safe-area-inset-bottom,0px))!important;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open.is-inbox-empty>.palace-chat-panel{
+  height:100%!important;
+  max-height:100%!important;
+ }
+}

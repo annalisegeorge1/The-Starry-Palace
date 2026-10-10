@@ -333,7 +333,7 @@ export default function PalaceChatDrawer({userId}){
  }
  const owner=activeGroup?.ownerId===userId;
  if(quiet&&!open)return null;
- return <div data-circle-colour={tab==='groups'?(activeGroup?.colorKey||'moonlit'):'moonlit'} className={'palace-chat-dock palace-chat-v2'+(open?' is-open':'')+(chatPaused?' is-quiet':'')}>
+ return <div data-circle-colour={tab==='groups'?(activeGroup?.colorKey||'moonlit'):'moonlit'} className={'palace-chat-dock palace-chat-v2'+(open?' is-open':'')+(open&&!active&&!creating?' is-inbox-empty':'')+(chatPaused?' is-quiet':'')}>
   {!open?<button type="button" className="palace-chat-launch" aria-label={'Open Palace chat'+(unread?' · '+unread+' new items':'')} aria-expanded={false} onClick={()=>setOpen(true)}><span aria-hidden="true">✉</span><span>Chat</span>{unread>0&&<b>{unread>99?'99+':unread}</b>}</button>:
   <section className="palace-chat-panel" aria-label="Palace Chat" role="region">
    <header className="palace-chat-heading"><div><small>THE PALACE · PRIVATE CHATS</small><strong>Palace Chat <span aria-hidden="true">✦</span></strong></div><div className="palace-chat-header-actions"><button type="button" onClick={()=>setChatPaused(v=>!v)} aria-pressed={chatPaused} title="Smaller launcher when minimized" aria-label={chatPaused?'Turn off quiet launcher':'Use quiet launcher'}>◌</button><button type="button" onClick={()=>setOpen(false)} aria-label="Minimize Palace chat">−</button></div></header>
