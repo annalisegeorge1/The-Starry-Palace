@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Link, NavLink, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { AuthProvider, ProtectedRoute, useAuth } from './auth';
+import { PalaceRouteSeo } from './usePalaceSeo';
 import { configured, supabase } from './supabase';
 import './style.css';
 import './polish.css';
@@ -574,7 +575,7 @@ class PalaceRootBoundary extends React.Component{
 
 function PalaceChatHost(){const {session}=useAuth();return <PalaceChatDrawer userId={session?.user?.id}/>}
 
-function App(){return <AuthProvider><PalaceBuildFreshnessWatch/><NavigationReset/><RouteStateReset/><BlankScreenWatchdog/><Frame><RouteGuard><Routes>
+function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo pathname={location.pathname}/><PalaceBuildFreshnessWatch/><NavigationReset/><RouteStateReset/><BlankScreenWatchdog/><Frame><RouteGuard><Routes>
  <Route path="/" element={<Home/>}/><Route path="/login" element={<Login/>}/><Route path="/auth/callback" element={<Callback/>}/>
  <Route path="/welcome" element={<ProtectedRoute><OnboardingLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
