@@ -63,6 +63,7 @@ import './palace-unified-action-gradients.css';
 import './palace-search-room-refinement.css';
 import './mobile-member-chamber-finish.css';
 import './palace-mobile-theme-parity.css';
+import './reading-mobile-story-cards.css';
 import './member-chamber-journey.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
