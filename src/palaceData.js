@@ -199,27 +199,28 @@ export async function getPublishedWorks(){
  const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,language,completion_status,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(username,display_name,avatar_url,title),work_tags(tags(id,name,category,status))').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(24);
  if(error)throw error;
  const rows=data||[];
- const marks=await getIdentityMarks(rows.map(x=>x.author_id));
  const ids=rows.map(x=>x.id);
  if(!ids.length)return [];
- // A single grouped read per table avoids per-card network requests. Only
- // released chapters and approved comments contribute to public figures.
+ // The essential published-work query has already completed. Fetch optional
+ // author showcase and aggregate statistics in parallel, rather than making
+ // readers wait for one enhancement before even requesting the next.
+ const [marksResult,chaptersResult,commentsResult,bookmarksResult]=await Promise.allSettled([
+  getIdentityMarks(rows.map(x=>x.author_id)),
+  needClient().from('chapters').select('work_id,word_count,status').in('work_id',ids).eq('status','published'),
+  needClient().from('comments').select('work_id,status').in('work_id',ids).eq('status','approved'),
+  needClient().rpc('get_reading_room_bookmark_counts',{p_work_ids:ids})
+ ]);
+ const marks=marksResult.status==='fulfilled'?marksResult.value:{};
  let stats={};
- try{
-  const [chapters,comments,bookmarks]=await Promise.all([
-   needClient().from('chapters').select('work_id,word_count,status').in('work_id',ids).eq('status','published'),
-   needClient().from('comments').select('work_id,status').in('work_id',ids).eq('status','approved'),
-   needClient().rpc('get_reading_room_bookmark_counts',{p_work_ids:ids})
-  ]);
-  for(const response of [chapters,comments,bookmarks])if(response.error)throw response.error;
+ const counts=[chaptersResult,commentsResult,bookmarksResult];
+ if(counts.every(result=>result.status==='fulfilled'&&!result.value.error)){
+  const [chapters,comments,bookmarks]=counts.map(result=>result.value);
   stats=Object.fromEntries(ids.map(id=>[id,{words:0,chapters:0,comments:0,bookmarks:0}]));
   for(const row of chapters.data||[]){const v=stats[row.work_id];if(v){v.chapters++;v.words+=Math.max(0,Number(row.word_count)||0)}}
   for(const row of comments.data||[]){const v=stats[row.work_id];if(v)v.comments++}
   for(const row of bookmarks.data||[]){const v=stats[row.work_id];if(v)v.bookmarks=Math.max(0,Number(row.bookmark_count)||0)}
- }catch{
-  // A missing public-count privilege must never break story discovery.
-  // No numbers are displayed unless the aggregation succeeds.
  }
+ // Optional badge/showcase or counts failures must never hide published work.
  return rows.map(x=>({...x,profiles:withIdentity(x.profiles,x.author_id,marks),reading_stats:stats[x.id]||null}));
 }
 /** Public aggregate only; never exposes which members saved a story. */

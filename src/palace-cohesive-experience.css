@@ -90,3 +90,21 @@ body.writing-desk-open .manuscript-sticky-toolbar button:focus-visible{
 .palace-main-stage :is(.heritage-card,.palace-life-story-list article,.palace-life-history-entry){
  box-sizing:border-box;
 }
+
+/* Consistent compact layouts: wrapping text must not widen a room on phones.
+   These keep all existing controls and artwork; nothing is hidden. */
+@media(max-width:600px){
+ .palace-main-stage :is(.palace-home-welcome,.palace-first-shelf,.palace-live-gatherings,.palace-tour-fold,.palace-room-directory){
+  box-sizing:border-box;min-width:0;max-width:100%;
+ }
+ .palace-main-stage :is(.palace-choice-card,.palace-culture-path,.palace-gathering-grid article,.home-world-grid>a){
+  box-sizing:border-box;min-width:0;max-width:100%;
+ }
+ .palace-main-stage :is(.palace-choice-card,.palace-culture-path,.palace-gathering-grid article,.home-world-grid>a) :is(h2,h3,p,strong,small){
+  overflow-wrap:anywhere;
+ }
+ .palace-main-stage .palace-home-more>summary{
+  box-sizing:border-box;min-width:0;max-width:100%;gap:10px;
+ }
+ .palace-main-stage .palace-home-more>summary>span:first-child{min-width:0}
+}
