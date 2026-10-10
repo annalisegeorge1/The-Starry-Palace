@@ -16,7 +16,8 @@ import {WriterWelcome} from './WriterWelcome';
 import {PalaceHomeWelcome,PalaceRoomDirectory,PalaceHomeCulturePaths,PalaceHomeMore} from './PalaceHomeWelcome';
 import PalaceSidebarNavigation from './PalaceSidebarNavigation';
 import PalaceNewStories from './PalaceNewStories';
-import PalaceChatDrawer from './PalaceChatDrawer';
+// Chat code and its CSS load only for authenticated members.
+// Visitors should not download private messaging features.
 import {palaceSignInDoor} from './palaceDoorway';
 import {shouldOfferManualPalaceRefresh} from './palaceUpdateSafety';
 import {isPalaceRoomVisuallyBlank} from './palaceBlankVisibility';
@@ -171,6 +172,7 @@ const PalaceGovernance=React.lazy(()=>importWithRecovery(()=>import('./PalaceGov
 const PalaceBetaGuide=React.lazy(()=>importWithRecovery(()=>import('./PalaceBetaGuide')));
 const PalaceFandomAtlas=React.lazy(()=>importWithRecovery(()=>import('./PalaceFandomAtlas')));
 // Core Palace rooms are imported eagerly for navigation reliability.
+const PalaceChatDrawerLazy=React.lazy(()=>importWithRecovery(()=>import('./PalaceChatDrawer')));
 
 const rooms=[
   ['Reading Rooms','/reading','Read, discover and return to the stories waiting for you.'],
@@ -554,7 +556,11 @@ class PalaceRootBoundary extends React.Component{
  }
 }
 
-function PalaceChatHost(){const {session}=useAuth();return <PalaceChatDrawer userId={session?.user?.id}/>}
+function PalaceChatHost(){
+ const {session}=useAuth();
+ if(!session?.user?.id)return null;
+ return <React.Suspense fallback={null}><PalaceChatDrawerLazy userId={session.user.id}/></React.Suspense>;
+}
 
 function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo pathname={location.pathname}/><PalaceBuildFreshnessWatch/><NavigationReset/><RouteStateReset/><BlankScreenWatchdog/><Frame><RouteGuard><Routes>
  <Route path="/" element={<Home/>}/><Route path="/login" element={<React.Suspense fallback={<RouteLoading/>}><PalaceLogin Frame={Frame}/></React.Suspense>}/><Route path="/auth/callback" element={<React.Suspense fallback={<RouteLoading/>}><PalaceAuthCallback Frame={Frame}/></React.Suspense>}/>
