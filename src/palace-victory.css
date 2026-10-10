@@ -1,0 +1,25 @@
+/* Small, one-time member celebration with lightweight CSS-only effects. */
+.palace-victory-celebration{position:fixed;inset:0;z-index:110;pointer-events:none}
+.palace-victory-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.palace-victory-particle{position:absolute;left:var(--x);top:-30px;color:var(--spark);opacity:0;animation:palace-victory-fall var(--duration) ease-out var(--delay) 1 both}
+.palace-victory-particle.star{font-size:clamp(10px,1.9vw,20px);filter:drop-shadow(0 0 5px var(--spark))}
+.palace-victory-particle.confetti{width:7px;height:12px;border-radius:2px;background:var(--spark);box-shadow:0 0 7px rgba(191,199,255,.4)}
+@keyframes palace-victory-fall{
+ 0%{opacity:0;transform:translate3d(0,-20px,0) rotate(0)}
+ 10%{opacity:1}
+ 80%{opacity:.95}
+ 100%{opacity:0;transform:translate3d(42px,79vh,0) rotate(540deg)}
+}
+.palace-victory-card{pointer-events:auto;position:absolute;top:clamp(75px,12vh,130px);left:50%;transform:translateX(-50%);display:flex;align-items:flex-start;gap:13px;box-sizing:border-box;width:min(550px,calc(100vw - 28px));max-height:calc(100vh - 100px);overflow:auto;border:1px solid var(--court-accent,#b6a9f4);border-radius:20px;padding:17px 20px;background:radial-gradient(circle at 10% 0%,rgba(115,101,182,.35),transparent 65%),linear-gradient(140deg,#191736,#171e42);box-shadow:0 18px 55px rgba(10,9,28,.55);color:#f8f5ff;animation:palace-victory-enter .48s ease-out both}
+@keyframes palace-victory-enter{from{opacity:0;transform:translate(-50%,-15px) scale(.98)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
+.palace-victory-glyph{font-size:22px;color:var(--court-accent);white-space:nowrap}
+.palace-victory-copy{flex:1;min-width:0}
+.palace-victory-copy small{display:block;font-weight:750;font-size:9px;letter-spacing:.09em;color:#d8cbfa}
+.palace-victory-copy strong{display:block;font:500 clamp(17px,2.5vw,25px)/1.2 Georgia,serif;margin:5px 0;color:#faf7ff}
+.palace-victory-copy p{font-size:12px;line-height:1.5;color:#e0d9f0;margin:4px 0 8px}
+.palace-victory-copy a{display:inline-block;color:#d6c7ff;font-weight:600;font-size:12px;text-decoration:underline;text-underline-offset:3px}
+.palace-victory-close{align-self:flex-start;border:0;background:rgba(255,255,255,.1);border-radius:7px;color:#fff;font-size:18px;padding:3px 9px;cursor:pointer}
+.palace-victory-close:hover{background:rgba(255,255,255,.23)}
+.palace-victory-close:focus-visible,.palace-victory-copy a:focus-visible{outline:2px solid #d9c7ff;outline-offset:3px}
+@media(max-width:600px){.palace-victory-card{top:68px;padding:14px 12px;gap:8px}.palace-victory-glyph{font-size:17px}}
+@media(prefers-reduced-motion:reduce){.palace-victory-particles{display:none}.palace-victory-card{animation:none;transform:translate(-50%,0)}}
