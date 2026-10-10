@@ -28,12 +28,11 @@ describe('Fast entry to Palace Classics',()=>{
   expect(shouldShowPalaceTidings('/classic/jane-eyre')).toBe(false);
  });
 });
-describe('Smaller Palace initial download',()=>{
- it('loads specialist Palace rooms on demand, without changing their route names',()=>{
-  expect(main).toContain("import('./liveRooms')");
-  expect(main).toContain('function lazyPalaceRoom(name)');
-  expect(main).toContain('<React.Suspense fallback={<RouteLoading/>}><Room {...props}/></React.Suspense>');
-  expect(main).not.toContain("} from './liveRooms';");
+describe('Stable Palace navigation alongside direct Classics',()=>{
+ it('keeps core rooms eager to honor earlier blank-screen reliability safeguards',()=>{
+  expect(main).toContain("} from './liveRooms';");
+  expect(main).not.toContain("import('./liveRooms')");
   expect(main).toContain('<Frame><RouteGuard><Routes>');
+  expect(main).toContain("import('./DirectClassicReader')");
  });
 });

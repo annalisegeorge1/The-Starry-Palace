@@ -26,27 +26,12 @@ import {shouldOpenPalaceQuickNavigation} from './palaceKeyboard';
 import {palaceRecentDoorKey,readPalaceRecentDoors,addPalaceRecentDoor} from './palaceRecentDoors';
 import './palace-inviting-polish.css';
 import './palace-cohesive-experience.css';
-// Each specialised room loads only when its doorway is entered. The homepage no
-// longer downloads every editor, comic, Treasury and Reading Room dependency.
-// Keep route-specific Suspense inside the persistent Palace frame so loading
-// cannot blank the navigation or replace a member's active manuscript.
-function lazyPalaceRoom(name){
- const Room=React.lazy(()=>importWithRecovery(()=>import('./liveRooms')).then(rooms=>({default:rooms[name]})));
- return function DeferredPalaceRoom(props){
-  return <React.Suspense fallback={<RouteLoading/>}><Room {...props}/></React.Suspense>;
- };
-}
-const [
+import {
  ChamberLive,OnboardingLive,ReadingLive,ClubLive,WritingLive,SettingsLive,ActivityLive,LibraryLive,
  PalaceLifeLive,LettersLive,EventsLive,TreasuryLive,LostWorksLive,MemberProfileLive,SearchLive,
  WorkLive,ChapterLive,WorkStudioLive,TagSearchLive,HonourLive,CouncilLive,CodeLive,ComicsLive,
  ComicLive,ComicEpisodeLive,ComicStudioLive,SeriesLive
-]=[
- 'ChamberLive','OnboardingLive','ReadingLive','ClubLive','WritingLive','SettingsLive','ActivityLive','LibraryLive',
- 'PalaceLifeLive','LettersLive','EventsLive','TreasuryLive','LostWorksLive','MemberProfileLive','SearchLive',
- 'WorkLive','ChapterLive','WorkStudioLive','TagSearchLive','HonourLive','CouncilLive','CodeLive','ComicsLive',
- 'ComicLive','ComicEpisodeLive','ComicStudioLive','SeriesLive'
-].map(lazyPalaceRoom);
+} from './liveRooms';
 const DirectClassicReader=React.lazy(()=>importWithRecovery(()=>import('./DirectClassicReader')));
 import './palace-editorial-finish.css';
 import './palace-navigation-jewels.css';
