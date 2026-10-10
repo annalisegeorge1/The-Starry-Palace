@@ -5,7 +5,12 @@ const read=(path)=>readFileSync(resolve(process.cwd(),path),'utf8');
 const live=read('src/liveRooms.jsx');
 const sql=read('database/member-chamber-decoration-and-arrangement.sql');
 const css=read('src/chamber-creative-shelf-polish.css');
-const gallery=live.slice(live.indexOf('<section id="chamber-honours"'),live.indexOf('<section id="chamber-worlds"'));
+// Gallery is the last Chamber section in the writer-first profile journey.
+// Scope the search to the actual member profile, not the next named section.
+const profileStart=live.indexOf('export function MemberProfileLive({Frame})');
+const profileEnd=live.indexOf('export function ',profileStart+20);
+const profile=live.slice(profileStart,profileEnd);
+const gallery=profile.slice(profile.indexOf('<section id="chamber-honours"'),profile.indexOf('\n </>}</State>',profile.indexOf('<section id="chamber-honours"')));
 
 describe('Accessible member Gallery arrangement',()=>{
  it('retains both collections and their original backend actions',()=>{
