@@ -1,0 +1,162 @@
+/* A living Chamber, not a wall of oversized statistics.
+   Preserve profile covers, original uploads, ceremonial artwork, all five
+   profile rooms, and every privacy/report/correspondence interaction. */
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats {
+ gap:7px!important;
+ padding:9px!important;
+ background:linear-gradient(135deg,rgba(24,24,61,.38),rgba(38,47,93,.29))!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats>div {
+ min-height:64px!important;
+ padding:9px 5px!important;
+ gap:4px!important;
+ border-radius:12px!important;
+ background:linear-gradient(140deg,rgba(91,84,152,.11),rgba(35,44,103,.09))!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats strong {
+ font-size:clamp(1.05rem,2vw,1.35rem)!important;
+ line-height:1.1!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats span {
+ font-size:clamp(.59rem,.82vw,.68rem)!important;
+ line-height:1.25!important;
+ letter-spacing:.03em!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-crown-ribbon>span:only-child {
+ max-width:420px!important;
+ justify-self:start!important;
+}
+.palace-shell .chamber-creator-overview,
+.palace-shell .creator-worlds-room,
+.palace-shell .chamber-posts-room,
+.palace-shell .chamber-atelier-gallery {
+ box-sizing:border-box;
+ width:min(100%,1180px);
+ max-width:100%;
+ min-width:0;
+ margin-left:auto;
+ margin-right:auto;
+}
+.palace-shell .chamber-creator-overview {gap:10px}
+.palace-shell .chamber-creator-overview .chamber-about-card,
+.palace-shell .chamber-creator-overview .chamber-contact-state {
+ box-shadow:0 7px 22px rgba(5,9,31,.10)!important;
+}
+.palace-shell .chamber-creator-overview .chamber-contact-state {
+ display:grid!important;
+ grid-template-columns:35px minmax(0,1fr);
+ align-content:center;
+ align-items:center;
+ gap:8px 12px;
+ padding:14px!important;
+}
+.palace-shell .chamber-creator-overview .chamber-contact-state>span[aria-hidden=true]{
+ width:35px;min-width:35px;box-sizing:border-box;
+}
+.palace-shell .chamber-creator-overview .chamber-contact-state>div{
+ min-width:0!important;
+}
+.palace-shell .chamber-creator-overview .chamber-contact-state>div strong {
+ line-height:1.3;
+}
+.palace-shell .chamber-creator-overview .chamber-contact-state>div p {
+ line-height:1.45;
+}
+.palace-shell .chamber-creator-overview .chamber-contact-state>button,
+.palace-shell .chamber-creator-overview .chamber-contact-state>a {
+ grid-column:2;
+ width:max-content!important;
+ max-width:100%;
+ min-width:0!important;
+ margin-top:0!important;
+ padding:8px 12px!important;
+ font-size:12px!important;
+ white-space:normal;
+}
+.palace-shell .boundary-bar {
+ margin:10px auto 15px!important;
+ padding:12px 14px!important;
+ box-shadow:none!important;
+ background:linear-gradient(110deg,rgba(37,39,84,.29),rgba(30,34,76,.22))!important;
+}
+.palace-shell .boundary-bar>div:first-child {min-width:0}
+.palace-shell .boundary-bar span {line-height:1.45}
+.palace-shell .creator-worlds-room {
+ margin-top:15px!important;
+ margin-bottom:22px!important;
+}
+.palace-shell .creator-worlds-room .section-heading {
+ margin-bottom:11px!important;
+}
+.palace-shell .creator-worlds-room .creator-shelf-block {
+ margin-bottom:12px!important;
+ padding:clamp(12px,1.8vw,17px)!important;
+}
+.palace-shell .chamber-posts-room,
+.palace-shell .chamber-atelier-gallery {
+ margin-top:15px!important;
+ margin-bottom:18px!important;
+}
+.palace-shell .chamber-section-nav.chamber-atelier-tabs a:focus-visible,
+.palace-shell .creator-worlds-room a:focus-visible {
+ outline:3px solid #b9d8ff!important;
+ outline-offset:2px!important;
+}
+
+/* Three succinct statistics per row when there's room; on small phones all
+   six remain visible in a genuinely readable two-column layout. */
+@media(max-width:720px) and (min-width:421px){
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats {
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ }
+}
+@media(max-width:720px){
+ .palace-shell .chamber-creator-overview{
+  margin-top:10px!important;
+  margin-bottom:12px!important;
+ }
+ .palace-shell .chamber-creator-overview :is(.chamber-about-card,.chamber-contact-state) {
+  padding:12px 13px!important;
+ }
+ .palace-shell .boundary-bar {gap:9px!important}
+ .palace-shell .creator-worlds-room .section-heading h2 {
+  font-size:clamp(1.35rem,4.2vw,1.8rem)!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-crown-ribbon>span:only-child {
+  max-width:100%!important;
+ }
+}
+@media(max-width:420px){
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats>div{
+  min-height:61px!important;
+ }
+ .palace-shell .chamber-creator-overview .chamber-contact-state {
+  grid-template-columns:28px minmax(0,1fr);
+  gap:7px 9px;
+ }
+ .palace-shell .chamber-creator-overview .chamber-contact-state>span[aria-hidden=true]{
+  width:28px;min-width:28px;
+ }
+}
+.palace-shell.daylight .member-chamber-atelier.chic-member-profile .legacy-profile-stats {
+ background:#f4f1fa!important;
+}
+.palace-shell.daylight .member-chamber-atelier.chic-member-profile .legacy-profile-stats>div {
+ background:linear-gradient(140deg,#fff,#f3effb)!important;
+ border-color:#d7cce7!important;
+}
+.palace-shell.daylight .boundary-bar {
+ background:linear-gradient(110deg,#f4effb,#eceaf9)!important;
+ border-color:#d1c6e6!important;
+}
+.palace-shell.daylight .chamber-creator-overview .chamber-contact-state {
+ background:#f9f6ff!important;
+ border-color:#d8ccec!important;
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .chamber-section-nav a,
+ .palace-shell .creator-worlds-room :is(a,button) {transition:none!important}
+}
