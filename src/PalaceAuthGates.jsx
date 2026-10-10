@@ -89,7 +89,7 @@ export function PalaceLogin({ Frame }) {
     <div className="gate-copy">
       <p className="eyebrow">THE PALACE GATES</p>
       <h1>{mode === 'signup' ? 'A place among the stars.' : 'Welcome home.'}</h1>
-      <p>Choose the doorway that suits you. Your Palace password should be different from your email password.</p>
+      <p>Choose the doorway that suits you. If you use a Palace password, never enter the password for your email inbox.</p>
       {requested && palaceDoorDestinationMessage(destination) && <p className="gate-destination-note">✧ {palaceDoorDestinationMessage(destination)}</p>}
     </div>
     <div className="auth-panel palace-login-panel">
@@ -136,7 +136,7 @@ export function PalaceLogin({ Frame }) {
 export function PalaceAuthCallback({ Frame }) {
   const { session, loading, error } = useAuth();
   const params = new URLSearchParams(window.location.search);
-  const pending = recallPalaceAuthDestination(window.sessionStorage);
+  const [pending] = useState(() => recallPalaceAuthDestination(window.sessionStorage));
   const [waiting, setWaiting] = useState(params.has('code'));
   useEffect(() => {
     if (session || !params.has('code')) return;

@@ -5,7 +5,7 @@ import {resolve} from 'node:path';
 const main=readFileSync(resolve(process.cwd(),'src/main.jsx'),'utf8');
 const home=readFileSync(resolve(process.cwd(),'src/PalaceHomeWelcome.jsx'),'utf8');
 const passage=main.split('const passageMap={')[1]?.split('const recentCommandItems=')[0]||'';
-const login=main.split('function Login(){')[1]?.split('function Callback(')[0]||'';
+const login=readFileSync(resolve(process.cwd(),'src/PalaceAuthGates.jsx'),'utf8');
 
 describe('Palace route continuity for visitors and members',()=>{
  it('sends guest writing, library and Commons doors through destination-aware sign-in',()=>{
@@ -22,10 +22,10 @@ describe('Palace route continuity for visitors and members',()=>{
   expect(passage).toContain("path:'/reading'");
  });
  it('explains the requested destination at the existing sign-in gate',()=>{
-  expect(login).toContain("location.state?.from||new URLSearchParams(location.search).get('next')");
+  expect(login).toContain("location.state?.from || new URLSearchParams(location.search).get('next')");
   expect(login).toContain('safePalaceReturnPath(requested)');
-  expect(login).toContain('requested&&palaceDoorDestinationMessage(destination)');
-  expect(login).toContain('<Navigate to={destination} replace/>');
+  expect(login).toContain('requested && palaceDoorDestinationMessage(destination)');
+  expect(login).toContain('<Navigate to={destination} replace />');
  });
  it('makes the home invitation clear for both visitors and signed-in writers',()=>{
   expect(home).toContain("member?'Enter Palace Life':'Explore public gatherings'");

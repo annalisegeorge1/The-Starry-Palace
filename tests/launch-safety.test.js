@@ -67,8 +67,8 @@ describe('Starry Palace launch safety',()=>{
   });
 
   it('never asks members for the password to their email inbox',()=>{
-    expect(main).toContain('never enter the password for your email inbox');
-    expect(main).not.toContain('Your email password is never required by the Palace.');
+    expect(read('src/PalaceAuthGates.jsx')).toContain('never enter the password for your email inbox');
+    expect(read('src/PalaceAuthGates.jsx')).not.toContain('Your email password is never required by the Palace.');
   });
 
   it('avoids ambiguous ballot-option embeds',()=>{
@@ -817,9 +817,9 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('<PalaceNewStories/>');
     expect(shelf).toContain('home-live-worlds');
     expect(shelf).toContain('NEWLY OPENED WORLDS');
-    expect(main).toContain('Email me a passwordless entrance link');
-    expect(main).toContain('password-field');
-    expect(main).not.toContain('Google entrance · coming soon');
+    expect(read('src/PalaceAuthGates.jsx')).toContain('Email me a passwordless entrance link');
+    expect(read('src/PalaceAuthGates.jsx')).toContain('password-field');
+    expect(read('src/PalaceAuthGates.jsx')).not.toContain('Google entrance · coming soon');
     expect(polish).toContain('.home-world-grid');
     expect(polish).toContain('.password-field');
   });
