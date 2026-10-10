@@ -1,0 +1,187 @@
+/*
+ * Palace Chat shares the active Palace theme on EVERY screen.
+ * The drawer is hosted outside the route's content, so it follows the
+ * root-level theme flag instead of assuming that chat is always dark.
+ * Keep existing chat features, circles, privacy and message behaviour.
+ */
+html[data-palace-theme="nightfall"] .palace-chat-v2 .palace-chat-launch{
+ background:linear-gradient(125deg,#6958a3,#4d659d 57%,#386f88);
+ border-color:rgba(202,194,246,.75);
+}
+html[data-palace-theme="nightfall"] .palace-chat-v2 .palace-chat-heading{
+ background:linear-gradient(120deg,#342c63,#284366 67%,#25586b);
+}
+html[data-palace-theme="nightfall"] .palace-chat-v2 .palace-chat-tabs button[aria-pressed=true]{
+ background:linear-gradient(112deg,#7261ae,#4d789c);
+}
+html[data-palace-theme="daylight"] .palace-chat-v2{
+ --palace-chat-ink:#2c2949;
+ --palace-chat-border:rgba(125,111,164,.25);
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-launch{
+ background:linear-gradient(120deg,#e7d7f7,#d5e5fb 59%,#c8ebea);
+ border-color:#a490c5;
+ color:#352c55;
+ box-shadow:0 12px 29px rgba(74,57,117,.17);
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-launch b{
+ background:#e5f5f3;color:#25475b;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-panel{
+ background:linear-gradient(155deg,#faf8fd,#f1f0fa 55%,#e9f3f7);
+ border-color:#b5a9d4;
+ color:#2c2949;
+ box-shadow:0 20px 70px rgba(40,38,83,.29);
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-heading{
+ background:linear-gradient(110deg,#eddef8,#dfebfc 63%,#d9f0ef);
+ border-bottom:1px solid rgba(121,106,166,.21);
+ color:#332951;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-heading :is(strong,small){
+ color:#332951;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-heading strong span{color:#665498}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-heading .palace-chat-header-actions button{
+ border-color:#b9a9d4;
+ background:rgba(255,255,255,.64);
+ color:#4e3b76!important;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-tabs{
+ background:#eceaf7;
+ border-bottom:1px solid rgba(138,116,178,.2);
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-tabs button{
+ color:#4d4768;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-tabs button[aria-pressed=true]{
+ color:#34284f;
+ background:linear-gradient(113deg,#ddc7f2,#c8def5 66%,#bfe9e7);
+ border-color:#a99bc8;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-tabs span{
+ background:#eefbfc;color:#2d5269;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 :is(.palace-chat-tools,.palace-chat-people){
+ background:rgba(245,243,251,.84);
+ border-color:var(--palace-chat-border);
+ color:#352e51;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 :is(.palace-chat-tools input,.palace-chat-group-form input,.palace-chat-settings input,.palace-chat-member-search input,.palace-chat-share-shelf input,.palace-chat-settings select,.palace-chat-settings textarea){
+ background:#fff!important;
+ border-color:#b7abd0!important;
+ color:#30294a!important;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 input::placeholder,
+html[data-palace-theme="daylight"] .palace-chat-v2 textarea::placeholder{
+ color:#726e86!important;
+ opacity:1;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-tools a{
+ color:#365f8a;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 :is(.palace-chat-tools button,.palace-chat-people button,.palace-chat-member-search button,.palace-chat-settings button,.palace-chat-invitations button){
+ background:#e5e1f2;
+ border-color:#b4a9d1;
+ color:#3d325b;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-people button[aria-pressed=true]{
+ background:linear-gradient(120deg,#dfd2f2,#d8e9f7);
+ border-color:#9983c1;
+ color:#342951;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-inbox-refine{
+ background:#eae9f6;
+ border-color:var(--palace-chat-border);
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-inbox-refine span{color:#4c4567}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-inbox-refine button{
+ background:#dcdcf0;border-color:#aaa4cb;color:#42365e;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-inbox-refine button[aria-pressed=true]{
+ background:linear-gradient(114deg,#d3bef0,#bfdeec);color:#302746;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-inbox-refine .palace-chat-clear-filter{background:transparent}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-correspondent,
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-settings,
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-invitations{
+ background:#e8e5f3;
+ border-color:var(--palace-chat-border);
+ color:#342c51;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-correspondent :is(strong,small),
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-connection{
+ color:#403856;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-messages{
+ background:linear-gradient(160deg,#f6f4fb,#f0f3fb);
+ color:#302946;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-empty,
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-filter-empty,
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-group-form p{
+ color:#57536f;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-empty a{
+ color:#315d87;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-bubble{
+ background:#e4e7f5;border-color:#b9b8d7;color:#302946;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-bubble.mine{
+ background:linear-gradient(128deg,#d9c9ee,#c8e0f1);
+ border-color:#afa0ce;color:#302846;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-sender{
+ color:#345879;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-compose,
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-draft-hint,
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-panel footer{
+ background:#e7e6f2;
+ border-color:var(--palace-chat-border);
+ color:#554d70;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-compose textarea{
+ background:#fff!important;border-color:#a99dc9;color:#2d2949;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-primary,
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-compose button{
+ background:linear-gradient(113deg,#dfcaf5,#bddcf4 64%,#bde8e3);
+ border-color:#aa94ca;color:#30264b;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-panel footer .palace-chat-mobile-close{
+ background:linear-gradient(115deg,#e1cff4,#c8dff6);
+ border-color:#9e8bc4;
+ color:#30284d;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-people .palace-chat-room-symbol{
+ background:linear-gradient(130deg,#9c86cc,#6c9fb6);color:#fff;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-notice{
+ background:#ddf2ef;color:#24575b;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-error{
+ background:#f8e5ed;color:#7b2948;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-earlier,
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-sharing-actions{
+ background:#efedf8;
+ color:#423957;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 :is(.palace-chat-settings label,.palace-chat-group-form label,.palace-chat-invitations strong){
+ color:#3c3454;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 :is(button,input,textarea,a):focus-visible{
+ outline-color:#6450a1;
+}
+@media(max-width:720px), (max-width:950px) and (max-height:600px) and (pointer:coarse){
+ .palace-chat-v2.palace-chat-dock.is-open .palace-chat-panel footer .palace-chat-mobile-close{
+  position:relative;
+  z-index:3;
+  white-space:nowrap;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open .palace-chat-panel footer{
+  min-width:0;
+ }
+}
