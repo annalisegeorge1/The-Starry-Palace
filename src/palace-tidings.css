@@ -1,0 +1,17 @@
+/* Tiny event-only strip: never overlays a story or writing surface. */
+.palace-tidings-bar{display:flex;align-items:center;gap:9px;box-sizing:border-box;min-width:0;height:30px;min-height:30px;padding:0 13px;color:#e9e4ff;background:linear-gradient(95deg,rgba(33,29,69,.97),rgba(62,49,102,.96) 54%,rgba(30,44,85,.97));border-bottom:1px solid rgba(197,181,255,.22);font-size:11px;line-height:1.2;letter-spacing:.01em}
+.palace-tidings-brand{white-space:nowrap;color:#dacfff;font-size:10px;font-weight:800;letter-spacing:.09em}
+.palace-tidings-separator{height:13px;width:1px;background:rgba(194,181,246,.38);flex:none}
+.palace-tidings-kind{color:#c6b8fa;font-weight:750;letter-spacing:.065em;font-size:9px;white-space:nowrap}
+.palace-tidings-link{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-decoration:none!important;color:#f7f4ff!important}
+.palace-tidings-link:hover,.palace-tidings-link:focus-visible{text-decoration:underline!important;text-underline-offset:2px}
+.palace-tidings-next,.palace-tidings-close{border:0;background:transparent;color:#eee7ff;cursor:pointer;padding:2px 5px;line-height:1;flex:none}
+.palace-tidings-next{font-size:13px;white-space:nowrap}
+.palace-tidings-next span{font-size:9px;font-variant-numeric:tabular-nums}
+.palace-tidings-close{font-size:17px;opacity:.75}
+.palace-tidings-next:hover,.palace-tidings-close:hover{background:rgba(210,201,255,.14);border-radius:5px}
+.palace-tidings-next:focus-visible,.palace-tidings-close:focus-visible{outline:2px solid #d9c9ff;outline-offset:2px}
+.daylight .palace-tidings-bar{background:linear-gradient(100deg,#e8e3f9,#dcdff7);color:#2f285d;border-bottom:1px solid #c0b6e5}
+.daylight .palace-tidings-brand,.daylight .palace-tidings-kind,.daylight .palace-tidings-link,.daylight .palace-tidings-close,.daylight .palace-tidings-next{color:#373060!important}
+.daylight .palace-tidings-separator{background:#9589be}
+@media(max-width:700px){.palace-tidings-bar{height:27px;min-height:27px;gap:6px;padding:0 8px}.palace-tidings-brand span{display:none}.palace-tidings-kind{font-size:8px;letter-spacing:0}.palace-tidings-next span{display:none}}

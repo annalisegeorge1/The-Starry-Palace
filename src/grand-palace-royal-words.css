@@ -1,0 +1,6 @@
+.grand-first-light{display:flex;align-items:center;gap:18px;justify-content:space-between;flex-wrap:wrap;border:1px solid rgba(163,149,228,.25);background:linear-gradient(100deg,rgba(117,103,193,.12),rgba(77,106,165,.10));border-radius:14px;padding:13px 17px;margin:0 0 19px}
+.grand-first-light small{display:block;letter-spacing:.12em;font-size:10px;color:var(--text-muted,#aea9cd);margin-bottom:6px}
+.grand-first-light strong{font-size:clamp(14px,2vw,18px);font-weight:650;color:var(--text-main,inherit)}
+.grand-first-light p{margin:5px 0 0;font-size:13px;color:var(--text-muted,#aea9cd)}
+.grand-gathering-label{margin:10px 0 14px}.grand-gathering-label small{display:block;font-size:10px;letter-spacing:.13em}.grand-gathering-label p{margin:5px 0 0;color:var(--text-muted,#aea9cd);font-size:13px}
+.grand-royal-title{margin:9px 0;font-size:13px;line-height:1.5;color:var(--text-muted,#aea9cd)}

@@ -66,7 +66,7 @@ export default function GrandPalaceCeremony({myPalaceId=null}){
    <div className="grand-ceremony-path">{CEREMONY_STAGES.map((stage,i)=><article key={stage.name} className={'grand-ceremony-tier '+(level.min>=stage.min?'achieved':'')}>
      <span aria-hidden="true">{stage.glyph}</span><strong>{stage.name}</strong><small>{stage.min.toLocaleString()} points per member</small>
    </article>)}</div>
-   <section className="grand-legacy-chronicle"><div className="section-heading"><div><p className="eyebrow">THE BOOK OF SEASONS</p><h2>Hall of Champions</h2><p>Archived titles, winning courts and awarded top-ten placements. Recorded victories never reset.</p></div></div>
+   <section className="grand-legacy-chronicle"><div className="section-heading"><div><p className="eyebrow">THE BOOK OF SEASONS</p><h2>The Eternal Record · Hall of Champions</h2><p>Archived titles, winning courts and awarded top-ten placements. Recorded victories never reset.</p></div></div>
       {chronicle.length?<div className="grand-legacy-seasons">{chronicle.map(record=><article key={record.quarter_start}>
        <header><span aria-hidden="true">{record.winner_sigil}</span><div><small>{ceremonyQuarterLabel(record.quarter_start)} · THE VICTORIOUS COURT</small><h3>{record.winner_name}</h3><p>{Number(record.verified_points).toLocaleString()} verified season points</p></div></header>
        {(record.champions||[]).length>0&&<div className="grand-legacy-champions">{record.champions.map(champ=><Link to={'/member/'+encodeURIComponent(champ.username)} key={champ.username}>
