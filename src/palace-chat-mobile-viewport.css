@@ -1,0 +1,88 @@
+/* Keep the Palace Chat close control in reach on real phones.
+ * A bottom-anchored 86dvh panel plus the 87px mobile dock offset could begin
+ * ABOVE the visible viewport. Pin BOTH its top and bottom instead.
+ * Loaded after Palace Chat's own styles; it changes no conversations or data. */
+.palace-chat-v2 .palace-chat-mobile-close{display:none}
+@media(max-width:720px){
+ .palace-chat-v2.palace-chat-dock.is-open{
+  position:fixed!important;
+  top:max(10px,env(safe-area-inset-top,0px))!important;
+  bottom:calc(89px + env(safe-area-inset-bottom,0px))!important;
+  left:8px!important;right:8px!important;
+  box-sizing:border-box!important;
+  height:auto!important;max-height:none!important;min-height:0!important;
+  display:flex!important;flex-direction:column!important;
+  z-index:1090;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open>.palace-chat-panel{
+  box-sizing:border-box!important;
+  width:100%!important;
+  height:100%!important;max-height:100%!important;min-height:0!important;
+  display:flex!important;flex-direction:column!important;
+  overflow:hidden!important;
+  border-radius:17px!important;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open .palace-chat-heading{
+  position:relative!important;top:auto!important;
+  flex:0 0 auto!important;z-index:2;
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  gap:10px!important;
+  padding:9px 11px!important;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open .palace-chat-heading>div:first-child{
+  flex:1 1 auto;min-width:0;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open .palace-chat-header-actions{
+  flex:0 0 auto;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open .palace-chat-header-actions button[aria-label="Minimize Palace chat"]{
+  width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;
+  display:grid!important;place-items:center!important;padding:0!important;
+  border:1px solid rgba(217,205,255,.6)!important;
+  color:#fff!important;background:rgba(245,240,255,.15)!important;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open .palace-chat-panel footer{
+  display:flex!important;flex:0 0 auto!important;
+  align-items:center!important;justify-content:space-between!important;
+  gap:8px!important;min-width:0!important;
+  padding:6px 8px!important;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open .palace-chat-panel footer>small{
+  flex:1 1 auto;min-width:0;
+  font-size:.66rem!important;line-height:1.4!important;
+  overflow-wrap:anywhere;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open .palace-chat-mobile-close{
+  flex:0 0 auto!important;
+  display:inline-flex!important;align-items:center;justify-content:center;gap:5px;
+  min-width:88px;min-height:44px;
+  border-radius:10px;
+  border:1px solid rgba(214,204,252,.58);
+  background:linear-gradient(120deg,#615398,#385b8c);
+  color:#fff;font:700 .73rem/1.2 system-ui,sans-serif;
+  cursor:pointer;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open .palace-chat-mobile-close>span{
+  font-size:1.2rem;line-height:1;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open .palace-chat-mobile-close:focus-visible,
+ .palace-chat-v2.palace-chat-dock.is-open .palace-chat-header-actions button:focus-visible{
+  outline:3px solid #caeaff!important;outline-offset:2px!important;
+ }
+}
+@media(max-width:720px) and (max-height:480px){
+ /* Preserve header and footer even in landscape or with a shortened viewport. */
+ .palace-chat-v2.palace-chat-dock.is-open{
+  top:max(6px,env(safe-area-inset-top,0px))!important;
+  bottom:calc(78px + env(safe-area-inset-bottom,0px))!important;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open .palace-chat-panel footer>small{
+  display:none;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-chat-v2.palace-chat-dock.is-open,
+ .palace-chat-v2.palace-chat-dock.is-open .palace-chat-panel{
+  animation:none!important;transition:none!important;
+ }
+}

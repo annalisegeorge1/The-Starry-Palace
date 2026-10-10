@@ -8,6 +8,7 @@ import './palace-chat-drawer.css';
 import './palace-chat-groups.css';
 import {GROUP_HISTORY_PAGE_SIZE,mergePalaceGroupMessages,oldestPalaceGroupMessage,palaceChatUnreadGroup,palaceChatMatchesGroup} from './palaceChatHistory';
 import './palace-chat-discovery.css';
+import './palace-chat-mobile-viewport.css';
 
 const draftKey=(user,kind,id)=>'palace-chat-draft:'+user+':'+kind+':'+id;
 const nameOf=p=>p?.display_name||p?.username||'Palace member';
@@ -393,7 +394,7 @@ export default function PalaceChatDrawer({userId}){
      <small className="palace-chat-draft-hint">{currentDraft?'Draft kept on this device':'Ctrl/⌘ + Enter to send · Enter for a new line'}</small>
     </>:<div className="palace-chat-empty"><p>{tab==='groups'?'No groups yet.':'No open direct conversations yet.'}</p><p>{tab==='groups'?'Start a private circle and invite members, or accept an invitation above.':'Begin or accept a correspondence in Palace Letters.'}</p>{tab==='direct'&&<Link to="/letters" onClick={()=>setOpen(false)}>Open Palace Letters →</Link>}{tab==='groups'&&<button type="button" onClick={()=>setCreating(true)}>＋ Create a group</button>}</div>}
    </>}
-   <footer><small>{tab==='groups'?'Group messages are visible only to current group members.':'Your Palace letters stay private.'} {chatPaused?'Quiet launcher is on.':'Minimize whenever you want to focus.'}</small></footer>
+   <footer><small>{tab==='groups'?'Group messages are visible only to current group members.':'Your Palace letters stay private.'} {chatPaused?'Quiet launcher is on.':'Minimize whenever you want to focus.'}</small><button type="button" className="palace-chat-mobile-close" aria-label="Close Palace chat" onClick={()=>setOpen(false)}>Close chat <span aria-hidden="true">×</span></button></footer>
   </section>}
  </div>;
 }

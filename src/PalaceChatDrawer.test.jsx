@@ -38,6 +38,17 @@ beforeEach(()=>{
 });
 afterEach(cleanup);
 describe('Palace quick chat',()=>{
+ it('offers both a visible header minimize button and a mobile-friendly footer close control',()=>{
+  mount();
+  fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  expect(screen.getByRole('button',{name:'Minimize Palace chat'})).toBeTruthy();
+  fireEvent.click(screen.getByRole('button',{name:'Close Palace chat'}));
+  expect(screen.getByRole('button',{name:/Open Palace chat/})).toBeTruthy();
+  fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(screen.getByRole('button',{name:'Minimize Palace chat'}));
+  expect(screen.getByRole('button',{name:/Open Palace chat/})).toBeTruthy();
+ });
+
  it('filters circles by a member name and can focus on unread groups without hiding chat features',async()=>{
   const older={...groups.groups[0],lastMessageAt:'2026-10-09T14:00:00Z',lastReadAt:'2026-10-09T13:00:00Z'};
   const quiet={...older,id:'quiet-two',title:'Quiet Writers',description:'Writers only',members:[{id:user,display_name:'Host'}],lastMessageAt:null};
