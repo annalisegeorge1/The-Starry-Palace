@@ -1,0 +1,44 @@
+{
+  "name": "The Starry Palace",
+  "short_name": "Starry Palace",
+  "description": "Gather. Have a cup of tea. Write and read with me.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#080a19",
+  "theme_color": "#0a0d1b",
+  "lang": "en",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/palace-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/palace-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Reading Room",
+      "short_name": "Read",
+      "url": "/reading"
+    },
+    {
+      "name": "Writing Chamber",
+      "short_name": "Write",
+      "url": "/writing"
+    },
+    {
+      "name": "Palace Life",
+      "short_name": "Gather",
+      "url": "/palace-life"
+    }
+  ]
+}
