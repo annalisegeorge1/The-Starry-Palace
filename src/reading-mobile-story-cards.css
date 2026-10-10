@@ -1,0 +1,197 @@
+/*
+ * Reading Room · comfortable mobile story density
+ * 10 October 2026
+ *
+ * In narrow screens the old two-column card confined every paragraph, tag,
+ * and button beside the cover. Let only the heading wrap beside the cover;
+ * the short summary, stats, tags, and reading action then use the full card.
+ *
+ * No text or interactions are hidden. The existing "Read full summary",
+ * "More work details", and "more tags" controls remain fully functional.
+ * Do not replace LGBTQ+ prism backgrounds or change desktop/tablet colours.
+ */
+@media (max-width:720px), (max-width:950px) and (max-height:600px) and (pointer:coarse){
+ .palace-shell .legacy-reading-page .chic-discovery-court .legacy-constellation-list article,
+ .palace-shell .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row{
+  box-sizing:border-box!important;
+  display:flow-root!important;
+  min-height:0!important;
+  height:auto!important;
+  padding:13px!important;
+  border-radius:18px!important;
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+ }
+ /* Flatten ONLY the original text column. Keep the cover accessible at its
+    original place in the DOM; all subsequent content can take the full row. */
+ .palace-shell .legacy-reading-page .chic-discovery-court .legacy-constellation-list article>div:last-child,
+ .palace-shell .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row>div:last-child{
+  display:contents!important;
+ }
+ .palace-shell .legacy-reading-page .chic-discovery-court .legacy-constellation-cover,
+ .palace-shell .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row .story-cover{
+  box-sizing:border-box!important;
+  float:left!important;
+  display:block!important;
+  width:72px!important;
+  min-width:72px!important;
+  max-width:72px!important;
+  height:auto!important;
+  aspect-ratio:3/4!important;
+  margin:0 12px 10px 0!important;
+  border-radius:11px!important;
+  overflow:hidden!important;
+ }
+ .palace-shell .legacy-reading-page .chic-discovery-court .legacy-constellation-cover :is(img,svg),
+ .palace-shell .legacy-reading-page .chic-story-catalogue .story-cover :is(img,svg){
+  max-width:100%;
+ }
+ .palace-shell .legacy-reading-page .chic-discovery-court .legacy-constellation-list article>div:last-child>small{
+  display:block!important;
+  margin:2px 0 5px!important;
+  font-size:.69rem!important;
+  line-height:1.36!important;
+  letter-spacing:0!important;
+  overflow-wrap:break-word!important;
+ }
+ .palace-shell .legacy-reading-page .chic-discovery-court .legacy-constellation-list article h3,
+ .palace-shell .legacy-reading-page .chic-story-catalogue .story-row h2{
+  display:block!important;
+  margin:4px 0 7px!important;
+  min-width:0!important;
+  font-size:clamp(1.14rem,4.4vw,1.32rem)!important;
+  line-height:1.24!important;
+  text-wrap:wrap!important;
+  overflow-wrap:break-word!important;
+  word-break:normal!important;
+ }
+ .palace-shell .legacy-reading-page .chic-discovery-court .story-reader-flags,
+ .palace-shell .legacy-reading-page .chic-story-catalogue .story-reader-flags{
+  margin:0 0 3px!important;
+  gap:4px!important;
+ }
+ /* This is the pivotal change: a readable full-width description, not
+    a 165-character paragraph squeezed into a 200px text strip. */
+ .palace-shell .legacy-reading-page .chic-discovery-court .reading-story-context.is-compact,
+ .palace-shell .legacy-reading-page .chic-story-catalogue .reading-story-context.is-compact{
+  clear:both!important;
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  margin:10px 0 0!important;
+ }
+ .palace-shell .legacy-reading-page .reading-story-context.is-compact .reading-story-context-facts{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  gap:5px!important;
+  line-height:1.28!important;
+  font-size:.72rem!important;
+ }
+ .palace-shell .legacy-reading-page .reading-story-context.is-compact .reading-story-context-facts>span{
+  min-width:0!important;
+  max-width:100%!important;
+  padding:5px 8px!important;
+  overflow-wrap:break-word!important;
+ }
+ .palace-shell .legacy-reading-page .reading-story-context.is-compact .reading-story-context-summary{
+  margin:10px 0 2px!important;
+ }
+ .palace-shell .legacy-reading-page .reading-story-context.is-compact .reading-story-context-summary>p{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  font-size:.84rem!important;
+  line-height:1.52!important;
+  white-space:pre-line!important;
+  overflow-wrap:break-word!important;
+  word-break:normal!important;
+ }
+ .palace-shell .legacy-reading-page .reading-story-context.is-compact .reading-story-summary-toggle{
+  min-height:42px!important;
+  margin-top:1px!important;
+  padding:6px 0!important;
+  font-size:.78rem!important;
+ }
+ .palace-shell .legacy-reading-page .reading-story-context-extra{
+  padding-top:3px!important;
+  margin-top:2px!important;
+ }
+ .palace-shell .legacy-reading-page .reading-story-context-extra summary{
+  min-height:38px!important;
+ }
+ .palace-shell .legacy-reading-page .chic-discovery-court .palace-story-statline,
+ .palace-shell .legacy-reading-page .chic-story-catalogue .palace-story-statline{
+  clear:both!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  gap:5px 13px!important;
+  width:100%!important;
+  margin:9px 0 7px!important;
+  padding:8px 0!important;
+  font-size:.75rem!important;
+  line-height:1.4!important;
+ }
+ .palace-shell .legacy-reading-page .chic-discovery-court .palace-story-statline>div,
+ .palace-shell .legacy-reading-page .chic-story-catalogue .palace-story-statline>div{
+  display:inline-flex!important;
+  flex-wrap:nowrap!important;
+  white-space:nowrap!important;
+  gap:4px!important;
+ }
+ .palace-shell .legacy-reading-page .chic-discovery-court .reading-card-tags,
+ .palace-shell .legacy-reading-page .chic-story-catalogue .reading-card-tags{
+  clear:both!important;
+  display:flex!important;
+  flex-wrap:wrap!important;
+  width:100%!important;
+  gap:5px!important;
+  margin:7px 0 9px!important;
+ }
+ .palace-shell .legacy-reading-page .reading-card-tags-reveal :is(a,button){
+  min-height:33px!important;
+  padding:5px 9px!important;
+  font-size:.71rem!important;
+  max-width:100%!important;
+ }
+ .palace-shell .legacy-reading-page .chic-discovery-court .legacy-constellation-list article>div:last-child>a{
+  box-sizing:border-box!important;
+  clear:both!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  min-height:44px!important;
+  margin:10px 0 0!important;
+  font-size:.82rem!important;
+ }
+ .palace-shell .legacy-reading-page .chic-story-catalogue .story-row footer{
+  clear:both!important;
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:stretch!important;
+  gap:8px!important;
+  width:100%!important;
+  margin:10px 0 0!important;
+ }
+ .palace-shell .legacy-reading-page .chic-story-catalogue .story-row footer>a{
+  width:100%!important;
+  min-height:44px!important;
+  font-size:.82rem!important;
+ }
+ /* Float never captures taps or hides surrounding content; the book, title,
+    expanded summary, linked tags, and Enter story remain natural tab stops. */
+}
+@media(max-width:390px){
+ .palace-shell .legacy-reading-page .chic-discovery-court .legacy-constellation-cover,
+ .palace-shell .legacy-reading-page .chic-story-catalogue .story-row .story-cover{
+  width:66px!important;min-width:66px!important;max-width:66px!important;
+  margin-right:10px!important;
+ }
+ .palace-shell .legacy-reading-page .chic-discovery-court .legacy-constellation-list article,
+ .palace-shell .legacy-reading-page .chic-story-catalogue .story-row{
+  padding:11px!important;
+ }
+}
