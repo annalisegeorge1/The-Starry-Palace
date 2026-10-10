@@ -285,15 +285,20 @@ function FrameShell({children}){
  React.useEffect(()=>{if(!(navOpen||mobileMoreOpen||commandOpen))return;const previous=document.body.style.overflow;document.body.style.overflow='hidden';return()=>{document.body.style.overflow=previous}},[navOpen,mobileMoreOpen,commandOpen]);
 
  // Stable member identity: do not re-fetch the same profile on every route.
+ const profileEditArea=/^\/(?:member|settings)(?:\/|$)/.test(location.pathname);
+ const previousShellProfileId=React.useRef(null);
  React.useEffect(()=>{
   const id=session?.user?.id;let active=true;
-  setShellProfile(null);
+  if(previousShellProfileId.current!==id){
+   setShellProfile(null);
+   previousShellProfileId.current=id;
+  }
   if(!id)return;
   supabase.from('profiles').select('username,display_name,title,avatar_url,cover_url').eq('id',id).maybeSingle()
    .then(({data,error})=>{if(active&&!error)setShellProfile(data||null)})
    .catch(error=>{if(active)console.warn('Palace identity unavailable',error)});
   return()=>{active=false};
- },[session?.user?.id]);
+ },[session?.user?.id,profileEditArea]);
  // Only unread counters require occasional refreshes, not the member profile.
  const badgeRefreshRef=React.useRef(null);
  React.useEffect(()=>{

@@ -8,7 +8,8 @@ describe('Fast and accessible Palace navigation',()=>{
  it('does not reload the member profile on pathname changes',()=>{
   const area=main.slice(main.indexOf('// Stable member identity:'),main.indexOf('const visibleRooms='));
   expect(area).toContain("supabase.from('profiles')");
-  expect(area).toContain("},[session?.user?.id]);");
+  expect(area).toContain("},[session?.user?.id,profileEditArea]);");
+  expect(area).toContain("if(previousShellProfileId.current!==id)");
   expect(area).toContain("React.useEffect(()=>{badgeRefreshRef.current?.()},[location.pathname]);");
   expect(area).not.toContain("},[session?.user?.id,location.pathname]);");
  });

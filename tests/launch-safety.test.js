@@ -1031,7 +1031,11 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('palace-error-detail');
     expect(main).toContain('Room: {window.location.pathname}');
     expect(main).toContain("safeSessionSet('palace-last-root-error',JSON.stringify(diagnostic))");
-    expect(main).toContain("catch(error=>{if(!alive)return;console.warn('Palace shell counters unavailable'");
+    expect(main).toContain("if(letters.status==='fulfilled'&&!letters.value.error)");
+    expect(main).toContain("if(activity.status==='fulfilled'&&!activity.value.error)");
+    expect(main).toContain("if(!shouldRefreshShellBadges(lastAttempt,now))return;");
+    expect(main).toContain("supabase.from('profiles').select('username,display_name,title,avatar_url,cover_url')");
+    expect(main).toContain("},[session?.user?.id,profileEditArea]);");
     expect(main).toContain("if(!session?.user?.id)");
     expect(auth).toContain('let subscription = null');
     expect(auth).toContain('subscription?.unsubscribe?.()');
