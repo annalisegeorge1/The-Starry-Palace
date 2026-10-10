@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://thestarrypalace.com/sitemap.xml
