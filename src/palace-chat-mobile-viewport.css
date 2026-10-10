@@ -106,3 +106,66 @@
   max-height:100%!important;
  }
 }
+
+/* Open an actual conversation when a member is tapped, instead of showing
+   the first selected thread below an inbox on narrow screens. All existing
+   messages remain in the same React component; this is only a view switch. */
+.palace-chat-v2 .palace-chat-thread-back,
+.palace-chat-v2 .palace-chat-select-hint{display:none}
+.palace-chat-v2 .palace-chat-retry{
+ margin:8px 12px;
+ border:1px solid rgba(185,170,236,.65);
+ border-radius:10px;
+ padding:10px 13px;
+ min-height:44px;
+ background:rgba(106,92,177,.26);
+ color:inherit;
+ font-weight:650;
+ cursor:pointer;
+}
+@media(max-width:720px){
+ .palace-chat-v2.palace-chat-dock.is-open:not(.is-thread-open) :is(
+  .palace-chat-correspondent,.palace-chat-settings,.palace-chat-pinned,
+  .palace-chat-sharing-actions,.palace-chat-share-shelf,.palace-chat-earlier,
+  .palace-chat-messages,.palace-chat-jump-latest,.palace-chat-replying,
+  .palace-chat-compose,.palace-chat-draft-hint
+ ){display:none!important}
+ .palace-chat-v2.palace-chat-dock.is-open.is-thread-open :is(
+  .palace-chat-tabs,.palace-chat-tools,.palace-chat-inbox-refine,
+  .palace-chat-people,.palace-chat-invitations
+ ){display:none!important}
+ .palace-chat-v2.palace-chat-dock.is-open:not(.is-thread-open) .palace-chat-select-hint{
+  display:block!important;
+  padding:12px 14px;
+  font-size:.83rem;
+  line-height:1.45;
+  color:inherit;
+  opacity:.86;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open.is-thread-open .palace-chat-thread-back{
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  width:fit-content;
+  max-width:100%;
+  min-height:42px;
+  margin:0 0 6px;
+  padding:6px 12px;
+  font-size:.78rem;
+  border:1px solid rgba(173,159,232,.65);
+  border-radius:10px;
+  background:rgba(106,96,169,.22);
+  color:inherit;
+  cursor:pointer;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open.is-thread-open .palace-chat-correspondent{
+  display:grid!important;
+  gap:5px!important;
+  flex:0 0 auto!important;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open.is-thread-open .palace-chat-messages{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  overflow-y:auto!important;
+ }
+}
