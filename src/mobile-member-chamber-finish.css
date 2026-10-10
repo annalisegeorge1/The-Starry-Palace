@@ -1,0 +1,177 @@
+/* October mobile Chamber finish. UI/contrast only: retain profile photographs,
+   every member's cover cropping, illustrations, sigils, and the five Chamber rooms. */
+.palace-shell .member-chamber-atelier.chic-member-profile,
+.palace-shell :is(.chamber-creator-overview,.boundary-bar,.chamber-posts-room){
+ box-sizing:border-box;min-width:0;max-width:100%;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions .chamber-report-button{
+ flex:0 0 auto!important;justify-self:end!important;align-self:center!important;
+ width:auto!important;min-width:100px!important;
+ padding:9px 17px!important;margin-left:auto!important;
+ border-radius:12px!important;
+ background:rgba(65,52,94,.38)!important;
+ border:1px solid rgba(191,167,223,.42)!important;
+ color:#e8dbf5!important;
+ font-size:12px!important;font-weight:650!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions .chamber-report-button:hover{
+ background:rgba(109,76,137,.48)!important;border-color:#d8bcf6!important;
+}
+.palace-shell.nightfall .chamber-contact-state>button,
+.palace-shell.nightfall .boundary-bar>div:last-child button{
+ appearance:none!important;
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ min-height:44px!important;padding:9px 16px!important;
+ border-radius:12px!important;
+ border:1px solid rgba(191,170,241,.5)!important;
+ background:linear-gradient(135deg,#514177,#324676)!important;
+ color:#f8f5ff!important;
+ font:700 13px/1.3 system-ui,sans-serif!important;
+ text-align:center!important;cursor:pointer;
+}
+.palace-shell.nightfall .boundary-bar>div:last-child .quiet-button{
+ background:rgba(49,37,75,.48)!important;
+ border-color:rgba(190,175,222,.42)!important;
+}
+.palace-shell.nightfall .chamber-contact-state>button:hover,
+.palace-shell.nightfall .boundary-bar>div:last-child button:hover{
+ filter:brightness(1.15);
+}
+.palace-shell.daylight .chamber-contact-state>button,
+.palace-shell.daylight .boundary-bar>div:last-child button{
+ appearance:none!important;
+ min-height:44px!important;padding:9px 16px!important;
+ border-radius:12px!important;
+ border:1px solid #8170b3!important;
+ background:linear-gradient(135deg,#65529b,#4a598a)!important;
+ color:#fff!important;
+ font:700 13px/1.3 system-ui,sans-serif!important;
+}
+.palace-shell :is(.chamber-contact-state>button,.boundary-bar button,.legacy-profile-actions button,.legacy-profile-actions a):focus-visible{
+ outline:3px solid #b9dcff!important;outline-offset:3px!important;
+}
+.palace-shell :is(.chamber-contact-state>button,.boundary-bar button,.legacy-profile-actions button)[disabled]{
+ opacity:.54!important;cursor:not-allowed!important;filter:grayscale(.2);
+}
+.palace-shell .boundary-bar{box-sizing:border-box;min-width:0;max-width:100%}
+.palace-shell .boundary-bar>div:last-child{display:flex;flex-wrap:wrap;gap:9px;min-width:0}
+.palace-shell .chamber-contact-state{min-width:0;box-sizing:border-box}
+.palace-shell .chamber-contact-state :is(strong,p,small),
+.palace-shell .boundary-bar :is(strong,span){overflow-wrap:anywhere}
+
+@media(max-width:950px){
+ /* Keep the theatrical cover, but give readers more profile information above
+    the fold instead of showing a nearly blank quarter-screen banner. */
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-cover{
+  height:196px!important;min-height:0!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-avatar{
+  top:142px!important;width:98px!important;height:98px!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-copy h1{
+  font-size:clamp(1.85rem,4.5vw,2.6rem)!important;line-height:1.13!important;
+  overflow-wrap:anywhere!important;word-break:normal!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-worn-heading{
+  margin:.7rem 0 .35rem!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-crown-ribbon>span{
+  padding:.55rem .75rem!important;
+ }
+ .palace-shell .chamber-creator-overview{gap:10px!important}
+ .palace-shell :is(.chamber-about-card,.chamber-contact-state){
+  padding:14px!important;
+ }
+ .palace-shell .boundary-bar{padding:14px!important;gap:12px!important}
+}
+
+@media(max-width:720px){
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-cover{
+  height:166px!important;min-height:0!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-avatar{
+  left:50%!important;top:118px!important;
+  transform:translateX(-50%)!important;
+  width:92px!important;height:92px!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-copy{
+  padding:3.65rem clamp(12px,3vw,19px) 1.15rem!important;
+  text-align:center!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-copy h1{
+  font-size:clamp(1.8rem,6.1vw,2.25rem)!important;
+  max-width:100%!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  align-items:stretch!important;gap:9px!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions :is(button,a):not(.chamber-report-button){
+  box-sizing:border-box!important;min-width:0!important;width:100%!important;
+  min-height:46px!important;padding:10px 9px!important;
+  font-size:clamp(11px,2.5vw,13px)!important;
+  line-height:1.3!important;white-space:normal!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions .chamber-report-button{
+  grid-column:1/-1!important;justify-self:end!important;
+  min-height:42px!important;margin-left:auto!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats>div{
+  min-height:69px!important;
+ }
+ .palace-shell .palace-stage main.palace-main-stage{
+  padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))!important;
+ }
+ .palace-shell :is(#chamber-palace,#chamber-about,#chamber-notes,#chamber-honours,#chamber-worlds){
+  scroll-margin-top:148px;scroll-margin-bottom:118px;
+ }
+ /* The raised Write tab remains a destination, but doesn't dominate every
+    other screen or overlap the card immediately above it. */
+ .palace-shell .mobile-palace-dock .mobile-dock-write{
+  width:53px!important;height:53px!important;margin-top:-10px!important;
+ }
+ /* Messages remain in the top bar and More menu: avoid a third floating
+    envelope on a phone. Keep the theme switch available. */
+ .palace-shell .restored-floating-controls .notification-anchor{display:none!important}
+ .palace-shell .restored-floating-controls{
+  bottom:calc(91px + env(safe-area-inset-bottom,0px))!important;
+  right:12px!important;
+ }
+ .palace-chat-dock:not(.is-open){
+  right:10px!important;
+  bottom:calc(169px + env(safe-area-inset-bottom,0px))!important;
+ }
+ .palace-chat-dock.is-open{
+  right:8px!important;
+  bottom:calc(87px + env(safe-area-inset-bottom,0px))!important;
+ }
+ .palace-chat-dock:not(.is-open) .palace-chat-launch{
+  min-height:44px!important;padding:10px 13px!important;
+  box-shadow:0 6px 22px rgba(10,9,31,.44)!important;
+ }
+ .palace-shell .palace-passage-doors a{
+  min-height:36px!important;gap:5px!important;
+ }
+ .palace-shell .palace-passage-doors a strong{
+  font-size:11px!important;line-height:1.25!important;
+ }
+ .palace-shell .palace-passage-doors a small{
+  font-size:10px!important;line-height:1.25!important;
+ }
+}
+@media(max-width:380px){
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-copy h1{
+  font-size:1.7rem!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions{
+  grid-template-columns:minmax(0,1fr)!important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions .chamber-report-button{
+  grid-column:1!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .legacy-profile-actions :is(button,a),
+ .palace-chat-dock .palace-chat-launch{transition:none!important}
+}

@@ -61,6 +61,7 @@ import './palace-prismatic-gradients.css';
 import './treasury-daylight-tablet-clarity.css';
 import './palace-unified-action-gradients.css';
 import './palace-search-room-refinement.css';
+import './mobile-member-chamber-finish.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
