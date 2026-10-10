@@ -38,6 +38,42 @@ beforeEach(()=>{
 });
 afterEach(cleanup);
 describe('Palace quick chat',()=>{
+ it('opens an existing Direct conversation explicitly on mobile instead of silently reselecting it',async()=>{
+  getLetters.mockResolvedValue({
+   conversations:[
+    {conversation_id:'direct-one',conversations:{kind:'direct'},correspondent:{display_name:'River'},preference:{archived:false,muted:false},unread:false},
+    {conversation_id:'direct-two',conversations:{kind:'direct'},correspondent:{display_name:'Juniper'},preference:{archived:false,muted:false},unread:false}
+   ],
+   messages:[
+    {id:'message-one',conversation_id:'direct-one',sender_id:'member-two',body:'River letter',created_at:'2026-10-09T12:00:00Z'},
+    {id:'message-two',conversation_id:'direct-two',sender_id:'member-three',body:'Juniper letter',created_at:'2026-10-09T13:00:00Z'}
+   ],requests:[]
+  });
+  const {container}=mount();
+  fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  await screen.findByRole('button',{name:'Juniper'});
+  expect(container.querySelector('.palace-chat-dock.is-thread-open')).toBeNull();
+  fireEvent.click(screen.getByRole('button',{name:'Juniper'}));
+  expect(container.querySelector('.palace-chat-dock.is-thread-open')).toBeTruthy();
+  expect(screen.getByText('Juniper letter')).toBeTruthy();
+  fireEvent.click(screen.getByRole('button',{name:'Back to conversations'}));
+  expect(container.querySelector('.palace-chat-dock.is-thread-open')).toBeNull();
+  fireEvent.click(screen.getByRole('button',{name:'River'}));
+  expect(screen.getByText('River letter')).toBeTruthy();
+  expect(screen.queryByText('Juniper letter')).toBeNull();
+ });
+ it('shows a retry rather than claiming zero conversations when Direct loading fails',async()=>{
+  getLetters.mockRejectedValue(new Error('Inbox temporarily unavailable'));
+  mount();
+  fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  expect(await screen.findByRole('alert')).toBeTruthy();
+  expect(screen.getByText('Could not load direct conversations')).toBeTruthy();
+  expect(screen.queryByText('0 direct conversations')).toBeNull();
+  getLetters.mockResolvedValue(direct);
+  fireEvent.click(screen.getByRole('button',{name:'Retry loading conversations'}));
+  await screen.findByRole('button',{name:'River'});
+  expect(screen.queryByRole('button',{name:'Retry loading conversations'})).toBeNull();
+ });
  it('offers both a visible header minimize button and a mobile-friendly footer close control',()=>{
   mount();
   fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
