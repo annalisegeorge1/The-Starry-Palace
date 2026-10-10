@@ -130,6 +130,7 @@ function PalaceBuildFreshnessWatch(){
  const offeredAssetRef=React.useRef('');
  React.useEffect(()=>{
   let alive=true;
+  const pendingChecks=new Set();
   const check=async()=>{
    if(document.visibilityState==='hidden')return;
    const focused=document.activeElement;
@@ -153,12 +154,19 @@ function PalaceBuildFreshnessWatch(){
     else schedulePalaceReload('palace-new-build-reload',80);
    }
   };
-  const routeTimer=window.setTimeout(check,900);
-  const onVisible=()=>{if(document.visibilityState==='visible')window.setTimeout(check,250)};
+  // Cancel every scheduled check when navigation changes or the shell unmounts.
+  // A stale route should never leave a delayed update decision behind.
+  const scheduleCheck=delay=>{
+   if(!alive)return;
+   const timer=window.setTimeout(()=>{pendingChecks.delete(timer);if(alive)check()},delay);
+   pendingChecks.add(timer);
+  };
+  scheduleCheck(900);
+  const onVisible=()=>{if(document.visibilityState==='visible')scheduleCheck(250)};
   const interval=window.setInterval(check,180000);
   document.addEventListener('visibilitychange',onVisible);
   window.addEventListener('pageshow',onVisible);
-  return()=>{alive=false;window.clearTimeout(routeTimer);window.clearInterval(interval);document.removeEventListener('visibilitychange',onVisible);window.removeEventListener('pageshow',onVisible)}
+  return()=>{alive=false;pendingChecks.forEach(timer=>window.clearTimeout(timer));pendingChecks.clear();window.clearInterval(interval);document.removeEventListener('visibilitychange',onVisible);window.removeEventListener('pageshow',onVisible)}
  },[location.pathname,location.search]);
  if(!updateAvailable||!shouldOfferManualPalaceRefresh(location.pathname))return null;
  if(updateSnoozed)return <button type="button" className="palace-update-peek" onClick={()=>setUpdateSnoozed(false)} aria-label="Review the available Palace update">✦ Update waiting</button>;
