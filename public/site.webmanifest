@@ -1,0 +1,17 @@
+{
+  "name": "The Starry Palace",
+  "short_name": "Starry Palace",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#080b24",
+  "theme_color": "#14113a",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
