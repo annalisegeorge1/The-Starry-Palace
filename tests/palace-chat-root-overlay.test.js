@@ -27,7 +27,7 @@ describe('Palace Chat is a viewport overlay, never clipped by the Reading Room',
   expect(viewport).toContain('z-index:1400!important');
  });
  it('avoids an enormous empty mobile inbox without shrinking active conversations',()=>{
-  expect(chat).toContain("(open&&!active&&!creating?' is-inbox-empty':'')");
+  expect(chat).toContain("(open&&!threadOpen&&!creating?' is-inbox-empty':'')");
   expect(viewport).toContain('@media(max-width:720px) and (min-height:600px)');
   expect(viewport).toContain('.palace-chat-v2.palace-chat-dock.is-open.is-inbox-empty');
   expect(viewport).toContain('height:min(68dvh,590px)!important');
