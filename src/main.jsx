@@ -26,12 +26,28 @@ import {shouldOpenPalaceQuickNavigation} from './palaceKeyboard';
 import {palaceRecentDoorKey,readPalaceRecentDoors,addPalaceRecentDoor} from './palaceRecentDoors';
 import './palace-inviting-polish.css';
 import './palace-cohesive-experience.css';
-import {
+// Each specialised room loads only when its doorway is entered. The homepage no
+// longer downloads every editor, comic, Treasury and Reading Room dependency.
+// Keep route-specific Suspense inside the persistent Palace frame so loading
+// cannot blank the navigation or replace a member's active manuscript.
+function lazyPalaceRoom(name){
+ const Room=React.lazy(()=>importWithRecovery(()=>import('./liveRooms')).then(rooms=>({default:rooms[name]})));
+ return function DeferredPalaceRoom(props){
+  return <React.Suspense fallback={<RouteLoading/>}><Room {...props}/></React.Suspense>;
+ };
+}
+const [
  ChamberLive,OnboardingLive,ReadingLive,ClubLive,WritingLive,SettingsLive,ActivityLive,LibraryLive,
  PalaceLifeLive,LettersLive,EventsLive,TreasuryLive,LostWorksLive,MemberProfileLive,SearchLive,
  WorkLive,ChapterLive,WorkStudioLive,TagSearchLive,HonourLive,CouncilLive,CodeLive,ComicsLive,
  ComicLive,ComicEpisodeLive,ComicStudioLive,SeriesLive
-} from './liveRooms';
+]=[
+ 'ChamberLive','OnboardingLive','ReadingLive','ClubLive','WritingLive','SettingsLive','ActivityLive','LibraryLive',
+ 'PalaceLifeLive','LettersLive','EventsLive','TreasuryLive','LostWorksLive','MemberProfileLive','SearchLive',
+ 'WorkLive','ChapterLive','WorkStudioLive','TagSearchLive','HonourLive','CouncilLive','CodeLive','ComicsLive',
+ 'ComicLive','ComicEpisodeLive','ComicStudioLive','SeriesLive'
+].map(lazyPalaceRoom);
+const DirectClassicReader=React.lazy(()=>importWithRecovery(()=>import('./DirectClassicReader')));
 import './palace-editorial-finish.css';
 import './palace-navigation-jewels.css';
 import './palace-regalia-rooms.css';
@@ -305,7 +321,7 @@ function FrameShell({children}){
  ];
  const commandNeedle=commandQuery.trim().toLowerCase();
  const commandMatches=commandItems.filter(item=>commandNeedle&&[item.label,item.detail].join(' ').toLowerCase().includes(commandNeedle)).slice(0,12);
- const activeRoom=visibleRooms.find(r=>location.pathname===r.path||r.sections.some(([,p])=>{const target=resolveRoomPath(p);return target&&location.pathname===target.split('?')[0]})||(r.id==='reading'&&['/comics','/comic/','/work/','/lost-works','/tags','/series'].some(p=>location.pathname.startsWith(p)))||(r.id==='writing'&&location.pathname.startsWith('/writing'))||(r.id==='life'&&['/palace-life','/club/','/search','/honour','/activity'].some(p=>location.pathname.startsWith(p))||(r.id==='life'&&location.pathname.startsWith('/member/')&&location.pathname!==('/member/'+(shellProfile?.username||''))))||(r.id==='events'&&location.pathname.startsWith('/events'))||(r.id==='treasury'&&location.pathname.startsWith('/treasury'))||(r.id==='settings'&&location.pathname.startsWith('/settings')));
+ const activeRoom=visibleRooms.find(r=>location.pathname===r.path||r.sections.some(([,p])=>{const target=resolveRoomPath(p);return target&&location.pathname===target.split('?')[0]})||(r.id==='reading'&&['/comics','/comic/','/work/','/classic/','/lost-works','/tags','/series'].some(p=>location.pathname.startsWith(p)))||(r.id==='writing'&&location.pathname.startsWith('/writing'))||(r.id==='life'&&['/palace-life','/club/','/search','/honour','/activity'].some(p=>location.pathname.startsWith(p))||(r.id==='life'&&location.pathname.startsWith('/member/')&&location.pathname!==('/member/'+(shellProfile?.username||''))))||(r.id==='events'&&location.pathname.startsWith('/events'))||(r.id==='treasury'&&location.pathname.startsWith('/treasury'))||(r.id==='settings'&&location.pathname.startsWith('/settings')));
  const currentHref=location.pathname+location.search;
  const activeSection=activeRoom?.sections.find(([,path])=>resolveRoomPath(path)===currentHref);
  const passageMap={
@@ -581,7 +597,7 @@ function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo
  <Route path="/welcome" element={<ProtectedRoute><OnboardingLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/writers" element={<WriterWelcome/>}/>
- <Route path="/reading" element={<ReadingLive Frame={Frame}/>}/><Route path="/series" element={<SeriesLive Frame={Frame}/>}/>
+ <Route path="/reading" element={<ReadingLive Frame={Frame}/>}/><Route path="/classic/:slug" element={<React.Suspense fallback={<RouteLoading/>}><DirectClassicReader Frame={Frame}/></React.Suspense>}/><Route path="/series" element={<SeriesLive Frame={Frame}/>}/>
  <Route path="/comics" element={<ComicsLive Frame={Frame}/>}/>
  <Route path="/comics/studio" element={<ProtectedRoute><ComicStudioLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/comic/:slug" element={<ComicLive Frame={Frame}/>}/>

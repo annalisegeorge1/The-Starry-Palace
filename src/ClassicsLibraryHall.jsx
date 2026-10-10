@@ -1,6 +1,7 @@
 import React,{useRef,useState} from 'react';
 import {Link,useNavigate} from 'react-router-dom';
 import ClassicBookCover from './ClassicBookCover';
+import {directClassicHref} from './directClassicModel';
 import PalaceInfoMark from './PalaceInfoMark';
 import {CLASSIC_LIBRARY_COLLECTIONS,filterClassicShelf,pageClassicShelf} from './classicShelfBrowsing';
 import './palace-classics-library.css';
@@ -16,7 +17,7 @@ export default function ClassicsLibraryHall({works=[],storyHref}){
  const collection=CLASSIC_LIBRARY_COLLECTIONS.find(x=>x.id===lens)||CLASSIC_LIBRARY_COLLECTIONS[0];
  const matching=filterClassicShelf(works,collection,query,order);
  const shelf=pageClassicShelf(matching,requestedPage);
- const openPath=work=>storyHref?.(work)||('/lost-works?open='+encodeURIComponent(work.slug));
+ const openPath=work=>storyHref?.(work)||directClassicHref(work);
  const movePage=next=>{
   setPage(next);
   if(typeof window!=='undefined')window.requestAnimationFrame?.(()=>{

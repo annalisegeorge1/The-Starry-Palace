@@ -41,6 +41,7 @@ import './reader-reward-completion.css';
 import './palace-desk-clarity.css';
 import PrismWayfinder from './PrismWayfinder';
 import ClassicBookCover from './ClassicBookCover';
+import {directClassicHref} from './directClassicModel';
 import ClassicsLibraryHall from './ClassicsLibraryHall';
 import StoryRatingBadge from './StoryRatingBadge';
 import PalaceFandomMiniPicker from './PalaceFandomMiniPicker';
@@ -298,7 +299,7 @@ export function ReadingLive({Frame}){
  const reopened=w=>!!stateFor(w).progress?.completed&&hasNew(w);
  const needsReading=w=>{const p=stateFor(w).progress;return!!p&&(!p.completed||reopened(w))};
  const finished=w=>!!stateFor(w).progress?.completed&&!hasNew(w);
- const storyHref=w=>{if(w.is_archive)return"/lost-works?open="+encodeURIComponent(w.slug);const p=stateFor(w).progress;if(p&&!p.completed&&p.chapter_id)return"/work/"+w.slug+"/chapter/"+p.chapter_id;return"/work/"+w.slug};
+ const storyHref=w=>{if(w.is_archive)return directClassicHref(w);const p=stateFor(w).progress;if(p&&!p.completed&&p.chapter_id)return"/work/"+w.slug+"/chapter/"+p.chapter_id;return"/work/"+w.slug};
  const storyCta=w=>w.is_archive?'Read classic →':reopened(w)?'Read new chapter →':stateFor(w).progress&&!stateFor(w).progress.completed?'Continue reading →':finished(w)?'Read again →':'Enter story →';
  const readerLensMatches=w=>readerLens==='all'||readerLens==='unread'&&!stateFor(w).progress||readerLens==='reading'&&needsReading(w)||readerLens==='new'&&hasNew(w)||readerLens==='saved'&&!!stateFor(w).saved||readerLens==='following'&&!!stateFor(w).following||readerLens==='finished'&&finished(w);
  const filtered=roomWorks.filter(w=>moodMatches(w,vibeDoor)&&readerLensMatches(w)&&(rating==='all'||w.rating===rating)&&(status==='all'||w.completion_status===status)&&(!query.trim()||[w.title,w.summary,w.profiles?.display_name,w.profiles?.username,w.profiles?.title,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase().includes(query.toLowerCase())));

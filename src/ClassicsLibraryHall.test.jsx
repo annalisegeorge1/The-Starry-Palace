@@ -13,7 +13,7 @@ const classics=Array.from({length:13},(_,i)=>({
 afterEach(cleanup);
 function setup(records=classics){
  return render(<MemoryRouter initialEntries={['/reading']}>
-  <div className="palace-shell"><ClassicsLibraryHall works={records} storyHref={w=>'/lost-works?open='+w.slug}/></div>
+  <div className="palace-shell"><ClassicsLibraryHall works={records} storyHref={w=>'/classic/'+w.slug}/></div>
  </MemoryRouter>);
 }
 describe('Palace Classics library hall',()=>{
@@ -28,7 +28,7 @@ describe('Palace Classics library hall',()=>{
   expect(screen.getByRole('heading',{name:'Book 13'})).toBeTruthy();
   expect(screen.getByRole('button',{name:'Next classics page'}).disabled).toBe(true);
   expect(screen.getByRole('link',{name:/Book 13/}).getAttribute('href'))
-    .toBe('/lost-works?open=classic-12');
+    .toBe('/classic/classic-12');
  });
  it('finds a specific author inside All Classics and resets the page',()=>{
   setup();
