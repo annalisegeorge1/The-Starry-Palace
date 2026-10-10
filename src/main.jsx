@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Link, NavLink, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { AuthProvider, ProtectedRoute, useAuth } from './auth';
 import { PalaceRouteSeo } from './usePalaceSeo';
-import { configured, supabase } from './supabase';
+import { supabase } from './supabase';
 import './style.css';
 import './polish.css';
 import './palace-next.css';
@@ -17,8 +17,7 @@ import {PalaceHomeWelcome,PalaceRoomDirectory,PalaceHomeCulturePaths,PalaceHomeM
 import PalaceSidebarNavigation from './PalaceSidebarNavigation';
 import PalaceNewStories from './PalaceNewStories';
 import PalaceChatDrawer from './PalaceChatDrawer';
-import {safePalaceReturnPath} from './palaceReturnPath';
-import {palaceSignInDoor,palaceDoorDestinationMessage} from './palaceDoorway';
+import {palaceSignInDoor} from './palaceDoorway';
 import {shouldOfferManualPalaceRefresh} from './palaceUpdateSafety';
 import {isPalaceRoomVisuallyBlank} from './palaceBlankVisibility';
 import {usePalaceDialogFocusTrap} from './usePalaceDialogFocusTrap';
@@ -417,27 +416,9 @@ function Home(){
  const{session}=useAuth();
  return <Frame><section className="home-hero realised"><div className="stars" aria-hidden="true">✦　·　✧　　·　✦　　☾</div><div className="hero-copy"><p className="eyebrow">GATHER UNDER KINDRED STARS.</p><h1>There’s a place<br/>for you here.</h1><p className="lede">Come for a wonderful story. Stay for the people who love them. Read a little longer, write at your own pace, and make yourself at home.</p><div className="hero-actions"><Link className="button" to="/reading">Enter the Reading Rooms</Link><Link className="text-link" to={session?'/writing':'/writers'}>{session?'Return to my Writing Chamber →':'Discover the Writer’s Door →'}</Link></div></div><aside className="hero-orbit palace-belonging-panel" aria-label="Your Palace, a place to belong"><img className="palace-belonging-art" src="/assets/palace/palace-belonging.gif" alt=""/><span>YOUR PALACE · A PLACE TO BELONG</span><strong>☾</strong><p>Stories, art, communities, heritage and creative life beneath one shared sky.</p><div><b>READ</b><b>WRITE</b><b>GATHER</b><b>KEEP</b></div></aside></section><PalaceHomeWelcome member={!!session} showCulture={false}/><PalaceResumeReading memberId={session?.user?.id}/><PalaceHomeMore><PalaceStartingPath memberId={session?.user?.id}/><PalaceRoomDirectory rooms={rooms}/><PalaceHomeCulturePaths/><section className="home-intro-strip"><span>EVERY VOICE DESERVES A PLACE</span><span>PRIVATE BY CHOICE</span><span>CREATIVE RIGHTS FIRST</span><span>COMMUNITY WITH BOUNDARIES</span></section><PalaceLiveGatherings/><PalaceNewStories/><section className="palace-paths"><div><p className="eyebrow">A PALACE, NOT A FEED</p><h2>Different rooms for different kinds of attention.</h2><p>Long-form reading does not need to compete with live chat. Private drafts do not need to become public before they are ready. Community, governance and creative ownership each have their own doorway.</p></div><div className="path-list"><Link to="/tags"><span>01</span><strong>Tag Constellation</strong><small>Include what you seek. Exclude what you do not.</small></Link><Link to="/honour"><span>02</span><strong>Throne of Honour</strong><small>Recognition without controlling discovery.</small></Link><Link to="/code"><span>03</span><strong>The Palace Code</strong><small>Rights, safety, moderation and appeals.</small></Link><Link to="/council/governance"><span>04</span><strong>Palace Council</strong><small>Review with a record, not invisible power.</small></Link></div></section><section className="manifesto"><p>EVERY VOICE CARRIES A WORLD.</p><h2>Gather. Have a cup of tea.<br/>Write and read with me.</h2><div><Link to="/reading">Find a story</Link><Link to="/login?mode=signup">Create your chamber</Link></div></section></PalaceHomeMore></Frame>
 }
-function Login(){
- const {session,loading,error:sessionError}=useAuth(); const [mode,setMode]=useState(()=>new URLSearchParams(window.location.search).get('mode')==='signup'?'signup':'login'); const [email,setEmail]=useState(''); const [password,setPassword]=useState(''); const [showPassword,setShowPassword]=useState(false); const [busy,setBusy]=useState(false); const [message,setMessage]=useState(''); const location=useLocation();
- const requested=location.state?.from||new URLSearchParams(location.search).get('next'); const destination=safePalaceReturnPath(requested);
- if(!loading&&session)return <Navigate to={destination} replace/>;
- function friendly(error){const code=error?.code||'';if(code==='email_not_confirmed')return 'Your account exists, but the email address has not been confirmed yet.';if(code==='over_email_send_rate_limit')return 'Please wait a moment before requesting another email.';if(code==='invalid_credentials')return 'That email and password combination was not recognised.';return error?.message||'Sign-in failed. Please try again.'}
- async function submit(e){e.preventDefault();setBusy(true);setMessage('');try{if(mode==='signup')safeSessionSet('palace-auth-return',JSON.stringify({to:destination,at:Date.now()}));const result=mode==='signup'?await supabase.auth.signUp({email,password,options:{emailRedirectTo:window.location.origin+'/auth/callback'}}):await supabase.auth.signInWithPassword({email,password});if(result.error)throw result.error;if(mode==='signup'&&!result.data.session)setMessage('Your chamber has been requested. Check your email and tap the confirmation link, then return to the Palace.')}catch(error){setMessage(friendly(error))}finally{setBusy(false)}}
- async function magic(){if(!email){setMessage('Enter your email address first, then choose Send me a magic link.');return}setBusy(true);setMessage('');try{safeSessionSet('palace-auth-return',JSON.stringify({to:destination,at:Date.now()}));const{error}=await supabase.auth.signInWithOtp({email,options:{emailRedirectTo:window.location.origin+'/auth/callback',shouldCreateUser:true}});if(error)throw error;setMessage('A passwordless entrance link has been sent. Check your email and tap it to enter the Palace.')}catch(error){setMessage(friendly(error))}finally{setBusy(false)}}
- return <Frame><section className="gate"><div className="gate-copy"><p className="eyebrow">THE PALACE GATES</p><h1>{mode==='signup'?'A place among the stars.':'Welcome home.'}</h1><p>Choose the doorway that suits you. If you use a Palace password, create one for this account — never enter the password for your email inbox.</p>{requested&&palaceDoorDestinationMessage(destination)&&<p className="gate-destination-note">✧ {palaceDoorDestinationMessage(destination)}</p>}</div><div className="auth-panel">{!configured?<p role="alert">Sign-in is not configured.</p>:<><label>Email<input type="email" autoComplete="email" required value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com"/></label><button type="button" className="magic-button" disabled={busy||loading} onClick={magic}>Email me a passwordless entrance link</button><div className="auth-divider"><span>or use a Palace password</span></div><form onSubmit={submit}><label>Password<div className="password-field"><input type={showPassword?'text':'password'} autoComplete={mode==='signup'?'new-password':'current-password'} minLength={mode==='signup'?8:undefined} required value={password} onChange={e=>setPassword(e.target.value)}/><button type="button" onClick={()=>setShowPassword(v=>!v)} aria-label={showPassword?'Hide password':'Show password'}>{showPassword?'Hide':'Show'}</button></div></label>{mode==='signup'&&<small className="password-note">Use at least 8 characters. This is a Palace password, not your email password.</small>}<button disabled={busy||loading}>{busy?'Please wait…':mode==='signup'?'Create my chamber':'Enter the Palace'}</button></form><button className="secondary" disabled={busy} onClick={()=>{setMode(mode==='signup'?'login':'signup');setMessage('');setPassword('')}}>{mode==='signup'?'Already a member? Sign in':'New beneath these stars? Create an account'}</button></>}{(message||sessionError)&&<p className="status" role="status">{message||sessionError}</p>}</div></section></Frame>
-}
-
-
-function Callback(){
- const{session,loading,error}=useAuth();
- const p=new URLSearchParams(window.location.search);
- const pending=(()=>{try{const record=JSON.parse(safeSessionGet('palace-auth-return')||'{}');return Date.now()-Number(record.at)<24*60*60*1000?safePalaceReturnPath(record.to):'/chamber'}catch{return '/chamber'}})();
- React.useEffect(()=>{if(session&&!loading)safeSessionSet('palace-auth-return','')},[session,loading]);
- if(p.has('error')||error)return <Frame><section className="room-title"><h1>Sign-in could not finish</h1><p role="alert">{p.get('error_description')||error||'Please try again.'}</p><Link to="/login">Return to the Palace gates</Link></section></Frame>;
- if(loading)return <p role="status">Completing sign-in…</p>;
- return <Navigate to={session?pending:'/login'} replace/>
-}
-
+// Keep authentication UI out of the busy Palace shell; both routes share one on-demand module.
+const PalaceLogin = React.lazy(() => import('./PalaceAuthGates').then(module => ({ default: module.PalaceLogin })));
+const PalaceAuthCallback = React.lazy(() => import('./PalaceAuthGates').then(module => ({ default: module.PalaceAuthCallback })));
 
 function NavigationReset(){
  const location=useLocation();
@@ -576,7 +557,7 @@ class PalaceRootBoundary extends React.Component{
 function PalaceChatHost(){const {session}=useAuth();return <PalaceChatDrawer userId={session?.user?.id}/>}
 
 function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo pathname={location.pathname}/><PalaceBuildFreshnessWatch/><NavigationReset/><RouteStateReset/><BlankScreenWatchdog/><Frame><RouteGuard><Routes>
- <Route path="/" element={<Home/>}/><Route path="/login" element={<Login/>}/><Route path="/auth/callback" element={<Callback/>}/>
+ <Route path="/" element={<Home/>}/><Route path="/login" element={<React.Suspense fallback={<RouteLoading/>}><PalaceLogin Frame={Frame}/></React.Suspense>}/><Route path="/auth/callback" element={<React.Suspense fallback={<RouteLoading/>}><PalaceAuthCallback Frame={Frame}/></React.Suspense>}/>
  <Route path="/welcome" element={<ProtectedRoute><OnboardingLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/writers" element={<WriterWelcome/>}/>
