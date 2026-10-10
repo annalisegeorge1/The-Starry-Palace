@@ -20,7 +20,7 @@ describe('Palace Chat is a viewport overlay, never clipped by the Reading Room',
   expect(chat).toContain('aria-label="Minimize Palace chat"');
   expect(chat).toContain('className="palace-chat-mobile-close" aria-label="Close Palace chat"');
   expect(chat).toContain('className="palace-chat-tabs"');
-  expect(chat).toContain("onClick={()=>setTab('groups')");
+  expect(chat).toContain("setTab('groups');");
   expect(chat).toContain("onClick={()=>setOpen(false)}");
   expect(viewport).toContain('top:max(10px,env(safe-area-inset-top,0px))!important');
   expect(viewport).toContain('bottom:calc(89px + env(safe-area-inset-bottom,0px))!important');
