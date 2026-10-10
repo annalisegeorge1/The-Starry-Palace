@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { createPortal } from 'react-dom';
 import { BrowserRouter, Link, NavLink, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { AuthProvider, ProtectedRoute, useAuth } from './auth';
 import { PalaceRouteSeo } from './usePalaceSeo';
@@ -628,7 +629,13 @@ class PalaceRootBoundary extends React.Component{
 function PalaceChatHost(){
  const {session}=useAuth();
  if(!session?.user?.id)return null;
- return <React.Suspense fallback={null}><PalaceChatDrawerLazy userId={session.user.id}/></React.Suspense>;
+ // Chat is rendered outside the Palace content's stacking/scroll container.
+ // Its fixed coordinates now use the viewport, never a transformed main.
+ if(typeof document==='undefined')return null;
+ return createPortal(
+  <React.Suspense fallback={null}><PalaceChatDrawerLazy userId={session.user.id}/></React.Suspense>,
+  document.body
+ );
 }
 
 function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo pathname={location.pathname}/><PalaceBuildFreshnessWatch/><NavigationReset/><RouteStateReset/><BlankScreenWatchdog/><Frame><RouteGuard><Routes>
