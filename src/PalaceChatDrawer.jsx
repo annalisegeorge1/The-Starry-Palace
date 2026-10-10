@@ -18,6 +18,9 @@ const errorText=e=>e?.message||'The Palace could not complete that action. Pleas
 
 export default function PalaceChatDrawer({userId}){
  const[open,setOpen]=useState(false);
+ const[threadOpen,setThreadOpen]=useState(false);
+ const[loadingDirect,setLoadingDirect]=useState(true);
+ const[refreshToken,setRefreshToken]=useState(0);
  const[tab,setTab]=useState('direct');
  const[direct,setDirect]=useState(null);
  const[dataOwner,setDataOwner]=useState(userId);
@@ -75,15 +78,18 @@ export default function PalaceChatDrawer({userId}){
  const unread=directUnread+groupUnread+groupData.invitations.length;
  const openedRoomName=tab==='direct'?nameOf(activeDirect?.correspondent):activeGroup?.title;
 
- useEffect(()=>{setOpen(false);setTab('direct');setDirect(null);setGroupData({groups:[],invitations:[]});setSelectedDirect('');setSelectedGroup('');setGroupMessages({chatId:'',items:[]});setNewWhileAway(false);setLiveStatus('polling');lastAcknowledgedRef.current={roomId:'',messageId:''};setReplyTarget(null);setStorySharing(false);setPinnedPreview({chatId:'',messageId:'',message:null});setDrafts({});setError('');setNotice('');setCreating(false);setManaging(false);setSearch('');setUnreadOnly(false);setHistoryLoading(false);setHasOlder(false);historyScrollRef.current=null;exhaustedHistoryRef.current.clear()},[userId]);
+ useEffect(()=>{setOpen(false);setThreadOpen(false);setLoadingDirect(true);setTab('direct');setDirect(null);setGroupData({groups:[],invitations:[]});setSelectedDirect('');setSelectedGroup('');setGroupMessages({chatId:'',items:[]});setNewWhileAway(false);setLiveStatus('polling');lastAcknowledgedRef.current={roomId:'',messageId:''};setReplyTarget(null);setStorySharing(false);setPinnedPreview({chatId:'',messageId:'',message:null});setDrafts({});setError('');setNotice('');setCreating(false);setManaging(false);setSearch('');setUnreadOnly(false);setHistoryLoading(false);setHasOlder(false);historyScrollRef.current=null;exhaustedHistoryRef.current.clear()},[userId]);
  useEffect(()=>{
   if(!userId)return;
   let alive=true;
+  if(!direct)setLoadingDirect(true);
   const refresh=async()=>{
    const [letters,groups]=await Promise.allSettled([getLetters(userId),getPalaceGroupChatOverview(userId)]);
    if(!alive)return;
+   setLoadingDirect(false);
    if(letters.status==='fulfilled'){
     setDirect(letters.value);
+    setError('');
     setSelectedDirect(previous=>letters.value.conversations.some(c=>c.conversation_id===previous&&!c.preference?.archived&&c.conversations?.kind==='direct')?previous:(letters.value.conversations.find(c=>!c.preference?.archived&&c.conversations?.kind==='direct')?.conversation_id||''));
    }else{setDirect(null);setError(errorText(letters.reason))}
    if(groups.status==='fulfilled'){
@@ -97,7 +103,7 @@ export default function PalaceChatDrawer({userId}){
   // letters, membership and profile queries every minute when chat is closed.
   const timer=open?window.setInterval(()=>{if(document.visibilityState==='visible')refresh()},60000):null;
   return()=>{alive=false;if(timer!==null)window.clearInterval(timer)};
- },[open,userId]);
+ },[open,userId,refreshToken]);
  useEffect(()=>{
   if(!open||tab!=='groups'||!selectedGroup)return;
   let alive=true;
@@ -333,24 +339,25 @@ export default function PalaceChatDrawer({userId}){
  }
  const owner=activeGroup?.ownerId===userId;
  if(quiet&&!open)return null;
- return <div data-circle-colour={tab==='groups'?(activeGroup?.colorKey||'moonlit'):'moonlit'} className={'palace-chat-dock palace-chat-v2'+(open?' is-open':'')+(open&&!active&&!creating?' is-inbox-empty':'')+(chatPaused?' is-quiet':'')}>
-  {!open?<button type="button" className="palace-chat-launch" aria-label={'Open Palace chat'+(unread?' · '+unread+' new items':'')} aria-expanded={false} onClick={()=>setOpen(true)}><span aria-hidden="true">✉</span><span>Chat</span>{unread>0&&<b>{unread>99?'99+':unread}</b>}</button>:
+ return <div data-circle-colour={tab==='groups'?(activeGroup?.colorKey||'moonlit'):'moonlit'} className={'palace-chat-dock palace-chat-v2'+(open?' is-open':'')+(open&&threadOpen?' is-thread-open':'')+(open&&!threadOpen&&!creating?' is-inbox-empty':'')+(chatPaused?' is-quiet':'')}>
+  {!open?<button type="button" className="palace-chat-launch" aria-label={'Open Palace chat'+(unread?' · '+unread+' new items':'')} aria-expanded={false} onClick={()=>{setThreadOpen(false);setOpen(true)}}><span aria-hidden="true">✉</span><span>Chat</span>{unread>0&&<b>{unread>99?'99+':unread}</b>}</button>:
   <section className="palace-chat-panel" aria-label="Palace Chat" role="region">
    <header className="palace-chat-heading"><div><small>THE PALACE · PRIVATE CHATS</small><strong>Palace Chat <span aria-hidden="true">✦</span></strong></div><div className="palace-chat-header-actions"><button type="button" onClick={()=>setChatPaused(v=>!v)} aria-pressed={chatPaused} title="Smaller launcher when minimized" aria-label={chatPaused?'Turn off quiet launcher':'Use quiet launcher'}>◌</button><button type="button" onClick={()=>setOpen(false)} aria-label="Minimize Palace chat">−</button></div></header>
    <nav className="palace-chat-tabs" aria-label="Chat type">
-    <button type="button" aria-pressed={tab==='direct'} onClick={()=>{setTab('direct');setSearch('');setUnreadOnly(false);setCreating(false);setManaging(false);setError('')}}>✉ Direct {directUnread>0&&<span>{directUnread}</span>}</button>
-    <button type="button" aria-pressed={tab==='groups'} onClick={()=>{setTab('groups');setSearch('');setUnreadOnly(false);setCreating(false);setManaging(false);setError('')}}>♧ Groups {(groupUnread+groupData.invitations.length)>0&&<span>{groupUnread+groupData.invitations.length}</span>}</button>
+    <button type="button" aria-pressed={tab==='direct'} onClick={()=>{setThreadOpen(false);setTab('direct');setSearch('');setUnreadOnly(false);setCreating(false);setManaging(false);setError('')}}>✉ Direct {directUnread>0&&<span>{directUnread}</span>}</button>
+    <button type="button" aria-pressed={tab==='groups'} onClick={()=>{setThreadOpen(false);setTab('groups');setSearch('');setUnreadOnly(false);setCreating(false);setManaging(false);setError('')}}>♧ Groups {(groupUnread+groupData.invitations.length)>0&&<span>{groupUnread+groupData.invitations.length}</span>}</button>
    </nav>
    <div className="palace-chat-tools"><input aria-label="Find a conversation" placeholder={tab==='groups'?'Find a circle or member…':'Search direct conversations…'} value={search} onChange={e=>setSearch(e.target.value)}/>
     {tab==='direct'?<Link to="/letters" onClick={()=>setOpen(false)}>All letters ↗</Link>:<button type="button" onClick={()=>{setCreating(v=>!v);setManaging(false);setMemberResults([]);setMemberSearch('');setError('')}}>{creating?'Cancel':'＋ Group'}</button>}
    </div>
    {!creating&&<div className="palace-chat-inbox-refine" aria-label="Conversation filters">
-    <span>{tab==='groups'?groupData.groups.length+' private circles':directRows.length+' direct conversations'}</span>
+    <span>{tab==='groups'?groupData.groups.length+' private circles':loadingDirect&&!direct?'Loading direct conversations…':error&&!direct?'Could not load direct conversations':directRows.length+' direct conversations'}</span>
     <button type="button" aria-pressed={unreadOnly} onClick={()=>setUnreadOnly(v=>!v)}>{unreadOnly?'✓ Unread only':'Unread only'}</button>
     {(search||unreadOnly)&&<button type="button" className="palace-chat-clear-filter" onClick={()=>{setSearch('');setUnreadOnly(false)}}>Clear filters</button>}
    </div>}
    {notice&&<p className="palace-chat-notice" role="status">{notice}</p>}
    {error&&<p className="palace-chat-error" role="alert">{error}</p>}
+   {tab==='direct'&&error&&!direct&&<button type="button" className="palace-chat-retry" onClick={()=>{setLoadingDirect(true);setError('');setRefreshToken(n=>n+1)}}>Retry loading conversations</button>}
    {tab==='groups'&&!groupAvailable&&<p className="palace-chat-empty">Group chats are not available on this Palace connection yet. Private letters still work.</p>}
    {tab==='groups'&&groupAvailable&&groupData.invitations.length>0&&!creating&&<div className="palace-chat-invitations"><small>AT YOUR DOOR · GROUP INVITATIONS</small>{groupData.invitations.map(i=><div key={i.id}><strong>{i.title}</strong><div><button type="button" disabled={busy} onClick={()=>respondToInvite(i,true)}>Join</button><button type="button" disabled={busy} onClick={()=>respondToInvite(i,false)}>Decline</button></div></div>)}</div>}
    {tab==='groups'&&creating?<form className="palace-chat-group-form" onSubmit={createGroup}>
@@ -362,11 +369,11 @@ export default function PalaceChatDrawer({userId}){
     <button className="palace-chat-primary" type="submit" disabled={busy||groupTitle.trim().length<3||invitees.length===0}>{busy?'Creating…':'Create group · '+invitees.length+' invited'}</button>
    </form>:<>
     <div className="palace-chat-people" aria-label={tab==='groups'?'Groups':'Direct conversations'}>
-     {tab==='direct'?visibleDirect.map(c=><button type="button" key={c.conversation_id} onClick={()=>{setSelectedDirect(c.conversation_id);setManaging(false)}} aria-pressed={activeDirect?.conversation_id===c.conversation_id}>{c.unread?'● ':''}{nameOf(c.correspondent)}</button>):
-      groupRows.map(g=><button type="button" key={g.id} onClick={()=>{setSelectedGroup(g.id);setManaging(false);setIdentity({title:g.title,description:g.description||'',colorKey:g.colorKey||'moonlit'})}} aria-pressed={activeGroup?.id===g.id} title={g.description||g.title}><span className="palace-chat-room-symbol" aria-hidden="true">✧</span><span className="palace-chat-room-name">{g.title}</span>{palaceChatUnreadGroup(g)&&<span className="palace-chat-unread-spark" aria-label="Unread messages">●</span>}{g.muted&&<span className="palace-chat-muted-symbol" title="Muted" aria-label="Muted">◌</span>}</button>)}
+     {tab==='direct'?visibleDirect.map(c=><button type="button" key={c.conversation_id} onClick={()=>{setSelectedDirect(c.conversation_id);setThreadOpen(true);setManaging(false)}} aria-pressed={activeDirect?.conversation_id===c.conversation_id}>{c.unread?'● ':''}{nameOf(c.correspondent)}</button>):
+      groupRows.map(g=><button type="button" key={g.id} onClick={()=>{setSelectedGroup(g.id);setThreadOpen(true);setManaging(false);setIdentity({title:g.title,description:g.description||'',colorKey:g.colorKey||'moonlit'})}} aria-pressed={activeGroup?.id===g.id} title={g.description||g.title}><span className="palace-chat-room-symbol" aria-hidden="true">✧</span><span className="palace-chat-room-name">{g.title}</span>{palaceChatUnreadGroup(g)&&<span className="palace-chat-unread-spark" aria-label="Unread messages">●</span>}{g.muted&&<span className="palace-chat-muted-symbol" title="Muted" aria-label="Muted">◌</span>}</button>)}
      {((tab==='groups'&&!groupRows.length)||(tab==='direct'&&!visibleDirect.length))&&(search||unreadOnly)&&<span className="palace-chat-filter-empty">No matching conversations. Clear filters to see your other rooms.</span>}
     </div>
-    {active?<><div className="palace-chat-correspondent"><div><strong>{openedRoomName}</strong><small>{tab==='groups'?activeGroup.members.length+' members · Invitation-only group':'Private correspondence · Palace boundaries apply'}</small><small className="palace-chat-connection" role="status"><i aria-hidden="true" className={liveStatus==='live'?'is-live':''}/>{liveStatus==='live'?'Live updates':'Refreshes automatically'}</small>{tab==='groups'&&activeGroup.description&&<p className="palace-chat-circle-description">{activeGroup.description}</p>}</div>{tab==='groups'&&<button type="button" aria-expanded={managing} onClick={()=>{setManaging(v=>!v);setIdentity({title:activeGroup.title,description:activeGroup.description||'',colorKey:activeGroup.colorKey||'moonlit'})}}>Members & settings ⚙</button>}</div>
+    {active?<><div className="palace-chat-correspondent"><button className="palace-chat-thread-back" type="button" onClick={()=>setThreadOpen(false)} aria-label="Back to conversations">← Conversations</button><div><strong>{openedRoomName}</strong><small>{tab==='groups'?activeGroup.members.length+' members · Invitation-only group':'Private correspondence · Palace boundaries apply'}</small><small className="palace-chat-connection" role="status"><i aria-hidden="true" className={liveStatus==='live'?'is-live':''}/>{liveStatus==='live'?'Live updates':'Refreshes automatically'}</small>{tab==='groups'&&activeGroup.description&&<p className="palace-chat-circle-description">{activeGroup.description}</p>}</div>{tab==='groups'&&<button type="button" aria-expanded={managing} onClick={()=>{setManaging(v=>!v);setIdentity({title:activeGroup.title,description:activeGroup.description||'',colorKey:activeGroup.colorKey||'moonlit'})}}>Members & settings ⚙</button>}</div>
      {tab==='groups'&&managing&&<section className="palace-chat-settings" aria-label="Group settings">
       <div className="palace-chat-settings-top"><strong>Members</strong><button type="button" disabled={busy} onClick={()=>mutate(()=>setPalaceGroupMuted(activeGroup.id,userId,!activeGroup.muted),activeGroup.muted?'Group unmuted.':'Group muted.')}>{activeGroup.muted?'Unmute':'Mute'}</button></div>
       <ul>{activeGroup.members.map(m=><li key={m.id}><span>{nameOf(m)} {m.id===activeGroup.ownerId?'· host':''}</span>{owner&&m.id!==userId&&<button type="button" disabled={busy} onClick={()=>{if(window.confirm('Remove '+nameOf(m)+' from this group?'))mutate(()=>removePalaceGroupMember(activeGroup.id,m.id),'Member removed.')}}>Remove</button>}</li>)}</ul>
@@ -393,8 +400,9 @@ export default function PalaceChatDrawer({userId}){
      {tab==='groups'&&replyTarget?.chatId===roomId&&<div className="palace-chat-replying"><span>Replying to: {replyTarget.body.slice(0,96)}{replyTarget.body.length>96?'…':''}</span><button type="button" aria-label="Cancel group reply" onClick={()=>setReplyTarget(null)}>×</button></div>}
      <form className="palace-chat-compose" onSubmit={send}><label className="sr-only" htmlFor="palace-quick-chat-message">Your message</label><textarea id="palace-quick-chat-message" aria-label={tab==='groups'?'Write a group message':'Write a private message'} placeholder={tab==='groups'?'Write to your circle…':'Write a little note…'} rows={2} maxLength={3000} value={currentDraft} onChange={e=>setDraft(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();if(currentDraft.trim())e.currentTarget.form?.requestSubmit()}}}/><button type="submit" disabled={busy||!currentDraft.trim()}>{busy?'Sending…':'Send ↗'}</button></form>
      <small className="palace-chat-draft-hint">{currentDraft?'Draft kept on this device':'Ctrl/⌘ + Enter to send · Enter for a new line'}</small>
-    </>:<div className="palace-chat-empty"><p>{tab==='groups'?'No groups yet.':'No open direct conversations yet.'}</p><p>{tab==='groups'?'Start a private circle and invite members, or accept an invitation above.':'Begin or accept a correspondence in Palace Letters.'}</p>{tab==='direct'&&<Link to="/letters" onClick={()=>setOpen(false)}>Open Palace Letters →</Link>}{tab==='groups'&&<button type="button" onClick={()=>setCreating(true)}>＋ Create a group</button>}</div>}
+    </>:<div className="palace-chat-empty"><p>{tab==='groups'?'No groups yet.':loadingDirect?'Loading your private conversations…':error?'Conversations could not be loaded.':'No open direct conversations yet.'}</p><p>{tab==='groups'?'Start a private circle and invite members, or accept an invitation above.':'Begin or accept a correspondence in Palace Letters.'}</p>{tab==='direct'&&<Link to="/letters" onClick={()=>setOpen(false)}>Open Palace Letters →</Link>}{tab==='groups'&&<button type="button" onClick={()=>setCreating(true)}>＋ Create a group</button>}</div>}
    </>}
+   {active&&!creating&&!threadOpen&&<p className="palace-chat-select-hint">Choose a name above to open their conversation.</p>}
    <footer><small>{tab==='groups'?'Group messages are visible only to current group members.':'Your Palace letters stay private.'} {chatPaused?'Quiet launcher is on.':'Minimize whenever you want to focus.'}</small><button type="button" className="palace-chat-mobile-close" aria-label="Close Palace chat" onClick={()=>setOpen(false)}>Close chat <span aria-hidden="true">×</span></button></footer>
   </section>}
  </div>;
