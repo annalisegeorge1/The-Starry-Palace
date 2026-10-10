@@ -16,6 +16,7 @@ import {PalaceHomeWelcome,PalaceRoomDirectory,PalaceHomeCulturePaths,PalaceHomeM
 import PalaceSidebarNavigation from './PalaceSidebarNavigation';
 import PalaceNewStories from './PalaceNewStories';
 import PalaceChatDrawer from './PalaceChatDrawer';
+import PalaceInstall from './PalaceInstall';
 import {safePalaceReturnPath} from './palaceReturnPath';
 import {palaceSignInDoor,palaceDoorDestinationMessage} from './palaceDoorway';
 import {shouldOfferManualPalaceRefresh} from './palaceUpdateSafety';
@@ -575,7 +576,7 @@ class PalaceRootBoundary extends React.Component{
 function PalaceChatHost(){const {session}=useAuth();return <PalaceChatDrawer userId={session?.user?.id}/>}
 
 function App(){return <AuthProvider><PalaceBuildFreshnessWatch/><NavigationReset/><RouteStateReset/><BlankScreenWatchdog/><Frame><RouteGuard><Routes>
- <Route path="/" element={<Home/>}/><Route path="/login" element={<Login/>}/><Route path="/auth/callback" element={<Callback/>}/>
+ <Route path="/" element={<Home/>}/><Route path="/install" element={<PalaceInstall/>}/><Route path="/login" element={<Login/>}/><Route path="/auth/callback" element={<Callback/>}/>
  <Route path="/welcome" element={<ProtectedRoute><OnboardingLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/writers" element={<WriterWelcome/>}/>
