@@ -5,9 +5,9 @@ const root='/assets/palace-watercolours/';
 const protect={onContextMenu:e=>e.preventDefault(),onDragStart:e=>e.preventDefault(),onCopy:e=>e.preventDefault()};
 // Keep the approved raster paintings intact. View boxes isolate one artwork;
 // alpha cleanup removes near-transparent export haze without losing brush edges.
-export function PaintedSprite({sheet,box,sheetSize,size=64,label='',className='',shape='none',decorative=false,stretch=false}){
+export function PaintedSprite({sheet,box,sheetSize,size=64,label='',className='',shape='none',decorative=false,stretch=false,padding=0}){
  const uid=useId().replace(/:/g,''),[x,y,w,h]=box;
- return <svg {...protect} className={'painted-art '+className} width={size} height={size} viewBox={box.join(' ')} preserveAspectRatio={stretch?"none":"xMidYMid meet"} role={decorative?undefined:'img'} aria-label={decorative?undefined:label} aria-hidden={decorative||undefined} focusable="false">
+ return <svg {...protect} className={'painted-art '+className} width={size} height={size} viewBox={[x-padding,y-padding,w+padding*2,h+padding*2].join(' ')} preserveAspectRatio={stretch?"none":"xMidYMid meet"} role={decorative?undefined:'img'} aria-label={decorative?undefined:label} aria-hidden={decorative||undefined} focusable="false">
   <defs><filter id={uid+'-alpha'} colorInterpolationFilters="sRGB"><feComponentTransfer><feFuncA type="linear" slope="1.04" intercept="-0.035"/></feComponentTransfer></filter><clipPath id={uid+'-clip'}>{shape==='circle'?<ellipse cx={x+w/2} cy={y+h/2} rx={w/2} ry={h/2}/>:shape==='banner'?<path d={`M${x} ${y}H${x+w*.83}L${x+w} ${y+h/2}L${x+w*.83} ${y+h}H${x}Z`}/>:<rect x={x} y={y} width={w} height={h}/>}</clipPath></defs>
   <g clipPath={`url(#${uid}-clip)`}><image href={root+sheet+'.webp'} width={sheetSize[0]} height={sheetSize[1]} filter={`url(#${uid}-alpha)`}/></g>
  </svg>;
@@ -34,11 +34,12 @@ export function PaintedBadge({family,tier='bronze'}){
 }
 export function ChamberFrameArt({slug,size='100%',className=''}){
  const frame=CHAMBER_FRAMES.find(x=>x.slug===slug);if(!frame)return null;
- // The source sheet is a square 5 × 5 atlas. Each tile must use the same
- // pitch on both axes; the old 249 × 242 offsets drifted into neighbouring
- // frames and produced stray painted fragments in the live Chamber picker.
- const tile=1254/5,inset=5;
+ // Measured transparent gutters in the original artwork; the painted rows
+ // occupy about 240px each, with unused space at the bottom of the sheet.
+ // Dividing the 1254px canvas into equal fifths clips every later row.
+ const columns=[0,262,503,746,993,1254];
+ const rows=[0,247,487,722,962,1210];
  const col=frame.index%5,row=Math.floor(frame.index/5);
- const box=[col*tile+inset,row*tile+inset,tile-inset*2,tile-inset*2];
- return <PaintedSprite sheet="chamber-frames" sheetSize={[1254,1254]} box={box} size={size} className={'painted-chamber-frame '+className} label={frame.name+' chamber frame'}/>;
+ const box=[columns[col],rows[row],columns[col+1]-columns[col],rows[row+1]-rows[row]];
+ return <PaintedSprite sheet="chamber-frames" sheetSize={[1254,1254]} box={box} padding={8} size={size} className={'painted-chamber-frame '+className} label={frame.name+' chamber frame'}/>;
 }
