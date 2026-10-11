@@ -5,7 +5,7 @@ const life=readFileSync('src/liveRooms.jsx','utf8');
 const gif=readFileSync('src/PalaceChatGif.jsx','utf8');
 describe('Palace expression controls',()=>{
  it('never renders an escaped newline between the GIF/photo panels and composer',()=>{
-  expect(chat).not.toContain('onClose={()=>setGifOpen(false)}/>}\\\\n');
+  expect(chat).not.toContain('onClose={()=>setGifOpen(false)}/>}\\n');
   expect(chat).toContain('onClose={()=>setGifOpen(false)}/>}\n     {photoFile&&');
   expect(chat).toContain('<form className="palace-chat-compose" onSubmit={send}>');
  });
