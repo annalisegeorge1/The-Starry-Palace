@@ -14,7 +14,7 @@ describe('Palace expression controls',()=>{
   expect(chat).toContain('sendPalaceGroupPhoto(roomId,userId,path,caption,');
   expect(chat).toContain('<PalaceChatGif body={m.body}/>');
   expect(chat).toContain('await sendLetter(userId,roomId,body)');
-  expect(chat).toContain('await sendPalaceGroupMessage(roomId,userId,body,{})');
+  expect(chat).toContain('await sendPalaceGroupMessage(roomId,userId,body,replyTarget?.chatId===roomId');
   expect(gif).toContain('referrerPolicy="no-referrer"');
   expect(gif).toContain('onClick={()=>setLoaded(true)}');
  });
