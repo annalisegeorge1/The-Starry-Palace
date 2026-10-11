@@ -66,6 +66,7 @@ import './mobile-member-chamber-finish.css';
 import './palace-mobile-theme-parity.css';
 import './reading-mobile-story-cards.css';
 import './member-chamber-journey.css';
+import './grand-palace-visual-refinement.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
