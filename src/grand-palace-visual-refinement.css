@@ -178,27 +178,94 @@
 .palace-shell .grand-ranked-courts article>span:last-child b{
   color:#e7d5fa;font-variant-numeric:tabular-nums;
 }
-/* Chamber identity cards keep their separate, compact banner. Honours untouched. */
+/* The sigil identifies the member; the official silk banner is an understated
+   ceremonial ribbon. Keep the honours grid and awards entirely untouched. */
 .palace-shell .member-palace-heraldry{
-  flex-wrap:nowrap!important;
-  min-height:145px;
+  display:grid!important;
+  grid-template-columns:84px minmax(0,1fr);
+  grid-template-rows:auto auto;
+  gap:.4rem clamp(.85rem,2vw,1.25rem);
   align-items:center;
-  gap:clamp(.65rem,2.2vw,1.3rem);
-  padding:clamp(.75rem,1.9vw,1.15rem);
+  min-height:0;
+  padding:clamp(.85rem,1.9vw,1.2rem);
+  border-color:color-mix(in srgb,var(--member-court-accent) 65%,transparent);
+  overflow:hidden;
 }
-.palace-shell .member-palace-heraldry>.painted-palace-banner{
-  flex:0 0 auto;
-  width:clamp(116px,19vw,185px)!important;
-  max-width:38%;
-  height:auto;
-  margin:0;
+.palace-shell .member-palace-heraldry>.member-palace-banner-rail{
+  box-sizing:border-box;
+  grid-column:1/-1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:100%;
+  height:clamp(56px,6vw,78px);
+  min-width:0;
+  padding:.15rem .3rem;
+  border-bottom:1px solid rgba(202,188,246,.18);
+  background:linear-gradient(90deg,transparent,rgba(165,139,227,.08) 50%,transparent);
+  overflow:hidden;
+}
+.palace-shell .member-palace-banner-rail .painted-palace-banner{
+  display:block;
+  width:min(100%,310px)!important;
+  max-width:310px;
+  height:100%;
+  max-height:75px;
+  margin:0 auto!important;
+  flex:none;
   aspect-ratio:643/158;
+}
+.palace-shell .member-palace-heraldry>.member-palace-heraldry-emblem{
+  box-sizing:border-box;
+  display:grid;
+  place-items:center;
+  width:84px;height:84px;
+  min-width:0;
+  border-radius:50%;
+  border:1px solid rgba(234,211,155,.65);
+  background:radial-gradient(circle,rgba(180,157,228,.2),rgba(37,39,85,.2));
+  box-shadow:0 6px 16px rgba(9,12,43,.2),inset 0 0 0 3px rgba(244,227,191,.08);
+  overflow:hidden;
+}
+.palace-shell .member-palace-heraldry-emblem .palace-emblem{
+  display:block;
+  width:78px;height:78px;
+  max-width:100%;max-height:100%;
+  filter:none;
+}
+.palace-shell .member-palace-heraldry>.member-palace-heraldry-copy{
+  min-width:0;
   align-self:center;
 }
-.palace-shell .member-palace-heraldry>div:last-child{
-  flex:1 1 0;min-width:0;
+.palace-shell .member-palace-heraldry-copy strong{
+  line-height:1.2;
+  overflow-wrap:break-word;
 }
-.palace-shell .member-palace-heraldry strong{line-height:1.22}
+.palace-shell .member-palace-heraldry-copy p{margin:.3rem 0 .5rem}
+/* The larger court page displays its banner too, but not as a huge separate
+   billboard across the viewport. Preserve natural banner proportions. */
+.palace-shell .grand-your-court .grand-court-banner{
+  box-sizing:border-box;
+  aspect-ratio:auto;
+  min-height:55px;
+  height:clamp(65px,8vw,94px);
+  max-height:94px;
+  padding:0 .35rem;
+  border:0;
+  border-bottom:1px solid rgba(227,205,161,.25);
+  border-radius:0;
+  background:transparent;
+}
+.palace-shell .grand-your-court .grand-court-banner .painted-palace-banner{
+  display:block;
+  flex:none;
+  width:min(85%,350px)!important;
+  max-width:350px;
+  height:100%;
+  max-height:92px;
+  margin:0 auto!important;
+  aspect-ratio:643/158;
+}
 /* Frame gallery: let every row be reached on the page, not clipped behind a
    separate scrolling window and the persistent phone navigation. */
 .palace-shell .painted-frame-picker{min-width:0;scroll-margin-top:8rem}
@@ -306,11 +373,29 @@
   }
   .palace-shell .grand-rank-copy>small{white-space:normal}
   .palace-shell .member-palace-heraldry{
-    min-height:130px;gap:.7rem;
+    grid-template-columns:70px minmax(0,1fr);
+    gap:.35rem .8rem;
+    padding:.8rem;
+    min-height:0;
   }
-  .palace-shell .member-palace-heraldry>.painted-palace-banner{
-    width:clamp(108px,28vw,136px)!important;
-    max-width:35%;
+  .palace-shell .member-palace-heraldry>.member-palace-banner-rail{
+    height:55px;padding:0 .1rem;
+  }
+  .palace-shell .member-palace-banner-rail .painted-palace-banner{
+    width:min(90%,220px)!important;
+    max-width:220px;
+  }
+  .palace-shell .member-palace-heraldry>.member-palace-heraldry-emblem{
+    width:70px;height:70px;
+  }
+  .palace-shell .member-palace-heraldry-emblem .palace-emblem{
+    width:66px;height:66px;
+  }
+  .palace-shell .grand-your-court .grand-court-banner{
+    height:61px;min-height:0;max-height:61px;
+  }
+  .palace-shell .grand-your-court .grand-court-banner .painted-palace-banner{
+    width:min(84%,250px)!important;max-width:250px;
   }
   .palace-shell .painted-frame-grid{
     grid-template-columns:repeat(3,minmax(0,1fr));
@@ -331,8 +416,15 @@
   .palace-shell .grand-ranked-courts .grand-rank-crest{width:37px;height:37px}
   .palace-shell .grand-ranked-courts article>span:last-child{width:43px}
   .palace-shell .grand-ranked-courts article>span:last-child small{display:none}
-  .palace-shell .member-palace-heraldry>.painted-palace-banner{
-    width:95px!important;max-width:34%;
+  .palace-shell .member-palace-heraldry{
+    grid-template-columns:64px minmax(0,1fr);
+    gap:.35rem .65rem;
+  }
+  .palace-shell .member-palace-heraldry>.member-palace-heraldry-emblem{
+    width:64px;height:64px;
+  }
+  .palace-shell .member-palace-heraldry-emblem .palace-emblem{
+    width:60px;height:60px;
   }
   .palace-shell .painted-frame-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
