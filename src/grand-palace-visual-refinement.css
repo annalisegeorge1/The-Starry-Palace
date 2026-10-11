@@ -62,34 +62,34 @@
   background:radial-gradient(ellipse at 4% 10%,rgba(147,115,221,.2),transparent 58%),
     linear-gradient(130deg,#191d47,#111a39);
 }
+/* Full-width ceremonial painting within the card's divider, without a
+   separate floating mini-banner. The SVG uses wide presentation only here. */
 .palace-shell .grand-your-court .grand-court-banner{
+  box-sizing:border-box;
   grid-column:1/-1;
-  width:100%;
-  height:auto;
-  aspect-ratio:643/120;
-  max-height:130px;
-  min-height:64px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:.2rem .35rem;
-  overflow:hidden;
-  border:1px solid rgba(233,200,138,.46);
-  border-radius:12px;
-  background:
-    radial-gradient(ellipse at 50% 50%,rgba(136,111,197,.24),transparent 60%),
-    linear-gradient(110deg,#1b244e,#353268,#18234d);
-}
-.palace-shell .grand-your-court .grand-court-banner .painted-palace-banner{
   display:block;
   width:100%;
-  height:100%;
-  max-width:670px;
-  max-height:125px;
-  aspect-ratio:643/158;
-  margin:0 auto;
-  object-fit:contain;
-  flex:0 1 670px;
+  height:clamp(68px,8vw,96px);
+  min-width:0;
+  min-height:0;
+  max-height:none;
+  padding:0;
+  overflow:hidden;
+  border:0;
+  border-bottom:1px solid rgba(225,203,162,.29);
+  border-radius:0;
+  background:linear-gradient(90deg,rgba(135,101,209,.07),rgba(162,134,212,.12),rgba(135,101,209,.07));
+}
+.palace-shell .grand-your-court .grand-court-banner .painted-palace-banner{
+  box-sizing:border-box;
+  display:block;
+  flex:none;
+  width:100%!important;
+  max-width:none!important;
+  height:100%!important;
+  max-height:none!important;
+  margin:0!important;
+  aspect-ratio:auto!important;
 }
 .palace-shell .grand-your-court .grand-my-crest{
   width:76px;height:76px;
@@ -191,29 +191,31 @@
   border-color:color-mix(in srgb,var(--member-court-accent) 65%,transparent);
   overflow:hidden;
 }
+/* The round crest remains the identity mark. The court artwork becomes a
+   full-length fabric ribbon across the existing divider line. */
 .palace-shell .member-palace-heraldry>.member-palace-banner-rail{
   box-sizing:border-box;
+  display:block;
   grid-column:1/-1;
-  display:flex;
-  justify-content:center;
-  align-items:center;
   width:100%;
-  height:clamp(56px,6vw,78px);
   min-width:0;
-  padding:.15rem .3rem;
-  border-bottom:1px solid rgba(202,188,246,.18);
-  background:linear-gradient(90deg,transparent,rgba(165,139,227,.08) 50%,transparent);
+  height:clamp(64px,7vw,88px);
+  padding:0;
+  margin:0;
   overflow:hidden;
+  border:0;
+  border-bottom:1px solid rgba(202,188,246,.23);
+  background:linear-gradient(90deg,rgba(146,120,214,.04),rgba(146,120,214,.13),rgba(146,120,214,.04));
 }
 .palace-shell .member-palace-banner-rail .painted-palace-banner{
+  box-sizing:border-box;
   display:block;
-  width:min(100%,310px)!important;
-  max-width:310px;
-  height:100%;
-  max-height:75px;
-  margin:0 auto!important;
-  flex:none;
-  aspect-ratio:643/158;
+  width:100%!important;
+  max-width:none!important;
+  height:100%!important;
+  max-height:none!important;
+  margin:0!important;
+  aspect-ratio:auto!important;
 }
 .palace-shell .member-palace-heraldry>.member-palace-heraldry-emblem{
   box-sizing:border-box;
@@ -242,30 +244,7 @@
   overflow-wrap:break-word;
 }
 .palace-shell .member-palace-heraldry-copy p{margin:.3rem 0 .5rem}
-/* The larger court page displays its banner too, but not as a huge separate
-   billboard across the viewport. Preserve natural banner proportions. */
-.palace-shell .grand-your-court .grand-court-banner{
-  box-sizing:border-box;
-  aspect-ratio:auto;
-  min-height:55px;
-  height:clamp(65px,8vw,94px);
-  max-height:94px;
-  padding:0 .35rem;
-  border:0;
-  border-bottom:1px solid rgba(227,205,161,.25);
-  border-radius:0;
-  background:transparent;
-}
-.palace-shell .grand-your-court .grand-court-banner .painted-palace-banner{
-  display:block;
-  flex:none;
-  width:min(85%,350px)!important;
-  max-width:350px;
-  height:100%;
-  max-height:92px;
-  margin:0 auto!important;
-  aspect-ratio:643/158;
-}
+/* Both Chamber and Grand Palace banners now share the full-width ribbon treatment. */
 /* Frame gallery: let every row be reached on the page, not clipped behind a
    separate scrolling window and the persistent phone navigation. */
 .palace-shell .painted-frame-picker{min-width:0;scroll-margin-top:8rem}
@@ -342,10 +321,7 @@
   .palace-shell .grand-palace-hall .grand-hero-stats strong{
     font-size:clamp(.84rem,3.15vw,1.08rem)!important;
   }
-  .palace-shell .grand-your-court .grand-court-banner{
-    min-height:52px;
-    max-height:92px;
-  }
+  .palace-shell .grand-your-court .grand-court-banner{height:64px}
   .palace-shell .grand-ranked-courts article{
     grid-template-columns:1.5rem 2.5rem minmax(0,1fr) 56px;
     gap:.4rem;
@@ -378,25 +354,14 @@
     padding:.8rem;
     min-height:0;
   }
-  .palace-shell .member-palace-heraldry>.member-palace-banner-rail{
-    height:55px;padding:0 .1rem;
-  }
-  .palace-shell .member-palace-banner-rail .painted-palace-banner{
-    width:min(90%,220px)!important;
-    max-width:220px;
-  }
+  .palace-shell .member-palace-heraldry>.member-palace-banner-rail{height:60px}
   .palace-shell .member-palace-heraldry>.member-palace-heraldry-emblem{
     width:70px;height:70px;
   }
   .palace-shell .member-palace-heraldry-emblem .palace-emblem{
     width:66px;height:66px;
   }
-  .palace-shell .grand-your-court .grand-court-banner{
-    height:61px;min-height:0;max-height:61px;
-  }
-  .palace-shell .grand-your-court .grand-court-banner .painted-palace-banner{
-    width:min(84%,250px)!important;max-width:250px;
-  }
+
   .palace-shell .painted-frame-grid{
     grid-template-columns:repeat(3,minmax(0,1fr));
     gap:.55rem;
@@ -408,6 +373,8 @@
   }
 }
 @media(max-width:380px){
+  .palace-shell .member-palace-heraldry>.member-palace-banner-rail{height:52px}
+  .palace-shell .grand-your-court .grand-court-banner{height:56px}
   .palace-shell .grand-palace-hall .grand-palace-hero>h1{font-size:1.95rem}
   .palace-shell .grand-ranked-courts article{
     grid-template-columns:1.3rem 2.3rem minmax(0,1fr) 43px;
