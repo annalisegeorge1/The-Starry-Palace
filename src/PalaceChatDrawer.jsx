@@ -506,7 +506,7 @@ export default function PalaceChatDrawer({userId}){
   <section className="palace-chat-panel" aria-label="Palace Chat" role="region">
    <header className="palace-chat-heading"><div className="palace-chat-brand"><span className="palace-chat-brand-mark" aria-hidden="true">✦</span><div className="palace-chat-brand-copy"><small>PRIVATE CONVERSATIONS</small><strong>Palace Chat</strong></div></div>
     {active&&threadOpen&&<div className="palace-chat-thread-identity">
-     <button type="button" className="palace-chat-header-back" aria-label="Back to conversations" onClick={()=>{setActionMenu(null);setThreadOpen(false)}}>‹</button>
+     <button type="button" className="palace-chat-header-back" aria-label="Back to inbox" onClick={()=>{setActionMenu(null);setThreadOpen(false)}}>‹</button>
      <span className="palace-chat-header-avatar" aria-hidden="true">{tab==='direct'&&activeDirect?.correspondent?.avatar_url?<img src={activeDirect.correspondent.avatar_url} alt=""/>:tab==='groups'?'✧':(openedRoomName||'P').charAt(0).toUpperCase()}</span>
      <span className="palace-chat-header-person"><strong>{openedRoomName}</strong><small><i aria-hidden="true" className={liveStatus==='live'?'is-live':''}/>{liveStatus==='live'?'Live updates':'Refreshes automatically'}</small></span>
      {tab==='groups'&&<button type="button" className="palace-chat-header-group-settings" aria-label="Group settings" aria-expanded={managing} onClick={()=>{setManaging(v=>!v);setIdentity({title:activeGroup.title,description:activeGroup.description||'',colorKey:activeGroup.colorKey||'moonlit'})}}>⚙</button>}
