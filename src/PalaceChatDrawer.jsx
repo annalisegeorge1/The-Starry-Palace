@@ -15,6 +15,7 @@ import PalaceChatGif from './PalaceChatGif';
 import {insertPalaceEmoji} from './palaceEmoji';
 import {encodePalaceGif} from './palaceChatGif';
 import './palace-chat-expressions.css';
+import './palace-chat-refined.css';
 
 const draftKey=(user,kind,id)=>'palace-chat-draft:'+user+':'+kind+':'+id;
 const nameOf=p=>p?.display_name||p?.username||'Palace member';
