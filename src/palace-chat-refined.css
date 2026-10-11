@@ -5,15 +5,15 @@
  * message dock and touch-friendly controls.
  */
 .palace-chat-v2{
- --pc-surface:#191e34;
- --pc-elevated:#232940;
- --pc-subtle:#1b2038;
- --pc-ink:#f5f3ff;
- --pc-muted:#bac3df;
- --pc-line:rgba(183,184,226,.22);
+ --pc-surface:var(--palace-chrome-panel,#191e34);
+ --pc-elevated:var(--palace-chrome-raised,#232940);
+ --pc-subtle:var(--palace-chrome-panel,#1b2038);
+ --pc-ink:var(--palace-chrome-ink,#f5f3ff);
+ --pc-muted:var(--palace-chrome-muted,#bac3df);
+ --pc-line:var(--palace-chrome-border,rgba(183,184,226,.22));
  --pc-brand:#d8d0ff;
  --pc-accent:#a4cdf4;
- --pc-field:#232942;
+ --pc-field:var(--palace-chrome-raised,#232942);
  --pc-received:#303952;
  --pc-received-line:rgba(165,189,233,.22);
  --pc-sent:#595394;
@@ -21,12 +21,12 @@
  --pc-button-ink:#1d2440;
 }
 html[data-palace-theme="daylight"] .palace-chat-v2{
- --pc-surface:#f7f6fc;
- --pc-elevated:#eeeaf8;
- --pc-subtle:#f4f2fb;
- --pc-ink:#302a4b;
- --pc-muted:#67637f;
- --pc-line:rgba(123,113,163,.25);
+ --pc-surface:var(--palace-chrome-panel,#f7f6fc);
+ --pc-elevated:var(--palace-chrome-raised,#eeeaf8);
+ --pc-subtle:var(--palace-chrome-panel,#f4f2fb);
+ --pc-ink:var(--palace-chrome-ink,#302a4b);
+ --pc-muted:var(--palace-chrome-muted,#67637f);
+ --pc-line:var(--palace-chrome-border,rgba(123,113,163,.25));
  --pc-brand:#554382;
  --pc-accent:#6b5ba1;
  --pc-field:#fff;
