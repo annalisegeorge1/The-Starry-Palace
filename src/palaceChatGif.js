@@ -6,7 +6,7 @@ export function palaceGifUrl(input){
   const u=new URL(String(input||'').trim());
   const host=u.hostname.toLowerCase();
   const trusted=host==='media.giphy.com'||host==='i.giphy.com'||/^media[0-9]*\.giphy\.com$/.test(host)||/^media[0-9]*\.tenor\.com$/.test(host)||host==='c.tenor.com';
-  if(u.protocol!=='https:'||!trusted||u.port||u.username||u.password||u.href.length>750)return null;
+  if(u.protocol!=='https:'||!trusted||u.port||u.username||u.password||u.search||u.hash||u.href.length>750)return null;
   if(!/\.(gif|webp)$/i.test(u.pathname))return null;
   if(!/^[A-Za-z0-9%/_ .-]+$/.test(u.pathname))return null;
   u.hash='';return u.toString();
