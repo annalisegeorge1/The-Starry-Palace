@@ -4,14 +4,14 @@
  * lilac / blue / aqua gradient as the selected All Stories room tab.
  * Appearance only — do not alter sizes, positions, routes or interactions.
  */
-.full-palace-shell.daylight{
+html[data-palace-theme="daylight"],.full-palace-shell.daylight{
  --palace-unified-action-gradient:linear-gradient(115deg,#e7d7fa,#dce8fe 58%,#d4f0e9);
  --palace-unified-action-hover:linear-gradient(115deg,#dbc6f3,#cedffc 58%,#c6e9df);
  --palace-unified-action-ink:#302347;
  --palace-unified-action-border:#9277bd;
  --palace-unified-action-shadow:0 3px 11px rgba(79,61,137,.14);
 }
-.full-palace-shell.nightfall{
+html[data-palace-theme="nightfall"],.full-palace-shell.nightfall{
  --palace-unified-action-gradient:linear-gradient(118deg,#7660bd,#516ca5 57%,#337a90);
  --palace-unified-action-hover:linear-gradient(118deg,#866cc7,#607bb7 57%,#3f889c);
  --palace-unified-action-ink:#ffffff;
