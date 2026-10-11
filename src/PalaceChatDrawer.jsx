@@ -495,8 +495,11 @@ export default function PalaceChatDrawer({userId}){
        {m.edited_at&&<small className="palace-chat-edited-mark" title={'Edited '+new Date(m.edited_at).toLocaleString()}>Edited</small>}
        {tab==='groups'&&m.works?.slug&&<Link className="palace-chat-shared-story" to={'/work/'+encodeURIComponent(m.works.slug)} onClick={()=>setOpen(false)}><span aria-hidden="true">✧</span><span><small>PALACE STORY</small><strong>{m.works.title}</strong></span><span aria-hidden="true">↗</span></Link>}
        <small>{dateOf(m.created_at)}</small>
-       {m.sender_id===userId&&!parsePalaceGif(m.body)&&editingMessage!==m.id&&<div className="palace-chat-bubble-actions"><button type="button" aria-label="Edit your message" onClick={()=>{setEditingMessage(m.id);setEditBody(m.body);setError('')}}>✎ Edit</button></div>}
-       {tab==='groups'&&<div className="palace-chat-bubble-actions"><button type="button" onClick={()=>{setReplyTarget({id:m.id,body:m.body,chatId:roomId});setStorySharing(false);window.requestAnimationFrame(()=>composerRef.current?.focus())}}>↩ Reply</button>{owner&&<button type="button" disabled={busy} onClick={()=>togglePin(m)}>{activeGroup.pinnedMessageId===m.id?'Unpin':'Pin'}</button>}</div>}
+       {(tab==='groups'||(m.sender_id===userId&&!parsePalaceGif(m.body)))&&<div className="palace-chat-bubble-actions">
+        {tab==='groups'&&<button type="button" onClick={()=>{setReplyTarget({id:m.id,body:m.body,chatId:roomId});setStorySharing(false);window.requestAnimationFrame(()=>composerRef.current?.focus())}}>↩ Reply</button>}
+        {m.sender_id===userId&&!parsePalaceGif(m.body)&&editingMessage!==m.id&&<button type="button" aria-label="Edit your message" onClick={()=>{setEditingMessage(m.id);setEditBody(m.body);setError('')}}>✎ Edit</button>}
+        {tab==='groups'&&owner&&<button type="button" disabled={busy} onClick={()=>togglePin(m)}>{activeGroup.pinnedMessageId===m.id?'Unpin':'Pin'}</button>}
+       </div>}
       </div>):<p className="palace-chat-empty">Nothing written here yet. Begin with a hello. ✦</p>}
      </div>
      {newWhileAway&&messages.length>0&&<button type="button" className="palace-chat-jump-latest" onClick={jumpToLatest}>New messages · Jump to latest ↓</button>}
