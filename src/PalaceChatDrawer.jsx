@@ -498,7 +498,7 @@ export default function PalaceChatDrawer({userId}){
  const previewDirect=c=>{
   const last=(direct?.messages||[]).filter(m=>m.conversation_id===c.conversation_id).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at))[0];
   if(!last)return {text:'Start your conversation',time:''};
-  return {text:last.media_path?'📷 Photo':parsePalaceGif(last.body)?'🎞 GIF':String(last.body||'Message').replace(/\\s+/g,' ').slice(0,82),time:dateOf(last.created_at)};
+  return {text:last.media_path?'📷 Photo':parsePalaceGif(last.body)?'🎞 GIF':String(last.body||'Message').replace(/\s+/g,' ').slice(0,82),time:dateOf(last.created_at)};
  };
  if(quiet&&!open)return null;
  return <div data-chat-type={tab} data-circle-colour={tab==='groups'?(activeGroup?.colorKey||'moonlit'):'moonlit'} className={'palace-chat-dock palace-chat-v2'+(open?' is-open':'')+(open&&threadOpen?' is-thread-open':'')+(open&&!threadOpen&&!creating?' is-inbox-empty':'')+(chatPaused?' is-quiet':'')}>
