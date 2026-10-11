@@ -749,7 +749,7 @@ export async function getLetters(userId){
  const ids=conversations.map(x=>x.conversation_id);
  let messages=[];
  if(ids.length){
-  const r=await needClient().from('messages').select('id,conversation_id,sender_id,body,created_at,status').in('conversation_id',ids).eq('status','active').order('created_at',{ascending:false}).limit(100);
+  const r=await needClient().from('messages').select('id,conversation_id,sender_id,body,created_at,edited_at,media_path,status').in('conversation_id',ids).eq('status','active').order('created_at',{ascending:false}).limit(100);
   if(r.error)throw r.error;
   messages=r.data||[];
  }
@@ -780,6 +780,22 @@ export async function getLetters(userId){
  }
 }
 export async function sendLetter(userId,conversationId,body){const text=body.trim();if(!text)throw new Error('Your letter is empty.');const{data,error}=await needClient().from('messages').insert({conversation_id:conversationId,sender_id:userId,body:text}).select().single();if(error)throw error;return data}
+export async function sendLetterPhoto(userId,conversationId,mediaPath,caption=''){
+ const text=String(caption||'').trim();
+ if(text.length>3000)throw new Error('Photo caption is too long.');
+ const {data,error}=await needClient().from('messages').insert({
+  conversation_id:conversationId,sender_id:userId,body:text||'📷 Photo',media_path:mediaPath
+ }).select('id').single();
+ if(error)throw error;return data;
+}
+export async function editLetterMessage(userId,conversationId,messageId,body){
+ const text=String(body||'').trim();
+ if(!text||text.length>3000)throw new Error('Messages must contain 1–3,000 characters.');
+ const {data,error}=await needClient().from('messages')
+  .update({body:text}).eq('conversation_id',conversationId).eq('sender_id',userId).eq('id',messageId)
+  .select('id,edited_at').single();
+ if(error)throw error;return data;
+}
 export async function respondToLetterRequest(userId,requestId,status){if(!['accepted','declined'].includes(status))throw new Error('Unknown request response.');const{error}=await needClient().from('message_requests').update({status,resolved_at:new Date().toISOString()}).eq('id',requestId).eq('recipient_id',userId).eq('status','pending');if(error)throw error}
 export async function requestPalaceLetter(userId,recipientId,introText=''){
  const text=introText.trim();const{data,error}=await needClient().from('message_requests').insert({sender_id:userId,recipient_id:recipientId,intro_text:text||'A Palace member would like to begin a correspondence.'}).select('id,status,conversation_id,recipient_id,created_at').single();if(error)throw error;return data
