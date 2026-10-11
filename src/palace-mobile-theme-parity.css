@@ -1,75 +1,55 @@
 /*
- * Mobile colour parity · 10 October 2026
- * Phones use the same Nightfall and Daylight palettes as the larger Palace.
- * The mobile dock is a compact version of the site, not a third colour theme.
- * Keep member artwork, holiday gradients, user colours and Palace sigils intact.
+ * Cross-device theme parity: mobile is a responsive layout, not another palette.
+ * Chrome derives from the SAME tokens used by desktop/tablet in
+ * palace-unified-action-gradients.css. Keep members' chosen artwork,
+ * holiday/LGBTQ+ gradients and reading/writing surfaces unchanged.
  */
-@media(max-width:720px), (max-width:950px) and (max-height:600px) and (pointer:coarse){
- /* removed mobile-only topbar colours: desktop topbar applies */
- .palace-shell.nightfall .global-search-live{
-  background:rgba(22,18,49,.68)!important;
-  border-color:rgba(167,155,220,.44)!important;
- }
+@media(max-width:720px),(max-width:950px) and (max-height:600px) and (pointer:coarse){
+ .palace-shell.nightfall .global-search-live,
  .palace-shell.daylight .global-search-live{
-  background:rgba(255,255,255,.90)!important;
-  border-color:rgba(152,140,190,.45)!important;
+  background:var(--palace-chrome-search)!important;
+  border-color:var(--palace-chrome-border)!important;
  }
- .palace-shell.nightfall .full-top-actions :is(.command-trigger,.top-icon-link){
-  background:rgba(41,34,79,.48)!important;
-  color:#eae7ff!important;
- }
+ .palace-shell.nightfall .full-top-actions :is(.command-trigger,.top-icon-link),
  .palace-shell.daylight .full-top-actions :is(.command-trigger,.top-icon-link){
-  background:rgba(255,255,255,.67)!important;
-  border-color:#c8bcdf!important;
-  color:#49386e!important;
+  background:var(--palace-chrome-icon)!important;
+  border-color:var(--palace-chrome-border)!important;
+  color:var(--palace-chrome-ink)!important;
  }
- .palace-shell.nightfall .mobile-palace-dock{
-  background:linear-gradient(180deg,rgba(31,24,68,.97),rgba(19,16,42,.985))!important;
-  border-color:rgba(181,169,235,.39)!important;
-  box-shadow:0 14px 35px rgba(7,8,26,.30),inset 0 1px 0 rgba(255,255,255,.08)!important;
- }
+ .palace-shell.nightfall .mobile-palace-dock,
  .palace-shell.daylight .mobile-palace-dock{
-  background:linear-gradient(180deg,rgba(249,247,253,.96),rgba(239,236,247,.98))!important;
-  border-color:rgba(135,116,171,.35)!important;
-  box-shadow:0 12px 32px rgba(62,48,100,.15),inset 0 1px 0 rgba(255,255,255,.80)!important;
+  background:var(--palace-chrome-panel)!important;
+  border-color:var(--palace-chrome-border)!important;
+  box-shadow:0 14px 35px rgba(7,8,26,.18),inset 0 1px 0 rgba(255,255,255,.08)!important;
+  color:var(--palace-chrome-ink)!important;
  }
- .palace-shell.nightfall .mobile-palace-dock :is(a,button){color:#dfdaf4!important}
- .palace-shell.daylight .mobile-palace-dock :is(a,button){color:#483e67!important}
- .palace-shell.nightfall .mobile-palace-dock :is(a,button).active{
-  background:rgba(127,105,190,.20)!important;
+ .palace-shell.nightfall .mobile-palace-dock :is(a,button),
+ .palace-shell.daylight .mobile-palace-dock :is(a,button){
+  color:var(--palace-chrome-ink)!important;
  }
+ .palace-shell.nightfall .mobile-palace-dock :is(a,button).active,
  .palace-shell.daylight .mobile-palace-dock :is(a,button).active{
-  background:rgba(195,177,225,.42)!important;
-  color:#332a52!important;
+  background:var(--palace-chrome-active)!important;
+  color:var(--palace-chrome-ink)!important;
  }
- .palace-shell.nightfall .mobile-palace-dock .mobile-dock-write{
-  background:linear-gradient(145deg,#7259bb,#5a4aa1 62%,#455b9d)!important;
-  border-color:#c6b2ec!important;
-  box-shadow:0 9px 20px rgba(27,26,75,.33),0 0 0 4px rgba(27,25,63,.60)!important;
-  color:#fff!important;
- }
+ .palace-shell.nightfall .mobile-palace-dock .mobile-dock-write,
  .palace-shell.daylight .mobile-palace-dock .mobile-dock-write{
-  background:linear-gradient(135deg,#e0d5f2,#cbd8f1 65%,#c6e4ed)!important;
-  border-color:#987fbf!important;
-  box-shadow:0 9px 20px rgba(77,67,124,.18),0 0 0 4px rgba(245,243,251,.84)!important;
-  color:#30244e!important;
+  background:var(--palace-unified-action-gradient)!important;
+  background-image:var(--palace-unified-action-gradient)!important;
+  border-color:var(--palace-unified-action-border)!important;
+  box-shadow:var(--palace-unified-action-shadow)!important;
+  color:var(--palace-unified-action-ink)!important;
  }
+ .palace-shell.nightfall .mobile-palace-dock .mobile-dock-write :is(span,small),
  .palace-shell.daylight .mobile-palace-dock .mobile-dock-write :is(span,small){
-  color:#30244e!important;
+  color:var(--palace-unified-action-ink)!important;
  }
- .palace-shell.nightfall .mobile-palace-dock .mobile-dock-write :is(span,small){
-  color:#f8f4ff!important;
- }
- .palace-shell.nightfall .restored-floating-controls .theme-orb{
-  background:linear-gradient(140deg,#6859a9,#486b9e 68%,#357f93)!important;
-  border-color:#c4b8ec!important;
- }
+ .palace-shell.nightfall .restored-floating-controls .theme-orb,
  .palace-shell.daylight .restored-floating-controls .theme-orb{
-  background:linear-gradient(140deg,#e7dcf6,#d0dffa 61%,#caecec)!important;
-  color:#4b3973!important;
-  border-color:#a996cf!important;
+  background:var(--palace-unified-action-gradient)!important;
+  border-color:var(--palace-unified-action-border)!important;
+  color:var(--palace-unified-action-ink)!important;
  }
- /* Writing hero now inherits its existing shared theme surface on every device. */
  .palace-shell .chic-writing-summary{
   box-sizing:border-box!important;
   min-width:0!important;
@@ -103,18 +83,13 @@
   overflow-wrap:normal!important;
   word-break:normal!important;
  }
- .palace-shell.nightfall .chic-writing-summary>span{
-  background:linear-gradient(138deg,rgba(47,40,93,.9),rgba(27,46,83,.87))!important;
-  border-color:rgba(185,169,231,.38)!important;
+ /* The text remains horizontal even in very narrow statistic tiles.
+    Colours are inherited from the actual Writing Chamber desktop theme. */
+ .palace-shell .chic-writing-summary>span :is(strong,small){
+  writing-mode:horizontal-tb!important;
+  word-break:normal!important;
  }
- .palace-shell.nightfall .chic-writing-summary :is(strong,small){color:#eeeaff!important}
- .palace-shell.daylight .chic-writing-summary>span{
-  background:linear-gradient(135deg,rgba(255,255,255,.87),rgba(233,228,248,.9))!important;
-  border-color:#c6badf!important;
- }
- .palace-shell.daylight .chic-writing-summary strong{color:#30294a!important}
- .palace-shell.daylight .chic-writing-summary small{color:#56516e!important}
- /* A floating theme orb should never obscure the open chat's close control. */
+ /* Keep floating tools off a private conversation, not over the keyboard. */
  body:has(.palace-chat-v2.palace-chat-dock.is-open) .restored-floating-controls{
   display:none!important;
  }

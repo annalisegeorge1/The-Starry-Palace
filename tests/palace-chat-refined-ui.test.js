@@ -45,7 +45,7 @@ describe('Palace Chat professional visual finish',()=>{
   expect(style).toContain('html[data-palace-theme="daylight"] .palace-chat-v2');
   expect(theme).toContain('html[data-palace-theme="nightfall"]');
   expect(style).toContain('@media(max-width:720px)');
-  expect(mobile).toContain('bottom:calc(89px + env(safe-area-inset-bottom,0px))!important');
+  expect(mobile).toContain('bottom:max(4px,env(safe-area-inset-bottom,0px))!important');
   expect(style).toContain('@media(prefers-reduced-motion:reduce)');
  });
 });

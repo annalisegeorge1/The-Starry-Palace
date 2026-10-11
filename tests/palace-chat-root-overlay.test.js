@@ -22,16 +22,16 @@ describe('Palace Chat is a viewport overlay, never clipped by the Reading Room',
   expect(chat).toContain('className="palace-chat-tabs"');
   expect(chat).toContain("setTab('groups');");
   expect(chat).toContain("onClick={()=>setOpen(false)}");
-  expect(viewport).toContain('top:max(10px,env(safe-area-inset-top,0px))!important');
-  expect(viewport).toContain('bottom:calc(89px + env(safe-area-inset-bottom,0px))!important');
+  expect(viewport).toContain('top:max(4px,env(safe-area-inset-top,0px))!important');
+  expect(viewport).toContain('bottom:max(4px,env(safe-area-inset-bottom,0px))!important');
   expect(viewport).toContain('z-index:1400!important');
  });
- it('avoids an enormous empty mobile inbox without shrinking active conversations',()=>{
+ it('uses a single full-viewport inbox and thread without shrinking private conversations',()=>{
   expect(chat).toContain("(open&&!threadOpen&&!creating?' is-inbox-empty':'')");
-  expect(viewport).toContain('@media(max-width:720px) and (min-height:600px)');
+  expect(viewport).toContain('body:has(.palace-chat-v2.palace-chat-dock.is-open) .mobile-palace-dock');
   expect(viewport).toContain('.palace-chat-v2.palace-chat-dock.is-open.is-inbox-empty');
-  expect(viewport).toContain('height:min(68dvh,590px)!important');
-  expect(viewport).toContain('max-height:calc(100dvh - 110px - env(safe-area-inset-bottom,0px))!important');
+  expect(viewport).toContain('height:auto!important;max-height:none!important');
+  expect(viewport).toContain('visibility:hidden!important;pointer-events:none!important');
   expect(viewport).toContain('@media(max-width:720px) and (max-height:480px)');
   expect(viewport).toContain('min-width:88px;min-height:44px;');
  });

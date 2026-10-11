@@ -6,8 +6,8 @@ describe('Palace Chat stays closable on short phones and browser webviews',()=>{
  it('pins both edges of the open drawer independently of the bottom dock',()=>{
   expect(css).toContain('@media(max-width:720px)');
   expect(css).toContain('.palace-chat-v2.palace-chat-dock.is-open{');
-  expect(css).toContain('top:max(10px,env(safe-area-inset-top,0px))!important');
-  expect(css).toContain('bottom:calc(89px + env(safe-area-inset-bottom,0px))!important');
+  expect(css).toContain('top:max(4px,env(safe-area-inset-top,0px))!important');
+  expect(css).toContain('bottom:max(4px,env(safe-area-inset-bottom,0px))!important');
   expect(css).toContain('height:auto!important;max-height:none!important;min-height:0!important');
   expect(css).toContain('height:100%!important;max-height:100%!important;min-height:0!important');
   expect(jsx).toContain("import './palace-chat-mobile-viewport.css';");

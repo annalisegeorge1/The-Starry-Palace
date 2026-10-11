@@ -4,14 +4,14 @@
  * lilac / blue / aqua gradient as the selected All Stories room tab.
  * Appearance only — do not alter sizes, positions, routes or interactions.
  */
-.full-palace-shell.daylight{
+html[data-palace-theme="daylight"],.full-palace-shell.daylight{
  --palace-unified-action-gradient:linear-gradient(115deg,#e7d7fa,#dce8fe 58%,#d4f0e9);
  --palace-unified-action-hover:linear-gradient(115deg,#dbc6f3,#cedffc 58%,#c6e9df);
  --palace-unified-action-ink:#302347;
  --palace-unified-action-border:#9277bd;
  --palace-unified-action-shadow:0 3px 11px rgba(79,61,137,.14);
 }
-.full-palace-shell.nightfall{
+html[data-palace-theme="nightfall"],.full-palace-shell.nightfall{
  --palace-unified-action-gradient:linear-gradient(118deg,#7660bd,#516ca5 57%,#337a90);
  --palace-unified-action-hover:linear-gradient(118deg,#866cc7,#607bb7 57%,#3f889c);
  --palace-unified-action-ink:#ffffff;
@@ -68,4 +68,42 @@
  .full-palace-shell .legacy-reading-page .reading-compass .reading-compass-wander{
   transition:none!important;
  }
+}
+
+/* One Palace chrome palette at every breakpoint.
+ * These values match the larger-screen Nightfall / Daylight surfaces and are
+ * shared by the topbar, search, phone dock and portalled Chat. Individual story,
+ * chamber, heritage and member-selected gradients remain independent. */
+html[data-palace-theme="nightfall"],.full-palace-shell.nightfall{
+ --palace-chrome-header:rgba(8,11,25,.92);
+ --palace-chrome-search:rgba(18,23,46,.72);
+ --palace-chrome-panel:rgba(19,24,45,.97);
+ --palace-chrome-raised:rgba(37,42,76,.86);
+ --palace-chrome-icon:rgba(122,110,181,.16);
+ --palace-chrome-active:rgba(127,105,190,.24);
+ --palace-chrome-ink:#f2f0fd;
+ --palace-chrome-muted:#bac0d9;
+ --palace-chrome-border:rgba(164,151,224,.34);
+ --palace-chrome-focus:#cce9ff;
+}
+html[data-palace-theme="daylight"],.full-palace-shell.daylight{
+ --palace-chrome-header:rgba(244,246,250,.96);
+ --palace-chrome-search:rgba(255,255,255,.91);
+ --palace-chrome-panel:rgba(251,251,253,.98);
+ --palace-chrome-raised:rgba(237,234,248,.94);
+ --palace-chrome-icon:rgba(224,218,242,.7);
+ --palace-chrome-active:rgba(221,213,243,.78);
+ --palace-chrome-ink:#302b49;
+ --palace-chrome-muted:#5e617d;
+ --palace-chrome-border:rgba(110,96,158,.32);
+ --palace-chrome-focus:#6550a2;
+}
+/* Shared desktop/tablet surfaces are reused on phones, not re-coloured there. */
+.full-palace-shell .full-topbar{
+ background:var(--palace-chrome-header)!important;
+ border-bottom-color:var(--palace-chrome-border)!important;
+}
+.full-palace-shell .full-topbar .global-search-live{
+ background:var(--palace-chrome-search)!important;
+ border-color:var(--palace-chrome-border)!important;
 }
