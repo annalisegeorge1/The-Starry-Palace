@@ -12,8 +12,8 @@ export function palaceGiphyItem(item){
    const u=new URL(String(input||''));
    // GIPHY rendition URLs can carry transient analytics params; keep only
    // the image URL after verifying the CDN and allowed extension.
-   if(!/^media[0-9]*\\.giphy\\.com$/.test(u.hostname)&&u.hostname!=='i.giphy.com')return null;
-   if(!/\\.(gif|webp)$/i.test(u.pathname))return null;
+   if(!/^media[0-9]*[.]giphy[.]com$/.test(u.hostname)&&u.hostname!=='i.giphy.com')return null;
+   if(!/[.](gif|webp)$/i.test(u.pathname))return null;
    u.search='';u.hash='';
    return palaceGifUrl(u.toString());
   }catch{return null}};
