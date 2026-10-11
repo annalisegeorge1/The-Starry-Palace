@@ -34,5 +34,11 @@ export function PaintedBadge({family,tier='bronze'}){
 }
 export function ChamberFrameArt({slug,size='100%',className=''}){
  const frame=CHAMBER_FRAMES.find(x=>x.slug===slug);if(!frame)return null;
- return <PaintedSprite sheet="chamber-frames" sheetSize={[1254,1254]} box={[frame.index%5*249,Math.floor(frame.index/5)*242,249,249]} size={size} className={'painted-chamber-frame '+className} label={frame.name+' chamber frame'}/>;
+ // The source sheet is a square 5 × 5 atlas. Each tile must use the same
+ // pitch on both axes; the old 249 × 242 offsets drifted into neighbouring
+ // frames and produced stray painted fragments in the live Chamber picker.
+ const tile=1254/5,inset=5;
+ const col=frame.index%5,row=Math.floor(frame.index/5);
+ const box=[col*tile+inset,row*tile+inset,tile-inset*2,tile-inset*2];
+ return <PaintedSprite sheet="chamber-frames" sheetSize={[1254,1254]} box={box} size={size} className={'painted-chamber-frame '+className} label={frame.name+' chamber frame'}/>;
 }
