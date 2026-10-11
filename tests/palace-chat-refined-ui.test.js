@@ -12,7 +12,7 @@ describe('Palace Chat professional visual finish',()=>{
   expect(view).toContain('await sendPalaceGroupMessage(');
   expect(view).toContain('role="log" aria-label="Conversation messages"');
   expect(view).toContain('<PalaceEmojiPicker label="Palace Chat"');
-  expect(view).toContain('className="palace-chat-gif-form"');
+  expect(view).toContain('<PalaceGiphyPicker busy={busy} onSend={sendGif}');
   expect(view).toContain('<PalaceChatGif body={m.body}/>');
  });
  it('uses a compact chat brand with reachable accessible controls',()=>{
