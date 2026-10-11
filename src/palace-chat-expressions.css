@@ -1,0 +1,21 @@
+/* Chat expressions are a quiet row above the editor, not a second large toolbar. */
+.palace-chat-v2 .palace-chat-compose-tools{display:flex;align-items:center;gap:7px;flex:0 0 auto;min-height:44px;padding:5px 11px;background:rgba(65,60,110,.16)}
+.palace-chat-v2 .palace-chat-gif-toggle{min-height:40px;padding:7px 12px;border:1px solid rgba(174,155,227,.6);border-radius:12px;background:rgba(111,98,175,.18);color:inherit;font-weight:650;cursor:pointer}
+.palace-chat-v2 .palace-chat-gif-form{flex:0 0 auto;display:grid;gap:5px;padding:8px 11px;border-top:1px solid rgba(165,148,219,.25);background:rgba(95,82,154,.13)}
+.palace-chat-v2 .palace-chat-gif-form label{display:grid;gap:5px;font-size:.75rem;font-weight:650}
+.palace-chat-v2 .palace-chat-gif-form input{box-sizing:border-box;width:100%;min-width:0;min-height:40px;padding:8px 10px;border:1px solid #ada2d2;border-radius:10px;color:#262340;background:#fff;font:inherit;font-size:.81rem}
+.palace-chat-v2 .palace-chat-gif-form small{font-size:.67rem;opacity:.83}
+.palace-chat-v2 .palace-chat-gif-form>div{display:flex;justify-content:flex-end;gap:8px}
+.palace-chat-v2 .palace-chat-gif-form>div button{min-height:39px;padding:7px 13px;border-radius:10px;border:1px solid #aaa0da;background:rgba(130,116,190,.21);color:inherit;cursor:pointer}
+.palace-chat-v2 .palace-chat-gif-form>div button:last-child{background:linear-gradient(120deg,#c0a9e9,#a9dceb);color:#19223e}
+.palace-chat-v2 .palace-chat-gif-preview{max-width:250px;display:grid;gap:6px}
+.palace-chat-v2 .palace-chat-gif-preview>button{display:grid;gap:6px;min-width:145px;min-height:95px;padding:16px;border:1px solid #a89fdf;border-radius:13px;background:linear-gradient(125deg,#3a306c,#305477);color:#fff;font-weight:750;cursor:pointer}
+.palace-chat-v2 .palace-chat-gif-preview>button small{font-weight:400;opacity:.86}
+.palace-chat-v2 .palace-chat-gif-preview img{display:block;max-width:100%;max-height:220px;border-radius:12px;object-fit:contain}
+.palace-chat-v2 .palace-chat-gif-preview>small{font-size:.65rem;opacity:.76}
+@media(max-width:720px){
+ .palace-chat-v2.palace-chat-dock.is-open:not(.is-thread-open) :is(.palace-chat-compose-tools,.palace-chat-gif-form){display:none!important}
+ .palace-chat-v2 .palace-chat-compose-tools{padding:4px 9px}
+ .palace-chat-v2 .palace-chat-gif-form{max-height:170px;overflow-y:auto}
+ .palace-chat-v2 .palace-emoji-panel{left:0}
+}
