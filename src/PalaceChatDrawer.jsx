@@ -280,7 +280,7 @@ export default function PalaceChatDrawer({userId}){
   setBusy(true);setError('');setNotice('');
   try{
    if(tab==='groups'){
-    await sendPalaceGroupMessage(roomId,userId,body,{});
+    await sendPalaceGroupMessage(roomId,userId,body,replyTarget?.chatId===roomId?{replyToId:replyTarget.id}:{});
     const fresh=await getPalaceGroupMessages(roomId);
     setGroupMessages(previous=>({chatId:roomId,items:previous.chatId===roomId?mergePalaceGroupMessages(previous.items,fresh):fresh}));
     setGroupData(await getPalaceGroupChatOverview(userId));
@@ -288,31 +288,33 @@ export default function PalaceChatDrawer({userId}){
     await sendLetter(userId,roomId,body);
     setDirect(await getLetters(userId));
    }
-   setGifOpen(false);scrollPinned.current=true;
+   setGifOpen(false);setReplyTarget(null);scrollPinned.current=true;
   }catch(e){setError(errorText(e))}
   finally{setBusy(false)}
  }
  async function sendPhoto(e){
   e.preventDefault();if(!roomId||!photoFile||busy)return;
   setBusy(true);setError('');setNotice('');
-  let path='';
+  let path='';let sent=false;
   try{
    path=await uploadPalaceChatPhoto({kind:tab==='groups'?'group':'direct',roomId,userId,file:photoFile});
    const caption=currentDraft.trim();
    if(tab==='groups'){
     await sendPalaceGroupPhoto(roomId,userId,path,caption,replyTarget?.chatId===roomId?{replyToId:replyTarget.id}:{});
+    sent=true;
     const fresh=await getPalaceGroupMessages(roomId);
     setGroupMessages(p=>({chatId:roomId,items:p.chatId===roomId?mergePalaceGroupMessages(p.items,fresh):fresh}));
     setGroupData(await getPalaceGroupChatOverview(userId));
    }else{
     await sendLetterPhoto(userId,roomId,path,caption);
+    sent=true;
     setDirect(await getLetters(userId));
    }
    setPhotoFile(null);setDraft('');setReplyTarget(null);
    if(photoInputRef.current)photoInputRef.current.value='';
    scrollPinned.current=true;
   }catch(e){
-   if(path)await discardPalaceChatPhoto(path).catch(()=>{});
+   if(path&&!sent)await discardPalaceChatPhoto(path).catch(()=>{});
    setError(errorText(e));
   }finally{setBusy(false)}
  }
