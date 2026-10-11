@@ -24,7 +24,7 @@ export default function MemberAvatar({profile,memberId,frame,className='',as:Tag
   return()=>{active=false;window.removeEventListener('palace:frame-changed',changed);window.removeEventListener('focus',refresh)};
  },[viewer,id,frame,key]);
  const slug=frame!==undefined?frame:(resolved.key===key?resolved.slug:'');
- return <Tag {...props} className={'member-avatar '+className+(slug?' member-avatar-framed':'')}>
+ return <Tag {...props} data-frame={slug||undefined} className={'member-avatar '+className+(slug?' member-avatar-framed':'')}>
   <span className="member-avatar-photo">{profile?.avatar_url?<img src={profile.avatar_url} alt="" loading="lazy" decoding="async"/>:<span aria-hidden="true">{(profile?.display_name||profile?.username||'☾').slice(0,1).toUpperCase()}</span>}</span>
   {slug&&<ChamberFrameArt slug={slug}/>}{children}
  </Tag>;

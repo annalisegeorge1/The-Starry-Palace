@@ -29,3 +29,9 @@
   padding:88px clamp(12px,3vw,19px) 1.15rem!important;
  }
 }
+
+/* Silver Ripple has an off-centre opening in its painted wave crest. Align
+   that opening with the photograph, rather than centring the sprite bounds. */
+.member-chamber-atelier .legacy-profile-avatar.member-avatar-framed[data-frame="silver-ripple"]>.painted-chamber-frame{
+ inset:-29% auto auto -37%!important;width:164%!important;height:164%!important;
+}
