@@ -1,0 +1,7 @@
+/* A discreet expression button under long-form conversations. */
+.palace-forum-expressions{display:flex;align-items:center;gap:9px;margin:7px 0;min-width:0}
+.palace-forum-expressions .palace-emoji-picker{z-index:5}
+.palace-forum-expressions>small{font-size:.75rem;opacity:.75}
+.thread-compose .palace-forum-expressions{margin:0 0 6px 0}
+.forum-reply-compose .palace-forum-expressions,.moon-compose .palace-forum-expressions{margin:8px 0}
+@media(max-width:480px){.palace-forum-expressions{justify-content:flex-start;flex-wrap:wrap}}
