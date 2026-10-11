@@ -14,7 +14,7 @@ describe('Palace Chat stays closable on short phones and browser webviews',()=>{
  });
  it('provides two independent close paths, both with reachable touch targets',()=>{
   expect(jsx).toContain('aria-label="Minimize Palace chat"');
-  expect(jsx).toContain('className="palace-chat-mobile-close" aria-label="Close Palace chat" onClick={()=>setOpen(false)}');
+  expect(jsx).toContain('className="palace-chat-mobile-close" aria-label="Close Palace chat" onClick={()=>{setActionMenu(null);setOpen(false)}}');
   expect(css).toContain('min-width:44px!important;min-height:44px!important;');
   expect(css).toContain('min-width:88px;min-height:44px;');
   expect(css).toContain('display:flex!important;flex:0 0 auto!important;');
