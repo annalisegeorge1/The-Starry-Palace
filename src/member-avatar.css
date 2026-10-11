@@ -19,13 +19,13 @@
 }
 .member-chamber-atelier .legacy-profile-avatar.member-avatar-framed>.member-avatar-photo{inset:0!important}
 .member-chamber-atelier .legacy-profile-avatar.member-avatar-framed>.painted-chamber-frame{
- inset:-46.154%!important;width:192.308%!important;height:192.308%!important;
+ inset:-34%!important;width:168%!important;height:168%!important;
 }
 .palace-shell .member-chamber-atelier.chic-member-profile:has(.legacy-profile-avatar.member-avatar-framed) .legacy-profile-copy{
- padding-left:230px!important;
+ padding-left:216px!important;
 }
 @media(max-width:720px){
  .palace-shell .member-chamber-atelier.chic-member-profile:has(.legacy-profile-avatar.member-avatar-framed) .legacy-profile-copy{
-  padding:104px clamp(12px,3vw,19px) 1.15rem!important;
+  padding:88px clamp(12px,3vw,19px) 1.15rem!important;
  }
 }
