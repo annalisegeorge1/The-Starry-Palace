@@ -15,7 +15,7 @@
 .legacy-profile-avatar.has-painted-frame>.painted-chamber-frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
 .legacy-profile-avatar.has-painted-frame>span{border-radius:50%;width:76%;height:76%;margin:12%}
 .painted-frame-picker{margin-top:1.5rem;padding-top:1rem;border-top:1px solid #95a5ce33}
-.painted-frame-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:.65rem;max-height:440px;overflow:auto;padding:.35rem}
+.painted-frame-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:.65rem;max-height:min(62vh,560px);overflow-y:auto;overflow-x:hidden;padding:.6rem;scroll-padding:.6rem;align-items:stretch}
 .painted-frame-choice{display:flex;flex-direction:column;align-items:center;gap:.3rem;padding:.6rem;border:1px solid #95a5ce55;border-radius:12px;background:transparent;color:inherit;min-width:0;cursor:pointer}
 .painted-frame-choice[aria-pressed=true]{outline:2px solid #aabde9;outline-offset:1px}
 .painted-frame-choice .painted-art{width:84px;height:84px}
