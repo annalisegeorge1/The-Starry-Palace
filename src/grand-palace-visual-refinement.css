@@ -1,0 +1,342 @@
+/*
+ * Grand Palace presentation pass — October 2026.
+ * Purely visual: keeps real standings, balance, Palace membership, navigation,
+ * earned honours and collectible artwork unchanged.
+ */
+.palace-shell .grand-palace-hall{
+  --grand-gold:#ecd3a1;
+  --grand-ink:#111936;
+  gap:clamp(.85rem,1.8vw,1.2rem)!important;
+}
+.palace-shell .grand-palace-hall .grand-palace-hero{
+  padding:clamp(1.05rem,3vw,2rem)!important;
+  border-color:rgba(180,167,245,.53);
+  background:
+    radial-gradient(circle at 92% 17%,rgba(251,223,174,.9) 0 1.3px,transparent 2.1px),
+    radial-gradient(circle at 78% 31%,rgba(232,221,255,.9) 0 1.1px,transparent 2px),
+    radial-gradient(circle at 96% 68%,rgba(240,234,255,.8) 0 1px,transparent 2px),
+    radial-gradient(ellipse at 90% 21%,rgba(143,112,224,.36),transparent 47%),
+    radial-gradient(ellipse at 10% 95%,rgba(111,103,208,.32),transparent 58%),
+    linear-gradient(125deg,#111a40 6%,#20265d 62%,#15284d);
+  box-shadow:0 15px 40px rgba(4,9,32,.21),inset 0 1px 0 rgba(239,225,255,.13);
+}
+.palace-shell .grand-palace-hall .grand-palace-hero::after{
+  content:'✦';top:-.34em;right:1%;font-size:clamp(7rem,16vw,13rem);
+  color:rgba(203,194,254,.1);
+}
+.palace-shell .grand-palace-hero>h1{
+  font:500 clamp(2.05rem,4.8vw,3.45rem)/1.12 Georgia,serif;
+  color:#f7e8d7;
+  letter-spacing:-.035em;
+}
+.palace-shell .grand-palace-hero>p:not(.eyebrow){
+  max-width:64ch;
+  font-size:clamp(.83rem,1.5vw,.97rem);
+  line-height:1.65;
+}
+.palace-shell .grand-palace-hall .grand-hero-stats{
+  margin-top:1.1rem;gap:.65rem;
+}
+.palace-shell .grand-palace-hall .grand-hero-stats>span{
+  min-width:0;min-height:85px;
+  padding:clamp(.7rem,1.6vw,1rem);
+  border-radius:16px;
+  border-color:rgba(174,167,241,.3);
+  background:linear-gradient(140deg,rgba(16,23,57,.74),rgba(35,43,90,.54));
+  align-content:center;
+}
+.palace-shell .grand-hero-stats small{letter-spacing:.055em}
+.palace-shell .grand-hero-stats strong{line-height:1.33!important;word-break:normal!important}
+.palace-shell .grand-palace-hall .grand-season-date{
+  text-align:center;line-height:1.55!important;
+  margin:.9rem auto 0!important;
+  max-width:85ch;
+}
+/* Place the painting INSIDE its court card: never between sections at page width. */
+.palace-shell .grand-palace-hall .grand-your-court{
+  grid-template-columns:76px minmax(0,1fr) auto;
+  gap:.85rem 1rem;
+  padding:clamp(.8rem,2vw,1.2rem);
+  overflow:hidden;
+  border-color:rgba(189,169,252,.52);
+  background:radial-gradient(ellipse at 4% 10%,rgba(147,115,221,.2),transparent 58%),
+    linear-gradient(130deg,#191d47,#111a39);
+}
+.palace-shell .grand-your-court .grand-court-banner{
+  grid-column:1/-1;
+  width:100%;
+  height:auto;
+  aspect-ratio:643/120;
+  max-height:130px;
+  min-height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:.2rem .35rem;
+  overflow:hidden;
+  border:1px solid rgba(233,200,138,.46);
+  border-radius:12px;
+  background:
+    radial-gradient(ellipse at 50% 50%,rgba(136,111,197,.24),transparent 60%),
+    linear-gradient(110deg,#1b244e,#353268,#18234d);
+}
+.palace-shell .grand-your-court .grand-court-banner .painted-palace-banner{
+  display:block;
+  width:100%;
+  height:100%;
+  max-width:670px;
+  max-height:125px;
+  aspect-ratio:643/158;
+  margin:0 auto;
+  object-fit:contain;
+  flex:0 1 670px;
+}
+.palace-shell .grand-your-court .grand-my-crest{
+  width:76px;height:76px;
+  border-radius:20px;
+  transform:none;
+  border-color:rgba(203,192,250,.5);
+}
+.palace-shell .grand-your-court .grand-my-crest .palace-emblem{
+  width:64px;height:64px;
+  max-width:100%;
+}
+.palace-shell .grand-your-court>div:nth-child(3){min-width:0}
+.palace-shell .grand-your-court h2{color:#f8f4ff}
+.palace-shell .grand-your-court .button-moonstone{
+  box-sizing:border-box;
+  min-height:42px;
+  padding:.7rem 1.05rem;
+  border-radius:12px;
+  white-space:nowrap;
+  text-align:center;
+}
+.palace-shell .grand-ranked-courts{
+  gap:.52rem;
+  margin-top:1rem;
+}
+.palace-shell .grand-ranked-courts article{
+  grid-template-columns:2rem 2.7rem minmax(0,1fr) minmax(62px,auto);
+  align-items:center;
+  gap:clamp(.38rem,1.2vw,.8rem);
+  padding:.7rem .8rem;
+  border:1px solid rgba(175,169,235,.25);
+  border-radius:15px;
+  background:linear-gradient(110deg,rgba(35,36,82,.44),rgba(21,29,68,.56));
+}
+.palace-shell .grand-ranked-courts article.mine{
+  border-color:rgba(191,163,255,.76);
+  box-shadow:inset 3px 0 0 #b6a1f3,0 0 0 1px rgba(149,122,213,.14);
+}
+.palace-shell .grand-ranked-courts .grand-rank-crest{
+  width:42px;height:42px;min-width:0;
+  display:grid;place-items:center;
+  font-size:0;line-height:0;
+}
+.palace-shell .grand-ranked-courts .grand-rank-crest .palace-emblem{
+  display:block;width:40px;height:40px;max-width:100%;max-height:100%;
+}
+.palace-shell .grand-ranked-courts .grand-rank-copy{
+  display:grid;
+  grid-template-columns:minmax(90px,132px) minmax(0,1fr);
+  grid-template-rows:auto auto;
+  gap:.12rem .72rem;
+  align-items:center;
+  min-width:0;
+}
+.palace-shell .grand-rank-copy>.grand-rank-banner{
+  display:flex;
+  grid-row:1/3;
+  align-items:center;
+  justify-content:center;
+  min-width:0;
+  height:38px;
+  overflow:hidden;
+  border-radius:8px;
+  background:rgba(126,108,194,.1);
+}
+.palace-shell .grand-rank-banner .painted-palace-banner{
+  width:100%;height:100%;max-width:100%;
+  margin:0;aspect-ratio:643/158;
+}
+.palace-shell .grand-rank-copy>strong{
+  grid-column:2;grid-row:1;
+  overflow-wrap:break-word!important;
+  word-break:normal!important;
+  line-height:1.3;
+}
+.palace-shell .grand-rank-copy>small{
+  grid-column:2;grid-row:2;
+  overflow-wrap:break-word;
+  font-size:.68rem;
+  line-height:1.35;
+}
+.palace-shell .grand-ranked-courts article>span:last-child{
+  text-align:right;
+  min-width:50px;
+}
+.palace-shell .grand-ranked-courts article>span:last-child b{
+  color:#e7d5fa;font-variant-numeric:tabular-nums;
+}
+/* Chamber identity cards keep their separate, compact banner. Honours untouched. */
+.palace-shell .member-palace-heraldry{
+  flex-wrap:nowrap!important;
+  min-height:145px;
+  align-items:center;
+  gap:clamp(.65rem,2.2vw,1.3rem);
+  padding:clamp(.75rem,1.9vw,1.15rem);
+}
+.palace-shell .member-palace-heraldry>.painted-palace-banner{
+  flex:0 0 auto;
+  width:clamp(116px,19vw,185px)!important;
+  max-width:38%;
+  height:auto;
+  margin:0;
+  aspect-ratio:643/158;
+  align-self:center;
+}
+.palace-shell .member-palace-heraldry>div:last-child{
+  flex:1 1 0;min-width:0;
+}
+.palace-shell .member-palace-heraldry strong{line-height:1.22}
+/* Frame gallery: let every row be reached on the page, not clipped behind a
+   separate scrolling window and the persistent phone navigation. */
+.palace-shell .painted-frame-picker{min-width:0;scroll-margin-top:8rem}
+.palace-shell .painted-frame-grid{
+  box-sizing:border-box;
+  grid-template-columns:repeat(auto-fit,minmax(118px,1fr));
+  max-height:none;
+  overflow:visible;
+  padding:.65rem .35rem 1rem;
+  gap:.7rem;
+}
+.palace-shell .painted-frame-choice{
+  min-width:0;
+  min-height:151px;
+  justify-content:center;
+  padding:.65rem .4rem;
+  gap:.35rem;
+}
+.palace-shell .painted-frame-choice .painted-chamber-frame{
+  width:min(100%,86px);height:auto;aspect-ratio:1;
+}
+.palace-shell .painted-frame-choice strong{
+  line-height:1.22;
+  overflow-wrap:break-word;
+  text-align:center;
+}
+.palace-shell .painted-frame-choice small{
+  text-align:center;
+  line-height:1.4;
+}
+.palace-shell .painted-frame-preview{
+  width:118px;height:118px;
+}
+.palace-shell .painted-frame-preview>.painted-chamber-frame{
+  width:100%;height:100%;
+}
+/* Day theme uses dark type and restraint instead of neon/gold overload. */
+.palace-shell.daylight .grand-palace-hall .grand-palace-hero,
+.palace-shell.daylight .grand-palace-hall .grand-your-court{
+  background:radial-gradient(ellipse at 90% 10%,rgba(188,164,234,.27),transparent 50%),
+    linear-gradient(135deg,#fdfaff,#edf1ff);
+  color:#322747;
+  border-color:#c3b1df;
+}
+.palace-shell.daylight .grand-palace-hall .grand-palace-hero h1,
+.palace-shell.daylight .grand-palace-hall .grand-your-court h2{color:#3a3056}
+.palace-shell.daylight .grand-palace-hall .grand-palace-hero>p:not(.eyebrow),
+.palace-shell.daylight .grand-palace-hall .grand-your-court p{color:#574b6b}
+.palace-shell.daylight .grand-hero-stats>span{background:rgba(255,255,255,.77);border-color:#d4c9ec}
+.palace-shell.daylight .grand-hero-stats>span :is(strong,small){color:#3a3056}
+.palace-shell.daylight .grand-ranked-courts article{background:#faf8ff;border-color:#d7cce9}
+.palace-shell.daylight .grand-ranked-courts article.mine{box-shadow:inset 3px 0 0 #7d66bf}
+.palace-shell.daylight .grand-ranked-courts article>span:last-child b{color:#49366c}
+@media(max-width:830px){
+  .palace-shell .grand-ranked-courts .grand-rank-copy{
+    grid-template-columns:minmax(80px,100px) minmax(0,1fr);
+    gap:.12rem .5rem;
+  }
+  .palace-shell .grand-your-court{grid-template-columns:68px minmax(0,1fr)}
+  .palace-shell .grand-your-court .grand-my-crest{width:68px;height:68px}
+  .palace-shell .grand-your-court .grand-my-crest .palace-emblem{width:60px;height:60px}
+  .palace-shell .grand-your-court>a{grid-column:1/-1}
+}
+@media(max-width:720px){
+  .palace-shell .grand-palace-hall .grand-hero-stats{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:.55rem!important;
+  }
+  .palace-shell .grand-hero-stats .grand-hero-court{grid-column:1/-1}
+  .palace-shell .grand-palace-hall .grand-hero-stats>span{
+    min-height:66px;
+    padding:.7rem .8rem;
+  }
+  .palace-shell .grand-palace-hall .grand-hero-stats strong{
+    font-size:clamp(.84rem,3.15vw,1.08rem)!important;
+  }
+  .palace-shell .grand-your-court .grand-court-banner{
+    min-height:52px;
+    max-height:92px;
+  }
+  .palace-shell .grand-ranked-courts article{
+    grid-template-columns:1.5rem 2.5rem minmax(0,1fr) 56px;
+    gap:.4rem;
+    padding:.65rem .55rem;
+    align-items:center;
+  }
+  .palace-shell .grand-ranked-courts .grand-rank-copy{
+    display:grid;grid-template-columns:minmax(0,1fr);
+  }
+  .palace-shell .grand-rank-copy>.grand-rank-banner{display:none}
+  .palace-shell .grand-rank-copy>strong{
+    grid-column:1;grid-row:auto;
+    font-size:clamp(.78rem,2.7vw,.95rem)!important;
+  }
+  .palace-shell .grand-rank-copy>small{
+    grid-column:1;grid-row:auto;
+    font-size:.61rem;
+  }
+  .palace-shell .grand-ranked-courts article>span:last-child{
+    width:56px;
+    font-size:.62rem;
+  }
+  .palace-shell .grand-ranked-courts article>span:last-child b{
+    font-size:1rem;
+  }
+  .palace-shell .grand-rank-copy>small{white-space:normal}
+  .palace-shell .member-palace-heraldry{
+    min-height:130px;gap:.7rem;
+  }
+  .palace-shell .member-palace-heraldry>.painted-palace-banner{
+    width:clamp(108px,28vw,136px)!important;
+    max-width:35%;
+  }
+  .palace-shell .painted-frame-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:.55rem;
+    padding:.5rem .18rem 1rem;
+  }
+  .palace-shell .painted-frame-choice{min-height:135px;padding:.55rem .25rem}
+  .palace-shell .painted-frame-choice .painted-chamber-frame{
+    width:min(100%,75px);height:auto;
+  }
+}
+@media(max-width:380px){
+  .palace-shell .grand-palace-hall .grand-palace-hero>h1{font-size:1.95rem}
+  .palace-shell .grand-ranked-courts article{
+    grid-template-columns:1.3rem 2.3rem minmax(0,1fr) 43px;
+    gap:.28rem;padding:.55rem .35rem;
+  }
+  .palace-shell .grand-ranked-courts .grand-rank-crest{width:37px;height:37px}
+  .palace-shell .grand-ranked-courts article>span:last-child{width:43px}
+  .palace-shell .grand-ranked-courts article>span:last-child small{display:none}
+  .palace-shell .member-palace-heraldry>.painted-palace-banner{
+    width:95px!important;max-width:34%;
+  }
+  .palace-shell .painted-frame-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(prefers-reduced-motion:reduce){
+  .palace-shell .grand-ranked-courts article,
+  .palace-shell .member-palace-heraldry{transition:none}
+}
