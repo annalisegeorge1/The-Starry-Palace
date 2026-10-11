@@ -1,4 +1,7 @@
-.member-avatar.member-avatar{position:relative;display:inline-grid;place-items:center;flex-shrink:0;isolation:isolate;overflow:visible!important;box-sizing:border-box;vertical-align:middle}
+/* Only provide a positioning default: chamber portraits are anchored absolutely
+   by their existing layout classes, including the cover editor preview. */
+:where(.member-avatar){position:relative}
+.member-avatar.member-avatar{display:inline-grid;place-items:center;flex-shrink:0;isolation:isolate;overflow:visible!important;box-sizing:border-box;vertical-align:middle}
 .member-avatar>.member-avatar-photo{position:absolute!important;inset:0!important;display:grid!important;place-items:center;width:auto!important;height:auto!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:50%!important;overflow:hidden!important;background:var(--avatar-background,linear-gradient(135deg,#676aa4,#34345c));color:#fff}
 .member-avatar>.member-avatar-photo>img{display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;border:0!important;border-radius:50%!important;margin:0!important;padding:0!important}
 .member-avatar.member-avatar-framed{background:transparent!important;border-color:transparent!important;box-shadow:none!important}
@@ -8,3 +11,21 @@
 .member-avatar.palace-chat-message-avatar{width:40px;height:40px;margin:0 .35rem .3rem 0}
 .palace-chat-sender .member-avatar{vertical-align:middle}
 .palace-chat-settings li>.member-avatar{width:38px;height:38px;margin-right:.45rem}
+
+/* Keep the chamber photograph at its original dimensions. The ornament grows
+   outside it; reserve clearance in the copy instead of shrinking the portrait. */
+.member-chamber-atelier.chic-member-profile .member-avatar.legacy-profile-avatar.member-avatar-framed{
+ border:0!important;box-shadow:none!important;
+}
+.member-chamber-atelier .legacy-profile-avatar.member-avatar-framed>.member-avatar-photo{inset:0!important}
+.member-chamber-atelier .legacy-profile-avatar.member-avatar-framed>.painted-chamber-frame{
+ inset:-46.154%!important;width:192.308%!important;height:192.308%!important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile:has(.legacy-profile-avatar.member-avatar-framed) .legacy-profile-copy{
+ padding-left:230px!important;
+}
+@media(max-width:720px){
+ .palace-shell .member-chamber-atelier.chic-member-profile:has(.legacy-profile-avatar.member-avatar-framed) .legacy-profile-copy{
+  padding:104px clamp(12px,3vw,19px) 1.15rem!important;
+ }
+}
