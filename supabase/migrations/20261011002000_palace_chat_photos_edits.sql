@@ -14,7 +14,7 @@ as $$
  select
   p_path is not null
   and array_length(string_to_array(p_path,'/'),1)=4
-  and split_part(p_path,'/',4) ~ '^[0-9a-f-]{36}\\.webp$'
+  and split_part(p_path,'/',4) ~ '^[0-9a-f-]{36}[.]webp$'
   and (
    (split_part(p_path,'/',1)='direct' and exists(
     select 1 from public.conversations c
@@ -80,7 +80,7 @@ begin
    return new;
  end if;
  if new.media_path is not null then
-  if new.media_path !~ ('^'||v_kind||'/'||v_room::text||'/'||v_user::text||'/[0-9a-f-]{36}\\.webp$')
+  if new.media_path !~ ('^'||v_kind||'/'||v_room::text||'/'||v_user::text||'/[0-9a-f-]{36}[.]webp$')
     or not private.can_access_palace_chat_photo(new.media_path,true)
     or not exists(select 1 from storage.objects o where o.bucket_id='palace-chat-photos' and o.name=new.media_path)
   then raise exception 'This photo is not accessible in the conversation.';end if;
