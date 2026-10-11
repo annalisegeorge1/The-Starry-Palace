@@ -101,3 +101,7 @@
  .palace-chat-v2 .palace-chat-private-photo>button img{max-height:170px}
  .palace-chat-v2 .palace-chat-private-photo.is-expanded>button img{max-height:50dvh}
 }
+
+@media(max-width:720px){
+ .palace-chat-v2.palace-chat-dock.is-open:not(.is-thread-open) :is(.palace-chat-photo-stage,.palace-giphy-picker){display:none!important}
+}
