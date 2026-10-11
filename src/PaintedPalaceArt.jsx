@@ -5,9 +5,9 @@ const root='/assets/palace-watercolours/';
 const protect={onContextMenu:e=>e.preventDefault(),onDragStart:e=>e.preventDefault(),onCopy:e=>e.preventDefault()};
 // Keep the approved raster paintings intact. View boxes isolate one artwork;
 // alpha cleanup removes near-transparent export haze without losing brush edges.
-export function PaintedSprite({sheet,box,sheetSize,size=64,label='',className='',shape='none',decorative=false}){
+export function PaintedSprite({sheet,box,sheetSize,size=64,label='',className='',shape='none',decorative=false,stretch=false}){
  const uid=useId().replace(/:/g,''),[x,y,w,h]=box;
- return <svg {...protect} className={'painted-art '+className} width={size} height={size} viewBox={box.join(' ')} preserveAspectRatio="xMidYMid meet" role={decorative?undefined:'img'} aria-label={decorative?undefined:label} aria-hidden={decorative||undefined} focusable="false">
+ return <svg {...protect} className={'painted-art '+className} width={size} height={size} viewBox={box.join(' ')} preserveAspectRatio={stretch?"none":"xMidYMid meet"} role={decorative?undefined:'img'} aria-label={decorative?undefined:label} aria-hidden={decorative||undefined} focusable="false">
   <defs><filter id={uid+'-alpha'} colorInterpolationFilters="sRGB"><feComponentTransfer><feFuncA type="linear" slope="1.04" intercept="-0.035"/></feComponentTransfer></filter><clipPath id={uid+'-clip'}>{shape==='circle'?<ellipse cx={x+w/2} cy={y+h/2} rx={w/2} ry={h/2}/>:shape==='banner'?<path d={`M${x} ${y}H${x+w*.83}L${x+w} ${y+h/2}L${x+w*.83} ${y+h}H${x}Z`}/>:<rect x={x} y={y} width={w} height={h}/>}</clipPath></defs>
   <g clipPath={`url(#${uid}-clip)`}><image href={root+sheet+'.webp'} width={sheetSize[0]} height={sheetSize[1]} filter={`url(#${uid}-alpha)`}/></g>
  </svg>;
@@ -16,9 +16,9 @@ export function PaintedSigil({palace,size=64,decorative=false,className=''}){
  const slug=typeof palace==='string'?palace:palace?.slug,index=PAINTED_PALACES.indexOf(slug);if(index<0)return null;
  return <PaintedSprite sheet="sigils" sheetSize={[1983,793]} box={[22+(index%5)*396,18+Math.floor(index/5)*386,355,355]} size={size} shape="circle" className={'palace-emblem '+className} label={(palace?.name||slug.replaceAll('-',' '))+' sigil'} decorative={decorative}/>;
 }
-export function PalaceBanner({palace,className=''}){
+export function PalaceBanner({palace,className='',wide=false}){
  const slug=typeof palace==='string'?palace:palace?.slug,index=PAINTED_PALACES.indexOf(slug);if(index<0)return null;
- return <PaintedSprite sheet="banners" sheetSize={[1536,1024]} box={[100+(index%2)*702,55+Math.floor(index/2)*186,643,158]} size="100%" shape="banner" className={'painted-palace-banner '+className} label={(palace?.name||slug.replaceAll('-',' '))+' banner'}/>;
+ return <PaintedSprite sheet="banners" sheetSize={[1536,1024]} box={[100+(index%2)*702,55+Math.floor(index/2)*186,643,158]} size="100%" shape="banner" stretch={wide} className={'painted-palace-banner '+(wide?'painted-palace-banner-wide ':'')+className} label={(palace?.name||slug.replaceAll('-',' '))+' banner'}/>;
 }
 export function WriterAward({kind,size=26,decorative=true}){
  const boxes={crown:[35,115,540,450],heart:[620,145,465,420],moon:[1170,110,478,485],star:[1650,110,500,480]};if(!boxes[kind])return null;
