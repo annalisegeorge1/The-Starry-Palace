@@ -10,3 +10,5 @@ export const selectPrismPalette=(slug,finish='soft',accent='harmony')=>call('sel
 export const savePrismLook=(slot,name,slug,finish,accent)=>call('save_chamber_prism_look',{p_slot:slot,p_name:name,p_slug:slug,p_finish:finish,p_accent:accent});
 
 export const savePaintedChamberFrame=slug=>call('set_painted_chamber_frame',{p_slug:slug});
+
+export const getPaintedMemberFrame=id=>call('get_painted_chamber_state',{p_member:id});

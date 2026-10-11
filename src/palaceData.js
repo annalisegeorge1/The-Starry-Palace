@@ -196,7 +196,7 @@ export async function getChamberSnapshot(userId){
  }
 }
 export async function getPublishedWorks(){
- const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,language,completion_status,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(username,display_name,avatar_url,title),work_tags(tags(id,name,category,status))').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(24);
+ const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,language,completion_status,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(id,username,display_name,avatar_url,title),work_tags(tags(id,name,category,status))').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(24);
  if(error)throw error;
  const rows=data||[];
  const ids=rows.map(x=>x.id);
@@ -535,12 +535,12 @@ export async function castClubPollVote(userId,pollId,optionId){
 export async function getPalaceLife(userId){
  const [clubs,threads,replies,forumPolls,forumPollOptions,forumPollVotes,chat,intros,clubInvites,clubRequests,myClubRequests,subscriptions,mutes,savedThreads,highlights,highlightChampions,communityIntros,introReactions,discovery,boundaries,follows]=await Promise.all([
   needClient().from('clubs').select('id,name,slug,club_type,privacy,description,club_members!inner(user_id,status,role)').eq('club_members.user_id',userId).eq('club_members.status','active').limit(24),
-  needClient().from('forum_threads').select('id,author_id,title,body,room,created_at,updated_at,profiles!forum_threads_author_id_fkey(username,display_name,avatar_url,title)').eq('status','active').order('updated_at',{ascending:false}).limit(30),
-  needClient().from('forum_replies').select('id,thread_id,author_id,body,status,created_at,updated_at,profiles!forum_replies_author_id_fkey(username,display_name,avatar_url,title)').eq('status','active').order('created_at',{ascending:true}).limit(240),
+  needClient().from('forum_threads').select('id,author_id,title,body,room,created_at,updated_at,profiles!forum_threads_author_id_fkey(id,username,display_name,avatar_url,title)').eq('status','active').order('updated_at',{ascending:false}).limit(30),
+  needClient().from('forum_replies').select('id,thread_id,author_id,body,status,created_at,updated_at,profiles!forum_replies_author_id_fkey(id,username,display_name,avatar_url,title)').eq('status','active').order('created_at',{ascending:true}).limit(240),
   needClient().from('forum_polls').select('id,thread_id,created_by,question,status,closes_at,created_at,closed_at').order('created_at',{ascending:false}).limit(60),
   needClient().from('forum_poll_options').select('id,poll_id,label,position').order('position',{ascending:true}).limit(360),
   needClient().from('forum_poll_votes').select('poll_id,option_id,user_id,created_at').limit(2000),
-  needClient().from('public_chat_messages').select('id,author_id,body,created_at,profiles!public_chat_messages_author_id_fkey(username,display_name,avatar_url,title)').eq('status','active').order('created_at',{ascending:false}).limit(30),
+  needClient().from('public_chat_messages').select('id,author_id,body,created_at,profiles!public_chat_messages_author_id_fkey(id,username,display_name,avatar_url,title)').eq('status','active').order('created_at',{ascending:false}).limit(30),
   needClient().from('member_introductions').select('id,author_id,title,body,highlighted,created_at,profiles!member_introductions_author_id_fkey(id,username,display_name,avatar_url,title)').eq('status','active').order('created_at',{ascending:false}).limit(16),
   needClient().from('club_invitations').select('id,club_id,sender_id,recipient_id,note,status,created_at,clubs(id,name,slug,club_type,privacy),profiles!club_invitations_sender_id_fkey(id,username,display_name,avatar_url,title)').eq('recipient_id',userId).eq('status','pending').order('created_at',{ascending:false}).limit(12),
   needClient().from('club_membership_requests').select('id,club_id,requester_id,note,status,created_at,clubs(id,name,slug),profiles!club_membership_requests_requester_id_fkey(id,username,display_name,avatar_url,title)').eq('status','pending').order('created_at',{ascending:false}).limit(30),
@@ -548,9 +548,9 @@ export async function getPalaceLife(userId){
   needClient().from('forum_thread_subscriptions').select('thread_id').eq('user_id',userId),
   needClient().from('forum_thread_mutes').select('thread_id').eq('user_id',userId),
   needClient().from('forum_saved_threads').select('thread_id').eq('user_id',userId),
-  needClient().from('community_highlights').select('id,member_id,created_by,reason,status,created_at,profiles!community_highlights_member_id_fkey(username,display_name,avatar_url,title)').in('status',['nominated','approved','featured']).order('created_at',{ascending:false}).limit(20),
+  needClient().from('community_highlights').select('id,member_id,created_by,reason,status,created_at,profiles!community_highlights_member_id_fkey(id,username,display_name,avatar_url,title)').in('status',['nominated','approved','featured']).order('created_at',{ascending:false}).limit(20),
   needClient().from('community_highlight_champions').select('highlight_id,user_id'),
-  needClient().from('community_introductions').select('id,member_id,title,body,tags,visibility,created_at,profiles!community_introductions_member_id_fkey(username,display_name,avatar_url,title)').in('visibility',['public','members']).order('created_at',{ascending:false}).limit(20),
+  needClient().from('community_introductions').select('id,member_id,title,body,tags,visibility,created_at,profiles!community_introductions_member_id_fkey(id,username,display_name,avatar_url,title)').in('visibility',['public','members']).order('created_at',{ascending:false}).limit(20),
   needClient().from('community_introduction_reactions').select('introduction_id,user_id,reaction'),
   needClient().from('clubs').select('id,name,slug,club_type,privacy,description,owner_id,created_at').eq('discoverable',true).in('privacy',['open','request_to_join']).order('created_at',{ascending:false}).limit(24),
   needClient().from('user_member_boundaries').select('other_user_id,muted,blocked').eq('user_id',userId),
@@ -683,7 +683,7 @@ export async function setIntroductionReaction(userId,introductionId,enabled){
  return enabled
 }
 export async function getMoonlightMessages(limit=50){
- const{data,error}=await needClient().from('public_chat_messages').select('id,author_id,body,created_at,profiles!public_chat_messages_author_id_fkey(username,display_name,avatar_url,title)').eq('status','active').order('created_at',{ascending:false}).limit(Math.max(1,Math.min(100,Number(limit)||50)));
+ const{data,error}=await needClient().from('public_chat_messages').select('id,author_id,body,created_at,profiles!public_chat_messages_author_id_fkey(id,username,display_name,avatar_url,title)').eq('status','active').order('created_at',{ascending:false}).limit(Math.max(1,Math.min(100,Number(limit)||50)));
  if(error)throw error;const rows=(data||[]).reverse();const marks=await getIdentityMarks(rows.map(x=>x.author_id));return rows.map(x=>({...x,profiles:withIdentity(x.profiles,x.author_id,marks)}))
 }
 export async function postMoonlight(userId,body){const text=body.trim();if(!text)throw new Error('Write something before sending it into the room.');if(text.length>500)throw new Error('Moonlight messages are limited to 500 characters.');const{data,error}=await needClient().from('public_chat_messages').insert({author_id:userId,body:text,status:'active'}).select().single();if(error)throw error;return data}
@@ -741,7 +741,7 @@ export async function respondClubMembershipRequest(userId,id,status){
 export async function getLetters(userId){
  const [members,requests,prefs]=await Promise.all([
   needClient().from('conversation_members').select('conversation_id,joined_at,conversations(id,kind,status,last_message_at,direct_user_a,direct_user_b)').eq('user_id',userId).is('left_at',null),
-  needClient().from('message_requests').select('id,sender_id,recipient_id,intro_text,status,created_at,profiles!message_requests_sender_id_fkey(username,display_name,avatar_url,title)').eq('recipient_id',userId).eq('status','pending').order('created_at',{ascending:false}),
+  needClient().from('message_requests').select('id,sender_id,recipient_id,intro_text,status,created_at,profiles!message_requests_sender_id_fkey(id,username,display_name,avatar_url,title)').eq('recipient_id',userId).eq('status','pending').order('created_at',{ascending:false}),
   needClient().from('conversation_preferences').select('*').eq('user_id',userId)
  ]);
  for(const r of[members,requests,prefs])if(r.error)throw r.error;
@@ -846,7 +846,7 @@ export async function getHonour(userId){
   needClient().from('honour_recommendations').select('id,nominator_id,author_name,work_title,reason,status,council_note,created_at,reviewed_at').order('created_at',{ascending:false}).limit(30)
  ]);
  if(periodsReq.error)throw periodsReq.error;if(recommendationsReq.error)throw recommendationsReq.error;
- const ids=(periodsReq.data||[]).map(p=>p.id);let rankings=[];if(ids.length){const r=await needClient().from('monthly_court_rankings').select('period_id,user_id,rank,score,calculated_at,profiles!monthly_court_rankings_user_id_fkey(username,display_name,title,avatar_url)').in('period_id',ids).order('rank');if(r.error)throw r.error;rankings=r.data||[]}
+ const ids=(periodsReq.data||[]).map(p=>p.id);let rankings=[];if(ids.length){const r=await needClient().from('monthly_court_rankings').select('period_id,user_id,rank,score,calculated_at,profiles!monthly_court_rankings_user_id_fkey(id,username,display_name,title,avatar_url)').in('period_id',ids).order('rank');if(r.error)throw r.error;rankings=r.data||[]}
  let pref=null;if(userId){const pr=await needClient().from('ranking_preferences').select('*').eq('user_id',userId).maybeSingle();if(pr.error)throw pr.error;pref=pr.data;if(!pref){const made=await needClient().from('ranking_preferences').insert({user_id:userId}).select().single();if(made.error)throw made.error;pref=made.data}}
  return{periods:periodsReq.data||[],rankings,preferences:pref,recommendations:recommendationsReq.data||[]}
 }
@@ -1071,7 +1071,7 @@ export async function searchPalace(term){
 
  const [tagGroups,directWorks,directComics,members,clubs,archive]=await Promise.all([
   Promise.all(tagProbes.map((probe,i)=>searchPalaceTags(probe,'all',i===0?16:12))),
-  needClient().from('works').select('id,title,slug,summary,rating,completion_status,cover_url,author_id,last_published_at,profiles!works_author_id_fkey(username,display_name,avatar_url,title)').eq('publication_status','published').or(broadWorks).order('last_published_at',{ascending:false}).limit(36),
+  needClient().from('works').select('id,title,slug,summary,rating,completion_status,cover_url,author_id,last_published_at,profiles!works_author_id_fkey(id,username,display_name,avatar_url,title)').eq('publication_status','published').or(broadWorks).order('last_published_at',{ascending:false}).limit(36),
   needClient().from('comics').select('id,creator_id,title,slug,summary,rating,completion_status,cover_path,last_published_at').eq('publication_status','published').or(broadWorks).order('last_published_at',{ascending:false}).limit(36),
   needClient().from('profiles').select('id,username,display_name,title,avatar_url,visibility').or(broadMembers).neq('visibility','hidden').limit(30),
   needClient().from('clubs').select('id,name,slug,club_type,privacy,description').or(broadClubs).neq('privacy','private').order('name').limit(24),
@@ -1083,14 +1083,14 @@ export async function searchPalace(term){
  const [tagWorkLinks,tagComicLinks,authorWorks]=await Promise.all([
   tagIds.length?needClient().from('work_tags').select('work_id,tag_id').in('tag_id',tagIds).limit(320):Promise.resolve({data:[],error:null}),
   tagIds.length?needClient().from('comic_tags').select('comic_id,tag_id').in('tag_id',tagIds).limit(320):Promise.resolve({data:[],error:null}),
-  memberIds.length?needClient().from('works').select('id,title,slug,summary,rating,completion_status,cover_url,author_id,last_published_at,profiles!works_author_id_fkey(username,display_name,avatar_url,title)').eq('publication_status','published').in('author_id',memberIds).order('last_published_at',{ascending:false}).limit(48):Promise.resolve({data:[],error:null})
+  memberIds.length?needClient().from('works').select('id,title,slug,summary,rating,completion_status,cover_url,author_id,last_published_at,profiles!works_author_id_fkey(id,username,display_name,avatar_url,title)').eq('publication_status','published').in('author_id',memberIds).order('last_published_at',{ascending:false}).limit(48):Promise.resolve({data:[],error:null})
  ]);
  for(const r of[tagWorkLinks,tagComicLinks,authorWorks])if(r.error)throw r.error;
 
  const extraWorkIds=[...new Set((tagWorkLinks.data||[]).map(x=>x.work_id).filter(id=>!(directWorks.data||[]).some(w=>w.id===id)&&!(authorWorks.data||[]).some(w=>w.id===id)))];
  const extraComicIds=[...new Set((tagComicLinks.data||[]).map(x=>x.comic_id).filter(id=>!(directComics.data||[]).some(w=>w.id===id)))];
  const [taggedWorks,taggedComics]=await Promise.all([
-  extraWorkIds.length?needClient().from('works').select('id,title,slug,summary,rating,completion_status,cover_url,author_id,last_published_at,profiles!works_author_id_fkey(username,display_name,avatar_url,title)').eq('publication_status','published').in('id',extraWorkIds).limit(64):Promise.resolve({data:[],error:null}),
+  extraWorkIds.length?needClient().from('works').select('id,title,slug,summary,rating,completion_status,cover_url,author_id,last_published_at,profiles!works_author_id_fkey(id,username,display_name,avatar_url,title)').eq('publication_status','published').in('id',extraWorkIds).limit(64):Promise.resolve({data:[],error:null}),
   extraComicIds.length?needClient().from('comics').select('id,creator_id,title,slug,summary,rating,completion_status,cover_path,last_published_at').eq('publication_status','published').in('id',extraComicIds).limit(64):Promise.resolve({data:[],error:null})
  ]);
  for(const r of[taggedWorks,taggedComics])if(r.error)throw r.error;
@@ -1152,7 +1152,7 @@ export async function searchPalace(term){
  }
 }
 
-export async function getWorkBySlug(slug){const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,language,completion_status,publication_status,visibility,comment_policy,constructive_criticism,translation_policy,download_policy,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(username,display_name,avatar_url,title),chapters(id,title,position,status,word_count,scheduled_for,published_at)').eq('slug',slug).maybeSingle();if(error)throw error;if(!data)return null;data.chapters=(data.chapters||[]).sort((a,b)=>a.position-b.position);return data}
+export async function getWorkBySlug(slug){const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,language,completion_status,publication_status,visibility,comment_policy,constructive_criticism,translation_policy,download_policy,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(id,username,display_name,avatar_url,title),chapters(id,title,position,status,word_count,scheduled_for,published_at)').eq('slug',slug).maybeSingle();if(error)throw error;if(!data)return null;data.chapters=(data.chapters||[]).sort((a,b)=>a.position-b.position);return data}
 export async function getWorkExport(slug){
  const work=await getWorkBySlug(slug);if(!work)return null;
  const{data:chapters,error}=await needClient().from('chapters').select('id,title,position,body_html,status,revision_note,word_count,created_at,updated_at,published_at').eq('work_id',work.id).order('position');
@@ -1296,7 +1296,7 @@ export async function deleteWorkLoreEntry(id){
  const{data,error}=await needClient().rpc('delete_work_lore_entry',{p_id:id});if(error)throw error;return data
 }
 
-export async function getWorkCommunity(workId){const [tags,comments]=await Promise.all([needClient().from('work_tags').select('position,tags(id,name,category,status)').eq('work_id',workId).order('position'),needClient().from('comments').select('id,work_id,chapter_id,author_id,parent_comment_id,comment_type,body,spoiler,status,created_at,profiles!comments_author_id_fkey(username,display_name,avatar_url)').eq('work_id',workId).order('created_at')]);if(tags.error)throw tags.error;if(comments.error)throw comments.error;return{tags:(tags.data||[]).filter(x=>['canonical','community'].includes(x.tags?.status)),comments:comments.data||[]}}
+export async function getWorkCommunity(workId){const [tags,comments]=await Promise.all([needClient().from('work_tags').select('position,tags(id,name,category,status)').eq('work_id',workId).order('position'),needClient().from('comments').select('id,work_id,chapter_id,author_id,parent_comment_id,comment_type,body,spoiler,status,created_at,profiles!comments_author_id_fkey(id,username,display_name,avatar_url)').eq('work_id',workId).order('created_at')]);if(tags.error)throw tags.error;if(comments.error)throw comments.error;return{tags:(tags.data||[]).filter(x=>['canonical','community'].includes(x.tags?.status)),comments:comments.data||[]}}
 export async function addWorkTag(userId,workId,tagId){const{error}=await needClient().from('work_tags').insert({work_id:workId,tag_id:tagId});if(error&&error.code!=='23505')throw error}
 export async function removeWorkTag(userId,workId,tagId){const{error}=await needClient().from('work_tags').delete().eq('work_id',workId).eq('tag_id',tagId);if(error)throw error}
 export async function proposeTag(userId,name,category){const clean=name.trim();if(!clean)throw new Error('Name the tag first.');const{data,error}=await needClient().from('tags').insert({name:clean,category,status:'pending',created_by:userId}).select().single();if(error)throw error;return data}
@@ -1604,7 +1604,7 @@ export async function getWritingExtras(userId){
  const [incoming,outgoing,comments,downloads]=await Promise.all([
   needClient().from('work_collaborators').select('work_id,user_id,role,status,invited_by,created_at,responded_at,works(id,title,slug,author_id,publication_status)').eq('user_id',userId).order('created_at',{ascending:false}),
   needClient().from('work_collaborators').select('work_id,user_id,role,status,invited_by,created_at,responded_at,works(id,title,slug,author_id,publication_status)').eq('invited_by',userId).order('created_at',{ascending:false}),
-  needClient().from('comments').select('id,work_id,chapter_id,author_id,comment_type,body,spoiler,status,created_at,works!inner(id,title,slug,author_id),profiles!comments_author_id_fkey(username,display_name,avatar_url)').eq('works.author_id',userId).order('created_at',{ascending:false}).limit(100),
+  needClient().from('comments').select('id,work_id,chapter_id,author_id,comment_type,body,spoiler,status,created_at,works!inner(id,title,slug,author_id),profiles!comments_author_id_fkey(id,username,display_name,avatar_url)').eq('works.author_id',userId).order('created_at',{ascending:false}).limit(100),
   needClient().from('comic_download_requests').select('id,comic_id,requester_id,requested_scope,note,status,created_at,decided_at,comics!inner(id,title,slug,creator_id)').eq('comics.creator_id',userId).order('created_at',{ascending:false}).limit(100)
  ]);for(const r of[incoming,outgoing,comments,downloads])if(r.error)throw r.error;
  const profileIds=[...new Set([...(incoming.data||[]).map(x=>x.invited_by),...(outgoing.data||[]).map(x=>x.user_id),...(downloads.data||[]).map(x=>x.requester_id)].filter(Boolean))];let profiles=[];

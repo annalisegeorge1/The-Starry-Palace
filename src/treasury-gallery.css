@@ -1,0 +1,50 @@
+/* Compact collection gallery; details and actions open from the artwork. */
+.treasury-gallery{min-width:0;width:100%}
+.treasury-gallery .treasury-catalogue-head{margin-bottom:1rem}
+.treasury-gallery .treasury-catalogue-head>.lede{max-width:65ch}
+.treasury-gallery .treasury-catalogue-head>p:last-child{font-size:.8rem;opacity:.75}
+.treasury-gallery .catalogue-celestial-doorway{padding:.8rem 1rem;margin:1rem 0;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.treasury-gallery .catalogue-celestial-doorway h2{font-size:1rem;margin:0}
+.treasury-gallery .catalogue-celestial-doorway p:not(.eyebrow){display:none}
+.treasury-gallery .treasury-collection-switch{position:static!important;display:flex!important;flex-direction:row!important;gap:.5rem;padding:.35rem!important;min-height:0!important;margin:1rem 0 .6rem!important;border-radius:16px!important}
+.treasury-gallery .treasury-collection-switch>button{flex:1!important;min-height:42px!important;padding:.55rem!important;text-align:center!important;border-radius:12px!important}
+.treasury-family-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.treasury-family-tabs button{padding:.5rem .8rem;border-radius:30px;border:1px solid #929dd64d;background:transparent;color:inherit}
+.treasury-family-tabs button[aria-pressed=true]{background:linear-gradient(120deg,#7163af55,#478b9e44);border-color:#a79cd4}
+.treasury-gallery .badge-controls,.treasury-badge-filters{display:flex!important;flex-wrap:wrap;gap:.65rem!important;margin:.8rem 0!important;position:static!important}
+.treasury-gallery .badge-controls label{flex:1 1 145px;min-width:0!important}
+.treasury-gallery .badge-controls label:first-child{flex:2 1 220px}
+.treasury-badge-filters label{display:grid;gap:.3rem;flex:1 1 160px;font-size:.8rem}
+.treasury-gallery select,.treasury-gallery input{max-width:100%;min-width:0;box-sizing:border-box}
+.treasury-gallery .badge-grid,.treasury-gallery .gift-catalogue-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important;align-items:stretch}
+.treasury-gallery .badge-card,.treasury-gallery .gift-catalogue-card{display:flex!important;flex-direction:column!important;align-items:stretch;min-width:0!important;min-height:0!important;height:auto!important;padding:14px!important;gap:7px!important;border-radius:20px!important;overflow:visible!important;box-shadow:0 5px 16px #05061619!important}
+.treasury-gallery .badge-card>h2,.treasury-gallery .gift-catalogue-card h2{font-size:clamp(.95rem,1.4vw,1.2rem)!important;line-height:1.3!important;margin:0!important;min-height:2.6em;overflow-wrap:anywhere}
+.treasury-gallery .badge-card>small{font-size:.7rem;line-height:1.4;margin:0!important}
+.treasury-gallery .badge-art-preview-button{width:100%;height:185px!important;min-height:0!important;display:grid!important;place-items:center;padding:0!important;margin:0!important}
+.treasury-gallery .badge-art-preview-button .palace-watercolour-badge{width:100%!important;margin:0!important;min-height:0!important;display:grid!important;place-items:center;gap:3px!important}
+.treasury-gallery .badge-art-preview-button figcaption{font-size:.68rem!important;line-height:1.2;margin:0!important;padding:0!important}
+.treasury-gallery .badge-card .treasury-name-open{background:none!important;border:0!important;box-shadow:none!important;color:inherit!important;padding:0!important;margin:0!important;text-align:left;font:inherit!important;min-height:0!important;width:100%;cursor:pointer}
+.treasury-tier-dots{display:flex;gap:7px;margin:2px 0;align-items:center}
+.treasury-tier-dots>span{display:block;width:9px;height:9px;border-radius:50%;background:transparent;border:1px solid var(--tier-color,#c9bdaf);opacity:.55}
+.treasury-tier-dots>span[data-tier=bronze]{--tier-color:#bf865f}.treasury-tier-dots>span[data-tier=silver]{--tier-color:#c1cde4}.treasury-tier-dots>span[data-tier=gold]{--tier-color:#d5b265}.treasury-tier-dots>span[data-tier=platinum]{--tier-color:#bcb3ed}.treasury-tier-dots>span[data-tier=emerald]{--tier-color:#60bfaa}
+.treasury-tier-dots>span.earned{background:var(--tier-color);opacity:1;box-shadow:0 0 5px color-mix(in srgb,var(--tier-color),transparent 65%)}
+.treasury-gallery .badge-card>progress{width:100%;height:5px;margin-top:auto;accent-color:#9b91d7;border:0;border-radius:20px;overflow:hidden}
+.treasury-gallery .badge-card>progress::-webkit-progress-bar{background:#9393be26}.treasury-gallery .badge-card>progress::-webkit-progress-value{background:linear-gradient(90deg,#9887d4,#60abb7)}
+.treasury-gift-open{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;padding:0!important;border:0!important;box-shadow:none!important;background:transparent!important;color:inherit!important;cursor:pointer;text-align:center}
+.treasury-gift-open>span{font-size:.75rem;line-height:1.4}
+.treasury-gift-open .palace-gift-art{height:175px!important;width:100%!important;min-height:0!important;margin:0!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
+.treasury-gift-open .palace-gift-art figcaption{display:none}
+.treasury-gift-open .original-collectible-stage{height:100%!important;width:100%!important;max-height:100%;min-height:0!important}
+.treasury-gallery .gift-catalogue-card .treasury-gift-open h2{align-self:stretch}
+.treasury-collection-tools{margin:.8rem 0;border:1px solid #919ac633;border-radius:14px;padding:.7rem 1rem}
+.treasury-collection-tools>summary{cursor:pointer;font-weight:600}
+.treasury-gallery .gift-collection-summary{margin:.7rem 0;gap:.5rem}
+.treasury-gallery .gift-collection-summary article{padding:.65rem}
+.treasury-gallery .gift-collection-summary strong{font-size:1.2rem}
+.treasury-gallery .gift-catalogue-status>span,.treasury-gallery .treasure-rank-note,.treasury-gallery .gift-edition-ribbon{display:none}
+.treasury-gift-dialog{max-width:560px}
+.treasury-gift-dialog .gift-card-actions{display:flex;flex-wrap:wrap;gap:.5rem}
+.treasury-gift-dialog .gift-catalogue-copy{padding:0}
+@media(min-width:1500px){.treasury-gallery .badge-grid,.treasury-gallery .gift-catalogue-grid{grid-template-columns:repeat(5,minmax(0,1fr))!important}}
+@media(max-width:1100px){.treasury-gallery .badge-grid,.treasury-gallery .gift-catalogue-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:650px){.treasury-gallery .badge-grid,.treasury-gallery .gift-catalogue-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}.treasury-gallery .badge-card,.treasury-gallery .gift-catalogue-card{padding:10px!important}.treasury-gallery .badge-art-preview-button{height:158px!important}.treasury-gallery .catalogue-celestial-doorway{flex-wrap:wrap}.treasury-gallery .badge-controls label{flex-basis:120px}.treasury-gallery .badge-controls label:first-child{flex-basis:100%}.treasury-gift-open .palace-gift-art{height:150px!important}}

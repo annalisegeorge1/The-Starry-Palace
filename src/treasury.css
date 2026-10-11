@@ -1187,3 +1187,13 @@
     rgba(249,246,251,.42)!important;
   color:#725f7c!important;
 }
+
+/* Older paintings and their oval mount share one coordinate system. */
+.painted-tier-stage.painted-tier-stage{width:160px!important;height:205px!important;max-width:100%!important}
+.painted-tier-stage .painted-tier-mount{transform:none!important}
+.painted-tier-stage.is-object .painted-badge-inner{left:19%;top:19%;width:62%;height:54%}
+.painted-tier-stage.is-object .painted-badge-inner>.approved-badge-art,.painted-tier-stage.is-object .painted-badge-inner>.merged-badge-object{transform:none}
+.painted-tier-stage.is-character .painted-badge-inner{left:25%;top:19%;width:50%;height:57%}
+.badge-art-dialog .painted-tier-stage.painted-tier-stage{width:min(260px,60vw)!important;height:min(334px,77vw)!important}
+.treasury-gallery .badge-card .painted-tier-stage.painted-tier-stage{width:128px!important;height:164px!important}
+@media(max-width:650px){.treasury-gallery .badge-card .painted-tier-stage.painted-tier-stage{width:106px!important;height:136px!important}}

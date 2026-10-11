@@ -1,3 +1,4 @@
+import MemberAvatar from './MemberAvatar';
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createPortal } from 'react-dom';
@@ -430,7 +431,7 @@ function FrameShell({children}){
   <a className="skip-to-content" href="#palace-content">Skip to main content</a>
   <aside id="palace-sidebar" className="sidebar full-sidebar" aria-label="Palace navigation" role={navOpen?'dialog':undefined} aria-modal={navOpen?'true':undefined} tabIndex={navOpen?-1:undefined}>
    <div className="palace-cover-live restored-cover dusk-gif-cover"><img src="/assets/palace/palace-belonging.gif" alt="" aria-hidden="true" loading="lazy" decoding="async"/><div className="dusk-cover-glass" aria-hidden="true"/><button className="sidebar-retract" type="button" onClick={()=>setSidebarCollapsed(true)} aria-label="Retract Palace sidebar" title="Retract sidebar">‹</button><button className="nav-close" onClick={()=>setNavOpen(false)} aria-label="Close Palace navigation">×</button></div>
-   {session?<Link className="identity-card-live restored-identity" to={shellProfile?.username?"/member/"+shellProfile.username:"/chamber"}><div className={"identity-avatar "+(!shellProfile?.avatar_url?'sigil-fallback':'')}>{shellProfile?.avatar_url?<img src={shellProfile.avatar_url} alt=""/>:<span aria-hidden="true">☾<b>✦</b></span>}</div><div><strong>{shellProfile?.display_name||shellProfile?.username||'Your Chamber'}</strong><span>{shellProfile?.title||'Palace member'}</span></div></Link>:<Link className="identity-card-live guest" to="/login"><div className="identity-avatar">✦</div><div><strong>Enter the Palace</strong><span>Sign in or create your chamber</span></div></Link>}
+   {session?<Link className="identity-card-live restored-identity" to={shellProfile?.username?"/member/"+shellProfile.username:"/chamber"}><MemberAvatar as="div" className="identity-avatar" profile={shellProfile} memberId={session.user.id}/><div><strong>{shellProfile?.display_name||shellProfile?.username||'Your Chamber'}</strong><span>{shellProfile?.title||'Palace member'}</span></div></Link>:<Link className="identity-card-live guest" to="/login"><div className="identity-avatar">✦</div><div><strong>Enter the Palace</strong><span>Sign in or create your chamber</span></div></Link>}
    <PalaceSidebarNavigation rooms={visibleRooms} activeRoom={activeRoom}
     currentHref={currentHref} currentPath={location.pathname}
     profilePath={shellProfile?.username?'/member/'+shellProfile.username:'/chamber'}

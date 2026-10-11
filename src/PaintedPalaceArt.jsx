@@ -26,7 +26,7 @@ export function WriterAward({kind,size=26,decorative=true}){
 }
 export function TierFrame({tier='bronze',style=0}){
  const i=Math.max(0,PAINTED_TIERS.indexOf(tier)),xs=[10,325,620,917,1210],ws=[313,293,295,291,325],ys=[25,338,651];
- return <PaintedSprite sheet="tier-frames" sheetSize={[1536,1024]} box={[xs[i],ys[style%3],ws[i],312]} size="100%" className="painted-tier-frame" decorative/>;
+ return <PaintedSprite sheet="tier-frames" sheetSize={[1536,1024]} box={[xs[i],ys[style%3],ws[i],312]} padding={6} stretch size="100%" className="painted-tier-frame" decorative/>;
 }
 export function PaintedBadge({family,tier='bronze'}){
  const i=family.index;
@@ -41,5 +41,5 @@ export function ChamberFrameArt({slug,size='100%',className=''}){
  const rows=[0,247,487,722,962,1210];
  const col=frame.index%5,row=Math.floor(frame.index/5);
  const box=[columns[col],rows[row],columns[col+1]-columns[col],rows[row+1]-rows[row]];
- return <PaintedSprite sheet="chamber-frames" sheetSize={[1254,1254]} box={box} padding={8} size={size} className={'painted-chamber-frame '+className} label={frame.name+' chamber frame'}/>;
+ return <PaintedSprite sheet="chamber-frames" sheetSize={[1254,1254]} box={box} padding={8} stretch size={size} className={'painted-chamber-frame '+className} label={frame.name+' chamber frame'}/>;
 }

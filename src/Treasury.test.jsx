@@ -79,3 +79,23 @@ it('redirects the old 600-art gallery link into the live gift collection',async(
  expect(await screen.findByRole('heading',{name:'Moon cup'})).toBeTruthy();
  expect(screen.queryByRole('button',{name:/Original painted treasures/})).toBeNull();
 });
+it('keeps gift actions in a dismissable detail panel',async()=>{
+ HTMLDialogElement.prototype.showModal=function(){this.setAttribute('open','')};
+ window.history.replaceState(null,'','/?collection=gifts');
+ render(<Treasury Frame={({children})=><main>{children}</main>}/>);
+ await screen.findByRole('heading',{name:'Moon cup'});
+ expect(screen.queryByRole('button',{name:'Add to chamber showcase'})).toBeNull();
+ fireEvent.click(screen.getByRole('button',{name:'Open Moon cup details'}));
+ expect(screen.getByRole('dialog',{name:'Moon cup details'})).toBeTruthy();
+ expect(screen.getByRole('button',{name:'Add to chamber showcase'})).toBeTruthy();
+ fireEvent.click(screen.getByRole('button',{name:'Close ×'}));
+ expect(screen.queryByRole('dialog')).toBeNull();
+});
+it('filters earned badges without granting catalogue previews',()=>{
+ window.history.replaceState(null,'','/?collection=expanded');
+ render(<Treasury Frame={({children})=><main>{children}</main>}/>);
+ fireEvent.change(screen.getByLabelText('My badges'),{target:{value:'owned'}});
+ expect(screen.queryAllByRole('button',{name:/Enlarge .* artwork/})).toHaveLength(0);
+ fireEvent.change(screen.getByLabelText('My badges'),{target:{value:'locked'}});
+ expect(screen.getAllByRole('button',{name:/Enlarge .* artwork/})).toHaveLength(24);
+});

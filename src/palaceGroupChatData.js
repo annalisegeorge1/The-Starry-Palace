@@ -39,7 +39,7 @@ export async function getPalaceGroupChatOverview(userId){
 export async function getPalaceGroupMessages(chatId,limit=100,before=null){
  if(!cleanId(chatId))return [];
  let query=client().from('palace_group_chat_messages')
-  .select('id,chat_id,sender_id,body,created_at,edited_at,media_path,reply_to_id,shared_work_id,profiles!palace_group_chat_messages_sender_id_fkey(id,username,display_name),works!palace_group_chat_messages_shared_work_id_fkey(id,title,slug)')
+  .select('id,chat_id,sender_id,body,created_at,edited_at,media_path,reply_to_id,shared_work_id,profiles!palace_group_chat_messages_sender_id_fkey(id,username,display_name,avatar_url),works!palace_group_chat_messages_shared_work_id_fkey(id,title,slug)')
   .eq('chat_id',chatId);
  // An exclusive, server-side timestamp cursor only retrieves earlier RLS-
  // authorized messages. Never download the entire history in one request.

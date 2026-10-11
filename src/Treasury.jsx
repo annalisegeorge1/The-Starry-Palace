@@ -6,6 +6,7 @@ import PalaceBadge from './PalaceBadge';
 import PalaceGift, { giftCourt, giftCourts, giftEdition, giftEditions } from './PalaceGift';
 import { ascendPalaceGift, createGiftTradeOffer, getGiftCatalogue, getGiftTrades, getTreasury, removeProfileAchievementShowcase, removeProfileGiftShowcase, respondGiftTradeOffer, searchMembers, setProfileAchievementShowcase, setProfileGiftShowcase } from './palaceData';
 import './treasury.css';
+import './treasury-gallery.css';
 import {buildInventory} from './treasuryCollection';
 
 const tiers=['bronze','silver','gold','platinum','emerald'];
@@ -19,9 +20,12 @@ export default function Treasury({Frame}) {
  const [artPreview,setArtPreview]=useState(null);
 
  const [category,setCategory]=useState('all');
- useEffect(()=>setBadgePage(1),[query,category,collection]);
- const [tier,setTier]=useState('bronze');
- const [selected,setSelected]=useState(null);
+
+ const [tier,setTier]=useState('owned');
+ const [badgeOwnership,setBadgeOwnership]=useState('all');
+ const [sort,setSort]=useState('catalogue');
+ const [giftDetail,setGiftDetail]=useState(null);
+ useEffect(()=>setBadgePage(1),[query,category,collection,badgeOwnership,sort]);
  const [giftData,setGiftData]=useState({items:[],count:0});
  const [ownedData,setOwnedData]=useState({gifts:[]});
  const [selectedCourt,setGiftCourt]=useState('all');
@@ -54,15 +58,19 @@ export default function Treasury({Frame}) {
   return()=>{live=false};
  },[session.user.id]);
 
- useEffect(()=>setGiftPage(1),[query,selectedCourt,giftEditionFilter,giftOwnership,collection]);
+ useEffect(()=>setGiftPage(1),[query,selectedCourt,giftEditionFilter,giftOwnership,collection,sort]);
 
  const source=collection==='originals'?originals:badges;
- const visibleBadges=source.filter(b=>(category==='all'||b.category===category)&&`${b.name} ${b.description} ${b.category}`.toLowerCase().includes(query.toLowerCase()));
+ const matchingBadges=source.filter(b=>(category==='all'||b.category===category)&&`${b.name} ${b.description} ${b.category}`.toLowerCase().includes(query.toLowerCase()));
  const courts=useMemo(()=>[...new Set(giftData.items.map(g=>g.court_name).filter(Boolean))].sort((a,b)=>a.localeCompare(b)),[giftData.items]);
  const inventory=useMemo(()=>buildInventory(ownedData.gifts),[ownedData.gifts]);
  const showcaseMap=useMemo(()=>new Map((ownedData.giftShowcase||[]).map(x=>[x.gift_id,x])),[ownedData.giftShowcase]);
  const achievementProgress=useMemo(()=>new Map((ownedData.achievements||[]).map(x=>[x.achievement_families?.catalogue_number,x])),[ownedData.achievements]);
  const achievementShowcaseMap=useMemo(()=>new Map((ownedData.achievementShowcase||[]).map(x=>[x.achievement_id,x])),[ownedData.achievementShowcase]);
+ const badgeRow=b=>collection==='expanded'?achievementProgress.get(b.number):null;
+ const badgeRank=b=>tier==='owned'?(unlockedTiers(badgeRow(b)).at(-1)||'bronze'):tier;
+ const completion=b=>{const row=badgeRow(b),unlocked=unlockedTiers(row);const goal=b.tiers.find(t=>!unlocked.includes(t.slug));return goal?Math.min(1,Number(row?.current_value||0)/goal.threshold):1};
+ const visibleBadges=matchingBadges.filter(b=>collection==='originals'||badgeOwnership==='all'||(badgeOwnership==='owned'?unlockedTiers(badgeRow(b)).length>0:unlockedTiers(badgeRow(b)).length===0)).sort((a,b)=>sort==='name'?a.name.localeCompare(b.name):sort==='progress'?(completion(a)===1?2:1-completion(a))-(completion(b)===1?2:1-completion(b)):0);
  const ownedDistinct=giftData.items.filter(g=>inventory.has(g.id)).length;
  const totalCopies=[...inventory.values()].reduce((n,x)=>n+x.copies,0);
  const duplicateDistinct=[...inventory.values()].filter(x=>x.hasDuplicates).length;
@@ -83,13 +91,13 @@ export default function Treasury({Frame}) {
    const owned=inventory.get(g.id);
    const ownershipMatch=giftOwnership==='all'||(giftOwnership==='owned'&&owned)||(giftOwnership==='missing'&&!owned)||(giftOwnership==='duplicates'&&owned?.hasDuplicates)||(giftOwnership==='ascendable'&&owned?.ascendable);
    return (selectedCourt==='all'||g.court_name===selectedCourt)&&(giftEditionFilter==='all'||giftEdition(g)===giftEditionFilter)&&ownershipMatch&&(!term||`${g.name} ${g.description} ${g.court_name} ${g.catalogue_number} ${giftEdition(g)}`.toLowerCase().includes(term));
-  });
- },[giftData.items,selectedCourt,giftEditionFilter,giftOwnership,inventory,query]);
+  }).sort((a,b)=>sort==='name'?a.name.localeCompare(b.name):sort==='copies'?(inventory.get(b.id)?.copies||0)-(inventory.get(a.id)?.copies||0):0);
+ },[giftData.items,selectedCourt,giftEditionFilter,giftOwnership,inventory,query,sort]);
  const giftPages=Math.max(1,Math.ceil(visibleGifts.length/PAGE_SIZE));
  const pagedGifts=visibleGifts.slice((giftPage-1)*PAGE_SIZE,giftPage*PAGE_SIZE);
 
  function choose(next){
-  setCollection(next);const url=new URL(window.location.href);url.searchParams.set('collection',next);window.history.replaceState(null,'',url);setCategory('all');setGiftCourt('all');setGiftEditionFilter('all');setGiftOwnership('all');setSelected(null);
+  setCollection(next);const url=new URL(window.location.href);url.searchParams.set('collection',next);window.history.replaceState(null,'',url);setCategory('all');setGiftCourt('all');setGiftEditionFilter('all');setGiftOwnership('all');setBadgeOwnership('all');setSort('catalogue');setGiftDetail(null);
  }
  async function reloadTreasury(){
   const owned=await getTreasury(session.user.id);setOwnedData(owned);
@@ -137,10 +145,10 @@ export default function Treasury({Frame}) {
   try{setGiftAction('badge-remove:'+id);setGiftError('');await removeProfileAchievementShowcase(id);await reloadTreasury()}catch(e){setGiftError(e.message)}finally{setGiftAction('')}
  }
 
- return <Frame privateArea>
+ return <Frame privateArea><div className="treasury-gallery">
   <section className="room-title treasury-catalogue-head">
    <p className="eyebrow">COLLECT · ACHIEVE · CELEBRATE</p>
-   <h1>Royal Treasury Catalogue</h1>
+   <h1>Your Royal Treasury</h1>
    <p className="lede">The original 175 Palace badges, the expanded achievement paths, and 600 painted treasures in the live gift collection live together here.</p>
    <p>Catalogue views are previews only. Earned badges, owned gifts, duplicate counts and showcase choices remain tied to verified Palace activity.</p>
   </section>
@@ -148,17 +156,17 @@ export default function Treasury({Frame}) {
   <section className="catalogue-celestial-doorway"><div><p className="eyebrow">CELESTIAL HONOURS</p><h2>Special titles now live in the Royal Treasury.</h2><p>Your Celestial Points, earned title constellations and point history have their own chamber so the Full Catalogue can stay focused on badges and treasures.</p></div><a href="/treasury?tab=titles" className="button-moonstone">Open Celestial Titles →</a></section>
 
   <div className="badge-collection-switch treasury-collection-switch" role="group" aria-label="Treasury collection">
-   <button aria-pressed={collection==='originals'} onClick={()=>choose('originals')}>Palace originals · 175 badges</button>
-   <button aria-pressed={collection==='expanded'} onClick={()=>choose('expanded')}>Expanded paths · {badges.length} families · painted collections</button>
-   <button aria-pressed={collection==='gifts'} onClick={()=>choose('gifts')}>Gift collection · {giftData.count||600} treasures</button>
+   <button aria-pressed={collection!=='gifts'} onClick={()=>choose('expanded')}>Badges</button>
+   <button aria-label="Gift collection" aria-pressed={collection==='gifts'} onClick={()=>choose('gifts')}>Gifts</button>
   </div>
-
+  {collection!=='gifts'&&<div className="treasury-family-tabs" role="group" aria-label="Badge collections"><button aria-pressed={collection==='expanded'} onClick={()=>choose('expanded')}>Achievement paths · {badges.length}</button><button aria-pressed={collection==='originals'} onClick={()=>choose('originals')}>Palace originals</button></div>}
   {collection==='gifts'?<>
    <div className="badge-controls gift-catalogue-controls">
     <label>Search gifts<input value={query} onChange={e=>setQuery(e.target.value)} type="search" placeholder="Name, court or catalogue number"/></label>
     <label>Court<select value={selectedCourt} onChange={e=>setGiftCourt(e.target.value)}><option value="all">All Palace courts</option>{courts.map(c=><option key={c} value={c}>{c}</option>)}</select></label>
     <label>Collection<select value={giftEditionFilter} onChange={e=>setGiftEditionFilter(e.target.value)}><option value="all">Both collections</option>{giftEditions.map(e=><option key={e} value={e}>{e.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</option>)}</select></label>
     <label>My collection<select value={giftOwnership} onChange={e=>setGiftOwnership(e.target.value)}><option value="all">All prizes</option><option value="owned">Owned</option><option value="missing">Not yet owned</option><option value="duplicates">Duplicates</option><option value="ascendable">Ready to ascend</option></select></label>
+    <label>Sort gifts<select value={sort} onChange={e=>setSort(e.target.value)}><option value="catalogue">Catalogue order</option><option value="name">Name A–Z</option><option value="copies">Most copies</option></select></label>
     <label>Collection rank<select value={giftPreviewTier} onChange={e=>setGiftPreviewTier(e.target.value)}><option value="owned">Highest owned tier · Bronze for previews</option>{tiers.map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label>
    </div>
    <p className="treasure-rank-note">Your earlier gifts remain in your cabinet and history. New rewards come from these 600 treasures. A collection rank records upgrades; it does not repaint an artwork’s original edition.</p>
@@ -169,27 +177,30 @@ export default function Treasury({Frame}) {
     <article><strong>{duplicateDistinct}</strong><span>duplicate gifts</span></article>
     <article><strong>{ascendableDistinct}</strong><span>ready to ascend</span></article>
    </section>
-   <section className="gift-exchange-desk"><div><p className="eyebrow">DUPLICATE EXCHANGE</p><h2>Trade without giving up your only copy.</h2><p>Trades exchange one duplicate tier for one duplicate tier. Ownership is checked again when the recipient accepts.</p></div><div className="gift-exchange-stats"><span><strong>{pendingIncoming.length}</strong> incoming</span><span><strong>{pendingOutgoing.length}</strong> outgoing</span><button disabled={!duplicateRows.length} onClick={openTrade}>{duplicateRows.length?'Propose a trade':'No duplicates to trade'}</button></div></section>
+   <details className="treasury-collection-tools"><summary>Explore courts & duplicate exchange</summary>   <section className="gift-exchange-desk"><div><p className="eyebrow">DUPLICATE EXCHANGE</p><h2>Trade without giving up your only copy.</h2><p>Trades exchange one duplicate tier for one duplicate tier. Ownership is checked again when the recipient accepts.</p></div><div className="gift-exchange-stats"><span><strong>{pendingIncoming.length}</strong> incoming</span><span><strong>{pendingOutgoing.length}</strong> outgoing</span><button disabled={!duplicateRows.length} onClick={openTrade}>{duplicateRows.length?'Propose a trade':'No duplicates to trade'}</button></div></section>
    {(pendingIncoming.length>0||pendingOutgoing.length>0)&&<section className="gift-trade-list">{[...pendingIncoming,...pendingOutgoing].map(t=>{const incoming=t.recipient_id===session.user.id;return <article key={t.id}><div><small>{incoming?'INCOMING':'OUTGOING'} · {t.status}</small><h3>{incoming?(t.offerer?.display_name||t.offerer?.username||'Palace member'):(t.recipient?.display_name||t.recipient?.username||'Palace member')}</h3><p><strong>{t.offeredGift?.name||'Treasure'} · {t.offered_tier}</strong><span> ⇄ </span><strong>{t.requestedGift?.name||'Treasure'} · {t.requested_tier}</strong></p>{t.note&&<blockquote>{t.note}</blockquote>}</div><div>{incoming?<><button disabled={!!tradeBusy} onClick={()=>respondTrade(t.id,'accept')}>Accept trade</button><button className="quiet-button" disabled={!!tradeBusy} onClick={()=>respondTrade(t.id,'decline')}>Decline</button></>:<button className="quiet-button" disabled={!!tradeBusy} onClick={()=>respondTrade(t.id,'cancel')}>Cancel offer</button>}</div></article>})}</section>}
    <div className="gift-court-atlas" aria-label="Palace court atlas">
     {giftCourts.map(c=>{const progress=courtProgress.get(c.name)||{owned:0,total:0};return <button key={c.slug} aria-pressed={selectedCourt===c.name} className={selectedCourt===c.name?'active':''} style={{'--court-accent':c.accent,'--court-glow':c.glow}} onClick={()=>setGiftCourt(selectedCourt===c.name?'all':c.name)}>
      <span className="court-atlas-sigil">{c.sigil}</span><span><strong>{c.name}</strong><small>{c.motto}</small><em>{progress.owned}/{progress.total} collected</em></span>
     </button>})}
    </div>
+</details>
       <div className="gift-catalogue-status"><p role="status">{visibleGifts.length} prizes found</p><span>500 court treasures + 100 keepsakes. Artwork editions stay original; collection ranks ascend from Bronze to Emerald.</span></div>
    {giftLoading&&<p className="catalogue-message">Gathering the collection beneath the stars…</p>}
    {giftError&&<p className="catalogue-message error-state">{giftError}</p>}
    {!giftLoading&&!giftError&&<>
     <div className="gift-catalogue-grid">{pagedGifts.map(g=>{const owned=inventory.get(g.id);const showcased=showcaseMap.get(g.id);const ascendTier=owned?tiers.find(t=>t!=='emerald'&&Number(owned.counts?.[t]||0)>=(g.upgrade_copies||3)):null;return <article className={"gift-catalogue-card"+(owned?' is-owned':' is-missing')+(showcased?' is-showcased':'')} key={g.id}>
-     <PalaceGift gift={g} tier={giftPreviewTier==='owned'?(owned?.tiers?.at(-1)||'bronze'):giftPreviewTier} locked={!owned}/>
+     <button className="treasury-gift-open" aria-label={'Open '+g.name+' details'} onClick={()=>setGiftDetail(g.id)}><PalaceGift gift={g} tier={giftPreviewTier==='owned'?(owned?.tiers?.at(-1)||'bronze'):giftPreviewTier} locked={!owned}/><h2>{g.name}</h2><span>{owned?.tiers?.at(-1)||'bronze'} · {owned?owned.copies+' owned':'Not collected'}</span></button>
+     {giftDetail===g.id&&<TreasuryDetail title={g.name} close={()=>setGiftDetail(null)}>     <PalaceGift gift={g} tier={giftPreviewTier==='owned'?(owned?.tiers?.at(-1)||'bronze'):giftPreviewTier} locked={!owned}/>
      <div className="gift-catalogue-copy">
       <div className="gift-owned-line">{owned?<><b>In your cabinet</b><span>{owned.copies} cop{owned.copies===1?'y':'ies'} · {owned.tiers.join(' / ')}</span></>:<><b>Not yet collected</b><span>Catalogue preview</span></>}</div>
       <small>CATALOGUE {String(g.catalogue_number).padStart(3,'0')} · {giftCourt(g).sigil} {g.court_name} · {giftEdition(g).replace('-',' ')}</small>
       <h2>{g.name}</h2>
       <p>{g.description}</p>
       <footer><span>{g.collection_type||'Palace collectible'}</span><b>{owned?.tiers?.at(-1)==='emerald'?'Emerald tier collected':(g.upgrade_copies||3)+' copies of the same tier to ascend'}</b></footer>
-      {owned&&<div className="gift-card-actions">{ascendTier&&<button disabled={giftAction==='ascend:'+g.id} onClick={()=>ascend(g,owned)}>{giftAction==='ascend:'+g.id?'Ascending…':'Ascend '+ascendTier+' → '+tiers[tiers.indexOf(ascendTier)+1]}</button>}<button className={showcased?'active':''} onClick={()=>openShowcase(g,owned)}>{showcased?'Showcased · slot '+showcased.position:'Add to chamber showcase'}</button>{showcased&&<button className="quiet-button" disabled={giftAction==='remove:'+g.id} onClick={()=>removeShowcase(g.id)}>{giftAction==='remove:'+g.id?'Removing…':'Remove showcase'}</button>}</div>}
+      {owned&&<div className="gift-card-actions">{ascendTier&&<button disabled={giftAction==='ascend:'+g.id} onClick={()=>ascend(g,owned)}>{giftAction==='ascend:'+g.id?'Ascending…':'Ascend '+ascendTier+' → '+tiers[tiers.indexOf(ascendTier)+1]}</button>}<button className={showcased?'active':''} onClick={()=>{setGiftDetail(null);openShowcase(g,owned)}}>{showcased?'Showcased · slot '+showcased.position:'Add to chamber showcase'}</button>{showcased&&<button className="quiet-button" disabled={giftAction==='remove:'+g.id} onClick={()=>removeShowcase(g.id)}>{giftAction==='remove:'+g.id?'Removing…':'Remove showcase'}</button>}</div>}
      </div>
+</TreasuryDetail>}
     </article>})}</div>
     {!pagedGifts.length&&<div className="catalogue-message"><p>No Palace gifts match these filters.</p><button onClick={()=>{setQuery('');setGiftCourt('all');setGiftEditionFilter('all');setGiftOwnership('all');setGiftPage(1)}}>Clear gift filters</button></div>}
     {giftPages>1&&<nav className="catalogue-pagination" aria-label="Gift catalogue pages">
@@ -202,30 +213,28 @@ export default function Treasury({Frame}) {
    <div className="badge-controls">
     <label>Search badges<input value={query} onChange={e=>setQuery(e.target.value)} type="search" placeholder="Name, category or goal"/></label>
     <label>Category<select value={category} onChange={e=>setCategory(e.target.value)}><option value="all">All categories</option>{[...new Set(source.map(b=>b.category))].map(c=><option key={c}>{c}</option>)}</select></label>
-    <label>Preview tier<select value={tier} onChange={e=>setTier(e.target.value)}>{tiers.map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label>
+    <label>Preview tier<select value={tier} onChange={e=>setTier(e.target.value)}><option value="owned">Highest earned · Bronze preview</option>{tiers.map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label>
    </div>
-   <p role="status">{visibleBadges.length} badge families · the 25 object watercolours and 60 court portraits now live inside these paths.</p>
+   <div className="treasury-badge-filters">{collection==='expanded'&&<label>My badges<select value={badgeOwnership} onChange={e=>setBadgeOwnership(e.target.value)}><option value="all">All badges</option><option value="owned">Earned</option><option value="locked">Locked</option></select></label>}<label>Sort badges<select value={sort} onChange={e=>setSort(e.target.value)}><option value="catalogue">Catalogue order</option><option value="name">Name A–Z</option>{collection==='expanded'&&<option value="progress">Closest to earning</option>}</select></label></div>
+   <p role="status">{visibleBadges.length} badge families · tap an artwork for details and all five tiers.</p>
    <div className="badge-grid">{visibleBadges.slice((badgePage-1)*24,badgePage*24).map(b=>{const progress=collection==='expanded'?achievementProgress.get(b.number):null;const unlocked=unlockedTiers(progress);const achievementId=progress?.achievement_families?.id;const showcased=achievementId?achievementShowcaseMap.get(achievementId):null;return <article className={"badge-card"+(unlocked.length?' is-earned':'')+(showcased?' is-showcased':'')} key={b.id}>
-    <button className="badge-art-preview-button" aria-label={"Enlarge "+b.name+" artwork"} onClick={()=>setArtPreview(b)}><PalaceBadge family={b} tier={tier}/></button>
-    <small>{b.category} · {b.difficulty}</small><h2>{b.name}</h2><p>{b.description}</p>
-    <p className="badge-goal">{b.tiers.find(t=>t.slug===tier)?.threshold.toLocaleString()} · {b.unit||b.metric.replaceAll('_',' ')}</p>
-    {collection==='expanded'&&<div className="badge-earned-state">{unlocked.length?<><strong>Earned · {unlocked.at(-1)}</strong><span>{Number(progress.current_value||0).toLocaleString()} current progress</span></>:<><strong>Not unlocked yet</strong><span>{Number(progress?.current_value||0).toLocaleString()} current progress</span></>}</div>}
-    <button onClick={()=>setSelected(selected===b.id?null:b.id)} aria-expanded={selected===b.id}>{selected===b.id?'Hide requirements':'View all tiers'}</button>
-    {selected===b.id&&<ul className="badge-requirements">{b.tiers.map(t=><li key={t.slug} className={unlocked.includes(t.slug)?'earned':''}><strong>{t.name}</strong><span>{t.threshold.toLocaleString()}</span></li>)}</ul>}
-    {collection==='expanded'&&unlocked.length>0&&<div className="badge-showcase-actions"><button className={showcased?'active':''} onClick={()=>openBadgeShowcase(b,progress)}>{showcased?'Showcased · slot '+showcased.position:'Add to chamber showcase'}</button>{showcased&&<button className="quiet-button" disabled={giftAction==='badge-remove:'+achievementId} onClick={()=>removeBadgeShowcase(achievementId)}>{giftAction==='badge-remove:'+achievementId?'Removing…':'Remove showcase'}</button>}</div>}
+    <button className="badge-art-preview-button" aria-label={"Enlarge "+b.name+" artwork"} onClick={()=>setArtPreview(b)}><PalaceBadge family={b} tier={badgeRank(b)}/></button>
+    <small>{b.category}</small><h2><button className="treasury-name-open" onClick={()=>setArtPreview(b)}>{b.name}</button></h2>
+    <div className="treasury-tier-dots" aria-label={unlocked.length?unlocked.join(', ')+' earned':'Five tiers · catalogue preview'}>{tiers.map(t=><span key={t} data-tier={t} className={unlocked.includes(t)?'earned':''} title={t+(unlocked.includes(t)?' earned':'')}/>)}</div>
+    {collection==='expanded'?<><progress aria-label={b.name+' progress toward next tier'} max="1" value={completion(b)}/><small>{unlocked.length?'Earned · '+unlocked.at(-1):'Not unlocked yet'} · {Number(progress?.current_value||0).toLocaleString()} progress</small></>:<small>Five collectible tiers · Preview</small>}
    </article>})}</div>
    {visibleBadges.length>24&&<nav className="catalogue-pagination" aria-label="Badge catalogue pages"><button disabled={badgePage===1} onClick={()=>setBadgePage(p=>p-1)}>← Previous</button><span>Page {badgePage} of {Math.ceil(visibleBadges.length/24)}</span><button disabled={badgePage*24>=visibleBadges.length} onClick={()=>setBadgePage(p=>p+1)}>Next →</button></nav>}
    {!visibleBadges.length&&<p>No badges match these filters. Try another name or category.</p>}
   </>}
- {artPreview&&<BadgePreview family={artPreview} tier={tier} close={()=>setArtPreview(null)}/>}
+ {artPreview&&<BadgePreview family={artPreview} tier={badgeRank(artPreview)} close={()=>setArtPreview(null)}><ul className="badge-requirements">{artPreview.tiers.map(t=><li key={t.slug}><strong>{t.name}{unlockedTiers(badgeRow(artPreview)).includes(t.slug)?' ✓':''}</strong><span>{t.threshold.toLocaleString()}</span></li>)}</ul>{unlockedTiers(badgeRow(artPreview)).length>0&&<button onClick={()=>{openBadgeShowcase(artPreview,badgeRow(artPreview));setArtPreview(null)}}>Choose chamber showcase</button>}{achievementShowcaseMap.has(badgeRow(artPreview)?.achievement_families?.id)&&<button disabled={!!giftAction} onClick={()=>removeBadgeShowcase(badgeRow(artPreview).achievement_families.id)}>Remove showcase</button>}</BadgePreview>}
  {badgeShowcase&&<div className="treasury-showcase-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setBadgeShowcase(null)}}><section className="treasury-showcase-dialog badge-showcase-dialog" role="dialog" aria-modal="true" aria-label="Choose achievement showcase slot"><header><div><p className="eyebrow">ACHIEVEMENT SHOWCASE</p><h2>{badgeShowcase.badge.name}</h2></div><button aria-label="Close badge showcase editor" onClick={()=>setBadgeShowcase(null)}>×</button></header><div className="treasury-showcase-preview"><PalaceBadge family={badgeShowcase.badge} tier={badgeShowcaseTier}/></div><div className="treasury-showcase-controls"><label>Displayed tier<select value={badgeShowcaseTier} onChange={e=>setBadgeShowcaseTier(e.target.value)}>{unlockedTiers(badgeShowcase.row).map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label><label>Showcase slot<select value={badgeShowcasePosition} onChange={e=>setBadgeShowcasePosition(Number(e.target.value))}>{Array.from({length:12},(_,i)=>i+1).map(pos=><option key={pos} value={pos}>Slot {pos}{ownedData.achievementShowcase?.some(x=>x.position===pos&&x.achievement_id!==badgeShowcase.row.achievement_families.id)?' · replaces current':''}</option>)}</select></label></div><p>Only tiers already unlocked by verified Palace activity can be displayed here.</p><footer><button className="quiet-button" onClick={()=>setBadgeShowcase(null)}>Cancel</button><button disabled={giftAction==='badge-showcase:'+badgeShowcase.row.achievement_families.id} onClick={saveBadgeShowcase}>{giftAction==='badge-showcase:'+badgeShowcase.row.achievement_families.id?'Saving…':'Save to chamber'}</button></footer></section></div>}
  {tradeOpen&&<div className="treasury-showcase-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setTradeOpen(false)}}><section className="treasury-showcase-dialog gift-trade-dialog" role="dialog" aria-modal="true" aria-label="Propose duplicate trade"><header><div><p className="eyebrow">DUPLICATE EXCHANGE</p><h2>Propose a treasure trade</h2></div><button aria-label="Close trade editor" onClick={()=>setTradeOpen(false)}>×</button></header><div className="gift-trade-form"><label>Find a member<div className="trade-member-search"><input value={tradeMemberQuery} onChange={e=>setTradeMemberQuery(e.target.value)} placeholder="Search display name or handle"/><button onClick={findTradeMembers}>Search</button></div></label>{tradeMembers.length>0&&<div className="trade-member-results">{tradeMembers.filter(m=>m.id!==session.user.id).map(m=><button key={m.id} className={tradeForm.recipientId===m.id?'active':''} onClick={()=>setTradeForm(v=>({...v,recipientId:m.id}))}><strong>{m.display_name||m.username}</strong><small>@{m.username}</small></button>)}</div>}<label>You offer<select value={tradeForm.offeredKey} onChange={e=>setTradeForm(v=>({...v,offeredKey:e.target.value}))}>{duplicateRows.map(x=><option key={x.virtual_gifts.id+':'+x.tier} value={x.virtual_gifts.id+':'+x.tier}>{x.virtual_gifts.name} · {x.tier} · {x.copies} copies</option>)}</select></label><label>You request<select value={tradeForm.requestedGiftId} onChange={e=>setTradeForm(v=>({...v,requestedGiftId:e.target.value}))}><option value="">Choose a treasure</option>{giftData.items.map(g=><option key={g.id} value={g.id}>{String(g.catalogue_number).padStart(3,'0')} · {g.name}</option>)}</select></label><label>Requested tier<select value={tradeForm.requestedTier} onChange={e=>setTradeForm(v=>({...v,requestedTier:e.target.value}))}>{tiers.map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label><label>Note <small>optional</small><textarea maxLength="500" rows="3" value={tradeForm.note} onChange={e=>setTradeForm(v=>({...v,note:e.target.value}))} placeholder="Why this exchange might suit both collections."/></label><p>The recipient must also have at least two copies of the requested tier when accepting. Both members keep one copy after the exchange.</p></div><footer><button className="quiet-button" onClick={()=>setTradeOpen(false)}>Cancel</button><button disabled={tradeBusy==='create'||!tradeForm.recipientId||!tradeForm.offeredKey||!tradeForm.requestedGiftId} onClick={submitTrade}>{tradeBusy==='create'?'Sending…':'Send trade offer'}</button></footer></section></div>}
  {showcaseGift&&<div className="treasury-showcase-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setShowcaseGift(null)}}><section className="treasury-showcase-dialog" role="dialog" aria-modal="true" aria-label="Choose showcase slot"><header><div><p className="eyebrow">CHAMBER SHOWCASE</p><h2>{showcaseGift.name}</h2></div><button aria-label="Close showcase editor" onClick={()=>setShowcaseGift(null)}>×</button></header><div className="treasury-showcase-preview"><PalaceGift gift={showcaseGift} tier={showcaseTier}/></div><div className="treasury-showcase-controls"><label>Displayed tier<select value={showcaseTier} onChange={e=>setShowcaseTier(e.target.value)}>{(inventory.get(showcaseGift.id)?.tiers||[]).map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label><label>Showcase slot<select value={showcasePosition} onChange={e=>setShowcasePosition(Number(e.target.value))}>{Array.from({length:12},(_,i)=>i+1).map(pos=><option key={pos} value={pos}>Slot {pos}{ownedData.giftShowcase?.some(x=>x.position===pos&&x.gift_id!==showcaseGift.id)?' · replaces current':''}</option>)}</select></label></div><p>Changing a slot replaces the treasure currently displayed there. Your underlying collection is never deleted.</p><footer><button className="quiet-button" onClick={()=>setShowcaseGift(null)}>Cancel</button><button disabled={giftAction==='showcase:'+showcaseGift.id} onClick={saveShowcase}>{giftAction==='showcase:'+showcaseGift.id?'Saving…':'Save to chamber'}</button></footer></section></div>}
- </Frame>;
+ </div></Frame>;
 }
 
 
-function BadgePreview({family,tier,close}){
+function BadgePreview({family,tier,close,children}){
  const [rank,setRank]=useState(tier);
  const dialogRef=useRef(null);
  useEffect(()=>{dialogRef.current?.showModal();},[]);
@@ -234,6 +243,12 @@ function BadgePreview({family,tier,close}){
   <h2>{family.name}</h2><p>{family.description}</p>
   <PalaceBadge family={family} tier={rank}/>
   <label>Collection rank<select value={rank} onChange={e=>setRank(e.target.value)}>{tiers.map(t=><option key={t} value={t}>{t}</option>)}</select></label>
-  <p>{family.tiers.find(t=>t.slug===rank)?.threshold.toLocaleString()} · {family.unit||family.metric.replaceAll('_',' ')}</p>
+  <p>{family.tiers.find(t=>t.slug===rank)?.threshold.toLocaleString()} · {family.unit||family.metric.replaceAll('_',' ')}</p>{children}
  </dialog>;
+}
+
+function TreasuryDetail({title,close,children}){
+ const ref=useRef(null);
+ useEffect(()=>{ref.current?.showModal()},[]);
+ return <dialog ref={ref} className="badge-art-dialog treasury-gift-dialog" aria-label={title+' details'} onCancel={close} onClose={close}><button autoFocus onClick={close}>Close ×</button>{children}</dialog>;
 }

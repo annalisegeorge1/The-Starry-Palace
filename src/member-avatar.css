@@ -1,0 +1,10 @@
+.member-avatar.member-avatar{position:relative;display:inline-grid;place-items:center;flex-shrink:0;isolation:isolate;overflow:visible!important;box-sizing:border-box;vertical-align:middle}
+.member-avatar>.member-avatar-photo{position:absolute!important;inset:0!important;display:grid!important;place-items:center;width:auto!important;height:auto!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:50%!important;overflow:hidden!important;background:var(--avatar-background,linear-gradient(135deg,#676aa4,#34345c));color:#fff}
+.member-avatar>.member-avatar-photo>img{display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;border:0!important;border-radius:50%!important;margin:0!important;padding:0!important}
+.member-avatar.member-avatar-framed{background:transparent!important;border-color:transparent!important;box-shadow:none!important}
+.member-avatar.member-avatar-framed>.member-avatar-photo{inset:24%!important}
+.member-avatar.member-avatar-framed>.painted-chamber-frame{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;margin:0!important;pointer-events:none;z-index:2}
+.member-avatar.member-avatar-framed:before,.member-avatar.member-avatar-framed:after{content:none!important}
+.member-avatar.palace-chat-message-avatar{width:40px;height:40px;margin:0 .35rem .3rem 0}
+.palace-chat-sender .member-avatar{vertical-align:middle}
+.palace-chat-settings li>.member-avatar{width:38px;height:38px;margin-right:.45rem}
