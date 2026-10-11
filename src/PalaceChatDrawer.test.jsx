@@ -4,16 +4,16 @@ import {act,cleanup,fireEvent,render,screen,waitFor} from '@testing-library/reac
 import {MemoryRouter} from 'react-router-dom';
 import PalaceChatDrawer from './PalaceChatDrawer';
 import {watchPalaceChatRoom} from './palaceChatRealtime';
-import {getLetters,searchMembers} from './palaceData';
-import {getPalaceGroupChatOverview,getPalaceGroupMessages,createPalaceGroupChat,respondPalaceGroupInvite,sendPalaceGroupMessage,setPalaceGroupIdentity,pinPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
+import {getLetters,searchMembers,editLetterMessage} from './palaceData';
+import {getPalaceGroupChatOverview,getPalaceGroupMessages,createPalaceGroupChat,respondPalaceGroupInvite,sendPalaceGroupMessage,editPalaceGroupMessage,setPalaceGroupIdentity,pinPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
 
 vi.mock('./palaceChatRealtime',()=>({watchPalaceChatRoom:vi.fn(()=>()=>{})}));
 vi.mock('./palaceData',()=>({
- getLetters:vi.fn(),sendLetter:vi.fn(),searchMembers:vi.fn(),setConversationPreference:vi.fn().mockResolvedValue(undefined)
+ getLetters:vi.fn(),sendLetter:vi.fn(),sendLetterPhoto:vi.fn(),editLetterMessage:vi.fn(),searchMembers:vi.fn(),setConversationPreference:vi.fn().mockResolvedValue(undefined)
 }));
 vi.mock('./palaceGroupChatData',()=>({
  getPalaceGroupChatOverview:vi.fn(),getPalaceGroupMessages:vi.fn(),createPalaceGroupChat:vi.fn(),
- sendPalaceGroupMessage:vi.fn(),respondPalaceGroupInvite:vi.fn(),
+ sendPalaceGroupMessage:vi.fn(),sendPalaceGroupPhoto:vi.fn(),editPalaceGroupMessage:vi.fn(),respondPalaceGroupInvite:vi.fn(),
  invitePalaceGroupMember:vi.fn(),removePalaceGroupMember:vi.fn(),leavePalaceGroupChat:vi.fn(),
  renamePalaceGroupChat:vi.fn(),setPalaceGroupMuted:vi.fn(),markPalaceGroupRead:vi.fn().mockResolvedValue(undefined),
  PALACE_GROUP_COLOURS:[{key:'moonlit',label:'Moonlit violet'},{key:'glacier',label:'Glacier blue'}],
@@ -38,6 +38,46 @@ beforeEach(()=>{
 });
 afterEach(cleanup);
 describe('Palace quick chat',()=>{
+ it('keeps message actions hidden until the bubble is held or context-clicked',async()=>{
+  getLetters.mockResolvedValue({...direct,messages:[{
+   id:'own-1',conversation_id:'direct-one',sender_id:user,body:'My private hello',
+   created_at:'2026-10-10T12:00:00.000Z',edited_at:null
+  },{
+   id:'theirs-1',conversation_id:'direct-one',sender_id:'member-two',body:'Hello back',
+   created_at:'2026-10-10T12:01:00.000Z'
+  }]});
+  mount();
+  fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  await screen.findByText('My private hello');
+  expect(screen.queryByRole('button',{name:'Edit your message'})).toBeNull();
+  expect(screen.queryByRole('menu',{name:'Message actions'})).toBeNull();
+  fireEvent.contextMenu(screen.getByText('Hello back').closest('.palace-chat-bubble'));
+  expect(screen.getByRole('menu',{name:'Message actions'})).toBeTruthy();
+  expect(screen.queryByRole('menuitem',{name:'Edit message'})).toBeNull();
+  fireEvent.click(screen.getByRole('menuitem',{name:'Cancel'}));
+  fireEvent.contextMenu(screen.getByText('My private hello').closest('.palace-chat-bubble'));
+  fireEvent.click(screen.getByRole('menuitem',{name:'Edit message'}));
+  expect(screen.getByRole('textbox',{name:'Edit your message'}).value).toBe('My private hello');
+  expect(screen.queryByRole('menu',{name:'Message actions'})).toBeNull();
+ });
+ it('supports keyboard message menus as well as touch-based long press',async()=>{
+  getLetters.mockResolvedValue({...direct,messages:[{
+   id:'own-2',conversation_id:'direct-one',sender_id:user,body:'Quiet note',
+   created_at:'2026-10-10T12:01:00.000Z'
+  }]});
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  const bubble=(await screen.findByText('Quiet note')).closest('.palace-chat-bubble');
+  fireEvent.keyDown(bubble,{key:'F10',shiftKey:true});
+  expect(screen.getByRole('menuitem',{name:'Edit message'})).toBeTruthy();
+  fireEvent.click(screen.getByRole('menuitem',{name:'Cancel'}));
+  vi.useFakeTimers();
+  try{
+   fireEvent.pointerDown(bubble,{button:0,pointerType:'touch',clientX:100,clientY:330});
+   act(()=>{vi.advanceTimersByTime(500)});
+   expect(screen.getByRole('menu',{name:'Message actions'})).toBeTruthy();
+   fireEvent.pointerUp(bubble,{button:0,pointerType:'touch'});
+  }finally{vi.useRealTimers()}
+ });
  it('opens an existing Direct conversation explicitly on mobile instead of silently reselecting it',async()=>{
   getLetters.mockResolvedValue({
    conversations:[
@@ -156,7 +196,9 @@ describe('Palace quick chat',()=>{
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
   fireEvent.click(screen.getByRole('button',{name:/Groups/}));
   await screen.findByText('Welcome to the circle');
-  fireEvent.click(screen.getByRole('button',{name:/Reply/}));
+  fireEvent.contextMenu(screen.getByText('Welcome to the circle').closest('.palace-chat-bubble'));
+  expect(screen.getByRole('menu',{name:'Message actions'})).toBeTruthy();
+  fireEvent.click(screen.getByRole('menuitem',{name:/Reply/}));
   expect(screen.getByText(/Replying to: Welcome to the circle/)).toBeTruthy();
   fireEvent.change(screen.getByRole('textbox',{name:'Write a group message'}),{target:{value:'I will bring the tea.'}});
   fireEvent.click(screen.getByRole('button',{name:/Send/}));
@@ -191,7 +233,8 @@ describe('Palace quick chat',()=>{
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
   fireEvent.click(screen.getByRole('button',{name:/Groups/}));
   await screen.findByText('Welcome to the circle');
-  fireEvent.click(screen.getByRole('button',{name:'Pin'}));
+  fireEvent.contextMenu(screen.getByText('Welcome to the circle').closest('.palace-chat-bubble'));
+  fireEvent.click(screen.getByRole('menuitem',{name:'Pin message'}));
   await waitFor(()=>expect(pinPalaceGroupMessage).toHaveBeenCalledWith('group-one','m1'));
  });
  it('subscribes only while a selected chat is open and labels an active connection honestly',async()=>{
