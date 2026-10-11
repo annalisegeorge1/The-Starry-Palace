@@ -66,7 +66,8 @@ describe('Palace quick chat',()=>{
    created_at:'2026-10-10T12:01:00.000Z'
   }]});
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
-  const bubble=(await within(screen.getByRole('log',{name:'Conversation messages'})).findByText('Quiet note')).closest('.palace-chat-bubble');
+  const log=await screen.findByRole('log',{name:'Conversation messages'});
+  const bubble=(await within(log).findByText('Quiet note')).closest('.palace-chat-bubble');
   fireEvent.keyDown(bubble,{key:'F10',shiftKey:true});
   expect(screen.getByRole('menuitem',{name:'Edit message'})).toBeTruthy();
   fireEvent.click(screen.getByRole('menuitem',{name:'Cancel'}));
