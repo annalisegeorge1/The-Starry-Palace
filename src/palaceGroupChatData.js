@@ -39,7 +39,7 @@ export async function getPalaceGroupChatOverview(userId){
 export async function getPalaceGroupMessages(chatId,limit=100,before=null){
  if(!cleanId(chatId))return [];
  let query=client().from('palace_group_chat_messages')
-  .select('id,chat_id,sender_id,body,created_at,reply_to_id,shared_work_id,profiles!palace_group_chat_messages_sender_id_fkey(id,username,display_name),works!palace_group_chat_messages_shared_work_id_fkey(id,title,slug)')
+  .select('id,chat_id,sender_id,body,created_at,edited_at,media_path,reply_to_id,shared_work_id,profiles!palace_group_chat_messages_sender_id_fkey(id,username,display_name),works!palace_group_chat_messages_shared_work_id_fkey(id,title,slug)')
   .eq('chat_id',chatId);
  // An exclusive, server-side timestamp cursor only retrieves earlier RLS-
  // authorized messages. Never download the entire history in one request.
@@ -62,6 +62,21 @@ export async function sendPalaceGroupMessage(chatId,userId,body,options={}){
  if(!text||text.length>3000)throw new Error('Write a message of up to 3,000 characters.');
  return result(await client().from('palace_group_chat_messages')
   .insert({chat_id:chatId,sender_id:userId,body:text,reply_to_id:options.replyToId||null,shared_work_id:options.sharedWorkId||null}).select('id').single());
+}
+export async function sendPalaceGroupPhoto(chatId,userId,mediaPath,caption='',options={}){
+ const text=String(caption||'').trim();
+ if(text.length>3000)throw new Error('Photo caption is too long.');
+ return result(await client().from('palace_group_chat_messages').insert({
+  chat_id:chatId,sender_id:userId,body:text||'📷 Photo',media_path:mediaPath,
+  reply_to_id:options.replyToId||null
+ }).select('id').single());
+}
+export async function editPalaceGroupMessage(chatId,userId,messageId,body){
+ const text=String(body||'').trim();
+ if(!text||text.length>3000)throw new Error('Messages must contain 1–3,000 characters.');
+ return result(await client().from('palace_group_chat_messages')
+  .update({body:text}).eq('chat_id',chatId).eq('sender_id',userId).eq('id',messageId)
+  .select('id,edited_at').single());
 }
 export async function respondPalaceGroupInvite(id,accept){
  result(await client().rpc('respond_palace_group_invite',{p_chat:id,p_accept:!!accept}));
