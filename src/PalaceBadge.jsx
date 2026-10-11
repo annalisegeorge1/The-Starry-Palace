@@ -1,3 +1,5 @@
+import {PaintedBadge} from './PaintedPalaceArt';
+import {paintedFamily} from './paintedCollection';
 import {useEffect,useId,useState} from 'react';
 import {resolveBadgeFrame} from './badgeArtwork';
 import originals from './originalBadges.json';
@@ -47,6 +49,7 @@ export default function PalaceBadge({family,tier='bronze',locked=false}){
  const key=normal(family?.name);
  const originalId=family?.id;
  const namedId=catalogue.get(key)||aliases[key];
+ const painted=paintedFamily(family);
  const merged=mergedBadgeArtwork(family,rank);
  const approved=merged?null:approvedBadgeFrame(family,rank);
  const[frame,setFrame]=useState(null);
@@ -55,15 +58,15 @@ export default function PalaceBadge({family,tier='bronze',locked=false}){
  useEffect(()=>{
   let alive=true;
   setFrame(null);setLoading(true);
-  if(merged||approved||(!originalId&&!namedId)){setLoading(false);return()=>{alive=false}}
+  if(painted||merged||approved||(!originalId&&!namedId)){setLoading(false);return()=>{alive=false}}
   loadFrames(rank).then(frames=>{if(alive){setFrame(resolveBadgeFrame(frames,originalId,namedId));setLoading(false)}}).catch(()=>{if(alive){setFrame(null);setLoading(false)}});
   return()=>{alive=false};
- },[rank,originalId,namedId,Boolean(approved),Boolean(merged)]);
+ },[rank,originalId,namedId,Boolean(approved),Boolean(merged),Boolean(painted)]);
 
  const name=family?.name||'Palace achievement';
  
- return <figure {...protectArt} className={'palace-watercolour-badge protected-palace-art tier-'+rank+(locked?' is-locked':'')}>
-  {merged?<span className={'original-badge-stage painted-tier-stage merged-badge-stage '+(merged.type==='court'?'is-character':'is-object')}><span className="painted-badge-inner"><MergedBadgeArt art={merged} name={name}/></span><PaintedTierMount rank={rank} id={id+'-painted-tier'}/></span>:approved?<span className="original-badge-stage painted-tier-stage approved-badge-stage is-object"><span className="painted-badge-inner"><ApprovedBadgeArt frame={approved} name={name} tier={rank}/></span><PaintedTierMount rank={rank} id={id+'-painted-tier'}/></span>:frame?<span className={'original-badge-stage'+(frame.character?' is-character':'')} role="img" aria-label={name+' · '+rank+' artwork'+(locked?' (preview)':'')}><SheetArt frame={frame} id={id}/>{frame.mount&&<SheetArt frame={frame.mount} id={id+'-mount'} mount/>}</span>:<span className="original-badge-stage" role="status">{loading?'Artwork loading…':'Artwork unavailable'}</span>}
+ return <figure {...protectArt} className={'palace-watercolour-badge protected-palace-art tier-'+rank+(locked?' is-locked':'')+(painted?' has-painted-round':'')}>
+  {painted?<PaintedBadge family={painted} tier={rank}/>:merged?<span className={'original-badge-stage painted-tier-stage merged-badge-stage '+(merged.type==='court'?'is-character':'is-object')}><span className="painted-badge-inner"><MergedBadgeArt art={merged} name={name}/></span><PaintedTierMount rank={rank} id={id+'-painted-tier'}/></span>:approved?<span className="original-badge-stage painted-tier-stage approved-badge-stage is-object"><span className="painted-badge-inner"><ApprovedBadgeArt frame={approved} name={name} tier={rank}/></span><PaintedTierMount rank={rank} id={id+'-painted-tier'}/></span>:frame?<span className={'original-badge-stage'+(frame.character?' is-character':'')} role="img" aria-label={name+' · '+rank+' artwork'+(locked?' (preview)':'')}><SheetArt frame={frame} id={id}/>{frame.mount&&<SheetArt frame={frame.mount} id={id+'-mount'} mount/>}</span>:<span className="original-badge-stage" role="status">{loading?'Artwork loading…':'Artwork unavailable'}</span>}
   <figcaption>{rank}{locked?' · Preview':''}</figcaption>
  </figure>;
 }

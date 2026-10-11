@@ -4266,5 +4266,805 @@
         "threshold": 150
       }
     ]
+  },
+  {
+    "id": "first-light",
+    "number": 109,
+    "name": "First Light",
+    "description": "Publish stories with at least one published chapter.",
+    "category": "Writing",
+    "metric": "painted_published_works",
+    "unit": "publish stories with at least one published chapter",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 20
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 50
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 100
+      }
+    ]
+  },
+  {
+    "id": "inkkeeper",
+    "number": 110,
+    "name": "Inkkeeper",
+    "description": "Share published words with the Palace.",
+    "category": "Writing",
+    "metric": "painted_words",
+    "unit": "share published words with the palace",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1000
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10000
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50000
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250000
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000000
+      }
+    ]
+  },
+  {
+    "id": "chapter-weaver",
+    "number": 111,
+    "name": "Chapter Weaver",
+    "description": "Publish chapters in your public stories.",
+    "category": "Writing",
+    "metric": "painted_chapters",
+    "unit": "publish chapters in your public stories",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 20
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 50
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 100
+      }
+    ]
+  },
+  {
+    "id": "story-voyager",
+    "number": 112,
+    "name": "Story Voyager",
+    "description": "Read rewarded chapters from different stories.",
+    "category": "Reading",
+    "metric": "painted_read_works",
+    "unit": "read rewarded chapters from different stories",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 20
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 50
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 100
+      }
+    ]
+  },
+  {
+    "id": "margin-garden",
+    "number": 113,
+    "name": "Margin Garden",
+    "description": "Leave approved responses on other writers’ stories.",
+    "category": "Community",
+    "metric": "painted_comments",
+    "unit": "leave approved responses on other writers’ stories",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 20
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 50
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 100
+      }
+    ]
+  },
+  {
+    "id": "quiet-reader",
+    "number": 114,
+    "name": "Quiet Reader",
+    "description": "Complete distinct rewarded chapter reads.",
+    "category": "Reading",
+    "metric": "painted_read_chapters",
+    "unit": "complete distinct rewarded chapter reads",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 5
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 25
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 100
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 250
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 1000
+      }
+    ]
+  },
+  {
+    "id": "library-lantern",
+    "number": 115,
+    "name": "Library Lantern",
+    "description": "Return on different days for rewarded chapter reading.",
+    "category": "Reading",
+    "metric": "painted_read_days",
+    "unit": "return on different days for rewarded chapter reading",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 20
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 50
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 100
+      }
+    ]
+  },
+  {
+    "id": "echoing-words",
+    "number": 116,
+    "name": "Echoing Words",
+    "description": "Receive approved responses from different readers.",
+    "category": "Community",
+    "metric": "painted_readers",
+    "unit": "receive approved responses from different readers",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 20
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 50
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 100
+      }
+    ]
+  },
+  {
+    "id": "poetry-dew",
+    "number": 117,
+    "name": "Poetry Dew",
+    "description": "Submit poetry to completed Ink Duels.",
+    "category": "Ink Duels",
+    "metric": "painted_poetry",
+    "unit": "submit poetry to completed ink duels",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 20
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 50
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 100
+      }
+    ]
+  },
+  {
+    "id": "haiku-petals",
+    "number": 118,
+    "name": "Haiku Petals",
+    "description": "Submit haiku to completed Ink Duels.",
+    "category": "Ink Duels",
+    "metric": "painted_haiku",
+    "unit": "submit haiku to completed ink duels",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 20
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 50
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 100
+      }
+    ]
+  },
+  {
+    "id": "duel-blossom",
+    "number": 119,
+    "name": "Duel Blossom",
+    "description": "Submit entries to completed Ink Duels.",
+    "category": "Ink Duels",
+    "metric": "painted_duels",
+    "unit": "submit entries to completed ink duels",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 20
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 50
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 100
+      }
+    ]
+  },
+  {
+    "id": "baton-bearer",
+    "number": 120,
+    "name": "Baton Bearer",
+    "description": "Pass the baton with completed relay turns.",
+    "category": "Community",
+    "metric": "painted_relays",
+    "unit": "pass the baton with completed relay turns",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 20
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 50
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 100
+      }
+    ]
+  },
+  {
+    "id": "worldmaker",
+    "number": 121,
+    "name": "Worldmaker",
+    "description": "Publish original worlds with a published chapter.",
+    "category": "Writing",
+    "metric": "painted_originals",
+    "unit": "publish original worlds with a published chapter",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 3
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 10
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 25
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 50
+      }
+    ]
+  },
+  {
+    "id": "lore-keeper",
+    "number": 122,
+    "name": "Lore Keeper",
+    "description": "Finish and publish complete stories.",
+    "category": "Writing",
+    "metric": "painted_completed",
+    "unit": "finish and publish complete stories",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 3
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 10
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 25
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 50
+      }
+    ]
+  },
+  {
+    "id": "comic-constellation",
+    "number": 123,
+    "name": "Comic Constellation",
+    "description": "Publish illustrated pages in public comics.",
+    "category": "Comics",
+    "metric": "painted_comic_pages",
+    "unit": "publish illustrated pages in public comics",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 10
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 50
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 150
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 500
+      }
+    ]
+  },
+  {
+    "id": "faithful-return",
+    "number": 124,
+    "name": "Faithful Return",
+    "description": "Read rewarded chapters in different calendar months.",
+    "category": "Reading",
+    "metric": "painted_read_months",
+    "unit": "read rewarded chapters in different calendar months",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 3
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 6
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 12
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 24
+      }
+    ]
+  },
+  {
+    "id": "kindred-voices",
+    "number": 125,
+    "name": "Kindred Voices",
+    "description": "Leave approved responses for different writers.",
+    "category": "Community",
+    "metric": "painted_kindred",
+    "unit": "leave approved responses for different writers",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 20
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 50
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 100
+      }
+    ]
+  },
+  {
+    "id": "thoughtful-critic",
+    "number": 126,
+    "name": "Thoughtful Critic",
+    "description": "Share approved constructive critiques on others’ stories.",
+    "category": "Community",
+    "metric": "painted_critiques",
+    "unit": "share approved constructive critiques on others’ stories",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 20
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 50
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 100
+      }
+    ]
+  },
+  {
+    "id": "prompt-alchemist",
+    "number": 127,
+    "name": "Prompt Alchemist",
+    "description": "Complete verified daily Palace creative prompts.",
+    "category": "Community",
+    "metric": "painted_rituals",
+    "unit": "complete verified daily palace creative prompts",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 5
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 20
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 50
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 100
+      }
+    ]
+  },
+  {
+    "id": "festival-scribe",
+    "number": 128,
+    "name": "Festival Scribe",
+    "description": "Host published events through their scheduled end.",
+    "category": "Community",
+    "metric": "painted_events",
+    "unit": "host published events through their scheduled end",
+    "symbol": "✧",
+    "difficulty": "Progressive",
+    "accent": "#798fbf",
+    "accent2": "#caa2d5",
+    "tiers": [
+      {
+        "name": "Bronze",
+        "slug": "bronze",
+        "threshold": 1
+      },
+      {
+        "name": "Silver",
+        "slug": "silver",
+        "threshold": 3
+      },
+      {
+        "name": "Gold",
+        "slug": "gold",
+        "threshold": 10
+      },
+      {
+        "name": "Platinum",
+        "slug": "platinum",
+        "threshold": 25
+      },
+      {
+        "name": "Emerald",
+        "slug": "emerald",
+        "threshold": 50
+      }
+    ]
   }
 ]

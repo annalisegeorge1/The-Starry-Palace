@@ -1,3 +1,4 @@
+import {PalaceBanner} from './PaintedPalaceArt';
 import PalaceEmblem from './PalaceEmblem';
 import React,{useEffect,useState} from 'react';
 import{Link}from'react-router-dom';
@@ -21,9 +22,9 @@ export default function GrandPalaceAtlas({palaces=[],myPalaceId,quarterStart,onR
  return <section className="grand-atlas" id="grand-atlas">
  <header className="grand-atlas-heading"><div><p className="eyebrow">THE TEN COURTS · THE LIVING CONSTELLATION</p><h2>Every Palace has a soul.</h2><p>Explore each court's founding story, traditions, relics and ceremonies. Your Palace stays yours throughout the seasons.</p></div><span>EST. BENEATH THE SAME SKY ✧</span></header>
  <div className="grand-gathering-label"><small>✧ THE GATHERING OF TEN</small><p>Ten permanent courts, one constellation. Their existing sigils meet in friendship before every quarterly race.</p></div>
- <div className="grand-atlas-grid" role="group" aria-label="Explore Grand Palace identities">{palaces.map(p=>{const l=loreForPalace(p);return <button type="button" key={p.id} className={'grand-atlas-choice '+(p.id===(chosen||myPalaceId)?'selected':'')} style={{'--court-glow':l.colour,'--court-deep':l.secondary}} onClick={()=>setChosen(p.id)} aria-pressed={p.id===(chosen||myPalaceId)}><span className="grand-atlas-crest"><PalaceEmblem palace={p} size={51} decorative/></span><strong>{p.name}</strong><small>{l.virtue}</small>{Number(p.id)===Number(myPalaceId)&&<em>YOUR COURT</em>}</button>})}</div>
+ <div className="grand-atlas-grid" role="group" aria-label="Explore Grand Palace identities">{palaces.map(p=>{const l=loreForPalace(p);return <button type="button" key={p.id} className={'grand-atlas-choice '+(p.id===(chosen||myPalaceId)?'selected':'')} style={{'--court-glow':l.colour,'--court-deep':l.secondary}} onClick={()=>setChosen(p.id)} aria-pressed={p.id===(chosen||myPalaceId)}><PalaceBanner palace={p}/><strong>{p.name}</strong><small>{l.virtue}</small>{Number(p.id)===Number(myPalaceId)&&<em>YOUR COURT</em>}</button>})}</div>
  {viewed&&<article className="grand-atlas-chamber" style={{'--court-glow':lore.colour,'--court-deep':lore.secondary}}>
- <header><span className="grand-atlas-large-crest"><PalaceEmblem palace={viewed} size={82} decorative/></span><div><small>{lore.emblem}</small><p className="eyebrow">{lore.epithet}</p><h3>{viewed.name}</h3><p>{lore.chamber} · {lore.virtue}</p></div></header>
+ <PalaceBanner palace={viewed}/><header><span className="grand-atlas-large-crest"><PalaceEmblem palace={viewed} size={82} decorative/></span><div><small>{lore.emblem}</small><p className="eyebrow">{lore.epithet}</p><h3>{viewed.name}</h3><p>{lore.chamber} · {lore.virtue}</p></div></header>
  {royal&&<p className="grand-royal-title"><strong>{royal.title}</strong> · “{viewed.motto||royal.motto}”</p>}
  <blockquote>{lore.legend}</blockquote>
  <div className="grand-atlas-virtues"><div><small>PALACE OATH</small><p>“{lore.oath}”</p></div><div><small>SACRED RELIC</small><p>{lore.relic}</p></div><div><small>THE COURT'S LOOK</small><p>{lore.signature}</p></div></div>

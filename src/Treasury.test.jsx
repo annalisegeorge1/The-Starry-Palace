@@ -53,15 +53,15 @@ it('clears empty duplicate filters without treating different tiers as duplicate
  expect(screen.getByRole('heading',{name:'Moon cup'})).toBeTruthy();
 });
 
-it('paginates all 108 families and resets the page when searching',async()=>{
+it('paginates all 128 families and resets the page when searching',async()=>{
  window.history.replaceState(null,'','/?collection=expanded');
  render(<Treasury Frame={({children})=><main>{children}</main>}/>);
  expect(screen.getAllByRole('button',{name:/Enlarge .* artwork/})).toHaveLength(24);
  fireEvent.click(screen.getByRole('button',{name:'Next →'}));
- expect(screen.getByText('Page 2 of 5')).toBeTruthy();
+ expect(screen.getByText('Page 2 of 6')).toBeTruthy();
  fireEvent.change(screen.getByLabelText('Search badges'),{target:{value:'Infinite Inkwell'}});
  expect(screen.getAllByRole('button',{name:/Enlarge .* artwork/})).toHaveLength(1);
- expect(screen.queryByText('Page 2 of 5')).toBeNull();
+ expect(screen.queryByText('Page 2 of 6')).toBeNull();
 });
 it('opens a keyboard-dismissable in-page art preview with all five tiers',()=>{
  HTMLDialogElement.prototype.showModal=function(){this.setAttribute('open','')};

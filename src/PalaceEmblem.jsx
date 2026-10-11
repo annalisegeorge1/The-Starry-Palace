@@ -1,8 +1,11 @@
+import {PaintedSigil} from './PaintedPalaceArt';
+import {PAINTED_PALACES} from './paintedCollection';
 import React from 'react';
 import{loreForPalace}from'./grandPalaceLore';
 /* Dedicated scalable pictorial crests, not a generic glyph repeated across courts. */
 export default function PalaceEmblem({palace,size=88,className='',decorative=false}){
  const lore=loreForPalace(palace),slug=typeof palace==='string'?palace:palace?.slug;
+ if(PAINTED_PALACES.includes(slug))return <PaintedSigil palace={palace} size={size} className={className} decorative={decorative}/>;
  const c=lore.colour,d=lore.secondary,id='emblem-'+(slug||'moon');
  const common={fill:'none',stroke:'url(#'+id+'-stroke)',strokeWidth:2.4,strokeLinecap:'round',strokeLinejoin:'round'};
  let drawing=null;

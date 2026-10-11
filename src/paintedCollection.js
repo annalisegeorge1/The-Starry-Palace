@@ -1,0 +1,10 @@
+export const PAINTED_TIERS=['bronze','silver','gold','platinum','emerald'];
+export const PAINTED_PALACES=['silver-crane','azure-moon','violet-star','sapphire-tide','obsidian-rose','celestial-lotus','midnight-lantern','whispering-comet','amethyst-sky','winter-phoenix'];
+const familyNames=['First Light','Inkkeeper','Chapter Weaver','Story Voyager','Margin Garden','Quiet Reader','Library Lantern','Echoing Words','Poetry Dew','Haiku Petals','Duel Blossom','Baton Bearer','Worldmaker','Lore Keeper','Comic Constellation','Faithful Return','Kindred Voices','Thoughtful Critic','Prompt Alchemist','Festival Scribe'];
+export const slugify=name=>String(name||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+export const PAINTED_FAMILIES=familyNames.map((name,index)=>({name,id:slugify(name),index,number:109+index,frameStyle:index%3}));
+export function paintedFamily(family){return PAINTED_FAMILIES.find(x=>x.id===family?.id||x.id===slugify(family?.name))||null}
+const chamberNames=['Bamboo Ink','Willow Mist','Lotus Thread','Orchid Frost','Jade Fern','Dusk Ring','Moon Halo','Golden Orbit','Opal Eclipse','Aurora Veil','Rain Trace','Silver Ripple','Gilded Tide','Frozen Lake','Jade Current','Ink Circle','Script Ribbon','Poet Laurel','Porcelain Quill','Archive Vine','Autumn Reed','Winter Lace','Dawn Petals','Crystal Bloom','Spring Canopy'];
+export const CHAMBER_FRAMES=chamberNames.map((name,index)=>({name,slug:slugify(name),index,tier:PAINTED_TIERS[index%5]}));
+export const FRAME_REQUIREMENTS={bronze:'Included',silver:'Publish 1 chapter or finish 5 rewarded chapter reads',gold:'Publish 5 chapters or finish 25 rewarded chapter reads',platinum:'Publish 20 chapters or finish 100 rewarded chapter reads',emerald:'Publish 50 chapters or finish 250 rewarded chapter reads'};
+export function chamberFrameUnlocked(frame,unlocks){const i=PAINTED_TIERS.indexOf(frame?.tier);return i===0||Number(unlocks?.published_chapters||0)>=[0,1,5,20,50][i]||Number(unlocks?.reading_chapters||0)>=[0,5,25,100,250][i]}

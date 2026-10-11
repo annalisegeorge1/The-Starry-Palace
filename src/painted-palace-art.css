@@ -1,0 +1,26 @@
+.painted-art{display:inline-block;vertical-align:middle;flex-shrink:0;max-width:100%;overflow:hidden;user-select:none;-webkit-user-select:none;background:none!important;box-shadow:none!important}
+.painted-art image{pointer-events:none}
+.painted-palace-banner{display:block;width:100%;height:auto;aspect-ratio:643/158;max-width:640px;margin:0 auto 1rem;filter:drop-shadow(0 3px 5px #080c1826)}
+.grand-atlas-choice .painted-palace-banner{max-width:220px;margin:0 auto .5rem}
+.member-palace-heraldry .painted-palace-banner{width:clamp(100px,25vw,230px);margin:0}
+.writer-award{width:auto;object-fit:contain;aspect-ratio:1;max-height:40px}
+.painted-round-badge{position:relative;display:block;isolation:isolate;width:min(100%,180px);aspect-ratio:1;margin:auto}
+.painted-round-picture{position:absolute;inset:12%;border-radius:50%;overflow:hidden}
+.painted-round-picture>.painted-art{width:100%;height:100%}
+.painted-tier-frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.palace-watercolour-badge.has-painted-round{background:transparent;min-height:0}
+.has-painted-round.is-locked .painted-round-badge{filter:grayscale(.9);opacity:.6}
+.legacy-profile-avatar.has-painted-frame{overflow:visible!important;background:none!important;border:0!important;box-shadow:none!important;isolation:isolate}
+.legacy-profile-avatar.has-painted-frame>img{width:76%!important;height:76%!important;margin:12%;border-radius:50%;object-fit:cover}
+.legacy-profile-avatar.has-painted-frame>.painted-chamber-frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+.legacy-profile-avatar.has-painted-frame>span{border-radius:50%;width:76%;height:76%;margin:12%}
+.painted-frame-picker{margin-top:1.5rem;padding-top:1rem;border-top:1px solid #95a5ce33}
+.painted-frame-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:.65rem;max-height:440px;overflow:auto;padding:.35rem}
+.painted-frame-choice{display:flex;flex-direction:column;align-items:center;gap:.3rem;padding:.6rem;border:1px solid #95a5ce55;border-radius:12px;background:transparent;color:inherit;min-width:0;cursor:pointer}
+.painted-frame-choice[aria-pressed=true]{outline:2px solid #aabde9;outline-offset:1px}
+.painted-frame-choice .painted-art{width:84px;height:84px}
+.painted-frame-choice small{font-size:.7rem;line-height:1.35;opacity:.85}
+.painted-frame-preview{width:132px;height:132px;position:relative;margin:.75rem auto}
+.painted-frame-preview:before{content:'☾';display:grid;place-items:center;position:absolute;inset:15%;border-radius:50%;background:linear-gradient(135deg,#8c9cd5,#362c69);color:#f2f0ff;font-size:2.5rem}
+.painted-frame-preview>.painted-art{position:relative;width:100%;height:100%}
+@media(max-width:600px){.member-palace-heraldry{flex-wrap:wrap}.member-palace-heraldry .painted-palace-banner{width:100%;max-width:280px}.painted-frame-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.painted-frame-choice{padding:.4rem}.painted-frame-choice .painted-art{width:72px;height:72px}}

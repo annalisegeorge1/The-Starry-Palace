@@ -1,3 +1,4 @@
+import ChamberFramePicker from './ChamberFramePicker';
 import './prism-seasonal-effects.css';
 import React,{useEffect,useMemo,useState}from'react';
 import{getMemberChamberDecor,saveMemberChamberDecor,getPrismState,purchasePrismPalette,selectPrismPalette,savePrismLook}from'./memberChamberDecorData';
@@ -30,7 +31,7 @@ export default function MemberChamberDecor({decor,onSaved,own}){
  <button type="button" className="prism-apply" disabled={busy||!choice?.unlocked} onClick={()=>run(async()=>{await selectPrismPalette(palette,finish,accent);await saveMemberChamberDecor(decor.backdrop,ornament,layout);return getPrismState(decor.user_id)},'Your new chamber is ready ✧')}>{busy?'Saving…':'Apply this look ✦'}</button>
  <p className="prism-disclaimer">Previewing is free. Locked tournament and legendary colours cannot be purchased. No purchases affect Palace rankings.</p>
  </aside></div>
- <div className="prism-looks"><h3>My five saved looks</h3><div><label>Look name<input maxLength={40} value={lookName} onChange={e=>setLookName(e.target.value)}/></label><label>Slot<select value={slot} onChange={e=>setSlot(Number(e.target.value))}>{[1,2,3,4,5].map(i=><option key={i} value={i}>{i}</option>)}</select></label><button type="button" disabled={!choice?.unlocked||busy||lookName.trim().length<2} onClick={()=>run(()=>savePrismLook(slot,lookName,palette,finish,accent),'Look saved.')}>Save selected look</button></div><div className="prism-saved-list">{(decor.prism_looks||[]).map(x=><button key={x.slot} type="button" onClick={()=>{setPalette(x.palette);setFinish(x.finish);setAccent(x.accent)}}><span>0{x.slot}</span><strong>{x.name}</strong><small>Preview ↗</small></button>)}</div></div>
+ <ChamberFramePicker decor={decor} onSaved={onSaved}/><div className="prism-looks"><h3>My five saved looks</h3><div><label>Look name<input maxLength={40} value={lookName} onChange={e=>setLookName(e.target.value)}/></label><label>Slot<select value={slot} onChange={e=>setSlot(Number(e.target.value))}>{[1,2,3,4,5].map(i=><option key={i} value={i}>{i}</option>)}</select></label><button type="button" disabled={!choice?.unlocked||busy||lookName.trim().length<2} onClick={()=>run(()=>savePrismLook(slot,lookName,palette,finish,accent),'Look saved.')}>Save selected look</button></div><div className="prism-saved-list">{(decor.prism_looks||[]).map(x=><button key={x.slot} type="button" onClick={()=>{setPalette(x.palette);setFinish(x.finish);setAccent(x.accent)}}><span>0{x.slot}</span><strong>{x.name}</strong><small>Preview ↗</small></button>)}</div></div>
  {notice&&<p role="status" className="prism-notice">{notice}</p>}{error&&<p role="alert" className="prism-error">{error}</p>}
  </div>}
  </section>;
