@@ -1,6 +1,6 @@
 import React from 'react';
 import {afterEach,beforeEach,describe,expect,it,vi} from 'vitest';
-import {act,cleanup,fireEvent,render,screen,waitFor} from '@testing-library/react';
+import {act,cleanup,fireEvent,render,screen,waitFor,within} from '@testing-library/react';
 import {MemoryRouter} from 'react-router-dom';
 import PalaceChatDrawer from './PalaceChatDrawer';
 import {watchPalaceChatRoom} from './palaceChatRealtime';
@@ -51,7 +51,7 @@ describe('Palace quick chat',()=>{
   await screen.findByText('My private hello');
   expect(screen.queryByRole('button',{name:'Edit your message'})).toBeNull();
   expect(screen.queryByRole('menu',{name:'Message actions'})).toBeNull();
-  fireEvent.contextMenu(screen.getByText('Hello back').closest('.palace-chat-bubble'));
+  fireEvent.contextMenu(within(screen.getByRole('log',{name:'Conversation messages'})).getByText('Hello back').closest('.palace-chat-bubble'));
   expect(screen.getByRole('menu',{name:'Message actions'})).toBeTruthy();
   expect(screen.queryByRole('menuitem',{name:'Edit message'})).toBeNull();
   fireEvent.click(screen.getByRole('menuitem',{name:'Cancel'}));
@@ -66,7 +66,7 @@ describe('Palace quick chat',()=>{
    created_at:'2026-10-10T12:01:00.000Z'
   }]});
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
-  const bubble=(await screen.findByText('Quiet note')).closest('.palace-chat-bubble');
+  const bubble=(await within(screen.getByRole('log',{name:'Conversation messages'})).findByText('Quiet note')).closest('.palace-chat-bubble');
   fireEvent.keyDown(bubble,{key:'F10',shiftKey:true});
   expect(screen.getByRole('menuitem',{name:'Edit message'})).toBeTruthy();
   fireEvent.click(screen.getByRole('menuitem',{name:'Cancel'}));
@@ -95,12 +95,12 @@ describe('Palace quick chat',()=>{
   expect(container.querySelector('.palace-chat-dock.is-thread-open')).toBeNull();
   fireEvent.click(screen.getByRole('button',{name:'Juniper'}));
   expect(container.querySelector('.palace-chat-dock.is-thread-open')).toBeTruthy();
-  expect(screen.getByText('Juniper letter')).toBeTruthy();
+  expect(within(screen.getByRole('log',{name:'Conversation messages'})).getByText('Juniper letter')).toBeTruthy();
   fireEvent.click(screen.getByRole('button',{name:'Back to conversations'}));
   expect(container.querySelector('.palace-chat-dock.is-thread-open')).toBeNull();
   fireEvent.click(screen.getByRole('button',{name:'River'}));
-  expect(screen.getByText('River letter')).toBeTruthy();
-  expect(screen.queryByText('Juniper letter')).toBeNull();
+  expect(within(screen.getByRole('log',{name:'Conversation messages'})).getByText('River letter')).toBeTruthy();
+  expect(within(screen.getByRole('log',{name:'Conversation messages'})).queryByText('Juniper letter')).toBeNull();
  });
  it('shows a retry rather than claiming zero conversations when Direct loading fails',async()=>{
   getLetters.mockRejectedValue(new Error('Inbox temporarily unavailable'));
