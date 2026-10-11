@@ -56,7 +56,7 @@
 .daylight .grand-theme-grid button{background:#eeebf8;color:#44355e;border-color:#d6cae7}.daylight .grand-theme-grid button.active{background:#ded5fa;border-color:#8b7fcb}
 .daylight .grand-send input,.daylight .grand-send select{background:white;color:#33234d;border-color:#c4b7da}
 @media(max-width:920px){.grand-box-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.grand-token-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:620px){.grand-hero-stats{grid-template-columns:1fr}.grand-your-court{grid-template-columns:70px minmax(0,1fr)}.grand-my-crest{width:70px;height:70px;font-size:2.4rem}.grand-your-court>a{grid-column:1/-1}.grand-box-grid,.grand-token-grid{grid-template-columns:1fr 1fr}.grand-ranked-courts article{grid-template-columns:1.6rem 1.7rem minmax(0,1fr) auto;gap:.35rem;padding:.5rem}.grand-ranked-courts article i{font-size:1.3rem}.grand-ranked-courts strong{font-size:.72rem}.grand-ranked-courts article>span b{font-size:.86rem}}
+@media(max-width:620px){.grand-hero-stats{grid-template-columns:1fr}.grand-your-court{grid-template-columns:70px minmax(0,1fr)}.grand-my-crest{width:70px;height:70px;font-size:2.4rem}.grand-your-court>a{grid-column:1/-1}.grand-box-grid,.grand-token-grid{grid-template-columns:1fr 1fr}.grand-ranked-courts article{grid-template-columns:1.6rem 2.65rem minmax(0,1fr) auto;gap:.45rem;padding:.55rem}.grand-ranked-courts article i{font-size:1.3rem}.grand-ranked-courts strong{font-size:.72rem}.grand-ranked-courts article>span b{font-size:.86rem}}
 @media(max-width:390px){.grand-box-grid,.grand-token-grid{grid-template-columns:1fr}.grand-ranked-courts article>span small{display:none}}
 
 /* Grand Palace membership and earned-token ribbons on profile */
