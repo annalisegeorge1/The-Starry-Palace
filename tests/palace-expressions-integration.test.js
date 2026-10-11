@@ -6,8 +6,12 @@ const gif=readFileSync('src/PalaceChatGif.jsx','utf8');
 describe('Palace expression controls',()=>{
  it('offers emoji in direct/group chat, keeps existing send paths, and uses safe GIF rendering',()=>{
   expect(chat).toContain('<PalaceEmojiPicker label="Palace Chat"');
-  expect(chat).toContain('aria-label="Direct GIF link"');
-  expect(chat).toContain('encodePalaceGif(gifLink)');
+  expect(chat).toContain('<PalaceGiphyPicker busy={busy} onSend={sendGif}');
+  expect(chat).toContain('className="palace-chat-photo-toggle"');
+  expect(chat).toContain('className="palace-chat-photo-stage"');
+  expect(chat).toContain('encodePalaceGif(url)');
+  expect(chat).toContain('sendLetterPhoto(userId,roomId,path,caption)');
+  expect(chat).toContain('sendPalaceGroupPhoto(roomId,userId,path,caption,');
   expect(chat).toContain('<PalaceChatGif body={m.body}/>');
   expect(chat).toContain('await sendLetter(userId,roomId,body)');
   expect(chat).toContain('await sendPalaceGroupMessage(roomId,userId,body,{})');
