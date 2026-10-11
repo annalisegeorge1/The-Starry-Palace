@@ -10,6 +10,11 @@ import {GROUP_HISTORY_PAGE_SIZE,mergePalaceGroupMessages,oldestPalaceGroupMessag
 import './palace-chat-discovery.css';
 import './palace-chat-mobile-viewport.css';
 import './palace-chat-theme-parity.css';
+import PalaceEmojiPicker from './PalaceEmojiPicker';
+import PalaceChatGif from './PalaceChatGif';
+import {insertPalaceEmoji} from './palaceEmoji';
+import {encodePalaceGif} from './palaceChatGif';
+import './palace-chat-expressions.css';
 
 const draftKey=(user,kind,id)=>'palace-chat-draft:'+user+':'+kind+':'+id;
 const nameOf=p=>p?.display_name||p?.username||'Palace member';
@@ -35,6 +40,8 @@ export default function PalaceChatDrawer({userId}){
  const[newWhileAway,setNewWhileAway]=useState(false);
  const[error,setError]=useState('');
  const[notice,setNotice]=useState('');
+ const[gifOpen,setGifOpen]=useState(false);
+ const[gifLink,setGifLink]=useState('');
  const[search,setSearch]=useState('');
  const[unreadOnly,setUnreadOnly]=useState(false);
  const[historyLoading,setHistoryLoading]=useState(false);
@@ -54,6 +61,7 @@ export default function PalaceChatDrawer({userId}){
  const[storyResults,setStoryResults]=useState([]);
  const[pinnedPreview,setPinnedPreview]=useState({chatId:'',messageId:'',message:null});
  const messageRef=useRef(null);
+ const composerRef=useRef(null);
  const historyScrollRef=useRef(null);
  const exhaustedHistoryRef=useRef(new Set());
  const selectedGroupRef=useRef(selectedGroup);
@@ -243,6 +251,34 @@ export default function PalaceChatDrawer({userId}){
    if(selectedGroupRef.current===chatId){historyScrollRef.current=null;setError(errorText(e))}
   }finally{if(selectedGroupRef.current===chatId)setHistoryLoading(false)}
  }
+ function insertChatEmoji(emoji){
+  if(!roomId)return;
+  const el=composerRef.current;
+  const added=insertPalaceEmoji(currentDraft,emoji,el?.selectionStart,el?.selectionEnd,3000);
+  if(!added.inserted)return;
+  setDraft(added.text);
+  window.requestAnimationFrame(()=>{if(composerRef.current){composerRef.current.focus();composerRef.current.setSelectionRange(added.cursor,added.cursor)}});
+ }
+ async function sendGif(e){
+  e.preventDefault();
+  const body=encodePalaceGif(gifLink);
+  if(!body){setError('Use a direct HTTPS .gif or .webp link from GIPHY or Tenor.');return}
+  if(!roomId||busy)return;
+  setBusy(true);setError('');setNotice('');
+  try{
+   if(tab==='groups'){
+    await sendPalaceGroupMessage(roomId,userId,body,{});
+    const fresh=await getPalaceGroupMessages(roomId);
+    setGroupMessages(previous=>({chatId:roomId,items:previous.chatId===roomId?mergePalaceGroupMessages(previous.items,fresh):fresh}));
+    setGroupData(await getPalaceGroupChatOverview(userId));
+   }else{
+    await sendLetter(userId,roomId,body);
+    setDirect(await getLetters(userId));
+   }
+   setGifLink('');setGifOpen(false);scrollPinned.current=true;
+  }catch(e){setError(errorText(e))}
+  finally{setBusy(false)}
+ }
  function setDraft(value){
   if(!roomId)return;
   setDrafts(p=>({...p,[draftsKey]:value}));
@@ -390,7 +426,7 @@ export default function PalaceChatDrawer({userId}){
       {messages.length?messages.map(m=><div key={m.id} className={'palace-chat-bubble'+(m.sender_id===userId?' mine':'')}>
        {tab==='groups'&&m.sender_id!==userId&&<strong className="palace-chat-sender">{nameOf(m.profiles)}</strong>}
        {tab==='groups'&&m.reply_to_id&&<div className="palace-chat-reply-quote"><small>Reply to</small><p>{messages.find(item=>item.id===m.reply_to_id)?.body?.slice(0,145)||'An earlier group message'}</p></div>}
-       <p>{m.body}</p>
+       <PalaceChatGif body={m.body}/>
        {tab==='groups'&&m.works?.slug&&<Link className="palace-chat-shared-story" to={'/work/'+encodeURIComponent(m.works.slug)} onClick={()=>setOpen(false)}><span aria-hidden="true">✧</span><span><small>PALACE STORY</small><strong>{m.works.title}</strong></span><span aria-hidden="true">↗</span></Link>}
        <small>{dateOf(m.created_at)}</small>
        {tab==='groups'&&<div className="palace-chat-bubble-actions"><button type="button" onClick={()=>{setReplyTarget({id:m.id,body:m.body,chatId:roomId});setStorySharing(false)}}>↩ Reply</button>{owner&&<button type="button" disabled={busy} onClick={()=>togglePin(m)}>{activeGroup.pinnedMessageId===m.id?'Unpin':'Pin'}</button>}</div>}
@@ -398,7 +434,9 @@ export default function PalaceChatDrawer({userId}){
      </div>
      {newWhileAway&&messages.length>0&&<button type="button" className="palace-chat-jump-latest" onClick={jumpToLatest}>New messages · Jump to latest ↓</button>}
      {tab==='groups'&&replyTarget?.chatId===roomId&&<div className="palace-chat-replying"><span>Replying to: {replyTarget.body.slice(0,96)}{replyTarget.body.length>96?'…':''}</span><button type="button" aria-label="Cancel group reply" onClick={()=>setReplyTarget(null)}>×</button></div>}
-     <form className="palace-chat-compose" onSubmit={send}><label className="sr-only" htmlFor="palace-quick-chat-message">Your message</label><textarea id="palace-quick-chat-message" aria-label={tab==='groups'?'Write a group message':'Write a private message'} placeholder={tab==='groups'?'Write to your circle…':'Write a little note…'} rows={2} maxLength={3000} value={currentDraft} onChange={e=>setDraft(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();if(currentDraft.trim())e.currentTarget.form?.requestSubmit()}}}/><button type="submit" disabled={busy||!currentDraft.trim()}>{busy?'Sending…':'Send ↗'}</button></form>
+     <div className="palace-chat-compose-tools"><PalaceEmojiPicker label="Palace Chat" onPick={insertChatEmoji}/><button type="button" className="palace-chat-gif-toggle" aria-expanded={gifOpen} onClick={()=>setGifOpen(v=>!v)}>🎞️ GIF</button></div>
+     {gifOpen&&<form className="palace-chat-gif-form" onSubmit={sendGif}><label>Share a GIF from GIPHY or Tenor<input type="url" aria-label="Direct GIF link" value={gifLink} onChange={e=>setGifLink(e.target.value)} placeholder="https://media.giphy.com/.../giphy.gif" required maxLength={750}/></label><small>Direct HTTPS .gif or .webp links only. Recipients tap to load external media.</small><div><button type="button" onClick={()=>setGifOpen(false)}>Cancel</button><button type="submit" disabled={busy||!gifLink.trim()}>{busy?'Sending…':'Send GIF'}</button></div></form>}
+     <form className="palace-chat-compose" onSubmit={send}><label className="sr-only" htmlFor="palace-quick-chat-message">Your message</label><textarea ref={composerRef} id="palace-quick-chat-message" aria-label={tab==='groups'?'Write a group message':'Write a private message'} placeholder={tab==='groups'?'Write to your circle…':'Write a little note…'} rows={2} maxLength={3000} value={currentDraft} onChange={e=>setDraft(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();if(currentDraft.trim())e.currentTarget.form?.requestSubmit()}}}/><button type="submit" disabled={busy||!currentDraft.trim()}>{busy?'Sending…':'Send ↗'}</button></form>
      <small className="palace-chat-draft-hint">{currentDraft?'Draft kept on this device':'Ctrl/⌘ + Enter to send · Enter for a new line'}</small>
     </>:<div className="palace-chat-empty"><p>{tab==='groups'?'No groups yet.':loadingDirect?'Loading your private conversations…':error?'Conversations could not be loaded.':'No open direct conversations yet.'}</p><p>{tab==='groups'?'Start a private circle and invite members, or accept an invitation above.':'Begin or accept a correspondence in Palace Letters.'}</p>{tab==='direct'&&<Link to="/letters" onClick={()=>setOpen(false)}>Open Palace Letters →</Link>}{tab==='groups'&&<button type="button" onClick={()=>setCreating(true)}>＋ Create a group</button>}</div>}
    </>}
