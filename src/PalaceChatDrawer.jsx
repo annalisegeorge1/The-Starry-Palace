@@ -580,10 +580,10 @@ export default function PalaceChatDrawer({userId}){
   {actionMenu&&createPortal(<div className="palace-chat-actions-backdrop" onPointerDown={e=>{if(e.target===e.currentTarget)setActionMenu(null)}} onClick={e=>{if(e.target===e.currentTarget)setActionMenu(null)}}>
    <div ref={actionMenuRef} className="palace-chat-actions-menu" role="menu" aria-label="Message actions" style={{top:actionMenu.top,left:actionMenu.left}}>
     <small>MESSAGE OPTIONS</small>
-    {tab==='groups'&&<button type="button" role="menuitem" onClick={()=>applyMessageAction('reply')}>↩ <span>Reply</span></button>}
-    {actionMenu.message.sender_id===userId&&!parsePalaceGif(actionMenu.message.body)&&<button type="button" role="menuitem" onClick={()=>applyMessageAction('edit')}>✎ <span>Edit message</span></button>}
-    <button type="button" role="menuitem" onClick={()=>applyMessageAction('copy')}>⧉ <span>Copy text</span></button>
-    {tab==='groups'&&owner&&<button type="button" role="menuitem" disabled={busy} onClick={()=>applyMessageAction('pin')}>✧ <span>{activeGroup?.pinnedMessageId===actionMenu.message.id?'Unpin message':'Pin message'}</span></button>}
+    {tab==='groups'&&<button type="button" role="menuitem" aria-label="Reply" onClick={()=>applyMessageAction('reply')}><span aria-hidden="true">↩</span><span>Reply</span></button>}
+    {actionMenu.message.sender_id===userId&&!parsePalaceGif(actionMenu.message.body)&&<button type="button" role="menuitem" aria-label="Edit message" onClick={()=>applyMessageAction('edit')}><span aria-hidden="true">✎</span><span>Edit message</span></button>}
+    <button type="button" role="menuitem" aria-label="Copy text" onClick={()=>applyMessageAction('copy')}><span aria-hidden="true">⧉</span><span>Copy text</span></button>
+    {tab==='groups'&&owner&&<button type="button" role="menuitem" aria-label={activeGroup?.pinnedMessageId===actionMenu.message.id?'Unpin message':'Pin message'} disabled={busy} onClick={()=>applyMessageAction('pin')}><span aria-hidden="true">✧</span><span>{activeGroup?.pinnedMessageId===actionMenu.message.id?'Unpin message':'Pin message'}</span></button>}
     <button type="button" className="palace-chat-action-dismiss" role="menuitem" onClick={()=>setActionMenu(null)}>Cancel</button>
    </div>
   </div>,document.body)}
