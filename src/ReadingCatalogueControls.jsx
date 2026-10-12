@@ -1,11 +1,18 @@
 import React from 'react';
+
+/** Browsing is public: avoid calling this shared archive a personal shelf. */
 export function ReadingCatalogueControls({layout,onLayout,shown,total}){
+ const safeTotal=Math.max(0,Number(total)||0);
+ const safeShown=Math.min(safeTotal,Math.max(0,Number(shown)||0));
+ const views=[['comfortable','Comfortable','Roomy story descriptions'],['compact','Compact','More stories at a glance'],['gallery','Gallery','Cover-forward browsing']];
  return <div className="reading-catalogue-controls">
-  <div><span className="eyebrow">YOUR STORY SHELF</span><p role="status">Showing <strong>{shown}</strong> of <strong>{total}</strong> stories</p></div>
-  <div role="group" aria-label="Story catalogue layout">{[['comfortable','Comfortable'],['compact','Compact'],['gallery','Gallery']].map(([key,label])=><button type="button" key={key} aria-pressed={layout===key} onClick={()=>onLayout(key)}>{label}</button>)}</div>
+  <div><span className="eyebrow">PUBLIC STORY ARCHIVE</span><p role="status" aria-live="polite" aria-atomic="true">Showing <strong>{safeShown}</strong> of <strong>{safeTotal}</strong> stories in this selection</p></div>
+  <div role="group" aria-label="Choose story catalogue layout">{views.map(([key,label,description])=><button type="button" key={key} title={description} aria-label={label+' layout: '+description} aria-pressed={layout===key} onClick={()=>{if(layout!==key)onLayout(key)}}>{label}</button>)}</div>
  </div>;
 }
 export function ReadingCatalogueMore({shown,total,onMore}){
- if(shown>=total)return null;
- return <div className="reading-catalogue-more"><p>{total-shown} more {total-shown===1?'story':'stories'} in this view</p><button type="button" onClick={onMore}>Show {Math.min(24,total-shown)} more stories <span aria-hidden="true">↓</span></button></div>;
+ const remaining=Math.max(0,(Number(total)||0)-(Number(shown)||0));
+ if(!remaining)return null;
+ const batch=Math.min(24,remaining);
+ return <div className="reading-catalogue-more"><p>{remaining} more {remaining===1?'story':'stories'} in this selection</p><button type="button" onClick={onMore} aria-label={'Show '+batch+' more stories'}>Show {batch} more {batch===1?'story':'stories'} <span aria-hidden="true">↓</span></button></div>;
 }
