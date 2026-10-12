@@ -28,7 +28,7 @@ describe('public reading with member-only participation',()=>{
  it('keeps public reading, comics and chapters outside the member route guard',()=>{
   const source=readFileSync('src/main.jsx','utf8');
   for(const path of ['/reading','/work/:slug','/work/:slug/chapter/:chapterId','/comics','/comic/:slug','/comic/:slug/episode/:episodeId','/classic/:slug','/lost-works']){
-   const route=source.split('<Route path="'+path+'" element=')[1]?.split('</Route>')[0]||'';
+   const route=source.split('<Route path="'+path+'" element=')[1]?.split('<Route path=')[0]||'';
    expect(route,path).not.toBe('');
    expect(route.slice(0,155),path).not.toContain('<ProtectedRoute>');
   }
