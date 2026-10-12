@@ -1240,3 +1240,34 @@
 .palace-shell .treasury-room.refined .badge-grid.refined > .achievement-card > .palace-watercolour-badge > figcaption {
   display: none !important;
 }
+
+
+/* Cabinet-only frame alignment: both SVG sprite layers occupy one exact
+   coordinate surface; no independent shifting or stretching of frame artwork. */
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card .original-badge-stage:not(.painted-tier-stage) {
+  position: relative !important;
+  padding: 0 !important;
+  isolation: isolate !important;
+}
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card .original-badge-stage:not(.painted-tier-stage) > :is(.original-badge-picture,.original-badge-mount) {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  transform-origin: center !important;
+  object-fit: contain !important;
+  overflow: visible !important;
+}
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card .original-badge-stage:not(.painted-tier-stage) > .original-badge-mount {
+  z-index: 2 !important;
+  pointer-events: none !important;
+}
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card .original-badge-stage:not(.painted-tier-stage) > .original-badge-picture {
+  z-index: 1 !important;
+}
