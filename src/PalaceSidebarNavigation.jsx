@@ -58,9 +58,9 @@ export default function PalaceSidebarNavigation({rooms=[],activeRoom,currentHref
   <p className="nav-section-label palace-calm-label palace-all-rooms-label">STEWARDSHIP & SAFETY</p>
   <nav className="full-room-nav secondary" aria-label="Palace stewardship">
    <div className="full-nav-room">
-    <NavLink to="/council/governance">
+    <Link to="/council/governance" className={inCouncil?'active':undefined} aria-current={inCouncil?'location':undefined}>
      <i className="room-sigil room-sigil-council">{renderIcon('council')}</i><span>Palace Council</span>
-    </NavLink>
+    </Link>
     {inCouncil&&<div className="full-subnav">
      <small>COUNCIL SECTIONS</small>
      {councilRoutes.map(([label,path])=><Link key={path} to={path} className={currentHref===path?'active':''}
@@ -68,7 +68,7 @@ export default function PalaceSidebarNavigation({rooms=[],activeRoom,currentHref
     </div>}
    </div>
    <div className="full-nav-room">
-    <NavLink to="/code"><i className="room-sigil room-sigil-council">§</i><span>The Palace Code</span></NavLink>
+    <Link to="/code" className={inCode?'active':undefined} aria-current={inCode?'location':undefined}><i className="room-sigil room-sigil-council">§</i><span>The Palace Code</span></Link>
     {inCode&&<div className="full-subnav">
      <small>SECTIONS</small>
      <span className="restored-static">Community conduct</span><span className="restored-static">Safety & privacy</span>
