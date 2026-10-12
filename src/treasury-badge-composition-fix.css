@@ -270,8 +270,8 @@
   position:relative !important;
   display:block !important;
   flex:0 0 auto !important;
-  width:116px !important;
-  height:116px !important;
+  width:98px !important;
+  height:98px !important;
   max-width:100% !important;
   margin:0 auto !important;
 }
@@ -286,4 +286,28 @@
 .palace-shell .treasury-room.refined .badge-grid.refined .achievement-card > .palace-watercolour-badge {
   justify-content:center !important;
   margin-bottom:8px !important;
+}
+
+/* Match the proportional display of circular paintings to ornate oval mounts.
+   The full circle/frame is scaled together; no clipping, no painting replacement. */
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card .painted-round-badge {
+  aspect-ratio:1 / 1 !important;
+  overflow:visible !important;
+  align-self:center !important;
+}
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card .painted-round-badge > .painted-round-picture {
+  position:absolute !important;
+  inset:16% !important;
+  width:auto !important;
+  height:auto !important;
+  border-radius:50% !important;
+}
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card .painted-round-badge > .painted-tier-frame {
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  max-width:none !important;
+  max-height:none !important;
+  object-fit:contain !important;
 }
