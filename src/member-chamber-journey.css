@@ -386,3 +386,45 @@
     scroll-behavior: auto;
   }
 }
+
+
+/* Compact Chamber rhythm: reduce oversized display areas, NOT member artwork.
+   Desktop/tablet only. Keep cover, profile photo, frame and badge geometry intact. */
+@media (min-width: 780px) {
+ .palace-shell .chamber-creator-overview,
+ .palace-shell .creator-worlds-room,
+ .palace-shell .chamber-posts-room,
+ .palace-shell .chamber-atelier-gallery {
+   width: min(100%,1080px);
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile {
+   width: min(100%,1080px) !important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-copy h1 {
+   font-size: clamp(1.5rem,2.1vw,2.15rem) !important;
+ }
+ .palace-shell .chamber-creator-overview,
+ .palace-shell .creator-worlds-room,
+ .palace-shell .chamber-posts-room,
+ .palace-shell .chamber-atelier-gallery {
+   margin-top: 12px;
+   margin-bottom: 16px;
+ }
+ .palace-shell .chamber-creator-overview :is(.chamber-about-card,.chamber-contact-state) {
+   padding: 14px !important;
+ }
+ .palace-shell .creator-worlds-room .section-heading,
+ .palace-shell .chamber-posts-room .section-heading,
+ .palace-shell .chamber-atelier-gallery .section-heading {
+   margin-bottom: 9px !important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats {
+   gap: 7px !important;
+   padding: 8px !important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats > div {
+   min-height: 62px !important;
+   padding: 8px 6px !important;
+ }
+}
+/* Mobile retains its own previously repaired profile grid and readable controls. */
