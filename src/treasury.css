@@ -1197,3 +1197,46 @@
 .badge-art-dialog .painted-tier-stage.painted-tier-stage{width:min(260px,60vw)!important;height:min(334px,77vw)!important}
 .treasury-gallery .badge-card .painted-tier-stage.painted-tier-stage{width:128px!important;height:164px!important}
 @media(max-width:650px){.treasury-gallery .badge-card .painted-tier-stage.painted-tier-stage{width:106px!important;height:136px!important}}
+
+
+/* SOURCE FIX: achievement cabinet legacy round portraits and decorative mounts.
+   Treasury CSS loads with the lazy badge renderer; correct sizing HERE so later
+   legacy rules cannot restore oversized frames. No change to dialogs, avatars,
+   badge artwork or earned tiers. */
+.palace-shell .treasury-room.refined .badge-grid.refined > .achievement-card > .palace-watercolour-badge {
+  flex: 0 0 150px !important;
+  height: 150px !important;
+  min-height: 150px !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  overflow: hidden !important;
+}
+.palace-shell .treasury-room.refined .badge-grid.refined > .achievement-card > .palace-watercolour-badge > .original-badge-stage:not(.painted-tier-stage) {
+  flex: none !important;
+  width: 104px !important;
+  height: 130px !important;
+  max-width: 104px !important;
+  transform: scale(.68) !important;
+  transform-origin: center center !important;
+  margin: 0 auto !important;
+}
+.palace-shell .treasury-room.refined .badge-grid.refined > .achievement-card > .palace-watercolour-badge > .painted-round-badge {
+  flex: none !important;
+  width: 98px !important;
+  height: 98px !important;
+  transform: scale(.88) !important;
+  transform-origin: center center !important;
+  margin: 0 auto !important;
+}
+.palace-shell .treasury-room.refined .badge-grid.refined > .achievement-card > .palace-watercolour-badge > .painted-tier-stage.painted-tier-stage {
+  width: 100px !important;
+  height: 130px !important;
+  max-width: 100px !important;
+  transform: none !important;
+}
+.palace-shell .treasury-room.refined .badge-grid.refined > .achievement-card > .palace-watercolour-badge > figcaption {
+  display: none !important;
+}
