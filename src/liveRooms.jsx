@@ -3,6 +3,8 @@ import CommonsThreadMenu from './CommonsThreadMenu';
 import GuestReadingInvitation from './GuestReadingInvitation';
 import {palaceSignInDoor} from './palaceDoorway';
 import {ReadingCatalogueControls,ReadingCatalogueMore} from './ReadingCatalogueControls';
+import ReadingFacetSidebar from './ReadingFacetSidebar';
+import {buildReadingFacets,matchesReadingFacets,sortReadingWorks} from './readingFacetModel';
 import useReadingDiscoveryState from './useReadingDiscoveryState';
 import useManuscriptReconnect from './useManuscriptReconnect';
 import MemberAvatar from './MemberAvatar';
@@ -294,7 +296,7 @@ export function ChamberLive({Frame}){
  </section>}</State></Frame>
 }
 export function ReadingLive({Frame}){
- const{session}=useAuth();const navigate=useNavigate();const location=useLocation();const[works,setWorks]=useState(null);const[archiveWorks,setArchiveWorks]=useState([]);const[readerState,setReaderState]=useState({});const[discoveryPrefs,setDiscoveryPrefs]=useState(null);const[error,setError]=useState('');const[advancedText,setAdvancedText]=useState('');const[advancedTagQuery,setAdvancedTagQuery]=useState('');const[advancedTagCategory,setAdvancedTagCategory]=useState('all');const[advancedTags,setAdvancedTags]=useState([]);const[advancedInclude,setAdvancedInclude]=useState([]);const[advancedExclude,setAdvancedExclude]=useState([]);const[advancedResults,setAdvancedResults]=useState([]);const[advancedBusy,setAdvancedBusy]=useState(false);const[advancedSearched,setAdvancedSearched]=useState(false);const[advancedTagBusy,setAdvancedTagBusy]=useState(false);const[advancedSort,setAdvancedSort]=useState('updated');
+ const{session}=useAuth();const navigate=useNavigate();const location=useLocation();const[works,setWorks]=useState(null);const[archiveWorks,setArchiveWorks]=useState([]);const[readerState,setReaderState]=useState({});const[discoveryPrefs,setDiscoveryPrefs]=useState(null);const[error,setError]=useState('');const[advancedText,setAdvancedText]=useState('');const[advancedTagQuery,setAdvancedTagQuery]=useState('');const[advancedTagCategory,setAdvancedTagCategory]=useState('all');const[advancedTags,setAdvancedTags]=useState([]);const[advancedInclude,setAdvancedInclude]=useState([]);const[advancedExclude,setAdvancedExclude]=useState([]);const[advancedResults,setAdvancedResults]=useState([]);const[advancedBusy,setAdvancedBusy]=useState(false);const[advancedSearched,setAdvancedSearched]=useState(false);const[advancedTagBusy,setAdvancedTagBusy]=useState(false);const[advancedSort,setAdvancedSort]=useState('updated');const[hasMorePublished,setHasMorePublished]=useState(false);const[morePublishedBusy,setMorePublishedBusy]=useState(false);const[morePublishedError,setMorePublishedError]=useState('');
  const [readingChoices,setReadingChoice]=useReadingDiscoveryState(session?.user?.id);
  const query=readingChoices.query;const setQuery=value=>setReadingChoice('query',value);
  const rating=readingChoices.rating;const setRating=value=>setReadingChoice('rating',value);
@@ -304,19 +306,21 @@ export function ReadingLive({Frame}){
  const vibeDoor=readingChoices.vibeDoor;const setVibeDoor=value=>setReadingChoice('vibeDoor',value);
  const readerLens=readingChoices.readerLens;const setReaderLens=value=>setReadingChoice('readerLens',value);
  const catalogueSort=readingChoices.catalogueSort;const setCatalogueSort=value=>setReadingChoice('catalogueSort',value);
+ const includedTags=readingChoices.includeTags;const excludedTags=readingChoices.excludeTags;
  const[readingNotice,setReadingNotice]=useState('');
  const[advancedTagLabels,setAdvancedTagLabels]=useState({});
  useEffect(()=>{
   let active=true;
   const id=session?.user?.id||null;
-  setWorks(null);setArchiveWorks([]);setReaderState({});setDiscoveryPrefs(null);setError('');setReadingNotice('');
+  setWorks(null);setArchiveWorks([]);setReaderState({});setDiscoveryPrefs(null);setError('');setReadingNotice('');setHasMorePublished(false);setMorePublishedBusy(false);setMorePublishedError('');
   // Public stories and the hosted Classics can each survive the other source
   // failing. Personal shelves are optional and never block public reading.
-  Promise.allSettled([getPublishedWorks(),getArchive(id)]).then(([stories,archive])=>{
+  Promise.allSettled([getPublishedWorks({limit:48}),getArchive(id)]).then(([stories,archive])=>{
    if(!active)return;
    const memberOK=stories.status==='fulfilled',archiveOK=archive.status==='fulfilled';
    if(!memberOK&&!archiveOK){setError('Story shelves are temporarily unavailable. Please try again.');return}
    setWorks(memberOK?(stories.value||[]):[]);
+   setHasMorePublished(memberOK&&(stories.value||[]).length===48);
    const archiveRows=archiveOK?(archive.value||[]):[];
    setArchiveWorks(archiveRows.filter(r=>r.host_mode==='full'&&r.rights_status==='public_domain_verified').map(r=>({id:'archive-'+r.id,archive_record_id:r.id,is_archive:true,title:r.title,slug:r.slug,summary:r.summary,work_type:'archive',rating:'not_rated',rights_status:r.rights_status,archive_source_url:r.archive_source_url,creator_name:r.creator_name,language:r.original_language||'English',completion_status:'complete',cover_url:null,first_published_at:null,last_published_at:r.updated_at||r.verified_at,profiles:{display_name:r.creator_name,title:'Palace Classic',username:null,avatar_url:null},work_tags:[{tags:{id:'archive-classics',name:'Palace Classics',category:'collection',status:'canonical'}},{tags:{id:'archive-'+(r.category||'classic'),name:String(r.category||'classic').replaceAll('_',' '),category:'genre',status:'canonical'}}]})));
    if(!memberOK||!archiveOK)setReadingNotice('One reading shelf could not be gathered. The other stories are still available.');
@@ -327,9 +331,34 @@ export function ReadingLive({Frame}){
   }
   return()=>{active=false};
  },[session?.user?.id]);
+ async function loadNextPublishedPage(){
+  if(morePublishedBusy||!hasMorePublished||!Array.isArray(works))return;
+  setMorePublishedBusy(true);setMorePublishedError('');
+  try{
+   const rows=await getPublishedWorks({offset:works.length,limit:48});
+   setWorks(previous=>{
+    const seen=new Set((previous||[]).map(work=>work.id));
+    return [...(previous||[]),...rows.filter(work=>!seen.has(work.id))];
+   });
+   setHasMorePublished(rows.length===48);
+   setReadingChoice('visibleCount',current=>current+48);
+  }catch(e){setMorePublishedError('More stories could not be gathered just now. Please try again.')}
+  finally{setMorePublishedBusy(false)}
+ }
+ function toggleReadingFacet(id,mode){
+  if(mode==='include'){
+   setReadingChoice('excludeTags',selected=>selected.filter(value=>value!==id));
+   setReadingChoice('includeTags',selected=>selected.includes(id)?selected.filter(value=>value!==id):[...selected,id]);
+  }else{
+   setReadingChoice('includeTags',selected=>selected.filter(value=>value!==id));
+   setReadingChoice('excludeTags',selected=>selected.includes(id)?selected.filter(value=>value!==id):[...selected,id]);
+  }
+ }
  // Stable book collections: typing in search must not rebuild every Classics list.
  const allReadingWorks=useMemo(()=>[...(works||[]),...(archiveWorks||[])],[works,archiveWorks]);
  const roomWorks=useMemo(()=>allReadingWorks.filter(w=>origin==='all'?true:origin==='fandom'?w.work_type==='fanwork':w.work_type!=='fanwork'),[allReadingWorks,origin]);
+ const tagFacets=useMemo(()=>buildReadingFacets(roomWorks),[roomWorks]);
+ const facetNames=Object.fromEntries(tagFacets.flatMap(group=>group.tags.map(tag=>[tag.id,tag.name])));
  const stateFor=w=>readerState[w.id]||{};
  const workTags=w=>(w.work_tags||[]).map(x=>x.tags).filter(t=>t&&['canonical','community'].includes(t.status));const moodDoors=[
   {id:'yearn',glyph:'☾',label:'Make me yearn',copy:'longing, slow burns & impossible feelings',terms:['yearn','yearning','slow burn','pining','longing','romance','love']},
@@ -349,11 +378,13 @@ export function ReadingLive({Frame}){
  const storyHref=w=>{if(w.is_archive)return directClassicHref(w);const p=stateFor(w).progress;if(p&&!p.completed&&p.chapter_id)return"/work/"+w.slug+"/chapter/"+p.chapter_id;return"/work/"+w.slug};
  const storyCta=w=>w.is_archive?'Read classic →':reopened(w)?'Read new chapter →':stateFor(w).progress&&!stateFor(w).progress.completed?'Continue reading →':finished(w)?'Read again →':'Enter story →';
  const readerLensMatches=w=>readerLens==='all'||readerLens==='unread'&&!stateFor(w).progress||readerLens==='reading'&&needsReading(w)||readerLens==='new'&&hasNew(w)||readerLens==='saved'&&!!stateFor(w).saved||readerLens==='following'&&!!stateFor(w).following||readerLens==='finished'&&finished(w);
- const filtered=roomWorks.filter(w=>moodMatches(w,vibeDoor)&&readerLensMatches(w)&&(rating==='all'||w.rating===rating)&&(status==='all'||w.completion_status===status)&&(!query.trim()||[w.title,w.summary,w.profiles?.display_name,w.profiles?.username,w.profiles?.title,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase().includes(query.trim().toLowerCase())));
- const catalogue=[...filtered].sort((a,b)=>catalogueSort==='title'?String(a.title||'').localeCompare(String(b.title||'')):catalogueSort==='oldest'?new Date(a.first_published_at||a.last_published_at||0)-new Date(b.first_published_at||b.last_published_at||0):new Date(b.last_published_at||0)-new Date(a.last_published_at||0));
- const activeReadingFilters=readingFilterChips({origin,query,rating,status,vibeDoor,readerLens},Object.fromEntries(moodDoors.map(door=>[door.id,door.label])));
- function clearReadingFilters(){setOrigin('all');setVibeDoor('all');setReaderLens('all');setQuery('');setRating('all');setStatus('all')}
+ const filtered=roomWorks.filter(w=>matchesReadingFacets(w,includedTags,excludedTags)&&moodMatches(w,vibeDoor)&&readerLensMatches(w)&&(rating==='all'||w.rating===rating)&&(status==='all'||w.completion_status===status)&&(!query.trim()||[w.title,w.summary,w.profiles?.display_name,w.profiles?.username,w.profiles?.title,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase().includes(query.trim().toLowerCase())));
+ const catalogue=sortReadingWorks(filtered,catalogueSort);
+ const activeReadingFilters=[...readingFilterChips({origin,query,rating,status,vibeDoor,readerLens},Object.fromEntries(moodDoors.map(door=>[door.id,door.label]))),...includedTags.map(id=>({key:'include:'+id,label:'Include: '+(facetNames[id]||'selected tag')})),...excludedTags.map(id=>({key:'exclude:'+id,label:'Exclude: '+(facetNames[id]||'selected tag')}))];
+ function clearReadingFilters(){setOrigin('all');setVibeDoor('all');setReaderLens('all');setQuery('');setRating('all');setStatus('all');setReadingChoice('includeTags',[]);setReadingChoice('excludeTags',[])}
  function removeReadingFilter(key){
+  if(key.startsWith('include:')){setReadingChoice('includeTags',current=>current.filter(id=>id!==key.slice(8)));return}
+  if(key.startsWith('exclude:')){setReadingChoice('excludeTags',current=>current.filter(id=>id!==key.slice(8)));return}
   switch(key){
    case 'origin':setOrigin('all');break;
    case 'vibeDoor':setVibeDoor('all');break;
