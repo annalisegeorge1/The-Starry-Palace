@@ -24,7 +24,8 @@ describe('Reading Room wayfinding and empty-shelf rescue',()=>{
   expect(reading).toContain('setReaderLens(\'all\')');
  });
  it('tells the difference between zero matches and a truly empty Palace shelf',()=>{
-  expect(reading).toContain('catalogue.length===0&&<div className="reading-catalogue-empty"');
+  expect(reading).toContain('visibleCatalogue.length===0&&<div className="reading-catalogue-empty"');
+   expect(reading).toContain('archiveBrowse.error&&<div className="reading-fetch-more"');
   expect(reading).toContain('No worlds match these choices yet.');
   expect(reading).toContain('This shelf is waiting for its first story.');
   expect(reading).toContain('Show every story →');
