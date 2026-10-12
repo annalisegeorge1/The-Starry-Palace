@@ -263,3 +263,27 @@
     grid-template-columns: repeat(auto-fit,minmax(min(205px,100%),1fr)) !important;
   }
 }
+
+/* Final visual calibration: painted round badges share the same footprint as mounts. */
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card .painted-round-badge {
+  box-sizing:border-box !important;
+  position:relative !important;
+  display:block !important;
+  flex:0 0 auto !important;
+  width:116px !important;
+  height:116px !important;
+  max-width:100% !important;
+  margin:0 auto !important;
+}
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card .painted-round-badge :is(.painted-round-picture,.painted-tier-frame) {
+  max-width:100%;
+}
+/* The card already announces bronze/silver/etc. Do not repeat the figure caption. */
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card > .palace-watercolour-badge > figcaption {
+  display:none !important;
+}
+/* Make the image slot truly independent of painting size. */
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card > .palace-watercolour-badge {
+  justify-content:center !important;
+  margin-bottom:8px !important;
+}
