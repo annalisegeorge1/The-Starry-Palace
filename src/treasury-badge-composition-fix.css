@@ -149,7 +149,7 @@
   text-align: center !important;
   min-width: 0 !important;
   height: auto !important;
-  min-height: 380px !important;
+  min-height: 348px !important;
   gap: 0 !important;
   padding: 18px 16px !important;
   overflow: hidden !important;
@@ -163,10 +163,10 @@
   justify-content: center !important;
   width: 100% !important;
   max-width: 100% !important;
-  height: 180px !important;
-  min-height: 180px !important;
-  flex: 0 0 180px !important;
-  margin: 0 0 12px !important;
+  height: 150px !important;
+  min-height: 150px !important;
+  flex: 0 0 150px !important;
+  margin: 0 0 10px !important;
   padding: 0 !important;
   overflow: hidden !important;
 }
@@ -175,16 +175,16 @@
   box-sizing: border-box !important;
   flex: 0 0 auto !important;
   display: block !important;
-  width: min(120px,100%) !important;
-  height: 153px !important;
+  width: min(104px,100%) !important;
+  height: 130px !important;
   max-width: 100% !important;
   margin: 0 auto !important;
   padding: 0 !important;
   overflow: visible !important;
 }
 .palace-shell .treasury-room.refined .badge-grid.refined .achievement-card > .palace-watercolour-badge > .painted-tier-stage.painted-tier-stage {
-  width: 118px !important;
-  height: 153px !important;
+  width: 100px !important;
+  height: 130px !important;
 }
 .palace-shell .treasury-room.refined .badge-grid.refined .achievement-card .painted-tier-mount {
   transform: none !important;
