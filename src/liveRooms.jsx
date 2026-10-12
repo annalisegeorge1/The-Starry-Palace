@@ -1,3 +1,5 @@
+import useReadingDiscoveryState from './useReadingDiscoveryState';
+import useManuscriptReconnect from './useManuscriptReconnect';
 import MemberAvatar from './MemberAvatar';
 import {WriterAward} from './PaintedPalaceArt';
 import ManuscriptProgressDashboard from './ManuscriptProgressDashboard';
@@ -287,7 +289,16 @@ export function ChamberLive({Frame}){
  </section>}</State></Frame>
 }
 export function ReadingLive({Frame}){
- const{session}=useAuth();const navigate=useNavigate();const location=useLocation();const[works,setWorks]=useState(null);const[archiveWorks,setArchiveWorks]=useState([]);const[readerState,setReaderState]=useState({});const[discoveryPrefs,setDiscoveryPrefs]=useState(null);const[error,setError]=useState('');const[query,setQuery]=useState('');const[rating,setRating]=useState('all');const[status,setStatus]=useState('all');const[origin,setOrigin]=useState('all');const[shelf,setShelf]=useState('first');const[advancedText,setAdvancedText]=useState('');const[advancedTagQuery,setAdvancedTagQuery]=useState('');const[advancedTagCategory,setAdvancedTagCategory]=useState('all');const[advancedTags,setAdvancedTags]=useState([]);const[advancedInclude,setAdvancedInclude]=useState([]);const[advancedExclude,setAdvancedExclude]=useState([]);const[advancedResults,setAdvancedResults]=useState([]);const[advancedBusy,setAdvancedBusy]=useState(false);const[advancedSearched,setAdvancedSearched]=useState(false);const[advancedTagBusy,setAdvancedTagBusy]=useState(false);const[advancedSort,setAdvancedSort]=useState('updated');const[vibeDoor,setVibeDoor]=useState('all');const[readerLens,setReaderLens]=useState('all');const[catalogueSort,setCatalogueSort]=useState('updated');
+ const{session}=useAuth();const navigate=useNavigate();const location=useLocation();const[works,setWorks]=useState(null);const[archiveWorks,setArchiveWorks]=useState([]);const[readerState,setReaderState]=useState({});const[discoveryPrefs,setDiscoveryPrefs]=useState(null);const[error,setError]=useState('');const[advancedText,setAdvancedText]=useState('');const[advancedTagQuery,setAdvancedTagQuery]=useState('');const[advancedTagCategory,setAdvancedTagCategory]=useState('all');const[advancedTags,setAdvancedTags]=useState([]);const[advancedInclude,setAdvancedInclude]=useState([]);const[advancedExclude,setAdvancedExclude]=useState([]);const[advancedResults,setAdvancedResults]=useState([]);const[advancedBusy,setAdvancedBusy]=useState(false);const[advancedSearched,setAdvancedSearched]=useState(false);const[advancedTagBusy,setAdvancedTagBusy]=useState(false);const[advancedSort,setAdvancedSort]=useState('updated');
+ const [readingChoices,setReadingChoice]=useReadingDiscoveryState(session?.user?.id);
+ const query=readingChoices.query;const setQuery=value=>setReadingChoice('query',value);
+ const rating=readingChoices.rating;const setRating=value=>setReadingChoice('rating',value);
+ const status=readingChoices.status;const setStatus=value=>setReadingChoice('status',value);
+ const origin=readingChoices.origin;const setOrigin=value=>setReadingChoice('origin',value);
+ const shelf=readingChoices.shelf;const setShelf=value=>setReadingChoice('shelf',value);
+ const vibeDoor=readingChoices.vibeDoor;const setVibeDoor=value=>setReadingChoice('vibeDoor',value);
+ const readerLens=readingChoices.readerLens;const setReaderLens=value=>setReadingChoice('readerLens',value);
+ const catalogueSort=readingChoices.catalogueSort;const setCatalogueSort=value=>setReadingChoice('catalogueSort',value);
  const[readingNotice,setReadingNotice]=useState('');
  useEffect(()=>{
   let active=true;
@@ -332,7 +343,7 @@ export function ReadingLive({Frame}){
  const storyHref=w=>{if(w.is_archive)return directClassicHref(w);const p=stateFor(w).progress;if(p&&!p.completed&&p.chapter_id)return"/work/"+w.slug+"/chapter/"+p.chapter_id;return"/work/"+w.slug};
  const storyCta=w=>w.is_archive?'Read classic →':reopened(w)?'Read new chapter →':stateFor(w).progress&&!stateFor(w).progress.completed?'Continue reading →':finished(w)?'Read again →':'Enter story →';
  const readerLensMatches=w=>readerLens==='all'||readerLens==='unread'&&!stateFor(w).progress||readerLens==='reading'&&needsReading(w)||readerLens==='new'&&hasNew(w)||readerLens==='saved'&&!!stateFor(w).saved||readerLens==='following'&&!!stateFor(w).following||readerLens==='finished'&&finished(w);
- const filtered=roomWorks.filter(w=>moodMatches(w,vibeDoor)&&readerLensMatches(w)&&(rating==='all'||w.rating===rating)&&(status==='all'||w.completion_status===status)&&(!query.trim()||[w.title,w.summary,w.profiles?.display_name,w.profiles?.username,w.profiles?.title,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase().includes(query.toLowerCase())));
+ const filtered=roomWorks.filter(w=>moodMatches(w,vibeDoor)&&readerLensMatches(w)&&(rating==='all'||w.rating===rating)&&(status==='all'||w.completion_status===status)&&(!query.trim()||[w.title,w.summary,w.profiles?.display_name,w.profiles?.username,w.profiles?.title,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase().includes(query.trim().toLowerCase())));
  const catalogue=[...filtered].sort((a,b)=>catalogueSort==='title'?String(a.title||'').localeCompare(String(b.title||'')):catalogueSort==='oldest'?new Date(a.first_published_at||a.last_published_at||0)-new Date(b.first_published_at||b.last_published_at||0):new Date(b.last_published_at||0)-new Date(a.last_published_at||0));
  const activeReadingFilters=readingFilterChips({origin,query,rating,status,vibeDoor,readerLens},Object.fromEntries(moodDoors.map(door=>[door.id,door.label])));
  function clearReadingFilters(){setOrigin('all');setVibeDoor('all');setReaderLens('all');setQuery('');setRating('all');setStatus('all')}
@@ -2057,6 +2068,7 @@ function WorkStudioForWork({Frame,slug}){
   },900);
  }
  async function quickSaveChapter(){const form=editorRef.current?.closest('form');if(!form||!chapter)return;if(saveTimerRef.current){clearTimeout(saveTimerRef.current);saveTimerRef.current=null}setSaved('Saving to Palace…');try{await persistChapter(form)}catch(err){setSaved(saveFailureNotice());setError(err.message)}}
+ useManuscriptReconnect({chapterId:chapter?.id,coordinator:saveCoordinatorRef.current,retry:quickSaveChapter});
  function downloadDraftBackup(){
   const form=editorRef.current?.closest('form');
   if(!form||!chapter)return;

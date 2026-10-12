@@ -1334,8 +1334,10 @@ describe('Starry Palace launch safety',()=>{
 
   it('keeps Reading discovery reader-controlled without turning continuity into ranking',()=>{
     const polish=read('src/polish.css');
-    expect(live).toContain("const[readerLens,setReaderLens]=useState('all')");
-    expect(live).toContain("const[catalogueSort,setCatalogueSort]=useState('updated')");
+    expect(live).toContain("const readerLens=readingChoices.readerLens");
+    expect(read('src/useReadingDiscoveryState.js')).toContain("readerLens:'all'");
+    expect(live).toContain("const catalogueSort=readingChoices.catalogueSort");
+    expect(read('src/useReadingDiscoveryState.js')).toContain("catalogueSort:'updated'");
     expect(live).toContain("readerLens==='new'&&hasNew(w)");
     expect(live).toContain('MY READING LENSES');
     expect(live).toContain('Private to you · never changes public discovery ranking');

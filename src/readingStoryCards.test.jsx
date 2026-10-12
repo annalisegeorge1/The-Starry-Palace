@@ -22,7 +22,7 @@ describe('Reading Room card information',()=>{
  });
  it('keeps a long summary compact until its expand button is selected',()=>{
   const long='A wandering storyteller. '.repeat(28);
-  const html=render(<ReadingStoryContext work={{work_type:'original',summary:long}}/>);
+  const html=render(<ReadingStoryContext compact work={{work_type:'original',summary:long}}/>);
   expect(html).toContain('Read full summary');
   expect(html).toContain('aria-expanded="false"');
   expect(html).not.toContain(long.trim());
@@ -33,4 +33,11 @@ describe('Reading Room card information',()=>{
   expect(html).toContain('A road through the stars');
   expect(html).toContain('Complete');
  });
+});
+
+it('shows the full summary immediately on a story detail page',()=>{
+ const summary='A wandering storyteller. '.repeat(28).trim();
+ const html=render(<ReadingStoryContext work={{summary}}/>);
+ expect(html).toContain(summary);
+ expect(html).not.toContain('Read full summary');
 });

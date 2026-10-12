@@ -7,7 +7,7 @@ import './reading-story-context.css';
 export default function ReadingStoryContext({work,compact=false}){
  const details=readingStoryPresentation(work);
  const[expanded,setExpanded]=useState(false);
- const {preview,truncated}=readingSummaryPreview(details.summary,compact?165:280);
+ const {preview,truncated}=compact?readingSummaryPreview(details.summary,165):{preview:details.summary,truncated:false};
  const overflowFandoms=compact&&details.fandoms.length>1;
  return <section className={'reading-story-context'+(compact?' is-compact':'')} aria-label="Story details">
    <div className="reading-story-context-facts">
