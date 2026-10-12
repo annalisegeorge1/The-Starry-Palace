@@ -30,3 +30,8 @@ describe('return to writing',()=>{
   expect(chooseWritingResumeTarget([{id:'a',slug:'a',updated_at:'bad',chapters:[{id:'1',position:1,status:'draft'}]}]).chapter.id).toBe('1');
  });
 });
+it('never resumes an archived manuscript even when it was most recently changed',()=>{
+ const archived={...a,publication_status:'archived',updated_at:'2099-01-01'};
+ expect(chooseWritingResumeTarget([archived,b]).work.id).toBe('b');
+ expect(chooseWritingResumeTarget([archived])).toBeNull();
+});

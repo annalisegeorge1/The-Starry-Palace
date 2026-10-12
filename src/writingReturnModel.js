@@ -8,7 +8,7 @@ function dateValue(value){
 }
 export function chooseWritingResumeTarget(works){
  if(!Array.isArray(works)||works.length===0)return null;
- const entries=works.filter(w=>w&&w.id&&w.slug).map(work=>{
+ const entries=works.filter(w=>w&&w.id&&w.slug&&w.publication_status!=='archived').map(work=>{
   const chapters=Array.isArray(work.chapters)?work.chapters:[];
   const draftChapters=chapters.filter(c=>c&&c.id&&c.status!=='published');
   const readable=(draftChapters.length?draftChapters:chapters.filter(c=>c&&c.id));

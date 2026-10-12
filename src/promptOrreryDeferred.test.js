@@ -8,7 +8,8 @@ describe('On-demand, complete Prompt Orrery',()=>{
  it('keeps the large catalogue out of the initial eager Palace module',()=>{
   expect(code).not.toContain("from'./promptOrreryData';");
   expect(writing).toContain("import('./promptOrreryData')");
-  expect(writing).toContain("tab!=='drafts'&&tab!=='duels'");
+  expect(writing).toContain("(tab==='drafts'&&inspirationOpen)||tab==='duels'");
+  expect(writing).toContain('inspirationOpen&&<>');
   expect(writing).toContain('const PROMPT_ORRERY_RECIPES=orreryModule?.PROMPT_ORRERY_RECIPES||EMPTY_ORRERY_RECIPES');
  });
  it('preserves all 7012 recipes and the random generator without modifying content',()=>{

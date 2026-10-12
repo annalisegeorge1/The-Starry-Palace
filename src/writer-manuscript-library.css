@@ -1,0 +1,52 @@
+/* A working library: clear manuscripts, deliberate actions, optional inspiration. */
+.palace-shell.full-palace-shell .chic-writing-head{padding-block:24px!important;min-height:0!important}
+.palace-shell.full-palace-shell .chic-writing-head h1{font-size:clamp(2rem,3.5vw,3rem)!important;line-height:1.15!important}
+.palace-shell.full-palace-shell .writing-pad-launch{border-radius:16px!important;box-shadow:none!important;margin-block:20px!important}
+.palace-shell.full-palace-shell .writing-pad-launch .writing-pad-copy h2{font-size:clamp(1.4rem,2.2vw,1.85rem)!important}
+.palace-shell.full-palace-shell :is(.writer-new-work-fold,.writer-inspiration-fold){margin:20px 0;border:1px solid var(--ui-line);border-radius:16px;background:var(--ui-surface);color:var(--ui-text);min-width:0}
+.palace-shell.full-palace-shell :is(.writer-new-work-fold,.writer-inspiration-fold)>summary{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 20px;min-height:60px;box-sizing:border-box;list-style:none;cursor:pointer}
+.palace-shell.full-palace-shell :is(.writer-new-work-fold,.writer-inspiration-fold)>summary::-webkit-details-marker{display:none}
+.palace-shell.full-palace-shell :is(.writer-new-work-fold,.writer-inspiration-fold)>summary strong{display:block;font:650 .95rem/1.4 system-ui,sans-serif}
+.palace-shell.full-palace-shell :is(.writer-new-work-fold,.writer-inspiration-fold)>summary small{display:block;margin-top:4px;font:.78rem/1.5 system-ui,sans-serif;color:var(--ui-muted)}
+.palace-shell.full-palace-shell :is(.writer-new-work-fold,.writer-inspiration-fold)[open]>summary{border-bottom:1px solid var(--ui-line)}
+.palace-shell.full-palace-shell .writer-new-work-fold .chic-new-work{margin:0!important;border:0!important;border-radius:0 0 16px 16px!important;box-shadow:none!important}
+.palace-shell.full-palace-shell .writer-inspiration-fold>.prompt-orrery{margin:0!important;border:0!important;border-radius:0 0 16px 16px!important}
+.palace-shell.full-palace-shell .chic-writing-library-tools{display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important;padding:14px!important;background:var(--ui-surface)!important;border:1px solid var(--ui-line)!important;border-radius:14px!important;box-shadow:none!important}
+.palace-shell.full-palace-shell .chic-writing-library-tools .writing-library-search{flex:2 1 260px!important;min-width:0!important}
+.palace-shell.full-palace-shell .chic-writing-library-tools select{flex:1 1 160px!important;min-width:0!important;max-width:100%!important;min-height:44px!important;font-size:.86rem!important}
+.palace-shell.full-palace-shell .chic-draft-list{display:grid!important;grid-template-columns:1fr!important;gap:16px!important;margin-block:20px!important}
+.palace-shell.full-palace-shell .chic-draft-list .writer-work-card{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:16px!important;padding:24px!important;margin:0!important;border:1px solid var(--ui-line)!important;border-radius:16px!important;box-shadow:none!important;background:var(--ui-surface)!important;color:var(--ui-text)!important;min-width:0!important;overflow:visible!important}
+.palace-shell.full-palace-shell .writer-work-card .writer-work-card-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center;font:650 .7rem/1.5 system-ui,sans-serif;color:var(--ui-muted);letter-spacing:.035em}
+.palace-shell.full-palace-shell .writer-work-card .writer-work-state{padding:5px 9px;border:1px solid var(--ui-line);border-radius:7px;color:var(--ui-text);background:var(--ui-raised);text-transform:capitalize}
+.palace-shell.full-palace-shell .writer-work-card .writer-work-state.is-published{border-color:#668f86}
+.palace-shell.full-palace-shell .writer-work-card .writer-work-card-copy{min-width:0}
+.palace-shell.full-palace-shell .writer-work-card .writer-work-card-copy h2{font:500 clamp(1.3rem,2vw,1.7rem)/1.25 Georgia,serif!important;margin:0 0 10px!important;overflow-wrap:anywhere}
+.palace-shell.full-palace-shell .writer-work-card .writer-work-card-copy h2 a{color:var(--ui-text)!important;text-decoration:none}
+.palace-shell.full-palace-shell .writer-work-card .writer-work-card-copy p{font:.88rem/1.65 system-ui,sans-serif!important;margin:0!important;color:var(--ui-muted)!important;max-width:75ch;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.palace-shell.full-palace-shell .writer-work-card .writer-work-card-stats{display:flex;flex-wrap:wrap;gap:16px 28px;margin:0;padding:14px 0;border-top:1px solid var(--ui-line);border-bottom:1px solid var(--ui-line)}
+.palace-shell.full-palace-shell .writer-work-card .writer-work-card-stats>div{display:flex;flex-direction:column-reverse;gap:5px}
+.palace-shell.full-palace-shell .writer-work-card dt{font:.72rem/1.4 system-ui,sans-serif;color:var(--ui-muted)}
+.palace-shell.full-palace-shell .writer-work-card dd{font:650 1.1rem/1.2 system-ui,sans-serif;color:var(--ui-text);font-variant-numeric:tabular-nums;margin:0}
+.palace-shell.full-palace-shell .writer-work-card .writer-work-release{display:flex;align-items:center;gap:12px;border-left:3px solid var(--ui-accent);padding:10px 14px;background:var(--ui-raised);color:var(--ui-text);text-decoration:none;border-radius:0 9px 9px 0}
+.palace-shell.full-palace-shell .writer-work-release>span:nth-child(2){flex:1;min-width:0}
+.palace-shell.full-palace-shell .writer-work-release strong{display:block;font:650 .84rem/1.4 system-ui,sans-serif;overflow-wrap:anywhere}
+.palace-shell.full-palace-shell .writer-work-release small{display:block;font:.75rem/1.5 system-ui,sans-serif;color:var(--ui-muted);margin-top:3px}
+.palace-shell.full-palace-shell .writer-work-card .writer-work-card-footer{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:14px}
+.palace-shell.full-palace-shell .writer-work-card-footer>span{font:.72rem/1.5 system-ui,sans-serif;color:var(--ui-muted);padding-top:12px}
+.palace-shell.full-palace-shell .writer-work-card-footer>div{display:flex;flex-wrap:wrap;gap:9px;align-items:flex-start}
+.palace-shell.full-palace-shell .writer-work-card .writer-work-resume{display:flex;align-items:center;justify-content:center;gap:14px;padding:10px 15px;min-height:44px;box-sizing:border-box;border:1px solid var(--palace-unified-action-border);border-radius:10px;background:var(--palace-unified-action-gradient);color:var(--palace-unified-action-ink);font:650 .82rem/1.4 system-ui,sans-serif;text-decoration:none}
+.palace-shell.full-palace-shell .writer-work-menu{min-width:96px;border:1px solid var(--ui-line);border-radius:10px}
+.palace-shell.full-palace-shell .writer-work-menu>summary{cursor:pointer;padding:11px 14px;min-height:44px;box-sizing:border-box;list-style:none;font:650 .8rem/1.4 system-ui,sans-serif;color:var(--ui-text)}
+.palace-shell.full-palace-shell .writer-work-menu>summary::-webkit-details-marker{display:none}
+.palace-shell.full-palace-shell .writer-work-menu>div{display:grid;padding:6px;border-top:1px solid var(--ui-line);gap:4px}
+.palace-shell.full-palace-shell .writer-work-menu :is(a,button){display:flex;align-items:center;min-height:44px;padding:8px 12px;border:0;border-radius:7px;background:transparent;color:var(--ui-text);font:500 .8rem/1.4 system-ui,sans-serif;text-decoration:none;text-align:left;cursor:pointer}
+.palace-shell.full-palace-shell .writer-work-menu :is(a,button):hover{background:var(--ui-raised)}
+.palace-shell.full-palace-shell :is(.writer-work-card,.writer-new-work-fold,.writer-inspiration-fold) :is(a,button,summary,input,select):focus-visible{outline:2px solid var(--ui-accent)!important;outline-offset:3px!important}
+@media(max-width:650px){
+ .palace-shell.full-palace-shell .chic-draft-list .writer-work-card{padding:17px!important;gap:14px!important}
+ .palace-shell.full-palace-shell .writer-work-card .writer-work-card-stats{gap:14px 20px}
+ .palace-shell.full-palace-shell .writer-work-card-footer>div{width:100%}
+ .palace-shell.full-palace-shell .writer-work-resume{flex:1}
+ .palace-shell.full-palace-shell :is(.writer-new-work-fold,.writer-inspiration-fold)>summary{padding:16px}
+ .palace-shell.full-palace-shell .chic-writing-library-tools :is(select,input){font-size:1rem!important}
+}
