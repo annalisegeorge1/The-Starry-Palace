@@ -9,6 +9,9 @@
  --ui-accent:#c5b3f5;
  --ui-selected:linear-gradient(110deg,#43355f,#283f59);
  --ui-radius:14px;
+ --ui-space-card:16px;
+ --ui-space-section:24px;
+ --ui-reading-width:72ch;
 }
 .palace-shell.full-palace-shell.daylight {
  --ui-surface:#fcfaff;
@@ -80,6 +83,7 @@
 .palace-shell.full-palace-shell .full-topbar {
  box-shadow:0 1px 0 var(--ui-line)!important;
  border-bottom-color:var(--ui-line)!important;
+ backdrop-filter:saturate(1.08);
 }
 .palace-shell.full-palace-shell .global-search-live {
  border-radius:12px!important;
@@ -127,14 +131,14 @@
 }
 .palace-shell.full-palace-shell .chic-commons .chic-timeline .social-thread {
  margin:0!important;
- padding:22px 20px!important;
+ padding:18px 18px!important;
  border:0!important;
  border-bottom:1px solid var(--ui-line)!important;
  border-radius:0!important;
  background:transparent!important;
  box-shadow:none!important;
  transform:none!important;
- gap:16px!important;
+ gap:12px!important;
 }
 .palace-shell.full-palace-shell .chic-commons .chic-timeline .social-thread:last-child {border-bottom:0!important}
 .palace-shell.full-palace-shell .chic-commons .social-thread-body {min-width:0!important}
