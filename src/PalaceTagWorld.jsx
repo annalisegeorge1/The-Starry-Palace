@@ -99,7 +99,7 @@ export default function PalaceTagWorld(){
   </section>}
   {canBrowse&&<>
    <header className="tag-world-hero">
-    <div><p className="eyebrow">THE STARry PALACE · {categoryName.toUpperCase()} ARCHIVE</p>
+    <div><p className="eyebrow">THE STARRY PALACE · {categoryName.toUpperCase()} ARCHIVE</p>
      <h1>{tag.name}</h1>
      <p>Every published story bearing this {categoryName.toLowerCase()} tag, gathered into one constellation. Browse freely; sign in only when you want to take part.</p>
      <div className="tag-world-hero-actions"><Link to="/reading">Explore all stories →</Link>
