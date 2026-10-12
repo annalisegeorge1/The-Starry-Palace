@@ -17,7 +17,8 @@ describe('real browsing, not an artificial 24-story ceiling',()=>{
   expect(live).toContain("getPublishedWorks({limit:48})");
   expect(live).toContain("getPublishedWorks({offset:works.length,limit:48})");
   expect(live).toContain("setReadingChoice('visibleCount',current=>current+48)");
-  expect(live).toContain('matching among {allReadingWorks.length} loaded');
+  expect(live).toContain('archiveBrowse.snapshot?visibleTotal.toLocaleString()');
+  expect(live).toContain('matching published stories · archive-wide');
   expect(live).toContain('matchesReadingFacets(w,includedTags,excludedTags)');
   expect(live).toContain('<ReadingFacetSidebar facets={tagFacets}');
  });
