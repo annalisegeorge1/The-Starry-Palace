@@ -19,6 +19,7 @@ it('shows an action menu instead of muting when the ellipsis is tapped',()=>{
 it('offers unmute when a conversation is already muted',()=>{
  const onMute=vi.fn();
  render(<CommonsThreadMenu muted title="Night Letters" onMute={onMute}/>);
+ fireEvent.click(screen.getByText('···'));
  expect(screen.getByRole('button',{name:'Unmute conversation'})).toBeTruthy();
  fireEvent.click(screen.getByRole('button',{name:'Unmute conversation'}));
  expect(onMute).toHaveBeenCalledOnce();
