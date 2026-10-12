@@ -5,6 +5,7 @@ import {FANDOM_MEDIA_SHELVES} from './palaceFandomCatalogue';
 import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection,fandomFacetOptions} from './fandomDirectoryModel';
 import StoryRatingBadge from './StoryRatingBadge';
 import PalaceInfoMark from './PalaceInfoMark';
+import {tagWorldPath} from './tagWorldRoutes';
 import './palace-fandom-atlas.css';
 
 export default function PalaceFandomAtlas(){
@@ -94,7 +95,7 @@ export default function PalaceFandomAtlas(){
    <div className="palace-fandom-cardgrid">
     {list.items.map(f=><article key={f.id} className={'palace-fandom-card'+(selected.includes(f.id)?' picked':'')}>
      <div className="palace-fandom-card-top"><span aria-hidden="true">✧</span><small>{(f.media_categories||['uncategorized']).map(fandomMediaLabel).slice(0,2).join(' · ')}</small></div>
-     <h2>{f.name}</h2>
+     <h2><Link to={tagWorldPath(f)||'/tags?q='+encodeURIComponent(f.name)}>{f.name}</Link></h2>
      <p>{f.subcategory||'Member-created fandom'}</p>
      {f.franchise&&f.franchise!==f.name&&<small className="palace-fandom-franchise">World: {f.franchise}</small>}
      {f.aliases?.length>0&&<small className="palace-fandom-aliases">Also known as {f.aliases.slice(0,2).join(' · ')}</small>}
@@ -102,6 +103,7 @@ export default function PalaceFandomAtlas(){
       disabled={!selected.includes(f.id)&&selected.length>=5}>
       {selected.includes(f.id)?'✓ In my constellation':'+ Select fandom'}
      </button>
+     {tagWorldPath(f)&&<Link className="palace-fandom-browse-door" to={tagWorldPath(f)}>Browse published stories →</Link>}
     </article>)}
    </div>
    <footer className="palace-fandom-pages">
@@ -131,7 +133,7 @@ export default function PalaceFandomAtlas(){
       </Link>)}</div></>:<p>No published stories are attached to this constellation yet. Be the first to write one.</p>}
     </div>
    </>}
-   <footer><Link to="/tags">Open Tag Constellation for characters, relationships, tropes and exclusions →</Link><Link to="/writing">Create a fanwork →</Link></footer>
+   <footer><Link to="/tags?category=relationship">Explore relationship tags →</Link><Link to="/tags">Open Tag Constellation for characters, relationships, tropes and exclusions →</Link><Link to="/writing">Create a fanwork →</Link></footer>
   </section>
  </section>;
 }

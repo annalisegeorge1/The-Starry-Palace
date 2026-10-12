@@ -38,6 +38,7 @@ import {
  ComicLive,ComicEpisodeLive,ComicStudioLive,SeriesLive
 } from './liveRooms';
 const DirectClassicReader=React.lazy(()=>importWithRecovery(()=>import('./DirectClassicReader')));
+const PalaceTagWorld=React.lazy(()=>importWithRecovery(()=>import('./PalaceTagWorld')));
 import './palace-editorial-finish.css';
 import './palace-navigation-jewels.css';
 import './palace-regalia-rooms.css';
@@ -685,6 +686,7 @@ function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo
  <Route path="/library" element={<ProtectedRoute><LibraryLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/letters" element={<ProtectedRoute><LettersLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/tags" element={<TagSearchLive Frame={Frame}/>}/>
+ <Route path="/tag/:tagId" element={<React.Suspense fallback={<RouteLoading/>}><Frame><PalaceTagWorld/></Frame></React.Suspense>}/>
   <Route path="/fandoms" element={<React.Suspense fallback={<RouteLoading/>}><Frame><PalaceFandomAtlas/></Frame></React.Suspense>}/>
  <Route path="/search" element={<SearchLive Frame={Frame}/>}/><Route path="/honour" element={<HonourLive Frame={Frame}/>}/><Route path="/council" element={<ProtectedRoute><CouncilLive Frame={Frame}/></ProtectedRoute>}/><Route path="/council/governance" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><PalaceGovernance Frame={Frame}/></React.Suspense></ProtectedRoute>}/><Route path="/code" element={<CodeLive Frame={Frame}/>}/><Route path="/beta" element={<React.Suspense fallback={<RouteLoading/>}><PalaceBetaGuide Frame={Frame}/></React.Suspense>}/>
  <Route path="/member/:username" element={<MemberProfileLive Frame={Frame}/>}/>

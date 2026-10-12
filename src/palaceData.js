@@ -412,6 +412,16 @@ export async function getStoriesForFandoms(tagIds=[],mode='any'){
 
 export async function getTagConstellation(){return searchPalaceTags('','all',120)}
 export async function searchPalaceTags(query='',category='all',limit=100){const args={p_query:String(query||''),p_category:category==='all'?null:category,p_limit:limit};const modern=await needClient().rpc('search_palace_tags_v2',args);if(!modern.error)return modern.data||[];const legacy=await needClient().rpc('search_palace_tags',args);if(legacy.error)throw modern.error||legacy.error;return legacy.data||[]}
+/** Public tag details for shareable fandom, relationship and trope archives. */
+export async function getPalaceTagById(tagId){
+ const id=String(tagId||'');
+ if(!/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i.test(id))return null;
+ const {data,error}=await needClient().from('tags')
+  .select('id,name,category,status,canonical_tag_id')
+  .eq('id',id).in('status',['canonical','community']).maybeSingle();
+ if(error)throw error;
+ return data||null;
+}
 export async function getTagFamilyCounts(){const{data,error}=await needClient().rpc('get_tag_family_counts');if(error)throw error;return data||[]}
 export async function createCommunityTag(name,category='additional'){const clean=String(name||'').trim().replace(/\s+/g,' ');if(clean.length<2)throw new Error('Give the tag at least 2 characters.');const nearby=await searchPalaceTags(clean,category,8);const exact=nearby.find(t=>String(t.name||'').toLowerCase()===clean.toLowerCase()&&t.category===category);if(exact)return exact;const{data,error}=await needClient().rpc('create_community_tag',{p_name:clean,p_category:category});if(error)throw error;return data}
 export async function getWorksForTag(tagId){const{data,error}=await needClient().from('work_tags').select('position,works(id,title,slug,summary,rating,completion_status,cover_url,publication_status,profiles!works_author_id_fkey(username,display_name))').eq('tag_id',tagId).order('position').limit(50);if(error)throw error;return(data||[]).filter(x=>x.works?.publication_status==='published')}
