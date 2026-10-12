@@ -1,4 +1,5 @@
 import React,{useState} from 'react';
+import {Link} from 'react-router-dom';
 import {READING_SORT_OPTIONS} from './readingFacetModel';
 import './reading-faceted-browse.css';
 
@@ -29,7 +30,7 @@ export default function ReadingFacetSidebar({
    <label className="reading-facet-label" htmlFor="palace-facet-tag-search">Find a tag within loaded stories</label>
    <input id="palace-facet-tag-search" className="reading-facet-search" type="search" value={search} onChange={event=>setSearch(event.target.value)} placeholder="Fandom, character, trope…"/>
    <div className="reading-facet-groups">
-    {groups.map(group=><details key={group.category} className="reading-facet-group" open={undefined}>
+    {groups.map(group=><details key={group.category} className="reading-facet-group">
      <summary><span>{group.label}</span><small>{group.tags.length}</small></summary>
      <div className="reading-facet-options">{group.tags.map(tag=>{
       const selectedIn=included.includes(tag.id),selectedOut=excluded.includes(tag.id);
@@ -43,7 +44,7 @@ export default function ReadingFacetSidebar({
    </div>
    <div className="reading-facet-footer">
     <p>Filters and statistics cover <strong>{loadedCount}</strong> currently loaded works{hasMore?'. Load more stories to expand the selection.':'.'}</p>
-    <p>For deeper searches across published stories, use <a href="/reading?view=search">Advanced search</a>.</p>
+    <p>For deeper searches across published stories, use <Link to="/reading?view=search">Advanced search</Link>.</p>
    </div>
   </div>
  </aside>;
