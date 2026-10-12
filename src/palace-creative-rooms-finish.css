@@ -1457,7 +1457,7 @@
  .palace-shell.full-palace-shell .full-topbar{
   position:sticky!important;
   top:0!important;
-  z-index:110!important;
+  z-index:20!important;
   isolation:isolate;
   background:#0c0d21!important;
   background-image:linear-gradient(180deg,#0c0d21,#111028)!important;
@@ -1541,7 +1541,7 @@
    scrolling; this also applies to narrow tablet widths. */
 @media(min-width:721px) and (max-width:960px){
  .palace-shell.full-palace-shell .full-topbar{
-  z-index:110!important;
+  z-index:20!important;
   background:#100f25!important;
   -webkit-backdrop-filter:none!important;
   backdrop-filter:none!important;
