@@ -70,6 +70,7 @@ import './reading-mobile-story-cards.css';
 import './member-chamber-journey.css';
 import './grand-palace-visual-refinement.css';
 import './palace-interface-system.css';
+import './reading-catalogue-experience.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 

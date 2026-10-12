@@ -31,3 +31,15 @@ it('survives corrupt and unavailable browser storage',()=>{
  expect(cleanReadingDiscovery({status:'not-real',rating:[],query:'x'.repeat(900)}).query).toHaveLength(500);
  expect(cleanReadingDiscovery({status:'not-real'}).status).toBe('all');
 });
+it('retains loaded batches across story visits and resets them for a different search',()=>{
+ const hook=renderHook(()=>useReadingDiscoveryState('reader'));
+ act(()=>{hook.result.current[1]('visibleCount',count=>count+24);hook.result.current[1]('layout','gallery')});
+ expect(hook.result.current[0].visibleCount).toBe(48);
+ hook.unmount();
+ const next=renderHook(()=>useReadingDiscoveryState('reader'));
+ expect(next.result.current[0]).toMatchObject({visibleCount:48,layout:'gallery'});
+ act(()=>next.result.current[1]('query','a different story'));
+ expect(next.result.current[0]).toMatchObject({visibleCount:24,layout:'gallery'});
+ act(()=>next.result.current[1]('visibleCount',-1));
+ expect(next.result.current[0].visibleCount).toBe(24);
+});
