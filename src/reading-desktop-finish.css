@@ -79,3 +79,61 @@
     animation: none !important;
   }
 }
+
+
+/* Reading catalogue density · compact story cards, not smaller content.
+   Desktop/tablet only; mobile story flow and chapter reader are untouched. */
+@media (min-width: 721px) {
+ .palace-shell.full-palace-shell .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row {
+   box-sizing:border-box!important;
+   min-height:0!important;
+   height:auto!important;
+   padding:13px 15px!important;
+   margin-bottom:10px!important;
+   gap:12px!important;
+   align-items:start!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row h2 {
+   font-size:clamp(1.04rem,1.35vw,1.24rem)!important;
+   line-height:1.25!important;
+   margin-block:0 6px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row .story-cover {
+   width:76px!important;
+   min-width:76px!important;
+   max-width:76px!important;
+   height:106px!important;
+   min-height:0!important;
+   border-radius:9px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row :is(.reading-story-context-summary,.reading-card-tags,.palace-story-statline) {
+   margin-block:6px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row footer {
+   margin-top:9px!important;
+   padding-top:7px!important;
+   gap:8px!important;
+ }
+ /* Gallery should not waste half a card on an isolated cover illustration. */
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .story-shelf.refined.chic-story-catalogue .story-row {
+   display:grid!important;
+   grid-template-columns:76px minmax(0,1fr)!important;
+   align-content:start!important;
+   gap:12px!important;
+   padding:14px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .story-shelf.refined.chic-story-catalogue .story-row .story-cover {
+   float:none!important;
+   margin:0!important;
+   align-self:start!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .story-shelf.refined.chic-story-catalogue .story-row>div:last-child {
+   display:block!important;
+   min-width:0!important;
+ }
+}
+@media(min-width:1000px) {
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .story-shelf.refined.chic-story-catalogue {
+   gap:12px!important;
+ }
+}
