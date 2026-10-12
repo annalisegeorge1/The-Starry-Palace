@@ -1428,3 +1428,23 @@
    justify-self:start!important;
  }
 }
+
+
+/* Phone chrome: the header already offers Palace Letters.
+   Remove only its duplicate floating shortcut; preserve the theme switch. */
+@media(max-width:600px){
+ .palace-shell.full-palace-shell .restored-floating-controls .notification-anchor {
+  display:none!important;
+ }
+ .palace-shell.full-palace-shell .restored-floating-controls {
+  right:max(11px,env(safe-area-inset-right))!important;
+  bottom:calc(88px + env(safe-area-inset-bottom))!important;
+  gap:0!important;
+ }
+ .palace-shell.full-palace-shell .restored-floating-controls .theme-orb {
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+ }
+}
