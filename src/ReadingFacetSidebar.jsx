@@ -23,7 +23,7 @@ export default function ReadingFacetSidebar({
   let current=true;
   setTagBusy(true);setTagError('');
   const timer=setTimeout(()=>{
-   onSearchTags(q,'all',60).then(results=>{
+   Promise.resolve().then(()=>onSearchTags(q,'all',60)).then(results=>{
     if(current)setGlobalTags((results||[]).filter(tag=>tag?.id&&tag?.name&&['canonical','community'].includes(tag.status)));
    }).catch(()=>{if(current){setGlobalTags([]);setTagError('Tag suggestions are temporarily unavailable. Retry in a moment.')}})
     .finally(()=>{if(current)setTagBusy(false)});
@@ -39,8 +39,8 @@ export default function ReadingFacetSidebar({
     items.push({id:String(tag.id),name:tag.name,category:key,global:true});
     grouped.set(key,items);
    }
-   return READING_FACET_ORDER.filter(key=>grouped.has(key)).map(category=>({
-    category,label:READING_FACET_NAMES[category],tags:grouped.get(category)
+   return [...READING_FACET_ORDER,'other'].filter((key,index,array)=>array.indexOf(key)===index&&grouped.has(key)).map(category=>({
+    category,label:READING_FACET_NAMES[category]||'Other tags',tags:grouped.get(category)
    }));
   }
   return facets.map(group=>({...group,tags:group.tags.filter(tag=>!q||tag.name.toLocaleLowerCase().includes(q))}))
@@ -49,7 +49,7 @@ export default function ReadingFacetSidebar({
  function pick(tag,mode){onToggle(tag.id,mode);onTagIdentified?.(tag)}
  return <aside className="reading-facet-sidebar" aria-label="Sort and filter stories">
   <button type="button" className="reading-facet-mobile-toggle" aria-controls="reading-facet-controls" aria-expanded={open} onClick={()=>setOpen(x=>!x)}>
-   <span>☷ Sort &amp; Filter</span><span>{active?active+' active':''} {open?'▴':'▾'}</span>
+   <span>☷ Sort &amp; Filter</span><span>{active?active+' active · ':''}{open?'Hide':'Show'} {open?'▴':'▾'}</span>
   </button>
   <div id="reading-facet-controls" className={'reading-facet-controls'+(open?' is-open':'')}>
    <header className="reading-facet-heading"><div><p className="eyebrow">FIND YOUR NEXT WORLD</p><h2>Sort &amp; Filter</h2></div><span aria-hidden="true">✦</span></header>
@@ -63,7 +63,7 @@ export default function ReadingFacetSidebar({
    <div className="reading-facet-precision"><div><strong>Include / Exclude</strong><small>{archiveWide?'Choose tags from the full Palace directory':'Build a constellation of tags'}</small></div>{active>0&&<button type="button" onClick={onClear}>Clear choices</button>}</div>
    {(included.length>0||excluded.length>0)&&<div className="reading-facet-selection-summary" aria-live="polite"><span>{included.length} included</span><span>{excluded.length} excluded</span></div>}
    <label className="reading-facet-label" htmlFor="palace-facet-tag-search">{archiveWide?'Search every tag in the Palace':'Find a tag within loaded stories'}</label>
-   <input id="palace-facet-tag-search" className="reading-facet-search" type="search" value={search} onChange={event=>setSearch(event.target.value)} placeholder="Fandom, character, relationship, trope…"/>
+   <input id="palace-facet-tag-search" className="reading-facet-search" type="search" value={search} onChange={event=>setSearch(event.target.value)} placeholder="Search fandoms, characters, relationships, tropes…"/>
    {archiveWide&&!q&&<p className="reading-facet-hint">Browse the tags in these story suggestions or search above to find any tag in the Palace, even one not shown here.</p>}
    {tagBusy&&<p className="reading-facet-hint" role="status">Gathering tags from the directory…</p>}
    {tagError&&<p className="reading-facet-hint" role="alert">{tagError}</p>}
