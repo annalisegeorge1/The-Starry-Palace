@@ -271,3 +271,174 @@
   transition:none!important;
  }
 }
+
+
+/* Signature Palace spaces · shared editorial treatment.
+   Restrict these styles to HOME controls, CHAMBER section navigation and
+   PALACE LIFE overview. No changes to covers, avatars, badges, frames, GIFs,
+   member-selected colours, manuscript text, Reading Rooms or reward artwork. */
+.palace-shell.full-palace-shell {
+ --signature-edge:rgba(183,173,235,.28);
+ --signature-glass:linear-gradient(130deg,rgba(95,83,163,.14),rgba(44,90,144,.08));
+ --signature-muted:#c5bedf;
+ --signature-radius:15px;
+}
+.palace-shell.full-palace-shell.daylight {
+ --signature-edge:rgba(105,87,162,.24);
+ --signature-glass:linear-gradient(130deg,rgba(246,241,255,.88),rgba(233,242,255,.85));
+ --signature-muted:#605678;
+}
+/* My Palace — the identity and shortcuts should feel like one personal desk. */
+.palace-shell.full-palace-shell .palace-command-hero .palace-home-welcome h1 {
+ text-wrap:balance;
+ line-height:1.12;
+ letter-spacing:-.025em;
+}
+.palace-shell.full-palace-shell .palace-command-hero .palace-home-identity {
+ box-sizing:border-box;
+ min-width:0;
+ max-width:100%;
+ border:1px solid var(--signature-edge);
+ border-radius:var(--signature-radius);
+ background:var(--signature-glass);
+ box-shadow:inset 0 1px rgba(255,255,255,.055);
+ padding:clamp(9px,1.3vw,14px);
+ gap:clamp(9px,1.3vw,14px);
+}
+.palace-shell.full-palace-shell .palace-command-hero .palace-home-identity > div {
+ min-width:0;
+}
+.palace-shell.full-palace-shell .palace-command-hero .palace-home-identity :is(strong,em) {
+ overflow-wrap:break-word;
+ line-height:1.3;
+}
+.palace-shell.full-palace-shell .palace-home-pulse {
+ min-width:0;
+ gap:8px;
+}
+.palace-shell.full-palace-shell .palace-home-pulse > span {
+ box-sizing:border-box;
+ min-width:0;
+ padding:10px 12px;
+ border:1px solid var(--signature-edge);
+ border-radius:13px;
+ background:var(--signature-glass);
+ box-shadow:inset 0 1px rgba(255,255,255,.035);
+}
+.palace-shell.full-palace-shell .palace-home-pulse > span :is(strong,small) {
+ display:block;
+ line-height:1.3;
+}
+.palace-shell.full-palace-shell .palace-home-pulse > span small {
+ color:var(--signature-muted);
+ letter-spacing:.025em;
+}
+.palace-shell.full-palace-shell .palace-home-shortcuts > a {
+ box-sizing:border-box;
+ min-width:0;
+ border-radius:13px;
+ border-color:var(--signature-edge);
+ box-shadow:0 7px 20px rgba(5,9,29,.09);
+}
+.palace-shell.full-palace-shell .palace-home-shortcuts > a :is(span,small) {
+ line-height:1.35;
+}
+.palace-shell.full-palace-shell .palace-home-shortcuts > a:focus-visible {
+ outline:2px solid var(--ui-accent,#b7a4eb);
+ outline-offset:3px;
+}
+/* Personal Chamber — more refined navigation between the five real rooms. */
+.palace-shell.full-palace-shell .chamber-atelier-tabs.chic-chamber-tabs {
+ box-sizing:border-box;
+ max-width:1180px;
+ border-radius:14px;
+ border:1px solid var(--signature-edge)!important;
+ background:var(--signature-glass)!important;
+ box-shadow:0 8px 23px rgba(8,9,30,.12)!important;
+ overflow-x:auto;
+ overscroll-behavior-x:contain;
+ scrollbar-width:thin;
+}
+.palace-shell.full-palace-shell .chamber-atelier-tabs.chic-chamber-tabs > a {
+ box-sizing:border-box;
+ min-width:0;
+ min-height:44px!important;
+ line-height:1.35!important;
+ border-radius:10px;
+ transition:background-color .16s ease,color .16s ease;
+}
+.palace-shell.full-palace-shell .chamber-atelier-tabs.chic-chamber-tabs > a:focus-visible {
+ outline:2px solid var(--ui-accent,#b7a4eb)!important;
+ outline-offset:-3px!important;
+}
+.palace-shell.full-palace-shell.daylight .chamber-atelier-tabs.chic-chamber-tabs > a {
+ color:#43375d!important;
+}
+.palace-shell.full-palace-shell.daylight .chamber-atelier-tabs.chic-chamber-tabs > a span {
+ color:#65519c;
+}
+/* Palace Life — align the six activity entrances with the same calm cards. */
+.palace-shell.full-palace-shell .legacy-life-page .community-pulse-row.restored.social-pulse {
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:9px;
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-life-page .community-pulse-row.restored.social-pulse > button {
+ box-sizing:border-box;
+ min-width:0;
+ min-height:74px;
+ padding:11px 13px;
+ border:1px solid var(--signature-edge)!important;
+ border-radius:var(--signature-radius)!important;
+ background:var(--signature-glass)!important;
+ box-shadow:inset 0 1px rgba(255,255,255,.04)!important;
+ text-align:left;
+}
+.palace-shell.full-palace-shell .legacy-life-page .community-pulse-row.restored.social-pulse > button :is(strong,span,small) {
+ max-width:100%;
+ overflow-wrap:break-word;
+ line-height:1.3;
+}
+.palace-shell.full-palace-shell .legacy-life-page .community-pulse-row.restored.social-pulse > button small {
+ color:var(--signature-muted);
+}
+.palace-shell.full-palace-shell .legacy-life-page .community-pulse-row.restored.social-pulse > button:focus-visible {
+ outline:2px solid var(--ui-accent,#b7a4eb)!important;
+ outline-offset:2px!important;
+}
+@media(min-width:1300px) {
+ .palace-shell.full-palace-shell .legacy-life-page .community-pulse-row.restored.social-pulse {
+  grid-template-columns:repeat(6,minmax(0,1fr));
+ }
+}
+@media(max-width:760px) {
+ .palace-shell.full-palace-shell .legacy-life-page .community-pulse-row.restored.social-pulse {
+  grid-template-columns:repeat(2,minmax(0,1fr));
+ }
+ .palace-shell.full-palace-shell .chamber-atelier-tabs.chic-chamber-tabs {
+  display:flex!important;
+  grid-template-columns:none!important;
+  flex-wrap:nowrap!important;
+ }
+ .palace-shell.full-palace-shell .chamber-atelier-tabs.chic-chamber-tabs > a {
+  flex:0 0 auto!important;
+  min-width:94px;
+  padding-inline:12px!important;
+  white-space:nowrap;
+ }
+}
+@media(max-width:420px) {
+ .palace-shell.full-palace-shell .legacy-life-page .community-pulse-row.restored.social-pulse {
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:7px;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .community-pulse-row.restored.social-pulse > button {
+  padding:9px;
+ }
+}
+@media(prefers-reduced-motion:reduce) {
+ .palace-shell.full-palace-shell .chamber-atelier-tabs.chic-chamber-tabs > a {
+  transition:none;
+ }
+}
