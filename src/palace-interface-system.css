@@ -365,3 +365,26 @@
    transition:none !important;
  }
 }
+
+
+/* Social discovery density: retain full post content and action hit targets.
+   Apply to Commons activity only; never resize member portraits or artwork. */
+@media(min-width:760px) {
+ .palace-shell.full-palace-shell .chic-commons .chic-timeline .social-thread {
+   padding:15px 18px!important;
+   gap:10px!important;
+ }
+ .palace-shell.full-palace-shell .chic-commons .social-thread-body>h3 {
+   font-size:1rem!important;
+   margin:5px 0 5px!important;
+ }
+ .palace-shell.full-palace-shell .chic-commons .social-thread-body>p {
+   font-size:.89rem!important;
+   line-height:1.57!important;
+ }
+ .palace-shell.full-palace-shell .chic-commons .social-thread-actions {
+   margin-top:8px!important;
+   padding-top:8px!important;
+   gap:6px 12px!important;
+ }
+}
