@@ -113,3 +113,23 @@
   transition:none!important;
  }
 }
+
+
+/* Editorial continuity: public Palace Life navigation; keep tab behaviour. */
+.palace-shell .legacy-life-page .life-tabs.restored {
+ border-bottom:1px solid var(--ui-line,rgba(193,181,239,.23));
+ padding-bottom:8px;
+}
+.palace-shell .legacy-life-page .life-tabs.restored :is(a,button) {
+ border-radius:11px!important;
+ transition:background-color .16s ease,border-color .16s ease,color .16s ease;
+}
+.palace-shell .legacy-life-page .life-tabs.restored :is(a,button):focus-visible {
+ outline:2px solid var(--ui-accent,#b9a7ed)!important;
+ outline-offset:2px!important;
+}
+@media(prefers-reduced-motion:reduce) {
+ .palace-shell .legacy-life-page .life-tabs.restored :is(a,button) {
+  transition:none!important;
+ }
+}
