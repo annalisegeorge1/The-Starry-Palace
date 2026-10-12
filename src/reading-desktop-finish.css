@@ -81,49 +81,234 @@
 }
 
 
-/* Reading catalogue density · compact story cards, not smaller content.
-   Desktop/tablet only; mobile story flow and chapter reader are untouched. */
-@media (min-width: 721px) {
- .palace-shell.full-palace-shell .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row {
-   box-sizing:border-box!important;
-   min-height:0!important;
-   height:auto!important;
-   padding:13px 15px!important;
-   margin-bottom:10px!important;
-   gap:12px!important;
+
+/* Canonical catalogue layouts — individual routes control the view. Archived
+   Compact cards are composed in liveRooms.jsx, not squeezed via old footers.
+   Artwork, story content, reading settings and disclosure state stay intact. */
+@media(min-width:721px) {
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .story-shelf.refined.chic-story-catalogue,
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=comfortable] .story-shelf.refined.chic-story-catalogue {
+   display:grid!important;
+   grid-template-columns:minmax(0,1fr)!important;
+   gap:9px!important;
    align-items:start!important;
  }
- .palace-shell.full-palace-shell .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row h2 {
-   font-size:clamp(1.04rem,1.35vw,1.24rem)!important;
-   line-height:1.25!important;
-   margin-block:0 6px!important;
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .story-shelf.refined.chic-story-catalogue .story-row {
+   display:grid!important;
+   grid-template-columns:56px minmax(0,1fr)!important;
+   align-items:start!important;
+   align-content:start!important;
+   min-width:0!important;
+   min-height:0!important;
+   height:auto!important;
+   margin:0!important;
+   padding:11px 13px!important;
+   gap:11px!important;
+   border-radius:13px!important;
  }
- .palace-shell.full-palace-shell .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row .story-cover {
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .story-shelf.refined.chic-story-catalogue .story-cover {
+   float:none!important;
+   align-self:start!important;
+   width:56px!important;
+   min-width:56px!important;
+   max-width:56px!important;
+   height:79px!important;
+   min-height:0!important;
+   margin:0!important;
+   border-radius:8px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=comfortable] .story-shelf.refined.chic-story-catalogue .story-row {
+   display:grid!important;
+   grid-template-columns:82px minmax(0,1fr)!important;
+   align-items:start!important;
+   align-content:start!important;
+   height:auto!important;
+   min-height:0!important;
+   padding:15px!important;
+   gap:13px!important;
+   margin:0!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=comfortable] .story-shelf.refined.chic-story-catalogue .story-cover {
+   float:none!important;
+   align-self:start!important;
+   width:82px!important;
+   min-width:82px!important;
+   max-width:82px!important;
+   height:114px!important;
+   min-height:0!important;
+   margin:0!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=comfortable] .story-shelf.refined.chic-story-catalogue .story-row>div:last-child {
+   display:block!important;
+   min-width:0!important;
+ }
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .story-shelf.refined.chic-story-catalogue .archive-compact-entry {
+ display:flex!important;
+ flex-direction:column!important;
+ align-items:stretch!important;
+ min-width:0!important;
+ gap:0!important;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-head {
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ flex-wrap:wrap;
+ gap:5px 12px;
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-title-group {
+ flex:1 1 280px;
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-entry h2 {
+ margin:0 0 2px!important;
+ font-size:clamp(1.02rem,1.25vw,1.17rem)!important;
+ line-height:1.23!important;
+ overflow-wrap:break-word;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-byline {
+ display:flex;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:2px 10px;
+ line-height:1.4;
+ font-size:.72rem;
+ color:var(--ui-muted,inherit);
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-byline>a {
+ font-weight:700;
+ color:inherit;
+ text-underline-offset:2px;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-byline time {
+ font-size:inherit!important;
+ margin:0!important;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-action {
+ flex:0 0 auto;
+ align-self:center;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-action>a {
+ box-sizing:border-box;
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ min-height:38px;
+ padding:7px 12px;
+ border-radius:9px;
+ border:1px solid rgba(143,170,213,.43);
+ background:linear-gradient(112deg,rgba(111,86,185,.7),rgba(56,118,161,.69));
+ color:#f7f2ff;
+ text-decoration:none;
+ white-space:nowrap;
+ font-size:.75rem;
+ font-weight:750;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-entry .story-reader-flags {
+ display:flex!important;
+ flex-wrap:wrap!important;
+ gap:4px!important;
+ margin:4px 0 1px!important;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-entry .reading-story-context {
+ margin:4px 0 0!important;
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-entry .reading-story-context-facts {
+ gap:3px 6px!important;
+ font-size:.68rem!important;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-entry .reading-story-context-facts>span {
+ padding:2px 6px!important;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-entry .reading-story-context-summary {
+ margin:4px 0 0!important;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-entry .reading-story-context-summary>small {
+ display:none;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-entry .reading-story-context-summary>p {
+ font-size:.82rem!important;
+ line-height:1.4!important;
+ margin:0!important;
+ max-width:85ch;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-entry .reading-story-summary-toggle {
+ min-height:28px!important;
+ padding:2px 0!important;
+ margin:1px 0 0!important;
+ font-size:.72rem!important;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-entry .reading-story-context-extra {
+ border-top:0!important;
+ margin:1px 0!important;
+ padding:0!important;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-entry .reading-story-context-extra summary {
+ min-height:28px!important;
+ font-size:.7rem;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-data {
+ display:flex;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:3px 12px;
+ margin-top:5px;
+ padding-top:5px;
+ border-top:1px solid var(--ui-line,rgba(160,150,210,.25));
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-data .palace-story-statline {
+ display:flex!important;
+ align-items:center!important;
+ flex-wrap:wrap!important;
+ gap:4px 10px!important;
+ margin:0!important;
+ padding:0!important;
+ border:0!important;
+ font-size:.71rem!important;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-data .reading-card-tags {
+ display:flex!important;
+ flex-wrap:wrap!important;
+ gap:4px!important;
+ margin:0!important;
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-data .reading-card-tags :is(a,button) {
+ min-height:27px!important;
+ padding:4px 7px!important;
+ font-size:.68rem!important;
+}
+.palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-entry :is(a,button,summary):focus-visible {
+ outline:2px solid var(--ui-accent,#b5a3e7)!important;
+ outline-offset:3px!important;
+}
+/* The Gallery deliberately remains cover-forward and two-column on desktop. */
+@media(min-width:1000px) {
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .story-shelf.refined.chic-story-catalogue {
+   display:grid!important;
+   grid-template-columns:repeat(2,minmax(0,1fr))!important;
+   gap:12px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .story-shelf.refined.chic-story-catalogue .story-row {
+   display:grid!important;
+   grid-template-columns:76px minmax(0,1fr)!important;
+   gap:12px!important;
+   padding:14px!important;
+   margin:0!important;
+   align-content:start!important;
+   align-items:start!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .story-shelf.refined.chic-story-catalogue .story-cover {
+   float:none!important;
    width:76px!important;
    min-width:76px!important;
    max-width:76px!important;
    height:106px!important;
    min-height:0!important;
-   border-radius:9px!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row :is(.reading-story-context-summary,.reading-card-tags,.palace-story-statline) {
-   margin-block:6px!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row footer {
-   margin-top:9px!important;
-   padding-top:7px!important;
-   gap:8px!important;
- }
- /* Gallery should not waste half a card on an isolated cover illustration. */
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .story-shelf.refined.chic-story-catalogue .story-row {
-   display:grid!important;
-   grid-template-columns:76px minmax(0,1fr)!important;
-   align-content:start!important;
-   gap:12px!important;
-   padding:14px!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .story-shelf.refined.chic-story-catalogue .story-row .story-cover {
-   float:none!important;
    margin:0!important;
    align-self:start!important;
  }
@@ -132,223 +317,23 @@
    min-width:0!important;
  }
 }
-@media(min-width:1000px) {
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .story-shelf.refined.chic-story-catalogue {
-   gap:12px!important;
- }
-}
-
-
-/* Default Comfortable layout was not covered by the earlier gallery/compact
-   redesign. Give the actual landing view a visibly compact horizontal card.
-   Leave text, chapter metadata, tags and links in the DOM; touch screens keep
-   the established mobile flow-root presentation. */
-@media(min-width:721px){
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="comfortable"]
- .story-shelf.refined.chic-story-catalogue .story-row {
-   display:grid!important;
-   grid-template-columns:82px minmax(0,1fr)!important;
-   align-items:start!important;
-   align-content:start!important;
-   gap:12px!important;
-   min-height:0!important;
-   padding:13px 15px!important;
-   margin-bottom:10px!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="comfortable"]
- .story-shelf.refined.chic-story-catalogue .story-row>.story-cover {
-   float:none!important;
-   margin:0!important;
-   width:82px!important;
-   min-width:82px!important;
-   max-width:82px!important;
-   height:114px!important;
-   min-height:0!important;
-   align-self:start!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="comfortable"]
- .story-shelf.refined.chic-story-catalogue .story-row>div:last-child {
+@media(max-width:720px), (max-width:950px) and (max-height:600px) and (pointer:coarse) {
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .story-shelf.refined.chic-story-catalogue .story-row>.archive-compact-entry {
    display:block!important;
    min-width:0!important;
  }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="comfortable"]
- .story-shelf.refined.chic-story-catalogue .story-row h2 {
-   font-size:clamp(1.07rem,1.5vw,1.28rem)!important;
-   line-height:1.28!important;
-   margin:2px 0 6px!important;
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-head {
+   display:flex;
+   align-items:flex-start;
+   flex-wrap:wrap;
  }
-}
-
-
-/* Story-list composition fix: Compact and Comfortable are actual single-column
-   archive LISTS, not two giant gallery tiles. Gallery remains two-column.
-   Keep metadata, full-summary toggle, writer profile and read actions intact. */
-@media(min-width:721px){
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue,
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="comfortable"]
- .story-shelf.refined.chic-story-catalogue{
-   display:grid!important;
-   grid-template-columns:minmax(0,1fr)!important;
-   gap:10px!important;
-   align-items:start!important;
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-action {
+   align-self:flex-start;
  }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row,
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="comfortable"]
- .story-shelf.refined.chic-story-catalogue .story-row{
-   width:100%!important;
-   max-width:none!important;
-   margin:0!important;
-   padding:13px 16px!important;
-   display:grid!important;
-   grid-template-columns:78px minmax(0,1fr)!important;
-   align-content:start!important;
-   align-items:start!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row>div:last-child,
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="comfortable"]
- .story-shelf.refined.chic-story-catalogue .story-row>div:last-child{
-   display:block!important;
-   min-width:0!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row .story-cover,
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="comfortable"]
- .story-shelf.refined.chic-story-catalogue .story-row .story-cover{
-   width:78px!important;min-width:78px!important;max-width:78px!important;
-   height:110px!important;min-height:0!important;
-   margin:0!important;float:none!important;align-self:start!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row :is(.reading-story-context,.reading-story-context-summary,.reading-card-tags,.palace-story-statline),
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="comfortable"]
- .story-shelf.refined.chic-story-catalogue .story-row :is(.reading-story-context,.reading-story-context-summary,.reading-card-tags,.palace-story-statline){
-   margin-block:5px!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row footer,
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="comfortable"]
- .story-shelf.refined.chic-story-catalogue .story-row footer{
-   display:flex!important;flex-wrap:wrap!important;align-items:center!important;
-   justify-content:space-between!important;
-   gap:8px!important;margin-top:7px!important;padding-top:8px!important;
- }
-}
-
-
-/* Meaningfully compact archive rows. Full summary/details remain accessible
-   through the existing disclosure controls. Do not change reader/chapter UI. */
-@media(min-width:721px) {
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row {
-   grid-template-columns:58px minmax(0,1fr)!important;
-   padding:10px 12px!important;
-   gap:9px!important;
-   border-radius:12px!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row .story-cover {
-   width:58px!important;min-width:58px!important;max-width:58px!important;
-   height:80px!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row h2 {
-   font-size:1.07rem!important;
-   line-height:1.22!important;
-   margin:0 0 3px!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row :is(.reading-story-context,.reading-story-context-summary,.reading-card-tags,.palace-story-statline){
-   margin-block:3px!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row :is(.reading-story-context-extra,.reading-story-context-summary) {
-   padding-block:0!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row footer {
-   margin-top:4px!important;
-   padding-top:5px!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row .story-creator-line {
-   min-width:0;
- }
-}
-
-
-/* Compact archive card COMPOSITION: author, action and summary remain readable.
-   Unlike repeated cover-only reductions, this specifically removes the tall
-   stacked footer and separates the compact composition from gallery cards. */
-@media(min-width:721px){
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row>div:last-child{
-   display:flex!important;
-   flex-direction:column!important;
-   align-items:stretch!important;
-   min-width:0!important;
-   gap:0!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row .story-reader-flags{
-   margin:0 0 3px!important;
-   gap:4px!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row .reading-story-context-summary>p{
-   line-height:1.4!important;
-   font-size:.82rem!important;
-   margin-block:2px!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row :is(.reading-story-context-extra,.palace-story-statline,.reading-card-tags){
-   padding-block:4px!important;
-   margin-block:2px!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row footer{
-   display:flex!important;
-   flex-direction:row!important;
-   align-items:center!important;
-   justify-content:space-between!important;
-   flex-wrap:wrap!important;
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-action>a {
    min-height:44px!important;
-   padding:6px 0 0!important;
-   margin:4px 0 0!important;
-   gap:8px!important;
  }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row footer .story-creator-line{
-   display:flex!important;
-   align-items:center!important;
-   min-width:0!important;
-   flex:1 1 170px!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row footer .story-author-chip{
-   display:inline-flex!important;
-   flex-direction:row!important;
-   align-items:center!important;
-   justify-content:flex-start!important;
-   min-width:0!important;
-   gap:8px!important;
-   padding:0!important;
-   margin:0!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row footer .story-author-chip>span{
-   display:flex!important;
-   flex-direction:column!important;
-   min-width:0!important;
-   gap:1px!important;
-   text-align:left!important;
- }
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
- .story-shelf.refined.chic-story-catalogue .story-row footer>a:last-child{
-   flex:0 0 auto!important;
-   align-self:center!important;
-   margin:0!important;
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .archive-compact-entry .reading-story-context {
+   clear:both;
  }
 }
