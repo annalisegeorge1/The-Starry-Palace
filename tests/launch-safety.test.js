@@ -1002,11 +1002,13 @@ describe('Starry Palace launch safety',()=>{
     expect(treasuryCss).toContain('.protected-palace-art img');
   });
 
-  it('recovers even when React never mounts',()=>{
+  it('offers manual restoration when React never mounts without restarting in a loop',()=>{
     const html=read('index.html');
-    expect(html).toContain('palace-pre-react-recovery');
     expect(html).toContain('window.__palaceBootFailure');
-    expect(html).toContain("url.searchParams.set('__palace_recover'");
+    expect(html).toContain("showFailure('startup-timeout')");
+    expect(html).toContain('if(settleIfMounted())return;');
+    expect(html).not.toContain("url.searchParams.set('__palace_recover'");
+    expect(html).not.toContain('palace-pre-react-recovery');
     expect(html).toContain('palace-entry');
     expect(html).toContain('The Palace did not finish opening.');
     expect(html).toContain('Restore the Palace');
@@ -1059,7 +1061,8 @@ describe('Starry Palace launch safety',()=>{
     expect(main).toContain('class PalaceRootBoundary extends React.Component');
     expect(main).toContain('The Palace caught a shell error.');
     expect(main).toContain('<PalaceRootBoundary><BrowserRouter><App/></BrowserRouter></PalaceRootBoundary>');
-    expect(html).toContain("showFailure('react-tree-lost')");
+    expect(html).toContain('if(settleIfMounted())observer.disconnect()');
+    expect(main).toContain('React.useEffect(()=>{window.__palaceBootReady?.()},[]);');
     expect(html).not.toContain('observer.disconnect();window.__palaceBootReady()');
   });
 
