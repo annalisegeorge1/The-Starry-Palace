@@ -74,6 +74,7 @@ import './grand-palace-visual-refinement.css';
 import './palace-interface-system.css';
 import './reading-catalogue-experience.css';
 import './reading-desktop-finish.css';
+import './treasury-badge-composition-fix.css';
 import './writer-manuscript-library.css';
 import './palace-creative-rooms-finish.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
