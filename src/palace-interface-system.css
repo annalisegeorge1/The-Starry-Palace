@@ -1,0 +1,257 @@
+/* Shared interface finish. Scope to chrome and content containers, never artwork,
+   avatar geometry, member themes, manuscript pages or special cultural gradients. */
+.palace-shell.full-palace-shell {
+ --ui-surface:#201e35;
+ --ui-raised:#28243e;
+ --ui-line:#45405d;
+ --ui-text:#f4f0ff;
+ --ui-muted:#c1bad4;
+ --ui-accent:#c5b3f5;
+ --ui-selected:linear-gradient(110deg,#43355f,#283f59);
+ --ui-radius:14px;
+}
+.palace-shell.full-palace-shell.daylight {
+ --ui-surface:#fcfaff;
+ --ui-raised:#f1edf8;
+ --ui-line:#d6cde4;
+ --ui-text:#302840;
+ --ui-muted:#645771;
+ --ui-accent:#705297;
+ --ui-selected:linear-gradient(110deg,#eae0f8,#e0edf7);
+}
+/* Navigation: a stable directory with one clear current destination. */
+.palace-shell.full-palace-shell .full-sidebar .full-room-nav {gap:3px!important}
+.palace-shell.full-palace-shell .full-sidebar .full-nav-room>a {
+ min-height:46px!important;
+ padding:8px 12px!important;
+ gap:11px!important;
+ border:1px solid transparent!important;
+ border-radius:11px!important;
+ background:transparent!important;
+ box-shadow:none!important;
+ color:var(--ui-muted)!important;
+ font:550 .88rem/1.35 system-ui,sans-serif!important;
+ letter-spacing:0!important;
+ text-shadow:none!important;
+ transform:none!important;
+}
+.palace-shell.full-palace-shell .full-sidebar .full-nav-room>a.active {
+ background:var(--ui-selected)!important;
+ border-color:var(--ui-line)!important;
+ box-shadow:inset 3px 0 var(--ui-accent)!important;
+ color:var(--ui-text)!important;
+ font-weight:700!important;
+}
+.palace-shell.full-palace-shell .full-sidebar .full-nav-room>a .room-sigil {
+ box-shadow:none!important;
+ border-color:transparent!important;
+ background:transparent!important;
+ border-radius:9px!important;
+}
+.palace-shell.full-palace-shell .full-sidebar .room-sigil svg {filter:none!important}
+.palace-shell.full-palace-shell .full-sidebar .nav-section-label {
+ color:var(--ui-muted)!important;
+ font:650 .65rem/1.5 system-ui,sans-serif!important;
+ letter-spacing:.09em!important;
+ margin-top:20px!important;
+ margin-bottom:7px!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell .full-sidebar .full-subnav {
+ border-left:1px solid var(--ui-line)!important;
+ margin-top:5px!important;
+ margin-bottom:10px!important;
+}
+.palace-shell.full-palace-shell .full-sidebar .full-subnav>a {
+ min-height:40px!important;
+ display:flex!important;
+ align-items:center;
+ padding:8px 10px!important;
+ font:500 .79rem/1.4 system-ui,sans-serif!important;
+ color:var(--ui-muted)!important;
+ border-radius:8px!important;
+}
+.palace-shell.full-palace-shell .full-sidebar .full-subnav>a.active {
+ background:var(--ui-raised)!important;
+ color:var(--ui-text)!important;
+ font-weight:700!important;
+}
+/* Header controls keep their proven responsive geometry. */
+.palace-shell.full-palace-shell .full-topbar {
+ box-shadow:0 1px 0 var(--ui-line)!important;
+ border-bottom-color:var(--ui-line)!important;
+}
+.palace-shell.full-palace-shell .global-search-live {
+ border-radius:12px!important;
+ box-shadow:none!important;
+}
+.palace-shell.full-palace-shell .global-search-live input {font-size:.875rem!important}
+.palace-shell.full-palace-shell .full-top-actions :is(.command-trigger,.top-icon-link) {
+ box-shadow:none!important;
+ border-radius:10px!important;
+}
+/* Story shelves: covers draw attention; metadata follows a repeatable rhythm. */
+.palace-shell.full-palace-shell .legacy-reading-page .chic-story-catalogue .story-row,
+.palace-shell.full-palace-shell .legacy-reading-page .chic-discovery-court .legacy-constellation-list article {
+ border-radius:var(--ui-radius)!important;
+ box-shadow:0 3px 12px #06051a12!important;
+ margin-bottom:12px!important;
+}
+.palace-shell.full-palace-shell .legacy-reading-page .chic-story-catalogue .story-row h2,
+.palace-shell.full-palace-shell .legacy-reading-page .chic-discovery-court .legacy-constellation-list h3 {
+ line-height:1.3!important;
+ letter-spacing:-.015em!important;
+}
+.palace-shell.full-palace-shell .legacy-reading-page .palace-story-statline {
+ display:flex!important;
+ flex-wrap:wrap!important;
+ gap:7px 16px!important;
+ font-variant-numeric:tabular-nums;
+ line-height:1.5!important;
+ border-top:1px solid var(--ui-line)!important;
+ padding-top:10px!important;
+}
+.palace-shell.full-palace-shell .legacy-reading-page .reading-card-tags {gap:6px!important}
+.palace-shell.full-palace-shell .legacy-reading-page .reading-card-tags :is(a,button) {
+ border-radius:7px!important;
+ box-shadow:none!important;
+ line-height:1.45!important;
+}
+/* Social reading: posts form a continuous feed, with quiet actions. */
+.palace-shell.full-palace-shell .chic-commons .chic-timeline {
+ display:grid!important;
+ gap:0!important;
+ border:1px solid var(--ui-line)!important;
+ border-radius:var(--ui-radius)!important;
+ background:var(--ui-surface)!important;
+}
+.palace-shell.full-palace-shell .chic-commons .chic-timeline .social-thread {
+ margin:0!important;
+ padding:22px 20px!important;
+ border:0!important;
+ border-bottom:1px solid var(--ui-line)!important;
+ border-radius:0!important;
+ background:transparent!important;
+ box-shadow:none!important;
+ transform:none!important;
+ gap:16px!important;
+}
+.palace-shell.full-palace-shell .chic-commons .chic-timeline .social-thread:last-child {border-bottom:0!important}
+.palace-shell.full-palace-shell .chic-commons .social-thread-body {min-width:0!important}
+.palace-shell.full-palace-shell .chic-commons .social-thread-body>h3 {
+ font:650 1.05rem/1.4 system-ui,sans-serif!important;
+ letter-spacing:-.012em!important;
+ margin:10px 0 8px!important;
+ color:var(--ui-text)!important;
+ overflow-wrap:anywhere;
+}
+.palace-shell.full-palace-shell .chic-commons .social-thread-body>p {
+ font-size:.92rem!important;
+ line-height:1.7!important;
+ color:var(--ui-text)!important;
+ overflow-wrap:anywhere;
+}
+.palace-shell.full-palace-shell .chic-commons .social-thread-head>div>span {
+ font-size:.75rem!important;
+ line-height:1.5!important;
+ color:var(--ui-muted)!important;
+}
+.palace-shell.full-palace-shell .chic-commons .social-thread-actions {
+ display:flex!important;
+ flex-wrap:wrap!important;
+ justify-content:flex-start!important;
+ gap:8px 18px!important;
+ padding-top:12px!important;
+ margin-top:12px!important;
+}
+.palace-shell.full-palace-shell .chic-commons .social-thread-actions button {
+ min-height:44px!important;
+ padding:7px 10px!important;
+ background:transparent!important;
+ border:1px solid transparent!important;
+ border-radius:9px!important;
+ box-shadow:none!important;
+ color:var(--ui-muted)!important;
+}
+.palace-shell.full-palace-shell .chic-commons .social-thread-actions button.active {
+ color:var(--ui-accent)!important;
+ background:var(--ui-raised)!important;
+}
+.palace-shell.full-palace-shell .chic-commons :is(.commons-conversation-path,.commons-compose-fold) {
+ background:var(--ui-surface)!important;
+ border-color:var(--ui-line)!important;
+ border-radius:var(--ui-radius)!important;
+ box-shadow:none!important;
+}
+.palace-shell.full-palace-shell .chic-commons .commons-compose-modes {
+ display:flex!important;
+ flex-wrap:wrap!important;
+ gap:7px!important;
+ overflow:visible!important;
+}
+.palace-shell.full-palace-shell .chic-commons .commons-compose-modes>button {
+ flex:0 0 auto!important;
+ min-height:44px!important;
+ white-space:normal!important;
+ border-radius:9px!important;
+ box-shadow:none!important;
+}
+.palace-shell.full-palace-shell .chic-commons .commons-compose-footer {
+ display:flex!important;
+ flex-wrap:wrap!important;
+ align-items:center!important;
+ gap:12px!important;
+}
+.palace-shell.full-palace-shell .chic-commons .commons-compose-footer>small {
+ flex:1 1 240px!important;
+ white-space:normal!important;
+ line-height:1.5!important;
+}
+/* The gallery's artwork and frames retain their own dimensions and colours. */
+.palace-shell.full-palace-shell .treasury-gallery :is(.badge-card,.gift-catalogue-card) {
+ border-radius:var(--ui-radius)!important;
+ box-shadow:none!important;
+ border-color:var(--ui-line)!important;
+}
+.palace-shell.full-palace-shell .treasury-gallery :is(.badge-controls,.treasury-badge-filters) {
+ padding:14px!important;
+ border:1px solid var(--ui-line)!important;
+ border-radius:var(--ui-radius)!important;
+ background:var(--ui-surface)!important;
+ align-items:end!important;
+}
+.palace-shell.full-palace-shell .treasury-gallery :is(input,select) {min-height:44px!important}
+.palace-shell.full-palace-shell .treasury-family-tabs button {min-height:44px!important}
+/* Newly published stories are a primary home destination. */
+.palace-shell.full-palace-shell .palace-first-shelf {
+ max-width:1230px;
+ margin:32px auto;
+ padding:0 clamp(16px,3vw,28px);
+ box-sizing:border-box;
+}
+.palace-shell.full-palace-shell .palace-first-shelf .home-world-grid {gap:16px!important}
+.palace-shell.full-palace-shell .palace-first-shelf .home-world-grid>a {
+ border-radius:var(--ui-radius)!important;
+ box-shadow:0 4px 16px #06051a14!important;
+}
+@media(hover:hover) {
+ .palace-shell.full-palace-shell .full-sidebar .full-nav-room>a:not(.active):hover,
+ .palace-shell.full-palace-shell .chic-commons .social-thread-actions button:hover {
+  background:var(--ui-raised)!important;
+  color:var(--ui-text)!important;
+ }
+}
+.palace-shell.full-palace-shell :is(.full-sidebar,.chic-commons,.treasury-gallery,.palace-first-shelf) :is(a,button,input,select,summary):focus-visible {
+ outline:2px solid var(--ui-accent)!important;
+ outline-offset:3px!important;
+}
+@media(max-width:650px) {
+ .palace-shell.full-palace-shell .chic-commons .chic-timeline .social-thread {
+  padding:18px 12px!important;
+  gap:12px!important;
+ }
+ .palace-shell.full-palace-shell .chic-commons .social-thread-actions {gap:4px 8px!important}
+ .palace-shell.full-palace-shell .chic-commons .social-thread-actions button {padding:7px!important}
+ .palace-shell.full-palace-shell .treasury-gallery :is(.badge-controls,.treasury-badge-filters) {padding:10px!important}
+ .palace-shell.full-palace-shell .palace-first-shelf {margin:24px auto;padding:0 12px}
+}
