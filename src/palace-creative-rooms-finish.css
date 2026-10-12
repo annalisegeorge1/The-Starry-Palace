@@ -158,6 +158,11 @@
  background:var(--ui-raised);
  box-shadow:0 12px 30px rgba(6,6,24,.20);
 }
+/* Keep the last post's menu inside the visible feed rather than clipping it. */
+.palace-shell.full-palace-shell .chic-commons .social-thread:last-child .social-thread-menu-options{
+ top:auto;
+ bottom:calc(100% + 5px);
+}
 .palace-shell.full-palace-shell .chic-commons .social-thread-menu-options button{
  display:block;
  width:100%;
@@ -213,16 +218,6 @@
  }
  .palace-shell.full-palace-shell :is(.legacy-reading-page .legacy-reading-intro,.chic-writing-head,.chic-commons .chic-life-intro){
   border-radius:15px!important;padding:18px!important;
- }
- .palace-shell.full-palace-shell .chic-commons .chic-timeline .social-thread{
-  grid-template-columns:minmax(0,1fr)!important;
- }
- /* Message authors stay full-sized: avatars are not scaled down to force a grid. */
- .palace-shell.full-palace-shell .chic-commons .chic-timeline .social-thread-avatar{
-  grid-column:1;
- }
- .palace-shell.full-palace-shell .chic-commons .social-thread-body{
-  grid-column:1;
  }
 }
 @media(prefers-reduced-motion:reduce){
