@@ -20,17 +20,17 @@
 .palace-shell.full-palace-shell .reading-catalogue-more button{min-height:46px;padding:10px 22px;border:1px solid var(--palace-unified-action-border);border-radius:10px;background:var(--palace-unified-action-gradient);color:var(--palace-unified-action-ink);font:650 .84rem/1.4 system-ui,sans-serif;cursor:pointer}
 /* Density changes only story covers and spacing. Member portraits retain their size. */
 @media(min-width:721px){
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .chic-story-catalogue .story-row{display:grid!important;grid-template-columns:64px minmax(0,1fr)!important;gap:16px!important;padding:16px!important}
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .chic-story-catalogue .story-cover{width:64px!important;min-width:64px!important;height:90px!important;min-height:0!important;border-radius:8px!important}
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .chic-story-catalogue .story-row h2{font-size:1.2rem!important;margin:0 0 8px!important}
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .chic-story-catalogue .story-row{display:grid!important;grid-template-columns:68px minmax(0,1fr)!important;gap:12px!important;padding:13px 15px!important}
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .chic-story-catalogue .story-cover{width:68px!important;min-width:68px!important;height:96px!important;min-height:0!important;border-radius:8px!important}
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .chic-story-catalogue .story-row h2{font-size:1.12rem!important;margin:0 0 6px!important}
  .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .chic-story-catalogue .reading-story-context-summary{margin-block:8px!important}
 }
 @media(min-width:1000px){
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .chic-story-catalogue{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px!important;align-items:stretch!important}
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .chic-story-catalogue .story-row{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:16px!important;padding:20px!important;margin:0!important;min-width:0!important}
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .chic-story-catalogue .story-cover{width:112px!important;min-width:112px!important;height:156px!important;min-height:0!important;align-self:center!important;border-radius:10px!important}
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .chic-story-catalogue{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;align-items:stretch!important}
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .chic-story-catalogue .story-row{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:12px!important;padding:14px!important;margin:0!important;min-width:0!important}
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .chic-story-catalogue .story-cover{width:76px!important;min-width:76px!important;height:106px!important;min-height:0!important;align-self:center!important;border-radius:10px!important}
  .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .chic-story-catalogue .story-row>div{min-width:0!important;flex:1;display:flex;flex-direction:column}
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .chic-story-catalogue .story-row footer{margin-top:auto!important;padding-top:16px!important;display:flex!important;flex-wrap:wrap!important;gap:12px!important}
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .chic-story-catalogue .story-row footer{margin-top:auto!important;padding-top:9px!important;display:flex!important;flex-wrap:wrap!important;gap:12px!important}
  .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .reading-catalogue-empty{grid-column:1/-1}
 }
 .palace-shell.full-palace-shell .legacy-reading-page .advanced-result-grid .reading-story-context-summary>p{display:block!important;-webkit-line-clamp:unset!important;max-height:none!important}
@@ -45,9 +45,9 @@
  .palace-shell.full-palace-shell .reading-catalogue-more{padding:18px;flex-direction:column;text-align:center}
 }
 @media(max-width:999px){
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .story-shelf.refined.chic-story-catalogue .story-row{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:14px!important;padding:18px!important}
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .story-shelf.refined.chic-story-catalogue .story-row{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:12px!important;padding:14px!important}
  .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .story-shelf.refined.chic-story-catalogue .story-row>div:last-child{display:block!important;min-width:0!important}
- .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .story-shelf.refined.chic-story-catalogue .story-cover{float:none!important;width:112px!important;min-width:112px!important;max-width:112px!important;height:156px!important;min-height:0!important;margin:0!important;align-self:center!important}
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=gallery] .story-shelf.refined.chic-story-catalogue .story-cover{float:none!important;width:76px!important;min-width:76px!important;max-width:76px!important;height:106px!important;min-height:0!important;margin:0!important;align-self:center!important}
 }
 @media(max-width:720px){
  .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout=compact] .story-shelf.refined.chic-story-catalogue .story-row{padding:10px!important;margin-bottom:8px!important}
