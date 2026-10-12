@@ -516,3 +516,69 @@
  .chamber-atelier-gallery .chamber-atelier-art-card{transition:none!important}
  .chamber-atelier-gallery .chamber-atelier-art-card:hover{transform:none}
 }
+
+
+/* Chamber identity editorial pass — applies only to header copy and its controls.
+   No changes to uploaded cover, portrait, frames or collectible gallery. */
+@media(min-width:780px){
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-copy {
+   padding-top: 1rem !important;
+   padding-bottom: 1.05rem !important;
+ }
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-copy h1 {
+   font-size:clamp(1.9rem,2.6vw,2.65rem) !important;
+   line-height:1.12 !important;
+   margin:.25rem 0 .45rem !important;
+ }
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-copy {
+ background:
+   radial-gradient(ellipse at 89% 27%,rgba(149,127,214,.12),transparent 55%),
+   linear-gradient(118deg,rgba(22,31,70,.73),rgba(66,60,113,.51)) !important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-copy blockquote {
+ margin:.65rem 0 !important;
+ padding:.35rem .9rem !important;
+ border-left:2px solid rgba(203,187,249,.7);
+ background:linear-gradient(90deg,rgba(164,139,218,.105),transparent 85%);
+ border-radius:0 10px 10px 0;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-tags {
+ display:flex;
+ flex-wrap:wrap;
+ gap:5px;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-tags span {
+ padding:.33rem .57rem !important;
+ border-radius:999px;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-worn-heading {
+ margin-top:.9rem;
+ margin-bottom:.35rem;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-crown-ribbon>span {
+ background:linear-gradient(117deg,rgba(60,67,122,.36),rgba(132,111,189,.15)) !important;
+ border-color:rgba(184,181,239,.3) !important;
+ box-shadow:inset 0 1px rgba(251,249,255,.055);
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions {
+ margin-top:.65rem !important;
+ gap:7px !important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions :is(a,button) {
+ min-height:36px;
+ border-radius:999px;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats>div {
+ border-color:rgba(190,185,242,.23) !important;
+ background:linear-gradient(145deg,rgba(86,83,149,.18),rgba(47,63,115,.13)) !important;
+}
+.palace-shell.daylight .member-chamber-atelier.chic-member-profile .legacy-profile-copy {
+ background:linear-gradient(120deg,rgba(252,249,255,.96),rgba(239,239,255,.94)) !important;
+}
+.palace-shell.daylight .member-chamber-atelier.chic-member-profile .legacy-profile-copy blockquote {
+ background:linear-gradient(90deg,rgba(118,91,171,.075),transparent 85%);
+}
+.palace-shell.daylight .member-chamber-atelier.chic-member-profile .chamber-atelier-crown-ribbon>span {
+ background:linear-gradient(115deg,rgba(245,239,255,.8),rgba(230,237,255,.72)) !important;
+}
