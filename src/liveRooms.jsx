@@ -4,6 +4,8 @@ import GuestReadingInvitation from './GuestReadingInvitation';
 import {palaceSignInDoor} from './palaceDoorway';
 import {ReadingCatalogueControls,ReadingCatalogueMore} from './ReadingCatalogueControls';
 import ReadingFacetSidebar from './ReadingFacetSidebar';
+import ReadingArchivePager from './ReadingArchivePager';
+import usePublishedBrowse from './usePublishedBrowse';
 import './archive-wide-search.css';
 import {buildReadingFacets,matchesReadingFacets,sortReadingWorks} from './readingFacetModel';
 import useReadingDiscoveryState from './useReadingDiscoveryState';
@@ -308,6 +310,29 @@ export function ReadingLive({Frame}){
  const readerLens=readingChoices.readerLens;const setReaderLens=value=>setReadingChoice('readerLens',value);
  const catalogueSort=readingChoices.catalogueSort;const setCatalogueSort=value=>setReadingChoice('catalogueSort',value);
  const includedTags=readingChoices.includeTags;const excludedTags=readingChoices.excludeTags;
+ const inAdvancedSearch=new URLSearchParams(location.search).get('view')==='search';
+ // Public archive results are server-filtered; private lenses and mood shelves
+ // intentionally stay on the member's local reading shelf.
+ const archiveBrowseEnabled=!inAdvancedSearch&&readingChoices.discoveryMode==='browse'
+  &&readingChoices.catalogueScope==='archive'&&readerLens==='all'
+  &&vibeDoor==='all'&&catalogueSort!=='bookmarks';
+ const archiveBrowse=usePublishedBrowse({
+  enabled:archiveBrowseEnabled,identity:session?.user?.id||'guest',
+  text:query,include:includedTags,exclude:excludedTags,rating,status,origin,sort:catalogueSort
+ });
+ function browseAllPublished(){
+  setReadingChoice('catalogueScope','archive');
+  setReaderLens('all');setVibeDoor('all');
+  if(catalogueSort==='bookmarks')setCatalogueSort('updated');
+ }
+ function browseLoadedShelves(){setReadingChoice('catalogueScope','loaded')}
+ function updateCatalogueSort(value){
+  setCatalogueSort(value);
+  if(value==='bookmarks')setReadingChoice('catalogueScope','loaded');
+ }
+ function identifyReadingTag(tag){
+  setReadingChoice('tagLabels',previous=>({...previous,[String(tag.id)]:String(tag.name||'').slice(0,140)}));
+ }
  const[readingNotice,setReadingNotice]=useState('');
  const[advancedTagLabels,setAdvancedTagLabels]=useState({});
  useEffect(()=>{
@@ -359,7 +384,8 @@ export function ReadingLive({Frame}){
  const allReadingWorks=useMemo(()=>[...(works||[]),...(archiveWorks||[])],[works,archiveWorks]);
  const roomWorks=useMemo(()=>allReadingWorks.filter(w=>origin==='all'?true:origin==='fandom'?w.work_type==='fanwork':w.work_type!=='fanwork'),[allReadingWorks,origin]);
  const tagFacets=useMemo(()=>buildReadingFacets(roomWorks),[roomWorks]);
- const facetNames=Object.fromEntries(tagFacets.flatMap(group=>group.tags.map(tag=>[tag.id,tag.name])));
+ const facetNames={...(readingChoices.tagLabels||{}),...Object.fromEntries(tagFacets.flatMap(group=>group.tags.map(tag=>[tag.id,tag.name])))};
+
  const stateFor=w=>readerState[w.id]||{};
  const workTags=w=>(w.work_tags||[]).map(x=>x.tags).filter(t=>t&&['canonical','community'].includes(t.status));const moodDoors=[
   {id:'yearn',glyph:'☾',label:'Make me yearn',copy:'longing, slow burns & impossible feelings',terms:['yearn','yearning','slow burn','pining','longing','romance','love']},
@@ -381,6 +407,11 @@ export function ReadingLive({Frame}){
  const readerLensMatches=w=>readerLens==='all'||readerLens==='unread'&&!stateFor(w).progress||readerLens==='reading'&&needsReading(w)||readerLens==='new'&&hasNew(w)||readerLens==='saved'&&!!stateFor(w).saved||readerLens==='following'&&!!stateFor(w).following||readerLens==='finished'&&finished(w);
  const filtered=roomWorks.filter(w=>matchesReadingFacets(w,includedTags,excludedTags)&&moodMatches(w,vibeDoor)&&readerLensMatches(w)&&(rating==='all'||w.rating===rating)&&(status==='all'||w.completion_status===status)&&(!query.trim()||[w.title,w.summary,w.profiles?.display_name,w.profiles?.username,w.profiles?.title,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase().includes(query.trim().toLowerCase())));
  const catalogue=sortReadingWorks(filtered,catalogueSort);
+ const visibleCatalogue=archiveBrowseEnabled?(archiveBrowse.snapshot?.results||[]):catalogue.slice(0,readingChoices.visibleCount);
+ const visibleTotal=archiveBrowseEnabled?(archiveBrowse.snapshot?.total||0):catalogue.length;
+ const showBrowseCards=archiveBrowseEnabled?Boolean(archiveBrowse.snapshot):Boolean(works);
+ const browseLoading=archiveBrowseEnabled?archiveBrowse.loading:!works&&!error;
+ const browseError=archiveBrowseEnabled?archiveBrowse.error:error;
  const activeReadingFilters=[...readingFilterChips({origin,query,rating,status,vibeDoor,readerLens},Object.fromEntries(moodDoors.map(door=>[door.id,door.label]))),...includedTags.map(id=>({key:'include:'+id,label:'Include: '+(facetNames[id]||'selected tag')})),...excludedTags.map(id=>({key:'exclude:'+id,label:'Exclude: '+(facetNames[id]||'selected tag')}))];
  function clearReadingFilters(){setOrigin('all');setVibeDoor('all');setReaderLens('all');setQuery('');setRating('all');setStatus('all');setReadingChoice('includeTags',[]);setReadingChoice('excludeTags',[])}
  function removeReadingFilter(key){
@@ -413,7 +444,7 @@ export function ReadingLive({Frame}){
  };
  const constellation=shelves[shelf]||[];
  const shelfModes=[['first','First Worlds'],['quiet','Quiet Shelves'],['updated','Newly Updated'],...(session?[['following','Following Updates'],['continue','Continue Reading'],...(privateInterests.length?[['nightstand','For Your Nightstand']]:[])]:[])];
- const advancedView=new URLSearchParams(location.search).get('view')==='search';const surpriseHandled=useRef(false);
+ const advancedView=inAdvancedSearch;const surpriseHandled=useRef(false);
  function surpriseMe(){const choice=chooseReadingSurprise(catalogue);if(choice)navigate(storyHref(choice))}
  useEffect(()=>{if(surpriseHandled.current||!works||new URLSearchParams(location.search).get('surprise')!=='1')return;surpriseHandled.current=true;const pool=allReadingWorks;if(!pool.length){navigate('/reading',{replace:true});return}const choice=pool[Math.floor(Math.random()*pool.length)];if(choice)navigate(storyHref(choice),{replace:true})},[works,archiveWorks,readerState,location.search]);
  function flags(w){const s=stateFor(w);const rows=[];if(hasNew(w))rows.push(['new','New chapter']);if(s.progress&&!s.progress.completed)rows.push(['reading','Reading']);else if(finished(w))rows.push(['finished','Finished']);if(s.saved)rows.push(['saved','Saved']);if(s.following)rows.push(['following','Following']);return rows}
