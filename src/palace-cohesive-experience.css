@@ -108,3 +108,41 @@ body.writing-desk-open .manuscript-sticky-toolbar button:focus-visible{
  }
  .palace-main-stage .palace-home-more>summary>span:first-child{min-width:0}
 }
+
+
+/* Palace-wide editorial rhythm · first-screen clarity, not a theme replacement.
+   Member artwork, cultural holiday art and manuscript surfaces are excluded. */
+@media(min-width:761px){
+ .palace-main-stage :is(.palace-home-welcome,.palace-first-shelf,.palace-live-gatherings) {
+   margin-block:clamp(12px,1.6vw,22px);
+ }
+ .palace-main-stage :is(.palace-home-welcome,.palace-first-shelf,.palace-live-gatherings) :is(h1,h2) {
+   text-wrap:balance;
+   line-height:1.16;
+   letter-spacing:-.02em;
+ }
+ .palace-main-stage :is(.palace-first-shelf,.palace-live-gatherings) :is(.home-world-grid,.palace-gathering-grid) {
+   gap:clamp(10px,1vw,15px);
+ }
+}
+.palace-main-stage :is(.palace-choice-card,.home-world-grid>a,.palace-gathering-grid article) {
+ min-width:0;
+ border-radius:16px;
+}
+.palace-main-stage :is(.palace-choice-card,.home-world-grid>a,.palace-gathering-grid article) :is(p,small) {
+ line-height:1.52;
+ overflow-wrap:break-word;
+}
+.palace-main-stage :is(.palace-choice-card,.home-world-grid>a,.palace-gathering-grid article) :is(a,button):focus-visible {
+ outline:2px solid var(--ui-accent,#b7a4eb);
+ outline-offset:3px;
+}
+@media(max-width:760px){
+ .palace-main-stage :is(.palace-home-welcome,.palace-first-shelf,.palace-live-gatherings) :is(h1,h2) {
+   text-wrap:balance;
+   line-height:1.2;
+ }
+ .palace-main-stage :is(.palace-first-shelf,.palace-live-gatherings) :is(.home-world-grid,.palace-gathering-grid){
+   gap:10px;
+ }
+}
