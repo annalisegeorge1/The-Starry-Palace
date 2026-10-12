@@ -33,3 +33,15 @@
  .palace-shell .guest-reading-actions a{flex:1 1 auto}
 }
 @media(prefers-reduced-motion:reduce){.palace-shell .guest-reading-actions a{transition:none}}
+
+/* Simple invitation, not an account wall at the front door. */
+.palace-hub-guest-promise{
+ max-width:62ch;
+ margin:13px 0 0;
+ font:.83rem/1.6 system-ui,sans-serif;
+ color:var(--ui-muted,#c1bad4);
+}
+.palace-hub-guest-promise strong{color:var(--ui-text,#f4f0ff);font-weight:700}
+.gate-read-freely{font:.85rem/1.65 system-ui,sans-serif}
+.gate-read-freely a{font-weight:700;color:var(--ui-accent,#b9a4f2);text-underline-offset:3px}
+.gate-read-freely a:focus-visible{outline:3px solid var(--ui-accent,#b9a4f2);outline-offset:3px}
