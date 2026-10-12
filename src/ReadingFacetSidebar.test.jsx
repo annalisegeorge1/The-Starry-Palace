@@ -1,4 +1,5 @@
 import React from 'react';
+import {MemoryRouter} from 'react-router-dom';
 import {afterEach,expect,it,vi} from 'vitest';
 import {render,screen,fireEvent,cleanup} from '@testing-library/react';
 import ReadingFacetSidebar from './ReadingFacetSidebar';
@@ -10,7 +11,7 @@ const props={
 };
 it('keeps the mobile filter panel accessible and presents inclusive and exclusive actions',()=>{
  const onToggle=vi.fn(),onSort=vi.fn();
- render(<ReadingFacetSidebar {...props} onToggle={onToggle} onSort={onSort}/>);
+ render(<MemoryRouter><ReadingFacetSidebar {...props} onToggle={onToggle} onSort={onSort}/></MemoryRouter>);
  const button=screen.getByRole('button',{name:/Sort & Filter/});
  expect(button.getAttribute('aria-expanded')).toBe('false');
  fireEvent.click(button);
@@ -26,7 +27,7 @@ it('keeps the mobile filter panel accessible and presents inclusive and exclusiv
 });
 it('offers a way to clear combined choices without losing the tag label',()=>{
  const onClear=vi.fn();
- render(<ReadingFacetSidebar {...props} included={['f1']} excluded={[]} rating="teen" onClear={onClear}/>);
+ render(<MemoryRouter><ReadingFacetSidebar {...props} included={['f1']} excluded={[]} rating="teen" onClear={onClear}/></MemoryRouter>);
  fireEvent.click(screen.getByRole('button',{name:'Clear choices'}));
  expect(onClear).toHaveBeenCalledOnce();
 });
