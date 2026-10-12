@@ -1,0 +1,81 @@
+/* The Starry Palace — desktop reading polish, 12 Oct 2026.
+   Isolated to browse/catalogue and desktop shell. Never modifies artwork,
+   avatar sizing, chapter typography, badge frames or the writing editor. */
+@media (min-width: 1000px) {
+  .palace-shell.full-palace-shell .legacy-reading-page {
+    width: 100%;
+    min-width: 0;
+  }
+  .palace-shell.full-palace-shell .legacy-reading-page :is(.chic-reading-tools,.reading-catalogue-controls,.reading-mode-tabs) {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .palace-shell.full-palace-shell .legacy-reading-page .chic-reading-tools {
+    display: grid !important;
+    grid-template-columns: minmax(240px,2fr) repeat(3,minmax(130px,1fr));
+    gap: 12px !important;
+    align-items: stretch !important;
+  }
+  .palace-shell.full-palace-shell .legacy-reading-page .chic-reading-tools > * {
+    min-width: 0 !important;
+    max-width: 100%;
+  }
+  .palace-shell.full-palace-shell .legacy-reading-page .chic-reading-tools .reading-search {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  .palace-shell.full-palace-shell .legacy-reading-page .chic-reading-tools :is(input,select,button) {
+    box-sizing: border-box;
+    min-height: 44px;
+  }
+  .palace-shell.full-palace-shell .legacy-reading-page .reading-mode-tabs {
+    gap: 8px !important;
+    overflow: visible !important;
+  }
+  .palace-shell.full-palace-shell .legacy-reading-page .reading-mode-tabs a {
+    white-space: normal !important;
+    text-align: center;
+  }
+  .palace-shell.full-palace-shell .legacy-reading-page .chic-story-catalogue .story-row {
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .palace-shell.full-palace-shell .legacy-reading-page .chic-story-catalogue .story-row > div:last-child {
+    min-width: 0 !important;
+  }
+  .palace-shell.full-palace-shell .legacy-reading-page .chic-story-catalogue :is(h2,h3,p) {
+    overflow-wrap: break-word;
+  }
+  .palace-shell.full-palace-shell .legacy-reading-page .reading-catalogue-controls {
+    align-items: center;
+  }
+  .palace-shell.full-palace-shell .legacy-reading-page .reading-catalogue-controls > div[role="group"] {
+    flex: 0 0 auto;
+  }
+  .palace-shell.full-palace-shell .full-topbar-row,
+  .palace-shell.full-palace-shell .topbar.full-topbar {
+    min-width: 0;
+  }
+}
+@media (min-width: 1000px) and (max-width: 1280px) {
+  .palace-shell.full-palace-shell .legacy-reading-page .chic-reading-tools {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+}
+@media (max-width: 999px) {
+  .palace-shell.full-palace-shell .legacy-reading-page .chic-reading-tools {
+    display:flex !important;
+    flex-wrap:wrap !important;
+  }
+}
+/* Keyboard access and reduced motion are intentional across layouts. */
+.palace-shell.full-palace-shell .legacy-reading-page :is(.chic-reading-tools,.reading-mode-tabs,.reading-catalogue-controls) :is(button,a,input,select):focus-visible {
+  outline: 2px solid var(--ui-accent, #b4a0e7) !important;
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .palace-shell.full-palace-shell .legacy-reading-page .chic-story-catalogue .story-row {
+    transition: none !important;
+    animation: none !important;
+  }
+}
