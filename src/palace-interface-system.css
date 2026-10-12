@@ -255,3 +255,85 @@
  .palace-shell.full-palace-shell .treasury-gallery :is(.badge-controls,.treasury-badge-filters) {padding:10px!important}
  .palace-shell.full-palace-shell .palace-first-shelf {margin:24px auto;padding:0 12px}
 }
+/* Keep navigation calm without losing each room's identity. Only Palace
+   navigation sigils are affected — never member portraits, honours or frames. */
+.palace-shell.full-palace-shell .full-sidebar .palace-calm-primary>.palace-calm-room>a .room-sigil {
+ display:inline-grid!important;
+ place-items:center!important;
+ flex:0 0 36px!important;
+ width:36px!important;
+ min-width:36px!important;
+ min-height:36px!important;
+ border:1px solid var(--ui-line)!important;
+ border-radius:10px!important;
+ transition:background-color .15s ease,border-color .15s ease!important;
+}
+.palace-shell.full-palace-shell.nightfall .full-sidebar .palace-calm-primary .room-sigil-palace {
+ color:#e4ccff!important;
+ background:linear-gradient(145deg,#514078,#372f65)!important;
+ border-color:#74619d!important;
+}
+.palace-shell.full-palace-shell.nightfall .full-sidebar .palace-calm-primary .room-sigil-reading {
+ color:#b8e6ff!important;
+ background:linear-gradient(145deg,#285778,#263f65)!important;
+ border-color:#417b9e!important;
+}
+.palace-shell.full-palace-shell.nightfall .full-sidebar .palace-calm-primary .room-sigil-writing {
+ color:#edceff!important;
+ background:linear-gradient(145deg,#654377,#4c386e)!important;
+ border-color:#88639b!important;
+}
+.palace-shell.full-palace-shell.nightfall .full-sidebar .palace-calm-primary .room-sigil-life {
+ color:#c5f4ed!important;
+ background:linear-gradient(145deg,#255d63,#2d4a68)!important;
+ border-color:#457f81!important;
+}
+.palace-shell.full-palace-shell.daylight .full-sidebar .palace-calm-primary .room-sigil-palace {
+ color:#5f3d83!important;
+ background:linear-gradient(145deg,#efe2ff,#e3e7ff)!important;
+ border-color:#b7a5ce!important;
+}
+.palace-shell.full-palace-shell.daylight .full-sidebar .palace-calm-primary .room-sigil-reading {
+ color:#245d82!important;
+ background:linear-gradient(145deg,#e0f2ff,#dceaff)!important;
+ border-color:#a6c8dc!important;
+}
+.palace-shell.full-palace-shell.daylight .full-sidebar .palace-calm-primary .room-sigil-writing {
+ color:#79468f!important;
+ background:linear-gradient(145deg,#f4e5ff,#e8e1fd)!important;
+ border-color:#cbaad7!important;
+}
+.palace-shell.full-palace-shell.daylight .full-sidebar .palace-calm-primary .room-sigil-life {
+ color:#286c67!important;
+ background:linear-gradient(145deg,#d9f5ed,#dbedfa)!important;
+ border-color:#a5d2c9!important;
+}
+/* Small screens and larger text sizes should never make destinations cramped. */
+.palace-shell.full-palace-shell .full-sidebar .full-nav-room>a {min-width:0!important}
+.palace-shell.full-palace-shell .full-sidebar .full-nav-room>a>span {min-width:0;overflow-wrap:anywhere}
+.palace-shell.full-palace-shell .full-sidebar .full-subnav>a {min-height:44px!important;overflow-wrap:anywhere}
+.palace-shell.full-palace-shell .palace-hub-lenses {flex-wrap:wrap;row-gap:0}
+.palace-shell.full-palace-shell .palace-hub-lenses>button {white-space:normal;overflow-wrap:anywhere}
+@media(max-width:420px) {
+ .palace-shell.full-palace-shell .palace-hub-lenses>button {
+  flex:1 1 0;min-width:0;padding-inline:10px;
+ }
+ .palace-shell.full-palace-shell .palace-hub-actions {gap:10px 14px}
+}
+/* Outlines remain visible for keyboard users in both themes and high contrast. */
+.palace-shell.full-palace-shell .full-sidebar :is(.palace-calm-primary,.secondary) a:focus-visible,
+.palace-shell.full-palace-shell .palace-hub-lenses>button:focus-visible {
+ outline:3px solid var(--ui-accent)!important;
+ outline-offset:2px!important;
+}
+@media(forced-colors:active) {
+ .palace-shell.full-palace-shell .full-sidebar .full-nav-room>a.active {
+  outline:2px solid Highlight!important;
+  outline-offset:-2px!important;
+ }
+}
+@media(prefers-reduced-motion:reduce) {
+ .palace-shell.full-palace-shell .full-sidebar .palace-calm-primary>.palace-calm-room>a .room-sigil {
+  transition:none!important;
+ }
+}
