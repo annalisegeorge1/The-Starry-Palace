@@ -262,6 +262,8 @@ function Frame(props){
 }
 function FrameShell({children}){
  const {session}=useAuth();
+ // Notify the non-React boot cover only after the visible shell has committed.
+ React.useEffect(()=>{window.__palaceBootReady?.()},[]);
  const [navOpen,setNavOpen]=useState(false);
  const [sidebarCollapsed,setSidebarCollapsed]=useState(()=>safeLocalGet('palace-sidebar-collapsed')==='1');
  const [daylight,setDaylight]=useState(()=>safeLocalGet('palace-theme')==='daylight');
