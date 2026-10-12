@@ -22,8 +22,8 @@ with
   args as (
     select
       lower(left(trim(coalesce(p_text,'')),160)) as query,
-      coalesce(p_include,'{}'::uuid[])[1:24] as including,
-      coalesce(p_exclude,'{}'::uuid[])[1:24] as excluding,
+      (coalesce(p_include,'{}'::uuid[]))[1:24] as including,
+      (coalesce(p_exclude,'{}'::uuid[]))[1:24] as excluding,
       greatest(1,least(48,coalesce(p_limit,24))) as batch,
       greatest(0,least(100000,coalesce(p_offset,0))) as start
   ),
