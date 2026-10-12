@@ -625,3 +625,221 @@
   flex:1 1 100%;
  }
 }
+
+
+/* WHOLE-PALACE VISUAL STANDARD · 2026-10-12
+   Shared page hierarchy and non-art card rhythm. Deliberately excludes the
+   Reading Room, member-created artwork, theme-specific gradients, portrait
+   frames, collectible images, and manuscript/episode editor canvases. */
+.palace-shell.full-palace-shell {
+ --room-edge:var(--ui-line,rgba(181,169,232,.3));
+ --room-paper:var(--ui-surface,#201e35);
+ --room-raised:var(--ui-raised,#28243e);
+ --room-focus:var(--ui-accent,#c5b3f5);
+ --room-shadow:0 8px 25px rgba(5,10,35,.10);
+}
+.palace-shell.full-palace-shell :is(
+ .chic-library-page .chic-library-head,
+ .comics-head,
+ .chic-events-head,
+ .chic-lost-head,
+ .settings-head,
+ .treasury-head,
+ .club-interior-hero
+){
+ box-sizing:border-box;
+ min-width:0;
+ max-width:100%;
+ padding:clamp(16px,2.2vw,26px)!important;
+ margin-bottom:clamp(13px,2vw,21px)!important;
+ border:1px solid var(--room-edge);
+ border-radius:19px;
+ box-shadow:var(--room-shadow);
+}
+.palace-shell.full-palace-shell :is(
+ .chic-library-page .chic-library-head,
+ .comics-head,
+ .chic-events-head,
+ .chic-lost-head,
+ .settings-head,
+ .treasury-head
+) :is(h1,h2),
+.palace-shell.full-palace-shell .club-interior-hero h1{
+ font-size:clamp(1.7rem,2.65vw,2.5rem)!important;
+ line-height:1.15!important;
+ letter-spacing:-.025em!important;
+ text-wrap:balance;
+ overflow-wrap:anywhere;
+ margin-block:5px 9px!important;
+}
+.palace-shell.full-palace-shell :is(
+ .chic-library-page .chic-library-head,
+ .comics-head,
+ .chic-events-head,
+ .chic-lost-head,
+ .settings-head,
+ .treasury-head,
+ .club-interior-hero
+) :is(.lede,p){
+ max-width:74ch;
+ line-height:1.57!important;
+ overflow-wrap:break-word;
+}
+.palace-shell.full-palace-shell :is(
+ .chic-library-page,.legacy-lost-page,.legacy-treasury-page,
+ .legacy-life-page,.club-interior-page
+) :is(.section-heading,h2,h3) {
+ text-wrap:balance;
+}
+/* Library: shelf controls, reading progress and saved-item cards. */
+.palace-shell.full-palace-shell .chic-library-page .chic-library-pulse {
+ box-sizing:border-box;
+ display:grid;
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:9px!important;
+ min-width:0;
+}
+.palace-shell.full-palace-shell .chic-library-page .chic-library-pulse>article{
+ box-sizing:border-box;
+ min-width:0;
+ padding:12px 14px!important;
+ border:1px solid var(--room-edge);
+ border-radius:13px!important;
+ box-shadow:var(--room-shadow);
+}
+.palace-shell.full-palace-shell .chic-library-page .chic-library-pulse>article strong{
+ font-variant-numeric:tabular-nums;
+ line-height:1.15;
+}
+.palace-shell.full-palace-shell .chic-library-page .chic-library-pulse>article span{
+ font-size:.76rem;
+ line-height:1.38;
+ overflow-wrap:break-word;
+}
+.palace-shell.full-palace-shell .chic-library-page .chic-library-tabs{
+ box-sizing:border-box;
+ min-width:0;
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ gap:6px!important;
+ padding:6px!important;
+ border:1px solid var(--room-edge);
+ border-radius:14px!important;
+}
+.palace-shell.full-palace-shell .chic-library-page .chic-library-tabs>button{
+ box-sizing:border-box;
+ min-height:42px!important;
+ padding:8px 12px!important;
+ border-radius:9px!important;
+ line-height:1.35!important;
+}
+.palace-shell.full-palace-shell .chic-library-page .chic-library-search{
+ box-sizing:border-box;
+ max-width:100%;
+ min-width:0;
+ border-radius:12px;
+}
+.palace-shell.full-palace-shell .chic-library-page .library-card-grid {
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:11px!important;
+}
+.palace-shell.full-palace-shell .chic-library-page .library-card-grid>.library-card {
+ box-sizing:border-box;
+ min-width:0;
+ gap:11px!important;
+ padding:12px!important;
+ border-radius:15px!important;
+ border-color:var(--room-edge)!important;
+ box-shadow:var(--room-shadow);
+}
+.palace-shell.full-palace-shell .chic-library-page .library-card-grid>.library-card :is(h2,h3,p,small,strong){
+ overflow-wrap:break-word;
+ line-height:1.4;
+}
+/* Comics: a visual shelf instead of oversized production cards.
+   Comic covers and the Studio page-editing tools keep their own sizing. */
+.palace-shell.full-palace-shell .comic-tools {
+ box-sizing:border-box;
+ min-width:0;
+ gap:10px!important;
+ border-radius:14px;
+}
+.palace-shell.full-palace-shell .comic-gallery {
+ gap:12px!important;
+}
+.palace-shell.full-palace-shell .comic-gallery>.comic-card{
+ box-sizing:border-box;
+ min-width:0;
+ gap:12px!important;
+ padding:13px!important;
+ border-radius:16px!important;
+ border-color:var(--room-edge)!important;
+ box-shadow:var(--room-shadow);
+}
+.palace-shell.full-palace-shell .comic-gallery>.comic-card :is(h2,h3,p,small) {
+ overflow-wrap:break-word;
+ line-height:1.43;
+}
+.palace-shell.full-palace-shell .comic-studio-home .comic-studio-card{
+ box-sizing:border-box;
+ min-width:0;
+ border-radius:17px!important;
+ border-color:var(--room-edge)!important;
+ box-shadow:var(--room-shadow);
+}
+.palace-shell.full-palace-shell .comic-studio-home .comic-studio-card>header{
+ display:flex;
+ flex-wrap:wrap;
+ gap:10px 14px;
+ align-items:start;
+}
+.palace-shell.full-palace-shell .comic-studio-home .comic-studio-card>header>div:first-child{
+ flex:1 1 240px;
+ min-width:0;
+}
+.palace-shell.full-palace-shell .comic-studio-home .comic-card-head-actions{
+ display:flex;
+ flex-wrap:wrap;
+ gap:7px;
+}
+.palace-shell.full-palace-shell .comic-studio-home .comic-studio-card>header h2 {
+ font-size:clamp(1.1rem,1.6vw,1.5rem);
+ line-height:1.25;
+ overflow-wrap:break-word;
+ margin-block:4px;
+}
+.palace-shell.full-palace-shell :is(.chic-library-page,.comic-studio-home,.comic-gallery)
+:is(a,button,input,select):focus-visible{
+ outline:2px solid var(--room-focus)!important;
+ outline-offset:3px!important;
+}
+@media(max-width:900px){
+ .palace-shell.full-palace-shell .chic-library-page .library-card-grid{
+  grid-template-columns:minmax(0,1fr);
+ }
+ .palace-shell.full-palace-shell .chic-library-page .chic-library-pulse{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+ }
+ .palace-shell.full-palace-shell .comic-gallery{
+  grid-template-columns:minmax(0,1fr)!important;
+ }
+}
+@media(max-width:600px){
+ .palace-shell.full-palace-shell .chic-library-page .chic-library-tabs{
+  flex-wrap:nowrap;
+  overflow-x:auto;
+  overscroll-behavior-x:contain;
+  scrollbar-width:thin;
+ }
+ .palace-shell.full-palace-shell .chic-library-page .chic-library-tabs>button{
+  flex:0 0 auto;
+  min-height:44px!important;
+ }
+ .palace-shell.full-palace-shell .chic-library-page .chic-library-pulse>article{
+  padding:10px!important;
+ }
+ .palace-shell.full-palace-shell .comic-gallery>.comic-card{
+  padding:11px!important;
+ }
+}
