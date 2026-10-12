@@ -26,7 +26,7 @@ export function WriterAward({kind,size=26,decorative=true}){
 }
 export function TierFrame({tier='bronze',style=0}){
  const i=Math.max(0,PAINTED_TIERS.indexOf(tier)),xs=[10,325,620,917,1210],ws=[313,293,295,291,325],ys=[25,338,651];
- return <PaintedSprite sheet="tier-frames" sheetSize={[1536,1024]} box={[xs[i],ys[style%3],ws[i],312]} padding={6} stretch size="100%" className="painted-tier-frame" decorative/>;
+ return <PaintedSprite sheet="tier-frames" sheetSize={[1536,1024]} box={[xs[i],ys[style%3],ws[i],312]} padding={6} size="100%" className="painted-tier-frame" decorative/>;
 }
 export function PaintedBadge({family,tier='bronze'}){
  const i=family.index;
