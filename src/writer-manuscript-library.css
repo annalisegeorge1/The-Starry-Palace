@@ -50,3 +50,23 @@
  .palace-shell.full-palace-shell :is(.writer-new-work-fold,.writer-inspiration-fold)>summary{padding:16px}
  .palace-shell.full-palace-shell .chic-writing-library-tools :is(select,input){font-size:1rem!important}
 }
+
+
+/* Editorial continuity: manuscript library only; do not restyle editing canvas. */
+.palace-shell.full-palace-shell .chic-writing-head h1 {
+ text-wrap:balance;
+ letter-spacing:-.025em;
+}
+.palace-shell.full-palace-shell :is(.writer-new-work-fold,.writer-inspiration-fold) {
+ background-image:linear-gradient(125deg,var(--ui-surface),var(--ui-raised));
+ box-shadow:0 8px 24px rgba(7,9,30,.08);
+}
+.palace-shell.full-palace-shell .chic-draft-list .writer-work-card {
+ border-radius:16px!important;
+ border-color:var(--ui-line)!important;
+}
+.palace-shell.full-palace-shell .writer-work-card :is(h2,h3) {
+ line-height:1.25;
+ text-wrap:balance;
+ overflow-wrap:anywhere;
+}
