@@ -337,3 +337,27 @@
   transition:none!important;
  }
 }
+
+
+/* Palace-wide editorial continuity: navigation only, never member art or themed cards.
+   Reuse existing theme tokens rather than imposing new colours on room designs. */
+.palace-shell.full-palace-shell .full-sidebar .full-subnav>a {
+ border-radius:10px;
+ transition:background-color .16s ease,color .16s ease,border-color .16s ease;
+}
+.palace-shell.full-palace-shell .full-sidebar .full-subnav>a:hover {
+ background:var(--ui-raised);
+ color:var(--ui-text);
+}
+.palace-shell.full-palace-shell .full-sidebar .full-subnav>a:focus-visible {
+ outline:2px solid var(--ui-accent) !important;
+ outline-offset:2px !important;
+}
+.palace-shell.full-palace-shell .full-sidebar .full-nav-room>a {
+ transition:background-color .16s ease,border-color .16s ease,color .16s ease;
+}
+@media(prefers-reduced-motion:reduce) {
+ .palace-shell.full-palace-shell .full-sidebar :is(.full-subnav>a,.full-nav-room>a) {
+   transition:none !important;
+ }
+}
