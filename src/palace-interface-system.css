@@ -388,3 +388,24 @@
    gap:6px 12px!important;
  }
 }
+
+
+/* Commons writing and response panel: give actions a consistent compact rhythm.
+   Preserve the full composer, attachments and post types. */
+.palace-shell.full-palace-shell .chic-commons :is(.commons-conversation-path,.commons-compose-fold) {
+ border-radius:16px!important;
+ min-width:0;
+}
+.palace-shell.full-palace-shell .chic-commons .commons-compose-modes>button {
+ border-radius:11px!important;
+}
+.palace-shell.full-palace-shell .chic-commons .social-thread-actions button:focus-visible,
+.palace-shell.full-palace-shell .chic-commons .commons-compose-modes>button:focus-visible {
+ outline:2px solid var(--ui-accent)!important;
+ outline-offset:2px!important;
+}
+@media(min-width:760px){
+ .palace-shell.full-palace-shell .chic-commons .commons-compose-footer {
+   gap:9px!important;
+ }
+}
