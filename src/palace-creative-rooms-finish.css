@@ -1448,3 +1448,105 @@
   min-height:44px!important;
  }
 }
+
+
+/* Mobile navigation clarity — remove content bleed beneath the sticky shell.
+   My Palace section tabs remain ordinary links in the document flow; only
+   the site header stays fixed. No room features or artwork are hidden. */
+@media(max-width:720px){
+ .palace-shell.full-palace-shell .full-topbar{
+  position:sticky!important;
+  top:0!important;
+  z-index:110!important;
+  isolation:isolate;
+  background:#0c0d21!important;
+  background-image:linear-gradient(180deg,#0c0d21,#111028)!important;
+  border-bottom:1px solid rgba(167,155,217,.24)!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+ }
+ .palace-shell.full-palace-shell.daylight .full-topbar{
+  background:#f4effb!important;
+  background-image:linear-gradient(180deg,#f7f2fc,#ede8f6)!important;
+  border-bottom-color:rgba(95,74,148,.22)!important;
+ }
+ .palace-shell.full-palace-shell .palace-command-centre>.legacy-home-tabs{
+  box-sizing:border-box!important;
+  position:relative!important;
+  top:auto!important;
+  inset-block-start:auto!important;
+  z-index:1!important;
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  gap:5px!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  min-height:50px!important;
+  margin:0 0 11px!important;
+  padding:4px!important;
+  border:1px solid var(--signature-edge,rgba(183,173,235,.28))!important;
+  border-radius:13px!important;
+  background:var(--signature-glass,rgba(47,39,89,.22))!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  overscroll-behavior-x:contain;
+  scroll-snap-type:x proximity;
+  scrollbar-width:none;
+ }
+ .palace-shell.full-palace-shell .palace-command-centre>.legacy-home-tabs::-webkit-scrollbar{
+  display:none;
+ }
+ .palace-shell.full-palace-shell .palace-command-centre>.legacy-home-tabs>a{
+  box-sizing:border-box!important;
+  position:relative!important;
+  display:inline-flex!important;
+  flex:0 0 auto!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:42px!important;
+  max-width:min(70vw,190px)!important;
+  padding:8px 12px!important;
+  margin:0!important;
+  border:1px solid transparent!important;
+  border-radius:9px!important;
+  text-align:center;
+  line-height:1.2!important;
+  text-decoration:none!important;
+  font-size:.76rem!important;
+  letter-spacing:0!important;
+  white-space:nowrap!important;
+  scroll-snap-align:start;
+ }
+ .palace-shell.full-palace-shell .palace-command-centre>.legacy-home-tabs>a.active{
+  border-color:rgba(187,167,246,.32)!important;
+  background:rgba(129,107,199,.22)!important;
+  color:var(--ui-text,#f3efff)!important;
+ }
+ .palace-shell.full-palace-shell .palace-command-centre>.legacy-home-tabs>a.active::after{
+  display:none!important;
+ }
+ .palace-shell.full-palace-shell .palace-command-centre>.legacy-home-tabs>a:focus-visible{
+  outline:2px solid var(--ui-accent,#baabee)!important;
+  outline-offset:-3px!important;
+ }
+ .palace-shell.full-palace-shell.daylight .palace-command-centre>.legacy-home-tabs>a.active{
+  color:#30264c!important;
+  background:rgba(111,87,171,.15)!important;
+  border-color:rgba(105,78,155,.35)!important;
+ }
+}
+/* Ensure the app header has its own opaque compositing layer during
+   scrolling; this also applies to narrow tablet widths. */
+@media(min-width:721px) and (max-width:960px){
+ .palace-shell.full-palace-shell .full-topbar{
+  z-index:110!important;
+  background:#100f25!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+ }
+ .palace-shell.full-palace-shell.daylight .full-topbar{
+  background:#f3effa!important;
+ }
+}
