@@ -7,7 +7,8 @@ const css=readFileSync('src/writer-toolbar-flow.css','utf8');
 describe('Reading Rooms tolerate partially available services',()=>{
  it('keeps public stories separate from optional personal shelf requests',()=>{
   const reading=live.split('export function ReadingLive({Frame})')[1].split('export function WritingLive({Frame})')[0];
-  expect(reading).toContain('Promise.allSettled([getPublishedWorks(),getArchive(id)])');
+  expect(reading).toContain('Promise.allSettled([getPublishedWorks({limit:48}),getArchive(id)])');
+   expect(reading).toContain('getPublishedWorks({offset:works.length,limit:48})');
   expect(reading).toContain('getWorkShelfState(id).then');
   expect(reading).toContain('getOnboardingState(id).then');
   expect(reading).toContain('if(!memberOK&&!archiveOK)');
