@@ -402,7 +402,8 @@ describe('Starry Palace launch safety',()=>{
     expect(data).toContain('summary,work_type,rating');
     expect(live).toContain("origin==='fandom'?w.work_type==='fanwork':w.work_type!=='fanwork'");
     expect(live).toContain('discovery-explainer');
-    expect(live).toContain('Search the current Reading Room');
+    expect(live).toContain('Search the currently loaded Reading Room stories');
+     expect(live).toContain('<ReadingFacetSidebar facets={tagFacets}');
     expect(polish).toContain('/* Reading Rooms — quieter discovery, stronger bookshop hierarchy */');
     expect(polish).toContain('/* My Library — private, organised and calm */');
   });
@@ -1345,7 +1346,8 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('MY READING LENSES');
     expect(live).toContain('Private to you · never changes public discovery ranking');
     expect(live).toContain('Clear reading filters');
-    expect(live).toContain('world{catalogue.length===1');
+    expect(live).toContain('matching among {allReadingWorks.length} loaded');
+    expect(live).toContain('sortReadingWorks(filtered,catalogueSort)');
     expect(polish).toContain('Reading Room private lenses + catalogue controls · October 6 2026');
     expect(polish).toContain('.reading-reader-lenses');
     expect(polish).toContain('.reading-result-count');
