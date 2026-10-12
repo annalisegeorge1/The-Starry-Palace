@@ -5,10 +5,11 @@ const read=path=>readFileSync(path,'utf8');
 const data=read('src/palaceData.js');
 const main=read('src/main.jsx');
 const css=read('src/palace-cohesive-experience.css');
-const reading=data.slice(data.indexOf('export async function getPublishedWorks(){'),data.indexOf('export async function getPublicWorkBookmarkCount('));
+const reading=data.slice(data.indexOf('export async function getPublishedWorks('),data.indexOf('export async function getPublicWorkBookmarkCount('));
 describe('Public Reading Room speed without less reliable navigation',()=>{
  it('loads optional stats and author badges in parallel and tolerates independently failing enhancements',()=>{
   expect(reading).toContain('Promise.allSettled([');
+   expect(reading).toContain('.range(start,start+size-1)');
   expect(reading).toContain('getIdentityMarks(rows.map(x=>x.author_id))');
   expect(reading).toContain("marksResult.status==='fulfilled'?marksResult.value:{}");
   expect(reading).toContain('counts.every(result=>result.status');
