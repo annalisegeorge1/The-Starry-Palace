@@ -15,9 +15,10 @@ import './grand-palaces.css';
 import {PalaceStartingPath,PalaceLiveGatherings} from './PalaceFirstVisit';
 import PalaceResumeReading from './PalaceResumeReading';
 import {WriterWelcome} from './WriterWelcome';
-import {PalaceHomeWelcome,PalaceRoomDirectory,PalaceHomeCulturePaths,PalaceHomeMore} from './PalaceHomeWelcome';
+import {PalaceRoomDirectory,PalaceHomeCulturePaths,PalaceHomeMore} from './PalaceHomeWelcome';
 import PalaceSidebarNavigation from './PalaceSidebarNavigation';
 import PalaceNewStories from './PalaceNewStories';
+import PalaceHomeHub from './PalaceHomeHub';
 // Chat code and its CSS load only for authenticated members.
 // Visitors should not download private messaging features.
 import {palaceSignInDoor} from './palaceDoorway';
@@ -489,7 +490,18 @@ function FrameShell({children}){
 }
 function Home(){
  const{session}=useAuth();
- return <Frame><section className="home-hero realised"><div className="stars" aria-hidden="true">✦　·　✧　　·　✦　　☾</div><div className="hero-copy"><p className="eyebrow">GATHER UNDER KINDRED STARS.</p><h1>There’s a place<br/>for you here.</h1><p className="lede">Come for a wonderful story. Stay for the people who love them. Read a little longer, write at your own pace, and make yourself at home.</p><div className="hero-actions"><Link className="button" to="/reading">Enter the Reading Rooms</Link><Link className="text-link" to={session?'/writing':'/writers'}>{session?'Return to my Writing Chamber →':'Discover the Writer’s Door →'}</Link></div></div><aside className="hero-orbit palace-belonging-panel" aria-label="Your Palace, a place to belong"><img className="palace-belonging-art" src="/assets/palace/palace-belonging.gif" alt="" decoding="async"/><span>YOUR PALACE · A PLACE TO BELONG</span><strong>☾</strong><p>Stories, art, communities, heritage and creative life beneath one shared sky.</p><div><b>READ</b><b>WRITE</b><b>GATHER</b><b>KEEP</b></div></aside></section><PalaceHomeWelcome member={!!session} showCulture={false}/><PalaceResumeReading memberId={session?.user?.id}/><PalaceNewStories/><PalaceHomeMore><PalaceStartingPath memberId={session?.user?.id}/><PalaceRoomDirectory rooms={rooms}/><PalaceHomeCulturePaths/><section className="home-intro-strip"><span>EVERY VOICE DESERVES A PLACE</span><span>PRIVATE BY CHOICE</span><span>CREATIVE RIGHTS FIRST</span><span>COMMUNITY WITH BOUNDARIES</span></section><PalaceLiveGatherings/><section className="palace-paths"><div><p className="eyebrow">A PALACE, NOT A FEED</p><h2>Different rooms for different kinds of attention.</h2><p>Long-form reading does not need to compete with live chat. Private drafts do not need to become public before they are ready. Community, governance and creative ownership each have their own doorway.</p></div><div className="path-list"><Link to="/tags"><span>01</span><strong>Tag Constellation</strong><small>Include what you seek. Exclude what you do not.</small></Link><Link to="/honour"><span>02</span><strong>Throne of Honour</strong><small>Recognition without controlling discovery.</small></Link><Link to="/code"><span>03</span><strong>The Palace Code</strong><small>Rights, safety, moderation and appeals.</small></Link><Link to="/council/governance"><span>04</span><strong>Palace Council</strong><small>Review with a record, not invisible power.</small></Link></div></section><section className="manifesto"><p>EVERY VOICE CARRIES A WORLD.</p><h2>Gather. Have a cup of tea.<br/>Write and read with me.</h2><div><Link to="/reading">Find a story</Link><Link to="/login?mode=signup">Create your chamber</Link></div></section></PalaceHomeMore></Frame>
+ return <Frame><div className="palace-home-layout">
+  <PalaceHomeHub memberId={session?.user?.id}>
+   <PalaceResumeReading memberId={session?.user?.id}/>
+  </PalaceHomeHub>
+  <PalaceNewStories/>
+  <PalaceHomeMore>
+   <PalaceStartingPath memberId={session?.user?.id}/>
+   <PalaceRoomDirectory rooms={rooms}/>
+   <PalaceHomeCulturePaths/>
+   <PalaceLiveGatherings/>
+  </PalaceHomeMore>
+ </div></Frame>
 }
 // Keep authentication UI out of the busy Palace shell; both routes share one on-demand module.
 const PalaceLogin = React.lazy(() => import('./PalaceAuthGates').then(module => ({ default: module.PalaceLogin })));

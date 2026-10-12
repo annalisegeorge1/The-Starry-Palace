@@ -1,6 +1,6 @@
 import React from 'react';
 import {afterEach,beforeEach,expect,it,vi} from 'vitest';
-import {cleanup,render,screen} from '@testing-library/react';
+import {cleanup,render,screen,fireEvent} from '@testing-library/react';
 import {MemoryRouter} from 'react-router-dom';
 const mocks=vi.hoisted(()=>({result:vi.fn()}));
 vi.mock('./supabase',()=>({
@@ -9,7 +9,7 @@ vi.mock('./supabase',()=>({
 }));
 import PalaceNewStories from './PalaceNewStories';
 beforeEach(()=>mocks.result.mockReset());
-afterEach(cleanup);
+afterEach(()=>{cleanup();localStorage.clear()});
 it('never invents stories when the public shelf is empty',async()=>{
  mocks.result.mockResolvedValue({data:[],error:null});
  render(<MemoryRouter><PalaceNewStories/></MemoryRouter>);
@@ -27,4 +27,15 @@ it('shows only genuine published results returned by the server',async()=>{
  render(<MemoryRouter><PalaceNewStories/></MemoryRouter>);
  expect(await screen.findByRole('link',{name:/Moonlight Pages/})).toBeTruthy();
  expect(screen.queryByText(/This shelf is waiting for its next story/)).toBeNull();
+});
+
+it('remembers the shelf layout while preserving the story destination',async()=>{
+ mocks.result.mockResolvedValue({data:[{id:'1',slug:'moonlight',title:'Moonlight Pages'}],error:null});
+ const {unmount}=render(<MemoryRouter><PalaceNewStories/></MemoryRouter>);
+ fireEvent.click(await screen.findByRole('button',{name:'List'}));
+ expect(screen.getByRole('button',{name:'List'}).getAttribute('aria-pressed')).toBe('true');
+ expect(screen.getByRole('link',{name:/Moonlight Pages/}).getAttribute('href')).toBe('/work/moonlight');
+ unmount();
+ render(<MemoryRouter><PalaceNewStories/></MemoryRouter>);
+ expect((await screen.findByRole('button',{name:'List'})).getAttribute('aria-pressed')).toBe('true');
 });

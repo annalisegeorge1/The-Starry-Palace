@@ -27,7 +27,7 @@ describe('Public Reading Room speed without less reliable navigation',()=>{
  });
  it('decodes decorative artwork asynchronously and gives mobile cards room to wrap',()=>{
   expect(main).toContain('aria-hidden="true" loading="lazy" decoding="async"');
-  expect(main).toContain('className="palace-belonging-art" src="/assets/palace/palace-belonging.gif" alt="" decoding="async"');
+  expect(read('src/PalaceHomeHub.jsx')).toContain('src="/assets/palace/palace-belonging.gif" alt="" decoding="async"');
   expect(css).toContain('@media(max-width:600px)');
   expect(css).toContain('.palace-main-stage .palace-home-more>summary');
   expect(css).toContain('overflow-wrap:anywhere');

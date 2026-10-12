@@ -3,6 +3,7 @@ import {readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 
 const main=readFileSync(resolve(process.cwd(),'src/main.jsx'),'utf8');
+const hub=readFileSync(resolve(process.cwd(),'src/PalaceHomeHub.jsx'),'utf8');
 const home=readFileSync(resolve(process.cwd(),'src/PalaceHomeWelcome.jsx'),'utf8');
 const passage=main.split('const passageMap={')[1]?.split('const recentCommandItems=')[0]||'';
 const login=readFileSync(resolve(process.cwd(),'src/PalaceAuthGates.jsx'),'utf8');
@@ -30,6 +31,6 @@ describe('Palace route continuity for visitors and members',()=>{
  it('makes the home invitation clear for both visitors and signed-in writers',()=>{
   expect(home).toContain("member?'Enter Palace Life':'Explore public gatherings'");
   expect(home).toContain("member&&choice.id==='belong'?'/palace-life':choice.url");
-  expect(main).toContain("to={session?'/writing':'/writers'}");
+  expect(hub).toContain("to={member?'/writing':'/writers'}");
  });
 });

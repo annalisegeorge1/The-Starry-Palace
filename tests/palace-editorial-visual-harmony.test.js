@@ -6,11 +6,11 @@ const home=readFileSync(resolve(process.cwd(),'src/PalaceHomeWelcome.jsx'),'utf8
 const main=readFileSync(resolve(process.cwd(),'src/main.jsx'),'utf8');
 
 describe('Palace editorial finish',()=>{
- it('preserves the existing wind-chime artwork and the simple three-door welcome',()=>{
+ it('preserves existing artwork and mounts the new discovery hub with optional deeper rooms',()=>{
   expect(main).toContain('/assets/palace/palace-belonging.gif');
   expect(home).toContain('Where would you like to begin?');
   expect(home).toContain('Read, write, or find your people.');
-  expect(main).toContain("<PalaceHomeWelcome member={!!session} showCulture={false}/>");
+  expect(main).toContain("<PalaceHomeHub memberId={session?.user?.id}>");
   expect(main).toContain("<PalaceHomeMore>");
   expect(main).toContain("<PalaceHomeCulturePaths/>");
  });
