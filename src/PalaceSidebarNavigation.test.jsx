@@ -55,6 +55,19 @@ describe('restored familiar Palace navigation',()=>{
   mount({activeId:'reading',href:'/council/governance?tab=ballots'});
   expect(screen.getByRole('link',{name:'Voting Chamber'}).getAttribute('aria-current')).toBe('page');
  });
+ it('keeps stewardship active on Council subpages and highlights the Code',()=>{
+  mount({activeId:'reading',href:'/council/governance?tab=appeals'});
+  const council=screen.getByRole('link',{name:/Palace Council/});
+  expect(council.classList.contains('active')).toBe(true);
+  expect(council.getAttribute('aria-current')).toBe('location');
+  expect(screen.getByRole('link',{name:'My appeals'}).getAttribute('aria-current')).toBe('page');
+  cleanup();
+  mount({activeId:'reading',href:'/code'});
+  const code=screen.getByRole('link',{name:/Palace Code/});
+  expect(code.classList.contains('active')).toBe(true);
+  expect(code.getAttribute('aria-current')).toBe('location');
+  expect(screen.getByRole('link',{name:/Palace Council/}).classList.contains('active')).toBe(false);
+ });
  it('keeps profile URLs attached to the current member and excludes private rooms when not signed in',()=>{
   mount({activeId:'palace',href:'/chamber'});
   expect(screen.getByRole('link',{name:'Chamber'}).getAttribute('href')).toBe('/member/starlight');
