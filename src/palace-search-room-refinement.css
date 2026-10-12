@@ -126,3 +126,24 @@
  outline:2px solid var(--ui-accent,#b9a7ed)!important;
  outline-offset:2px!important;
 }
+
+
+/* Search discovery: compact, consistent result controls without clipping results. */
+@media(min-width:760px) {
+ .palace-shell .legacy-search-page .search-gathering {
+   margin-block:7px 10px;
+   padding:9px 13px;
+ }
+ .palace-shell .legacy-search-page .palace-search-refinements {
+   margin-block:8px;
+ }
+ .palace-shell .legacy-search-page .palace-search-refinement-grid {
+   gap:9px;
+   padding-top:11px;
+ }
+}
+.palace-shell .legacy-search-page .palace-search-refinement-grid :is(input,select) {
+ min-width:0;
+ max-width:100%;
+ box-sizing:border-box;
+}
