@@ -1271,3 +1271,17 @@
 .palace-shell .treasury-room.refined .badge-grid.refined .achievement-card .original-badge-stage:not(.painted-tier-stage) > .original-badge-picture {
   z-index: 1 !important;
 }
+
+
+/* Let watercolor ornament tips remain visible around each painted medallion.
+   The crop is handled by PaintedSprite's rectangular art-box, not a second
+   circular clip that trims leaves, petals and irregular brush ornaments. */
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card .painted-round-badge > .painted-round-picture {
+  overflow: visible !important;
+}
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card .painted-round-badge > .painted-round-picture > .painted-art {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: visible !important;
+}
