@@ -843,3 +843,179 @@
   padding:11px!important;
  }
 }
+
+
+/* Calendar, Events and Lost Works · consistent discovery surfaces, with
+   cultural holiday imagery and archival publication labels left untouched. */
+.palace-shell.full-palace-shell .chic-events-tabs {
+ box-sizing:border-box;
+ display:flex;
+ flex-wrap:wrap;
+ gap:7px;
+ min-width:0;
+}
+.palace-shell.full-palace-shell .chic-events-tabs :is(button,a){
+ box-sizing:border-box;
+ min-height:43px;
+ padding:9px 13px;
+ border-radius:10px;
+ line-height:1.35;
+}
+.palace-shell.full-palace-shell .events-browser .event-browser-tools {
+ box-sizing:border-box;
+ min-width:0;
+ max-width:100%;
+ gap:9px!important;
+ padding:clamp(10px,1.4vw,15px);
+ border:1px solid var(--room-edge);
+ border-radius:14px;
+ box-shadow:var(--room-shadow);
+}
+.palace-shell.full-palace-shell .events-browser .event-browser-tools :is(input,select,button){
+ box-sizing:border-box;
+ min-width:0;
+ max-width:100%;
+ min-height:43px;
+ border-radius:10px;
+}
+.palace-shell.full-palace-shell .events-browser .event-list{
+ gap:11px!important;
+ min-width:0;
+}
+.palace-shell.full-palace-shell .events-browser .event-list>article{
+ box-sizing:border-box;
+ min-width:0;
+ padding:clamp(12px,1.45vw,18px);
+ gap:12px;
+ border:1px solid var(--room-edge);
+ border-radius:16px;
+ box-shadow:var(--room-shadow);
+}
+.palace-shell.full-palace-shell .events-browser .event-list>article>div {
+ min-width:0;
+}
+.palace-shell.full-palace-shell .events-browser .event-list>article h2 {
+ font-size:clamp(1.05rem,1.45vw,1.4rem);
+ line-height:1.25;
+ margin-block:3px 7px;
+ text-wrap:balance;
+}
+.palace-shell.full-palace-shell .events-browser .event-list>article p{
+ line-height:1.52;
+ overflow-wrap:break-word;
+}
+.palace-shell.full-palace-shell .events-browser .event-list>article .event-actions,
+.palace-shell.full-palace-shell .events-browser .event-list>article .event-rsvp-group {
+ flex-wrap:wrap;
+ gap:7px;
+}
+.palace-shell.full-palace-shell .heritage-discovery-head {
+ box-sizing:border-box;
+ min-width:0;
+ align-items:start;
+ gap:12px;
+}
+.palace-shell.full-palace-shell .heritage-discovery-head :is(h2,p){
+ line-height:1.45;
+ text-wrap:balance;
+}
+.palace-shell.full-palace-shell .heritage-filter-bar {
+ box-sizing:border-box;
+ min-width:0;
+ max-width:100%;
+ gap:9px;
+}
+.palace-shell.full-palace-shell .heritage-filter-bar :is(input,select,button){
+ box-sizing:border-box;
+ min-width:0;
+ max-width:100%;
+}
+.palace-shell.full-palace-shell .legacy-lost-page .archive-pulse {
+ display:grid;
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:9px;
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-lost-page .archive-pulse>span{
+ box-sizing:border-box;
+ min-width:0;
+ padding:10px 13px;
+ border:1px solid var(--room-edge);
+ border-radius:13px;
+ box-shadow:var(--room-shadow);
+}
+.palace-shell.full-palace-shell .legacy-lost-page .archive-pulse>span :is(strong,small){
+ display:block;
+ line-height:1.35;
+ overflow-wrap:break-word;
+}
+.palace-shell.full-palace-shell .legacy-lost-page .lost-work-toolbar {
+ box-sizing:border-box;
+ min-width:0;
+ max-width:100%;
+ border-radius:14px;
+ gap:9px;
+}
+.palace-shell.full-palace-shell .legacy-lost-page .lost-work-toolbar :is(input,select,button){
+ box-sizing:border-box;
+ max-width:100%;
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-lost-page .lost-work-grid{
+ gap:12px!important;
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-lost-page .lost-work-grid>.lost-work-card{
+ box-sizing:border-box;
+ min-width:0;
+ padding:clamp(12px,1.3vw,17px);
+ border:1px solid var(--room-edge);
+ border-radius:16px;
+ box-shadow:var(--room-shadow);
+}
+.palace-shell.full-palace-shell .legacy-lost-page .lost-work-card :is(h2,p,small){
+ min-width:0;
+ overflow-wrap:break-word;
+ line-height:1.45;
+}
+.palace-shell.full-palace-shell .legacy-lost-page .lost-work-card h2 {
+ font-size:clamp(1.07rem,1.35vw,1.35rem);
+ line-height:1.24;
+ margin-block:7px;
+}
+.palace-shell.full-palace-shell .legacy-lost-page .archive-card-actions{
+ display:flex;
+ flex-wrap:wrap;
+ gap:8px;
+ margin-top:auto;
+}
+.palace-shell.full-palace-shell :is(
+ .events-browser,.chic-events-tabs,.heritage-filter-bar,
+ .legacy-lost-page .lost-work-toolbar,.legacy-lost-page .lost-work-card
+) :is(input,select,button,a):focus-visible{
+ outline:2px solid var(--room-focus)!important;
+ outline-offset:3px!important;
+}
+@media(max-width:900px){
+ .palace-shell.full-palace-shell .legacy-lost-page .archive-pulse{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+ }
+}
+@media(max-width:600px){
+ .palace-shell.full-palace-shell .chic-events-tabs{
+  flex-wrap:nowrap;
+  overflow-x:auto;
+  overscroll-behavior-x:contain;
+  scrollbar-width:thin;
+ }
+ .palace-shell.full-palace-shell .chic-events-tabs :is(button,a){
+  flex:0 0 auto;
+  min-height:44px;
+ }
+ .palace-shell.full-palace-shell .events-browser .event-list>article{
+  padding:12px;
+ }
+ .palace-shell.full-palace-shell .legacy-lost-page .archive-pulse>span{
+  padding:9px;
+ }
+}
