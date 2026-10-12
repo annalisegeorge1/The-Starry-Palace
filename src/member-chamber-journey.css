@@ -388,43 +388,65 @@
 }
 
 
-/* Compact Chamber rhythm: reduce oversized display areas, NOT member artwork.
-   Desktop/tablet only. Keep cover, profile photo, frame and badge geometry intact. */
+/* Chamber collectibles, compact display · intentionally NOT a new badge/frame design.
+   Preserve original artwork and avatar/cover dimensions, earned state and all controls. */
 @media (min-width: 780px) {
- .palace-shell .chamber-creator-overview,
- .palace-shell .creator-worlds-room,
- .palace-shell .chamber-posts-room,
- .palace-shell .chamber-atelier-gallery {
-   width: min(100%,1080px);
- }
- .palace-shell .member-chamber-atelier.chic-member-profile {
-   width: min(100%,1080px) !important;
- }
- .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-copy h1 {
-   font-size: clamp(1.5rem,2.1vw,2.15rem) !important;
- }
- .palace-shell .chamber-creator-overview,
- .palace-shell .creator-worlds-room,
- .palace-shell .chamber-posts-room,
- .palace-shell .chamber-atelier-gallery {
-   margin-top: 12px;
-   margin-bottom: 16px;
- }
- .palace-shell .chamber-creator-overview :is(.chamber-about-card,.chamber-contact-state) {
-   padding: 14px !important;
- }
- .palace-shell .creator-worlds-room .section-heading,
- .palace-shell .chamber-posts-room .section-heading,
- .palace-shell .chamber-atelier-gallery .section-heading {
-   margin-bottom: 9px !important;
- }
- .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats {
-   gap: 7px !important;
-   padding: 8px !important;
- }
- .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats > div {
-   min-height: 62px !important;
-   padding: 8px 6px !important;
- }
+  .palace-shell .chamber-atelier-gallery .legacy-showcase-grid {
+    grid-template-columns: repeat(4,minmax(0,1fr)) !important;
+    gap: 12px !important;
+  }
 }
-/* Mobile retains its own previously repaired profile grid and readable controls. */
+.palace-shell .chamber-atelier-gallery .legacy-showcase-grid .chamber-atelier-art-card .chamber-atelier-art-stage {
+  box-sizing: border-box;
+  height: 164px !important;
+  padding: 14px 12px 5px !important;
+}
+.palace-shell .chamber-atelier-gallery .chamber-atelier-art-stage :is(.palace-watercolour-badge,.palace-gift-art) {
+  width: min(100%,138px) !important;
+  height: 100% !important;
+  max-height: 147px !important;
+  margin-inline: auto !important;
+}
+.palace-shell .chamber-atelier-gallery .chamber-atelier-art-card > h3 {
+  font-size: clamp(.96rem,1.15vw,1.13rem) !important;
+  line-height: 1.28 !important;
+}
+.palace-shell .chamber-atelier-gallery .chamber-atelier-art-card > p {
+  font-size: .73rem !important;
+  line-height: 1.5 !important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-crown-ribbon {
+  max-width: 100% !important;
+  gap: 8px !important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-crown-ribbon > span {
+  box-sizing: border-box;
+  min-height: 0 !important;
+  padding: 9px 11px !important;
+  grid-template-columns: 26px minmax(0,1fr) !important;
+  gap: 3px 7px !important;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .chamber-atelier-crown-ribbon > span i {
+  font-size: 1.12rem !important;
+}
+@media(max-width: 779px) {
+  .palace-shell .chamber-atelier-gallery .legacy-showcase-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  }
+  .palace-shell .chamber-atelier-gallery .legacy-showcase-grid .chamber-atelier-art-card .chamber-atelier-art-stage {
+    height: 142px !important;
+    padding: 12px 6px 4px !important;
+  }
+  .palace-shell .chamber-atelier-gallery .chamber-atelier-art-stage :is(.palace-watercolour-badge,.palace-gift-art) {
+    width: min(100%,118px) !important;
+    max-height: 126px !important;
+  }
+}
+@media(max-width: 440px) {
+  .palace-shell .chamber-atelier-gallery .legacy-showcase-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  }
+  .palace-shell .chamber-atelier-gallery .legacy-showcase-grid .chamber-atelier-art-card > h3 {
+    font-size: .91rem !important;
+  }
+}
