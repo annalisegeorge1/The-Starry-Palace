@@ -189,6 +189,49 @@
 .palace-shell.full-palace-shell .chic-commons .chic-timeline .social-thread{
  position:relative;
 }
+/* Even on desktop, the room passage must be readable at ordinary scale. */
+.palace-shell.full-palace-shell .palace-passage{
+ gap:10px!important;
+}
+.palace-shell.full-palace-shell .palace-passage-context{
+ gap:9px!important;
+}
+.palace-shell.full-palace-shell .palace-passage-context small{
+ color:var(--ui-muted)!important;
+ font:650 .64rem/1.3 system-ui,sans-serif!important;
+}
+.palace-shell.full-palace-shell .palace-passage-context strong{
+ color:var(--ui-text)!important;
+ font:600 .86rem/1.35 system-ui,sans-serif!important;
+ max-width:170px!important;
+}
+.palace-shell.full-palace-shell .palace-passage-doors{
+ gap:6px!important;
+}
+.palace-shell.full-palace-shell .palace-passage-doors>a{
+ min-height:44px!important;
+ gap:8px!important;
+ padding:7px 11px!important;
+}
+.palace-shell.full-palace-shell .palace-passage-doors strong{
+ font:650 .74rem/1.3 system-ui,sans-serif!important;
+ color:var(--ui-text)!important;
+}
+.palace-shell.full-palace-shell .palace-passage-doors small{
+ font:400 .65rem/1.35 system-ui,sans-serif!important;
+ color:var(--ui-muted)!important;
+}
+.palace-shell.full-palace-shell .palace-passage-wander{
+ min-height:44px!important;
+ padding:8px 13px!important;
+ color:var(--ui-text)!important;
+ font:650 .74rem/1.25 system-ui,sans-serif!important;
+ cursor:pointer;
+}
+.palace-shell.full-palace-shell .palace-passage :is(a,button):focus-visible{
+ outline:2px solid var(--ui-accent)!important;
+ outline-offset:2px!important;
+}
 /* The nearby-room ribbon should not remain glued above the entire page on phones. */
 @media(max-width:720px){
  .palace-shell.full-palace-shell .palace-passage{
