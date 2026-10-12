@@ -90,3 +90,17 @@
 .palace-shell.full-palace-shell .legacy-reading-page .reading-mode-tabs {
  scroll-margin-top:76px;
 }
+
+
+/* Keep the filter rail useful but prevent it visually overpowering the archive.
+   The rail remains scrollable and every filter option remains accessible. */
+@media(min-width:1000px){
+ .palace-shell.full-palace-shell .legacy-reading-page .reading-catalogue-layout {
+   grid-template-columns:minmax(0,1fr) minmax(230px,260px)!important;
+   gap:18px!important;
+   align-items:start!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page .reading-catalogue-main{
+   min-width:0!important;
+ }
+}
