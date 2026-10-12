@@ -46,7 +46,7 @@ export default function ReadingFacetSidebar({
   return facets.map(group=>({...group,tags:group.tags.filter(tag=>!q||tag.name.toLocaleLowerCase().includes(q))}))
     .filter(group=>group.tags.length>0);
  },[archiveWide,q,globalTags,facets]);
- function pick(tag,mode){onTagIdentified?.(tag);onToggle(tag.id,mode)}
+ function pick(tag,mode){onToggle(tag.id,mode);onTagIdentified?.(tag)}
  return <aside className="reading-facet-sidebar" aria-label="Sort and filter stories">
   <button type="button" className="reading-facet-mobile-toggle" aria-controls="reading-facet-controls" aria-expanded={open} onClick={()=>setOpen(x=>!x)}>
    <span>☷ Sort &amp; Filter</span><span>{active?active+' active':''} {open?'▴':'▾'}</span>
