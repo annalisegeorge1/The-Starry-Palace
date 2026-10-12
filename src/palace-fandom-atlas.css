@@ -149,3 +149,25 @@
 .palace-shell.daylight .palace-fandom-media button.active .palace-fandom-media-count{
  background:rgba(40,40,78,.12);color:#fff;border-color:rgba(242,224,255,.54);
 }
+
+/* A selected fandom is not only a filter; it has a shareable story archive. */
+.palace-fandom-card h2 a{
+ color:inherit;text-decoration:none;text-underline-offset:4px;
+}
+.palace-fandom-card h2 a:hover{text-decoration:underline}
+.palace-fandom-card .palace-fandom-browse-door{
+ display:flex;align-items:center;justify-content:center;min-height:44px;
+ padding:8px 11px;margin-top:0;border:1px solid rgba(164,170,231,.42);
+ border-radius:10px;color:#e2e8ff;background:rgba(74,100,156,.12);
+ font:700 .76rem/1.4 system-ui,sans-serif;text-align:center;
+ text-decoration:none;
+}
+.palace-fandom-card .palace-fandom-browse-door:hover{
+ border-color:#a7d7ec;background:rgba(108,141,194,.22)
+}
+.palace-shell.daylight .palace-fandom-card .palace-fandom-browse-door{
+ background:#edf2ff;border-color:#b4b8dd;color:#3d456d;
+}
+.palace-fandom-atlas .palace-fandom-card :is(a,button):focus-visible{
+ outline:3px solid #a7e0ff;outline-offset:2px;
+}
