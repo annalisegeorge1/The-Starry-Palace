@@ -137,3 +137,44 @@
    gap:12px!important;
  }
 }
+
+
+/* Default Comfortable layout was not covered by the earlier gallery/compact
+   redesign. Give the actual landing view a visibly compact horizontal card.
+   Leave text, chapter metadata, tags and links in the DOM; touch screens keep
+   the established mobile flow-root presentation. */
+@media(min-width:721px){
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="comfortable"]
+ .story-shelf.refined.chic-story-catalogue .story-row {
+   display:grid!important;
+   grid-template-columns:82px minmax(0,1fr)!important;
+   align-items:start!important;
+   align-content:start!important;
+   gap:12px!important;
+   min-height:0!important;
+   padding:13px 15px!important;
+   margin-bottom:10px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="comfortable"]
+ .story-shelf.refined.chic-story-catalogue .story-row>.story-cover {
+   float:none!important;
+   margin:0!important;
+   width:82px!important;
+   min-width:82px!important;
+   max-width:82px!important;
+   height:114px!important;
+   min-height:0!important;
+   align-self:start!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="comfortable"]
+ .story-shelf.refined.chic-story-catalogue .story-row>div:last-child {
+   display:block!important;
+   min-width:0!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="comfortable"]
+ .story-shelf.refined.chic-story-catalogue .story-row h2 {
+   font-size:clamp(1.07rem,1.5vw,1.28rem)!important;
+   line-height:1.28!important;
+   margin:2px 0 6px!important;
+ }
+}
