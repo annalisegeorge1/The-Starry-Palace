@@ -328,3 +328,61 @@
  }
  .palace-shell .palace-passage-doors>a{scroll-snap-align:start}
 }
+
+
+/* Chamber visual unification · editorial finish.
+   Deliberately excludes cover, avatar, art, honours, badges, frames and controls. */
+.palace-shell .member-chamber-atelier.chic-member-profile {
+  --chamber-editorial-border: rgba(186,177,242,.25);
+  --chamber-editorial-ink: #f3f0ff;
+  --chamber-editorial-muted: #c4bddf;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-copy {
+  line-height: 1.6;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-copy :is(p,blockquote,.legacy-profile-meta) {
+  line-height: 1.65;
+}
+.palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-copy h1 {
+  line-height: 1.12;
+  letter-spacing: -.025em;
+  text-wrap: balance;
+}
+.palace-shell :is(.chamber-creator-overview,.creator-worlds-room,.chamber-posts-room,.chamber-atelier-gallery) :is(.section-heading,h2) {
+  text-wrap: balance;
+  line-height: 1.2;
+}
+.palace-shell :is(.chamber-creator-overview,.creator-worlds-room,.chamber-posts-room,.chamber-atelier-gallery) :is(p,small) {
+  line-height: 1.55;
+  overflow-wrap: break-word;
+}
+.palace-shell .chamber-creator-overview :is(.chamber-about-card,.chamber-contact-state),
+.palace-shell .creator-worlds-room .creator-shelf-block,
+.palace-shell .chamber-posts-room > article {
+  border-radius: 18px;
+  border-color: var(--chamber-editorial-border,rgba(186,177,242,.25));
+  box-shadow: 0 12px 30px rgba(7,8,30,.12),inset 0 1px rgba(255,255,255,.035);
+}
+.palace-shell .chamber-creator-overview :is(.chamber-about-card,.chamber-contact-state) {
+  background-image: linear-gradient(125deg,rgba(88,76,151,.13),rgba(49,80,134,.09));
+}
+.palace-shell .chamber-creator-overview,
+.palace-shell .creator-worlds-room,
+.palace-shell .chamber-posts-room,
+.palace-shell .chamber-atelier-gallery {
+  scroll-margin-top: 92px;
+}
+.palace-shell.daylight .member-chamber-atelier.chic-member-profile {
+  --chamber-editorial-border: rgba(111,91,165,.25);
+  --chamber-editorial-ink: #32284c;
+  --chamber-editorial-muted: #55496e;
+}
+.palace-shell.daylight .chamber-creator-overview :is(.chamber-about-card,.chamber-contact-state) {
+  background-image: linear-gradient(125deg,rgba(245,239,255,.72),rgba(234,243,255,.7));
+}
+@media(prefers-reduced-motion:reduce) {
+  .palace-shell .member-chamber-atelier.chic-member-profile,
+  .palace-shell .chamber-creator-overview :is(.chamber-about-card,.chamber-contact-state) {
+    scroll-behavior: auto;
+  }
+}
