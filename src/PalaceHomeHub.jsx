@@ -45,6 +45,7 @@ export default function PalaceHomeHub({memberId,children}){
     <p className="palace-hub-eyebrow">{member?'WELCOME BACK TO YOUR PALACE':'THE STARRY PALACE'}</p>
     <h1 id="palace-home-title">{member?'Make yourself at home.':<>A world of stories.<br/>A place to belong.</>}</h1>
     <p className="palace-hub-motto">Gather. Have a cup of tea. Write and read with me.</p>
+    {!member&&<p className="palace-hub-guest-promise"><strong>Read freely, no account needed.</strong> Join only when you want to comment, save, follow, chat or take part in Palace Life.</p>}
     <div className="palace-hub-actions"><Link className="hub-primary" to="/reading">Find your next story <span aria-hidden="true">→</span></Link><Link to={member?'/writing':'/writers'}>{member?'Open my writing desk':'Step through the Writer’s Door'} <span aria-hidden="true">↗</span></Link></div>
    </div>
    <div className="palace-hub-art"><img src="/assets/palace/palace-belonging.gif" alt="" decoding="async"/><span>YOUR PALACE · A PLACE TO BELONG</span></div>
