@@ -1285,3 +1285,89 @@
   height: 100% !important;
   overflow: visible !important;
 }
+
+
+/* Full catalogue is a separate layout from the achievement cabinet.
+   Four readable columns on large desktops, no five-column squeeze.
+   The medal's painting and frame remain a single intact component. */
+.palace-shell .badge-grid:not(.refined) {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: grid !important;
+  grid-template-columns: repeat(4,minmax(0,1fr)) !important;
+  gap: 15px !important;
+  align-items: stretch;
+}
+.palace-shell .badge-grid:not(.refined) > .badge-card {
+  min-height: 310px !important;
+  height: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-sizing: border-box !important;
+  padding: 14px !important;
+  gap: 0 !important;
+}
+.palace-shell .badge-grid:not(.refined) .badge-art-preview-button {
+  flex: 0 0 150px !important;
+  width: 100% !important;
+  height: 150px !important;
+  min-height: 150px !important;
+  max-height: 150px !important;
+  margin: 0 0 7px !important;
+  padding: 0 !important;
+}
+.palace-shell .badge-grid:not(.refined) .badge-art-preview-button > .palace-watercolour-badge {
+  height: 146px !important;
+  min-height: 0 !important;
+  max-height: 146px !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+}
+.palace-shell .badge-grid:not(.refined) .badge-art-preview-button .painted-round-badge {
+  width: 112px !important;
+  height: 112px !important;
+  transform: none !important;
+}
+.palace-shell .badge-grid:not(.refined) .badge-art-preview-button .painted-tier-stage.painted-tier-stage {
+  width: 105px !important;
+  height: 138px !important;
+  transform: none !important;
+}
+.palace-shell .badge-grid:not(.refined) > .badge-card > small {
+  font-size: .68rem !important;
+  line-height: 1.45 !important;
+  letter-spacing: .035em !important;
+}
+.palace-shell .badge-grid:not(.refined) > .badge-card > h2 {
+  font-size: 1.04rem !important;
+  line-height: 1.28 !important;
+  margin: 7px 0 11px !important;
+}
+.palace-shell .badge-grid:not(.refined) .treasury-name-open {
+  font: inherit !important;
+  line-height: inherit !important;
+  text-align: inherit;
+  overflow-wrap: break-word;
+}
+.palace-shell .badge-grid:not(.refined) .treasury-tier-dots {
+  margin: auto 0 11px !important;
+}
+.palace-shell .badge-grid:not(.refined) > .badge-card > progress {
+  width: 100%;
+  margin: 0 0 7px !important;
+}
+@media(max-width:1120px) {
+  .palace-shell .badge-grid:not(.refined) {
+    grid-template-columns: repeat(3,minmax(0,1fr)) !important;
+  }
+}
+@media(max-width:780px) {
+  .palace-shell .badge-grid:not(.refined) {
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  }
+}
+@media(max-width:480px) {
+  .palace-shell .badge-grid:not(.refined) {
+    grid-template-columns: minmax(0,1fr) !important;
+  }
+}
