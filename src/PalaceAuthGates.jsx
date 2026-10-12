@@ -90,6 +90,7 @@ export function PalaceLogin({ Frame }) {
       <p className="eyebrow">THE PALACE GATES</p>
       <h1>{mode === 'signup' ? 'A place among the stars.' : 'Welcome home.'}</h1>
       <p>Choose the doorway that suits you. If you use a Palace password, never enter the password for your email inbox.</p>
+      <p className="gate-read-freely">Just here to read? <Link to="/reading">Browse public stories without an account →</Link> You only need to join to comment, chat, follow or save.</p>
       {requested && palaceDoorDestinationMessage(destination) && <p className="gate-destination-note">✧ {palaceDoorDestinationMessage(destination)}</p>}
     </div>
     <div className="auth-panel palace-login-panel">
