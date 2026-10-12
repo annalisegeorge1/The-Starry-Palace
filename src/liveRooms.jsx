@@ -212,7 +212,7 @@ export function ChamberLive({Frame}){
   nightstand?.[0]&&{icon:'✦',kicker:'A DOOR YOU HAVE NOT OPENED',title:nightstand[0].title,copy:nightstand[0].summary||'A story chosen from the interests you asked the Palace to remember.',to:'/work/'+nightstand[0].slug,action:'Take a look',tone:'discover'}
  ].filter(Boolean).slice(0,6);
  return <Frame privateArea><State loading={!data&&!error} error={error}>{p&&<section className="legacy-home-dashboard palace-command-centre">
-   <nav className="legacy-home-tabs">
+   <nav className="legacy-home-tabs" aria-label="My Palace sections">
     <Link className="active" aria-current="page" to="/chamber">Home</Link>
     <Link to={"/member/"+p.username}>My chamber</Link>
     <Link to="/activity">Notifications{unread?' · '+unread:''}</Link>
