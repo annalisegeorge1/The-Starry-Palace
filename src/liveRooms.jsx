@@ -4,7 +4,10 @@ import GuestReadingInvitation from './GuestReadingInvitation';
 import {palaceSignInDoor} from './palaceDoorway';
 import {ReadingCatalogueControls,ReadingCatalogueMore} from './ReadingCatalogueControls';
 import ReadingFacetSidebar from './ReadingFacetSidebar';
+import ReadingArchivePager from './ReadingArchivePager';
+import usePublishedBrowse from './usePublishedBrowse';
 import './archive-wide-search.css';
+import './reading-archive-atlas.css';
 import {buildReadingFacets,matchesReadingFacets,sortReadingWorks} from './readingFacetModel';
 import useReadingDiscoveryState from './useReadingDiscoveryState';
 import useManuscriptReconnect from './useManuscriptReconnect';
@@ -308,6 +311,29 @@ export function ReadingLive({Frame}){
  const readerLens=readingChoices.readerLens;const setReaderLens=value=>setReadingChoice('readerLens',value);
  const catalogueSort=readingChoices.catalogueSort;const setCatalogueSort=value=>setReadingChoice('catalogueSort',value);
  const includedTags=readingChoices.includeTags;const excludedTags=readingChoices.excludeTags;
+ const inAdvancedSearch=new URLSearchParams(location.search).get('view')==='search';
+ // Public archive results are server-filtered; private lenses and mood shelves
+ // intentionally stay on the member's local reading shelf.
+ const archiveBrowseEnabled=!inAdvancedSearch&&readingChoices.discoveryMode==='browse'
+  &&readingChoices.catalogueScope==='archive'&&readerLens==='all'
+  &&vibeDoor==='all'&&catalogueSort!=='bookmarks';
+ const archiveBrowse=usePublishedBrowse({
+  enabled:archiveBrowseEnabled,identity:session?.user?.id||'guest',
+  text:query,include:includedTags,exclude:excludedTags,rating,status,origin,sort:catalogueSort
+ });
+ function browseAllPublished(){
+  setReadingChoice('catalogueScope','archive');
+  setReaderLens('all');setVibeDoor('all');
+  if(catalogueSort==='bookmarks')setCatalogueSort('updated');
+ }
+ function browseLoadedShelves(){setReadingChoice('catalogueScope','loaded')}
+ function updateCatalogueSort(value){
+  setCatalogueSort(value);
+  if(value==='bookmarks')setReadingChoice('catalogueScope','loaded');
+ }
+ function identifyReadingTag(tag){
+  setReadingChoice('tagLabels',previous=>({...previous,[String(tag.id)]:String(tag.name||'').slice(0,140)}));
+ }
  const[readingNotice,setReadingNotice]=useState('');
  const[advancedTagLabels,setAdvancedTagLabels]=useState({});
  useEffect(()=>{
@@ -359,7 +385,8 @@ export function ReadingLive({Frame}){
  const allReadingWorks=useMemo(()=>[...(works||[]),...(archiveWorks||[])],[works,archiveWorks]);
  const roomWorks=useMemo(()=>allReadingWorks.filter(w=>origin==='all'?true:origin==='fandom'?w.work_type==='fanwork':w.work_type!=='fanwork'),[allReadingWorks,origin]);
  const tagFacets=useMemo(()=>buildReadingFacets(roomWorks),[roomWorks]);
- const facetNames=Object.fromEntries(tagFacets.flatMap(group=>group.tags.map(tag=>[tag.id,tag.name])));
+ const facetNames={...(readingChoices.tagLabels||{}),...Object.fromEntries(tagFacets.flatMap(group=>group.tags.map(tag=>[tag.id,tag.name])))};
+
  const stateFor=w=>readerState[w.id]||{};
  const workTags=w=>(w.work_tags||[]).map(x=>x.tags).filter(t=>t&&['canonical','community'].includes(t.status));const moodDoors=[
   {id:'yearn',glyph:'☾',label:'Make me yearn',copy:'longing, slow burns & impossible feelings',terms:['yearn','yearning','slow burn','pining','longing','romance','love']},
@@ -381,6 +408,11 @@ export function ReadingLive({Frame}){
  const readerLensMatches=w=>readerLens==='all'||readerLens==='unread'&&!stateFor(w).progress||readerLens==='reading'&&needsReading(w)||readerLens==='new'&&hasNew(w)||readerLens==='saved'&&!!stateFor(w).saved||readerLens==='following'&&!!stateFor(w).following||readerLens==='finished'&&finished(w);
  const filtered=roomWorks.filter(w=>matchesReadingFacets(w,includedTags,excludedTags)&&moodMatches(w,vibeDoor)&&readerLensMatches(w)&&(rating==='all'||w.rating===rating)&&(status==='all'||w.completion_status===status)&&(!query.trim()||[w.title,w.summary,w.profiles?.display_name,w.profiles?.username,w.profiles?.title,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase().includes(query.trim().toLowerCase())));
  const catalogue=sortReadingWorks(filtered,catalogueSort);
+ const visibleCatalogue=archiveBrowseEnabled?(archiveBrowse.snapshot?.results||[]):catalogue.slice(0,readingChoices.visibleCount);
+ const visibleTotal=archiveBrowseEnabled?(archiveBrowse.snapshot?.total||0):catalogue.length;
+ const showBrowseCards=archiveBrowseEnabled?Boolean(archiveBrowse.snapshot):Boolean(works);
+ const browseLoading=archiveBrowseEnabled?archiveBrowse.loading:!works&&!error;
+ const browseError=archiveBrowseEnabled?archiveBrowse.error:error;
  const activeReadingFilters=[...readingFilterChips({origin,query,rating,status,vibeDoor,readerLens},Object.fromEntries(moodDoors.map(door=>[door.id,door.label]))),...includedTags.map(id=>({key:'include:'+id,label:'Include: '+(facetNames[id]||'selected tag')})),...excludedTags.map(id=>({key:'exclude:'+id,label:'Exclude: '+(facetNames[id]||'selected tag')}))];
  function clearReadingFilters(){setOrigin('all');setVibeDoor('all');setReaderLens('all');setQuery('');setRating('all');setStatus('all');setReadingChoice('includeTags',[]);setReadingChoice('excludeTags',[])}
  function removeReadingFilter(key){
@@ -413,7 +445,7 @@ export function ReadingLive({Frame}){
  };
  const constellation=shelves[shelf]||[];
  const shelfModes=[['first','First Worlds'],['quiet','Quiet Shelves'],['updated','Newly Updated'],...(session?[['following','Following Updates'],['continue','Continue Reading'],...(privateInterests.length?[['nightstand','For Your Nightstand']]:[])]:[])];
- const advancedView=new URLSearchParams(location.search).get('view')==='search';const surpriseHandled=useRef(false);
+ const advancedView=inAdvancedSearch;const surpriseHandled=useRef(false);
  function surpriseMe(){const choice=chooseReadingSurprise(catalogue);if(choice)navigate(storyHref(choice))}
  useEffect(()=>{if(surpriseHandled.current||!works||new URLSearchParams(location.search).get('surprise')!=='1')return;surpriseHandled.current=true;const pool=allReadingWorks;if(!pool.length){navigate('/reading',{replace:true});return}const choice=pool[Math.floor(Math.random()*pool.length)];if(choice)navigate(storyHref(choice),{replace:true})},[works,archiveWorks,readerState,location.search]);
  function flags(w){const s=stateFor(w);const rows=[];if(hasNew(w))rows.push(['new','New chapter']);if(s.progress&&!s.progress.completed)rows.push(['reading','Reading']);else if(finished(w))rows.push(['finished','Finished']);if(s.saved)rows.push(['saved','Saved']);if(s.following)rows.push(['following','Following']);return rows}
@@ -490,24 +522,36 @@ export function ReadingLive({Frame}){
   </section>
   </>}
   {!advancedView&&<>
-  <section className="legacy-reading-tools chic-reading-tools">
-   <div className="reading-search" role="search"><span aria-hidden="true">⌕</span><input aria-label="Search the currently loaded Reading Room stories" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Title, writer, fandom or tag…"/></div>
-   <div className="reading-result-count" aria-live="polite"><strong>{catalogue.length}</strong><span>matching among {allReadingWorks.length} loaded {allReadingWorks.length===1?'work':'works'}</span></div>
+  <section className="reading-scope-selector" aria-label="Choose how widely to browse">
+   <div><p className="eyebrow">THE READING ATLAS</p><h2>Every world. Your way.</h2><p>{archiveBrowseEnabled?'Searching all published stories across the Palace.':'Your loaded stories, verified classics and personal reading lenses remain close by.'}</p></div>
+   <div className="reading-scope-options" role="group" aria-label="Reading scope">
+    <button type="button" aria-pressed={archiveBrowseEnabled} className={archiveBrowseEnabled?'selected':''} onClick={browseAllPublished}><span aria-hidden="true">✦</span> Entire published archive</button>
+    <button type="button" aria-pressed={!archiveBrowseEnabled} className={!archiveBrowseEnabled?'selected':''} onClick={browseLoadedShelves}><span aria-hidden="true">☾</span> Shelves &amp; classics</button>
+   </div>
   </section>
+  <section className="legacy-reading-tools chic-reading-tools">
+   <div className="reading-search" role="search"><span aria-hidden="true">⌕</span><input aria-label={archiveBrowseEnabled?'Search all published Reading Room stories':'Search the currently loaded Reading Room stories'} value={query} onChange={e=>setQuery(e.target.value)} placeholder="Title, writer, fandom or tag…"/></div>
+   <div className="reading-result-count" aria-live="polite"><strong>{archiveBrowseEnabled?(archiveBrowse.snapshot?visibleTotal.toLocaleString():'…'):catalogue.length.toLocaleString()}</strong><span>{archiveBrowseEnabled?'matching published stories · archive-wide':('matching among '+allReadingWorks.length+' loaded '+(allReadingWorks.length===1?'work':'works'))}</span></div>
+  </section>
+  {!archiveBrowseEnabled&&readerLens!=='all'&&<p className="reading-scope-note">Personal lenses search your currently loaded reading shelf. Choose “Entire published archive” to return to public browsing.</p>}
+  {!archiveBrowseEnabled&&vibeDoor!=='all'&&<p className="reading-scope-note">Mood suggestions come from loaded stories, not archive-wide rankings.</p>}
+  {!archiveBrowseEnabled&&catalogueSort==='bookmarks'&&<p className="reading-scope-note">Bookmark sorting covers loaded stories. Other sorts can use the complete published archive.</p>}
   {activeReadingFilters.length>0&&<nav className="reading-filter-trail" aria-label="Active Reading Room filters"><span className="reading-filter-title">YOUR CURRENT CHOICES</span><div>{activeReadingFilters.map(item=><button type="button" key={item.key} onClick={()=>removeReadingFilter(item.key)} aria-label={'Remove '+item.label+' filter'}><span>{item.label}</span><b aria-hidden="true">×</b></button>)}</div><button type="button" className="reading-filter-clear" onClick={clearReadingFilters}>Clear all filters →</button></nav>}
   {session&&<section className="reading-reader-lenses" aria-label="Your private reading lenses"><div><small>MY READING LENSES</small><span>Private to you · never changes public discovery ranking</span></div><nav>{[['all','All'],['unread','Unread'],['reading','In progress'],['new','New chapters'],['saved','Saved'],['following','Following'],['finished','Finished']].map(([key,label])=><button type="button" key={key} className={readerLens===key?'active':''} aria-pressed={readerLens===key} onClick={()=>setReaderLens(key)}>{label}</button>)}</nav>{(readerLens!=='all'||query||rating!=='all'||status!=='all'||vibeDoor!=='all')&&<button type="button" className="quiet-button" onClick={clearReadingFilters}>Clear reading filters</button>}</section>}
   {readingNotice&&<p className="reading-partial-notice" role="status">✧ {readingNotice}</p>}
   <div className="reading-catalogue-layout"><div className="reading-catalogue-main">
-  {works&&<ReadingCatalogueControls layout={readingChoices.layout} onLayout={value=>setReadingChoice('layout',value)} shown={Math.min(readingChoices.visibleCount,catalogue.length)} total={catalogue.length}/>}
-  <State loading={!works&&!error} error={error}>{works&&<section className="story-shelf refined chic-story-catalogue">{catalogue.length===0&&<div className="reading-catalogue-empty" role="status"><span className="reading-empty-star" aria-hidden="true">☾ ✦</span><div><p className="eyebrow">{activeReadingFilters.length?'A QUIETER CORNER':'AN OPEN SHELF'}</p><h2>{activeReadingFilters.length?'No worlds match these choices yet.':'This shelf is waiting for its first story.'}</h2><p>{activeReadingFilters.length?'Nothing is wrong with your search. Remove a filter or open the full Reading Rooms to browse again.':'Newly published stories will appear here when their writers open the doors.'}</p><div className="reading-empty-actions">{activeReadingFilters.length?<button type="button" onClick={clearReadingFilters}>Show every story →</button>:<Link to="/writers">Explore the Writer’s Door →</Link>}<Link to="/reading?view=search">Try advanced search →</Link></div></div></div>}{catalogue.slice(0,readingChoices.visibleCount).map(w=>{const badges=flags(w);const prismStory=isLgbtqContent(w.title,w.summary,workTags(w));return <article className={"story-row"+(w.is_archive?' palace-classic-story':'')+(hasNew(w)?' has-new-chapter':'')+(prismStory?' prism-glass prism-story':'')} key={w.id}><Link className="story-cover palace-rating-anchor" to={storyHref(w)}>{w.is_archive?<ClassicBookCover record={w}/>:w.cover_url?<img loading="lazy" decoding="async" src={w.cover_url} alt=""/>:<span>☾</span>}<StoryRatingBadge rating={w.rating}/></Link><div>{badges.length>0&&<div className="story-reader-flags">{badges.map(([kind,label])=><span className={kind} key={kind}>{label}</span>)}</div>}<h2><Link to={storyHref(w)}>{w.title}</Link></h2>{w.last_published_at&&<time className="reading-story-updated" dateTime={w.last_published_at}>Updated {new Date(w.last_published_at).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</time>}<ReadingStoryContext work={w} compact previewLength={readingChoices.layout==='comfortable'?330:175}/><ReadingStoryStats work={w}/><ReadingCardTags tags={workTags(w)} limit={readingChoices.layout==='comfortable'?9:4}/><footer><span className="story-creator-line">{w.is_archive?<span className="story-classic-author"><i aria-hidden="true">⌁</i><span><small>PALACE CLASSIC · ORIGINAL AUTHOR</small><strong>{w.profiles?.display_name||'Historical author'}</strong><em>Public-domain verified archive work</em></span></span>:w.profiles?.username?<Link className="story-author-chip" to={"/member/"+encodeURIComponent(w.profiles.username)}><MemberAvatar profile={w.profiles} memberId={w.author_id} style={{width:42,height:42}}/><span><small>FROM THE CHAMBER OF</small><strong>{w.profiles?.display_name||w.profiles.username}</strong>{w.profiles?.title&&<em>{w.profiles.title}</em>}<IdentityMarks profile={w.profiles}/></span></Link>:<small>by Palace writer</small>}</span><Link to={storyHref(w)}>{storyCta(w)}</Link></footer></div></article>})}</section>}</State>
-  {works&&<ReadingCatalogueMore shown={Math.min(readingChoices.visibleCount,catalogue.length)} total={catalogue.length} onMore={()=>setReadingChoice('visibleCount',count=>count+24)}/>}
-  {works&&hasMorePublished&&<div className="reading-fetch-more">
+  {showBrowseCards&&<ReadingCatalogueControls layout={readingChoices.layout} onLayout={value=>setReadingChoice('layout',value)} shown={archiveBrowseEnabled?visibleCatalogue.length:Math.min(readingChoices.visibleCount,catalogue.length)} total={visibleTotal}/>}
+  <State loading={browseLoading} error={browseError}>{showBrowseCards&&<section className="story-shelf refined chic-story-catalogue">{visibleCatalogue.length===0&&<div className="reading-catalogue-empty" role="status"><span className="reading-empty-star" aria-hidden="true">☾ ✦</span><div><p className="eyebrow">{activeReadingFilters.length?'A QUIETER CORNER':'AN OPEN SHELF'}</p><h2>{activeReadingFilters.length?'No worlds match these choices yet.':'This shelf is waiting for its first story.'}</h2><p>{activeReadingFilters.length?'Nothing is wrong with your search. Remove a filter or open the full Reading Rooms to browse again.':'Newly published stories will appear here when their writers open the doors.'}</p><div className="reading-empty-actions">{activeReadingFilters.length?<button type="button" onClick={clearReadingFilters}>Show every story →</button>:<Link to="/writers">Explore the Writer’s Door →</Link>}<Link to="/reading?view=search">Try advanced search →</Link></div></div></div>}{visibleCatalogue.map(w=>{const badges=flags(w);const prismStory=isLgbtqContent(w.title,w.summary,workTags(w));return <article className={"story-row"+(w.is_archive?' palace-classic-story':'')+(hasNew(w)?' has-new-chapter':'')+(prismStory?' prism-glass prism-story':'')} key={w.id}><Link className="story-cover palace-rating-anchor" to={storyHref(w)}>{w.is_archive?<ClassicBookCover record={w}/>:w.cover_url?<img loading="lazy" decoding="async" src={w.cover_url} alt=""/>:<span>☾</span>}<StoryRatingBadge rating={w.rating}/></Link><div>{badges.length>0&&<div className="story-reader-flags">{badges.map(([kind,label])=><span className={kind} key={kind}>{label}</span>)}</div>}<h2><Link to={storyHref(w)}>{w.title}</Link></h2>{w.last_published_at&&<time className="reading-story-updated" dateTime={w.last_published_at}>Updated {new Date(w.last_published_at).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</time>}<ReadingStoryContext work={w} compact previewLength={readingChoices.layout==='comfortable'?330:175}/><ReadingStoryStats work={w}/><ReadingCardTags tags={workTags(w)} limit={readingChoices.layout==='comfortable'?9:4}/><footer><span className="story-creator-line">{w.is_archive?<span className="story-classic-author"><i aria-hidden="true">⌁</i><span><small>PALACE CLASSIC · ORIGINAL AUTHOR</small><strong>{w.profiles?.display_name||'Historical author'}</strong><em>Public-domain verified archive work</em></span></span>:w.profiles?.username?<Link className="story-author-chip" to={"/member/"+encodeURIComponent(w.profiles.username)}><MemberAvatar profile={w.profiles} memberId={w.author_id} style={{width:42,height:42}}/><span><small>FROM THE CHAMBER OF</small><strong>{w.profiles?.display_name||w.profiles.username}</strong>{w.profiles?.title&&<em>{w.profiles.title}</em>}<IdentityMarks profile={w.profiles}/></span></Link>:<small>by Palace writer</small>}</span><Link to={storyHref(w)}>{storyCta(w)}</Link></footer></div></article>})}</section>}</State>
+  {archiveBrowseEnabled&&archiveBrowse.error&&<div className="reading-fetch-more" role="alert"><strong>We could not reach the full archive.</strong><p>Your stories are safe. Retry the search or switch to your loaded shelves.</p><div className="reading-retry-actions"><button type="button" onClick={archiveBrowse.retry}>Retry archive search</button><button type="button" onClick={browseLoadedShelves}>View loaded shelves</button></div></div>}
+  {archiveBrowseEnabled&&archiveBrowse.snapshot&&<ReadingArchivePager page={archiveBrowse.page} total={visibleTotal} pending={archiveBrowse.pending} onPage={archiveBrowse.goPage}/>}
+  {!archiveBrowseEnabled&&works&&<ReadingCatalogueMore shown={Math.min(readingChoices.visibleCount,catalogue.length)} total={catalogue.length} onMore={()=>setReadingChoice('visibleCount',count=>count+24)}/>}
+  {!archiveBrowseEnabled&&works&&hasMorePublished&&<div className="reading-fetch-more">
    <strong>More published worlds await</strong><p>Load the next 48 stories to expand the searchable catalogue and available tags.</p>
    <button type="button" disabled={morePublishedBusy} onClick={loadNextPublishedPage}>{morePublishedBusy?'Gathering more stories…':'Load more from the Palace ↓'}</button>
    {morePublishedError&&<p role="alert">{morePublishedError}</p>}
   </div>}
   </div>
-  <ReadingFacetSidebar facets={tagFacets} sort={catalogueSort} onSort={setCatalogueSort} rating={rating} onRating={setRating} status={status} onStatus={setStatus} included={includedTags} excluded={excludedTags} onToggle={toggleReadingFacet} onClear={clearReadingFilters} loadedCount={roomWorks.length} hasMore={hasMorePublished}/>
+  <ReadingFacetSidebar facets={tagFacets} sort={catalogueSort} onSort={updateCatalogueSort} rating={rating} onRating={setRating} status={status} onStatus={setStatus} included={includedTags} excluded={excludedTags} onToggle={toggleReadingFacet} onClear={clearReadingFilters} loadedCount={roomWorks.length} hasMore={!archiveBrowseEnabled&&hasMorePublished} archiveWide={archiveBrowseEnabled} onSearchTags={searchPalaceTags} onTagIdentified={identifyReadingTag}/>
   </div>
   </>}
  </section></Frame>
