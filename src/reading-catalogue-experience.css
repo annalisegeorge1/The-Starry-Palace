@@ -74,3 +74,19 @@
  outline:2px solid var(--ui-accent)!important;
  outline-offset:2px!important;
 }
+
+
+/* More visible stories per screen without reducing readability or cover size. */
+@media(min-width:760px) {
+ .palace-shell.full-palace-shell .legacy-reading-page .legacy-reading-intro {
+  padding-block:18px!important;
+  margin-bottom:12px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page .chic-reading-tools {
+  margin-block:14px 10px!important;
+  padding:13px!important;
+ }
+}
+.palace-shell.full-palace-shell .legacy-reading-page .reading-mode-tabs {
+ scroll-margin-top:76px;
+}
