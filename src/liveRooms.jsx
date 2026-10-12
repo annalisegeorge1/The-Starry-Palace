@@ -7,6 +7,7 @@ import ReadingFacetSidebar from './ReadingFacetSidebar';
 import ReadingArchivePager from './ReadingArchivePager';
 import usePublishedBrowse from './usePublishedBrowse';
 import './archive-wide-search.css';
+import './reading-archive-atlas.css';
 import {buildReadingFacets,matchesReadingFacets,sortReadingWorks} from './readingFacetModel';
 import useReadingDiscoveryState from './useReadingDiscoveryState';
 import useManuscriptReconnect from './useManuscriptReconnect';
