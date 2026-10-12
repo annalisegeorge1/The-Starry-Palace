@@ -1,0 +1,58 @@
+/* Archive-wide search has its own clear, compact controls.
+   Keeps the wider Palace aesthetics, gradients and legibility in both themes. */
+.palace-shell.full-palace-shell .reading-advanced-search .palace-archive-range{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:10px;margin:11px 0 10px;padding:13px;
+ border:1px solid var(--ui-line);background:var(--ui-surface);border-radius:13px;
+}
+.palace-shell.full-palace-shell .palace-archive-range label{
+ display:grid;min-width:0;gap:7px;color:var(--ui-text);
+ font:650 .72rem/1.4 system-ui,sans-serif;
+}
+.palace-shell.full-palace-shell .palace-archive-range input{
+ width:100%;box-sizing:border-box;min-width:0;min-height:44px;
+ padding:10px 12px;background:var(--ui-raised);border:1px solid var(--ui-line);
+ border-radius:9px;color:var(--ui-text);font:500 .86rem system-ui,sans-serif;
+}
+.palace-shell.full-palace-shell .palace-archive-scope{
+ font:450 .78rem/1.6 system-ui,sans-serif;color:var(--ui-muted);
+ margin:8px 0 18px;
+}
+.palace-shell.full-palace-shell .palace-archive-scope a{
+ color:var(--ui-text);text-underline-offset:3px;
+}
+.palace-shell.full-palace-shell .palace-archive-pagination{
+ display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
+ gap:13px;padding:13px 15px;margin:14px 0 17px;
+ border:1px solid var(--ui-line);border-radius:12px;
+ background:var(--ui-surface);color:var(--ui-text);
+ font:650 .78rem/1.45 system-ui,sans-serif;
+}
+.palace-shell.full-palace-shell .palace-archive-pagination>div{
+ display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+}
+.palace-shell.full-palace-shell .palace-archive-pagination button{
+ box-sizing:border-box;min-height:44px;border:1px solid var(--ui-line);
+ border-radius:9px;background:var(--ui-raised);padding:8px 12px;
+ color:var(--ui-text);cursor:pointer;font:650 .77rem/1.3 system-ui,sans-serif;
+}
+.palace-shell.full-palace-shell .palace-archive-pagination button:disabled{
+ opacity:.48;cursor:not-allowed;
+}
+.palace-shell.full-palace-shell .palace-archive-pagination button:not(:disabled):hover{
+ border-color:var(--ui-accent);background:var(--ui-selected);
+}
+.palace-shell.full-palace-shell .palace-archive-pagination :is(button,input,a):focus-visible,
+.palace-shell.full-palace-shell .palace-archive-range input:focus-visible{
+ outline:2px solid var(--ui-accent);outline-offset:2px;
+}
+@media(max-width:780px){
+ .palace-shell.full-palace-shell .palace-archive-range{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .palace-shell.full-palace-shell .palace-archive-pagination{align-items:start}
+}
+@media(max-width:480px){
+ .palace-shell.full-palace-shell .palace-archive-range{grid-template-columns:minmax(0,1fr)!important}
+ .palace-shell.full-palace-shell .palace-archive-pagination>div{width:100%;justify-content:space-between}
+ .palace-shell.full-palace-shell .palace-archive-pagination>div>span{flex:1;text-align:center;white-space:nowrap}
+ .palace-shell.full-palace-shell .palace-archive-pagination button{min-width:93px;padding-inline:7px}
+}
