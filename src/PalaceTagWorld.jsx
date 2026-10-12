@@ -16,7 +16,6 @@ const SORTS=[
 ];
 const RATINGS=[['all','Any rating'],['general','General'],['teen','Teen'],['mature','Mature'],['explicit','Explicit'],['not_rated','Not rated']];
 const STATUSES=[['all','Any status'],['complete','Complete'],['in_progress','In progress'],['hiatus','On hiatus'],['abandoned','Abandoned']];
-const SUGGESTION_CATEGORIES=['fandom','relationship','character','trope','genre','warning','theme','mood'];
 function Selector({label,value,options,onChange}){
  return <label><span>{label}</span><select value={value} onChange={e=>onChange(e.target.value)}>
   {options.map(([key,name])=><option key={key} value={key}>{name}</option>)}
@@ -66,7 +65,7 @@ export default function PalaceTagWorld(){
   },240);
   return()=>{active=false;clearTimeout(timer)};
  },[searchTags,tagId]);
- const enabled=Boolean(tag)&&valid;
+ const enabled=Boolean(tag)&&valid&&String(tag.id).toLowerCase()===String(tagId).toLowerCase();
  const include=useMemo(()=>enabled?[tag.id,...extraInclude.filter(id=>id!==tag.id)]:[],[enabled,tag?.id,extraInclude]);
  const archive=usePublishedBrowse({enabled,identity:'public-tag-'+tagId,text,include,exclude:extraExclude,rating,status,origin,sort});
  function choose(id,mode){
@@ -107,7 +106,7 @@ export default function PalaceTagWorld(){
     </div><span className="tag-world-hero-symbol" aria-hidden="true">{tag.category==='relationship'?'∞':tag.category==='fandom'?'✧':tag.category==='character'?'♙':'✦'}</span>
    </header>
    <div className="tag-world-layout">
-    <main className="tag-world-results">
+    <div className="tag-world-results">
      <div className="tag-world-results-head"><div><p className="eyebrow">PUBLISHED WORKS</p>
       <h2>{archive.snapshot?total.toLocaleString()+' '+(total===1?'story':'stories'):'Gathering stories…'}</h2>
       <p>Archive-wide results · filters apply before pages are counted</p>
@@ -136,7 +135,7 @@ export default function PalaceTagWorld(){
        </div>
       </article>)}</div>}
      {archive.snapshot&&<ReadingArchivePager page={archive.page} total={total} pending={archive.pending} onPage={archive.goPage}/>}
-    </main>
+    </div>
     <aside className="tag-world-filters" aria-label="Filter tagged stories">
      <div className="tag-world-filter-head"><p className="eyebrow">REFINE THE CONSTELLATION</p><h2>Sort &amp; Filter</h2></div>
      <label className="tag-world-search-label"><span>Search within these stories</span><input type="search" value={text} onChange={e=>setText(e.target.value)} placeholder="Title, writer, another tag…"/></label>
