@@ -236,3 +236,44 @@
    gap:8px!important;margin-top:7px!important;padding-top:8px!important;
  }
 }
+
+
+/* Meaningfully compact archive rows. Full summary/details remain accessible
+   through the existing disclosure controls. Do not change reader/chapter UI. */
+@media(min-width:721px) {
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
+ .story-shelf.refined.chic-story-catalogue .story-row {
+   grid-template-columns:58px minmax(0,1fr)!important;
+   padding:10px 12px!important;
+   gap:9px!important;
+   border-radius:12px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
+ .story-shelf.refined.chic-story-catalogue .story-row .story-cover {
+   width:58px!important;min-width:58px!important;max-width:58px!important;
+   height:80px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
+ .story-shelf.refined.chic-story-catalogue .story-row h2 {
+   font-size:1.07rem!important;
+   line-height:1.22!important;
+   margin:0 0 3px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
+ .story-shelf.refined.chic-story-catalogue .story-row :is(.reading-story-context,.reading-story-context-summary,.reading-card-tags,.palace-story-statline){
+   margin-block:3px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
+ .story-shelf.refined.chic-story-catalogue .story-row :is(.reading-story-context-extra,.reading-story-context-summary) {
+   padding-block:0!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
+ .story-shelf.refined.chic-story-catalogue .story-row footer {
+   margin-top:4px!important;
+   padding-top:5px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-reading-page[data-reading-layout="compact"]
+ .story-shelf.refined.chic-story-catalogue .story-row .story-creator-line {
+   min-width:0;
+ }
+}
