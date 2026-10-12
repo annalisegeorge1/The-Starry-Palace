@@ -102,3 +102,27 @@
 @media(prefers-reduced-motion:reduce){
  .palace-shell .legacy-search-page .search-gathering-orb{animation:none}
 }
+
+
+/* Discovery density: a clearer search toolbar without hiding any filters. */
+.palace-shell .legacy-search-page .search-gathering {
+ margin-block:8px 12px;
+ padding:11px 14px;
+ border-radius:13px;
+ line-height:1.45;
+}
+.palace-shell .legacy-search-page .palace-search-refinements {
+ margin-block:10px;
+ border-radius:14px;
+}
+.palace-shell .legacy-search-page .palace-search-refinements>summary {
+ min-height:44px;
+ padding:10px 14px;
+}
+.palace-shell .legacy-search-page .palace-search-refinement-grid {
+ gap:10px;
+}
+.palace-shell .legacy-search-page .palace-search-refinements :is(summary,button,select,input):focus-visible {
+ outline:2px solid var(--ui-accent,#b9a7ed)!important;
+ outline-offset:2px!important;
+}
