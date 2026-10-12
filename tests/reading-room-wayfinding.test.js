@@ -14,7 +14,9 @@ describe('Reading Room wayfinding and empty-shelf rescue',()=>{
   expect(reading).toContain('disabled={!catalogue.length} onClick={surpriseMe}');
  });
  it('gives active filters their own removable, accessible controls',()=>{
-  expect(reading).toContain('const activeReadingFilters=readingFilterChips(');
+  expect(reading).toContain('const activeReadingFilters=[...readingFilterChips(');
+   expect(reading).toContain("...includedTags.map(id=>({key:'include:'+id");
+   expect(reading).toContain("...excludedTags.map(id=>({key:'exclude:'+id");
   expect(reading).toContain('aria-label="Active Reading Room filters"');
   expect(reading).toContain('aria-label={\'Remove \'+item.label+\' filter\'}');
   expect(reading).toContain('Clear all filters →');

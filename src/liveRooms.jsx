@@ -3,6 +3,8 @@ import CommonsThreadMenu from './CommonsThreadMenu';
 import GuestReadingInvitation from './GuestReadingInvitation';
 import {palaceSignInDoor} from './palaceDoorway';
 import {ReadingCatalogueControls,ReadingCatalogueMore} from './ReadingCatalogueControls';
+import ReadingFacetSidebar from './ReadingFacetSidebar';
+import {buildReadingFacets,matchesReadingFacets,sortReadingWorks} from './readingFacetModel';
 import useReadingDiscoveryState from './useReadingDiscoveryState';
 import useManuscriptReconnect from './useManuscriptReconnect';
 import MemberAvatar from './MemberAvatar';
@@ -294,7 +296,7 @@ export function ChamberLive({Frame}){
  </section>}</State></Frame>
 }
 export function ReadingLive({Frame}){
- const{session}=useAuth();const navigate=useNavigate();const location=useLocation();const[works,setWorks]=useState(null);const[archiveWorks,setArchiveWorks]=useState([]);const[readerState,setReaderState]=useState({});const[discoveryPrefs,setDiscoveryPrefs]=useState(null);const[error,setError]=useState('');const[advancedText,setAdvancedText]=useState('');const[advancedTagQuery,setAdvancedTagQuery]=useState('');const[advancedTagCategory,setAdvancedTagCategory]=useState('all');const[advancedTags,setAdvancedTags]=useState([]);const[advancedInclude,setAdvancedInclude]=useState([]);const[advancedExclude,setAdvancedExclude]=useState([]);const[advancedResults,setAdvancedResults]=useState([]);const[advancedBusy,setAdvancedBusy]=useState(false);const[advancedSearched,setAdvancedSearched]=useState(false);const[advancedTagBusy,setAdvancedTagBusy]=useState(false);const[advancedSort,setAdvancedSort]=useState('updated');
+ const{session}=useAuth();const navigate=useNavigate();const location=useLocation();const[works,setWorks]=useState(null);const[archiveWorks,setArchiveWorks]=useState([]);const[readerState,setReaderState]=useState({});const[discoveryPrefs,setDiscoveryPrefs]=useState(null);const[error,setError]=useState('');const[advancedText,setAdvancedText]=useState('');const[advancedTagQuery,setAdvancedTagQuery]=useState('');const[advancedTagCategory,setAdvancedTagCategory]=useState('all');const[advancedTags,setAdvancedTags]=useState([]);const[advancedInclude,setAdvancedInclude]=useState([]);const[advancedExclude,setAdvancedExclude]=useState([]);const[advancedResults,setAdvancedResults]=useState([]);const[advancedBusy,setAdvancedBusy]=useState(false);const[advancedSearched,setAdvancedSearched]=useState(false);const[advancedTagBusy,setAdvancedTagBusy]=useState(false);const[advancedSort,setAdvancedSort]=useState('updated');const[hasMorePublished,setHasMorePublished]=useState(false);const[morePublishedBusy,setMorePublishedBusy]=useState(false);const[morePublishedError,setMorePublishedError]=useState('');
  const [readingChoices,setReadingChoice]=useReadingDiscoveryState(session?.user?.id);
  const query=readingChoices.query;const setQuery=value=>setReadingChoice('query',value);
  const rating=readingChoices.rating;const setRating=value=>setReadingChoice('rating',value);
@@ -304,19 +306,21 @@ export function ReadingLive({Frame}){
  const vibeDoor=readingChoices.vibeDoor;const setVibeDoor=value=>setReadingChoice('vibeDoor',value);
  const readerLens=readingChoices.readerLens;const setReaderLens=value=>setReadingChoice('readerLens',value);
  const catalogueSort=readingChoices.catalogueSort;const setCatalogueSort=value=>setReadingChoice('catalogueSort',value);
+ const includedTags=readingChoices.includeTags;const excludedTags=readingChoices.excludeTags;
  const[readingNotice,setReadingNotice]=useState('');
  const[advancedTagLabels,setAdvancedTagLabels]=useState({});
  useEffect(()=>{
   let active=true;
   const id=session?.user?.id||null;
-  setWorks(null);setArchiveWorks([]);setReaderState({});setDiscoveryPrefs(null);setError('');setReadingNotice('');
+  setWorks(null);setArchiveWorks([]);setReaderState({});setDiscoveryPrefs(null);setError('');setReadingNotice('');setHasMorePublished(false);setMorePublishedBusy(false);setMorePublishedError('');
   // Public stories and the hosted Classics can each survive the other source
   // failing. Personal shelves are optional and never block public reading.
-  Promise.allSettled([getPublishedWorks(),getArchive(id)]).then(([stories,archive])=>{
+  Promise.allSettled([getPublishedWorks({limit:48}),getArchive(id)]).then(([stories,archive])=>{
    if(!active)return;
    const memberOK=stories.status==='fulfilled',archiveOK=archive.status==='fulfilled';
    if(!memberOK&&!archiveOK){setError('Story shelves are temporarily unavailable. Please try again.');return}
    setWorks(memberOK?(stories.value||[]):[]);
+   setHasMorePublished(memberOK&&(stories.value||[]).length===48);
    const archiveRows=archiveOK?(archive.value||[]):[];
    setArchiveWorks(archiveRows.filter(r=>r.host_mode==='full'&&r.rights_status==='public_domain_verified').map(r=>({id:'archive-'+r.id,archive_record_id:r.id,is_archive:true,title:r.title,slug:r.slug,summary:r.summary,work_type:'archive',rating:'not_rated',rights_status:r.rights_status,archive_source_url:r.archive_source_url,creator_name:r.creator_name,language:r.original_language||'English',completion_status:'complete',cover_url:null,first_published_at:null,last_published_at:r.updated_at||r.verified_at,profiles:{display_name:r.creator_name,title:'Palace Classic',username:null,avatar_url:null},work_tags:[{tags:{id:'archive-classics',name:'Palace Classics',category:'collection',status:'canonical'}},{tags:{id:'archive-'+(r.category||'classic'),name:String(r.category||'classic').replaceAll('_',' '),category:'genre',status:'canonical'}}]})));
    if(!memberOK||!archiveOK)setReadingNotice('One reading shelf could not be gathered. The other stories are still available.');
@@ -327,9 +331,34 @@ export function ReadingLive({Frame}){
   }
   return()=>{active=false};
  },[session?.user?.id]);
+ async function loadNextPublishedPage(){
+  if(morePublishedBusy||!hasMorePublished||!Array.isArray(works))return;
+  setMorePublishedBusy(true);setMorePublishedError('');
+  try{
+   const rows=await getPublishedWorks({offset:works.length,limit:48});
+   setWorks(previous=>{
+    const seen=new Set((previous||[]).map(work=>work.id));
+    return [...(previous||[]),...rows.filter(work=>!seen.has(work.id))];
+   });
+   setHasMorePublished(rows.length===48);
+   setReadingChoice('visibleCount',current=>current+48);
+  }catch(e){setMorePublishedError('More stories could not be gathered just now. Please try again.')}
+  finally{setMorePublishedBusy(false)}
+ }
+ function toggleReadingFacet(id,mode){
+  if(mode==='include'){
+   setReadingChoice('excludeTags',selected=>selected.filter(value=>value!==id));
+   setReadingChoice('includeTags',selected=>selected.includes(id)?selected.filter(value=>value!==id):[...selected,id]);
+  }else{
+   setReadingChoice('includeTags',selected=>selected.filter(value=>value!==id));
+   setReadingChoice('excludeTags',selected=>selected.includes(id)?selected.filter(value=>value!==id):[...selected,id]);
+  }
+ }
  // Stable book collections: typing in search must not rebuild every Classics list.
  const allReadingWorks=useMemo(()=>[...(works||[]),...(archiveWorks||[])],[works,archiveWorks]);
  const roomWorks=useMemo(()=>allReadingWorks.filter(w=>origin==='all'?true:origin==='fandom'?w.work_type==='fanwork':w.work_type!=='fanwork'),[allReadingWorks,origin]);
+ const tagFacets=useMemo(()=>buildReadingFacets(roomWorks),[roomWorks]);
+ const facetNames=Object.fromEntries(tagFacets.flatMap(group=>group.tags.map(tag=>[tag.id,tag.name])));
  const stateFor=w=>readerState[w.id]||{};
  const workTags=w=>(w.work_tags||[]).map(x=>x.tags).filter(t=>t&&['canonical','community'].includes(t.status));const moodDoors=[
   {id:'yearn',glyph:'☾',label:'Make me yearn',copy:'longing, slow burns & impossible feelings',terms:['yearn','yearning','slow burn','pining','longing','romance','love']},
@@ -349,11 +378,13 @@ export function ReadingLive({Frame}){
  const storyHref=w=>{if(w.is_archive)return directClassicHref(w);const p=stateFor(w).progress;if(p&&!p.completed&&p.chapter_id)return"/work/"+w.slug+"/chapter/"+p.chapter_id;return"/work/"+w.slug};
  const storyCta=w=>w.is_archive?'Read classic →':reopened(w)?'Read new chapter →':stateFor(w).progress&&!stateFor(w).progress.completed?'Continue reading →':finished(w)?'Read again →':'Enter story →';
  const readerLensMatches=w=>readerLens==='all'||readerLens==='unread'&&!stateFor(w).progress||readerLens==='reading'&&needsReading(w)||readerLens==='new'&&hasNew(w)||readerLens==='saved'&&!!stateFor(w).saved||readerLens==='following'&&!!stateFor(w).following||readerLens==='finished'&&finished(w);
- const filtered=roomWorks.filter(w=>moodMatches(w,vibeDoor)&&readerLensMatches(w)&&(rating==='all'||w.rating===rating)&&(status==='all'||w.completion_status===status)&&(!query.trim()||[w.title,w.summary,w.profiles?.display_name,w.profiles?.username,w.profiles?.title,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase().includes(query.trim().toLowerCase())));
- const catalogue=[...filtered].sort((a,b)=>catalogueSort==='title'?String(a.title||'').localeCompare(String(b.title||'')):catalogueSort==='oldest'?new Date(a.first_published_at||a.last_published_at||0)-new Date(b.first_published_at||b.last_published_at||0):new Date(b.last_published_at||0)-new Date(a.last_published_at||0));
- const activeReadingFilters=readingFilterChips({origin,query,rating,status,vibeDoor,readerLens},Object.fromEntries(moodDoors.map(door=>[door.id,door.label])));
- function clearReadingFilters(){setOrigin('all');setVibeDoor('all');setReaderLens('all');setQuery('');setRating('all');setStatus('all')}
+ const filtered=roomWorks.filter(w=>matchesReadingFacets(w,includedTags,excludedTags)&&moodMatches(w,vibeDoor)&&readerLensMatches(w)&&(rating==='all'||w.rating===rating)&&(status==='all'||w.completion_status===status)&&(!query.trim()||[w.title,w.summary,w.profiles?.display_name,w.profiles?.username,w.profiles?.title,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase().includes(query.trim().toLowerCase())));
+ const catalogue=sortReadingWorks(filtered,catalogueSort);
+ const activeReadingFilters=[...readingFilterChips({origin,query,rating,status,vibeDoor,readerLens},Object.fromEntries(moodDoors.map(door=>[door.id,door.label]))),...includedTags.map(id=>({key:'include:'+id,label:'Include: '+(facetNames[id]||'selected tag')})),...excludedTags.map(id=>({key:'exclude:'+id,label:'Exclude: '+(facetNames[id]||'selected tag')}))];
+ function clearReadingFilters(){setOrigin('all');setVibeDoor('all');setReaderLens('all');setQuery('');setRating('all');setStatus('all');setReadingChoice('includeTags',[]);setReadingChoice('excludeTags',[])}
  function removeReadingFilter(key){
+  if(key.startsWith('include:')){setReadingChoice('includeTags',current=>current.filter(id=>id!==key.slice(8)));return}
+  if(key.startsWith('exclude:')){setReadingChoice('excludeTags',current=>current.filter(id=>id!==key.slice(8)));return}
   switch(key){
    case 'origin':setOrigin('all');break;
    case 'vibeDoor':setVibeDoor('all');break;
@@ -430,13 +461,25 @@ export function ReadingLive({Frame}){
   </section>
   </>}
   {!advancedView&&<>
-  <section className="legacy-reading-tools chic-reading-tools"><div className="reading-search" role="search"><span aria-hidden="true">⌕</span><input aria-label="Search the current Reading Room" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Title, writer, fandom or tag…"/></div><select value={rating} onChange={e=>setRating(e.target.value)} aria-label="Filter stories by rating"><option value="all">All ratings</option><option value="general">General</option><option value="teen">Teen</option><option value="mature">Mature</option><option value="explicit">Explicit</option><option value="not_rated">Not rated</option></select><select value={status} onChange={e=>setStatus(e.target.value)} aria-label="Filter stories by status"><option value="all">All statuses</option><option value="in_progress">In progress</option><option value="complete">Complete</option><option value="hiatus">Hiatus</option></select><select value={catalogueSort} onChange={e=>setCatalogueSort(e.target.value)} aria-label="Sort the current Reading Room"><option value="updated">Recently updated</option><option value="oldest">Oldest first</option><option value="title">Title A–Z</option></select><div className="reading-result-count" aria-live="polite"><strong>{catalogue.length}</strong><span>world{catalogue.length===1?'':'s'} in this view</span></div></section>
+  <section className="legacy-reading-tools chic-reading-tools">
+   <div className="reading-search" role="search"><span aria-hidden="true">⌕</span><input aria-label="Search the currently loaded Reading Room stories" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Title, writer, fandom or tag…"/></div>
+   <div className="reading-result-count" aria-live="polite"><strong>{catalogue.length}</strong><span>matching among {allReadingWorks.length} loaded {allReadingWorks.length===1?'work':'works'}</span></div>
+  </section>
   {activeReadingFilters.length>0&&<nav className="reading-filter-trail" aria-label="Active Reading Room filters"><span className="reading-filter-title">YOUR CURRENT CHOICES</span><div>{activeReadingFilters.map(item=><button type="button" key={item.key} onClick={()=>removeReadingFilter(item.key)} aria-label={'Remove '+item.label+' filter'}><span>{item.label}</span><b aria-hidden="true">×</b></button>)}</div><button type="button" className="reading-filter-clear" onClick={clearReadingFilters}>Clear all filters →</button></nav>}
   {session&&<section className="reading-reader-lenses" aria-label="Your private reading lenses"><div><small>MY READING LENSES</small><span>Private to you · never changes public discovery ranking</span></div><nav>{[['all','All'],['unread','Unread'],['reading','In progress'],['new','New chapters'],['saved','Saved'],['following','Following'],['finished','Finished']].map(([key,label])=><button type="button" key={key} className={readerLens===key?'active':''} aria-pressed={readerLens===key} onClick={()=>setReaderLens(key)}>{label}</button>)}</nav>{(readerLens!=='all'||query||rating!=='all'||status!=='all'||vibeDoor!=='all')&&<button type="button" className="quiet-button" onClick={clearReadingFilters}>Clear reading filters</button>}</section>}
   {readingNotice&&<p className="reading-partial-notice" role="status">✧ {readingNotice}</p>}
+  <div className="reading-catalogue-layout"><div className="reading-catalogue-main">
   {works&&<ReadingCatalogueControls layout={readingChoices.layout} onLayout={value=>setReadingChoice('layout',value)} shown={Math.min(readingChoices.visibleCount,catalogue.length)} total={catalogue.length}/>}
-  <State loading={!works&&!error} error={error}>{works&&<section className="story-shelf refined chic-story-catalogue">{catalogue.length===0&&<div className="reading-catalogue-empty" role="status"><span className="reading-empty-star" aria-hidden="true">☾ ✦</span><div><p className="eyebrow">{activeReadingFilters.length?'A QUIETER CORNER':'AN OPEN SHELF'}</p><h2>{activeReadingFilters.length?'No worlds match these choices yet.':'This shelf is waiting for its first story.'}</h2><p>{activeReadingFilters.length?'Nothing is wrong with your search. Remove a filter or open the full Reading Rooms to browse again.':'Newly published stories will appear here when their writers open the doors.'}</p><div className="reading-empty-actions">{activeReadingFilters.length?<button type="button" onClick={clearReadingFilters}>Show every story →</button>:<Link to="/writers">Explore the Writer’s Door →</Link>}<Link to="/reading?view=search">Try advanced search →</Link></div></div></div>}{catalogue.slice(0,readingChoices.visibleCount).map(w=>{const badges=flags(w);const prismStory=isLgbtqContent(w.title,w.summary,workTags(w));return <article className={"story-row"+(w.is_archive?' palace-classic-story':'')+(hasNew(w)?' has-new-chapter':'')+(prismStory?' prism-glass prism-story':'')} key={w.id}><Link className="story-cover palace-rating-anchor" to={storyHref(w)}>{w.is_archive?<ClassicBookCover record={w}/>:w.cover_url?<img loading="lazy" decoding="async" src={w.cover_url} alt=""/>:<span>☾</span>}<StoryRatingBadge rating={w.rating}/></Link><div>{badges.length>0&&<div className="story-reader-flags">{badges.map(([kind,label])=><span className={kind} key={kind}>{label}</span>)}</div>}<h2><Link to={storyHref(w)}>{w.title}</Link></h2><ReadingStoryContext work={w} compact/><ReadingStoryStats work={w}/><ReadingCardTags tags={workTags(w)} limit={3}/><footer><span className="story-creator-line">{w.is_archive?<span className="story-classic-author"><i aria-hidden="true">⌁</i><span><small>PALACE CLASSIC · ORIGINAL AUTHOR</small><strong>{w.profiles?.display_name||'Historical author'}</strong><em>Public-domain verified archive work</em></span></span>:w.profiles?.username?<Link className="story-author-chip" to={"/member/"+encodeURIComponent(w.profiles.username)}><MemberAvatar profile={w.profiles} memberId={w.author_id} style={{width:42,height:42}}/><span><small>FROM THE CHAMBER OF</small><strong>{w.profiles?.display_name||w.profiles.username}</strong>{w.profiles?.title&&<em>{w.profiles.title}</em>}<IdentityMarks profile={w.profiles}/></span></Link>:<small>by Palace writer</small>}</span><Link to={storyHref(w)}>{storyCta(w)}</Link></footer></div></article>})}</section>}</State>
+  <State loading={!works&&!error} error={error}>{works&&<section className="story-shelf refined chic-story-catalogue">{catalogue.length===0&&<div className="reading-catalogue-empty" role="status"><span className="reading-empty-star" aria-hidden="true">☾ ✦</span><div><p className="eyebrow">{activeReadingFilters.length?'A QUIETER CORNER':'AN OPEN SHELF'}</p><h2>{activeReadingFilters.length?'No worlds match these choices yet.':'This shelf is waiting for its first story.'}</h2><p>{activeReadingFilters.length?'Nothing is wrong with your search. Remove a filter or open the full Reading Rooms to browse again.':'Newly published stories will appear here when their writers open the doors.'}</p><div className="reading-empty-actions">{activeReadingFilters.length?<button type="button" onClick={clearReadingFilters}>Show every story →</button>:<Link to="/writers">Explore the Writer’s Door →</Link>}<Link to="/reading?view=search">Try advanced search →</Link></div></div></div>}{catalogue.slice(0,readingChoices.visibleCount).map(w=>{const badges=flags(w);const prismStory=isLgbtqContent(w.title,w.summary,workTags(w));return <article className={"story-row"+(w.is_archive?' palace-classic-story':'')+(hasNew(w)?' has-new-chapter':'')+(prismStory?' prism-glass prism-story':'')} key={w.id}><Link className="story-cover palace-rating-anchor" to={storyHref(w)}>{w.is_archive?<ClassicBookCover record={w}/>:w.cover_url?<img loading="lazy" decoding="async" src={w.cover_url} alt=""/>:<span>☾</span>}<StoryRatingBadge rating={w.rating}/></Link><div>{badges.length>0&&<div className="story-reader-flags">{badges.map(([kind,label])=><span className={kind} key={kind}>{label}</span>)}</div>}<h2><Link to={storyHref(w)}>{w.title}</Link></h2>{w.last_published_at&&<time className="reading-story-updated" dateTime={w.last_published_at}>Updated {new Date(w.last_published_at).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</time>}<ReadingStoryContext work={w} compact previewLength={readingChoices.layout==='comfortable'?330:175}/><ReadingStoryStats work={w}/><ReadingCardTags tags={workTags(w)} limit={readingChoices.layout==='comfortable'?9:4}/><footer><span className="story-creator-line">{w.is_archive?<span className="story-classic-author"><i aria-hidden="true">⌁</i><span><small>PALACE CLASSIC · ORIGINAL AUTHOR</small><strong>{w.profiles?.display_name||'Historical author'}</strong><em>Public-domain verified archive work</em></span></span>:w.profiles?.username?<Link className="story-author-chip" to={"/member/"+encodeURIComponent(w.profiles.username)}><MemberAvatar profile={w.profiles} memberId={w.author_id} style={{width:42,height:42}}/><span><small>FROM THE CHAMBER OF</small><strong>{w.profiles?.display_name||w.profiles.username}</strong>{w.profiles?.title&&<em>{w.profiles.title}</em>}<IdentityMarks profile={w.profiles}/></span></Link>:<small>by Palace writer</small>}</span><Link to={storyHref(w)}>{storyCta(w)}</Link></footer></div></article>})}</section>}</State>
   {works&&<ReadingCatalogueMore shown={Math.min(readingChoices.visibleCount,catalogue.length)} total={catalogue.length} onMore={()=>setReadingChoice('visibleCount',count=>count+24)}/>}
+  {works&&hasMorePublished&&<div className="reading-fetch-more">
+   <strong>More published worlds await</strong><p>Load the next 48 stories to expand the searchable catalogue and available tags.</p>
+   <button type="button" disabled={morePublishedBusy} onClick={loadNextPublishedPage}>{morePublishedBusy?'Gathering more stories…':'Load more from the Palace ↓'}</button>
+   {morePublishedError&&<p role="alert">{morePublishedError}</p>}
+  </div>}
+  </div>
+  <ReadingFacetSidebar facets={tagFacets} sort={catalogueSort} onSort={setCatalogueSort} rating={rating} onRating={setRating} status={status} onStatus={setStatus} included={includedTags} excluded={excludedTags} onToggle={toggleReadingFacet} onClear={clearReadingFilters} loadedCount={roomWorks.length} hasMore={hasMorePublished}/>
+  </div>
   </>}
  </section></Frame>
 }

@@ -1,5 +1,5 @@
 import {useState,useEffect} from 'react';
-export const readingDefaults={query:'',rating:'all',status:'all',origin:'all',shelf:'first',vibeDoor:'all',readerLens:'all',catalogueSort:'updated',layout:'comfortable',discoveryMode:'browse',visibleCount:24};
+export const readingDefaults={query:'',rating:'all',status:'all',origin:'all',shelf:'first',vibeDoor:'all',readerLens:'all',catalogueSort:'updated',layout:'comfortable',discoveryMode:'browse',visibleCount:24,includeTags:[],excludeTags:[]};
 const options={rating:['all','general','teen','mature','explicit','not_rated'],status:['all','in_progress','complete','hiatus','abandoned'],origin:['all','original','fandom'],shelf:['first','quiet','updated','following','continue','nightstand'],vibeDoor:['all','yearn','unsettle','soft','chaos','epic','strange'],readerLens:['all','unread','reading','new','saved','following','finished'],catalogueSort:['updated','oldest','title'],layout:['comfortable','compact','gallery'],discoveryMode:['browse','discover']};
 export function cleanReadingDiscovery(value){
  const clean={...readingDefaults};
@@ -7,6 +7,8 @@ export function cleanReadingDiscovery(value){
  if(typeof value.query==='string')clean.query=value.query.slice(0,500);
  for(const [key,values] of Object.entries(options))if(values.includes(value[key]))clean[key]=value[key];
  if(Number.isSafeInteger(value.visibleCount)&&value.visibleCount>=24)clean.visibleCount=Math.min(value.visibleCount,10000);
+ for(const key of ['includeTags','excludeTags'])if(Array.isArray(value[key]))clean[key]=[...new Set(value[key].filter(id=>typeof id==='string'&&id.length>0&&id.length<=128))].slice(0,24);
+ clean.excludeTags=clean.excludeTags.filter(id=>!clean.includeTags.includes(id));
  return clean;
 }
 function read(key){try{return cleanReadingDiscovery(JSON.parse(sessionStorage.getItem(key)||'null'))}catch{return {...readingDefaults}}}
@@ -19,7 +21,7 @@ export default function useReadingDiscoveryState(memberId){
  function setField(field,next){
   setStored(previous=>{
    const current=previous.key===key?previous.value:read(key);
-   const resetsShelf=['query','rating','status','origin','vibeDoor','readerLens','catalogueSort'].includes(field);
+   const resetsShelf=['query','rating','status','origin','vibeDoor','readerLens','catalogueSort','includeTags','excludeTags'].includes(field);
    const value=cleanReadingDiscovery({...current,...(resetsShelf?{visibleCount:24}:{}),[field]:typeof next==='function'?next(current[field]):next});
    return {key,value};
   });

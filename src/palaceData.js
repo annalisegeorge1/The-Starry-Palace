@@ -195,8 +195,11 @@ export async function getChamberSnapshot(userId){
   }
  }
 }
-export async function getPublishedWorks(){
- const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,language,completion_status,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(id,username,display_name,avatar_url,title),work_tags(tags(id,name,category,status))').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(24);
+export async function getPublishedWorks({offset=0,limit=24}={}){
+ // Home callers keep their 24 results. Reading Rooms can load later pages.
+ const start=Math.max(0,Math.floor(Number(offset)||0));
+ const size=Math.max(1,Math.min(72,Math.floor(Number(limit)||24)));
+ const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,language,completion_status,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(id,username,display_name,avatar_url,title),work_tags(tags(id,name,category,status))').eq('publication_status','published').order('last_published_at',{ascending:false}).order('id',{ascending:true}).range(start,start+size-1);
  if(error)throw error;
  const rows=data||[];
  const ids=rows.map(x=>x.id);

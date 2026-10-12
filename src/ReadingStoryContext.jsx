@@ -4,10 +4,10 @@ import {readingSummaryPreview} from './readingCardModel';
 import './reading-story-context.css';
 
 /** Full metadata on a story page; a calmer summary-first view on discovery cards. */
-export default function ReadingStoryContext({work,compact=false}){
+export default function ReadingStoryContext({work,compact=false,previewLength=165}){
  const details=readingStoryPresentation(work);
  const[expanded,setExpanded]=useState(false);
- const {preview,truncated}=compact?readingSummaryPreview(details.summary,165):{preview:details.summary,truncated:false};
+ const {preview,truncated}=compact?readingSummaryPreview(details.summary,previewLength):{preview:details.summary,truncated:false};
  const overflowFandoms=compact&&details.fandoms.length>1;
  return <section className={'reading-story-context'+(compact?' is-compact':'')} aria-label="Story details">
    <div className="reading-story-context-facts">
