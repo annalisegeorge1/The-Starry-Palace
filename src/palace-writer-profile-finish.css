@@ -17,3 +17,21 @@ body.writing-desk-open .legacy-save-state{overflow-wrap:anywhere;white-space:nor
 @media(prefers-reduced-motion:reduce){
  body.writing-desk-open .writer-chapter-jump-actions *{scroll-behavior:auto}
 }
+
+
+/* Public writer identity · consistent editorial text without altering portrait geometry. */
+.palace-shell .chic-member-profile .legacy-profile-copy h1 {
+ text-wrap:balance;
+ letter-spacing:-.025em;
+}
+.palace-shell .chic-member-profile .legacy-profile-copy :is(p,blockquote,.legacy-profile-meta){
+ line-height:1.55;
+}
+.palace-shell .chic-member-profile .legacy-profile-actions {
+ flex-wrap:wrap;
+ gap:8px;
+}
+.palace-shell .chic-member-profile .legacy-profile-actions :is(button,a):focus-visible {
+ outline:2px solid var(--ui-accent,#b9a7ed)!important;
+ outline-offset:3px!important;
+}
