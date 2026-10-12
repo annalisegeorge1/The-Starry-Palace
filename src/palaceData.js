@@ -1306,6 +1306,35 @@ export async function proposeTag(userId,name,category){const clean=name.trim();i
 export async function addComment(userId,workId,chapterId,body,type='response',spoiler=false,parentId=null){const text=body.trim();if(!text)throw new Error('Write a response first.');const{data,error}=await needClient().from('comments').insert({work_id:workId,chapter_id:chapterId||null,author_id:userId,parent_comment_id:parentId,comment_type:type,body:text,spoiler,status:'pending'}).select().single();if(error)throw error;return data}
 export async function moderateComment(commentId,status){const{data,error}=await needClient().from('comments').update({status,updated_at:new Date().toISOString()}).eq('id',commentId).select().single();if(error)throw error;return data}
 
+/**
+ * Search the entire published archive on the server, never the first 100 rows.
+ * RLS is enforced by the SQL invoker function; guests cannot see drafts.
+ */
+export async function searchPublishedArchive(filters={}){
+ const ids=list=>[...new Set((Array.isArray(list)?list:[]).filter(id=>/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i.test(String(id))))].slice(0,24);
+ const numeric=value=>value===''||value===null||value===undefined?null:Math.max(0,Math.min(100000000,Math.floor(Number(value)||0)));
+ const sort=['updated','published','oldest','title','words','chapters','comments'].includes(filters.sort)?filters.sort:'updated';
+ const args={
+  p_text:String(filters.text||'').trim().slice(0,160),
+  p_include:ids(filters.include),
+  p_exclude:ids(filters.exclude),
+  p_rating:String(filters.rating||'all'),
+  p_status:String(filters.status||'all'),
+  p_origin:String(filters.origin||'all'),
+  p_language:String(filters.language||'all').trim().slice(0,48)||'all',
+  p_min_words:numeric(filters.minWords),
+  p_max_words:numeric(filters.maxWords),
+  p_sort:sort,
+  p_limit:Math.max(1,Math.min(48,Number(filters.limit)||20)),
+  p_offset:Math.max(0,Math.min(100000,Number(filters.offset)||0))
+ };
+ if(args.p_min_words!==null&&args.p_max_words!==null&&args.p_min_words>args.p_max_words){
+  throw new Error('The maximum word count must be greater than or equal to the minimum.');
+ }
+ const {data,error}=await needClient().rpc('search_published_works_v2',args);
+ if(error)throw error;
+ return {results:Array.isArray(data?.results)?data.results:[],total:Math.max(0,Number(data?.total)||0),limit:args.p_limit,offset:args.p_offset};
+}
 export async function searchWorksByTags(includeIds=[],excludeIds=[],text=''){let q=needClient().from('works').select('id,title,slug,summary,rating,language,completion_status,work_type,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(username,display_name),work_tags(tag_id,tags(id,name,category,status))').eq('publication_status','published').order('last_published_at',{ascending:false}).limit(100);if(text.trim())q=q.or(`title.ilike.%${text.trim()}%,summary.ilike.%${text.trim()}%`);const{data,error}=await q;if(error)throw error;return(data||[]).filter(w=>{const ids=(w.work_tags||[]).filter(x=>['canonical','community'].includes(x.tags?.status)).map(x=>x.tag_id);return includeIds.every(id=>ids.includes(id))&&!excludeIds.some(id=>ids.includes(id))})}
 
 
