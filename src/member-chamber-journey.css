@@ -450,3 +450,40 @@
     font-size: .91rem !important;
   }
 }
+
+
+/* Chamber editorial continuity: navigation and writing shelves.
+   Strictly excludes collectible presentation, portrait, cover, frames and badges. */
+.palace-shell .member-chamber-atelier.chic-member-profile :is(.legacy-profile-actions,.legacy-profile-meta) {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.palace-shell .creator-worlds-room,
+.palace-shell .chamber-posts-room {
+  min-width: 0;
+}
+.palace-shell .creator-worlds-room :is(.section-heading,.creator-shelf-block),
+.palace-shell .chamber-posts-room :is(.section-heading,article) {
+  min-width: 0;
+}
+.palace-shell .creator-worlds-room .creator-shelf-block {
+  border: 1px solid rgba(184,177,236,.21);
+  border-radius: 16px;
+  background-image: linear-gradient(140deg,rgba(99,89,164,.075),rgba(57,92,150,.055));
+}
+.palace-shell .chamber-posts-room > article {
+  background-image: linear-gradient(145deg,rgba(94,85,158,.08),rgba(49,83,137,.055));
+}
+.palace-shell :is(.creator-worlds-room,.chamber-posts-room) :is(h2,h3) {
+  overflow-wrap: break-word;
+  line-height: 1.25;
+}
+.palace-shell :is(.creator-worlds-room,.chamber-posts-room) :is(a,button):focus-visible {
+  outline: 2px solid var(--ui-accent,#b6a5ef);
+  outline-offset: 3px;
+}
+.palace-shell.daylight .creator-worlds-room .creator-shelf-block,
+.palace-shell.daylight .chamber-posts-room > article {
+  border-color: rgba(103,88,164,.22);
+  background-image: linear-gradient(135deg,rgba(248,243,255,.82),rgba(239,245,255,.78));
+}
