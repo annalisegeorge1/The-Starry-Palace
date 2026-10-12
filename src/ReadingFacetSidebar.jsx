@@ -68,7 +68,7 @@ export default function ReadingFacetSidebar({
    {tagBusy&&<p className="reading-facet-hint" role="status">Gathering tags from the directory…</p>}
    {tagError&&<p className="reading-facet-hint" role="alert">{tagError}</p>}
    <div className="reading-facet-groups">
-    {groups.map(group=><details key={group.category} className="reading-facet-group">
+    {groups.map(group=><details key={group.category+(q?":search":"")} open={q?true:undefined} className="reading-facet-group">
      <summary><span>{group.label}</span><small>{group.tags.length}</small></summary>
      <div className="reading-facet-options">{group.tags.map(tag=>{
       const selectedIn=included.includes(tag.id),selectedOut=excluded.includes(tag.id);
