@@ -1,0 +1,133 @@
+/* Treasury badge composition repair — 12 Oct 2026.
+   Layout-only. Never crop/repaint the underlying artwork or resize chamber avatars.
+   Scoped to the badge grid; detail dialogs intentionally retain their own sizing. */
+.palace-shell .badge-grid {
+  align-items: stretch;
+  gap: 16px !important;
+}
+.palace-shell .badge-grid > .badge-card {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 382px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  padding: 16px !important;
+  gap: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+.palace-shell .badge-grid > .badge-card > .badge-art-preview-button {
+  box-sizing: border-box;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  flex: 0 0 186px !important;
+  width: 100% !important;
+  height: 186px !important;
+  min-height: 186px !important;
+  max-height: 186px !important;
+  margin: 0 0 10px !important;
+  padding: 3px !important;
+  overflow: hidden !important;
+  border-radius: 14px;
+}
+.palace-shell .badge-grid > .badge-card .badge-art-preview-button > .palace-watercolour-badge {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  height: 180px !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+.palace-shell .badge-grid > .badge-card .badge-art-preview-button .original-badge-stage {
+  box-sizing: border-box !important;
+  flex: 0 0 auto !important;
+  position: relative !important;
+  width: min(140px, 100%) !important;
+  height: 153px !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+.palace-shell .badge-grid > .badge-card .badge-art-preview-button .painted-tier-stage.painted-tier-stage {
+  width: 115px !important;
+  height: 153px !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+}
+.palace-shell .badge-grid > .badge-card .badge-art-preview-button .original-badge-stage > svg,
+.palace-shell .badge-grid > .badge-card .badge-art-preview-button .original-badge-stage > img {
+  max-width: 100%;
+  object-fit: contain !important;
+}
+.palace-shell .badge-grid > .badge-card .badge-art-preview-button .painted-tier-stage .painted-tier-mount {
+  width: 100% !important;
+  height: 100% !important;
+  transform: none !important;
+}
+.palace-shell .badge-grid > .badge-card .badge-art-preview-button .palace-watercolour-badge figcaption {
+  position: static !important;
+  flex: 0 0 auto;
+  display: block;
+  margin: 3px 0 0 !important;
+  padding: 0 !important;
+  line-height: 1.25 !important;
+  text-align: center !important;
+}
+.palace-shell .badge-grid > .badge-card > small,
+.palace-shell .badge-grid > .badge-card > h2,
+.palace-shell .badge-grid > .badge-card > p,
+.palace-shell .badge-grid > .badge-card > .badge-earned-state,
+.palace-shell .badge-grid > .badge-card > .badge-showcase-actions {
+  position: relative !important;
+  inset: auto !important;
+  float: none !important;
+  width: auto !important;
+  max-width: 100%;
+  min-width: 0;
+  transform: none !important;
+  clear: both;
+}
+.palace-shell .badge-grid > .badge-card h2 {
+  font-size: 1.04rem !important;
+  line-height: 1.28 !important;
+  margin: 4px 0 7px !important;
+  overflow-wrap: break-word;
+}
+.palace-shell .badge-grid > .badge-card > p:not(.badge-goal) {
+  font-size: .77rem !important;
+  line-height: 1.48 !important;
+  margin: 0 0 10px !important;
+}
+.palace-shell .badge-grid > .badge-card .badge-goal {
+  margin-top: auto !important;
+  font-size: .72rem !important;
+  line-height: 1.4 !important;
+}
+.palace-shell .badge-grid > .badge-card .badge-showcase-actions {
+  margin-top: 10px !important;
+}
+.palace-shell .badge-grid > .badge-card :is(.badge-showcase-actions button,button:not(.badge-art-preview-button)) {
+  min-height: 40px !important;
+  font-size: .73rem !important;
+  line-height: 1.35 !important;
+}
+@media(max-width:620px) {
+  .palace-shell .badge-grid {
+    grid-template-columns: repeat(auto-fit,minmax(min(100%,210px),1fr)) !important;
+  }
+  .palace-shell .badge-grid > .badge-card {
+    min-height: 368px !important;
+  }
+}
