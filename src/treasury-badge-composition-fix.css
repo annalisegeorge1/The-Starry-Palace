@@ -311,3 +311,16 @@
   max-height:none !important;
   object-fit:contain !important;
 }
+
+/* Correct the oversized source artwork rather than just its layout box.
+   Some sprite images extend outside their stage; shrink the complete stage
+   (painting AND ornament) together. Only affects Treasury achievement cards. */
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card > .palace-watercolour-badge > .original-badge-stage:not(.painted-tier-stage),
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card > .palace-watercolour-badge > .painted-round-badge {
+  transform:scale(.73) !important;
+  transform-origin:50% 50% !important;
+}
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card > .palace-watercolour-badge > .painted-tier-stage {
+  transform:scale(.94) !important;
+  transform-origin:50% 50% !important;
+}
