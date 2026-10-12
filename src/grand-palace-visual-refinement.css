@@ -62,34 +62,41 @@
   background:radial-gradient(ellipse at 4% 10%,rgba(147,115,221,.2),transparent 58%),
     linear-gradient(130deg,#191d47,#111a39);
 }
-/* Full-width ceremonial painting within the card's divider, without a
-   separate floating mini-banner. The SVG uses wide presentation only here. */
+/* Full-width ribbon rail; original watercolor is centered at its native aspect.
+   The background continues the colour to the card edges without stretching art. */
 .palace-shell .grand-your-court .grand-court-banner{
   box-sizing:border-box;
   grid-column:1/-1;
-  display:block;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   width:100%;
-  height:clamp(68px,8vw,96px);
   min-width:0;
-  min-height:0;
-  max-height:none;
-  padding:0;
+  min-height:88px;
+  height:auto;
+  padding:10px 12px;
   overflow:hidden;
   border:0;
-  border-bottom:1px solid rgba(225,203,162,.29);
-  border-radius:0;
-  background:linear-gradient(90deg,rgba(135,101,209,.07),rgba(162,134,212,.12),rgba(135,101,209,.07));
+  border-bottom:1px solid rgba(207,190,241,.25);
+  border-radius:10px 10px 0 0;
+  background:radial-gradient(ellipse at 50% 48%,rgba(129,111,198,.2),transparent 64%),
+    linear-gradient(90deg,rgba(64,56,125,.08),rgba(130,108,204,.12),rgba(64,56,125,.08));
 }
 .palace-shell .grand-your-court .grand-court-banner .painted-palace-banner{
   box-sizing:border-box;
   display:block;
   flex:none;
-  width:100%!important;
-  max-width:none!important;
-  height:100%!important;
+  width:min(100%,545px)!important;
+  max-width:100%!important;
+  height:auto!important;
   max-height:none!important;
-  margin:0!important;
-  aspect-ratio:auto!important;
+  margin:0 auto!important;
+  aspect-ratio:643 / 158!important;
+  /* The original painting is four times wider than it is tall.
+     Never stretch the triangular tail to fill a panoramic row. */
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);
+  filter:none;
 }
 .palace-shell .grand-your-court .grand-my-crest{
   width:76px;height:76px;
@@ -191,31 +198,40 @@
   border-color:color-mix(in srgb,var(--member-court-accent) 65%,transparent);
   overflow:hidden;
 }
-/* The round crest remains the identity mark. The court artwork becomes a
-   full-length fabric ribbon across the existing divider line. */
+/* The round crest remains the identity mark. The original painted banner
+   sits in a full-width, softly-coloured rail without distorting its geometry. */
 .palace-shell .member-palace-heraldry>.member-palace-banner-rail{
   box-sizing:border-box;
-  display:block;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   grid-column:1/-1;
   width:100%;
   min-width:0;
-  height:clamp(64px,7vw,88px);
-  padding:0;
+  height:auto;
+  min-height:88px;
+  padding:10px 12px;
   margin:0;
   overflow:hidden;
   border:0;
-  border-bottom:1px solid rgba(202,188,246,.23);
-  background:linear-gradient(90deg,rgba(146,120,214,.04),rgba(146,120,214,.13),rgba(146,120,214,.04));
+  border-bottom:1px solid rgba(202,188,246,.26);
+  border-radius:10px 10px 0 0;
+  background:radial-gradient(ellipse at 50% 48%,rgba(143,112,219,.22),transparent 64%),
+    linear-gradient(90deg,rgba(88,72,159,.06),rgba(146,120,214,.14),rgba(88,72,159,.06));
 }
 .palace-shell .member-palace-banner-rail .painted-palace-banner{
   box-sizing:border-box;
   display:block;
-  width:100%!important;
-  max-width:none!important;
-  height:100%!important;
+  flex:none;
+  width:min(100%,545px)!important;
+  max-width:100%!important;
+  height:auto!important;
   max-height:none!important;
-  margin:0!important;
-  aspect-ratio:auto!important;
+  margin:0 auto!important;
+  aspect-ratio:643 / 158!important;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);
+  filter:none;
 }
 .palace-shell .member-palace-heraldry>.member-palace-heraldry-emblem{
   box-sizing:border-box;
@@ -244,7 +260,7 @@
   overflow-wrap:break-word;
 }
 .palace-shell .member-palace-heraldry-copy p{margin:.3rem 0 .5rem}
-/* Both Chamber and Grand Palace banners now share the full-width ribbon treatment. */
+/* Both Chamber and Grand Palace retain the same non-stretched presentation. */
 /* Frame gallery: let every row be reached on the page, not clipped behind a
    separate scrolling window and the persistent phone navigation. */
 .palace-shell .painted-frame-picker{min-width:0;scroll-margin-top:8rem}
@@ -321,7 +337,7 @@
   .palace-shell .grand-palace-hall .grand-hero-stats strong{
     font-size:clamp(.84rem,3.15vw,1.08rem)!important;
   }
-  .palace-shell .grand-your-court .grand-court-banner{height:64px}
+  .palace-shell .grand-your-court .grand-court-banner{height:auto;min-height:68px;padding:8px}
   .palace-shell .grand-ranked-courts article{
     grid-template-columns:1.5rem 2.5rem minmax(0,1fr) 56px;
     gap:.4rem;
@@ -354,7 +370,7 @@
     padding:.8rem;
     min-height:0;
   }
-  .palace-shell .member-palace-heraldry>.member-palace-banner-rail{height:60px}
+  .palace-shell .member-palace-heraldry>.member-palace-banner-rail{height:auto;min-height:68px;padding:8px}
   .palace-shell .member-palace-heraldry>.member-palace-heraldry-emblem{
     width:70px;height:70px;
   }
@@ -373,8 +389,8 @@
   }
 }
 @media(max-width:380px){
-  .palace-shell .member-palace-heraldry>.member-palace-banner-rail{height:52px}
-  .palace-shell .grand-your-court .grand-court-banner{height:56px}
+  .palace-shell .member-palace-heraldry>.member-palace-banner-rail{height:auto;min-height:56px;padding:7px}
+  .palace-shell .grand-your-court .grand-court-banner{height:auto;min-height:56px;padding:7px}
   .palace-shell .grand-palace-hall .grand-palace-hero>h1{font-size:1.95rem}
   .palace-shell .grand-ranked-courts article{
     grid-template-columns:1.3rem 2.3rem minmax(0,1fr) 43px;
