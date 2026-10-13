@@ -17,7 +17,7 @@
  background:var(--journey-glow),linear-gradient(124deg,rgba(55,42,102,.96),rgba(34,56,104,.96) 65%,rgba(28,91,105,.93))!important;
  box-shadow:0 9px 23px rgba(8,10,35,.17),inset 0 1px 0 rgba(244,222,255,.22)!important;
 }
-.palace-shell.daylight .palace-journey-strip{
+.palace-shell.full-palace-shell.daylight .palace-journey-strip{
  --journey-ink:#302746;--journey-muted:#645678;
  --journey-glow:radial-gradient(ellipse at 5% -45%,rgba(255,255,255,.98),transparent 60%);
  background:var(--journey-glow),linear-gradient(124deg,#f0e4fc,#e3eaf9 64%,#d8eff0)!important;
