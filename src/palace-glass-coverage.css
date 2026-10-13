@@ -1,0 +1,279 @@
+/*
+ * THE STARRY PALACE / GLASS COVERAGE
+ * Prominent prism-gloss across REAL room surfaces, not merely site chrome.
+ * Applied after all room CSS so quiet editorial passes cannot flatten it.
+ *
+ * Protected: actual manuscript/reader paper, member-selected chamber themes,
+ * cover art, profile photos, watercolour badges/gifts/frames, palace banners,
+ * rainbow story treatments and themed holiday cards.
+ *
+ * Appearance only: no geometry changes, no animations, no overlay masks.
+ */
+.palace-shell.full-palace-shell.nightfall {
+ --lustre-hero:
+  radial-gradient(ellipse at 8% -18%,rgba(250,223,255,.36),transparent 48%),
+  radial-gradient(ellipse at 100% 95%,rgba(58,210,207,.28),transparent 53%),
+  linear-gradient(119deg,#5a3486 0%,#35447f 52%,#1b6376 100%);
+ --lustre-card:
+  radial-gradient(ellipse at 8% 0%,rgba(228,196,255,.29),transparent 55%),
+  radial-gradient(ellipse at 100% 98%,rgba(78,195,217,.17),transparent 48%),
+  linear-gradient(132deg,rgba(76,49,119,.94) 0%,rgba(38,49,96,.97) 57%,rgba(24,75,92,.96) 100%);
+ --lustre-soft:
+  radial-gradient(ellipse at 2% 0%,rgba(238,211,255,.20),transparent 55%),
+  linear-gradient(125deg,rgba(69,47,110,.93),rgba(41,53,100,.96) 58%,rgba(29,76,98,.94));
+ --lustre-tab:
+  radial-gradient(ellipse at 10% 0%,rgba(255,229,255,.33),transparent 73%),
+  linear-gradient(117deg,#8757bb,#566bb1 55%,#258e9b);
+ --lustre-tab-idle:
+  linear-gradient(135deg,rgba(171,124,221,.21),rgba(79,121,193,.16));
+ --lustre-border:rgba(206,180,255,.60);
+ --lustre-shine:rgba(255,255,255,.30);
+ --lustre-shadow:0 15px 37px rgba(6,7,30,.29),inset 0 1px 0 rgba(255,255,255,.29),inset 0 -1px 0 rgba(133,208,231,.12);
+ --lustre-small-shadow:0 7px 20px rgba(5,8,28,.18),inset 0 1px 0 rgba(255,255,255,.23);
+}
+.palace-shell.full-palace-shell.daylight {
+ --lustre-hero:
+  radial-gradient(ellipse at 6% -10%,rgba(255,255,255,.98),transparent 49%),
+  radial-gradient(ellipse at 98% 92%,rgba(122,220,212,.42),transparent 57%),
+  linear-gradient(120deg,#e7c8f5 0%,#c8dbfb 54%,#b2eee6 100%);
+ --lustre-card:
+  radial-gradient(ellipse at 6% 0%,rgba(255,255,255,.97),transparent 57%),
+  radial-gradient(ellipse at 96% 95%,rgba(159,226,217,.31),transparent 58%),
+  linear-gradient(130deg,#efe0fc 0%,#dee6fb 56%,#d5f4f0 100%);
+ --lustre-soft:
+  radial-gradient(ellipse at 4% 0%,rgba(255,255,255,.95),transparent 52%),
+  linear-gradient(132deg,#f3e8fc,#e6ebfc 55%,#e1f5f5);
+ --lustre-tab:
+  radial-gradient(ellipse at 9% 0%,rgba(255,255,255,.97),transparent 74%),
+  linear-gradient(119deg,#d8b4f0,#b3d5f7 54%,#a2e5d9);
+ --lustre-tab-idle:
+  linear-gradient(132deg,rgba(233,216,251,.93),rgba(208,231,252,.90));
+ --lustre-border:rgba(134,95,185,.50);
+ --lustre-shine:rgba(255,255,255,.98);
+ --lustre-shadow:0 13px 31px rgba(57,44,111,.16),inset 0 1px 0 rgba(255,255,255,.98),inset 0 -1px 0 rgba(114,155,181,.12);
+ --lustre-small-shadow:0 6px 18px rgba(63,49,115,.13),inset 0 1px 0 rgba(255,255,255,.96);
+}
+
+/* The real Reading/Writing/Commons introductions were being forcibly
+ * flattened by palace-creative-rooms-finish.css. Restore unmistakable colour. */
+.palace-shell.full-palace-shell :is(
+ .legacy-reading-page .legacy-reading-intro,
+ .chic-writing-head,
+ .writing-head,
+ .chic-commons .chic-life-intro,
+ .legacy-life-page>.legacy-life-head,
+ .legacy-treasury-page>.legacy-treasury-head,
+ .chic-library-page>.chic-library-head,
+ .chic-library-page>.library-head,
+ .legacy-search-page .search-gathering
+) {
+ background:var(--lustre-hero)!important;
+ border-color:var(--lustre-border)!important;
+ box-shadow:var(--lustre-shadow)!important;
+}
+/* Highlights stay within backgrounds; no pseudo-element over content. */
+.palace-shell.full-palace-shell :is(
+ .palace-hub-hero,
+ .palace-passage,
+ .palace-home-more,
+ .palace-command-hero .palace-home-identity,
+ .palace-home-pulse>span,
+ .palace-home-shortcuts>a,
+ .chic-library-page .library-follow-discovery,
+ .chic-library-page .writer-discovery-toolbar,
+ .reading-facet-sidebar,
+ .legacy-search-page .palace-search-refinements,
+ .chic-commons .commons-conversation-path,
+ .chic-commons .commons-compose-fold,
+ .chic-commons .chic-timeline,
+ .legacy-life-page .community-pulse-row>button,
+ .chamber-atelier-tabs.chic-chamber-tabs,
+ .palace-hub-paths>a,
+ .palace-hub-recent>a
+) {
+ background:var(--lustre-card)!important;
+ border-color:var(--lustre-border)!important;
+ box-shadow:var(--lustre-shadow)!important;
+}
+/* Do not repaint artwork-bearing panes: preserve their individual designs
+ * and give their existing gradients a visible, reflective glass rim. */
+.palace-shell.full-palace-shell :is(
+ .palace-home-welcome .palace-choice-card,
+ .reading-mood-doors,
+ .reading-classics-hall,
+ .writing-pad-launch,
+ .prompt-orrery,
+ .legacy-treasury-page .treasury-wardrobe,
+ .duel-basis-draw,
+ .grand-palace-hall .grand-palace-hero,
+ .grand-palace-hall .grand-your-court
+) {
+ border-color:var(--lustre-border)!important;
+ box-shadow:var(--lustre-shadow)!important;
+}
+
+/* Reading discovery: add depth to cards without touching the covers.
+ * Explicitly exclude LGBTQ+ rainbow/prism stories and themed treatments. */
+.palace-shell.full-palace-shell .legacy-reading-page .chic-story-catalogue .story-row:not(.prism-story):not(.heritage-prism),
+.palace-shell.full-palace-shell .legacy-reading-page .chic-discovery-court .legacy-constellation-list article:not(.prism-story),
+.palace-shell.full-palace-shell .chic-draft-list .writer-work-card,
+.palace-shell.full-palace-shell .chic-library-page .library-card {
+ background:var(--lustre-soft)!important;
+ border-color:var(--lustre-border)!important;
+ box-shadow:var(--lustre-small-shadow)!important;
+}
+@media(hover:hover) {
+ .palace-shell.full-palace-shell .legacy-reading-page .chic-story-catalogue .story-row:not(.prism-story):not(.heritage-prism):hover,
+ .palace-shell.full-palace-shell .chic-draft-list .writer-work-card:hover,
+ .palace-shell.full-palace-shell .chic-library-page .library-card:hover {
+  background:var(--lustre-card)!important;
+  border-color:var(--ui-accent)!important;
+  box-shadow:var(--lustre-shadow)!important;
+ }
+}
+
+/* The filters, catalogues and writing studio had flat #surface fills.
+ * All controls remain native and usable, with visually distinct surfaces. */
+.palace-shell.full-palace-shell :is(
+ .legacy-reading-page .chic-reading-tools,
+ .reading-catalogue-controls>div[role="group"],
+ .reading-catalogue-more,
+ .chic-writing-library-tools,
+ .writer-work-card .writer-work-menu[open],
+ .chic-library-page .library-tabs,
+ .chic-library-page .library-search-live,
+ .chic-activity-page .chic-activity-lenses,
+ .legacy-search-page .palace-search-refinement-grid,
+ .home-shelf-toolbar>div,
+ .palace-hub-discovery form,
+ .treasury-gallery .badge-controls,
+ .treasury-gallery .treasury-badge-filters
+) {
+ background:var(--lustre-soft)!important;
+ border-color:var(--lustre-border)!important;
+ box-shadow:var(--lustre-small-shadow)!important;
+}
+/* Active destinations should resemble luminous coloured glass rather than
+ * nearly-black flat tabs. Resting tabs keep subdued tints and visible edges. */
+.palace-shell.full-palace-shell :is(
+ .legacy-reading-page .reading-mode-tabs a.active,
+ .chic-writing-tabs button.active,
+ .writing-tabs.chic-writing-tabs button.active,
+ .chic-commons .commons-view-buttons button.active,
+ .legacy-life-page .life-tabs.restored button[aria-current="page"],
+ .legacy-treasury-page .treasury-tabs button.active,
+ .chamber-atelier-tabs.chic-chamber-tabs>a.active,
+ .reading-catalogue-controls button[aria-pressed="true"],
+ .chic-library-page .library-tabs button.active,
+ .palace-hub-lenses button[aria-pressed="true"],
+ .home-shelf-toolbar button[aria-pressed="true"]
+) {
+ background:var(--lustre-tab)!important;
+ border-color:var(--lustre-border)!important;
+ box-shadow:var(--lustre-small-shadow)!important;
+}
+.palace-shell.full-palace-shell :is(
+ .legacy-reading-page .reading-mode-tabs a:not(.active),
+ .chic-writing-tabs button:not(.active),
+ .chic-commons .commons-view-buttons button:not(.active),
+ .chic-library-page .library-tabs button:not(.active),
+ .palace-passage-doors>a,
+ .reading-catalogue-controls button:not([aria-pressed="true"])
+) {
+ background:var(--lustre-tab-idle)!important;
+ border-color:var(--palace-glass-edge)!important;
+ box-shadow:inset 0 1px 0 var(--lustre-shine)!important;
+}
+
+/* Primary action gloss: preserve the already selected unified gradients,
+ * adding a reflective top wash without erasing their underlying palette. */
+.palace-shell.full-palace-shell :is(
+ .full-topbar .global-search-live>button[type="submit"],
+ .full-topbar .full-top-actions .write-action,
+ .palace-passage .palace-passage-wander,
+ .legacy-reading-page .reading-compass .reading-compass-wander,
+ .palace-hub-actions>.hub-primary
+) {
+ background-image:
+  radial-gradient(ellipse at 10% -12%,rgba(255,255,255,.40),transparent 66%),
+  var(--palace-unified-action-gradient)!important;
+ border-color:var(--lustre-border)!important;
+ box-shadow:var(--lustre-small-shadow)!important;
+}
+.palace-shell.full-palace-shell.daylight :is(
+ .full-topbar .global-search-live>button[type="submit"],
+ .full-topbar .full-top-actions .write-action,
+ .palace-passage .palace-passage-wander,
+ .legacy-reading-page .reading-compass .reading-compass-wander,
+ .palace-hub-actions>.hub-primary
+) {
+ background-image:
+  radial-gradient(ellipse at 10% -12%,rgba(255,255,255,.9),transparent 65%),
+  var(--palace-unified-action-gradient)!important;
+}
+
+/* A light sheen over the main Palace shell itself; do not change reading
+ * canvases or member-selected decoration in the personal Chamber. */
+.palace-shell.full-palace-shell.nightfall .full-stage {
+ background-image:
+  radial-gradient(ellipse at 8% 0%,rgba(126,77,204,.11),transparent 46%),
+  radial-gradient(ellipse at 96% 35%,rgba(53,171,182,.08),transparent 53%);
+}
+.palace-shell.full-palace-shell.daylight .full-stage {
+ background-image:
+  radial-gradient(ellipse at 8% 0%,rgba(180,134,229,.11),transparent 46%),
+  radial-gradient(ellipse at 96% 35%,rgba(109,200,207,.11),transparent 53%);
+}
+
+/* Chat can be rendered in a portal outside the .palace-shell. Scope via
+ * the actual theme attribute, not an assumed ancestor. Keep message bubbles,
+ * attachments and images precisely as they are. */
+html[data-palace-theme="nightfall"] .palace-chat-v2 {
+ --chat-lustre:
+  radial-gradient(ellipse at 9% 0%,rgba(211,176,255,.26),transparent 52%),
+  linear-gradient(145deg,#302853,#202f59 57%,#194457);
+ --chat-lustre-line:rgba(205,177,249,.55);
+ --chat-lustre-shadow:0 20px 65px rgba(6,8,31,.38),inset 0 1px 0 rgba(255,255,255,.18);
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 {
+ --chat-lustre:
+  radial-gradient(ellipse at 9% 0%,rgba(255,255,255,.98),transparent 53%),
+  linear-gradient(145deg,#efe3fc,#e0e9fc 59%,#d7f4f0);
+ --chat-lustre-line:rgba(137,100,183,.44);
+ --chat-lustre-shadow:0 18px 48px rgba(60,48,110,.16),inset 0 1px 0 #fff;
+}
+html[data-palace-theme] .palace-chat-v2 .palace-chat-panel {
+ border-color:var(--chat-lustre-line)!important;
+ box-shadow:var(--chat-lustre-shadow)!important;
+}
+html[data-palace-theme] .palace-chat-v2 .palace-chat-heading {
+ background:var(--chat-lustre)!important;
+ border-bottom-color:var(--chat-lustre-line)!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.2)!important;
+}
+html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-heading {
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.98)!important;
+}
+html[data-palace-theme] .palace-chat-v2 .palace-chat-tabs button[aria-pressed="true"] {
+ background:var(--chat-lustre)!important;
+ border-color:var(--chat-lustre-line)!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.2)!important;
+}
+/* Stay comfortable on mobile. Avoid expensive scrolling blurs/motion. */
+@media(prefers-reduced-transparency:reduce) {
+ .palace-shell.full-palace-shell.nightfall {
+  --lustre-card:linear-gradient(130deg,#42316c,#28385e 62%,#28566b);
+  --lustre-soft:linear-gradient(130deg,#352950,#293755 62%,#234957);
+ }
+ .palace-shell.full-palace-shell.daylight {
+  --lustre-card:linear-gradient(130deg,#efe0fa,#ddeafa 62%,#d9f4ef);
+  --lustre-soft:linear-gradient(130deg,#f0e7fa,#e5ebfa 62%,#e2f4ee);
+ }
+}
+@media(forced-colors:active) {
+ .palace-shell.full-palace-shell :is(.legacy-reading-intro,.chic-writing-head,.chic-life-intro,.story-row,.writer-work-card,.palace-hub-hero,.palace-passage) {
+  background:Canvas!important;
+  border-color:CanvasText!important;
+  box-shadow:none!important;
+ }
+}
