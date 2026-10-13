@@ -20,7 +20,7 @@ export default function PalaceHistoryArchive({life,stories=[],loadState='idle',o
   chaptersReady
  }),[life,stories,loadState,chaptersReady]);
  const visible=useMemo(()=>filterPalaceChronicle(archive,{kind,query,period,sort}),[archive,kind,query,period,sort]);
- const groups=useMemo(()=>groupPalaceChronicle(visible.slice(0,limit)),[visible,limit]);
+ const groups=useMemo(()=>sort==='title'?[{key:'alphabetic',label:'A–Z',items:visible.slice(0,limit)}].filter(g=>g.items.length):groupPalaceChronicle(visible.slice(0,limit)),[visible,limit,sort]);
  const counts=useMemo(()=>Object.fromEntries(PALACE_CHRONICLE_TYPES.map(([type])=>[
   type,type==='all'?archive.length:archive.filter(e=>e.kind===type).length
  ])),[archive]);
