@@ -4,7 +4,7 @@ import {act,cleanup,fireEvent,render,screen,waitFor,within} from '@testing-libra
 import {MemoryRouter} from 'react-router-dom';
 import PalaceChatDrawer from './PalaceChatDrawer';
 import {watchPalaceChatRoom} from './palaceChatRealtime';
-import {getLetters,searchMembers,editLetterMessage} from './palaceData';
+import {getLetters,searchMembers,editLetterMessage,setConversationPreference} from './palaceData';
 import {getPalaceGroupChatOverview,getPalaceGroupMessages,createPalaceGroupChat,respondPalaceGroupInvite,sendPalaceGroupMessage,editPalaceGroupMessage,setPalaceGroupIdentity,pinPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
 
 vi.mock('./palaceChatRealtime',()=>({watchPalaceChatRoom:vi.fn(()=>()=>{})}));
@@ -38,6 +38,36 @@ beforeEach(()=>{
 });
 afterEach(cleanup);
 describe('Palace quick chat',()=>{
+
+ it('keeps unread Direct conversations unread until the person opens that thread',async()=>{
+  getLetters.mockResolvedValue({
+   ...direct,
+   conversations:[{...direct.conversations[0],unread:true}],
+   messages:[{id:'unread-note',conversation_id:'direct-one',sender_id:'member-two',body:'A note from River',created_at:'2026-10-13T13:15:00Z'}]
+  });
+  const {container}=mount();
+  fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  const river=await screen.findByRole('button',{name:'River'});
+  expect(container.querySelector('.palace-chat-dock.is-thread-open')).toBeNull();
+  expect(setConversationPreference).not.toHaveBeenCalled();
+  fireEvent.click(river);
+  await waitFor(()=>expect(setConversationPreference).toHaveBeenCalledWith(user,'direct-one',expect.objectContaining({last_read_at:expect.any(String)})));
+  expect(container.querySelector('.palace-chat-dock.is-thread-open')).toBeTruthy();
+ });
+ it('has a real expandable feature guide and accessible message menu by Enter',async()=>{
+  getLetters.mockResolvedValue({...direct,messages:[{
+   id:'own-help',conversation_id:'direct-one',sender_id:user,body:'Help example',created_at:'2026-10-13T13:00:00Z'
+  }]});
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  const help=screen.getByLabelText('How Palace Chat works');
+  fireEvent.click(help);
+  expect(help.closest('details').open).toBe(true);
+  expect(screen.getByText('Palace Chat guide')).toBeTruthy();
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  const bubble=(await screen.findByText('Help example')).closest('.palace-chat-bubble');
+  fireEvent.keyDown(bubble,{key:'Enter'});
+  expect(screen.getByRole('menu',{name:'Message actions'})).toBeTruthy();
+ });
  it('keeps message actions hidden until the bubble is held or context-clicked',async()=>{
   getLetters.mockResolvedValue({...direct,messages:[{
    id:'own-1',conversation_id:'direct-one',sender_id:user,body:'My private hello',
