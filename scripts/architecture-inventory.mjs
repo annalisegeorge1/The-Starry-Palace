@@ -4,7 +4,7 @@
  * Highlights structural hotspots without treating size as a broken feature.
  * No dependency installation, networking or database connections required.
  */
-import {readdirSync,readFileSync,statSync} from 'node:fs';
+import {readdirSync,readFileSync} from 'node:fs';
 import {join,relative,extname} from 'node:path';
 
 const root=process.cwd();
