@@ -3,6 +3,7 @@ import {readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {shouldFetchStoryHistory,canShowHistoryChapterDetails} from './storyHistoryLoading';
 const live=readFileSync(resolve(process.cwd(),'src/liveRooms.jsx'),'utf8');
+const chronicle=readFileSync(resolve(process.cwd(),'src/PalaceHistoryArchive.jsx'),'utf8');
 
 describe('Palace Life history fetch isolation',()=>{
  it('never loads history in other Palace Life rooms and caches successful loads',()=>{
@@ -22,6 +23,9 @@ describe('Palace Life history fetch isolation',()=>{
   expect(live).toContain('getStoryHistoryMetadata(works.map(x=>x.id))');
   expect(live).toContain("setHistoryLoadState('partial')");
   expect(live).toContain('setHistoryLoadVersion(v=>v+1)');
-  expect(live).toContain('canShowHistoryChapterDetails(historyLoadState)');
+  expect(live).toContain('loadState={historyLoadState}');
+  expect(chronicle).toContain("const chaptersReady=loadState==='ready'");
+  expect(chronicle).toContain('Chapters not verified');
+  expect(chronicle).toContain('Words not verified');
  });
 });
