@@ -1,0 +1,124 @@
+/*
+ * Room to room, without another crowded directory.
+ * Compact contextual destinations: 3 relevant choices, no current-room card.
+ * Does not alter manuscript pages, collectibles, or member-customized artwork.
+ */
+.palace-shell.full-palace-shell .palace-journey-strip{
+ --journey-border:var(--lustre-border,rgba(192,173,241,.36));
+ --journey-ink:#f2edff;
+ --journey-muted:#c7bfdd;
+ --journey-glow:radial-gradient(ellipse at 6% -55%,rgba(216,162,244,.28),transparent 55%);
+ display:flex!important;align-items:center;
+ min-width:0;max-width:1240px;width:100%;
+ gap:10px;margin:4px auto 13px;
+ padding:8px 10px;
+ border:1px solid var(--journey-border)!important;
+ border-radius:15px!important;
+ background:var(--journey-glow),linear-gradient(124deg,rgba(55,42,102,.96),rgba(34,56,104,.96) 65%,rgba(28,91,105,.93))!important;
+ box-shadow:0 9px 23px rgba(8,10,35,.17),inset 0 1px 0 rgba(244,222,255,.22)!important;
+}
+.palace-shell.daylight .palace-journey-strip{
+ --journey-ink:#302746;--journey-muted:#645678;
+ --journey-glow:radial-gradient(ellipse at 5% -45%,rgba(255,255,255,.98),transparent 60%);
+ background:var(--journey-glow),linear-gradient(124deg,#f0e4fc,#e3eaf9 64%,#d8eff0)!important;
+ box-shadow:0 8px 21px rgba(49,37,95,.13),inset 0 1px 0 rgba(255,255,255,.97)!important;
+}
+.palace-shell .palace-journey-strip .prism-room-wayfinder-intro{
+ display:flex;align-items:center;flex:0 0 143px;gap:7px;
+ min-width:0;padding:5px 6px!important;
+}
+.palace-shell .palace-journey-strip .prism-room-wayfinder-intro>span{
+ width:27px;height:27px;border-radius:9px;font:1.1rem/1 Georgia,serif;
+ display:grid;place-items:center;color:var(--journey-ink);
+ background:linear-gradient(145deg,rgba(181,137,235,.32),rgba(98,168,208,.23));
+}
+.palace-shell .palace-journey-strip .prism-room-wayfinder-intro small{
+ font:750 .58rem/1.1 system-ui,sans-serif;letter-spacing:.08em;
+ color:var(--journey-muted)!important;
+}
+.palace-shell .palace-journey-strip .prism-room-wayfinder-intro strong{
+ font:650 .89rem/1.2 Georgia,serif;color:var(--journey-ink)!important;
+}
+.palace-shell .palace-journey-strip .prism-room-wayfinder-links{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+ align-items:stretch;flex:1 1 auto;min-width:0;
+ gap:7px;padding:0;overflow:visible;
+}
+.palace-shell .palace-journey-strip .prism-room-wayfinder-link{
+ min-width:0;min-height:45px;
+ display:flex;align-items:center;gap:8px;
+ padding:6px 11px;border-radius:11px!important;
+ border:1px solid var(--journey-border)!important;
+ background:linear-gradient(125deg,rgba(166,131,214,.14),rgba(69,137,169,.13))!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.1)!important;
+ color:var(--journey-ink)!important;text-decoration:none;
+ transform:none!important;
+}
+.palace-shell.daylight .palace-journey-strip .prism-room-wayfinder-link{
+ background:linear-gradient(130deg,rgba(247,237,255,.7),rgba(231,246,251,.68))!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.9)!important;
+}
+.palace-shell .palace-journey-strip .prism-room-wayfinder-link:hover,
+.palace-shell .palace-journey-strip .prism-room-wayfinder-link:focus-visible{
+ border-color:var(--prism-hue)!important;
+ background:var(--prism-hue-wash)!important;
+}
+.palace-shell .palace-journey-strip .prism-room-wayfinder-link:focus-visible{
+ outline:2px solid #a8dafa!important;outline-offset:2px;
+}
+.palace-shell .palace-journey-strip .prism-room-wayfinder-glyph{
+ flex:0 0 28px;width:28px;height:28px;border-radius:9px;
+ font:1.05rem/1 Georgia,serif;color:var(--prism-hue);
+}
+.palace-shell .palace-journey-strip .prism-room-wayfinder-label{
+ min-width:0;display:grid;gap:2px;flex:1 1 auto;
+}
+.palace-shell .palace-journey-strip .prism-room-wayfinder-label strong{
+ font:750 .75rem/1.23 system-ui,sans-serif;color:var(--journey-ink)!important;
+ white-space:normal;overflow-wrap:normal;
+}
+.palace-shell .palace-journey-strip .prism-room-wayfinder-label small{
+ font:500 .62rem/1.25 system-ui,sans-serif;color:var(--journey-muted)!important;
+}
+.palace-shell .palace-journey-strip .palace-journey-arrow{
+ margin-left:auto;flex:none;color:var(--prism-hue);font:750 1rem/1 system-ui,sans-serif;
+}
+@media(max-width:900px){
+ .palace-shell.full-palace-shell .palace-journey-strip{
+  display:grid!important;grid-template-columns:minmax(0,1fr);
+  gap:5px;padding:8px;margin:2px auto 11px;
+ }
+ .palace-shell .palace-journey-strip .prism-room-wayfinder-intro{
+  flex-basis:auto;padding:2px 5px!important;
+ }
+ .palace-shell .palace-journey-strip .prism-room-wayfinder-links{
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));
+  overflow:visible!important;gap:6px;padding:0!important;
+ }
+ .palace-shell .palace-journey-strip .prism-room-wayfinder-link{
+  flex:none;min-width:0!important;min-height:43px!important;
+  padding:7px 8px!important;
+ }
+ .palace-shell .palace-journey-strip .prism-room-wayfinder-label small{display:none}
+ .palace-shell .palace-journey-strip .prism-room-wayfinder-intro>span{width:24px;height:24px}
+}
+@media(max-width:470px){
+ .palace-shell .palace-journey-strip .prism-room-wayfinder-intro strong{font-size:.78rem!important}
+ .palace-shell .palace-journey-strip .prism-room-wayfinder-intro small{font-size:.53rem!important}
+ .palace-shell .palace-journey-strip .prism-room-wayfinder-link{gap:5px!important}
+ .palace-shell .palace-journey-strip .prism-room-wayfinder-glyph{
+  width:23px;height:23px;flex-basis:23px;font-size:.96rem;
+ }
+ .palace-shell .palace-journey-strip .prism-room-wayfinder-label strong{font-size:.66rem!important;line-height:1.2}
+ .palace-shell .palace-journey-strip .palace-journey-arrow{display:none}
+}
+@media(forced-colors:active){
+ .palace-shell .palace-journey-strip,
+ .palace-shell .palace-journey-strip .prism-room-wayfinder-link{
+  background:Canvas!important;border-color:CanvasText!important;
+  box-shadow:none!important;color:CanvasText!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .palace-journey-strip a{transition:none!important;transform:none!important}
+}
