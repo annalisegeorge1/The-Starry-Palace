@@ -252,7 +252,7 @@ describe('Palace quick chat',()=>{
  it('shares only a selected published story with a structured story reference',async()=>{
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
   fireEvent.click(screen.getByRole('button',{name:/Groups/}));
-  await screen.findAllByText('Moonlight Readers');
+  fireEvent.click(await screen.findByRole('button',{name:'Moonlight Readers'}));
   fireEvent.click(screen.getByRole('button',{name:/Share a Palace story/}));
   fireEvent.change(screen.getByRole('textbox',{name:'Find a published story to share'}),{target:{value:'Blue'}});
   fireEvent.click(screen.getByRole('button',{name:'Find'}));
