@@ -6,8 +6,8 @@ afterEach(cleanup);
 it('exposes each layout and reports the chosen presentation accessibly',()=>{
  const choose=vi.fn();
  render(<ReadingCatalogueControls layout="compact" onLayout={choose} shown={24} total={80}/>);
- expect(screen.getByRole('button',{name:'Compact'}).getAttribute('aria-pressed')).toBe('true');
- fireEvent.click(screen.getByRole('button',{name:'Gallery'}));
+ expect(screen.getByRole('button',{name:/Compact layout/}).getAttribute('aria-pressed')).toBe('true');
+ fireEvent.click(screen.getByRole('button',{name:/Gallery layout/}));
  expect(choose).toHaveBeenCalledWith('gallery');
  expect(screen.getByRole('status').textContent).toContain('24');
  expect(screen.getByRole('status').textContent).toContain('80');
