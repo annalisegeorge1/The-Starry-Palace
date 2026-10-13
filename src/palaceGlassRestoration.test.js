@@ -24,7 +24,7 @@ describe('Palace glass visual identity',()=>{
   expect(css).toContain('radial-gradient(');
   expect(css).toContain('linear-gradient(');
   expect(css).not.toMatch(/\banimation\s*:/);
-  expect(css).not.toMatch(/\b(?:width|height|padding|margin|transform)\s*:/);
+  expect(css).not.toMatch(/[;{]\s*(?:width|height|padding|margin|transform)\s*:/);
  });
  it('uses frosted glass only on desktop, with opaque mobile headers',()=>{
   expect(css).toContain('@media(min-width:961px)');
