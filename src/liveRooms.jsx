@@ -1029,7 +1029,7 @@ export function LibraryLive({Frame}){
  const filteredCollections=(org?.collections||[]).filter(x=>matches(x.name,x.description,...(x.library_collection_items||[]).map(i=>i.works?.title||i.comics?.title)));
  const filteredLists=(org?.lists||[]).filter(x=>matches(x.name,x.description,...(x.reading_list_items||[]).map(i=>i.works?.title||i.comics?.title)));
  const filteredNotes=(org?.notes||[]).filter(x=>matches(x.note_text,x.bookmark_label,x.works?.title,x.comics?.title,x.chapters?.title));
- function choose(next){setTab(next);setQuery('');history.replaceState(null,'','/library?tab=+encodeURIComponent(next));window.scrollTo({top:0,left:0,behavior:'auto'})}
+ function choose(next){setTab(next);setQuery('');history.replaceState(null,'','/library?tab='+encodeURIComponent(next));window.scrollTo({top:0,left:0,behavior:'auto'})}
  const sourceItems=[...(data?.saved||[]).map(x=>({type:'work',id:x.works?.id,title:x.works?.title||'Story'})),...(data?.savedComics||[]).map(x=>({type:'comic',id:x.comics?.id,title:x.comics?.title||'Comic'}))].filter(x=>x.id);
  function openDialog(kind,extra={}){setForm({name:'',description:'',itemKey:sourceItems[0]?sourceItems[0].type+':'+sourceItems[0].id:'',note:'',label:'',...extra});setDialog(kind)}
  async function removeOrganizerItem(kind,itemId){try{await removeLibraryOrganizerItem(kind,itemId);await load()}catch(e){setError(e.message)}}
