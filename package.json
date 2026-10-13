@@ -11,7 +11,8 @@
     "build": "vite build && node scripts/prepare-spa-fallback.mjs",
     "preview": "vite preview",
     "test": "vitest run",
-    "verify": "vitest run && npm run build"
+    "verify": "vitest run && npm run build",
+    "audit:structure": "node scripts/architecture-inventory.mjs"
   },
   "keywords": [],
   "author": "",
