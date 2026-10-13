@@ -2123,7 +2123,7 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('A newer episode was published after you finished.');
     expect(live).toContain('comicHasNew');
     expect(live).toContain('comicFinished');
-    expect(live).toContain('New panels available');
+    expect(read('src/libraryHistoryChronicleModel.js')).toContain('New episode since your saved place');
     expect(polish).toContain('.comic-reader-flags span.new');
     expect(polish).toContain('.comic-resume-strip.new-panels');
   });
