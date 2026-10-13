@@ -77,6 +77,7 @@ import './reading-desktop-finish.css';
 import './treasury-badge-composition-fix.css';
 import './writer-manuscript-library.css';
 import './palace-creative-rooms-finish.css';
+import './palace-glass-restoration.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
