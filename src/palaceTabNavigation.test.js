@@ -1,6 +1,6 @@
 import {describe,it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
-import {palaceTabFromSearch,palaceTabUrl,WRITING_TABS,LIBRARY_TABS} from './palaceTabNavigation';
+import {palaceTabFromSearch,palaceTabUrl,WRITING_TABS,LIBRARY_TABS,SETTINGS_TABS,EVENTS_PUBLIC_TABS,EVENTS_MEMBER_TABS} from './palaceTabNavigation';
 
 describe('Palace core tab routing cleanup',()=>{
  it('recognizes every available writing tab and handles legacy or invalid links safely',()=>{
@@ -23,11 +23,24 @@ describe('Palace core tab routing cleanup',()=>{
   expect(palaceTabFromSearch('?tab=',WRITING_TABS,'drafts')).toBe('drafts');
   expect(palaceTabUrl('/writing','not-real',WRITING_TABS,'drafts')).toBe('/writing?tab=drafts');
  });
+ it('preserves Settings, member calendars and public event links without exposing member-only event tabs',()=>{
+  expect(SETTINGS_TABS).toEqual(['privacy','notifications','quiet','storage','account','system','guide','testing']);
+  expect(palaceTabFromSearch('?tab=account',SETTINGS_TABS,'privacy')).toBe('account');
+  expect(palaceTabFromSearch('?tab=invalid',SETTINGS_TABS,'privacy')).toBe('privacy');
+  expect(EVENTS_PUBLIC_TABS).toEqual(['writing','events','heritage']);
+  expect(EVENTS_MEMBER_TABS).toContain('calendar');
+  expect(EVENTS_MEMBER_TABS).toContain('proposals');
+  expect(palaceTabFromSearch('?tab=ballots',EVENTS_MEMBER_TABS,'writing')).toBe('ballots');
+  expect(palaceTabFromSearch('?tab=ballots',EVENTS_PUBLIC_TABS,'writing')).toBe('writing');
+  expect(palaceTabUrl('/events','heritage',EVENTS_PUBLIC_TABS,'writing')).toBe('/events?tab=heritage');
+ });
  it('uses React Router for tab transitions and Back/Forward instead of raw history edits',()=>{
   const src=readFileSync('src/liveRooms.jsx','utf8');
   const writing=src.split('export function WritingLive({Frame})')[1]?.split('export function ')[0]||'';
   const library=src.split('export function LibraryLive({Frame})')[1]?.split('export function ')[0]||'';
-  for(const area of [writing,library]){
+  const settings=src.split('export function SettingsLive({Frame})')[1]?.split('export function ')[0]||'';
+  const events=src.split('export function EventsLive({Frame})')[1]?.split('export function ')[0]||'';
+  for(const area of [writing,library,settings,events]){
    expect(area).toContain('palaceTabFromSearch(location.search,');
    expect(area).toContain('navigate(palaceTabUrl(');
    expect(area).not.toContain('history.replaceState(');
