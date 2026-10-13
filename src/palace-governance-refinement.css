@@ -35,3 +35,149 @@
 @media(min-width:1000px){.palace-governance .governance-tab-groups{grid-template-columns:1fr 1fr 1fr}.palace-governance .governance-tab-group .governance-tabs button{flex:1 1 115px}}
 @media(max-width:600px){.palace-governance .governance-entry-grid{grid-template-columns:1fr}.palace-governance .governance-pulse{gap:7px}.palace-governance .governance-pulse>div{padding:13px 10px}.palace-governance .governance-tab-group{padding:12px}.palace-governance .governance-tab-group .governance-tabs button{min-width:0;flex:1 1 118px}.palace-governance .governance-entry-grid button{padding:18px}}
 @media(prefers-reduced-motion:reduce){.palace-governance .governance-entry-grid button,.palace-governance .governance-tab-group .governance-tabs button{transition:none}.palace-governance .governance-entry-grid button:hover{transform:none}}
+
+
+/* Voting Hall · ballot discovery and decision clarity.
+   This layer does not modify vote counting, eligibility, selection limits,
+   result visibility, timestamps or council privileges. */
+.palace-governance .governance-heading {
+ min-width:0;
+ gap:12px;
+}
+.palace-governance .governance-filter {
+ gap:6px;
+ align-items:center;
+}
+.palace-governance .governance-filter button {
+ box-sizing:border-box;
+ min-height:44px;
+ border-radius:10px;
+ padding:9px 13px;
+}
+.palace-governance .governance-ballot-controls {
+ box-sizing:border-box;
+ min-width:0;
+ max-width:100%;
+ align-items:end;
+ gap:9px 12px;
+ padding:13px;
+ border:1px solid var(--palace-border,var(--line));
+ border-radius:15px;
+ background:var(--card,rgba(27,25,55,.55));
+}
+.palace-governance .governance-ballot-controls label {
+ box-sizing:border-box;
+ min-width:0;
+}
+.palace-governance .governance-ballot-toolbar {
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ flex-wrap:wrap;
+ flex:1 1 100%;
+ min-width:0;
+ gap:8px 12px;
+ padding-top:10px;
+ border-top:1px solid var(--palace-border,var(--line));
+}
+.palace-governance .governance-ballot-toolbar>span {
+ color:var(--muted,var(--palace-muted));
+ font-size:.78rem;
+ font-weight:700;
+ line-height:1.45;
+ font-variant-numeric:tabular-nums;
+}
+.palace-governance :is(.governance-ballot-clear,.governance-ballot-empty-reset) {
+ box-sizing:border-box;
+ display:inline-flex;
+ justify-content:center;
+ align-items:center;
+ min-height:42px;
+ max-width:100%;
+ padding:9px 13px;
+ border:1px solid rgba(173,153,223,.55);
+ border-radius:11px;
+ background:rgba(110,91,175,.19);
+ color:inherit;
+ font:750 .78rem/1.35 system-ui,sans-serif;
+ cursor:pointer;
+}
+.palace-governance .governance-ballot-empty-reset {
+ margin-top:11px;
+}
+.palace-governance .governance-ballots {
+ min-width:0;
+}
+.palace-governance .governance-ballot {
+ min-width:0;
+ border-radius:17px;
+}
+.palace-governance .governance-ballot>header h3 {
+ text-wrap:balance;
+ overflow-wrap:anywhere;
+ line-height:1.24;
+}
+.palace-governance .governance-ballot>header p,
+.palace-governance .governance-ballot footer {
+ line-height:1.53;
+ overflow-wrap:break-word;
+}
+.palace-governance .governance-choice {
+ min-width:0;
+ box-sizing:border-box;
+ text-align:left;
+}
+.palace-governance .governance-choice :is(strong,small) {
+ overflow-wrap:break-word;
+ line-height:1.36;
+}
+.palace-governance .governance-choice:focus-visible,
+.palace-governance .governance-filter button:focus-visible,
+.palace-governance .governance-ballot-toolbar button:focus-visible,
+.palace-governance .governance-ballot-empty-reset:focus-visible {
+ outline:2px solid var(--ui-accent,#b8a2ee)!important;
+ outline-offset:3px!important;
+}
+.palace-shell.daylight .palace-governance .governance-ballot-controls {
+ background:rgba(255,255,255,.82);
+}
+.palace-shell.daylight .palace-governance :is(.governance-ballot-clear,.governance-ballot-empty-reset) {
+ background:rgba(119,94,177,.11);
+ color:#43315e;
+ border-color:rgba(99,77,154,.42);
+}
+@media(max-width:680px) {
+ .palace-governance .governance-heading {
+  display:flex;
+  flex-wrap:wrap;
+ }
+ .palace-governance .governance-filter {
+  width:100%;
+  flex-wrap:nowrap;
+ }
+ .palace-governance .governance-filter button {
+  flex:1 1 0;
+  min-width:0;
+ }
+ .palace-governance .governance-ballot-controls {
+  padding:11px;
+  gap:8px;
+ }
+ .palace-governance .governance-ballot-controls>label {
+  flex:1 1 100%;
+ }
+ .palace-governance .governance-ballot-controls :is(input,select) {
+  min-height:44px;
+  max-width:100%;
+ }
+ .palace-governance .governance-ballot-toolbar {
+  align-items:flex-start;
+ }
+ .palace-governance .governance-ballot-toolbar>span {
+  flex:1 1 160px;
+ }
+ .palace-governance .governance-ballot-clear {
+  flex:0 1 auto;
+  white-space:normal;
+ }
+}
