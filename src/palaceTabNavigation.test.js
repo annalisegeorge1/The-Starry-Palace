@@ -38,7 +38,7 @@ describe('Palace core tab routing cleanup',()=>{
   const src=readFileSync('src/liveRooms.jsx','utf8');
   const writing=src.split('export function WritingLive({Frame})')[1]?.split('export function ')[0]||'';
   const library=src.split('export function LibraryLive({Frame})')[1]?.split('export function ')[0]||'';
-  const settings=src.split('export function SettingsLive({Frame})')[1]?.split('export function ')[0]||'';
+  const settings=readFileSync('src/SettingsRoom.jsx','utf8');
   const events=src.split('export function EventsLive({Frame})')[1]?.split('export function ')[0]||'';
   for(const area of [writing,library,settings,events]){
    expect(area).toContain('palaceTabFromSearch(location.search,');
