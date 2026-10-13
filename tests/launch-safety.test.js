@@ -311,8 +311,8 @@ describe('Starry Palace launch safety',()=>{
 
   it('keeps shared room states visually finished across the Palace',()=>{
     const polish=read('src/polish.css');
-    expect(live).toContain('palace-state-loading');
-    expect(live).toContain('Try this room again');
+    expect(read('src/PalaceLivePrimitives.jsx')).toContain('palace-state-loading');
+    expect(read('src/PalaceLivePrimitives.jsx')).toContain('Try this room again');
     expect(polish).toContain('.palace-state');
     expect(polish).toContain('.palace-dialog');
     expect(polish).toContain('.library-tabs,.treasury-tabs,.life-tabs');
@@ -853,8 +853,8 @@ describe('Starry Palace launch safety',()=>{
 
   it('keeps long Palace dialogs above the shell with visible actions',()=>{
     const next=read('src/palace-next.css');
-    expect(live).toContain("import{createPortal}from'react-dom'");
-    expect(live).toContain("return typeof document!=='undefined'?createPortal(dialog,document.body):dialog");
+    expect(read('src/PalaceLivePrimitives.jsx')).toContain("import {createPortal} from 'react-dom'");
+    expect(read('src/PalaceLivePrimitives.jsx')).toContain("return typeof document!=='undefined'?createPortal(dialog,document.body):dialog");
     expect(live).toContain('className="ink-duel-dialog"');
     expect(next).toContain('Palace dialogs v2 · viewport-safe portal surfaces');
     expect(next).toContain('grid-template-rows:auto minmax(0,1fr) auto');
