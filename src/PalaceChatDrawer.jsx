@@ -565,7 +565,7 @@ export default function PalaceChatDrawer({userId}){
      {tab==='groups'&&storySharing&&<section className="palace-chat-share-shelf" aria-label="Share a published Palace story"><form onSubmit={findStories}><input aria-label="Find a published story to share" placeholder="Search published story titles…" value={storyQuery} onChange={e=>setStoryQuery(e.target.value)} minLength={2} maxLength={90}/><button disabled={busy||storyQuery.trim().length<2}>Find</button></form><div>{storyResults.map(w=><button type="button" key={w.id} disabled={busy} onClick={()=>shareStory(w)}><strong>{w.title}</strong><small>Share with this circle ↗</small></button>)}</div><small>Only published Palace stories can be shared.</small></section>}
      {tab==='groups'&&hasOlder&&messages.length>0&&<div className="palace-chat-earlier"><button type="button" onClick={loadOlderGroupMessages} disabled={historyLoading} aria-label="Load earlier group messages">{historyLoading?'Gathering earlier messages…':'↑ Earlier messages'}</button></div>}
      <div className="palace-chat-messages" ref={messageRef} role="log" aria-label="Conversation messages" aria-live="polite" onScroll={e=>{const el=e.currentTarget;const pinned=el.scrollHeight-el.scrollTop-el.clientHeight<80;scrollPinned.current=pinned;if(pinned){setNewWhileAway(false);if(tab==='groups')acknowledgeVisibleGroupMessage();else acknowledgeVisibleDirectMessage()}}}>
-      {messages.length?messages.map(m=><div key={m.id} data-chat-message={m.id}
+      {messages.length?messages.map((m,index)=><React.Fragment key={m.id}>{(index===0||new Date(messages[index-1].created_at).toDateString()!==new Date(m.created_at).toDateString())&&<div className="palace-chat-date-divider" role="separator"><span>{new Date(m.created_at).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</span></div>}<div data-chat-message={m.id}
         tabIndex={0} role="group" aria-label={'Message from '+(m.sender_id===userId?'you':tab==='groups'?nameOf(m.profiles):openedRoomName)+'. Press and hold for actions.'}
         onPointerDown={e=>beginMessageHold(e,m)}
         onPointerMove={moveMessageHold} onPointerUp={clearMessageHold} onPointerCancel={clearMessageHold} onPointerLeave={clearMessageHold}
@@ -584,7 +584,7 @@ export default function PalaceChatDrawer({userId}){
        {tab==='groups'&&m.works?.slug&&<Link className="palace-chat-shared-story" to={'/work/'+encodeURIComponent(m.works.slug)} onClick={()=>setOpen(false)}><span aria-hidden="true">✧</span><span><small>PALACE STORY</small><strong>{m.works.title}</strong></span><span aria-hidden="true">↗</span></Link>}
        <small>{dateOf(m.created_at)}</small>
        {/* Message actions appear only on long-press, right-click, or keyboard context menu. */}
-      </div>):<p className="palace-chat-empty">Nothing written here yet. Begin with a hello. ✦</p>}
+      </div></React.Fragment>):<p className="palace-chat-empty">Nothing written here yet. Begin with a hello. ✦</p>}
      </div>
      {newWhileAway&&messages.length>0&&<button type="button" className="palace-chat-jump-latest" onClick={jumpToLatest}>New messages · Jump to latest ↓</button>}
      {tab==='groups'&&replyTarget?.chatId===roomId&&<div className="palace-chat-replying"><span>Replying to: {replyTarget.body.slice(0,96)}{replyTarget.body.length>96?'…':''}</span><button type="button" aria-label="Cancel group reply" onClick={()=>setReplyTarget(null)}>×</button></div>}
