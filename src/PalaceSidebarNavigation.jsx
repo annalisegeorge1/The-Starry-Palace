@@ -26,7 +26,7 @@ function PalaceNavRoom({room,active,currentHref,profilePath,renderIcon}){
     return <Link key={label+'-'+path} to={url} className={selected?'active':''}
      aria-current={selected?'page':undefined}><span>{label}</span></Link>;
    })}
-   {room.sections.length>5&&<details key={currentHref} className="palace-more-subdoors" defaultOpen={room.sections.slice(5).some(([,path])=>resolve(path)===currentHref)}>
+   {room.sections.length>5&&<details key={currentHref} className="palace-more-subdoors" open={room.sections.slice(5).some(([,path])=>resolve(path)===currentHref)||undefined}>
     <summary>More in this room <span>{room.sections.length-5}</span></summary>
     {room.sections.slice(5).map(([label,path])=>{
      const url=resolve(path),selected=currentHref===url;
