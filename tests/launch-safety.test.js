@@ -6,6 +6,8 @@ const root=resolve(process.cwd());
 const read=(p)=>readFileSync(resolve(root,p),'utf8');
 const main=read('src/main.jsx');
 const live=read('src/liveRooms.jsx');
+const settingsRoom=read('src/SettingsRoom.jsx');
+const activityRoom=read('src/PalaceActivityRoom.jsx');
 const pkg=JSON.parse(read('package.json'));
 const authoredTextFiles=()=>{
   const out=['index.html','README.md'];
@@ -59,11 +61,11 @@ describe('Starry Palace launch safety',()=>{
   });
 
   it('lets signed-in members change their Palace password without asking for an email inbox password',()=>{
-    expect(live).toContain('Change Palace password');
-    expect(live).toContain('Current Palace password');
-    expect(live).toContain('supabase.auth.updateUser(update)');
-    expect(live).toContain('current_password');
-    expect(live).toContain('The new passwords do not match.');
+    expect(settingsRoom).toContain('Change Palace password');
+    expect(settingsRoom).toContain('Current Palace password');
+    expect(settingsRoom).toContain('supabase.auth.updateUser(update)');
+    expect(settingsRoom).toContain('current_password');
+    expect(settingsRoom).toContain('The new passwords do not match.');
   });
 
   it('never asks members for the password to their email inbox',()=>{
@@ -793,11 +795,11 @@ describe('Starry Palace launch safety',()=>{
 
   it('keeps privacy and notification presets available without removing granular controls',()=>{
     const polish=read('src/polish.css');
-    expect(live).toContain("applyPrivacyPreset('open')");
-    expect(live).toContain("applyPrivacyPreset('members')");
-    expect(live).toContain("applyPrivacyPreset('private')");
-    expect(live).toContain("applyNotificationPreset('focused')");
-    expect(live).toContain('PRESETS SAVE IMMEDIATELY');
+    expect(settingsRoom).toContain("applyPrivacyPreset('open')");
+    expect(settingsRoom).toContain("applyPrivacyPreset('members')");
+    expect(settingsRoom).toContain("applyPrivacyPreset('private')");
+    expect(settingsRoom).toContain("applyNotificationPreset('focused')");
+    expect(settingsRoom).toContain('PRESETS SAVE IMMEDIATELY');
     expect(polish).toContain('.settings-presets');
   });
 
@@ -1016,9 +1018,9 @@ describe('Starry Palace launch safety',()=>{
   });
 
   it('never returns async load promises from React effects',()=>{
-    const live=read('src/liveRooms.jsx');
-    expect(live).not.toMatch(/useEffect\s*\(\s*load\s*,/);
-    expect((live.match(/useEffect\(\(\)=>\{load\(\)\},/g)||[]).length).toBeGreaterThanOrEqual(15);
+    const allRooms=[live,settingsRoom,activityRoom].join('\n');
+    expect(allRooms).not.toMatch(/useEffect\s*\(\s*load\s*,/);
+    expect((allRooms.match(/useEffect\(\(\)=>\{load\(\)\},/g)||[]).length).toBeGreaterThanOrEqual(15);
   });
 
   it('keeps the room boundary mounted across navigation so cleanup failures stay inside the room layer',()=>{
