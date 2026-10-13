@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link,NavLink} from 'react-router-dom';
 import './palace-calm-layout.css';
+import './palace-navigation-calm-doors.css';
 
 // Familiar Palace navigation: every room is immediately visible. Its own
 // sections appear while visiting it, rather than crowding every other room.
@@ -20,11 +21,19 @@ function PalaceNavRoom({room,active,currentHref,profilePath,renderIcon}){
   </NavLink>
   {active&&(room.sections||[]).length>0&&<div className="full-subnav palace-calm-subnav">
    <small>IN THIS ROOM</small>
-   {room.sections.map(([label,path])=>{
+   {room.sections.slice(0,5).map(([label,path])=>{
     const url=resolve(path),selected=currentHref===url;
     return <Link key={label+'-'+path} to={url} className={selected?'active':''}
      aria-current={selected?'page':undefined}><span>{label}</span></Link>;
    })}
+   {room.sections.length>5&&<details key={currentHref} className="palace-more-subdoors" defaultOpen={room.sections.slice(5).some(([,path])=>resolve(path)===currentHref)}>
+    <summary>More in this room <span>{room.sections.length-5}</span></summary>
+    {room.sections.slice(5).map(([label,path])=>{
+     const url=resolve(path),selected=currentHref===url;
+     return <Link key={label+'-'+path} to={url} className={selected?'active':''}
+      aria-current={selected?'page':undefined}><span>{label}</span></Link>;
+    })}
+   </details>}
   </div>}
  </div>;
 }
