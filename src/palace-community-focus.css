@@ -84,3 +84,28 @@
   color:CanvasText!important;box-shadow:none!important;
  }
 }
+
+/* Curation not deletion: show a small personal Treasury shelf first.
+ * Every earned badge/gift remains accessible behind the expanded cabinet. */
+.palace-shell.full-palace-shell .treasury-more-controls{
+ display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
+ gap:9px 14px;margin:15px 0 7px;padding:13px 15px;
+ border:1px solid var(--lustre-border,rgba(190,166,234,.47));
+ border-radius:14px;
+ background:var(--lustre-soft,rgba(54,43,98,.89));
+ box-shadow:var(--lustre-small-shadow,0 7px 18px rgba(6,9,28,.17));
+}
+.palace-shell .treasury-more-controls>span{
+ color:var(--ui-muted,#cbbfe7);font:.74rem/1.4 system-ui,sans-serif;
+}
+.palace-shell .treasury-more-controls>button{
+ min-height:42px;border:1px solid var(--lustre-border,rgba(211,183,248,.54));
+ border-radius:10px;padding:9px 14px;
+ background:var(--lustre-tab,linear-gradient(120deg,#8554ad,#477ea1));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.24);
+ color:var(--ui-text,#f5f1ff);font:750 .76rem/1.3 system-ui,sans-serif;cursor:pointer;
+}
+.palace-shell .treasury-more-controls>button:focus-visible{outline:2px solid #b8dcff;outline-offset:3px}
+@media(max-width:600px){
+ .palace-shell .treasury-more-controls>button{width:100%}
+}
