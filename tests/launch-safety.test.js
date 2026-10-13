@@ -305,10 +305,10 @@ describe('Starry Palace launch safety',()=>{
   });
 
   it('keeps quiet activity rooms useful rather than visually empty',()=>{
-    expect(live).toContain('activity-empty-state');
-    expect(live).toContain('Open My Library');
-    expect(live).toContain('Continue writing');
-    expect(live).toContain('Visit Palace Life');
+    expect(activityRoom).toContain('activity-empty-state');
+    expect(activityRoom).toContain('Open My Library');
+    expect(activityRoom).toContain('Continue writing');
+    expect(activityRoom).toContain('Visit Palace Life');
   });
 
   it('keeps shared room states visually finished across the Palace',()=>{
