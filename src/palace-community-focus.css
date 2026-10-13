@@ -1,0 +1,86 @@
+/*
+ * Palace Life cleanup / October 2026.
+ * Keep the familiar Palace glass, but use fewer competing destinations.
+ * The Moonlight room is presented inside Commons; member recognition follows introductions.
+ */
+.palace-shell.full-palace-shell .commons-moonlight-entry{
+ display:flex;align-items:center;justify-content:space-between;
+ flex-wrap:wrap;gap:12px;margin:16px 0 13px;padding:14px 16px;
+ border:1px solid var(--lustre-border,rgba(194,166,246,.43));
+ border-radius:15px;
+ background:var(--lustre-soft,linear-gradient(128deg,rgba(70,51,121,.95),rgba(28,72,96,.9)));
+ box-shadow:var(--lustre-small-shadow,0 9px 24px rgba(7,10,32,.15));
+}
+.palace-shell .commons-moonlight-entry>div{
+ display:flex;align-items:center;gap:11px;min-width:0;flex:1 1 240px;
+}
+.palace-shell .commons-moonlight-entry>div>span{
+ display:grid;place-items:center;flex:none;width:36px;height:36px;
+ border:1px solid var(--lustre-border,rgba(197,173,240,.45));
+ border-radius:12px;color:var(--ui-text,#f5eeff);
+ background:linear-gradient(125deg,rgba(179,134,232,.4),rgba(86,151,191,.26));
+ font-size:1.25rem;
+}
+.palace-shell .commons-moonlight-entry>div>div{min-width:0;display:grid;gap:4px}
+.palace-shell .commons-moonlight-entry strong{
+ color:var(--ui-text,#f5eeff);font:700 .93rem/1.3 Georgia,serif;
+}
+.palace-shell .commons-moonlight-entry small{
+ color:var(--ui-muted,#c7bfdf);font:.73rem/1.4 system-ui,sans-serif;
+}
+.palace-shell .commons-moonlight-entry>button{
+ min-height:42px;padding:9px 14px;flex:none;
+ border:1px solid var(--lustre-border,rgba(215,191,246,.5));
+ border-radius:11px;background:var(--lustre-tab,linear-gradient(122deg,#8061ab,#426e9e));
+ color:var(--ui-text,#f8f4ff);font:700 .74rem/1.3 system-ui,sans-serif;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.2);
+ cursor:pointer;
+}
+.palace-shell .chic-commons>.moonlight-room{
+ margin:0 0 16px;
+ padding:14px;
+ border:1px solid var(--lustre-border,rgba(187,170,232,.42));
+ border-radius:16px;
+ background:var(--lustre-soft,rgba(44,41,79,.94));
+ box-shadow:var(--lustre-shadow,0 17px 35px rgba(9,11,39,.2));
+ max-width:100%;
+}
+.palace-shell .chic-commons>.moonlight-room .life-room-intro{margin-top:0}
+.palace-shell .chic-commons>.moonlight-room .moon-stage{max-width:100%;min-width:0}
+.palace-shell .chic-commons>.moonlight-room .live-chat{
+ min-height:175px;max-height:min(46dvh,390px);
+ overflow-y:auto;overscroll-behavior:contain;
+}
+.palace-shell .palace-member-discovery-jumps{
+ display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+ margin:10px 0 18px;
+}
+.palace-shell .palace-member-discovery-jumps>a{
+ display:inline-flex;align-items:center;min-height:42px;
+ padding:9px 13px;border:1px solid var(--lustre-border,rgba(193,164,237,.43));
+ border-radius:10px;background:var(--lustre-soft,rgba(51,42,87,.88));
+ box-shadow:var(--lustre-small-shadow,0 7px 19px rgba(6,8,26,.12));
+ color:var(--ui-text,#f5edff);text-decoration:none;
+ font:700 .75rem/1.2 system-ui,sans-serif;
+}
+.palace-shell .palace-member-discovery-jumps>a:hover{
+ background:var(--lustre-card,rgba(85,65,138,.95));
+}
+.palace-shell .palace-discovery-recognition{margin-top:21px;padding-top:13px;border-top:1px solid var(--lustre-border,rgba(193,164,237,.4))}
+.palace-shell .palace-discovery-recognition .life-room-intro{margin-top:0}
+.palace-shell .palace-member-discovery-jumps>a:focus-visible,
+.palace-shell .commons-moonlight-entry>button:focus-visible{outline:2px solid #badbff;outline-offset:3px}
+@media(max-width:720px){
+ .palace-shell .commons-moonlight-entry>button{width:100%}
+ .palace-shell .chic-commons>.moonlight-room{padding:10px}
+ .palace-shell .chic-commons>.moonlight-room .live-chat{max-height:min(38dvh,290px)}
+ .palace-shell .palace-member-discovery-jumps>a{flex:1 1 auto;justify-content:center}
+}
+@media(forced-colors:active){
+ .palace-shell .commons-moonlight-entry,
+ .palace-shell .chic-commons>.moonlight-room,
+ .palace-shell .palace-member-discovery-jumps>a{
+  background:Canvas!important;border-color:CanvasText!important;
+  color:CanvasText!important;box-shadow:none!important;
+ }
+}
