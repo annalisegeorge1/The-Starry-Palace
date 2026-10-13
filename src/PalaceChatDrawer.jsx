@@ -209,22 +209,22 @@ export default function PalaceChatDrawer({userId}){
   return()=>{live=false};
  },[open,tab,selectedGroup,activeGroup?.pinnedMessageId]);
  useEffect(()=>{
-  if(!open||!roomId)return;
+  if(!open||!roomId||!threadOpen)return;
   scrollPinned.current=true;setNewWhileAway(false);
   if(tab==='direct'&&activeDirect?.unread){
    setConversationPreference(userId,roomId,{...{starred:!!activeDirect.preference?.starred,archived:false,muted:!!activeDirect.preference?.muted},last_read_at:new Date().toISOString()}).then(()=>setDirect(d=>d?({...d,conversations:d.conversations.map(c=>c.conversation_id===roomId?{...c,unread:false}:c)}):d)).catch(()=>{});
   }
- },[open,tab,roomId,userId]);
+ },[open,tab,roomId,userId,threadOpen]);
  useEffect(()=>{
   const el=messageRef.current;
-  if(!el||!open||!roomId)return;
+  if(!el||!open||!roomId||!threadOpen)return;
   if(scrollPinned.current){
    el.scrollTop=el.scrollHeight;
    setNewWhileAway(false);
    if(tab==='groups'&&latestMessageId)acknowledgeVisibleGroupMessage();
    else if(tab==='direct'&&activeDirect?.unread&&latestMessageId)acknowledgeVisibleDirectMessage();
   }else if(latestMessageId)setNewWhileAway(true);
- },[latestMessageId,roomId,tab,open]);
+ },[latestMessageId,roomId,tab,open,threadOpen]);
  useLayoutEffect(()=>{
   const anchor=historyScrollRef.current;
   if(!anchor||anchor.chatId!==groupMessages.chatId)return;
@@ -234,7 +234,7 @@ export default function PalaceChatDrawer({userId}){
   historyScrollRef.current=null;
  },[groupMessages]);
  useEffect(()=>{const update=()=>setQuiet(document.body.classList.contains('reader-focus-mode')||document.body.classList.contains('writer-focus-mode'));update();const obs=new MutationObserver(update);obs.observe(document.body,{attributes:true,attributeFilter:['class']});return()=>obs.disconnect()},[]);
- useEffect(()=>{const handle=e=>{if(e.key==='Escape'&&open){if(creating){setCreating(false)}else if(managing)setManaging(false);else setOpen(false)}};window.addEventListener('keydown',handle);return()=>window.removeEventListener('keydown',handle)},[open,creating,managing]);
+ useEffect(()=>{const handle=e=>{if(e.key!=='Escape'||!open)return;if(actionMenu){setActionMenu(null)}else if(creating){setCreating(false)}else if(managing){setManaging(false)}else if(threadOpen){setThreadOpen(false)}else setOpen(false)};window.addEventListener('keydown',handle);return()=>window.removeEventListener('keydown',handle)},[open,creating,managing,threadOpen,actionMenu]);
  if(!userId||dataOwner!==userId)return null;
 
  function acknowledgeVisibleGroupMessage(){
@@ -514,7 +514,8 @@ export default function PalaceChatDrawer({userId}){
      <span className="palace-chat-header-person"><strong>{openedRoomName}</strong><small><i aria-hidden="true" className={liveStatus==='live'?'is-live':''}/>{liveStatus==='live'?'Live updates':'Refreshes automatically'}</small></span>
      {tab==='groups'&&<button type="button" className="palace-chat-header-group-settings" aria-label="Group settings" aria-expanded={managing} onClick={()=>{setManaging(v=>!v);setIdentity({title:activeGroup.title,description:activeGroup.description||'',colorKey:activeGroup.colorKey||'moonlit'})}}>⚙</button>}
     </div>}
-    <div className="palace-chat-header-actions"><button type="button" onClick={()=>setChatPaused(v=>!v)} aria-pressed={chatPaused} title="Compact chat launcher when minimized" aria-label={chatPaused?'Turn off quiet launcher':'Use quiet launcher'}>☾</button><button type="button" onClick={()=>{setActionMenu(null);setOpen(false)}} aria-label="Minimize Palace chat">−</button></div></header>
+    <details className="palace-chat-help"><summary aria-label="How Palace Chat works" title="Chat tips and shortcuts">?</summary><div className="palace-chat-help-card"><strong>Palace Chat guide</strong><p>Choose a conversation to read and reply. Use <b>Direct</b> for one-to-one messages, or <b>Groups</b> for private circles.</p><p><b>Message options:</b> press and hold a bubble (or right-click it). You can copy, edit your own message, reply in groups, and pin messages when hosting a group.</p><p><b>Writing:</b> Ctrl/⌘ + Enter sends; Enter starts a new line. Use Emoji, GIF or Photo beside your message.</p><small>Messages stay within the conversation you open.</small></div></details>
+     <div className="palace-chat-header-actions"><button type="button" onClick={()=>setChatPaused(v=>!v)} aria-pressed={chatPaused} title="Compact chat launcher when minimized" aria-label={chatPaused?'Turn off quiet launcher':'Use quiet launcher'}>☾</button><button type="button" onClick={()=>{setActionMenu(null);setOpen(false)}} aria-label="Minimize Palace chat">−</button></div></header>
    <nav className="palace-chat-tabs" aria-label="Chat type">
     <button type="button" aria-pressed={tab==='direct'} onClick={()=>{setActionMenu(null);setThreadOpen(false);setTab('direct');setSearch('');setUnreadOnly(false);setCreating(false);setManaging(false);setError('')}}>✉ Direct {directUnread>0&&<span>{directUnread}</span>}</button>
     <button type="button" aria-pressed={tab==='groups'} onClick={()=>{setActionMenu(null);setThreadOpen(false);setTab('groups');setSearch('');setUnreadOnly(false);setCreating(false);setManaging(false);setError('')}}>♧ Groups {(groupUnread+groupData.invitations.length)>0&&<span>{groupUnread+groupData.invitations.length}</span>}</button>
@@ -568,7 +569,7 @@ export default function PalaceChatDrawer({userId}){
         onPointerDown={e=>beginMessageHold(e,m)}
         onPointerMove={moveMessageHold} onPointerUp={clearMessageHold} onPointerCancel={clearMessageHold} onPointerLeave={clearMessageHold}
         onContextMenu={e=>{e.preventDefault();openMessageActions(m,e.currentTarget,e.clientX,e.clientY)}}
-        onKeyDown={e=>{if((e.shiftKey&&e.key==='F10')||e.key==='ContextMenu'){e.preventDefault();openMessageActions(m,e.currentTarget)} }}
+        onKeyDown={e=>{if(e.target!==e.currentTarget)return;if((e.shiftKey&&e.key==='F10')||e.key==='ContextMenu'||e.key==='Enter'||e.key===' '){e.preventDefault();openMessageActions(m,e.currentTarget)} }}
         className={'palace-chat-bubble'+(m.sender_id===userId?' mine':'')+(actionMenu?.message.id===m.id?' has-active-actions':'')}>
        <div className="palace-chat-sender"><MemberAvatar className="palace-chat-message-avatar" memberId={m.sender_id} profile={tab==='groups'?(m.profiles||activeGroup?.members.find(p=>p.id===m.sender_id)):m.sender_id===userId?selfProfile:activeDirect?.correspondent}/>{tab==='groups'&&m.sender_id!==userId&&<strong>{nameOf(m.profiles)}</strong>}</div>
        {tab==='groups'&&m.reply_to_id&&<button type="button" className="palace-chat-reply-quote" onClick={()=>jumpToQuotedMessage(m.reply_to_id)} aria-label="Jump to replied message"><small>↩ Reply to {nameOf(messages.find(item=>item.id===m.reply_to_id)?.profiles)}</small><p>{messages.find(item=>item.id===m.reply_to_id)?.body?.slice(0,145)||'An earlier group message'}</p></button>}
