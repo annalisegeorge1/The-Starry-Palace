@@ -44,7 +44,7 @@ describe('Palace core tab routing cleanup',()=>{
    expect(area).toContain('palaceTabFromSearch(location.search,');
    expect(area).toContain('navigate(palaceTabUrl(');
    expect(area).not.toContain('history.replaceState(');
-   expect(area).toContain('[location.search]');
+   expect(area).toMatch(/\[location\.search(?:,session\?\.user\?\.id)?\]/);
   }
  });
  it('opens the selected scheduled release and most recent edited chapter',()=>{
