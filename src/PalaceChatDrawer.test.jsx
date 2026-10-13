@@ -64,7 +64,7 @@ describe('Palace quick chat',()=>{
   expect(help.closest('details').open).toBe(true);
   expect(screen.getByText('Palace Chat guide')).toBeTruthy();
   fireEvent.click(await screen.findByRole('button',{name:'River'}));
-  const bubble=(await screen.findByText('Help example')).closest('.palace-chat-bubble');
+  const bubble=(await within(screen.getByRole('log',{name:'Conversation messages'})).findByText('Help example')).closest('.palace-chat-bubble');
   fireEvent.keyDown(bubble,{key:'Enter'});
   expect(screen.getByRole('menu',{name:'Message actions'})).toBeTruthy();
  });
