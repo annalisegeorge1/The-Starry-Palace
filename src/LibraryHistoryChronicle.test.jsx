@@ -57,7 +57,7 @@ describe('My Library unified History screen',()=>{
   getPublishedWorks.mockRejectedValue(new Error('Offline'));
   mount();
   expect(screen.getByText('The Private Moon')).toBeTruthy();
-  await waitFor(()=>expect(screen.getByRole('alert').textContent).toContain('temporarily'));
+  await waitFor(()=>expect(screen.getByRole('alert').textContent).toContain('could not be loaded'));
   expect(screen.getByText('The Private Moon')).toBeTruthy();
   expect(screen.queryByText('The Glass Garden')).toBeNull();
  });
