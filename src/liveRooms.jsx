@@ -237,7 +237,7 @@ export function ChamberLive({Frame}){
     <Link to="/comics/studio"><span>◈</span><small>Comic Studio</small></Link>
     <Link to="/events?tab=calendar"><span>✧</span><small>Calendar</small></Link>
     <Link to="/treasury"><span>♛</span><small>Treasury</small></Link>
-    <Link to="/search"><span>⌕</span><small>Search</small></Link>
+    <Link to="/library?tab=history"><span>◷</span><small>History</small></Link>
    </nav>
 
    <section className="palace-moon-prompt" aria-label="Moon prompt">
