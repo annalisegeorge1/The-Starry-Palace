@@ -3,6 +3,7 @@ import {readFileSync} from 'node:fs';
 
 const live=readFileSync('src/liveRooms.jsx','utf8');
 const settings=readFileSync('src/SettingsRoom.jsx','utf8');
+const activity=readFileSync('src/PalaceActivityRoom.jsx','utf8');
 const primitives=readFileSync('src/PalaceLivePrimitives.jsx','utf8');
 const main=readFileSync('src/main.jsx','utf8');
 
@@ -22,6 +23,16 @@ describe('Palace room structural boundaries',()=>{
   expect(settings).toContain('updateNotifications(');
   expect(settings).toContain('supabase.auth.updateUser(');
   expect(settings).toContain('cancelAccountDeletion(');
+ });
+ it('keeps member activity and notification management in an isolated room',()=>{
+  expect(live).toContain("export {ActivityLive} from './PalaceActivityRoom';");
+  expect(live).not.toContain('export function ActivityLive({Frame})');
+  expect(activity).toContain('export function ActivityLive({Frame})');
+  expect(activity).toContain("from './PalaceLivePrimitives'");
+  expect(activity).not.toContain("from './liveRooms'");
+  expect(activity).toContain('markNoticeRead(');
+  expect(activity).toContain('markAllNoticesRead(');
+  expect(activity).toContain('dismissNotice(');
  });
  it('shares one accessible dialog and room state implementation across pages',()=>{
   expect(primitives).toContain('export function PalaceDialog(');
