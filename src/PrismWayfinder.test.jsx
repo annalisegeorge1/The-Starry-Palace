@@ -31,7 +31,7 @@ describe('Contextual Palace next-step directions',()=>{
   render(<MemoryRouter><PrismWayfinder active="reading"/></MemoryRouter>);
   const nav=screen.getByRole('navigation',{name:'Where to go next in the Palace'});
   expect(nav.querySelectorAll('a')).toHaveLength(3);
-  expect(screen.getByRole('link',{name:/Explore fandoms/})).toHaveAttribute('href','/fandoms');
+  expect(screen.getByRole('link',{name:/Explore fandoms/}).getAttribute('href')).toBe('/fandoms');
  });
  it('preserves member access checks if a guest renders a protected room link',()=>{
   const doors=palaceJourneyDoors('writing',false);
