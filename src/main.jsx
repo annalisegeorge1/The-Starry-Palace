@@ -349,6 +349,16 @@ function FrameShell({children}){
   document.addEventListener('visibilitychange',onVisible);
   return()=>{active=false;badgeRefreshRef.current=null;window.removeEventListener('focus',refresh);document.removeEventListener('visibilitychange',onVisible)};
  },[session?.user?.id]);
+ React.useEffect(()=>{
+  const onActivityCount=event=>{
+   const detail=event.detail;
+   if(detail?.userId!==session?.user?.id)return;
+   const next=Number(detail?.unread);
+   if(Number.isFinite(next))setActivityBadge(Math.max(0,Math.floor(next)));
+  };
+  window.addEventListener('palace:activity-count-changed',onActivityCount);
+  return()=>window.removeEventListener('palace:activity-count-changed',onActivityCount);
+ },[session?.user?.id]);
  React.useEffect(()=>{badgeRefreshRef.current?.()},[location.pathname]);
  const visibleRooms=fullPalaceRooms.filter(r=>!r.private||session);
  const resolveRoomPath=p=>p==='/member'?(shellProfile?.username?'/member/'+shellProfile.username:'/chamber'):p;
