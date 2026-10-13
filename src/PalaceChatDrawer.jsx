@@ -23,6 +23,7 @@ import './palace-chat-expressions.css';
 import './palace-chat-refined.css';
 import './palace-chat-media-edit.css';
 import './palace-chat-context-polish.css';
+import './palace-chat-conversation-first.css';
 
 const draftKey=(user,kind,id)=>'palace-chat-draft:'+user+':'+kind+':'+id;
 const nameOf=p=>p?.display_name||p?.username||'Palace member';
