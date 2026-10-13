@@ -286,6 +286,7 @@ describe('Palace quick chat',()=>{
  it('does not drag readers to new messages when they are scrolled up, and offers a jump button',async()=>{
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
   fireEvent.click(screen.getByRole('button',{name:/Groups/}));
+  fireEvent.click(await screen.findByRole('button',{name:'Moonlight Readers'}));
   await screen.findByText('Welcome to the circle');
   const log=screen.getByRole('log',{name:'Conversation messages'});
   Object.defineProperties(log,{
