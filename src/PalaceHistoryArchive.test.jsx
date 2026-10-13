@@ -31,7 +31,7 @@ describe('Palace Life History room',()=>{
   fireEvent.click(screen.getByRole('button',{name:/Conversations/}));
   expect(screen.getAllByText('The Reading Circle').length).toBeGreaterThan(0);
   expect(screen.queryByText('Moonlit Book')).toBeNull();
-  fireEvent.click(screen.getByRole('button',{name:'View room ↗'}));
+  fireEvent.click(screen.getByRole('button',{name:/View room/}));
   expect(visit).toHaveBeenCalledWith('forum');
   fireEvent.change(screen.getByRole('textbox',{name:'Search Palace Life history'}),{target:{value:'unmatched phrase'}});
   expect(screen.getByText('No moments match your filters.')).toBeTruthy();
