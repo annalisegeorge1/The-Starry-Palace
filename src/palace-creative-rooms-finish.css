@@ -2033,3 +2033,225 @@
   min-height:44px;
  }
 }
+
+
+/* Forum + universal Search · continuity of discovery.
+   Keep actual thread contents, writer cover art and reader settings untouched. */
+.palace-shell.full-palace-shell .legacy-life-page .forum-ledger-tools {
+ box-sizing:border-box;
+ min-width:0;
+ gap:8px 10px;
+ border-color:var(--room-edge,var(--ui-line));
+}
+.palace-shell.full-palace-shell .legacy-life-page .forum-ledger-tools .commons-search {
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-life-page .forum-ledger-tools .commons-view-buttons {
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-life-page .forum-discovery-status {
+ box-sizing:border-box;
+ grid-column:1/-1;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ flex-wrap:wrap;
+ gap:7px 12px;
+ min-width:0;
+ padding-top:8px;
+ border-top:1px solid var(--room-edge,var(--ui-line));
+}
+.palace-shell.full-palace-shell .legacy-life-page .forum-discovery-status>span {
+ min-width:0;
+ flex:1 1 160px;
+ font-size:.76rem;
+ font-weight:700;
+ color:var(--ui-muted,inherit);
+ font-variant-numeric:tabular-nums;
+}
+.palace-shell.full-palace-shell .legacy-life-page .forum-discovery-reset {
+ box-sizing:border-box;
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ min-height:40px;
+ max-width:100%;
+ padding:7px 12px;
+ border:1px solid var(--room-edge,var(--ui-line));
+ border-radius:10px;
+ font-size:.76rem;
+ white-space:nowrap;
+}
+.palace-shell.full-palace-shell .legacy-life-page .forum-thread-list>article {
+ box-sizing:border-box;
+ min-width:0;
+ border-color:var(--room-edge,var(--ui-line));
+ border-radius:15px;
+ gap:11px;
+}
+.palace-shell.full-palace-shell .legacy-life-page .forum-thread-list>article :is(.forum-thread-copy,.forum-thread-room){
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-life-page .forum-thread-list>article .forum-thread-copy h3{
+ text-wrap:balance;
+ overflow-wrap:break-word;
+ line-height:1.29;
+}
+.palace-shell.full-palace-shell .legacy-life-page .forum-thread-list>article .forum-thread-copy p {
+ overflow-wrap:anywhere;
+ line-height:1.54;
+}
+.palace-shell.full-palace-shell .legacy-life-page .forum-thread-list>article .forum-thread-byline,
+.palace-shell.full-palace-shell .legacy-life-page .forum-thread-list>article .forum-actions{
+ display:flex;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:5px 9px;
+}
+.palace-shell.full-palace-shell .legacy-life-page .forum-thread-list>article .forum-actions button{
+ box-sizing:border-box;
+ min-height:40px;
+ border-radius:10px;
+}
+.palace-shell.full-palace-shell .legacy-life-page .forum-ledger-more {
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ justify-content:center;
+ gap:9px 13px;
+ padding:12px;
+ margin:10px 0;
+ border:1px solid var(--room-edge,var(--ui-line));
+ border-radius:13px;
+}
+.palace-shell.full-palace-shell .legacy-life-page .forum-ledger-more>span {
+ font-variant-numeric:tabular-nums;
+ font-size:.76rem;
+ color:var(--ui-muted,inherit);
+}
+.palace-shell.full-palace-shell .legacy-life-page .forum-ledger-more>button {
+ min-height:44px;
+ border-radius:10px;
+}
+/* Search — keep lenses visible as a single deliberate mobile row. */
+.palace-shell.full-palace-shell .legacy-search-page {
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-search-page .search-lenses {
+ box-sizing:border-box;
+ display:flex;
+ min-width:0;
+ max-width:100%;
+ align-items:center;
+ gap:6px;
+}
+.palace-shell.full-palace-shell .legacy-search-page .search-lenses>button{
+ box-sizing:border-box;
+ min-height:42px;
+ line-height:1.28;
+}
+.palace-shell.full-palace-shell .legacy-search-page .search-summary {
+ box-sizing:border-box;
+ display:flex;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:7px 12px;
+ min-width:0;
+ padding:11px 13px;
+ margin-block:12px 15px;
+ border-radius:12px;
+}
+.palace-shell.full-palace-shell .legacy-search-page .search-summary>span{
+ min-width:0;
+ flex:1 1 150px;
+ overflow-wrap:break-word;
+ line-height:1.44;
+}
+.palace-shell.full-palace-shell .legacy-search-page .search-clear-all-filters {
+ box-sizing:border-box;
+ display:inline-flex;
+ flex:0 0 auto;
+ justify-content:center;
+ align-items:center;
+ min-height:40px;
+ padding:8px 12px;
+ border:1px solid var(--room-edge,var(--ui-line));
+ border-radius:10px;
+ font-size:.76rem;
+ white-space:nowrap;
+}
+.palace-shell.full-palace-shell .legacy-search-page :is(
+ .search-result-card,.search-archive-result,.search-club-grid>article,.people-results>a
+) {
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-search-page :is(
+ .search-result-card,.search-archive-result,.search-club-grid>article
+) :is(h3,p,small) {
+ overflow-wrap:break-word;
+ line-height:1.45;
+}
+.palace-shell.full-palace-shell :is(
+ .legacy-life-page .forum-ledger-tools,
+ .legacy-life-page .forum-ledger-more,
+ .legacy-search-page .search-summary,
+ .legacy-search-page .search-lenses
+) :is(button,input):focus-visible {
+ outline:2px solid var(--room-focus,var(--ui-accent,#b7a5e5))!important;
+ outline-offset:2px!important;
+}
+@media(max-width:760px) {
+ .palace-shell.full-palace-shell .legacy-life-page .forum-ledger-tools {
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .forum-ledger-tools .commons-search {
+  box-sizing:border-box;
+  width:100%;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .forum-ledger-tools .commons-view-buttons {
+  display:flex;
+  flex-wrap:nowrap;
+  align-items:center;
+  overflow-x:auto;
+  overscroll-behavior-x:contain;
+  scrollbar-width:thin;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .forum-ledger-tools .commons-view-buttons>button {
+  min-height:44px;
+  flex:0 0 auto;
+  white-space:nowrap;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .forum-discovery-status {
+  grid-column:1;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .forum-thread-list>article {
+  padding:12px;
+  gap:8px;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .forum-thread-list>article .forum-actions button {
+  min-height:44px;
+ }
+ .palace-shell.full-palace-shell .legacy-search-page .search-lenses {
+  flex-wrap:nowrap;
+  padding-bottom:7px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  overscroll-behavior-x:contain;
+  scroll-snap-type:x proximity;
+  scrollbar-width:thin;
+ }
+ .palace-shell.full-palace-shell .legacy-search-page .search-lenses>button {
+  flex:0 0 auto;
+  min-height:44px;
+  scroll-snap-align:start;
+  white-space:nowrap;
+ }
+ .palace-shell.full-palace-shell .legacy-search-page .search-summary {
+  padding:10px;
+ }
+ .palace-shell.full-palace-shell .legacy-search-page .search-clear-all-filters {
+  min-height:44px;
+  white-space:normal;
+ }
+}
