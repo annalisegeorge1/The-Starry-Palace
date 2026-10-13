@@ -380,3 +380,24 @@
   width:90% !important;
   height:94% !important;
 }
+
+
+/* Corrected frame scope · 13 Oct 2026.
+   The older merged and approved Treasury badges predate the Oct 11 painted
+   collection, so their tier mounts must remain visible. Restore the earlier
+   compact .77 mount scale without changing the size or crop of badge art,
+   the achievement card, member portraits, or Chamber frames. */
+.palace-shell .palace-watercolour-badge.has-original-tier-frame .painted-tier-mount {
+ transform:scale(.77) !important;
+ transform-origin:50% 45% !important;
+}
+.palace-shell .badge-grid > .badge-card .badge-art-preview-button
+ .palace-watercolour-badge.has-original-tier-frame .painted-tier-stage .painted-tier-mount {
+ transform:scale(.77) !important;
+ transform-origin:50% 45% !important;
+}
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card
+ .palace-watercolour-badge.has-original-tier-frame .painted-tier-stage .painted-tier-mount {
+ transform:scale(.77) !important;
+ transform-origin:50% 45% !important;
+}
