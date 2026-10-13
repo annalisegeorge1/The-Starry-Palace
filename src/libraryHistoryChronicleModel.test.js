@@ -24,7 +24,7 @@ describe('Unified My Library History model',()=>{
   const all=records();
   expect(all).toHaveLength(4);
   expect(all.filter(x=>x.private).map(x=>x.category)).toEqual(['reading','reading']);
-  expect(all.filter(x=>!x.private).map(x=>x.category)).toEqual(['updates','community']);
+  expect(all.filter(x=>!x.private).map(x=>x.category)).toEqual(['community','updates']);
   expect(all.find(x=>x.kind==='reading')).toMatchObject({
    progress:43,chapterPercent:71,newer:true,chapterCount:1,wordCount:1320,
    href:'/work/river-stars'
@@ -44,7 +44,7 @@ describe('Unified My Library History model',()=>{
   expect(filterLibraryHistory(rows,{query:'Sapphire'})).toHaveLength(1);
   expect(filterLibraryHistory(rows,{period:'week',now:new Date('2026-10-13T18:00:00Z')})).toHaveLength(4);
   expect(filterLibraryHistory(rows,{period:'week',now:new Date('2026-11-30T18:00:00Z')})).toHaveLength(0);
-  expect(filterLibraryHistory(rows,{sort:'oldest'}).map(r=>r.kind)).toEqual(['community','reading','comic','stories']);
+  expect(filterLibraryHistory(rows,{sort:'oldest'}).map(r=>r.kind)).toEqual(['forum','reading','comic','stories']);
   expect(groupLibraryHistory(filterLibraryHistory(rows,{sort:'title'}),'title')[0].label).toBe('A–Z');
  });
  it('shows never invented public chapter totals when metadata was missing',()=>{
