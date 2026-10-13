@@ -79,7 +79,7 @@ import {readingRewardEligibility,readingSessionStartFeedback,readingRewardResult
 import PalaceCalendar from './PalaceCalendar';
 import {restoreFlatClassicChapterHtml} from './classicTextStructure';
 import ArchiveClassicReader from './ArchiveClassicReader';
-import {selectStoryHistory} from './storyHistoryModel';
+import {storyHistoryDetails,storyHistoryLabel,selectStoryHistory} from './storyHistoryModel';
 import PalaceHistoryArchive from './PalaceHistoryArchive';
 import {shouldFetchStoryHistory} from './storyHistoryLoading';
 import ReadingStoryStats from './ReadingStoryStats';
