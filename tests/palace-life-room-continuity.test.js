@@ -10,11 +10,14 @@ const main=readFileSync(resolve(process.cwd(),'src/main.jsx'),'utf8');
 describe('Palace Life rooms feel coherent and easy to enter',()=>{
  it('uses router navigation instead of bypassing React Router with raw history edits',()=>{
   expect(life).toContain('const initialRoom=palaceLifeRoomFromSearch(location.search)');
-  expect(life).toContain('const next=palaceLifeRoomFromSearch(location.search);if(next!==room)setRoom(next)');
+  expect(life).toContain('const next=palaceLifeRoomFromSearch(location.search);');
+  expect(life).toContain("const targetRoom=next==='moonlight'?'commons':next");
   expect(life).toContain('const url=palaceLifeRoomUrl(target)');
   expect(life).toContain('navigate(url,{preventScrollReset:true})');
   expect(life).not.toContain('history.replaceState(');
-  expect(life).toContain('const rooms=PALACE_LIFE_ROOMS.filter(x=>x!==room)');
+  expect(life).toContain("const rooms=PALACE_LIFE_ROOMS.filter(x=>x!==room&&x!=='moonlight'&&x!=='history'&&x!=='highlights')");
+  expect(life).toContain("room==='commons'&&loungeOpen&&<div className=\"life-room moonlight-room\"");
+  expect(life).toContain('getMoonlightMessages(50)');
  });
  it('keeps meaningful deep-linked Commons conversations and Salon drafting',()=>{
   expect(life).toContain("const talk=params.get('talk')");
