@@ -1,6 +1,6 @@
 import React from 'react';
 import {afterEach,describe,expect,it} from 'vitest';
-import {cleanup,render,screen,within} from '@testing-library/react';
+import {cleanup,fireEvent,render,screen,within} from '@testing-library/react';
 import {MemoryRouter} from 'react-router-dom';
 import PalaceSidebarNavigation,{dividePalaceRooms} from './PalaceSidebarNavigation';
 const rooms=[
@@ -79,3 +79,32 @@ describe('restored familiar Palace navigation',()=>{
  });
 });
 
+
+describe('calmer room overflow without lost destinations',()=>{
+ const many=[{id:'life',label:'Palace Life',path:'/palace-life',sections:[
+  ['Commons','/palace-life?room=commons'],
+  ['Clubs','/palace-life?room=clubs'],
+  ['Forum','/palace-life?room=forum'],
+  ['Discover Members','/palace-life?room=stars'],
+  ['Activities','/activity'],
+  ['Throne of Honour','/honour'],
+  ['Community history','/palace-life?room=history'],
+  ['Palace Hall','/grand-palaces']
+ ]}];
+ it('shows five essential links then offers the remaining doors without deletion',()=>{
+  const{container}=mount({activeId:'life',href:'/palace-life?room=commons',roomsToShow:many});
+  expect(container.querySelectorAll('.palace-calm-subnav > a')).toHaveLength(5);
+  const overflow=container.querySelector('details.palace-more-subdoors');
+  expect(overflow).toBeTruthy();
+  expect(overflow.querySelectorAll('a')).toHaveLength(3);
+  expect(overflow.open).toBe(false);
+  fireEvent.click(overflow.querySelector('summary'));
+  expect(overflow.open).toBe(true);
+  expect(screen.getByRole('link',{name:'Community history'}).getAttribute('href')).toBe('/palace-life?room=history');
+ });
+ it('opens more automatically on an existing deep-linked destination',()=>{
+  const{container}=mount({activeId:'life',href:'/palace-life?room=history',roomsToShow:many});
+  expect(container.querySelector('details.palace-more-subdoors').open).toBe(true);
+  expect(screen.getByRole('link',{name:'Community history'}).getAttribute('aria-current')).toBe('page');
+ });
+});
