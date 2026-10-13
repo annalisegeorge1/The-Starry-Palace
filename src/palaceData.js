@@ -1835,3 +1835,32 @@ export async function setGiftShowcase(userId,giftId,displayTier,show){
  return true
 }
 
+
+/**
+ * Read-only, bounded activity for My Library → History.
+ * Uses the same public/member visibility and boundary rules as Palace Life
+ * without fetching private clubs, chat, invitations or moderation records.
+ */
+export async function getPalaceHistoryMoments(userId){
+ const client=needClient();
+ const requests=await Promise.all([
+  client.from('forum_threads')
+   .select('id,author_id,title,body,created_at')
+   .eq('status','active').order('created_at',{ascending:false}).limit(36),
+  client.from('community_introductions')
+   .select('id,member_id,title,body,visibility,created_at,profiles!community_introductions_member_id_fkey(id,username,display_name)')
+   .in('visibility',['public','members']).order('created_at',{ascending:false}).limit(24),
+  client.from('community_highlights')
+   .select('id,member_id,reason,status,created_at,profiles!community_highlights_member_id_fkey(id,username,display_name)')
+   .in('status',['nominated','approved','featured']).order('created_at',{ascending:false}).limit(24),
+  client.from('user_member_boundaries')
+   .select('other_user_id,muted,blocked').eq('user_id',userId)
+ ]);
+ for(const result of requests)if(result.error)throw result.error;
+ const quiet=new Set((requests[3].data||[]).filter(x=>x.blocked||x.muted).map(x=>x.other_user_id));
+ return{
+  threads:(requests[0].data||[]).filter(x=>!quiet.has(x.author_id)),
+  communityIntroductions:(requests[1].data||[]).filter(x=>!quiet.has(x.member_id)),
+  highlights:(requests[2].data||[]).filter(x=>!quiet.has(x.member_id))
+ };
+}
