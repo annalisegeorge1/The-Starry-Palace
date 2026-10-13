@@ -87,7 +87,6 @@
  .chic-commons .commons-compose-fold,
  .chic-commons .chic-timeline,
  .legacy-life-page .community-pulse-row>button,
- .chamber-atelier-tabs.chic-chamber-tabs,
  .palace-hub-paths>a,
  .palace-hub-recent>a
 ) {
@@ -110,6 +109,13 @@
 ) {
  border-color:var(--lustre-border)!important;
  box-shadow:var(--lustre-shadow)!important;
+}
+
+/* The member's Chamber tabs may use a personalised colour scheme. Keep that
+ * selected colour and apply only the reflective outer material. */
+.palace-shell.full-palace-shell .chamber-atelier-tabs.chic-chamber-tabs {
+ border-color:var(--lustre-border)!important;
+ box-shadow:var(--lustre-small-shadow)!important;
 }
 
 /* Reading discovery: add depth to cards without touching the covers.
@@ -162,7 +168,6 @@
  .chic-commons .commons-view-buttons button.active,
  .legacy-life-page .life-tabs.restored button[aria-current="page"],
  .legacy-treasury-page .treasury-tabs button.active,
- .chamber-atelier-tabs.chic-chamber-tabs>a.active,
  .reading-catalogue-controls button[aria-pressed="true"],
  .chic-library-page .library-tabs button.active,
  .palace-hub-lenses button[aria-pressed="true"],
