@@ -324,3 +324,59 @@
   transform:scale(.94) !important;
   transform-origin:50% 50% !important;
 }
+
+
+/* Frameless newer badges · 13 Oct 2026.
+   These classes are applied only when the new decorative tier overlays
+   are disabled at source in PalaceBadge. Keep original legacy mounts,
+   tier labels, earned badges, Chamber frames and award art unchanged.
+   Artwork fills the existing presentation stage instead of the tiny
+   opening formerly left for the overlaid ornamental mount. */
+.palace-shell .palace-watercolour-badge.no-new-badge-frames
+ .painted-round-badge.without-tier-frame > .painted-round-picture {
+  position:absolute !important;
+  inset:4% !important;
+  width:auto !important;
+  height:auto !important;
+  max-width:none !important;
+  max-height:none !important;
+  overflow:visible !important;
+  border-radius:50% !important;
+}
+.palace-shell .palace-watercolour-badge.no-new-badge-frames
+ .painted-round-badge.without-tier-frame > .painted-round-picture > .painted-art {
+  display:block;
+  width:100% !important;
+  height:100% !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  object-fit:contain !important;
+}
+.palace-shell .palace-watercolour-badge.no-new-badge-frames
+ .painted-tier-stage .painted-badge-inner {
+  position:absolute !important;
+  inset:3% 5% !important;
+  left:5% !important;
+  top:3% !important;
+  width:90% !important;
+  height:94% !important;
+  max-width:none !important;
+  max-height:none !important;
+  display:grid !important;
+  place-items:center !important;
+  overflow:visible !important;
+}
+/* Override the older Treasury mount-alignment rules specifically for
+   frameless variants; do not alter the sizing of original badges. */
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card
+ .palace-watercolour-badge.no-new-badge-frames .painted-round-badge.without-tier-frame > .painted-round-picture {
+  inset:4% !important;
+}
+.palace-shell .treasury-room.refined .badge-grid.refined .achievement-card
+ .palace-watercolour-badge.no-new-badge-frames .painted-tier-stage .painted-badge-inner {
+  inset:3% 5% !important;
+  left:5% !important;
+  top:3% !important;
+  width:90% !important;
+  height:94% !important;
+}
