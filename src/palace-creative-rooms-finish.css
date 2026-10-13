@@ -1666,3 +1666,370 @@
   max-width:100%;
  }
 }
+
+
+/* Council + community discovery · coherent controls with a clear reading order.
+   The navigation, artist art, member identity and moderation rules are unchanged. */
+.palace-shell.full-palace-shell .legacy-council-page {
+ box-sizing:border-box;
+ min-width:0;
+ max-width:1200px;
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-hero {
+ min-width:0;
+ box-sizing:border-box;
+ padding:clamp(17px,2.1vw,25px)!important;
+ margin-bottom:14px;
+ border:1px solid var(--room-edge,var(--ui-line));
+ border-radius:18px;
+ box-shadow:var(--room-shadow);
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-hero h1 {
+ font-size:clamp(1.8rem,2.55vw,2.65rem)!important;
+ line-height:1.17;
+ letter-spacing:-.025em;
+ text-wrap:balance;
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-hero .lede{
+ max-width:76ch;
+ line-height:1.6;
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-principles{
+ gap:9px;
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-principles>article{
+ box-sizing:border-box;
+ min-width:0;
+ padding:13px 14px;
+ border-color:var(--room-edge,var(--ui-line));
+ border-radius:14px;
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-principles :is(strong,small) {
+ line-height:1.4;
+ overflow-wrap:break-word;
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-room-tabs{
+ box-sizing:border-box;
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ gap:6px;
+ min-width:0;
+ max-width:100%;
+ margin-block:11px;
+ padding:6px;
+ border:1px solid var(--room-edge,var(--ui-line));
+ border-radius:14px;
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-room-tabs>button{
+ box-sizing:border-box;
+ flex:0 0 auto;
+ min-height:42px;
+ border-radius:9px;
+ padding:9px 12px;
+ font-size:.76rem;
+ line-height:1.35;
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-room-tabs>button.active{
+ box-shadow:inset 0 -2px 0 var(--room-focus,var(--ui-accent));
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-queue-tools{
+ box-sizing:border-box;
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ gap:8px 11px;
+ min-width:0;
+ max-width:100%;
+ padding:11px;
+ border-color:var(--room-edge,var(--ui-line));
+ border-radius:14px;
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-search{
+ flex:2 1 220px;
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-queue-tools>select{
+ box-sizing:border-box;
+ flex:1 1 130px;
+ min-width:0;
+ max-width:100%;
+ min-height:44px;
+ border-radius:10px;
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-queue-count{
+ flex:0 0 auto;
+ min-width:125px;
+ border-left:1px solid var(--room-edge,var(--ui-line));
+ padding:5px 9px;
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-filter-reset {
+ min-height:40px;
+ flex:0 0 auto;
+ margin-inline-start:auto;
+ padding:7px 11px;
+ border:1px solid var(--room-edge,var(--ui-line));
+ border-radius:10px;
+ font-size:.76rem;
+ white-space:nowrap;
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-desk {
+ min-width:0;
+ padding:12px;
+ border-radius:17px;
+ border-color:var(--room-edge,var(--ui-line));
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-list>article{
+ box-sizing:border-box;
+ min-width:0;
+ gap:10px 16px;
+ padding:clamp(12px,1.3vw,17px);
+ border-radius:13px;
+ border-color:var(--room-edge,var(--ui-line));
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-list>article>div:first-child{
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-list>article h2{
+ font-size:clamp(1.04rem,1.35vw,1.33rem);
+ line-height:1.3;
+ overflow-wrap:break-word;
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-list>article :is(p,blockquote){
+ overflow-wrap:break-word;
+ line-height:1.52;
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-actions{
+ gap:6px;
+ align-content:start;
+}
+.palace-shell.full-palace-shell .legacy-council-page .council-actions button{
+ min-height:40px;
+}
+/* Commons: discovery filters and result counts stay together, not lost
+   between unrelated card panels. */
+.palace-shell.full-palace-shell .legacy-life-page .chic-commons .commons-lens{
+ box-sizing:border-box;
+ min-width:0;
+ gap:9px;
+ border-color:var(--room-edge,var(--ui-line));
+}
+.palace-shell.full-palace-shell .legacy-life-page .chic-commons .commons-search{
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-life-page .chic-commons .commons-view-buttons{
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-life-page .chic-commons .commons-conversation-path{
+ box-sizing:border-box;
+ min-width:0;
+ border-radius:15px;
+}
+.palace-shell.full-palace-shell .legacy-life-page .chic-commons .commons-discovery-status{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ flex-wrap:wrap;
+ gap:6px 12px;
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-life-page .chic-commons .commons-moment-count {
+ margin:0;
+ min-width:0;
+ flex:1 1 160px;
+ line-height:1.43;
+}
+.palace-shell.full-palace-shell .legacy-life-page .chic-commons .commons-discovery-reset,
+.palace-shell.full-palace-shell .legacy-life-page .club-discovery-reset {
+ box-sizing:border-box;
+ flex:0 0 auto;
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ min-height:39px;
+ padding:8px 11px;
+ border:1px solid var(--room-edge,var(--ui-line));
+ border-radius:10px;
+ font-size:.73rem;
+ white-space:nowrap;
+}
+/* Discoverable circles should feel like a browsable community directory. */
+.palace-shell.full-palace-shell .legacy-life-page .club-discovery-control-deck{
+ min-width:0;
+ box-sizing:border-box;
+ border-color:var(--room-edge,var(--ui-line));
+}
+.palace-shell.full-palace-shell .legacy-life-page .club-discovery-search,
+.palace-shell.full-palace-shell .legacy-life-page .club-discovery-search input{
+ min-width:0;
+ max-width:100%;
+ box-sizing:border-box;
+}
+.palace-shell.full-palace-shell .legacy-life-page .club-discovery-filters{
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ gap:6px;
+}
+.palace-shell.full-palace-shell .legacy-life-page .club-discovery-filters>button{
+ min-height:40px;
+ padding:8px 11px;
+ border-radius:9px;
+}
+.palace-shell.full-palace-shell .legacy-life-page .club-discovery-meta-filters{
+ display:flex;
+ align-items:end;
+ flex-wrap:wrap;
+ gap:8px;
+}
+.palace-shell.full-palace-shell .legacy-life-page .club-discovery-meta-filters>span{
+ margin-inline-start:auto;
+ flex:0 1 auto;
+ font-variant-numeric:tabular-nums;
+}
+.palace-shell.full-palace-shell .legacy-life-page .club-discovery-meta-filters .club-discovery-reset{
+ margin-inline-start:0;
+}
+.palace-shell.full-palace-shell .legacy-life-page .club-discovery-grid{
+ gap:11px;
+}
+.palace-shell.full-palace-shell .legacy-life-page .club-discovery-grid>article{
+ box-sizing:border-box;
+ min-width:0;
+ min-height:0;
+ border-color:var(--room-edge,var(--ui-line));
+ border-radius:15px;
+}
+.palace-shell.full-palace-shell .legacy-life-page .club-discovery-grid>article :is(h3,p,small){
+ overflow-wrap:break-word;
+ line-height:1.45;
+}
+.palace-shell.full-palace-shell .legacy-life-page .club-discovery-more{
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:9px 13px;
+ min-width:0;
+ padding:14px 8px;
+ margin-top:12px;
+ border-top:1px solid var(--room-edge,var(--ui-line));
+}
+.palace-shell.full-palace-shell .legacy-life-page .club-discovery-more>span{
+ font-size:.74rem;
+ color:var(--ui-muted,inherit);
+ font-variant-numeric:tabular-nums;
+}
+.palace-shell.full-palace-shell .legacy-life-page .club-discovery-more>button{
+ min-height:44px;
+ padding:9px 15px;
+ border-radius:12px;
+ border:1px solid var(--room-edge,var(--ui-line));
+ background:var(--ui-raised,rgba(88,67,151,.18));
+ font-weight:700;
+}
+.palace-shell.full-palace-shell :is(
+ .legacy-council-page .council-room-tabs,
+ .legacy-council-page .council-queue-tools,
+ .legacy-council-page .council-actions,
+ .legacy-life-page .chic-commons .commons-discovery-status,
+ .legacy-life-page .club-discovery-control-deck,
+ .legacy-life-page .club-discovery-more
+) :is(button,input,select):focus-visible{
+ outline:2px solid var(--room-focus,var(--ui-accent,#baa8e6))!important;
+ outline-offset:2px!important;
+}
+@media(max-width:760px){
+ .palace-shell.full-palace-shell .legacy-council-page .council-room-tabs{
+  flex-wrap:nowrap;
+  overflow-x:auto;
+  overscroll-behavior-x:contain;
+  scroll-snap-type:x proximity;
+  scrollbar-width:thin;
+ }
+ .palace-shell.full-palace-shell .legacy-council-page .council-room-tabs>button {
+  flex:0 0 auto;
+  min-height:44px;
+  scroll-snap-align:start;
+  white-space:nowrap;
+ }
+ .palace-shell.full-palace-shell .legacy-council-page .council-principles{
+  grid-template-columns:minmax(0,1fr);
+ }
+ .palace-shell.full-palace-shell .legacy-council-page .council-queue-tools{
+  flex-direction:column;
+  align-items:stretch;
+ }
+ .palace-shell.full-palace-shell .legacy-council-page .council-search,
+ .palace-shell.full-palace-shell .legacy-council-page .council-queue-tools>select{
+  flex:0 0 auto;
+  width:100%;
+  min-height:44px;
+ }
+ .palace-shell.full-palace-shell .legacy-council-page .council-queue-count{
+  flex:1 1 auto;
+  min-width:0;
+  width:100%;
+  border:0;
+  border-top:1px solid var(--room-edge,var(--ui-line));
+  padding:7px 0 0;
+ }
+ .palace-shell.full-palace-shell .legacy-council-page .council-filter-reset{
+  align-self:flex-start;
+  min-height:44px;
+  margin:0;
+ }
+ .palace-shell.full-palace-shell .legacy-council-page .council-desk{
+  padding:9px;
+ }
+ .palace-shell.full-palace-shell .legacy-council-page .council-list>article{
+  grid-template-columns:minmax(0,1fr);
+ }
+ .palace-shell.full-palace-shell .legacy-council-page .council-actions{
+  justify-content:flex-start;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .chic-commons .commons-lens{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .chic-commons .commons-view-buttons{
+  display:flex;
+  flex-wrap:nowrap;
+  width:100%;
+  max-width:100%;
+  overflow-x:auto;
+  overscroll-behavior-x:contain;
+  scrollbar-width:thin;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .chic-commons .commons-view-buttons>button{
+  min-height:44px;
+  flex:0 0 auto;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .club-discovery-filters{
+  flex-wrap:nowrap;
+  overflow-x:auto;
+  overscroll-behavior-x:contain;
+  scrollbar-width:thin;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .club-discovery-filters>button{
+  white-space:nowrap;
+  flex:0 0 auto;
+  min-height:44px;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .club-discovery-meta-filters>label{
+  flex:1 1 110px;
+  min-width:0;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .club-discovery-meta-filters>label select{
+  box-sizing:border-box;
+  max-width:100%;
+  width:100%;
+  min-height:44px;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .club-discovery-meta-filters>span{
+  margin-inline-start:0;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .club-discovery-meta-filters .club-discovery-reset{
+  min-height:44px;
+ }
+}
