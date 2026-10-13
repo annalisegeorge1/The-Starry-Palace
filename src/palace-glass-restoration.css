@@ -1,0 +1,196 @@
+/*
+ * The Starry Palace · glass & prismatic continuity, October 2026
+ *
+ * Restore the luminous, layered appearance after the interface simplification.
+ * Intentional boundaries: do not style manuscript paper, story-cover imagery,
+ * collectible artwork, avatar/frame geometry, custom chamber canvases, holidays,
+ * LGBTQ+ themed cards, or text-entry surfaces. Layout and interaction unchanged.
+ * No animation, large overlays or filters applied to scrolling story lists.
+ */
+.palace-shell.full-palace-shell.nightfall {
+  --palace-glass-panel:
+    radial-gradient(ellipse at 12% 0%,rgba(212,185,255,.22),transparent 53%),
+    linear-gradient(123deg,rgba(77,57,134,.94),rgba(39,51,99,.94) 56%,rgba(23,76,92,.88));
+  --palace-glass-quiet:
+    radial-gradient(ellipse at 6% 0%,rgba(207,186,255,.11),transparent 54%),
+    linear-gradient(128deg,rgba(54,43,96,.89),rgba(27,42,77,.91) 55%,rgba(22,49,76,.89));
+  --palace-glass-active:
+    linear-gradient(125deg,rgba(112,77,180,.72),rgba(60,92,153,.65) 65%,rgba(45,126,138,.46));
+  --palace-glass-edge:rgba(198,178,246,.45);
+  --palace-glass-rim:rgba(255,255,255,.19);
+  --palace-glass-shadow:0 13px 35px rgba(5,8,27,.25),inset 0 1px 0 rgba(255,255,255,.18),inset 0 -1px 0 rgba(142,177,234,.08);
+  --palace-glass-shadow-small:0 5px 17px rgba(5,8,27,.19),inset 0 1px 0 rgba(255,255,255,.16);
+}
+.palace-shell.full-palace-shell.daylight {
+  --palace-glass-panel:
+    radial-gradient(ellipse at 12% 0%,rgba(255,255,255,.99),transparent 54%),
+    linear-gradient(123deg,rgba(244,232,255,.98),rgba(224,235,255,.98) 56%,rgba(215,242,242,.97));
+  --palace-glass-quiet:
+    radial-gradient(ellipse at 6% 0%,rgba(255,255,255,.96),transparent 52%),
+    linear-gradient(128deg,rgba(249,244,255,.98),rgba(238,242,254,.98) 56%,rgba(235,249,248,.97));
+  --palace-glass-active:
+    linear-gradient(125deg,rgba(224,202,248,.95),rgba(196,220,249,.96) 65%,rgba(197,237,230,.9));
+  --palace-glass-edge:rgba(128,105,179,.41);
+  --palace-glass-rim:rgba(255,255,255,.96);
+  --palace-glass-shadow:0 12px 30px rgba(66,55,116,.12),inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(122,139,191,.13);
+  --palace-glass-shadow-small:0 4px 15px rgba(66,55,116,.11),inset 0 1px 0 rgba(255,255,255,.97);
+}
+
+/* Glass is part of the site chrome, not an effect placed over people's work. */
+.palace-shell.full-palace-shell.nightfall .full-sidebar {
+  background:
+    radial-gradient(ellipse at 5% 0%,rgba(156,118,239,.22),transparent 39%),
+    linear-gradient(175deg,#221d46 0%,#15192f 48%,#101b30 100%)!important;
+  border-right-color:var(--palace-glass-edge)!important;
+  box-shadow:inset -1px 0 0 rgba(239,217,255,.1),8px 0 35px rgba(5,8,30,.12)!important;
+}
+.palace-shell.full-palace-shell.daylight .full-sidebar {
+  background:
+    radial-gradient(ellipse at 3% 0%,rgba(255,255,255,.96),transparent 51%),
+    linear-gradient(175deg,#efe7fb 0%,#e9effa 55%,#e4f5f4 100%)!important;
+  border-right-color:var(--palace-glass-edge)!important;
+  box-shadow:inset -1px 0 0 rgba(255,255,255,.9),8px 0 30px rgba(57,55,110,.08)!important;
+}
+.palace-shell.full-palace-shell .full-sidebar .full-nav-room>a.active,
+.palace-shell.full-palace-shell .full-sidebar .full-subnav>a.active {
+  background:var(--palace-glass-active)!important;
+  border-color:var(--palace-glass-edge)!important;
+  box-shadow:inset 3px 0 0 var(--ui-accent),inset 0 1px 0 var(--palace-glass-rim),0 5px 16px rgba(19,19,57,.11)!important;
+}
+.palace-shell.full-palace-shell .full-sidebar .palace-calm-primary>.palace-calm-room>a .room-sigil {
+  box-shadow:inset 0 1px 0 var(--palace-glass-rim),0 3px 10px rgba(12,13,44,.13)!important;
+}
+
+/* At desktop widths the bar has genuine frosted depth. On phones and narrow
+ * tablets retain an OPAQUE glossy gradient: no scrolling text bleed-through. */
+@media(min-width:961px) {
+  .palace-shell.full-palace-shell.nightfall .full-topbar {
+    background:linear-gradient(113deg,rgba(46,35,84,.93),rgba(18,29,62,.93) 61%,rgba(20,54,72,.92))!important;
+    -webkit-backdrop-filter:blur(12px) saturate(1.25)!important;
+    backdrop-filter:blur(12px) saturate(1.25)!important;
+  }
+  .palace-shell.full-palace-shell.daylight .full-topbar {
+    background:linear-gradient(113deg,rgba(249,241,255,.94),rgba(237,245,255,.94) 59%,rgba(226,248,246,.93))!important;
+    -webkit-backdrop-filter:blur(12px) saturate(1.18)!important;
+    backdrop-filter:blur(12px) saturate(1.18)!important;
+  }
+}
+@media(max-width:960px) {
+  .palace-shell.full-palace-shell.nightfall .full-topbar {
+    background:#15152e!important;
+    background-image:linear-gradient(115deg,#34264e,#191d3c 60%,#16384b)!important;
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+  }
+  .palace-shell.full-palace-shell.daylight .full-topbar {
+    background:#f0effa!important;
+    background-image:linear-gradient(115deg,#f8edff,#e8eeff 60%,#e0f5f1)!important;
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+  }
+}
+.palace-shell.full-palace-shell .full-topbar {
+  border-bottom-color:var(--palace-glass-edge)!important;
+  box-shadow:0 7px 25px rgba(8,10,31,.15),inset 0 1px 0 var(--palace-glass-rim)!important;
+}
+.palace-shell.full-palace-shell .global-search-live,
+.palace-shell.full-palace-shell .full-top-actions :is(.command-trigger,.top-icon-link) {
+  background-color:var(--palace-chrome-search)!important;
+  background-image:linear-gradient(146deg,rgba(255,255,255,.13),rgba(136,135,206,.05) 62%,rgba(79,177,202,.08))!important;
+  border-color:var(--palace-glass-edge)!important;
+  box-shadow:var(--palace-glass-shadow-small)!important;
+}
+.palace-shell.full-palace-shell.daylight .global-search-live,
+.palace-shell.full-palace-shell.daylight .full-top-actions :is(.command-trigger,.top-icon-link) {
+  background-color:rgba(255,255,255,.93)!important;
+  background-image:linear-gradient(146deg,rgba(255,255,255,.96),rgba(224,222,249,.37) 66%,rgba(197,239,239,.28))!important;
+}
+
+/* Layered rooms: opt into the glass finish only for outward-facing panels.
+ * The design must not change card size, information density or scroll flow. */
+.palace-shell.full-palace-shell :is(
+  .palace-hub-hero,
+  .palace-hub-paths>a,
+  .palace-hub-recent>a,
+  .palace-home-more,
+  .palace-room-directory>summary,
+  .palace-culture-path,
+  .chic-commons .commons-conversation-path,
+  .chic-commons .commons-compose-fold,
+  .chic-commons .chic-timeline,
+  .treasury-gallery .badge-controls,
+  .treasury-gallery .treasury-badge-filters
+) {
+  background:var(--palace-glass-quiet)!important;
+  border-color:var(--palace-glass-edge)!important;
+  box-shadow:var(--palace-glass-shadow)!important;
+}
+.palace-shell.full-palace-shell :is(
+  .palace-hub-hero,
+  .palace-home-more,
+  .palace-home-welcome .palace-choice-card,
+  .writing-head,
+  .legacy-reading-page>.legacy-reading-intro,
+  .legacy-life-page>.legacy-life-head,
+  .legacy-treasury-page>.legacy-treasury-head,
+  .writing-pad-launch,
+  .reading-mood-doors,
+  .reading-classics-hall,
+  .prompt-orrery,
+  .legacy-treasury-page .treasury-wardrobe
+) {
+  border-color:var(--palace-glass-edge)!important;
+  box-shadow:var(--palace-glass-shadow)!important;
+}
+/* Preserve the three uniquely coloured entrance gradients and all prismatic
+ * feature-section backgrounds; enhance their optical depth, not their hue. */
+.palace-shell.full-palace-shell .palace-home-welcome .palace-choice-card {
+  box-shadow:var(--palace-glass-shadow)!important;
+}
+.palace-shell.full-palace-shell .palace-home-layout :is(.palace-hub-paths>a,.palace-hub-recent>a):hover {
+  background:var(--palace-glass-panel)!important;
+  border-color:var(--ui-accent)!important;
+  box-shadow:0 13px 30px rgba(40,34,91,.17),inset 0 1px 0 var(--palace-glass-rim)!important;
+}
+
+/* The Commons remains a clean continuous feed; individual posts aren't
+ * separate floating boxes. The composer and its parent glass panel have depth. */
+.palace-shell.full-palace-shell .chic-commons .chic-timeline .social-thread {
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.palace-shell.full-palace-shell .chic-commons .commons-compose-modes>button[aria-pressed="true"],
+.palace-shell.full-palace-shell .chic-commons .commons-compose-modes>button.active,
+.palace-shell.full-palace-shell .palace-hub-lenses>button[aria-pressed="true"],
+.palace-shell.full-palace-shell .home-shelf-toolbar button[aria-pressed="true"] {
+  background:var(--palace-glass-active)!important;
+  box-shadow:inset 0 1px 0 var(--palace-glass-rim),0 3px 11px rgba(36,23,75,.1)!important;
+}
+
+/* Compact mobile dock: same palette and glossy finish, no new glass blur. */
+@media(max-width:720px),(max-width:950px) and (max-height:600px) and (pointer:coarse) {
+  .palace-shell.full-palace-shell.nightfall .mobile-palace-dock {
+    background:linear-gradient(128deg,#32284e,#212442 55%,#193f51)!important;
+    border-color:var(--palace-glass-edge)!important;
+    box-shadow:0 12px 28px rgba(8,9,31,.24),inset 0 1px 0 rgba(255,255,255,.2)!important;
+  }
+  .palace-shell.full-palace-shell.daylight .mobile-palace-dock {
+    background:linear-gradient(128deg,#f6eafe,#e7edfc 56%,#dff5ef)!important;
+    border-color:var(--palace-glass-edge)!important;
+    box-shadow:0 10px 23px rgba(66,56,111,.13),inset 0 1px 0 #fff!important;
+  }
+}
+/* Respect accessibility settings while keeping colours readable. */
+@media(prefers-reduced-transparency:reduce) {
+  .palace-shell.full-palace-shell .full-topbar {
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+  }
+}
+@media(forced-colors:active) {
+  .palace-shell.full-palace-shell :is(.full-topbar,.full-sidebar,.palace-hub-hero,.palace-hub-paths>a,.chic-commons .chic-timeline) {
+    background:Canvas!important;
+    border-color:CanvasText!important;
+    box-shadow:none!important;
+  }
+}
