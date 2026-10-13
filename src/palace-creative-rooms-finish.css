@@ -2440,3 +2440,152 @@
   min-height:44px;
  }
 }
+
+
+/* Writer discovery + Activity notifications · make useful connections
+   visible without changing follower state, member avatars or permissions. */
+.palace-shell.full-palace-shell .chic-library-page .writer-discovery-room {
+ display:grid;
+ gap:12px;
+ min-width:0;
+}
+.palace-shell.full-palace-shell .chic-library-page .writer-discovery-toolbar {
+ box-sizing:border-box;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ flex-wrap:wrap;
+ gap:10px 15px;
+ min-width:0;
+ padding:clamp(12px,1.5vw,18px);
+ border:1px solid var(--room-edge,var(--ui-line));
+ border-radius:15px;
+ background:var(--signature-glass,rgba(108,88,171,.08));
+}
+.palace-shell.full-palace-shell .chic-library-page .writer-discovery-toolbar>div:first-child {
+ display:grid;
+ gap:3px;
+ min-width:0;
+ flex:1 1 205px;
+}
+.palace-shell.full-palace-shell .chic-library-page .writer-discovery-toolbar strong{
+ font-size:.96rem;
+ line-height:1.35;
+ font-variant-numeric:tabular-nums;
+ overflow-wrap:anywhere;
+}
+.palace-shell.full-palace-shell .chic-library-page .writer-discovery-toolbar small{
+ color:var(--ui-muted,inherit);
+ font-size:.74rem;
+ line-height:1.45;
+}
+.palace-shell.full-palace-shell .chic-library-page .writer-discovery-links{
+ display:flex;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:8px;
+ min-width:0;
+}
+.palace-shell.full-palace-shell .chic-library-page .writer-discovery-links>a{
+ box-sizing:border-box;
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ min-height:42px;
+ padding:9px 12px;
+ border:1px solid var(--room-edge,var(--ui-line));
+ border-radius:10px;
+ color:var(--ui-text,inherit);
+ text-decoration:none;
+ font-size:.75rem;
+ line-height:1.3;
+ font-weight:700;
+}
+.palace-shell.full-palace-shell .chic-library-page .writer-discovery-links>a:last-child{
+ background:rgba(119,97,187,.16);
+}
+.palace-shell.full-palace-shell .chic-library-page .writer-discovery-room .writer-shelf{
+ min-width:0;
+}
+.palace-shell.full-palace-shell .chic-library-page .writer-discovery-room .writer-shelf>a{
+ box-sizing:border-box;
+ min-width:0;
+}
+.palace-shell.full-palace-shell .chic-library-page .writer-discovery-room .writer-shelf>a>div{
+ min-width:0;
+}
+.palace-shell.full-palace-shell .chic-library-page .writer-discovery-room .writer-shelf>a :is(strong,small){
+ overflow-wrap:break-word;
+ line-height:1.35;
+}
+.palace-shell.full-palace-shell .chic-activity-page .activity-filter-status {
+ box-sizing:border-box;
+ display:flex;
+ flex:1 1 100%;
+ align-items:center;
+ justify-content:space-between;
+ flex-wrap:wrap;
+ gap:8px 12px;
+ min-width:0;
+ padding:9px 0 0;
+ margin:2px 0 0;
+ border-top:1px solid var(--room-edge,var(--ui-line));
+}
+.palace-shell.full-palace-shell .chic-activity-page .activity-filter-status>span{
+ flex:1 1 170px;
+ min-width:0;
+ font-size:.76rem;
+ line-height:1.4;
+ color:var(--ui-muted,inherit);
+ font-variant-numeric:tabular-nums;
+}
+.palace-shell.full-palace-shell .chic-activity-page .activity-filter-reset {
+ box-sizing:border-box;
+ flex:0 0 auto;
+ min-height:40px;
+ padding:8px 12px;
+ border:1px solid var(--room-edge,var(--ui-line));
+ border-radius:10px;
+ font-size:.75rem;
+ white-space:nowrap;
+}
+.palace-shell.full-palace-shell .chic-activity-page .chic-activity-lenses{
+ min-width:0;
+}
+.palace-shell.full-palace-shell .chic-activity-page .chic-activity-lenses .activity-search{
+ min-width:0;
+}
+.palace-shell.full-palace-shell .chic-activity-page .chic-activity-lenses :is(button,select,input):focus-visible,
+.palace-shell.full-palace-shell .chic-library-page .writer-discovery-room a:focus-visible{
+ outline:2px solid var(--room-focus,var(--ui-accent,#baaae8))!important;
+ outline-offset:3px!important;
+}
+@media(max-width:720px){
+ .palace-shell.full-palace-shell .chic-library-page .writer-discovery-links{
+  width:100%;
+ }
+ .palace-shell.full-palace-shell .chic-library-page .writer-discovery-links>a{
+  flex:1 1 135px;
+  min-height:44px;
+ }
+ .palace-shell.full-palace-shell .chic-activity-page .activity-filter-status{
+  gap:7px;
+ }
+ .palace-shell.full-palace-shell .chic-activity-page .activity-filter-reset{
+  min-height:44px;
+ }
+ .palace-shell.full-palace-shell .chic-activity-page .chic-activity-lenses .activity-view-pills{
+  display:flex;
+  flex-wrap:nowrap;
+  min-width:0;
+  max-width:100%;
+  overflow-x:auto;
+  overscroll-behavior-x:contain;
+  scrollbar-width:thin;
+ }
+ .palace-shell.full-palace-shell .chic-activity-page .chic-activity-lenses .activity-view-pills>button{
+  flex:0 0 auto;
+  min-height:44px!important;
+  font-size:.72rem!important;
+ }
+}
