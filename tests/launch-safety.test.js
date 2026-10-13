@@ -1629,9 +1629,9 @@ describe('Starry Palace launch safety',()=>{
     const polish=read('src/polish.css');
     expect(data).toContain('setNoticeSaved');
     expect(data).toContain('dismissNotice');
-    expect(live).toContain('activity-lenses');
-    expect(live).toContain('noticeHref');
-    expect(live).toContain('No notices in this view.');
+    expect(activityRoom).toContain('activity-lenses');
+    expect(activityRoom).toContain('noticeHref');
+    expect(activityRoom).toContain('No notices in this view.');
     expect(polish).toContain('.activity-notice-actions');
   });
 
@@ -1640,11 +1640,11 @@ describe('Starry Palace launch safety',()=>{
     const polish=read('src/polish.css');
     expect(data).toContain('metadata,action_label,unread,saved,created_at');
     expect(data).toContain("select('id',{count:'exact',head:true}).eq('user_id',userId).eq('dismissed',false).eq('unread',true)");
-    expect(live).toContain("const[noticeGroup,setNoticeGroup]=useState('all')");
-    expect(live).toContain('activity-category-tabs');
-    expect(live).toContain("const bucketOrder=['Today','Yesterday','This week','Earlier']");
-    expect(live).toContain("n.action_label||'Open →'");
-    expect(live).toContain('type="button" className="activity-notice-copy"');
+    expect(activityRoom).toContain("const[noticeGroup,setNoticeGroup]=useState('all')");
+    expect(activityRoom).toContain('activity-category-tabs');
+    expect(activityRoom).toContain("const bucketOrder=['Today','Yesterday','This week','Earlier']");
+    expect(activityRoom).toContain("n.action_label||'Open →'");
+    expect(activityRoom).toContain('type="button" className="activity-notice-copy"');
     expect(polish).toContain('/* Activity notification centre grouping */');
     expect(polish).toContain('.activity-time-group');
     expect(polish).toContain('.activity-notice-copy:focus-visible');
@@ -1655,11 +1655,11 @@ describe('Starry Palace launch safety',()=>{
     const polish=read('src/polish.css');
     expect(data).toContain(".eq('dismissed',false).eq('saved',true)");
     expect(data).toContain('saved:savedCount.count||0');
-    expect(live).toContain("const[noticeQuery,setNoticeQuery]=useState('')");
-    expect(live).toContain('Search notifications…');
-    expect(live).toContain('const nq=noticeQuery.trim().toLowerCase()');
-    expect(live).toContain("saved:Math.max(0,(d.metrics?.saved||0)+(next?1:-1))");
-    expect(live).toContain("saved:item.saved?Math.max(0,(d.metrics?.saved||0)-1):(d.metrics?.saved||0)");
+    expect(activityRoom).toContain("const[noticeQuery,setNoticeQuery]=useState('')");
+    expect(activityRoom).toContain('Search notifications…');
+    expect(activityRoom).toContain('const nq=noticeQuery.trim().toLowerCase()');
+    expect(activityRoom).toContain("saved:Math.max(0,(d.metrics?.saved||0)+(next?1:-1))");
+    expect(activityRoom).toContain("saved:item.saved?Math.max(0,(d.metrics?.saved||0)-1):(d.metrics?.saved||0)");
     expect(polish).toContain('/* Searchable Activity inbox */');
     expect(polish).toContain('.activity-search');
   });
@@ -1671,9 +1671,9 @@ describe('Starry Palace launch safety',()=>{
   });
 
   it('keeps story and blocked-writing notices pointed at the exact destination',()=>{
-    expect(live).toContain("item.metadata?.chapter_id?'/chapter/'");
-    expect(live).toContain("item.route_name==='writing'&&item.route_param");
-    expect(live).toContain("'?chapter='+encodeURIComponent(item.metadata.chapter_id)");
+    expect(activityRoom).toContain("item.metadata?.chapter_id?'/chapter/'");
+    expect(activityRoom).toContain("item.route_name==='writing'&&item.route_param");
+    expect(activityRoom).toContain("'?chapter='+encodeURIComponent(item.metadata.chapter_id)");
     expect(live).toContain("const requestedChapter=new URLSearchParams(window.location.search).get('chapter')");
     expect(live).toContain("d.chapters.find(ch=>ch.id===requestedChapter)");
   });
@@ -2011,7 +2011,7 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('Schedule publication');
     expect(live).toContain('Cancel schedule');
     expect(live).toContain('comicLocalDateTimeValue');
-    expect(live).toContain("comic_studio:'/comics/studio'");
+    expect(activityRoom).toContain("comic_studio:'/comics/studio'");
     expect(live).toContain('scheduled</span>');
     expect(polish).toContain('.episode-schedule-note');
     expect(sql).toContain('private.process_scheduled_comic_episodes()');
@@ -2039,8 +2039,8 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('episodeReadyForRelease');
     expect(live).toContain('Ready to publish');
     expect(live).toContain('Needs work');
-    expect(live).toContain("item.route_name==='comic_studio'");
-    expect(live).toContain("'#comic-'+encodeURIComponent(item.metadata.comic_id)");
+    expect(activityRoom).toContain("item.route_name==='comic_studio'");
+    expect(activityRoom).toContain("'#comic-'+encodeURIComponent(item.metadata.comic_id)");
     expect(polish).toContain('.episode-health');
     expect(polish).toContain('.episode-health span.scheduled');
   });
@@ -2112,8 +2112,8 @@ describe('Starry Palace launch safety',()=>{
     expect(sql).toContain('private.send_weekly_comic_digest()');
     expect(sql).toContain("'palace-weekly-comic-digest'");
     expect(sql).toContain("'0 12 * * 0'");
-    expect(live).toContain("item.route_name==='comic'");
-    expect(live).toContain("item.metadata?.tab");
+    expect(activityRoom).toContain("item.route_name==='comic'");
+    expect(activityRoom).toContain("item.metadata?.tab");
   });
 
   it('reopens finished comics when newer panels are published',()=>{
