@@ -12,6 +12,16 @@ describe('story history metrics',()=>{
   const x=storyHistoryDetails({},[{status:'published',word_count:300,published_at:first,updated_at:'2026-03-02T10:00:00Z',title:'First chapter'}]);
   expect(storyHistoryLabel(x)).toBe('Chapter updated');
  });
+ it('uses the latest work publication date without inventing a chapter change',()=>{
+  const work={last_published_at:'2026-04-10T11:00:00Z'};
+  const x=storyHistoryDetails(work,[{status:'published',word_count:450,title:'Earlier chapter',
+   published_at:first,updated_at:'2026-03-02T10:00:00Z'}]);
+  expect(x.lastChangedAt).toBe(work.last_published_at);
+  expect(x.changeKind).toBe('unknown');
+  expect(x.chapterTitle).toBeNull();
+  expect(x.chapterCount).toBe(1);
+  expect(x.wordCount).toBe(450);
+ });
  it('does not interpret automatic timestamp drift as an edit',()=>{
   const x=storyHistoryDetails({},[{status:'published',word_count:500,published_at:first,updated_at:'2026-01-01T10:00:03Z'}]);
   expect(storyHistoryLabel(x)).toBe('New chapter published');
