@@ -30,9 +30,10 @@
  background-attachment:scroll;
 }
 
-/* DAYLIGHT — the user's five-colour palette meets the pastel gradient:
- * powder sky blue and cornflower/periwinkle lead; pink and peach blush
- * lightly at the upper-left; deep royal blue anchors accessible accents.
+/* DAYLIGHT — lavender/lilac first, powder blue second.
+ * The pastel references guide subtle glass tints, not a pink backdrop:
+ * lavender carries most of the sky, blue finishes the lower half,
+ * and blush appears only as a faint ambient highlight.
  * Translated into CSS gradients, never using the reference's watermarked art.
  * Keep the Palace's glass, contrasted navy text, and all individual artwork.
  */
@@ -42,51 +43,51 @@
  --palace-daylight-blush:#ffbbd0;
  --palace-daylight-peach:#fee5e1;
  --palace-daylight-royal:#033495;
- --palace-daylight-core:#e8edfa;
- --palace-bg:#e9eefb;
- --palace-bg-deep:#d9e7fa;
- --palace-panel:#f7f6fd;
- --palace-panel-raised:#fdfaff;
+ --palace-daylight-core:#e7e7f8;
+ --palace-bg:#e9e7f8;
+ --palace-bg-deep:#dbe3f7;
+ --palace-panel:#f6f4fd;
+ --palace-panel-raised:#fcfbff;
  --palace-panel-soft:rgba(249,250,255,.9);
  --ui-surface:#fcfbff;
  --ui-raised:#e8f0fd;
- --ui-selected:linear-gradient(110deg,#eee5fa,#d9eaff);
+ --ui-selected:linear-gradient(110deg,#e9e0f8,#dbeafa);
  --lustre-hero:
-  radial-gradient(ellipse at 5% -9%,rgba(254,229,225,.76),transparent 52%),
+  radial-gradient(ellipse at 5% -9%,rgba(242,232,255,.83),transparent 52%),
   radial-gradient(ellipse at 96% 90%,rgba(106,156,253,.27),transparent 59%),
-  linear-gradient(121deg,#f5e5f1 0%,#e7e6fa 48%,#d0e8fb 100%);
+  linear-gradient(121deg,#ebe2f8 0%,#e0e3f9 53%,#d4e7fa 100%);
  --lustre-card:
   radial-gradient(ellipse at 6% 0%,rgba(255,255,255,.96),transparent 56%),
   radial-gradient(ellipse at 96% 96%,rgba(174,228,255,.34),transparent 59%),
-  linear-gradient(130deg,#f8edf9 0%,#edecfb 54%,#dceafa 100%);
+  linear-gradient(130deg,#f3eafa 0%,#eaeafa 54%,#dceafa 100%);
  --lustre-soft:
   radial-gradient(ellipse at 4% 0%,rgba(255,255,255,.95),transparent 53%),
-  linear-gradient(130deg,#faf2fb 0%,#f0f0fc 54%,#e2f0fc 100%);
+  linear-gradient(130deg,#f6effd 0%,#efeffc 54%,#e4effc 100%);
  --lustre-tab:
   radial-gradient(ellipse at 8% 0%,rgba(255,255,255,.95),transparent 72%),
-  linear-gradient(119deg,#f1e2f6 0%,#e0e5fa 53%,#cfe7fc 100%);
+  linear-gradient(119deg,#e7def7 0%,#dbe3f9 53%,#d1e7fb 100%);
  --lustre-tab-idle:
-  linear-gradient(132deg,rgba(245,235,251,.95),rgba(219,238,253,.92));
+  linear-gradient(132deg,rgba(238,232,251,.95),rgba(219,236,252,.92));
  --lustre-border:rgba(103,115,188,.42);
  --ui-accent:#17469c;
  --ui-text:#24365c;
  --palace-text:#25365b;
  background-color:var(--palace-daylight-core);
 }
-/* This is a vertical sky, not a diagonal or an image-overlay wallpaper.
- * The reference grid is intentionally NOT reproduced. */
+/* A calm vertical lilac-to-blue sky, without stripes, ribbons or the
+ * grid from the reference image. Pink is only a delicate ambient haze. */
 .palace-shell.full-palace-shell.daylight :is(.full-stage,.palace-stage) {
  background:
-  radial-gradient(ellipse 75% 38% at 85% -4%,
-   rgba(255,239,251,.25),transparent 80%),
-  radial-gradient(ellipse 72% 38% at 12% 99%,
-   rgba(152,210,254,.18),transparent 82%),
+  radial-gradient(ellipse 74% 35% at 10% -5%,
+   rgba(255,211,231,.10),transparent 80%),
+  radial-gradient(ellipse 72% 38% at 82% 99%,
+   rgba(152,210,254,.17),transparent 82%),
   linear-gradient(180deg,
-   #f7b9df 0%,
-   #edc1e9 24%,
-   #d8c3f2 49%,
-   #bed0f7 74%,
-   #a5d5fa 100%)!important;
+   #e6daf7 0%,
+   #dacbf3 24%,
+   #cec8f2 51%,
+   #bdcff5 75%,
+   #a9dcfa 100%)!important;
  background-attachment:scroll;
 }
 
@@ -102,16 +103,16 @@
   linear-gradient(112deg,rgba(31,34,75,.95),rgba(15,26,65,.95) 63%,rgba(13,36,63,.94))!important;
 }
 
-/* Frosted navigation catches the same blush-to-blue light. No portrait,
+/* Frosted navigation catches the same lilac-to-blue light. No portrait,
  * Chamber, reading/writing canvas or collectible styling is affected. */
 .palace-shell.full-palace-shell.daylight .full-sidebar {
  background:
-  radial-gradient(ellipse at 4% 0%,rgba(254,229,225,.59),transparent 48%),
-  linear-gradient(170deg,rgba(246,241,253,.98),rgba(226,235,251,.98) 55%,rgba(220,238,252,.98))!important;
+  radial-gradient(ellipse at 4% 0%,rgba(242,232,255,.53),transparent 48%),
+  linear-gradient(170deg,rgba(240,235,251,.98),rgba(228,234,251,.98) 55%,rgba(219,238,252,.98))!important;
 }
 .palace-shell.full-palace-shell.daylight .full-topbar {
  background:
-  linear-gradient(110deg,rgba(251,243,251,.96),rgba(236,239,253,.94) 51%,rgba(219,240,253,.94))!important;
+  linear-gradient(110deg,rgba(244,237,254,.96),rgba(234,237,253,.94) 51%,rgba(219,238,252,.94))!important;
 }
 
 /* Existing clouds are oversized soft-edged ovals and read as flowing waves.
