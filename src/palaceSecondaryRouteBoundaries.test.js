@@ -25,7 +25,7 @@ describe('Isolated Palace secondary route boundaries',()=>{
  });
  it('preserves creator and archival safety through the extraction',()=>{
   expect(code).toContain('Publishing in the Palace does not transfer ownership');
-  expect(code).toContain('A report is an allegation');
+  expect(code).toContain('Reports are evidence for review');
   expect(lost).toContain("['full','excerpt'].includes(r.host_mode)");
   expect(lost).toContain("r.host_mode==='citation'");
   expect(lost).toContain('setArchiveRecordSaved');
