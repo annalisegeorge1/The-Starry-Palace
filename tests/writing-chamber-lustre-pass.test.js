@@ -67,6 +67,22 @@ describe('Writing Chamber glass and usability pass',()=>{
   expect(css).toContain('.writer-toolbar-help:not([open])>.writer-toolbar-help-content');
   expect(css).toContain('display:none!important;');
  });
+ it('keeps Focus mode reversible on desktop and mobile while preventing sticky-header overlap',()=>{
+  expect(room).toContain("aria-pressed={focusMode} onClick={()=>setFocusMode(v=>!v)}>{focusMode?'Exit focus · Esc':'Enter focus'}");
+  expect(room).toContain('className="writer-focus-exit"');
+  expect(room).toContain('aria-label="Exit focus mode and restore the writing desk"');
+  expect(room).toContain('onClick={()=>setFocusMode(false)}');
+  expect(room).toContain("else if(e.key==='Escape'&&focusMode){setFocusMode(false)}");
+  expect(css).toContain('/* FOCUS MODE: no overlapping sticky headers');
+  expect(css).toContain('.chic-editor-form>.editor-chapter-heading');
+  expect(css).toContain('position:relative!important;');
+  expect(css).toContain('.chic-editor-form>.manuscript-sticky-toolbar');
+  expect(css).toContain('top:0!important;');
+  expect(css).toContain('.writer-chapter-jump-actions>.writer-focus-exit');
+  expect(css).toContain('position:sticky;');
+  expect(css).toContain('left:0;');
+  expect(css).toContain('.full-palace-shell.daylight .writer-focus-exit');
+ });
  it('leaves manuscript data, actual page styles, autosave, publishing and art unchanged',()=>{
   for(const protectedSelector of [
    '.legacy-writing-canvas','.writing-page-stage','.chapter-manager-row',
