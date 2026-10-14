@@ -35,6 +35,6 @@ describe('Independent Throne of Honour room',()=>{
   await waitFor(()=>expect(getHonour).toHaveBeenCalledWith('member-1'));
   fireEvent.click(screen.getByRole('button',{name:'Recommend an author'}));
   expect(screen.getByText('Recommend an author or creator')).toBeTruthy();
-  expect(screen.getByText(/Recommendations are reviewed before publication/)).toBeTruthy();
+  expect(screen.getAllByText(/Recommendations are reviewed before publication/).length).toBeGreaterThan(0);
  });
 });
