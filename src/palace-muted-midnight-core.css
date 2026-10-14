@@ -1,0 +1,45 @@
+/*
+ * Muted midnight core · The Starry Palace.
+ * Matched to the original reference: inky blue/indigo, restrained violet
+ * blooming from the left, near-black navy on the right. No visible waves.
+ *
+ * This layer affects ONLY the Nightfall shell backdrop. It deliberately does
+ * not touch cards, glass panels, manuscript pages, chamber decoration, avatars,
+ * collectible frames, artwork, chat bubbles or the Daylight palette.
+ */
+.palace-shell.full-palace-shell.nightfall {
+ --palace-midnight-core:#01031a;
+ background-color:var(--palace-midnight-core);
+}
+.palace-shell.full-palace-shell.nightfall :is(.full-stage,.palace-stage) {
+ background:
+  radial-gradient(ellipse 76% 92% at -11% 73%,
+   rgba(99,3,141,.72) 0%,
+   rgba(75,3,124,.52) 29%,
+   rgba(39,6,96,.21) 55%,
+   transparent 77%),
+  radial-gradient(ellipse 83% 89% at 46% 35%,
+   rgba(3,12,104,.80) 0%,
+   rgba(2,10,82,.54) 43%,
+   transparent 77%),
+  linear-gradient(115deg,
+   #09041d 0%,#030625 39%,#020320 69%,#01010d 100%)!important;
+ background-attachment:scroll;
+}
+/* The old moving cloud/oval is what looked like a flowing ribbon. The
+   background itself remains gently luminous through static CSS gradients. */
+.palace-shell.full-palace-shell.nightfall :is(.full-stage,.palace-stage)::after {
+ opacity:0!important;
+ animation:none!important;
+ filter:none!important;
+}
+.palace-shell.full-palace-shell.nightfall :is(.full-stage,.palace-stage)::before {
+ opacity:.09!important;
+ animation:none!important;
+}
+@media(forced-colors:active){
+ .palace-shell.full-palace-shell.nightfall :is(.full-stage,.palace-stage){
+  background:Canvas!important;
+  color:CanvasText;
+ }
+}
