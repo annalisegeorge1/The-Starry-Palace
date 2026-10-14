@@ -1691,11 +1691,13 @@ describe('Starry Palace launch safety',()=>{
 
   it('keeps Lost Works provenance-first and personally saveable',()=>{
     const data=read('src/palaceData.js');
+    const lostWorks=read('src/PalaceLostWorksRoom.jsx');
     const polish=read('src/polish.css');
     expect(data).toContain('setArchiveRecordSaved');
-    expect(live).toContain('archive-advanced-filters');
-    expect(live).toContain('Recently verified/updated');
-    expect(live).toContain('Saved ✓');
+    expect(lostWorks).toContain('archive-advanced-filters');
+    expect(lostWorks).toContain('Recently verified/updated');
+    expect(lostWorks).toContain('Saved ✓');
+    expect(lostWorks).toContain("r.host_mode==='citation'");
     expect(polish).toContain('.archive-advanced-filters');
   });
 
