@@ -326,6 +326,11 @@ body.writing-desk-open .palace-shell.full-palace-shell .writer-toolbar-help-icon
  color:#f5efff;
  background:rgba(155,127,223,.24);
 }
+/* The author display:grid rule below must never reveal closed disclosure
+ * content against the browser's native <details> hidden state. */
+body.writing-desk-open .palace-shell.full-palace-shell .writer-toolbar-help:not([open])>.writer-toolbar-help-content{
+ display:none!important;
+}
 body.writing-desk-open .palace-shell.full-palace-shell .writer-toolbar-help-content{
  position:absolute;
  top:calc(100% + 8px);
