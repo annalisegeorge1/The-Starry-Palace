@@ -35,6 +35,6 @@ describe('Extracted series shelves',()=>{
   await waitFor(()=>expect(getMyWorks).toHaveBeenCalledWith('writer-1'));
   fireEvent.click(screen.getByRole('button',{name:/Create a series/}));
   expect(screen.getAllByText(/Create a series/).length).toBeGreaterThan(0);
-  expect(screen.getByText(/New works are added at the end/)).toBeTruthy();
+  expect(screen.getByRole('textbox',{name:'Series title'})).toBeTruthy();
  });
 });
