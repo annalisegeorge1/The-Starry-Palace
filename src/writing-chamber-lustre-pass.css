@@ -272,3 +272,112 @@ body.writing-desk-open .palace-shell.full-palace-shell.daylight .manuscript-shee
   transition:none!important;
  }
 }
+
+
+/* WRITER HELP — contextual guidance rather than a permanent fourth
+ * explanatory toolbar row. Native details works with mouse, touch and
+ * keyboard, and does not interact with the contentEditable chapter. */
+body.writing-desk-open .palace-shell.full-palace-shell .manuscript-toolbar-note.writer-toolbar-help{
+ display:block!important;
+ position:relative;
+ justify-self:end;
+ align-self:center;
+ z-index:94;
+ max-width:100%;
+ margin:0 0 0 auto!important;
+ padding:0!important;
+ min-width:0;
+ font:600 .73rem/1.4 system-ui,sans-serif;
+ color:#e5ddfb;
+}
+body.writing-desk-open .palace-shell.full-palace-shell .writer-toolbar-help>summary{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ gap:.42rem;
+ padding:.25rem .55rem;
+ min-height:36px;
+ min-width:38px;
+ box-sizing:border-box;
+ border-radius:999px;
+ border:1px solid rgba(183,178,240,.38);
+ background:linear-gradient(127deg,rgba(128,107,208,.22),rgba(76,126,175,.22));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+ color:#efeafd;
+ cursor:pointer;
+ list-style:none;
+ user-select:none;
+}
+body.writing-desk-open .palace-shell.full-palace-shell .writer-toolbar-help>summary::-webkit-details-marker{display:none}
+body.writing-desk-open .palace-shell.full-palace-shell .writer-toolbar-help>summary::marker{content:''}
+body.writing-desk-open .palace-shell.full-palace-shell .writer-toolbar-help>summary:focus-visible{
+ outline:3px solid #b8dfff!important;
+ outline-offset:3px!important;
+}
+body.writing-desk-open .palace-shell.full-palace-shell .writer-toolbar-help-icon{
+ display:inline-grid;
+ place-items:center;
+ width:22px;
+ height:22px;
+ flex:0 0 22px;
+ font:800 .83rem/1 system-ui,sans-serif;
+ border:1px solid rgba(209,191,250,.45);
+ border-radius:50%;
+ color:#f5efff;
+ background:rgba(155,127,223,.24);
+}
+body.writing-desk-open .palace-shell.full-palace-shell .writer-toolbar-help-content{
+ position:absolute;
+ top:calc(100% + 8px);
+ right:0;
+ width:min(338px,calc(100vw - 40px));
+ box-sizing:border-box;
+ display:grid;
+ gap:.32rem;
+ padding:.85rem 1rem;
+ border:1px solid rgba(190,172,250,.65);
+ border-radius:13px;
+ color:#e8e6fa;
+ background:linear-gradient(132deg,#28234c 0%,#1b284b 100%);
+ box-shadow:0 18px 44px rgba(6,7,28,.36),inset 0 1px 0 rgba(255,255,255,.11);
+ white-space:normal;
+ text-align:left;
+}
+body.writing-desk-open .palace-shell.full-palace-shell .writer-toolbar-help-content>strong{
+ color:#f6f2ff!important;
+ font-size:.84rem!important;
+ line-height:1.35;
+}
+body.writing-desk-open .palace-shell.full-palace-shell .writer-toolbar-help-content p{
+ margin:0;
+ color:#dad9ef;
+ font:500 .77rem/1.6 system-ui,sans-serif;
+}
+body.writing-desk-open .palace-shell.full-palace-shell.daylight .writer-toolbar-help>summary{
+ border-color:rgba(108,116,188,.44);
+ background:linear-gradient(126deg,#eee2fc,#e0effb);
+ color:#313a6c;
+}
+body.writing-desk-open .palace-shell.full-palace-shell.daylight .writer-toolbar-help-icon{
+ border-color:rgba(106,109,185,.36);
+ color:#3c4b87;
+ background:rgba(182,179,246,.34);
+}
+body.writing-desk-open .palace-shell.full-palace-shell.daylight .writer-toolbar-help-content{
+ color:#273758;
+ background:linear-gradient(129deg,#f5edfc,#e8f2ff);
+ border-color:rgba(107,111,182,.44);
+ box-shadow:0 15px 34px rgba(56,64,121,.17),inset 0 1px 0 rgba(255,255,255,.94);
+}
+body.writing-desk-open .palace-shell.full-palace-shell.daylight .writer-toolbar-help-content>strong{color:#23325b!important}
+body.writing-desk-open .palace-shell.full-palace-shell.daylight .writer-toolbar-help-content p{color:#334362}
+@media(max-width:760px){
+ body.writing-desk-open .palace-shell.full-palace-shell .writer-toolbar-help>summary{
+  min-height:40px;
+  min-width:40px;
+  padding:.3rem;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .writer-toolbar-help>summary>span:last-child{
+  display:none;
+ }
+}
