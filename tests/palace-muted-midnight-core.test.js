@@ -24,10 +24,12 @@ describe('Blue-muted Nightfall and blush-to-periwinkle Daylight core',()=>{
  it('gives Daylight blush-lavender-blue gradient glass instead of a flat pastel fill',()=>{
   expect(core).toContain('.palace-shell.full-palace-shell.daylight {');
   expect(core).toContain('.palace-shell.full-palace-shell.daylight :is(.full-stage,.palace-stage)');
-  expect(core).toContain('#fae9ee 0%,#e8e6f9 47%,#c4e2fb 100%');
-  expect(core).toContain('rgba(255,187,208,.39)');
-  expect(core).toContain('rgba(174,228,255,.51)');
-  expect(core).toContain('rgba(106,156,253,.20)');
+  expect(core).toContain('linear-gradient(180deg,');
+  expect(core).toContain('#f7b9df 0%');
+  expect(core).toContain('#edc1e9 24%');
+  expect(core).toContain('#d8c3f2 49%');
+  expect(core).toContain('#bed0f7 74%');
+  expect(core).toContain('#a5d5fa 100%');
   expect(core).toContain('--lustre-hero:');
   expect(core).toContain('--lustre-card:');
   expect(core).toContain('--lustre-soft:');
@@ -56,6 +58,15 @@ describe('Blue-muted Nightfall and blush-to-periwinkle Daylight core',()=>{
    .reduce((sum,v,i)=>sum+[.2126,.7152,.0722][i]*v,0);
   const ink=luminance('25365b'),glass=luminance('f7f6fd');
   expect((glass+.05)/(ink+.05)).toBeGreaterThan(9);
+ });
+ it('uses a smooth pastel sky rather than grid lines or an embedded reference image',()=>{
+  const daylight=core.slice(core.indexOf('/* DAYLIGHT —'),core.indexOf('/* Match the Nightfall chrome'));
+  expect(daylight).toContain('linear-gradient(180deg,');
+  expect(daylight).not.toContain('repeating-linear-gradient');
+  expect(daylight).not.toContain('background-image:url');
+  expect(daylight).not.toContain('background-size:20px');
+  expect(daylight).toContain('--lustre-hero:');
+  expect(daylight).toContain('--lustre-card:');
  });
  it('does not change the approved blue Nightfall theme while adjusting Daylight',()=>{
   const night=core.slice(core.indexOf('/* NIGHTFALL —'),core.indexOf('/* DAYLIGHT —'));
