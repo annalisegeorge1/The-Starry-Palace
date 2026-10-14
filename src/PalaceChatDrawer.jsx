@@ -368,11 +368,13 @@ export default function PalaceChatDrawer({userId}){
   if(!element||editingMessage===message.id)return;
   clearMessageHold();
   const rect=element.getBoundingClientRect();
-  const menuWidth=210,menuHeight=175;
+  // Group conversations can show up to five actions; reserve the full menu
+  // height rather than placing its last buttons below the mobile viewport.
+  const menuWidth=210,menuHeight=260;
   const width=Math.max(window.innerWidth||360,240);
-  const height=Math.max(window.innerHeight||700,280);
+  const height=Math.max(window.innerHeight||280,100);
   const left=Math.max(10,Math.min(width-menuWidth-10,Number.isFinite(x)?x-72:rect.left+20));
-  const top=Math.max(10,Math.min(height-menuHeight-10,(Number.isFinite(y)?y:rect.top)-menuHeight-7));
+  const top=Math.max(10,Math.min(Math.max(10,height-menuHeight-10),(Number.isFinite(y)?y:rect.top)-menuHeight-7));
   setActionMenu({message,top,left,roomId});
  }
  function beginMessageHold(e,message){
