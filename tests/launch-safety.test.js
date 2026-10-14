@@ -1018,7 +1018,7 @@ describe('Starry Palace launch safety',()=>{
   });
 
   it('never returns async load promises from React effects',()=>{
-    const allRooms=[live,settingsRoom,activityRoom].join('\n');
+    const allRooms=[live,settingsRoom,activityRoom,read('src/HonourRoom.jsx'),read('src/SeriesRoom.jsx')].join('\n');
     expect(allRooms).not.toMatch(/useEffect\s*\(\s*load\s*,/);
     expect((allRooms.match(/useEffect\(\(\)=>\{load\(\)\},/g)||[]).length).toBeGreaterThanOrEqual(15);
   });
@@ -1716,8 +1716,10 @@ describe('Starry Palace launch safety',()=>{
     expect(data).toContain('createHonourRecommendation');
     expect(data).toContain('withdrawHonourRecommendation');
     expect(data).toContain('reviewHonourRecommendation');
-    expect(live).toContain('Recommend an author');
-    expect(live).toContain('honour-my-recommendations');
+    const honour=read('src/HonourRoom.jsx');
+    expect(live).toContain('return <HonourRoom Frame={Frame}/>');
+    expect(honour).toContain('Recommend an author');
+    expect(honour).toContain('honour-my-recommendations');
     expect(live).toContain('Honour recommendations');
     expect(live).toContain('Publish tribute');
     expect(polish).toContain('.honour-monthly-courts');
