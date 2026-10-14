@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 const main=readFileSync('src/main.jsx','utf8');
 const core=readFileSync('src/palace-muted-midnight-core.css','utf8');
 
-describe('Blue-muted Nightfall and frosted periwinkle Daylight core',()=>{
+describe('Blue-muted Nightfall and blush-to-periwinkle Daylight core',()=>{
  it('loads the background refinement after the existing glass and room-theme styles',()=>{
   const glass=main.indexOf("import './palace-glass-coverage.css';");
   const last=main.indexOf("import './palace-community-focus.css';");
@@ -21,20 +21,30 @@ describe('Blue-muted Nightfall and frosted periwinkle Daylight core',()=>{
   expect(core).toContain('linear-gradient(115deg,');
   expect(core).not.toContain('rgba(56,48,131,.34)');
  });
- it('gives Daylight cool misty lavender-blue glass, not a flat pastel paint',()=>{
+ it('gives Daylight blush-lavender-blue gradient glass instead of a flat pastel fill',()=>{
   expect(core).toContain('.palace-shell.full-palace-shell.daylight {');
   expect(core).toContain('.palace-shell.full-palace-shell.daylight :is(.full-stage,.palace-stage)');
-  expect(core).toContain('#eff1fa 0%,#e6edf9 48%,#e0e9f7 100%');
+  expect(core).toContain('#f8e6ed 0%,#e9e2f7 47%,#c6def7 100%');
+  expect(core).toContain('rgba(255,211,218,.67)');
+  expect(core).toContain('rgba(157,194,232,.46)');
+  expect(core).toContain('rgba(207,194,244,.38)');
   expect(core).toContain('--lustre-hero:');
   expect(core).toContain('--lustre-card:');
   expect(core).toContain('--lustre-soft:');
   expect(core).toContain('--lustre-tab:');
   expect(core).toContain('rgba(255,255,255,.96)');
-  expect(core).toContain('linear-gradient(130deg,#eff0fa');
+  expect(core).toContain('linear-gradient(130deg,#f7eaf8');
   expect(core).toContain('.palace-shell.full-palace-shell.daylight .full-sidebar');
   expect(core).toContain('.palace-shell.full-palace-shell.nightfall .full-sidebar');
   expect(core).toContain('.palace-shell.full-palace-shell.nightfall .full-topbar');
   expect(core).toContain('.palace-shell.full-palace-shell.daylight .full-topbar');
+ });
+ it('does not change the approved blue Nightfall theme while adjusting Daylight',()=>{
+  const night=core.slice(core.indexOf('/* NIGHTFALL —'),core.indexOf('/* DAYLIGHT —'));
+  expect(night).toContain('rgba(35,53,122,.24)');
+  expect(night).toContain('rgba(8,29,100,.54)');
+  expect(night).toContain('#060b20 0%,#05112e 39%,#030b22 69%,#020511 100%');
+  expect(core).toContain('linear-gradient(170deg,#1c2146 0%,#111932 57%,#0c1428 100%)');
  });
  it('removes flowing cloud ovals while leaving stars quiet and existing gloss intact',()=>{
   expect(core).toContain(':is(.nightfall,.daylight) :is(.full-stage,.palace-stage)::after');
