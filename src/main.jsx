@@ -33,8 +33,8 @@ import './palace-inviting-polish.css';
 import './palace-cohesive-experience.css';
 import {
  ChamberLive,OnboardingLive,ReadingLive,ClubLive,WritingLive,SettingsLive,ActivityLive,LibraryLive,
- PalaceLifeLive,LettersLive,EventsLive,TreasuryLive,LostWorksLive,MemberProfileLive,SearchLive,
- WorkLive,ChapterLive,WorkStudioLive,TagSearchLive,HonourLive,CouncilLive,CodeLive,ComicsLive,
+ PalaceLifeLive,LettersLive,EventsLive,TreasuryLive,MemberProfileLive,SearchLive,
+ WorkLive,ChapterLive,WorkStudioLive,TagSearchLive,HonourLive,CouncilLive,ComicsLive,
  ComicLive,ComicEpisodeLive,ComicStudioLive,SeriesLive
 } from './liveRooms';
 const DirectClassicReader=React.lazy(()=>importWithRecovery(()=>import('./DirectClassicReader')));
@@ -202,6 +202,9 @@ const TreasuryCatalogueLazy=React.lazy(()=>importWithRecovery(()=>import('./Trea
 const GrandPalaceHall=React.lazy(()=>importWithRecovery(()=>import('./GrandPalaceHall')));
 const PalaceGovernance=React.lazy(()=>importWithRecovery(()=>import('./PalaceGovernance')));
 const PalaceBetaGuide=React.lazy(()=>importWithRecovery(()=>import('./PalaceBetaGuide')));
+// Public secondary rooms are isolated from the essential reading and writing bundle.
+const PalaceCodeRoom=React.lazy(()=>importWithRecovery(()=>import('./PalaceCodeRoom')));
+const PalaceLostWorksRoom=React.lazy(()=>importWithRecovery(()=>import('./PalaceLostWorksRoom')));
 const PalaceFandomAtlas=React.lazy(()=>importWithRecovery(()=>import('./PalaceFandomAtlas')));
 // Core Palace rooms are imported eagerly for navigation reliability.
 const PalaceChatDrawerLazy=React.lazy(()=>importWithRecovery(()=>import('./PalaceChatDrawer')));
@@ -696,7 +699,7 @@ function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo
  <Route path="/grand-palaces" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><GrandPalaceHall Frame={Frame}/></React.Suspense></ProtectedRoute>}/>
  <Route path="/treasury" element={<ProtectedRoute><TreasuryLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/treasury/catalogue" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><TreasuryCatalogueLazy Frame={Frame}/></React.Suspense></ProtectedRoute>}/>
- <Route path="/lost-works" element={<LostWorksLive Frame={Frame}/>}/>
+ <Route path="/lost-works" element={<React.Suspense fallback={<RouteLoading/>}><PalaceLostWorksRoom Frame={Frame}/></React.Suspense>}/>
  <Route path="/settings" element={<ProtectedRoute><SettingsLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/activity" element={<ProtectedRoute><ActivityLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/library" element={<ProtectedRoute><LibraryLive Frame={Frame}/></ProtectedRoute>}/>
@@ -704,7 +707,7 @@ function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo
  <Route path="/tags" element={<TagSearchLive Frame={Frame}/>}/>
  <Route path="/tag/:tagId" element={<React.Suspense fallback={<RouteLoading/>}><Frame><PalaceTagWorld/></Frame></React.Suspense>}/>
   <Route path="/fandoms" element={<React.Suspense fallback={<RouteLoading/>}><Frame><PalaceFandomAtlas/></Frame></React.Suspense>}/>
- <Route path="/search" element={<SearchLive Frame={Frame}/>}/><Route path="/honour" element={<HonourLive Frame={Frame}/>}/><Route path="/council" element={<ProtectedRoute><CouncilLive Frame={Frame}/></ProtectedRoute>}/><Route path="/council/governance" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><PalaceGovernance Frame={Frame}/></React.Suspense></ProtectedRoute>}/><Route path="/code" element={<CodeLive Frame={Frame}/>}/><Route path="/beta" element={<React.Suspense fallback={<RouteLoading/>}><PalaceBetaGuide Frame={Frame}/></React.Suspense>}/>
+ <Route path="/search" element={<SearchLive Frame={Frame}/>}/><Route path="/honour" element={<HonourLive Frame={Frame}/>}/><Route path="/council" element={<ProtectedRoute><CouncilLive Frame={Frame}/></ProtectedRoute>}/><Route path="/council/governance" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><PalaceGovernance Frame={Frame}/></React.Suspense></ProtectedRoute>}/><Route path="/code" element={<React.Suspense fallback={<RouteLoading/>}><PalaceCodeRoom Frame={Frame}/></React.Suspense>}/><Route path="/beta" element={<React.Suspense fallback={<RouteLoading/>}><PalaceBetaGuide Frame={Frame}/></React.Suspense>}/>
  <Route path="/member/:username" element={<MemberProfileLive Frame={Frame}/>}/>
  <Route path="*" element={<Frame><section className="lost-gates-page"><div className="lost-gates-orbit"><span>☾</span><i>✦</i></div><p className="eyebrow">BEYOND THE GATES</p><h1>You left palace grounds.</h1><p>The path thinned, the lamps disappeared, and somehow you wandered beyond the Palace walls.</p><div className="lost-gates-actions"><Link className="button" to="/">Return to the Palace</Link><Link to="/search">Search for a room →</Link></div></section></Frame>}/>
  </Routes></RouteGuard><PalaceChatHost/></Frame></AuthProvider>}
