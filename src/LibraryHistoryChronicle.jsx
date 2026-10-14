@@ -8,6 +8,16 @@ import './library-history-chronicle.css';
 const pageSize=18;
 const niceDate=n=>n?new Date(n).toLocaleString(undefined,{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}):'Date not recorded';
 
+function HistorySummary({summary}){
+ const[expanded,setExpanded]=useState(false);
+ if(!summary)return null;
+ const canExpand=summary.length>160;
+ return <div className="library-chronicle-summary-wrap">
+  <p className={'library-chronicle-summary'+(expanded?' is-expanded':'')}>{summary}</p>
+  {canExpand&&<button type="button" className="library-chronicle-summary-toggle" aria-expanded={expanded} onClick={()=>setExpanded(value=>!value)}>{expanded?'Show less ↑':'Show more summary ↓'}</button>}
+ </div>;
+}
+
 export default function LibraryHistoryChronicle({userId,library,historyChapters={}}){
  const[category,setCategory]=useState('all');
  const[query,setQuery]=useState('');
@@ -103,10 +113,10 @@ export default function LibraryHistoryChronicle({userId,library,historyChapters=
      <div className="library-chronicle-eyebrow"><span className={'library-chronicle-privacy '+(item.private?'is-private':'is-shared')}>{item.private?'◈ PRIVATE · YOUR HISTORY':'✦ PALACE MOMENT'}</span><span>{item.label}</span></div>
      <h4><Link to={item.href||('/palace-life?room='+encodeURIComponent(item.room||'history'))}>{item.title}</Link></h4>
      {item.byline&&<small className="library-chronicle-byline">by {item.byline}</small>}
-     {item.summary&&<p className="library-chronicle-summary">{item.summary}</p>}
+     {item.summary&&<HistorySummary key={item.id} summary={item.summary}/>}
      {item.private&&item.kind==='reading'&&<div className="library-chronicle-reading">
-      <span>{item.completed?'Completed':item.newer?'New story update available':item.progress+'% of story · saved position'}</span>
-      {!item.newer&&<div className="library-chronicle-progress" role="progressbar" aria-label={'Saved reading progress for '+item.title} aria-valuemin={0} aria-valuemax={100} aria-valuenow={item.progress}><i style={{width:item.progress+'%'}}/></div>}
+      <span>{item.newer?'New story update available · saved at '+item.progress+'%':item.completed?'Completed':item.progress+'% of story · saved position'}</span>
+      <div className="library-chronicle-progress" role="progressbar" aria-label={'Saved reading progress for '+item.title} aria-valuemin={0} aria-valuemax={100} aria-valuenow={item.progress}><i style={{width:item.progress+'%'}}/></div>
      </div>}
      {item.private&&item.kind==='reading'&&item.newer&&item.resumeHref&&item.href!==item.resumeHref&&<Link className="library-chronicle-update-link" to={item.href}>See latest story updates ↗</Link>}
      {(item.chapterCount!==null||item.wordCount!==null||item.chapterTitle)&&<div className="library-chronicle-stats">
