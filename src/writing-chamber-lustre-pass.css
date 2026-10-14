@@ -517,3 +517,63 @@ body.writing-desk-open .palace-shell.full-palace-shell.daylight .writer-toolbar-
   font-size:16px!important;
  }
 }
+
+
+/* FOCUS MODE: no overlapping sticky headers and no trapped mobile writer.
+ * The chapter title remains readable at the beginning of the page; the
+ * formatting toolbar alone stays pinned as the manuscript scrolls. */
+body.focus-editor.writing-desk-open .palace-shell.full-palace-shell .chic-editor-form>.editor-chapter-heading{
+ position:relative!important;
+ top:auto!important;
+ z-index:auto!important;
+}
+body.focus-editor.writing-desk-open .palace-shell.full-palace-shell .chic-editor-form>.manuscript-sticky-toolbar{
+ top:0!important;
+}
+body.focus-editor.writing-desk-open .palace-shell.full-palace-shell .writer-chapter-jump-actions{
+ min-width:0;
+}
+body.focus-editor.writing-desk-open .palace-shell.full-palace-shell .writer-focus-exit{
+ flex:0 0 auto!important;
+ min-height:43px!important;
+ padding:.42rem .76rem!important;
+ border:1px solid rgba(210,188,252,.66)!important;
+ border-radius:999px!important;
+ background:linear-gradient(125deg,rgba(141,100,214,.56),rgba(64,117,167,.42))!important;
+ color:#fff7ff!important;
+ font-size:.77rem!important;
+ font-weight:750!important;
+ line-height:1.25;
+ white-space:nowrap;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.20);
+}
+body.focus-editor.writing-desk-open .palace-shell.full-palace-shell .writer-focus-exit:hover{
+ border-color:rgba(230,218,255,.84)!important;
+ background:linear-gradient(120deg,rgba(166,115,235,.67),rgba(84,142,191,.52))!important;
+}
+body.focus-editor.writing-desk-open .palace-shell.full-palace-shell .writer-focus-exit:focus-visible{
+ outline:3px solid #bfe4ff!important;
+ outline-offset:3px!important;
+}
+body.focus-editor.writing-desk-open .palace-shell.full-palace-shell.daylight .writer-focus-exit{
+ border-color:rgba(106,100,185,.52)!important;
+ background:linear-gradient(122deg,#e5d4f7,#cee6fc)!important;
+ color:#29375d!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.91);
+}
+body.focus-editor.writing-desk-open .palace-shell.full-palace-shell.daylight .writer-focus-exit:hover{
+ background:linear-gradient(122deg,#d9c8f2,#bedef8)!important;
+}
+@media(max-width:760px){
+ body.focus-editor.writing-desk-open .palace-shell.full-palace-shell .writer-chapter-jump-actions>.writer-focus-exit{
+  min-width:106px!important;
+  min-height:44px!important;
+  position:sticky;
+  left:0;
+  z-index:2;
+  box-shadow:0 0 0 3px rgba(19,23,54,.85);
+ }
+ body.focus-editor.writing-desk-open .palace-shell.full-palace-shell.daylight .writer-chapter-jump-actions>.writer-focus-exit{
+  box-shadow:0 0 0 3px rgba(241,238,253,.95);
+ }
+}
