@@ -2309,7 +2309,7 @@ function WorkStudioForWork({Frame,slug}){
       </div>
       <button type="button" className="writer-format-arrow" aria-label="Scroll formatting tools right" onClick={()=>scrollFormatting('right')} title="More formatting tools">›</button>
     </div>
-        <div className="manuscript-toolbar-note"><span aria-hidden="true">✎</span><strong>Write freely.</strong><span>Text formatting stays in your draft; font, size and page mood are just your private writing view.</span></div>
+        <details className="manuscript-toolbar-note writer-toolbar-help"><summary aria-label="How formatting and personal writing views work" title="About formatting and private writing views"><span className="writer-toolbar-help-icon" aria-hidden="true">?</span><span>Formatting help</span></summary><div className="writer-toolbar-help-content"><strong>Your manuscript, your way.</strong><p>Bold, headings, lists and paragraph formatting stay in the saved chapter. Typeface, text size, line spacing and page mood change only your private writing view. You can save anytime with Ctrl/⌘ S.</p></div></details>
 <small className="editor-shortcut-hint">Formatting stays with you while you scroll · Ctrl/⌘ S · save · Ctrl/⌘ Z · undo · B bold · I italic · U underline · F find</small></div>
     {recoveryStorageAvailable===false&&<div className="writer-recovery-alert" role="alert"><strong>Device recovery unavailable.</strong><span>This browser could not keep a local recovery copy. Save to the Palace and download a text backup before leaving.</span><button type="button" onClick={downloadDraftBackup}>Download a backup →</button></div>}
     {backupMessage&&<p className="writer-backup-feedback" role="status">{backupMessage}</p>}
