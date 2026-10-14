@@ -43,14 +43,28 @@ describe('Writing Chamber glass and usability pass',()=>{
   expect(css).toContain('.full-palace-shell.daylight .writing-focus-strip :is(strong,p)');
   expect(css).toContain('color:#273958!important;');
  });
- it('does not affect the manuscript document, editor toolbar, autosave, publishing or art',()=>{
+ it('gives the manuscript priority while leaving the actual editor mounted',()=>{
+  expect(room).toContain('className="legacy-editor-form chic-editor-form"');
+  expect(room).toContain('className="legacy-writing-canvas" contentEditable');
+  expect(room).toContain('onInput={e=>{rememberFormattingSelection();editorMetricsRef.current?.schedule();queue');
+  expect(css).toContain('.writing-studio-grid:not(.rail-collapsed)');
+  expect(css).toContain('grid-template-columns:248px minmax(0,1fr)!important;');
+  expect(css).toContain('.writer-sprint-orbit');
+  expect(css).toContain('.writer-sprint-controls :is(button,select)');
+  expect(css).toContain('.manuscript-sticky-toolbar .writer-format-scroll button');
+  expect(css).toContain('min-height:43px!important;');
+ });
+ it('leaves manuscript data, actual page styles, autosave, publishing and art unchanged',()=>{
   for(const protectedSelector of [
-   '.legacy-editor-form','.manuscript-sticky-toolbar','.writing-page-stage',
-   '.chapter-manager-row','.editor-canvas','.reader-page','.chamber-frame',
-   '.badge-card','.member-avatar',
+   '.legacy-writing-canvas','.writing-page-stage','.chapter-manager-row',
+   '.editor-canvas','.reader-page','.chamber-frame','.badge-card',
+   '.member-avatar',
   ])expect(css).not.toContain(protectedSelector);
   expect(css).not.toContain('url(');
   expect(css).not.toContain('@keyframes');
+  expect(css).not.toContain('contentEditable');
+  expect(css).not.toContain('dangerouslySetInnerHTML');
+  expect(css).not.toContain('display:none');
   expect(css).not.toContain('transform:');
  });
  it('has visible keyboard focus and small-screen touch-safe controls',()=>{
