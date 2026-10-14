@@ -52,6 +52,16 @@ describe('My Library unified History screen',()=>{
   fireEvent.change(screen.getByRole('textbox',{name:'Search combined Library history'}),{target:{value:'not-found'}});
   expect(screen.getByText('Nothing matches these filters.')).toBeTruthy();
  });
+ it('keeps a direct saved-chapter shortcut when a story has newer changes',async()=>{
+  const updatedProgress={...progress,works:{...progress.works,last_published_at:'2026-10-14T09:00:00Z'}};
+  render(<MemoryRouter><LibraryHistoryChronicle userId="reader-1" library={{progress:[updatedProgress],comicProgress:[]}}
+   historyChapters={{'private-book':[{status:'published',word_count:500,title:'Chapter One',published_at:'2026-10-12T09:00:00Z'}]}}/></MemoryRouter>);
+  const resume=screen.getByRole('link',{name:'Resume saved chapter ↗'});
+  expect(resume.getAttribute('href')).toBe('/work/private-moon/chapter/page-12');
+  expect(screen.getByRole('link',{name:'See latest story updates ↗'}).getAttribute('href')).toBe('/work/private-moon');
+  expect(screen.getByText(/Last story publication:/)).toBeTruthy();
+  expect(screen.getByText('New story update available')).toBeTruthy();
+ });
  it('keeps private reading accessible when community and published queries fail',async()=>{
   getPalaceHistoryMoments.mockRejectedValue(new Error('Offline'));
   getPublishedWorks.mockRejectedValue(new Error('Offline'));
