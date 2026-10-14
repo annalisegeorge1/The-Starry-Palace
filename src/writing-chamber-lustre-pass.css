@@ -386,3 +386,134 @@ body.writing-desk-open .palace-shell.full-palace-shell.daylight .writer-toolbar-
   display:none;
  }
 }
+
+/* LONG-SESSION MOBILE DESK
+ * Keep the goals and chapter actions usable above the keyboard. Earlier
+ * polish.css puts the chapter-action buttons in grid column two; on phones
+ * that can squeeze three real actions into a sliver beside the goal field.
+ * Repair only the statistics chrome, never the editable manuscript. */
+@media(max-width:760px){
+ body.writing-desk-open .palace-shell.full-palace-shell .chic-editor-form>.chic-editor-stats{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:.7rem!important;
+  padding:.7rem!important;
+  border-radius:15px!important;
+  min-width:0;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .chic-editor-stats :is(.writing-count-block,.editor-goal-control,.editor-stat-actions){
+  grid-column:1/-1!important;
+  min-width:0!important;
+  width:100%;
+  box-sizing:border-box;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .chic-editor-stats .writing-count-block{
+  gap:.7rem!important;
+  align-items:center;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .writing-count-block>div:last-child{
+  min-width:0;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .writing-count-block>div:last-child>span{
+  font-size:.76rem!important;
+  line-height:1.5!important;
+  white-space:normal;
+  overflow-wrap:anywhere;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .editor-goal-control{
+  gap:.4rem;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .editor-goal-control label{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(92px,112px)!important;
+  align-items:center;
+  gap:.65rem;
+  font-size:.79rem!important;
+  line-height:1.45;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .editor-goal-control input{
+  min-width:0;
+  width:100%;
+  box-sizing:border-box;
+  min-height:43px!important;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .editor-goal-control .goal-presets{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.38rem;
+  min-width:0;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .goal-presets button{
+  flex:1 1 66px;
+  min-height:40px!important;
+  font-size:.76rem!important;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .chic-editor-stats .editor-stat-actions{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  justify-content:flex-start!important;
+  gap:.45rem!important;
+  white-space:normal!important;
+  align-items:stretch!important;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .editor-stat-actions>button{
+  flex:1 1 130px;
+  max-width:100%;
+  min-height:43px!important;
+  padding:.48rem .65rem!important;
+  font-size:.76rem!important;
+  line-height:1.35!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .writer-sprint-controls{
+  min-width:0;
+  flex-wrap:wrap;
+  gap:.42rem;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .writer-sprint-controls :is(button,select){
+  min-height:43px!important;
+  font-size:.78rem!important;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .writer-chapter-jump-main{
+  min-width:0;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .writer-chapter-jump-main select{
+  min-width:0!important;
+  max-width:100%;
+  min-height:43px!important;
+  text-overflow:ellipsis;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .writer-chapter-jump-main .writer-chapter-arrow{
+  min-width:43px;
+  min-height:43px!important;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .manuscript-sticky-toolbar .writer-format-arrow{
+  min-width:43px!important;
+  min-height:44px!important;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .manuscript-sticky-toolbar .writer-format-navigator{
+  grid-template-columns:43px minmax(0,1fr) 43px!important;
+  gap:4px;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .manuscript-sticky-toolbar .writer-format-scroll button{
+  min-height:44px!important;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .chic-editor-stats :is(button,input,select):focus-visible,
+ body.writing-desk-open .palace-shell.full-palace-shell .writer-chapter-jump-main :is(button,select):focus-visible{
+  outline:3px solid var(--ui-accent)!important;
+  outline-offset:2px!important;
+ }
+}
+/* iOS Safari zooms the viewport when a focused input is rendered too small.
+ * Keep mobile writing controls at a readable, zoom-safe 16px. */
+@media(max-width:600px){
+ body.writing-desk-open .palace-shell.full-palace-shell :is(
+  .writing-chapter-manager-tools input,
+  .writing-chapter-manager-tools select,
+  .writer-chapter-jump-main select,
+  .editor-goal-control input
+ ){
+  font-size:16px!important;
+ }
+}
