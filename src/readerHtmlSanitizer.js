@@ -24,9 +24,10 @@ export function safeReaderHtml(raw=''){
  // its contents or descendants behind for later unwrapping.
  const nodes=[...doc.body.querySelectorAll('*')].reverse();
  for(const element of nodes){
-  if(DROP_WITH_CONTENT.has(element.tagName)){
+  const name=element.tagName.toUpperCase();
+  if(DROP_WITH_CONTENT.has(name)){
    element.remove();
-  }else if(!READER_TAGS.has(element.tagName)){
+  }else if(!READER_TAGS.has(name)){
    const replacement=doc.createDocumentFragment();
    while(element.firstChild)replacement.appendChild(element.firstChild);
    element.replaceWith(replacement);
