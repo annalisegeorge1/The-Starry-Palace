@@ -73,17 +73,20 @@
  --palace-text:#25365b;
  background-color:var(--palace-daylight-core);
 }
+/* This is a vertical sky, not a diagonal or an image-overlay wallpaper.
+ * The reference grid is intentionally NOT reproduced. */
 .palace-shell.full-palace-shell.daylight :is(.full-stage,.palace-stage) {
  background:
-  radial-gradient(ellipse 76% 78% at -8% -6%,
-   rgba(255,187,208,.39) 0%,
-   rgba(254,229,225,.32) 51%,
-   transparent 77%),
-  radial-gradient(ellipse 73% 87% at 96% 85%,
-   rgba(174,228,255,.51),transparent 77%),
-  radial-gradient(ellipse 75% 76% at 38% 72%,
-   rgba(106,156,253,.20),transparent 77%),
-  linear-gradient(129deg,#fae9ee 0%,#e8e6f9 47%,#c4e2fb 100%)!important;
+  radial-gradient(ellipse 75% 38% at 85% -4%,
+   rgba(255,239,251,.25),transparent 80%),
+  radial-gradient(ellipse 72% 38% at 12% 99%,
+   rgba(152,210,254,.18),transparent 82%),
+  linear-gradient(180deg,
+   #f7b9df 0%,
+   #edc1e9 24%,
+   #d8c3f2 49%,
+   #bed0f7 74%,
+   #a5d5fa 100%)!important;
  background-attachment:scroll;
 }
 
