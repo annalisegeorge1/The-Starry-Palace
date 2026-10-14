@@ -60,7 +60,22 @@ describe('My Library unified History screen',()=>{
   expect(resume.getAttribute('href')).toBe('/work/private-moon/chapter/page-12');
   expect(screen.getByRole('link',{name:'See latest story updates ↗'}).getAttribute('href')).toBe('/work/private-moon');
   expect(screen.getByText(/Last story publication:/)).toBeTruthy();
-  expect(screen.getByText('New story update available')).toBeTruthy();
+  expect(screen.getByText('New story update available · saved at 38%')).toBeTruthy();
+  expect(screen.getByRole('progressbar',{name:'Saved reading progress for The Private Moon'}).getAttribute('aria-valuenow')).toBe('38');
+ });
+ it('lets readers expand and collapse a long History summary without hiding story details',async()=>{
+  const longSummary='An intricate tale of moonlit rooms and lost letters. '.repeat(13).trim();
+  getPublishedWorks.mockResolvedValue([{...pub,summary:longSummary}]);
+  mount();
+  await screen.findByText('The Glass Garden');
+  const toggle=screen.getByRole('button',{name:'Show more summary ↓'});
+  expect(toggle.getAttribute('aria-expanded')).toBe('false');
+  fireEvent.click(toggle);
+  expect(screen.getByRole('button',{name:'Show less ↑'}).getAttribute('aria-expanded')).toBe('true');
+  const summary=screen.getByText(longSummary.slice(0,180),{exact:false});
+  expect(summary.classList.contains('is-expanded')).toBe(true);
+  fireEvent.click(screen.getByRole('button',{name:'Show less ↑'}));
+  expect(screen.getByRole('button',{name:'Show more summary ↓'}).getAttribute('aria-expanded')).toBe('false');
  });
  it('keeps private reading accessible when community and published queries fail',async()=>{
   getPalaceHistoryMoments.mockRejectedValue(new Error('Offline'));
