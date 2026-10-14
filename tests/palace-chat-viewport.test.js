@@ -2,6 +2,7 @@ import {describe,it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
 const css=readFileSync('src/palace-chat-mobile-viewport.css','utf8');
 const jsx=readFileSync('src/PalaceChatDrawer.jsx','utf8');
+const actionCss=readFileSync('src/palace-chat-context-polish.css','utf8');
 describe('Palace Chat stays closable on short phones and browser webviews',()=>{
  it('pins both edges of the open drawer independently of the bottom dock',()=>{
   expect(css).toContain('@media(max-width:720px)');
@@ -25,5 +26,12 @@ describe('Palace Chat stays closable on short phones and browser webviews',()=>{
   expect(css).toContain('.palace-chat-v2.palace-chat-dock.is-open .palace-chat-heading');
   expect(jsx).toContain('getLetters');
   expect(jsx).toContain('getPalaceGroupChatOverview');
+ });
+ it('keeps long-press group message actions visible in short landscape viewports',()=>{
+  expect(jsx).toContain('const menuWidth=210,menuHeight=260;');
+  expect(jsx).toContain('const height=Math.max(window.innerHeight||280,100);');
+  expect(actionCss).toContain('max-height:calc(100dvh - 20px);');
+  expect(actionCss).toContain('overflow-y:auto;');
+  expect(actionCss).toContain('overscroll-behavior:contain;');
  });
 });
