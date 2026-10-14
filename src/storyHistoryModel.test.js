@@ -16,7 +16,7 @@ describe('story history metrics',()=>{
   const work={last_published_at:'2026-04-10T11:00:00Z'};
   const x=storyHistoryDetails(work,[{status:'published',word_count:450,title:'Earlier chapter',
    published_at:first,updated_at:'2026-03-02T10:00:00Z'}]);
-  expect(x.lastChangedAt).toBe(work.last_published_at);
+  expect(x.lastChangedAt).toBe(new Date(work.last_published_at).toISOString());
   expect(x.changeKind).toBe('unknown');
   expect(x.chapterTitle).toBeNull();
   expect(x.chapterCount).toBe(1);
