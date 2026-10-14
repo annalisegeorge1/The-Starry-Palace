@@ -12,6 +12,17 @@ it('exposes each layout and reports the chosen presentation accessibly',()=>{
  expect(screen.getByRole('status').textContent).toContain('24');
  expect(screen.getByRole('status').textContent).toContain('80');
 });
+it('keeps layout help behind a touch-accessible question mark',()=>{
+ render(<ReadingCatalogueControls layout="comfortable" onLayout={()=>{}} shown={3} total={5}/>);
+ const help=screen.getByRole('button',{name:'About: Story layout choices'});
+ expect(help.getAttribute('aria-expanded')).toBe('false');
+ expect(screen.queryByText(/Changing the layout does not change/)).toBeNull();
+ fireEvent.click(help);
+ expect(help.getAttribute('aria-expanded')).toBe('true');
+ expect(screen.getByText(/Changing the layout does not change/)).toBeTruthy();
+ fireEvent.click(screen.getByRole('button',{name:'Close Story layout choices'}));
+ expect(help.getAttribute('aria-expanded')).toBe('false');
+});
 it('shows the real remaining batch and removes the control when complete',()=>{
  const more=vi.fn();
  const {rerender}=render(<ReadingCatalogueMore shown={24} total={29} onMore={more}/>);

@@ -20,11 +20,13 @@ export function buildLibraryHistoryEntries({progress=[],comicProgress=[],history
   const hasChapters=Object.prototype.hasOwnProperty.call(available(historyChapters),id);
   const chapter=hasChapters?storyHistoryDetails(work,historyChapters[id]):null;
   const newer=Boolean(at&&changed>at);
+  const workHref=work.slug?'/work/'+encodeURIComponent(work.slug):null;
+  const resumeHref=workHref&&item.chapter_id&&!item.completed?workHref+'/chapter/'+encodeURIComponent(item.chapter_id):null;
   entries.push({
    id:'private-work-'+id,category:'reading',private:true,kind:'reading',at,
    title:work.title||'Story',summary:truncate(work.summary),
-   label:newer?'New chapter since your saved place':item.completed?'Finished reading':'Saved reading position',
-   href:work.slug?('/work/'+encodeURIComponent(work.slug)+(item.chapter_id&&!newer&&!item.completed?'/chapter/'+encodeURIComponent(item.chapter_id):'')):'/reading',
+   label:newer?'Story updated since your saved place':item.completed?'Finished reading':'Saved reading position',
+   href:workHref?(resumeHref&&!newer?resumeHref:workHref):'/reading',resumeHref,lastPublishedAt:changed||null,
    cover:work.cover_url||null,progress:safePercent(item.progress_percent),
    chapterPercent:safePercent(item.chapter_progress_percent),
    completed:!!item.completed&&!newer,
