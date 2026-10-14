@@ -12,7 +12,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "verify": "vitest run && npm run build",
-    "audit:structure": "node scripts/architecture-inventory.mjs"
+    "audit:structure": "node scripts/architecture-inventory.mjs",
+    "audit:css": "node scripts/css-overlap-inventory.mjs"
   },
   "keywords": [],
   "author": "",
