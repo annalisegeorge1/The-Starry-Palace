@@ -41,6 +41,29 @@ describe('manuscript format selection',()=>{
   expect(restoreEditorSelection(editor,saved,selection)).toBe(false);
   editor.remove();selection.removeAllRanges();
  });
+ it('rejects stale highlights when their text changes without detaching the editor',()=>{
+  const editor=document.createElement('div');
+  document.body.appendChild(editor);
+  const {selection,node}=selectionWithRange(editor,'A chapter with a lovely phrase',17,23);
+  const saved=captureEditorSelection(editor,selection);
+  expect(saved?.selectedText).toBe('lovely');
+  node.data='A chapter with a bright phrase';
+  selection.removeAllRanges();
+  expect(restoreEditorSelection(editor,saved,selection)).toBe(false);
+  expect(selection.rangeCount).toBe(0);
+  editor.remove();
+ });
+ it('invalidates a remembered caret if inserting text shifts its boundary',()=>{
+  const editor=document.createElement('div');
+  document.body.appendChild(editor);
+  const {selection,node}=selectionWithRange(editor,'Beginning of a chapter',9,9);
+  const saved=captureEditorSelection(editor,selection);
+  expect(saved?.collapsed).toBe(true);
+  node.insertData(0,'Another ');
+  selection.removeAllRanges();
+  expect(restoreEditorSelection(editor,saved,selection)).toBe(false);
+  editor.remove();
+ });
  it('handles missing selection and computes a useful horizontal step',()=>{
   expect(captureEditorSelection(null,null)).toBeNull();
   expect(restoreEditorSelection(null,null,null)).toBe(false);
