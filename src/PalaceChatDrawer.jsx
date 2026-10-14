@@ -105,6 +105,13 @@ export default function PalaceChatDrawer({userId}){
  const groupUnread=groupData.groups.filter(g=>!g.muted&&palaceChatUnreadGroup(g)).length;
  const unread=directUnread+groupUnread+groupData.invitations.length;
  const openedRoomName=tab==='direct'?nameOf(activeDirect?.correspondent):activeGroup?.title;
+ // A conversation can be archived or access can be removed while Chat is open.
+ // Never leave the drawer stranded in a thread whose header no longer exists.
+ useEffect(()=>{
+  if(!threadOpen)return;
+  const missing=tab==='direct'?(Boolean(direct)&&!activeDirect):(groupAvailable&&!activeGroup);
+  if(missing){setThreadOpen(false);setActionMenu(null);setManaging(false)}
+ },[threadOpen,tab,direct,activeDirect,groupAvailable,activeGroup]);
  useEffect(()=>{if(!photoFile){setPhotoPreview('');return}
   const preview=URL.createObjectURL(photoFile);setPhotoPreview(preview);
   return()=>URL.revokeObjectURL(preview);
@@ -507,7 +514,7 @@ export default function PalaceChatDrawer({userId}){
   return directPreviews.get(c.conversation_id)||{text:'Start your conversation',time:''};
  };
  if(quiet&&!open)return null;
- return <div data-chat-type={tab} data-circle-colour={tab==='groups'?(activeGroup?.colorKey||'moonlit'):'moonlit'} className={'palace-chat-dock palace-chat-v2'+(open?' is-open':'')+(open&&threadOpen?' is-thread-open':'')+(open&&!threadOpen&&!creating?' is-inbox-empty':'')+(chatPaused?' is-quiet':'')}>
+ return <div data-chat-type={tab} data-circle-colour={tab==='groups'?(activeGroup?.colorKey||'moonlit'):'moonlit'} className={'palace-chat-dock palace-chat-v2'+(open?' is-open':'')+(open&&threadOpen&&active?' is-thread-open':'')+(open&&!threadOpen&&!creating?' is-inbox-empty':'')+(chatPaused?' is-quiet':'')}>
   {!open?<button type="button" className="palace-chat-launch" aria-label={'Open Palace chat'+(unread?' · '+unread+' new items':'')} aria-expanded={false} onClick={()=>{setActionMenu(null);setThreadOpen(false);setOpen(true)}}><span aria-hidden="true">✉</span><span>Chat</span>{unread>0&&<b>{unread>99?'99+':unread}</b>}</button>:
   <section className="palace-chat-panel" aria-label="Palace Chat" role="region">
    <header className="palace-chat-heading"><div className="palace-chat-brand"><span className="palace-chat-brand-mark" aria-hidden="true">✦</span><div className="palace-chat-brand-copy"><small>PRIVATE CONVERSATIONS</small><strong>Palace Chat</strong></div></div>
