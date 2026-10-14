@@ -64,6 +64,8 @@ describe('Writing Chamber glass and usability pass',()=>{
   expect(css).toContain('.writer-toolbar-help-content');
   expect(css).toContain('.full-palace-shell.daylight .writer-toolbar-help-content');
   expect(css).toContain('width:min(338px,calc(100vw - 40px));');
+  expect(css).toContain('.writer-toolbar-help:not([open])>.writer-toolbar-help-content');
+  expect(css).toContain('display:none!important;');
  });
  it('leaves manuscript data, actual page styles, autosave, publishing and art unchanged',()=>{
   for(const protectedSelector of [
