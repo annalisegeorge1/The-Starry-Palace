@@ -17,16 +17,16 @@
 .palace-shell.full-palace-shell.nightfall :is(.full-stage,.palace-stage) {
  background:
   radial-gradient(ellipse 76% 92% at -11% 73%,
-   rgba(56,48,131,.34) 0%,
-   rgba(44,43,116,.25) 31%,
-   rgba(25,28,81,.10) 57%,
+   rgba(35,53,122,.24) 0%,
+   rgba(26,44,104,.16) 31%,
+   rgba(17,31,77,.07) 57%,
    transparent 77%),
   radial-gradient(ellipse 83% 89% at 46% 35%,
-   rgba(6,21,101,.63) 0%,
-   rgba(7,18,76,.39) 43%,
+   rgba(8,29,100,.54) 0%,
+   rgba(6,23,78,.34) 43%,
    transparent 77%),
   linear-gradient(115deg,
-   #07091f 0%,#050b2c 39%,#030921 69%,#020410 100%)!important;
+   #060b20 0%,#05112e 39%,#030b22 69%,#020511 100%)!important;
  background-attachment:scroll;
 }
 
@@ -34,55 +34,67 @@
  * A frosted blue/lilac morning with a white-glass shimmer, never peach/pink.
  * Colours are scoped to shared glass surfaces only, not bespoke artworks. */
 .palace-shell.full-palace-shell.daylight {
- --palace-daylight-core:#edf0fa;
- --palace-bg:#edf0fa;
- --palace-bg-deep:#e2e7f6;
- --palace-panel:#f6f4fc;
- --palace-panel-raised:#fcfbff;
- --palace-panel-soft:rgba(248,247,255,.89);
- --ui-surface:#f9f7fe;
- --ui-raised:#ecf0fb;
- --ui-selected:linear-gradient(110deg,#e8e0f5,#dce6f9);
+ --palace-daylight-core:#ebf0fa;
+ --palace-bg:#ebf0fa;
+ --palace-bg-deep:#e0e8f7;
+ --palace-panel:#f3f5fc;
+ --palace-panel-raised:#fbfcff;
+ --palace-panel-soft:rgba(246,249,255,.89);
+ --ui-surface:#f8f9fe;
+ --ui-raised:#e8effb;
+ --ui-selected:linear-gradient(110deg,#e4e7f6,#dcebf9);
  --lustre-hero:
   radial-gradient(ellipse at 7% -10%,rgba(255,255,255,.86),transparent 52%),
-  radial-gradient(ellipse at 96% 93%,rgba(168,185,232,.31),transparent 60%),
-  linear-gradient(119deg,#e7dff3 0%,#dfe7f8 53%,#cddcf4 100%);
+  radial-gradient(ellipse at 96% 93%,rgba(157,182,227,.28),transparent 60%),
+  linear-gradient(119deg,#e5e6f3 0%,#dceaf8 53%,#cfddf4 100%);
  --lustre-card:
   radial-gradient(ellipse at 6% 0%,rgba(255,255,255,.96),transparent 56%),
-  radial-gradient(ellipse at 96% 96%,rgba(177,190,234,.22),transparent 60%),
-  linear-gradient(130deg,#f2ebfa 0%,#e7ebf9 55%,#dce5f8 100%);
+  radial-gradient(ellipse at 96% 96%,rgba(161,184,231,.24),transparent 60%),
+  linear-gradient(130deg,#eff0fa 0%,#e6ecfa 55%,#dce8f8 100%);
  --lustre-soft:
   radial-gradient(ellipse at 4% 0%,rgba(255,255,255,.94),transparent 53%),
-  linear-gradient(130deg,#f5f0fc 0%,#ecedf9 55%,#e2e9f9 100%);
+  linear-gradient(130deg,#f3f3fc 0%,#ebeffb 55%,#e1ebf9 100%);
  --lustre-tab:
   radial-gradient(ellipse at 8% 0%,rgba(255,255,255,.93),transparent 72%),
-  linear-gradient(118deg,#e6d7f2 0%,#d7dff6 55%,#c9daf3 100%);
+  linear-gradient(118deg,#e4e0f3 0%,#d6e3f7 55%,#c7d9f1 100%);
  --lustre-tab-idle:
-  linear-gradient(132deg,rgba(237,229,250,.94),rgba(219,231,249,.92));
+  linear-gradient(132deg,rgba(234,234,250,.94),rgba(216,232,249,.92));
  --lustre-border:rgba(129,123,182,.43);
  background-color:var(--palace-daylight-core);
 }
 .palace-shell.full-palace-shell.daylight :is(.full-stage,.palace-stage) {
  background:
   radial-gradient(ellipse 76% 75% at 2% 9%,
-   rgba(197,178,220,.31),transparent 74%),
+   rgba(171,184,223,.18),transparent 74%),
   radial-gradient(ellipse 66% 79% at 84% 18%,
-   rgba(173,191,229,.35),transparent 75%),
+   rgba(160,189,230,.29),transparent 75%),
   radial-gradient(ellipse 85% 67% at 44% 100%,
-   rgba(203,210,237,.32),transparent 78%),
-  linear-gradient(124deg,#f1edf8 0%,#e8eaf8 48%,#e1e8f7 100%)!important;
+   rgba(185,205,235,.27),transparent 78%),
+  linear-gradient(124deg,#eff1fa 0%,#e6edf9 48%,#e0e9f7 100%)!important;
  background-attachment:scroll;
+}
+
+/* Match the Nightfall chrome to the quieter blue core, keeping its
+   reflective gradients and all individual navigation colours intact. */
+.palace-shell.full-palace-shell.nightfall .full-sidebar {
+ background:
+  radial-gradient(ellipse at 8% 0%,rgba(101,104,173,.12),transparent 47%),
+  linear-gradient(170deg,#1c2146 0%,#111932 57%,#0c1428 100%)!important;
+}
+.palace-shell.full-palace-shell.nightfall .full-topbar {
+ background:
+  linear-gradient(112deg,rgba(31,34,75,.95),rgba(15,26,65,.95) 63%,rgba(13,36,63,.94))!important;
 }
 
 /* Only the shared Daylight chrome: no badge art or member-custom themes. */
 .palace-shell.full-palace-shell.daylight .full-sidebar {
  background:
   radial-gradient(ellipse at 8% 0%,rgba(255,255,255,.70),transparent 49%),
-  linear-gradient(170deg,rgba(239,235,250,.98),rgba(224,231,247,.98))!important;
+  linear-gradient(170deg,rgba(236,239,251,.98),rgba(223,232,249,.98))!important;
 }
 .palace-shell.full-palace-shell.daylight .full-topbar {
  background:
-  linear-gradient(110deg,rgba(248,244,254,.95),rgba(231,237,251,.94) 64%,rgba(226,234,249,.94))!important;
+  linear-gradient(110deg,rgba(247,248,254,.95),rgba(231,239,252,.94) 64%,rgba(223,235,250,.94))!important;
 }
 
 /* Existing clouds are oversized soft-edged ovals and read as flowing waves.
