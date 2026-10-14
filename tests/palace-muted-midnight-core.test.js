@@ -16,22 +16,24 @@ describe('Blue-muted Nightfall and frosted periwinkle Daylight core',()=>{
  it('uses restrained blue-indigo Nightfall instead of intense magenta',()=>{
   expect(core).toContain('.palace-shell.full-palace-shell.nightfall :is(.full-stage,.palace-stage)');
   expect(core).toContain('radial-gradient(ellipse 76% 92% at -11% 73%');
-  expect(core).toContain('rgba(56,48,131,.34)');
-  expect(core).toContain('rgba(6,21,101,.63)');
+  expect(core).toContain('rgba(35,53,122,.24)');
+  expect(core).toContain('rgba(8,29,100,.54)');
   expect(core).toContain('linear-gradient(115deg,');
-  expect(core).not.toContain('rgba(99,3,141,.72)');
+  expect(core).not.toContain('rgba(56,48,131,.34)');
  });
  it('gives Daylight cool misty lavender-blue glass, not a flat pastel paint',()=>{
   expect(core).toContain('.palace-shell.full-palace-shell.daylight {');
   expect(core).toContain('.palace-shell.full-palace-shell.daylight :is(.full-stage,.palace-stage)');
-  expect(core).toContain('#f1edf8 0%,#e8eaf8 48%,#e1e8f7 100%');
+  expect(core).toContain('#eff1fa 0%,#e6edf9 48%,#e0e9f7 100%');
   expect(core).toContain('--lustre-hero:');
   expect(core).toContain('--lustre-card:');
   expect(core).toContain('--lustre-soft:');
   expect(core).toContain('--lustre-tab:');
   expect(core).toContain('rgba(255,255,255,.96)');
-  expect(core).toContain('linear-gradient(130deg,#f2ebfa');
+  expect(core).toContain('linear-gradient(130deg,#eff0fa');
   expect(core).toContain('.palace-shell.full-palace-shell.daylight .full-sidebar');
+  expect(core).toContain('.palace-shell.full-palace-shell.nightfall .full-sidebar');
+  expect(core).toContain('.palace-shell.full-palace-shell.nightfall .full-topbar');
   expect(core).toContain('.palace-shell.full-palace-shell.daylight .full-topbar');
  });
  it('removes flowing cloud ovals while leaving stars quiet and existing gloss intact',()=>{
