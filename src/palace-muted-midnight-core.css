@@ -1,34 +1,94 @@
 /*
- * Muted midnight core · The Starry Palace.
- * Matched to the original reference: inky blue/indigo, restrained violet
- * blooming from the left, near-black navy on the right. No visible waves.
+ * The Starry Palace — muted blue Nightfall & frosted periwinkle Daylight.
  *
- * This layer affects ONLY the Nightfall shell backdrop. It deliberately does
- * not touch cards, glass panels, manuscript pages, chamber decoration, avatars,
- * collectible frames, artwork, chat bubbles or the Daylight palette.
+ * Reference-led atmospheres, not wallpaper: soft colour fields, no ribbons.
+ * Only shell backdrops, the shared Daylight glass palette, and navigation
+ * chrome are tuned. Do not touch manuscript paper, member Chamber designs,
+ * story art, banners, badge frames, gifts, chat bubbles or avatar geometry.
+ * Keep every existing prismatic reflection, highlight and shadow.
  */
+
+/* NIGHTFALL — less saturated and more blue than the earlier purple core.
+ * The violet bloom is an accent; ink-blue stays dominant. */
 .palace-shell.full-palace-shell.nightfall {
- --palace-midnight-core:#01031a;
+ --palace-midnight-core:#020616;
  background-color:var(--palace-midnight-core);
 }
 .palace-shell.full-palace-shell.nightfall :is(.full-stage,.palace-stage) {
  background:
   radial-gradient(ellipse 76% 92% at -11% 73%,
-   rgba(99,3,141,.72) 0%,
-   rgba(75,3,124,.52) 29%,
-   rgba(39,6,96,.21) 55%,
+   rgba(56,48,131,.34) 0%,
+   rgba(44,43,116,.25) 31%,
+   rgba(25,28,81,.10) 57%,
    transparent 77%),
   radial-gradient(ellipse 83% 89% at 46% 35%,
-   rgba(3,12,104,.80) 0%,
-   rgba(2,10,82,.54) 43%,
+   rgba(6,21,101,.63) 0%,
+   rgba(7,18,76,.39) 43%,
    transparent 77%),
   linear-gradient(115deg,
-   #09041d 0%,#030625 39%,#020320 69%,#01010d 100%)!important;
+   #07091f 0%,#050b2c 39%,#030921 69%,#020410 100%)!important;
  background-attachment:scroll;
 }
-/* The old moving cloud/oval is what looked like a flowing ribbon. The
-   background itself remains gently luminous through static CSS gradients. */
-.palace-shell.full-palace-shell.nightfall :is(.full-stage,.palace-stage)::after {
+
+/* DAYLIGHT — the lavender-flower reference, cooled toward periwinkle.
+ * A frosted blue/lilac morning with a white-glass shimmer, never peach/pink.
+ * Colours are scoped to shared glass surfaces only, not bespoke artworks. */
+.palace-shell.full-palace-shell.daylight {
+ --palace-daylight-core:#edf0fa;
+ --palace-bg:#edf0fa;
+ --palace-bg-deep:#e2e7f6;
+ --palace-panel:#f6f4fc;
+ --palace-panel-raised:#fcfbff;
+ --palace-panel-soft:rgba(248,247,255,.89);
+ --ui-surface:#f9f7fe;
+ --ui-raised:#ecf0fb;
+ --ui-selected:linear-gradient(110deg,#e8e0f5,#dce6f9);
+ --lustre-hero:
+  radial-gradient(ellipse at 7% -10%,rgba(255,255,255,.86),transparent 52%),
+  radial-gradient(ellipse at 96% 93%,rgba(168,185,232,.31),transparent 60%),
+  linear-gradient(119deg,#e7dff3 0%,#dfe7f8 53%,#cddcf4 100%);
+ --lustre-card:
+  radial-gradient(ellipse at 6% 0%,rgba(255,255,255,.96),transparent 56%),
+  radial-gradient(ellipse at 96% 96%,rgba(177,190,234,.22),transparent 60%),
+  linear-gradient(130deg,#f2ebfa 0%,#e7ebf9 55%,#dce5f8 100%);
+ --lustre-soft:
+  radial-gradient(ellipse at 4% 0%,rgba(255,255,255,.94),transparent 53%),
+  linear-gradient(130deg,#f5f0fc 0%,#ecedf9 55%,#e2e9f9 100%);
+ --lustre-tab:
+  radial-gradient(ellipse at 8% 0%,rgba(255,255,255,.93),transparent 72%),
+  linear-gradient(118deg,#e6d7f2 0%,#d7dff6 55%,#c9daf3 100%);
+ --lustre-tab-idle:
+  linear-gradient(132deg,rgba(237,229,250,.94),rgba(219,231,249,.92));
+ --lustre-border:rgba(129,123,182,.43);
+ background-color:var(--palace-daylight-core);
+}
+.palace-shell.full-palace-shell.daylight :is(.full-stage,.palace-stage) {
+ background:
+  radial-gradient(ellipse 76% 75% at 2% 9%,
+   rgba(197,178,220,.31),transparent 74%),
+  radial-gradient(ellipse 66% 79% at 84% 18%,
+   rgba(173,191,229,.35),transparent 75%),
+  radial-gradient(ellipse 85% 67% at 44% 100%,
+   rgba(203,210,237,.32),transparent 78%),
+  linear-gradient(124deg,#f1edf8 0%,#e8eaf8 48%,#e1e8f7 100%)!important;
+ background-attachment:scroll;
+}
+
+/* Only the shared Daylight chrome: no badge art or member-custom themes. */
+.palace-shell.full-palace-shell.daylight .full-sidebar {
+ background:
+  radial-gradient(ellipse at 8% 0%,rgba(255,255,255,.70),transparent 49%),
+  linear-gradient(170deg,rgba(239,235,250,.98),rgba(224,231,247,.98))!important;
+}
+.palace-shell.full-palace-shell.daylight .full-topbar {
+ background:
+  linear-gradient(110deg,rgba(248,244,254,.95),rgba(231,237,251,.94) 64%,rgba(226,234,249,.94))!important;
+}
+
+/* Existing clouds are oversized soft-edged ovals and read as flowing waves.
+ * The static gradients above carry the atmosphere without extra shapes.
+ * Retain only a barely perceptible star texture on both themes. */
+.palace-shell.full-palace-shell:is(.nightfall,.daylight) :is(.full-stage,.palace-stage)::after {
  opacity:0!important;
  animation:none!important;
  filter:none!important;
@@ -37,8 +97,13 @@
  opacity:.09!important;
  animation:none!important;
 }
-@media(forced-colors:active){
- .palace-shell.full-palace-shell.nightfall :is(.full-stage,.palace-stage){
+.palace-shell.full-palace-shell.daylight :is(.full-stage,.palace-stage)::before {
+ opacity:.12!important;
+ animation:none!important;
+}
+
+@media(forced-colors:active) {
+ .palace-shell.full-palace-shell:is(.nightfall,.daylight) :is(.full-stage,.palace-stage) {
   background:Canvas!important;
   color:CanvasText;
  }
