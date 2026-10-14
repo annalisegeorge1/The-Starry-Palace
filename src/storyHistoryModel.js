@@ -12,9 +12,13 @@ export function storyHistoryDetails(work,chapters=[]){
  });
  events.sort((a,b)=>b.at-a.at);
  const event=events[0]||null;
- const last=event?.at||validDate(work?.last_published_at)||0;
+ // A work-level publication timestamp can be newer than the latest chapter
+ // metadata we received. Keep that date, but do not mislabel it as a chapter edit.
+ const workLast=validDate(work?.last_published_at);
+ const last=Math.max(event?.at||0,workLast);
+ const verifiedEvent=event&&event.at>=workLast?event:null;
  return {chapterCount:published.length,wordCount,lastChangedAt:last?new Date(last).toISOString():null,
-  changeKind:event?.kind||'unknown',chapterTitle:event?.chapter||null};
+  changeKind:verifiedEvent?.kind||'unknown',chapterTitle:verifiedEvent?.chapter||null};
 }
 export const storyHistoryLabel=details=>details.changeKind==='updated'?'Chapter updated':details.changeKind==='chapter'?'New chapter published':'Latest change not recorded';
 
