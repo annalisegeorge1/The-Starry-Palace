@@ -84,6 +84,30 @@ describe('Writing Chamber glass and usability pass',()=>{
   expect(css).not.toMatch(/\\.legacy-writing-canvas[^{}]*\\{[^}]*display\\s*:\\s*none/);
   expect(css).not.toContain('transform:');
  });
+ it('keeps mobile chapter metrics and all real actions out of the narrow second column',()=>{
+  expect(room).toContain('className="legacy-editor-stats chic-editor-stats"');
+  expect(room).toContain('className="editor-stat-actions"');
+  expect(room).toContain('duplicateCurrentChapter');
+  expect(room).toContain('openSnapshots');
+  expect(css).toContain('/* LONG-SESSION MOBILE DESK');
+  expect(css).toContain('.chic-editor-form>.chic-editor-stats');
+  expect(css).toContain('grid-template-columns:minmax(0,1fr)!important;');
+  expect(css).toContain('.chic-editor-stats .editor-stat-actions');
+  expect(css).toContain('grid-column:1/-1!important;');
+  expect(css).toContain('flex-wrap:wrap!important;');
+  expect(css).toContain('white-space:normal!important;');
+  expect(css).toContain('min-height:43px!important;');
+ });
+ it('makes mobile chapter selectors and goals readable without shrinking the manuscript',()=>{
+  expect(css).toContain('@media(max-width:600px)');
+  expect(css).toContain('.writing-chapter-manager-tools input,');
+  expect(css).toContain('.writer-chapter-jump-main select,');
+  expect(css).toContain('.editor-goal-control input');
+  expect(css).toContain('font-size:16px!important;');
+  expect(css).toContain('grid-template-columns:43px minmax(0,1fr) 43px!important;');
+  expect(css).toContain('min-height:44px!important;');
+  expect(css).not.toContain('word-break:break-all');
+ });
  it('has visible keyboard focus and small-screen touch-safe controls',()=>{
   expect(css).toContain(':focus-visible');
   expect(css).toContain('@media(max-width:650px)');
