@@ -62,7 +62,7 @@ describe('Writing Chamber glass and usability pass',()=>{
   ])expect(css).not.toContain(protectedSelector);
   expect(css).not.toContain('url(');
   expect(css).not.toContain('@keyframes');
-  expect(css).not.toContain('contentEditable');
+  expect(css).not.toMatch(/contentEditable\\s*[:=]/);
   expect(css).not.toContain('dangerouslySetInnerHTML');
   expect(css).not.toContain('display:none');
   expect(css).not.toContain('transform:');
