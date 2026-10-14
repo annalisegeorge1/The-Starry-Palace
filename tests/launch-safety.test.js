@@ -6,6 +6,7 @@ const root=resolve(process.cwd());
 const read=(p)=>readFileSync(resolve(root,p),'utf8');
 const main=read('src/main.jsx');
 const live=read('src/liveRooms.jsx');
+const seriesRoom=read('src/SeriesRoom.jsx');
 const settingsRoom=read('src/SettingsRoom.jsx');
 const activityRoom=read('src/PalaceActivityRoom.jsx');
 const pkg=JSON.parse(read('package.json'));
@@ -370,7 +371,7 @@ describe('Starry Palace launch safety',()=>{
   it('deep-links open chamber correspondence into Palace Letters',()=>{
     expect(live).toContain("const requestedConversation=new URLSearchParams(window.location.search).get('conversation')");
     expect(live).toContain("navigate('/letters?conversation='+encodeURIComponent(r.conversation_id))");
-    expect(live).toContain("setSeriesQuery]=useState(()=>new URLSearchParams(window.location.search).get('q')||'')");
+    expect(seriesRoom).toContain("setSeriesQuery]=useState(()=>new URLSearchParams(window.location.search).get('q')||'')");
   });
 
   it('keeps Exile destructive to stale social links without weakening authenticated creator RPCs',()=>{
@@ -1560,9 +1561,9 @@ describe('Starry Palace launch safety',()=>{
 
   it('keeps empty Series shelves actionable instead of dead-ended',()=>{
     const polish=read('src/polish.css');
-    expect(live).toContain('series-empty-state');
-    expect(live).toContain('Create the first series ✦');
-    expect(live).toContain('Browse the Reading Rooms →');
+    expect(seriesRoom).toContain('series-empty-state');
+    expect(seriesRoom).toContain('Create the first series ✦');
+    expect(seriesRoom).toContain('Browse the Reading Rooms →');
     expect(polish).toContain('.series-empty-actions');
   });
 
@@ -1571,9 +1572,9 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('comicSort');
     expect(live).toContain('comicStatus');
     expect(live).toContain('comic-result-count');
-    expect(live).toContain('series-browser-tools');
-    expect(live).toContain('seriesView');
-    expect(live).toContain('Most works');
+    expect(seriesRoom).toContain('series-browser-tools');
+    expect(seriesRoom).toContain('seriesView');
+    expect(seriesRoom).toContain('Most works');
     expect(polish).toContain('.comic-tools.refined');
     expect(polish).toContain('.series-browser-tools');
   });
@@ -1944,10 +1945,10 @@ describe('Starry Palace launch safety',()=>{
     expect(data).toContain('updateSeries');
     expect(data).toContain('deleteSeries');
     expect(data).toContain('reorderSeriesWorks');
-    expect(live).toContain('Edit series');
-    expect(live).toContain('Delete this series?');
-    expect(live).toContain('series-order-actions');
-    expect(live).toContain('series-completion');
+    expect(seriesRoom).toContain('Edit series');
+    expect(seriesRoom).toContain('Delete this series?');
+    expect(seriesRoom).toContain('series-order-actions');
+    expect(seriesRoom).toContain('series-completion');
     expect(polish).toContain('.series-owner-actions');
     expect(polish).toContain('.series-order-actions');
   });
