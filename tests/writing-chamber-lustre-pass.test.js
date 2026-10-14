@@ -54,6 +54,17 @@ describe('Writing Chamber glass and usability pass',()=>{
   expect(css).toContain('.manuscript-sticky-toolbar .writer-format-scroll button');
   expect(css).toContain('min-height:43px!important;');
  });
+ it('replaces permanent formatting guidance with a native accessible tap/keyboard help disclosure',()=>{
+  expect(room).toContain('<details className="manuscript-toolbar-note writer-toolbar-help">');
+  expect(room).toContain('aria-label="How formatting and personal writing views work"');
+  expect(room).toContain('className="writer-toolbar-help-content"');
+  expect(room).toContain('Bold, headings, lists and paragraph formatting stay in the saved chapter.');
+  expect(room).not.toContain('<div className="manuscript-toolbar-note"><span');
+  expect(css).toContain('.writer-toolbar-help>summary:focus-visible');
+  expect(css).toContain('.writer-toolbar-help-content');
+  expect(css).toContain('.full-palace-shell.daylight .writer-toolbar-help-content');
+  expect(css).toContain('width:min(338px,calc(100vw - 40px));');
+ });
  it('leaves manuscript data, actual page styles, autosave, publishing and art unchanged',()=>{
   for(const protectedSelector of [
    '.legacy-writing-canvas','.writing-page-stage','.chapter-manager-row',
@@ -64,7 +75,11 @@ describe('Writing Chamber glass and usability pass',()=>{
   expect(css).not.toContain('@keyframes');
   expect(css).not.toMatch(/contentEditable\\s*[:=]/);
   expect(css).not.toContain('dangerouslySetInnerHTML');
-  expect(css).not.toContain('display:none');
+  // Only the redundant help-label text is hidden on phone-width screens.
+  // Neither the formatting ribbon nor the writer's chapter is hidden here.
+  expect(css).toContain('.writer-toolbar-help>summary>span:last-child');
+  expect(css).not.toMatch(/\\.writer-format-scroll[^{}]*\\{[^}]*display\\s*:\\s*none/);
+  expect(css).not.toMatch(/\\.legacy-writing-canvas[^{}]*\\{[^}]*display\\s*:\\s*none/);
   expect(css).not.toContain('transform:');
  });
  it('has visible keyboard focus and small-screen touch-safe controls',()=>{
