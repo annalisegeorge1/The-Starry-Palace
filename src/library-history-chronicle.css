@@ -183,6 +183,13 @@
  color:var(--lh-muted);font:650 .68rem/1.4 system-ui,sans-serif;
 }
 .palace-shell .library-chronicle-stats span+span:before{content:'·';margin-right:8px}
+.palace-shell .library-chronicle-update-link{
+ display:inline-flex;align-items:center;margin-top:8px;
+ color:var(--lh-ink);font:700 .71rem/1.45 system-ui,sans-serif;
+ text-decoration:underline;text-underline-offset:3px;
+}
+.palace-shell .library-chronicle-update-link:hover{color:var(--ui-accent,var(--lh-ink))}
+.palace-shell .library-chronicle-copy>time.library-chronicle-publication{margin-top:8px}
 .palace-shell .library-chronicle-copy>time{
  display:block;margin-top:10px;color:var(--lh-muted);
  font:.65rem/1.35 system-ui,sans-serif;
