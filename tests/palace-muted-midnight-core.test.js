@@ -24,20 +24,38 @@ describe('Blue-muted Nightfall and blush-to-periwinkle Daylight core',()=>{
  it('gives Daylight blush-lavender-blue gradient glass instead of a flat pastel fill',()=>{
   expect(core).toContain('.palace-shell.full-palace-shell.daylight {');
   expect(core).toContain('.palace-shell.full-palace-shell.daylight :is(.full-stage,.palace-stage)');
-  expect(core).toContain('#f8e6ed 0%,#e9e2f7 47%,#c6def7 100%');
-  expect(core).toContain('rgba(255,211,218,.67)');
-  expect(core).toContain('rgba(157,194,232,.46)');
-  expect(core).toContain('rgba(207,194,244,.38)');
+  expect(core).toContain('#fae9ee 0%,#e8e6f9 47%,#c4e2fb 100%');
+  expect(core).toContain('rgba(255,187,208,.39)');
+  expect(core).toContain('rgba(174,228,255,.51)');
+  expect(core).toContain('rgba(106,156,253,.20)');
   expect(core).toContain('--lustre-hero:');
   expect(core).toContain('--lustre-card:');
   expect(core).toContain('--lustre-soft:');
   expect(core).toContain('--lustre-tab:');
   expect(core).toContain('rgba(255,255,255,.96)');
-  expect(core).toContain('linear-gradient(130deg,#f7eaf8');
+  expect(core).toContain('linear-gradient(130deg,#f8edf9');
   expect(core).toContain('.palace-shell.full-palace-shell.daylight .full-sidebar');
   expect(core).toContain('.palace-shell.full-palace-shell.nightfall .full-sidebar');
   expect(core).toContain('.palace-shell.full-palace-shell.nightfall .full-topbar');
   expect(core).toContain('.palace-shell.full-palace-shell.daylight .full-topbar');
+ });
+ it('uses the supplied five-colour palette as layered Daylight accents',()=>{
+  expect(core).toContain('--palace-daylight-sky:#aee4ff;');
+  expect(core).toContain('--palace-daylight-periwinkle:#6a9cfd;');
+  expect(core).toContain('--palace-daylight-blush:#ffbbd0;');
+  expect(core).toContain('--palace-daylight-peach:#fee5e1;');
+  expect(core).toContain('--palace-daylight-royal:#033495;');
+  expect(core).toContain('--ui-accent:#17469c;');
+  expect(core).toContain('--palace-text:#25365b;');
+  expect(core).toContain('rgba(254,229,225,.76)');
+  expect(core).toContain('rgba(174,228,255,.34)');
+ });
+ it('keeps Daylight reading text dark against the palest shared glass',()=>{
+  const rgb=hex=>hex.match(/[a-f0-9]{2}/gi).map(n=>parseInt(n,16)/255);
+  const luminance=hex=>rgb(hex).map(c=>c<=.04045?c/12.92:((c+.055)/1.055)**2.4)
+   .reduce((sum,v,i)=>sum+[.2126,.7152,.0722][i]*v,0);
+  const ink=luminance('25365b'),glass=luminance('f7f6fd');
+  expect((glass+.05)/(ink+.05)).toBeGreaterThan(9);
  });
  it('does not change the approved blue Nightfall theme while adjusting Daylight',()=>{
   const night=core.slice(core.indexOf('/* NIGHTFALL —'),core.indexOf('/* DAYLIGHT —'));
