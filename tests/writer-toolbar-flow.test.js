@@ -16,6 +16,13 @@ describe('writing toolbar flow',()=>{
   expect(studio).toContain('onMouseDownCapture=');
   expect(studio).toContain('onInput={e=>{rememberFormattingSelection();editorMetricsRef.current?.schedule()');
  });
+ it('remembers keyboard and composition selections without hijacking IME shortcuts',()=>{
+  expect(studio).toContain('onSelect={rememberFormattingSelection}');
+  expect(studio).toContain('onCompositionEnd={rememberFormattingSelection}');
+  expect(studio).toContain('onTouchEnd={rememberFormattingSelection}');
+  expect(studio).toContain('if(e.isComposing||e.keyCode===229)return;');
+  expect(studio).toContain('restoreEditorSelection(editor,formatSelectionRef.current,window.getSelection())');
+ });
  it('avoids unnecessary saves on unsupported formatting commands',()=>{
   expect(studio).toContain('const applied=document.execCommand(command,false,value)');
   expect(studio).toContain("if(applied){editorMetricsRef.current?.schedule();queueSave(editor.closest('form'))}");
