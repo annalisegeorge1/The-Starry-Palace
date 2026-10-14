@@ -165,6 +165,27 @@
  font:.79rem/1.55 system-ui,sans-serif;overflow-wrap:anywhere;
  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden;
 }
+.palace-shell .library-chronicle-summary.is-expanded{
+ display:block;
+ -webkit-line-clamp:unset;
+ line-clamp:unset;
+ overflow:visible;
+}
+.palace-shell .library-chronicle-summary-toggle{
+ min-height:36px;
+ margin-top:2px;
+ padding:5px 2px;
+ border:0;
+ border-radius:4px;
+ background:transparent;
+ color:var(--lh-ink);
+ font:700 .73rem/1.45 system-ui,sans-serif;
+ text-decoration:underline;
+ text-decoration-color:var(--lh-line);
+ text-underline-offset:3px;
+ cursor:pointer;
+}
+.palace-shell .library-chronicle-summary-toggle:hover{text-decoration-color:currentColor}
 .palace-shell .library-chronicle-reading{
  display:flex;gap:8px;flex-wrap:wrap;align-items:center;
  color:var(--lh-muted);font:650 .7rem/1.4 system-ui,sans-serif;
