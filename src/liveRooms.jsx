@@ -54,6 +54,7 @@ import {readingFilterChips,chooseReadingSurprise} from './readingDiscovery';
 import {matchesChamberPreview,chamberPreviewCount} from './chamberShelfView';
 import {loadSelectedManuscript} from './chapterLoadController';
 import {readReaderNoteDraft,writeReaderNoteDraft} from './readerNoteDraft';
+import {safeReaderHtml} from './readerHtmlSanitizer';
 import {rememberReaderPosition,readReaderPosition,chooseReaderResumePosition} from './readerPosition';
 import {readPalaceChoice,readPalaceNumber,readPalacePreference,writePalacePreference,removePalacePreference} from './browserPreferences';
 import './palace-chapter-transitions.css';
@@ -113,21 +114,6 @@ function PalaceBadge(props){return <React.Suspense fallback={<span className="pa
 function PalaceGift(props){return <React.Suspense fallback={<span className="palace-gift-art compact" aria-label="Loading gift artwork"/>}><GiftArtwork {...props}/></React.Suspense>}
 function IdentityMarks({profile,className=''}){const achievement=profile?.identity?.achievement;const gift=profile?.identity?.gift;if(!achievement&&!gift)return null;const achName=achievement?.achievement_families?.name;const giftName=gift?.virtual_gifts?.name;return <span className={"palace-identity-marks "+className} aria-label="Worn Palace honours">{achievement&&<i className={"identity-mark achievement tier-"+(achievement.display_tier||'bronze')} title={(achName||'Palace achievement')+" · "+(achievement.display_tier||'bronze')}>✦</i>}{gift&&<i className={"identity-mark treasure tier-"+(gift.display_tier||'bronze')} title={(giftName||'Palace treasure')+" · "+(gift.display_tier||'bronze')}>◇</i>}</span>}
 
-function safeReaderHtml(raw=''){
- if(typeof DOMParser==='undefined')return String(raw||'').replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<style[\s\S]*?<\/style>/gi,'');
- const doc=new DOMParser().parseFromString('<body>'+String(raw||'')+'</body>','text/html');
- const allowed=new Set(['P','BR','STRONG','B','EM','I','U','S','STRIKE','H2','H3','BLOCKQUOTE','HR','UL','OL','LI']);
- [...doc.body.querySelectorAll('*')].forEach(el=>{
-  if(!allowed.has(el.tagName)){
-   const frag=doc.createDocumentFragment();
-   while(el.firstChild)frag.appendChild(el.firstChild);
-   el.replaceWith(frag);
-   return;
-  }
-  [...el.attributes].forEach(a=>el.removeAttribute(a.name));
- });
- return doc.body.innerHTML;
-}
 
 
 export function OnboardingLive({Frame}){
