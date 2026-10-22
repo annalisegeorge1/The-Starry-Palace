@@ -1,4 +1,5 @@
 import React from 'react';
+import PalaceInfoMark from './PalaceInfoMark';
 
 /** Browsing is public: avoid calling this shared archive a personal shelf. */
 export function ReadingCatalogueControls({layout,onLayout,shown,total}){
@@ -7,7 +8,13 @@ export function ReadingCatalogueControls({layout,onLayout,shown,total}){
  const views=[['comfortable','Comfortable','Roomy story descriptions'],['compact','Compact','More stories at a glance'],['gallery','Gallery','Cover-forward browsing']];
  return <div className="reading-catalogue-controls">
   <div><span className="eyebrow">PUBLIC STORY ARCHIVE</span><p role="status" aria-live="polite" aria-atomic="true">Showing <strong>{safeShown}</strong> of <strong>{safeTotal}</strong> stories in this selection</p></div>
-  <div role="group" aria-label="Choose story catalogue layout">{views.map(([key,label,description])=><button type="button" key={key} title={description} aria-label={label+' layout: '+description} aria-pressed={layout===key} onClick={()=>{if(layout!==key)onLayout(key)}}>{label}</button>)}</div>
+  <div role="group" aria-label="Choose story catalogue layout">{views.map(([key,label,description])=><button type="button" key={key} title={description} aria-label={label+' layout: '+description} aria-pressed={layout===key} onClick={()=>{if(layout!==key)onLayout(key)}}>{label}</button>)}
+   <PalaceInfoMark title="Story layout choices">
+    <p><strong>Comfortable:</strong> Roomier story details and longer summary previews.</p>
+    <p><strong>Compact:</strong> More stories at a glance. Open any summary to read more.</p>
+    <p><strong>Gallery:</strong> Browse by cover and title, with the same story links and details.</p>
+    <p>Changing the layout does not change which stories appear.</p>
+   </PalaceInfoMark></div>
  </div>;
 }
 export function ReadingCatalogueMore({shown,total,onMore}){

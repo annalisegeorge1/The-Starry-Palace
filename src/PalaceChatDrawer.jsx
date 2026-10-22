@@ -1,9 +1,10 @@
 import MemberAvatar from './MemberAvatar';
-import React,{useEffect,useLayoutEffect,useRef,useState} from 'react';
+import React,{useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
 import {Link} from 'react-router-dom';
 import {supabase} from './supabase';
 import {watchPalaceChatRoom} from './palaceChatRealtime';
+import {buildPalaceDirectPreviews} from './palaceChatDirectPreview';
 import {getMyProfile,getLetters,sendLetter,sendLetterPhoto,editLetterMessage,searchMembers,setConversationPreference} from './palaceData';
 import {createPalaceGroupChat,getPalaceGroupChatOverview,getPalaceGroupMessages,sendPalaceGroupMessage,sendPalaceGroupPhoto,editPalaceGroupMessage,respondPalaceGroupInvite,invitePalaceGroupMember,removePalaceGroupMember,leavePalaceGroupChat,setPalaceGroupMuted,markPalaceGroupRead,PALACE_GROUP_COLOURS,setPalaceGroupIdentity,pinPalaceGroupMessage,getPinnedPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
 import './palace-chat-drawer.css';
@@ -97,12 +98,20 @@ export default function PalaceChatDrawer({userId}){
  const draftsKey=roomId?draftKey(userId,tab,roomId):'';
  const currentDraft=roomId?(drafts[draftsKey]??(()=>{try{return localStorage.getItem(draftsKey)||''}catch{return ''}})()):'';
  const directRows=(direct?.conversations||[]).filter(c=>!c.preference?.archived&&c.conversations?.kind==='direct');
+ const directPreviews=useMemo(()=>buildPalaceDirectPreviews(direct?.messages,{formatTime:dateOf,isGif:body=>Boolean(parsePalaceGif(body))}),[direct?.messages]);
  const groupRows=groupData.groups.filter(g=>palaceChatMatchesGroup(g,search)&&(!unreadOnly||palaceChatUnreadGroup(g)));
  const visibleDirect=directRows.filter(c=>[c.correspondent?.username,c.correspondent?.display_name].join(' ').toLowerCase().includes(search.toLowerCase())&&(!unreadOnly||c.unread));
  const directUnread=directRows.filter(c=>c.unread&&!c.preference?.muted).length;
  const groupUnread=groupData.groups.filter(g=>!g.muted&&palaceChatUnreadGroup(g)).length;
  const unread=directUnread+groupUnread+groupData.invitations.length;
  const openedRoomName=tab==='direct'?nameOf(activeDirect?.correspondent):activeGroup?.title;
+ // A conversation can be archived or access can be removed while Chat is open.
+ // Never leave the drawer stranded in a thread whose header no longer exists.
+ useEffect(()=>{
+  if(!threadOpen)return;
+  const missing=tab==='direct'?(Boolean(direct)&&!activeDirect):(groupAvailable&&!activeGroup);
+  if(missing){setThreadOpen(false);setActionMenu(null);setManaging(false)}
+ },[threadOpen,tab,direct,activeDirect,groupAvailable,activeGroup]);
  useEffect(()=>{if(!photoFile){setPhotoPreview('');return}
   const preview=URL.createObjectURL(photoFile);setPhotoPreview(preview);
   return()=>URL.revokeObjectURL(preview);
@@ -366,11 +375,13 @@ export default function PalaceChatDrawer({userId}){
   if(!element||editingMessage===message.id)return;
   clearMessageHold();
   const rect=element.getBoundingClientRect();
-  const menuWidth=210,menuHeight=175;
+  // Group conversations can show up to five actions; reserve the full menu
+  // height rather than placing its last buttons below the mobile viewport.
+  const menuWidth=210,menuHeight=260;
   const width=Math.max(window.innerWidth||360,240);
-  const height=Math.max(window.innerHeight||700,280);
+  const height=Math.max(window.innerHeight||280,100);
   const left=Math.max(10,Math.min(width-menuWidth-10,Number.isFinite(x)?x-72:rect.left+20));
-  const top=Math.max(10,Math.min(height-menuHeight-10,(Number.isFinite(y)?y:rect.top)-menuHeight-7));
+  const top=Math.max(10,Math.min(Math.max(10,height-menuHeight-10),(Number.isFinite(y)?y:rect.top)-menuHeight-7));
   setActionMenu({message,top,left,roomId});
  }
  function beginMessageHold(e,message){
@@ -500,12 +511,10 @@ export default function PalaceChatDrawer({userId}){
  }
  const owner=activeGroup?.ownerId===userId;
  const previewDirect=c=>{
-  const last=(direct?.messages||[]).filter(m=>m.conversation_id===c.conversation_id).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at))[0];
-  if(!last)return {text:'Start your conversation',time:''};
-  return {text:last.media_path?'📷 Photo':parsePalaceGif(last.body)?'🎞 GIF':String(last.body||'Message').replace(/\s+/g,' ').slice(0,82),time:dateOf(last.created_at)};
+  return directPreviews.get(c.conversation_id)||{text:'Start your conversation',time:''};
  };
  if(quiet&&!open)return null;
- return <div data-chat-type={tab} data-circle-colour={tab==='groups'?(activeGroup?.colorKey||'moonlit'):'moonlit'} className={'palace-chat-dock palace-chat-v2'+(open?' is-open':'')+(open&&threadOpen?' is-thread-open':'')+(open&&!threadOpen&&!creating?' is-inbox-empty':'')+(chatPaused?' is-quiet':'')}>
+ return <div data-chat-type={tab} data-circle-colour={tab==='groups'?(activeGroup?.colorKey||'moonlit'):'moonlit'} className={'palace-chat-dock palace-chat-v2'+(open?' is-open':'')+(open&&threadOpen&&active?' is-thread-open':'')+(open&&!threadOpen&&!creating?' is-inbox-empty':'')+(chatPaused?' is-quiet':'')}>
   {!open?<button type="button" className="palace-chat-launch" aria-label={'Open Palace chat'+(unread?' · '+unread+' new items':'')} aria-expanded={false} onClick={()=>{setActionMenu(null);setThreadOpen(false);setOpen(true)}}><span aria-hidden="true">✉</span><span>Chat</span>{unread>0&&<b>{unread>99?'99+':unread}</b>}</button>:
   <section className="palace-chat-panel" aria-label="Palace Chat" role="region">
    <header className="palace-chat-heading"><div className="palace-chat-brand"><span className="palace-chat-brand-mark" aria-hidden="true">✦</span><div className="palace-chat-brand-copy"><small>PRIVATE CONVERSATIONS</small><strong>Palace Chat</strong></div></div>
@@ -566,7 +575,7 @@ export default function PalaceChatDrawer({userId}){
      {tab==='groups'&&hasOlder&&messages.length>0&&<div className="palace-chat-earlier"><button type="button" onClick={loadOlderGroupMessages} disabled={historyLoading} aria-label="Load earlier group messages">{historyLoading?'Gathering earlier messages…':'↑ Earlier messages'}</button></div>}
      <div className="palace-chat-messages" ref={messageRef} role="log" aria-label="Conversation messages" aria-live="polite" onScroll={e=>{const el=e.currentTarget;const pinned=el.scrollHeight-el.scrollTop-el.clientHeight<80;scrollPinned.current=pinned;if(pinned){setNewWhileAway(false);if(tab==='groups')acknowledgeVisibleGroupMessage();else acknowledgeVisibleDirectMessage()}}}>
       {messages.length?messages.map((m,index)=><React.Fragment key={m.id}>{(index===0||new Date(messages[index-1].created_at).toDateString()!==new Date(m.created_at).toDateString())&&<div className="palace-chat-date-divider" role="separator"><span>{new Date(m.created_at).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</span></div>}<div data-chat-message={m.id}
-        tabIndex={0} role="group" aria-label={'Message from '+(m.sender_id===userId?'you':tab==='groups'?nameOf(m.profiles):openedRoomName)+'. Press and hold for actions.'}
+        tabIndex={0} role="group" aria-label={'Message from '+(m.sender_id===userId?'you':tab==='groups'?nameOf(m.profiles):openedRoomName)+'. Press and hold or press Enter for actions.'}
         onPointerDown={e=>beginMessageHold(e,m)}
         onPointerMove={moveMessageHold} onPointerUp={clearMessageHold} onPointerCancel={clearMessageHold} onPointerLeave={clearMessageHold}
         onContextMenu={e=>{e.preventDefault();openMessageActions(m,e.currentTarget,e.clientX,e.clientY)}}

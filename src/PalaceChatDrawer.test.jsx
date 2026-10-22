@@ -133,6 +133,31 @@ describe('Palace quick chat',()=>{
   expect(within(screen.getByRole('log',{name:'Conversation messages'})).getByText('River letter')).toBeTruthy();
   expect(within(screen.getByRole('log',{name:'Conversation messages'})).queryByText('Juniper letter')).toBeNull();
  });
+ it('returns to the inbox when an opened Direct conversation disappears on refresh',async()=>{
+  const {container}=mount();
+  fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  expect(container.querySelector('.palace-chat-dock.is-thread-open')).toBeTruthy();
+  getLetters.mockResolvedValue({...direct,conversations:[],messages:[]});
+  const config=watchPalaceChatRoom.mock.calls.find(call=>call[1]?.kind==='direct')?.[1];
+  await act(async()=>{await config.onChange()});
+  await waitFor(()=>expect(container.querySelector('.palace-chat-dock.is-thread-open')).toBeNull());
+  expect(screen.getByRole('navigation',{name:'Chat type'})).toBeTruthy();
+  expect(screen.queryByRole('button',{name:'Back to inbox'})).toBeNull();
+ });
+ it('returns to the group inbox when access to the active circle is lost',async()=>{
+  const {container}=mount();
+  fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(screen.getByRole('button',{name:/Groups/}));
+  fireEvent.click(await screen.findByRole('button',{name:'Moonlight Readers'}));
+  expect(container.querySelector('.palace-chat-dock.is-thread-open')).toBeTruthy();
+  getPalaceGroupChatOverview.mockResolvedValue({groups:[],invitations:[]});
+  const config=watchPalaceChatRoom.mock.calls.find(call=>call[1]?.kind==='groups')?.[1];
+  await act(async()=>{await config.onChange()});
+  await waitFor(()=>expect(container.querySelector('.palace-chat-dock.is-thread-open')).toBeNull());
+  expect(screen.getByRole('navigation',{name:'Chat type'})).toBeTruthy();
+  expect(screen.getByText('No groups yet.')).toBeTruthy();
+ });
  it('shows a retry rather than claiming zero conversations when Direct loading fails',async()=>{
   getLetters.mockRejectedValue(new Error('Inbox temporarily unavailable'));
   mount();

@@ -27,7 +27,7 @@ describe('Unified My Library History model',()=>{
   expect(all.filter(x=>!x.private).map(x=>x.category)).toEqual(['community','updates']);
   expect(all.find(x=>x.kind==='reading')).toMatchObject({
    progress:43,chapterPercent:71,newer:true,chapterCount:1,wordCount:1320,
-   href:'/work/river-stars'
+   href:'/work/river-stars',resumeHref:'/work/river-stars/chapter/chapter-seven'
   });
   expect(all.find(x=>x.kind==='comic').href).toBe('/comic/sapphire-tide/episode/episode-two');
   expect(all.find(x=>x.category==='updates')).toMatchObject({
@@ -55,8 +55,10 @@ describe('Unified My Library History model',()=>{
  it('protects private reading history from community records',()=>{
   const privateRecord=records().find(r=>r.private);
   expect(privateRecord.category).toBe('reading');
-  expect(privateRecord.label).toBe('New chapter since your saved place');
+  expect(privateRecord.label).toBe('Story updated since your saved place');
   expect(privateRecord.room).toBeNull();
   expect(privateRecord.href).not.toContain('/palace-life');
+  expect(privateRecord.lastPublishedAt).toBe(Date.parse('2026-10-13T09:00:00Z'));
+  expect(privateRecord.resumeHref).toBe('/work/river-stars/chapter/chapter-seven');
  });
 });
