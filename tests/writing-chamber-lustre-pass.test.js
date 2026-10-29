@@ -98,7 +98,8 @@ describe('Writing Chamber glass and usability pass',()=>{
   expect(css).toContain('.writer-toolbar-help>summary>span:last-child');
   expect(css).not.toMatch(/\\.writer-format-scroll[^{}]*\\{[^}]*display\\s*:\\s*none/);
   expect(css).not.toMatch(/\\.legacy-writing-canvas[^{}]*\\{[^}]*display\\s*:\\s*none/);
-  expect(css).not.toContain('transform:');
+  // Reject geometry transforms without mistaking the Folder label's text-transform for one.
+  expect(css).not.toMatch(/(^|[;{}\\s])transform\\s*:/m);
  });
  it('keeps mobile chapter metrics and all real actions out of the narrow second column',()=>{
   expect(room).toContain('className="legacy-editor-stats chic-editor-stats"');
