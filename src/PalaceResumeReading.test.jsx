@@ -57,6 +57,7 @@ describe('home reading resume interface',()=>{
   expect(screen.getByText('Story d')).toBeTruthy();
   expect(screen.queryByText('Story a')).toBeNull();
   fireEvent.change(screen.getByRole('searchbox',{name:'Find a saved story'}),{target:{value:'not found'}});
-  expect(screen.getByRole('status').textContent).toMatch(/No matching saved stories/);
+  expect(screen.getByText(/No matching saved stories/)).toBeTruthy();
+  expect(screen.getByRole('status').textContent).toMatch(/0 matching saved stories/);
  });
 });
