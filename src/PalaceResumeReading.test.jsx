@@ -1,6 +1,6 @@
 import React from 'react';
 import {afterEach,describe,expect,it,vi} from 'vitest';
-import {cleanup,render,screen,waitFor} from '@testing-library/react';
+import {cleanup,fireEvent,render,screen} from '@testing-library/react';
 import {MemoryRouter} from 'react-router-dom';
 
 const queryRows=vi.hoisted(()=>({rows:[],error:null}));
@@ -17,6 +17,20 @@ const row=(id,chapterId)=>({
  work_id:id,chapter_id:chapterId,updated_at:'2026-10-20T12:00:00Z',completed:false,
  chapter_progress_percent:42,
  works:{id,title:'Story '+id,slug:'story-'+id,publication_status:'published',cover_url:null,rating:null}
+ it('expands and filters the private shelf without changing saved progress',async()=>{
+  queryRows.rows=[row('a','chapter-a'),row('b','chapter-b'),row('c','chapter-c'),row('d','chapter-d')];queryRows.error=null;
+  render(<MemoryRouter><PalaceResumeReading memberId="member-a"/></MemoryRouter>);
+  const expand=await screen.findByRole('button',{name:/See all saved reads/i});
+  expect(screen.queryByText('Story d')).toBeNull();
+  fireEvent.click(expand);
+  expect(screen.getByText('Story d')).toBeTruthy();
+  fireEvent.change(screen.getByRole('searchbox',{name:'Find a saved story'}),{target:{value:'Story d'}});
+  expect(screen.getByText('Story d')).toBeTruthy();
+  expect(screen.queryByText('Story a')).toBeNull();
+  fireEvent.change(screen.getByRole('searchbox',{name:'Find a saved story'}),{target:{value:'not found'}});
+  expect(screen.getByRole('status').textContent).toMatch(/No matching saved stories/);
+ });
+
 });
 describe('home reading resume interface',()=>{
  it('labels the chapter destination and announces percentage without exposing other members',async()=>{
