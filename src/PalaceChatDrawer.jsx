@@ -419,22 +419,34 @@ export default function PalaceChatDrawer({userId,workspace=false}){
  }
  async function send(e){
   e.preventDefault();
-  const text=currentDraft.trim();if(!roomId||!text||busy)return;
-  setBusy(true);setError('');setNotice('');
+  const text=currentDraft.trim(),sentRoomId=roomId,sentKind=tab,sentDraftKey=draftsKey;
+  if(!sentRoomId||!text||busy)return;
+  setBusy(true);setError('');setNotice('Sending your message…');
   try{
-   if(tab==='groups'){
-    await sendPalaceGroupMessage(roomId,userId,text,replyTarget?.chatId===roomId?{replyToId:replyTarget.id}:{});
-    await markPalaceGroupRead(roomId,userId);
-    const fresh=await getPalaceGroupMessages(roomId);
-    setGroupMessages(previous=>({chatId:roomId,items:previous.chatId===roomId?mergePalaceGroupMessages(previous.items,fresh):fresh}));
+   if(sentKind==='groups')await sendPalaceGroupMessage(sentRoomId,userId,text,replyTarget?.chatId===sentRoomId?{replyToId:replyTarget.id}:{});
+   else await sendLetter(userId,sentRoomId,text);
+  }catch(e){
+   setNotice('');
+   setError('Message not confirmed. Your draft is preserved. '+errorText(e));
+   setBusy(false);
+   return;
+  }
+  // The write succeeded: clear only the draft that was actually sent.
+  // A separate refresh failure must never invite the member to send it twice.
+  setDrafts(p=>({...p,[sentDraftKey]:''}));
+  try{localStorage.removeItem(sentDraftKey)}catch{}
+  setReplyTarget(null);scrollPinned.current=true;setNotice('Message sent.');
+  try{
+   if(sentKind==='groups'){
+    await markPalaceGroupRead(sentRoomId,userId).catch(()=>{});
+    const fresh=await getPalaceGroupMessages(sentRoomId);
+    setGroupMessages(previous=>previous.chatId===sentRoomId?{chatId:sentRoomId,items:mergePalaceGroupMessages(previous.items,fresh)}:previous);
     setGroupData(await getPalaceGroupChatOverview(userId));
-   }else{
-    await sendLetter(userId,roomId,text);
-    setDirect(await getLetters(userId));
-   }
-   scrollPinned.current=true;setDraft('');setReplyTarget(null);
-  }catch(e){setError(errorText(e))}
-  finally{setBusy(false)}
+   }else setDirect(await getLetters(userId));
+  }catch{
+   setNotice('Message sent. The conversation is syncing; use Refresh if it does not appear.');
+   setRefreshToken(n=>n+1);
+  }finally{setBusy(false)}
  }
  async function searchForMembers(e){
   e.preventDefault();if(!memberSearch.trim())return;
@@ -615,7 +627,7 @@ export default function PalaceChatDrawer({userId,workspace=false}){
     </>:<div className="palace-chat-empty"><p>{tab==='groups'?'No groups yet.':loadingDirect?'Loading your private conversations…':error?'Conversations could not be loaded.':'No open direct conversations yet.'}</p><p>{tab==='groups'?'Start a private circle and invite members, or accept an invitation above.':'Begin or accept a correspondence in Palace Letters.'}</p>{tab==='direct'&&<Link to="/letters" onClick={()=>setOpen(false)}>Open Palace Letters →</Link>}{tab==='groups'&&<button type="button" onClick={()=>setCreating(true)}>＋ Create a group</button>}</div>}
    </>}
    {active&&!creating&&!threadOpen&&<p className="palace-chat-select-hint">Choose a name above to open their conversation.</p>}
-   <footer><small>{tab==='groups'?'Members-only group':'Private conversation'}{chatPaused?' · Quiet mode':''}</small><button type="button" className="palace-chat-mobile-close" aria-label="Close Palace chat" onClick={()=>{setActionMenu(null);setOpen(false)}}>Close chat <span aria-hidden="true">×</span></button></footer>
+   <footer><small>{tab==='groups'?'Members-only group':'Private conversation'}{chatPaused?' · Quiet mode':''}</small>{workspace?<Link className="palace-chat-mobile-close" to="/" aria-label="Return to Palace home">Exit Messenger <span aria-hidden="true">×</span></Link>:<button type="button" className="palace-chat-mobile-close" aria-label="Close Palace chat" onClick={()=>{setActionMenu(null);setOpen(false)}}>Close chat <span aria-hidden="true">×</span></button>}</footer>
   </section>}
   {open&&actionMenu&&actionMenu.roomId===roomId&&createPortal(<div className="palace-chat-actions-backdrop" onPointerDown={e=>{if(e.target===e.currentTarget)setActionMenu(null)}} onClick={e=>{if(e.target===e.currentTarget)setActionMenu(null)}}>
    <div ref={actionMenuRef} className="palace-chat-actions-menu" role="menu" aria-label="Message actions" style={{top:actionMenu.top,left:actionMenu.left}}>
