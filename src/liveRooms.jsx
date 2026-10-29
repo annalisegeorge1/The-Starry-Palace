@@ -826,7 +826,7 @@ export function LibraryLive({Frame}){
    catch{if(isCurrent())setHistoryChapters({})}
   }).catch(e=>{if(isCurrent())setError(e.message)});
  };
- useEffect(()=>{setLibraryState({ownerId:null,data:null,org:null});setHistoryChapters({});setQuery('');load()},[session.user.id]);
+ useEffect(()=>{setLibraryState({ownerId:null,data:null,org:null});setHistoryChapters({});setQuery('')},[session.user.id]);useEffect(()=>{load()},[session.user.id]);
  const q=query.trim().toLowerCase();const matches=(...values)=>!q||values.filter(Boolean).join(' ').toLowerCase().includes(q);
  const storyHasNew=x=>!!(x?.updated_at&&x?.works?.last_published_at&&new Date(x.works.last_published_at)>new Date(x.updated_at));const storyReopened=x=>!!x?.completed&&storyHasNew(x);const storyFinished=x=>!!x?.completed&&!storyHasNew(x);const storyNeedsReading=x=>!x?.completed||storyReopened(x);
  const unfinished=(data?.progress.filter(storyNeedsReading)||[]).filter(x=>matches(x.works?.title)).sort((a,b)=>new Date(b.updated_at||0)-new Date(a.updated_at||0));
