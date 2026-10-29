@@ -39,6 +39,38 @@ beforeEach(()=>{
 afterEach(cleanup);
 describe('Palace quick chat',()=>{
 
+ it('opens the full Messenger directly without showing a second quick launcher',async()=>{
+  render(<MemoryRouter><PalaceChatDrawer userId={user} workspace/></MemoryRouter>);
+  expect(await screen.findByRole('region',{name:'Palace Chat'})).toBeTruthy();
+  expect(screen.queryByRole('button',{name:/Open Palace chat/})).toBeNull();
+  expect(screen.getByRole('link',{name:'Return to Palace home'}).getAttribute('href')).toBe('/');
+ });
+ it('opens the full Messenger from quick chat without replacing ongoing conversations',async()=>{
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  const link=await screen.findByRole('link',{name:'Open full Palace Messenger'});
+  expect(link.getAttribute('href')).toBe('/chat');
+ });
+ it('stars a direct conversation and filters favourites from existing private records',async()=>{
+  getLetters.mockResolvedValue({...direct,conversations:[direct.conversations[0]]});
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(screen.getByRole('button',{name:'Add conversation to favourites'}));
+  await waitFor(()=>expect(setConversationPreference).toHaveBeenCalledWith(user,'direct-one',expect.objectContaining({starred:true,archived:false})));
+  await screen.findByRole('button',{name:'Remove conversation from favourites'});
+  fireEvent.click(screen.getByRole('button',{name:'Back to inbox'}));
+  fireEvent.click(screen.getByRole('button',{name:/Favourites/}));
+  expect(screen.getByRole('button',{name:'River'})).toBeTruthy();
+ });
+ it('searches only locally loaded message text within the opened thread',async()=>{
+  getLetters.mockResolvedValue({...direct,messages:[{id:'moon-note',conversation_id:'direct-one',sender_id:'member-two',body:'The Moonlit Orchard',created_at:'2026-10-21T12:00:00Z'}]});
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(screen.getByRole('button',{name:'Search messages in this conversation'}));
+  fireEvent.change(screen.getByRole('searchbox',{name:'Find in loaded messages'}),{target:{value:'moonlit'}});
+  expect(screen.getByText('1 matching loaded message')).toBeTruthy();
+ });
+
+
  it('keeps unread Direct conversations unread until the person opens that thread',async()=>{
   getLetters.mockResolvedValue({
    ...direct,
