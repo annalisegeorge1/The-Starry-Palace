@@ -17,11 +17,20 @@ export function captureEditorSelection(editor,selection){
  if(!selection||!selection.rangeCount)return null;
  try{
   const range=selection.getRangeAt(0);
-  return rangeWithinEditor(editor,range)?{range:range.cloneRange(),start:range.startContainer,end:range.endContainer}:null;
+  return rangeWithinEditor(editor,range)?{
+   range:range.cloneRange(),start:range.startContainer,end:range.endContainer,
+   startOffset:range.startOffset,endOffset:range.endOffset,
+   collapsed:range.collapsed,
+   selectedText:range.collapsed?null:range.toString()
+  }:null;
  }catch{return null}
 }
 export function restoreEditorSelection(editor,range,selection){
  if(!selection||!range||!rangeWithinEditor(editor,range.range)||range.range.startContainer!==range.start||range.range.endContainer!==range.end)return false;
+ // A live DOM Range can survive an in-place text edit while its boundaries
+ // quietly shift. Never format an outdated word or caret after such a change.
+ if(range.range.startOffset!==range.startOffset||range.range.endOffset!==range.endOffset||range.range.collapsed!==range.collapsed)return false;
+ if(range.selectedText!==null&&range.range.toString()!==range.selectedText)return false;
  try{
   selection.removeAllRanges();
   selection.addRange(range.range.cloneRange());

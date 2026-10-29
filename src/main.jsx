@@ -82,6 +82,7 @@ import './palace-glass-coverage.css';
 import './palace-core-tabs-polish.css';
 import './palace-community-focus.css';
 import './palace-muted-midnight-core.css';
+import './writing-chamber-lustre-pass.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
