@@ -86,6 +86,7 @@ import {restoreFlatClassicChapterHtml} from './classicTextStructure';
 import {selectStoryHistory} from './storyHistoryModel';
 import LibraryHistoryChronicle from './LibraryHistoryChronicle';
 import LibraryOverview from './LibraryOverview';
+import {visibleLibrarySnapshot,isCurrentLibraryRequest} from './libraryMemberGate';
 import PalaceHistoryArchive from './PalaceHistoryArchive';
 import {shouldFetchStoryHistory} from './storyHistoryLoading';
 import ReadingStoryStats from './ReadingStoryStats';
@@ -815,8 +816,8 @@ export {SettingsLive} from './SettingsRoom';
 export {ActivityLive} from './PalaceActivityRoom';
 export function LibraryLive({Frame}){
  const[historyChapters,setHistoryChapters]=useState({});
- const{session}=useAuth();const navigate=useNavigate();const location=useLocation();const[libraryState,setLibraryState]=useState({ownerId:null,data:null,org:null});const ownerRef=useRef(session.user.id);ownerRef.current=session.user.id;const requestRef=useRef(0);const data=libraryState.ownerId===session.user.id?libraryState.data:null;const org=libraryState.ownerId===session.user.id?libraryState.org:null;const[error,setError]=useState('');const[tab,setTab]=useState(()=>palaceTabFromSearch(location.search,LIBRARY_TABS,'overview'));const[dialog,setDialog]=useState(null);const[form,setForm]=useState({});const[query,setQuery]=useState('');
- const load=()=>{const memberId=session.user.id;const requestId=++requestRef.current;const isCurrent=()=>ownerRef.current===memberId&&requestRef.current===requestId;
+ const{session}=useAuth();const navigate=useNavigate();const location=useLocation();const[libraryState,setLibraryState]=useState({ownerId:null,data:null,org:null});const ownerRef=useRef(session.user.id);ownerRef.current=session.user.id;const requestRef=useRef(0);const {data,org}=visibleLibrarySnapshot(libraryState,session.user.id);const[error,setError]=useState('');const[tab,setTab]=useState(()=>palaceTabFromSearch(location.search,LIBRARY_TABS,'overview'));const[dialog,setDialog]=useState(null);const[form,setForm]=useState({});const[query,setQuery]=useState('');
+ const load=()=>{const memberId=session.user.id;const requestId=++requestRef.current;const isCurrent=()=>isCurrentLibraryRequest(ownerRef.current,requestRef.current,memberId,requestId);
   setError('');
   return Promise.all([getLibrary(memberId),getLibraryOrganizers(memberId)]).then(async ([a,b])=>{
    if(!isCurrent())return;
