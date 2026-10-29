@@ -8,6 +8,8 @@ import StoryRatingBadge from './StoryRatingBadge';
 /** Reads only the current member's progress, protected by reading_progress RLS. */
 export default function PalaceResumeReading({memberId}){
  const[shelf,setShelf]=useState({memberId:null,rows:[]});
+ const[showAll,setShowAll]=useState(false);
+ const[search,setSearch]=useState('');
  useEffect(()=>{
   if(!memberId||!supabase){setShelf({memberId:null,rows:[]});return;}
   let mounted=true;
@@ -18,17 +20,21 @@ export default function PalaceResumeReading({memberId}){
    .order('updated_at',{ascending:false}).limit(12)
    .then(({data,error})=>{
     if(!mounted)return;
-    setShelf({memberId,rows:error?[]:selectHomeReading(data)});
+    setShelf({memberId,rows:error?[]:selectHomeReading(data,12)});
    }).catch(()=>{if(mounted)setShelf({memberId,rows:[]})});
   return()=>{mounted=false};
  },[memberId]);
  // Never show the previous member's private shelf even for the frame before the effect runs.
  const rows=visibleHomeReading(shelf,memberId);
  if(!memberId||rows.length===0)return null;
+ const matching=rows.filter(row=>row.works.title.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase()));
+ const displayed=showAll?matching:matching.slice(0,3);
  return <section className="palace-resume-reading" aria-label="Your unfinished reading history">
   <header><div><p className="eyebrow">YOUR BOOKMARK IN THE STARS</p><h2>Pick up where you left off.</h2>
    <p>Your own unfinished stories, in the order you last read them. Only you can see this shelf.</p></div><Link to="/library">My library →</Link></header>
-  <div className="palace-resume-shelf">{rows.map(row=>{
+  {rows.length>3&&<div className="palace-resume-controls"><label htmlFor="palace-resume-search">Find a saved story</label><input id="palace-resume-search" type="search" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search your current reads" autoComplete="off"/><button type="button" aria-expanded={showAll} onClick={()=>setShowAll(v=>!v)}>{showAll?"Show recent three":"See all saved reads ("+rows.length+")"}</button></div>}
+  {displayed.length===0&&<p className="palace-resume-empty" role="status">No matching saved stories. Try another title.</p>}
+  <div className="palace-resume-shelf">{displayed.map(row=>{
    const work=row.works;
    const chapterPercent=chapterReadingPercent(row.chapter_progress_percent);
    const date=new Date(row.updated_at);
