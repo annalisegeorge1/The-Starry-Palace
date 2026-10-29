@@ -108,3 +108,48 @@
   display:none!important;
  }
 }
+
+/* Conversation actions live below the compact mobile identity header, rather
+   than competing for pixels with the name, back button, and close control. */
+.palace-chat-v2 .palace-chat-thread-actions{
+ display:flex!important;align-items:center!important;flex-wrap:wrap;flex:0 0 auto;
+ gap:7px;padding:7px 12px;min-width:0;
+ border-bottom:1px solid var(--pc-line,rgba(180,160,225,.36));
+ background:var(--pc-elevated,rgba(48,42,78,.9));
+}
+.palace-chat-v2 .palace-chat-thread-actions :is(button,a),
+.palace-chat-v2 .palace-chat-full-route{
+ display:inline-flex!important;align-items:center;justify-content:center;
+ min-height:40px;min-width:0;padding:8px 12px;
+ border-radius:11px;border:1px solid var(--pc-line,rgba(179,160,225,.45));
+ background:var(--pc-field,rgba(62,52,99,.6));
+ color:var(--pc-ink,#f9f5ff)!important;
+ font:650 .78rem/1.3 system-ui,sans-serif;text-decoration:none;cursor:pointer;
+}
+.palace-chat-v2 .palace-chat-thread-actions button[aria-pressed=true]{
+ background:linear-gradient(120deg,rgba(171,137,232,.31),rgba(91,154,211,.19));
+ border-color:rgba(183,163,246,.72);
+}
+.palace-chat-v2 .palace-chat-thread-actions :is(button,a):focus-visible,
+.palace-chat-v2 .palace-chat-full-route:focus-visible{outline:3px solid #aad7ff;outline-offset:2px}
+.palace-chat-v2.is-thread-open .palace-chat-full-route{display:none!important}
+@media(max-width:720px){
+ .palace-chat-v2 .palace-chat-thread-actions{
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:7px 9px;
+ }
+ .palace-chat-v2:not(.is-workspace) .palace-chat-thread-actions a{
+  grid-column:1 / -1;
+ }
+ .palace-chat-v2 .palace-chat-thread-actions :is(button,a){
+  width:100%;min-height:44px;padding:8px 7px;font-size:clamp(.71rem,3vw,.79rem);
+ }
+ .palace-chat-v2.palace-chat-dock.is-open:not(.is-thread-open)>.palace-chat-panel>footer>small{
+  display:none;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open:not(.is-thread-open)>.palace-chat-panel>footer .palace-chat-full-route{
+  min-height:44px;
+ }
+ .palace-chat-v2 .palace-chat-heading .palace-chat-header-actions :is(button,.palace-chat-expand,.palace-chat-close-workspace){
+  flex:0 0 38px;
+ }
+}
