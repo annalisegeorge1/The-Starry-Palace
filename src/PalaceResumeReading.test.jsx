@@ -50,6 +50,9 @@ describe('home reading resume interface',()=>{
   expect(screen.queryByText('Story d')).toBeNull();
   fireEvent.click(expand);
   expect(screen.getByText('Story d')).toBeTruthy();
+  fireEvent.change(screen.getByRole('combobox',{name:'Sort saved stories'}),{target:{value:'title'}});
+  expect(screen.getByText('Story a')).toBeTruthy();
+  fireEvent.change(screen.getByRole('combobox',{name:'Sort saved stories'}),{target:{value:'progress'}});
   fireEvent.change(screen.getByRole('searchbox',{name:'Find a saved story'}),{target:{value:'Story d'}});
   expect(screen.getByText('Story d')).toBeTruthy();
   expect(screen.queryByText('Story a')).toBeNull();
