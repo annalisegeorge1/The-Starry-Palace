@@ -170,3 +170,18 @@
     padding:16px!important;
   }
 }
+
+/* My Library has its own search field when an individual shelf is selected.
+   Make the small-screen shell one row: global search stays available from the
+   top-right magnifying-glass command/search control. */
+@media(max-width:720px){
+  .palace-shell[data-palace-room="library"] .full-topbar .global-search-live{
+    display:none!important;
+  }
+  .palace-shell[data-palace-room="library"] .full-topbar{
+    min-height:0!important;height:auto!important;padding-block:8px!important;
+  }
+  .palace-shell[data-palace-room="library"] .full-topbar-row{
+    grid-template-rows:minmax(42px,auto)!important;gap:0!important;min-height:0!important;
+  }
+}
