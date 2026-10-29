@@ -35,3 +35,7 @@
 .palace-resume-controls :is(input,button):focus-visible{outline:3px solid #a788ef;outline-offset:2px}
 .palace-resume-empty{margin:16px 0 0;line-height:1.5}
 @media(max-width:520px){.palace-resume-controls label{width:100%}.palace-resume-controls input{max-width:none;font-size:16px}.palace-resume-controls button{width:100%}}
+
+.palace-resume-controls select{min-height:44px;max-width:220px;min-width:155px;padding:9px 12px;border:1px solid #a18bc584;border-radius:12px;background:var(--card,rgba(35,30,59,.86));color:inherit;font:inherit}
+.palace-resume-controls select:focus-visible{outline:3px solid #a788ef;outline-offset:2px}
+@media(max-width:520px){.palace-resume-controls select{width:100%;max-width:none;font-size:16px}}
