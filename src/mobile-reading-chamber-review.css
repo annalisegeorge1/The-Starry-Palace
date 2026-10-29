@@ -89,3 +89,84 @@
     line-height:1.58!important;
   }
 }
+
+/* My Library mobile layout, observed in the user's 29 October preview.
+   Keep the horizontally swipeable tab row, but let it scroll with content:
+   sticky tab bars were floating over Overview cards underneath the top header. */
+@media(max-width:780px){
+  .palace-shell[data-palace-room="library"] .chic-library-page .library-tabs.chic-library-tabs,
+  .palace-shell[data-palace-room="library"] .chic-library-page .library-search-live.chic-library-search{
+    position:relative!important;
+    inset:auto!important;
+    top:auto!important;
+    z-index:auto!important;
+    margin-block:12px!important;
+  }
+  .palace-shell[data-palace-room="library"] .chic-library-page .library-tabs.chic-library-tabs{
+    width:100%!important;
+    max-width:100%!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    box-sizing:border-box!important;
+    scroll-padding-inline:12px;
+    overscroll-behavior-inline:contain;
+  }
+  /* All four existing counters remain visible without a sideways scroll
+     or a clipped fourth card. */
+  .palace-shell[data-palace-room="library"] .chic-library-page .library-pulse.chic-library-pulse{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+    width:100%!important;
+    max-width:100%!important;
+    overflow:visible!important;
+    box-sizing:border-box!important;
+  }
+  .palace-shell[data-palace-room="library"] .chic-library-page .library-pulse.chic-library-pulse>article{
+    box-sizing:border-box!important;
+    min-width:0!important;
+    width:auto!important;
+    max-width:100%!important;
+    flex:none!important;
+    min-height:68px!important;
+    padding:12px!important;
+    gap:8px!important;
+  }
+  .palace-shell[data-palace-room="library"] .chic-library-pulse article span{
+    font-size:.74rem!important;
+    line-height:1.35!important;
+    overflow-wrap:anywhere;
+  }
+  .palace-shell[data-palace-room="library"] .chic-library-pulse article strong{
+    font-size:1.35rem!important;
+    line-height:1.15!important;
+  }
+  /* The dock and the last Library cards do not compete at the bottom. */
+  .palace-shell[data-palace-room="library"] main.palace-main-stage{
+    padding-bottom:calc(155px + env(safe-area-inset-bottom,0px))!important;
+  }
+  /* Mobile header already contains a Letters shortcut. Keep the separate
+     theme switch, making it less intrusive in the reading area. */
+  .palace-shell[data-palace-room="library"] .restored-floating-controls .notification-anchor{
+    display:none!important;
+  }
+  .palace-shell[data-palace-room="library"] .restored-floating-controls{
+    right:10px!important;
+    bottom:calc(97px + env(safe-area-inset-bottom,0px))!important;
+  }
+  .palace-shell[data-palace-room="library"] .restored-floating-controls .theme-orb{
+    width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;
+  }
+}
+@media(max-width:590px){
+  .palace-shell[data-palace-room="library"] .library-overview .library-overview-hero{
+    padding:18px!important;
+    gap:14px!important;
+  }
+  .palace-shell[data-palace-room="library"] .library-overview .library-overview-hero h2{
+    font-size:clamp(1.55rem,6vw,2rem)!important;
+  }
+  .palace-shell[data-palace-room="library"] .library-overview :is(.library-overview-section,.library-overview-discover,.library-overview-updates){
+    padding:16px!important;
+  }
+}
