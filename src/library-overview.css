@@ -50,3 +50,36 @@
 @media(max-width:920px){.library-overview-feature-grid{grid-template-columns:1fr}.library-overview-updates{grid-template-columns:1fr}.library-overview-updates-link{grid-column:1}.library-overview-pulse{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:590px){.library-overview{gap:15px}.library-overview-hero{padding:20px}.library-overview-hero-action{width:100%}.library-overview-pulse a{min-height:91px;padding:13px}.library-overview-shortcuts{grid-template-columns:1fr}.library-overview-updates li a{flex-wrap:wrap}.library-overview-section-head>a{min-height:40px;display:flex;align-items:center}}
 @media(prefers-reduced-motion:no-preference){.library-overview :is(.library-overview-book,.library-overview-shortcuts a,.library-overview-pulse a){transition:border-color .18s ease,background-color .18s ease}}
+
+/* A single useful next-step panel when both preview shelves are empty.
+   Keep the same glossy art direction rather than stacking empty card boxes. */
+.library-overview-start{
+ display:flex;align-items:center;gap:clamp(18px,3vw,28px);min-width:0;
+ padding:clamp(19px,3vw,30px);border:1px solid rgba(177,155,233,.38);
+ border-radius:23px;background:radial-gradient(ellipse at 100% 0%,rgba(90,193,204,.16),transparent 55%),
+ linear-gradient(120deg,rgba(138,104,209,.18),rgba(66,70,141,.13)),var(--card,rgba(34,28,58,.85));
+}
+.library-overview-start-mark{
+ display:grid;place-items:center;flex:0 0 74px;height:92px;border:1px solid rgba(206,176,249,.36);
+ border-radius:18px;background:linear-gradient(145deg,rgba(171,136,224,.21),rgba(67,151,190,.14));
+ font:600 1.8rem Georgia,serif;color:var(--ui-text,#e8ddff);
+}
+.library-overview-start-copy{min-width:0;flex:1}
+.library-overview-start .eyebrow{font-size:.69rem;letter-spacing:.11em;margin:0 0 8px}
+.library-overview-start h3{font:700 clamp(1.3rem,2.5vw,1.8rem)/1.25 Georgia,serif;margin:0 0 9px}
+.library-overview-start p:not(.eyebrow){font-size:.9rem;line-height:1.57;margin:0;max-width:65ch}
+.library-overview-start nav{display:flex;flex-wrap:wrap;gap:9px;margin-top:17px}
+.library-overview-start nav a{
+ display:inline-flex;align-items:center;justify-content:center;min-height:44px;
+ padding:9px 14px;text-decoration:none;font-weight:700;font-size:.86rem;
+ border:1px solid rgba(179,157,235,.47);border-radius:12px;
+ background:linear-gradient(120deg,rgba(163,133,228,.22),rgba(104,178,223,.15));
+}
+.library-overview-updates.is-quiet{grid-template-columns:minmax(0,1.2fr) minmax(0,1.2fr);gap:9px 18px}
+.library-overview-updates.is-quiet .library-overview-update-empty{font-size:.85rem}
+@media(max-width:920px){.library-overview-updates.is-quiet{grid-template-columns:1fr}}
+@media(max-width:590px){
+ .library-overview-start{align-items:flex-start;padding:16px;gap:13px}
+ .library-overview-start-mark{flex-basis:45px;height:52px;font-size:1.1rem;border-radius:12px}
+ .library-overview-start nav a{width:100%}
+}
