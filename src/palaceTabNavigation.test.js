@@ -12,7 +12,10 @@ describe('Palace core tab routing cleanup',()=>{
   expect(palaceTabUrl('/writing','duels',WRITING_TABS,'drafts')).toBe('/writing?tab=duels');
  });
  it('keeps every existing Library shelf deep-linkable, including History',()=>{
-  expect(LIBRARY_TABS).toHaveLength(10);
+  expect(LIBRARY_TABS).toHaveLength(11);
+  expect(palaceTabFromSearch('?tab=overview',LIBRARY_TABS,'overview')).toBe('overview');
+  expect(palaceTabFromSearch('',LIBRARY_TABS,'overview')).toBe('overview');
+  expect(palaceTabUrl('/library','overview',LIBRARY_TABS,'overview')).toBe('/library?tab=overview');
   expect(palaceTabFromSearch('?tab=history',LIBRARY_TABS,'continue')).toBe('history');
   expect(palaceTabFromSearch('?tab=finished',LIBRARY_TABS,'continue')).toBe('finished');
   expect(palaceTabFromSearch('?tab=invalid',LIBRARY_TABS,'continue')).toBe('continue');

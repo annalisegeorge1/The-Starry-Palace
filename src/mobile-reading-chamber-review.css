@@ -1,0 +1,215 @@
+/*
+ * Screenshot-led mobile comfort pass, October 2026.
+ * Scoped to Reading Rooms and member Chamber. Preserve all story content,
+ * archive controls, reader actions, navigation destinations, theme palettes
+ * and artwork. Global search remains reachable via the top-bar search icon.
+ */
+@media (max-width:720px){
+  /* A second full-width global search bar consumes valuable height above the
+     Reading Room's own query and filters. The command/search button stays. */
+  .palace-shell[data-palace-room="reading"] .full-topbar .global-search-live{
+    display:none!important;
+  }
+  .palace-shell[data-palace-room="reading"] .full-topbar{
+    min-height:0!important;
+    height:auto!important;
+    padding-block:8px!important;
+  }
+  .palace-shell[data-palace-room="reading"] .full-topbar-row{
+    grid-template-rows:minmax(42px,auto)!important;
+    gap:0!important;
+    min-height:0!important;
+  }
+  .palace-shell[data-palace-room="reading"] .chic-reading-tools{
+    position:relative!important;
+    top:auto!important;
+    z-index:auto!important;
+    margin-block:12px!important;
+  }
+  /* Give the catalogue result count its own breathing room instead of
+     squeezing it beside a three-button density control on small phones. */
+  .palace-shell[data-palace-room="reading"] .reading-catalogue-controls{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:12px!important;
+    align-items:start!important;
+  }
+  .palace-shell[data-palace-room="reading"] .reading-catalogue-controls>div[role="group"]{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:5px!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  .palace-shell[data-palace-room="reading"] .reading-catalogue-controls>div[role="group"] button{
+    min-width:0!important;
+    padding:9px 6px!important;
+    overflow-wrap:normal!important;
+    font-size:clamp(.72rem,3.1vw,.82rem)!important;
+    min-height:44px!important;
+  }
+  /* The screenshot shows the lower actions competing with the cards.
+     Keep all controls accessible but give content space to scroll past dock. */
+  .palace-shell[data-palace-room="reading"] main.palace-main-stage,
+  .palace-shell[data-palace-room="palace"] main.palace-main-stage{
+    padding-bottom:calc(160px + env(safe-area-inset-bottom,0px))!important;
+  }
+  .palace-shell[data-palace-room="reading"] .legacy-reading-page{
+    scroll-margin-top:74px;
+    padding-bottom:24px;
+  }
+  .palace-shell[data-palace-room="reading"] :is(.reading-catalogue-controls,.reading-mode-tabs,.chic-reading-tools){
+    scroll-margin-top:78px!important;
+  }
+  /* Letters is already in the top bar. Suppress only its duplicated
+     floating shortcut; the day/night toggle remains available. */
+  .palace-shell[data-palace-room="reading"] .restored-floating-controls .notification-anchor,
+  .palace-shell[data-palace-room="palace"] .restored-floating-controls .notification-anchor{
+    display:none!important;
+  }
+  .palace-shell[data-palace-room="reading"] .restored-floating-controls,
+  .palace-shell[data-palace-room="palace"] .restored-floating-controls{
+    right:10px!important;
+    bottom:calc(99px + env(safe-area-inset-bottom,0px))!important;
+  }
+  /* Keep the raised Write destination but avoid visually presenting it as
+     the active room while the reader is browsing stories. */
+  .palace-shell[data-palace-room="reading"] .mobile-palace-dock .mobile-dock-write:not(.active){
+    filter:saturate(.8)!important;
+  }
+}
+@media (max-width:430px){
+  .palace-shell[data-palace-room="reading"] .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row{
+    padding:13px!important;
+  }
+  .palace-shell[data-palace-room="reading"] .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row h2{
+    line-height:1.27!important;
+  }
+  .palace-shell[data-palace-room="reading"] .legacy-reading-page .story-shelf.refined.chic-story-catalogue .reading-story-context-summary>p{
+    line-height:1.58!important;
+  }
+}
+
+/* My Library mobile layout, observed in the user's 29 October preview.
+   Keep the horizontally swipeable tab row, but let it scroll with content:
+   sticky tab bars were floating over Overview cards underneath the top header. */
+@media(max-width:780px){
+  .palace-shell[data-palace-room="library"] .chic-library-page .library-tabs.chic-library-tabs,
+  .palace-shell[data-palace-room="library"] .chic-library-page .library-search-live.chic-library-search{
+    position:relative!important;
+    inset:auto!important;
+    top:auto!important;
+    z-index:auto!important;
+    margin-block:12px!important;
+  }
+  .palace-shell[data-palace-room="library"] .chic-library-page .library-tabs.chic-library-tabs{
+    width:100%!important;
+    max-width:100%!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    box-sizing:border-box!important;
+    scroll-padding-inline:12px;
+    overscroll-behavior-inline:contain;
+  }
+  /* All four existing counters remain visible without a sideways scroll
+     or a clipped fourth card. */
+  .palace-shell[data-palace-room="library"] .chic-library-page .library-pulse.chic-library-pulse{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+    width:100%!important;
+    max-width:100%!important;
+    overflow:visible!important;
+    box-sizing:border-box!important;
+  }
+  .palace-shell[data-palace-room="library"] .chic-library-page .library-pulse.chic-library-pulse>article{
+    box-sizing:border-box!important;
+    min-width:0!important;
+    width:auto!important;
+    max-width:100%!important;
+    flex:none!important;
+    min-height:68px!important;
+    padding:12px!important;
+    gap:8px!important;
+  }
+  .palace-shell[data-palace-room="library"] .chic-library-pulse article span{
+    font-size:.74rem!important;
+    line-height:1.35!important;
+    overflow-wrap:anywhere;
+  }
+  .palace-shell[data-palace-room="library"] .chic-library-pulse article strong{
+    font-size:1.35rem!important;
+    line-height:1.15!important;
+  }
+  /* The dock and the last Library cards do not compete at the bottom. */
+  .palace-shell[data-palace-room="library"] main.palace-main-stage{
+    padding-bottom:calc(155px + env(safe-area-inset-bottom,0px))!important;
+  }
+  /* Mobile header already contains a Letters shortcut. Keep the separate
+     theme switch, making it less intrusive in the reading area. */
+  .palace-shell[data-palace-room="library"] .restored-floating-controls .notification-anchor{
+    display:none!important;
+  }
+  .palace-shell[data-palace-room="library"] .restored-floating-controls{
+    right:10px!important;
+    bottom:calc(97px + env(safe-area-inset-bottom,0px))!important;
+  }
+  .palace-shell[data-palace-room="library"] .restored-floating-controls .theme-orb{
+    width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;
+  }
+}
+@media(max-width:590px){
+  .palace-shell[data-palace-room="library"] .library-overview .library-overview-hero{
+    padding:18px!important;
+    gap:14px!important;
+  }
+  .palace-shell[data-palace-room="library"] .library-overview .library-overview-hero h2{
+    font-size:clamp(1.55rem,6vw,2rem)!important;
+  }
+  .palace-shell[data-palace-room="library"] .library-overview :is(.library-overview-section,.library-overview-discover,.library-overview-updates){
+    padding:16px!important;
+  }
+}
+
+/* My Library has its own search field when an individual shelf is selected.
+   Make the small-screen shell one row: global search stays available from the
+   top-right magnifying-glass command/search control. */
+@media(max-width:720px){
+  .palace-shell[data-palace-room="library"] .full-topbar .global-search-live{
+    display:none!important;
+  }
+  .palace-shell[data-palace-room="library"] .full-topbar{
+    min-height:0!important;height:auto!important;padding-block:8px!important;
+  }
+  .palace-shell[data-palace-room="library"] .full-topbar-row{
+    grid-template-rows:minmax(42px,auto)!important;gap:0!important;min-height:0!important;
+  }
+}
+
+/* The envelope seen in the screenshot is the actual Palace Chat button,
+   portalled to document.body. Do not confuse it with the Letters shortcut.
+   Chat stays reachable as a 44px launcher just above the dock. */
+@media(max-width:720px){
+ body[data-palace-room="library"] .palace-chat-dock:not(.is-open){
+   right:10px!important;
+   bottom:calc(94px + env(safe-area-inset-bottom,0px))!important;
+   max-width:44px!important;
+ }
+ body[data-palace-room="library"] .palace-chat-dock:not(.is-open) .palace-chat-launch{
+   width:44px!important;min-width:44px!important;height:44px!important;
+   min-height:44px!important;padding:0!important;gap:0!important;
+   display:grid!important;place-items:center!important;border-radius:50%!important;
+   box-shadow:0 6px 18px rgba(9,8,30,.28)!important;
+ }
+ body[data-palace-room="library"] .palace-chat-dock:not(.is-open) .palace-chat-launch>span:nth-child(2){
+   display:none!important;
+ }
+ body[data-palace-room="library"] .palace-chat-dock:not(.is-open) .palace-chat-launch>span:first-child{
+   display:inline!important;font-size:1.1rem!important;
+ }
+ /* The mobile More sheet already has a working Nightfall/Daylight switch.
+    Avoid a second floating theme control over text on this one room. */
+ .palace-shell[data-palace-room="library"] .restored-floating-controls .theme-orb{
+   display:none!important;
+ }
+}

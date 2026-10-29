@@ -4,7 +4,7 @@
  * A room's own tab state and its URL should never disagree.
  */
 export const WRITING_TABS=['drafts','collab','relay','duels','comments','permissions'];
-export const LIBRARY_TABS=['continue','saved','comics','collections','lists','notes','following','writers','history','finished'];
+export const LIBRARY_TABS=['overview','continue','saved','comics','collections','lists','notes','following','writers','history','finished'];
 export const SETTINGS_TABS=['privacy','notifications','quiet','storage','account','system','guide','testing'];
 export const EVENTS_PUBLIC_TABS=['writing','events','heritage'];
 export const EVENTS_MEMBER_TABS=[...EVENTS_PUBLIC_TABS,'calendar','proposals','ballots'];
