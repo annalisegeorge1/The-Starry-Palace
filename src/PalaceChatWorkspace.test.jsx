@@ -10,7 +10,7 @@ afterEach(cleanup);
 describe('full Palace Messenger destination',()=>{
  it('reuses the existing chat engine inside a separate workspace',()=>{
   render(<MemoryRouter><PalaceChatWorkspace/></MemoryRouter>);
-  expect(screen.getByRole('main',{name:'Palace Messenger'})).toBeTruthy();
+  expect(screen.getByRole('region',{name:'Palace Messenger'})).toBeTruthy();
   expect(screen.getByTestId('workspace-chat').textContent).toBe('member-one:true');
   expect(screen.getByRole('link',{name:'Palace Letters'}).getAttribute('href')).toBe('/letters');
   expect(screen.getByRole('link',{name:'Palace Life'}).getAttribute('href')).toBe('/palace-life');
