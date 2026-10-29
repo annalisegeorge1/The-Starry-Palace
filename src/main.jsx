@@ -211,6 +211,7 @@ const PalaceLostWorksRoom=React.lazy(()=>importWithRecovery(()=>import('./Palace
 const PalaceFandomAtlas=React.lazy(()=>importWithRecovery(()=>import('./PalaceFandomAtlas')));
 // Core Palace rooms are imported eagerly for navigation reliability.
 const PalaceChatDrawerLazy=React.lazy(()=>importWithRecovery(()=>import('./PalaceChatDrawer')));
+const PalaceChatWorkspaceLazy=React.lazy(()=>importWithRecovery(()=>import('./PalaceChatWorkspace')));
 const PalaceTidingsLazy=React.lazy(()=>importWithRecovery(()=>import('./PalaceTidings')));
 const PalaceVictoryCelebrationLazy=React.lazy(()=>importWithRecovery(()=>import('./PalaceVictoryCelebration')));
 
@@ -512,6 +513,7 @@ function FrameShell({children}){
         <Link to="/library"><span>▧</span><strong>My Library</strong><small>Saved worlds & history</small></Link>
         <Link to="/events?tab=calendar"><span>✧</span><strong>Events</strong><small>Calendars & invitations</small></Link>
         <Link to="/treasury"><span>♛</span><strong>Treasury</strong><small>Badges, gifts & draw</small></Link>
+        <Link to="/chat"><span>✉</span><strong>Messenger</strong><small>Direct and group conversations</small></Link>
         <Link to="/letters" className={letterBadge?'has-attention':''}><span>✉</span><strong>Messages</strong><small>{letterBadge?letterBadge+' request'+(letterBadge===1?'':'s')+' waiting':'Palace Letters'}</small>{letterBadge>0&&<b>{letterBadge>99?'99+':letterBadge}</b>}</Link>
         <Link to="/activity" className={activityBadge?'has-attention':''}><span>✦</span><strong>Activity</strong><small>{activityBadge?activityBadge+' unread':'Notifications & updates'}</small>{activityBadge>0&&<b>{activityBadge>99?'99+':activityBadge}</b>}</Link>
         <Link to="/search"><span>⌕</span><strong>Search</strong><small>Works, writers & tags</small></Link>
@@ -678,7 +680,8 @@ class PalaceRootBoundary extends React.Component{
 
 function PalaceChatHost(){
  const {session}=useAuth();
- if(!session?.user?.id)return null;
+ const location=useLocation();
+ if(!session?.user?.id||location.pathname==='/chat')return null;
  // Chat is rendered outside the Palace content's stacking/scroll container.
  // Its fixed coordinates now use the viewport, never a transformed main.
  if(typeof document==='undefined')return null;
@@ -713,6 +716,7 @@ function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo
  <Route path="/activity" element={<ProtectedRoute><ActivityLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/library" element={<ProtectedRoute><LibraryLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/letters" element={<ProtectedRoute><LettersLive Frame={Frame}/></ProtectedRoute>}/>
+ <Route path="/chat" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><PalaceChatWorkspaceLazy/></React.Suspense></ProtectedRoute>}/>
  <Route path="/tags" element={<TagSearchLive Frame={Frame}/>}/>
  <Route path="/tag/:tagId" element={<React.Suspense fallback={<RouteLoading/>}><Frame><PalaceTagWorld/></Frame></React.Suspense>}/>
   <Route path="/fandoms" element={<React.Suspense fallback={<RouteLoading/>}><Frame><PalaceFandomAtlas/></Frame></React.Suspense>}/>
