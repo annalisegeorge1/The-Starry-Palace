@@ -87,3 +87,24 @@
  .palace-chat-v2 .palace-chat-inbox-refine>span{width:100%}
  .palace-chat-v2 .palace-chat-inbox-refine button{font-size:.74rem}
 }
+
+/* Preserve quick-chat message search and favourite actions on narrow phones.
+   An older conversation-first rule intentionally hid all pressed controls;
+   these are now meaningful, explicitly labeled actions. */
+@media(max-width:720px){
+ .palace-chat-v2.is-thread-open .palace-chat-header-actions button[aria-label="Search messages in this conversation"],
+ .palace-chat-v2.is-thread-open .palace-chat-header-actions button[aria-label="Close message search"],
+ .palace-chat-v2.is-thread-open .palace-chat-header-actions button[aria-label="Add conversation to favourites"],
+ .palace-chat-v2.is-thread-open .palace-chat-header-actions button[aria-label="Remove conversation from favourites"]{
+  display:grid!important;place-items:center!important;
+ }
+ .palace-chat-v2 .palace-chat-heading .palace-chat-header-actions{
+  gap:5px!important;
+ }
+ .palace-chat-v2 .palace-chat-heading .palace-chat-header-actions :is(button,.palace-chat-expand,.palace-chat-close-workspace){
+  width:38px!important;min-width:38px!important;height:38px!important;min-height:38px!important;
+ }
+ .palace-shell:has(.palace-chat-workspace-page) .restored-floating-controls{
+  display:none!important;
+ }
+}
