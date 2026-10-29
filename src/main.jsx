@@ -83,6 +83,7 @@ import './palace-core-tabs-polish.css';
 import './palace-community-focus.css';
 import './palace-muted-midnight-core.css';
 import './writing-chamber-lustre-pass.css';
+import './mobile-reading-chamber-review.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
@@ -457,7 +458,7 @@ function FrameShell({children}){
  function submitSearch(e){e.preventDefault();if(search.trim())navigate('/search?q='+encodeURIComponent(search.trim()))}
  function chooseCommand(path){setCommandOpen(false);setCommandQuery('');setCommandIndex(0);navigate(path)}
  function searchCommand(){const q=commandQuery.trim();if(!q)return;setCommandOpen(false);setCommandQuery('');setCommandIndex(0);navigate('/search?q='+encodeURIComponent(q))}
- return <div data-palace-frame="ready" className={"palace-shell full-palace-shell "+(navOpen?'nav-open ':'')+(sidebarCollapsed?'sidebar-collapsed ':'')+(daylight?'daylight':'nightfall')}>
+ return <div data-palace-frame="ready" data-palace-room={activeRoom?.id||"unknown"} className={"palace-shell full-palace-shell "+(navOpen?'nav-open ':'')+(sidebarCollapsed?'sidebar-collapsed ':'')+(daylight?'daylight':'nightfall')}>
   <a className="skip-to-content" href="#palace-content">Skip to main content</a>
   <aside id="palace-sidebar" className="sidebar full-sidebar" aria-label="Palace navigation" role={navOpen?'dialog':undefined} aria-modal={navOpen?'true':undefined} tabIndex={navOpen?-1:undefined}>
    <div className="palace-cover-live restored-cover dusk-gif-cover"><img src="/assets/palace/palace-belonging.gif" alt="" aria-hidden="true" loading="lazy" decoding="async"/><div className="dusk-cover-glass" aria-hidden="true"/><button className="sidebar-retract" type="button" onClick={()=>setSidebarCollapsed(true)} aria-label="Retract Palace sidebar" title="Retract sidebar">‹</button><button className="nav-close" onClick={()=>setNavOpen(false)} aria-label="Close Palace navigation">×</button></div>
