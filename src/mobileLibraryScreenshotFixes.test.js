@@ -28,6 +28,14 @@ describe('mobile Library screenshot fixes',()=>{
   expect(css).toContain('overflow:visible!important');
   expect(css).toContain('flex:none!important');
  });
+ it('keeps chat available as a compact portal launcher, while using More for theme',()=>{
+  expect(shell).toContain("document.body.dataset.palaceRoom=activeRoom?.id||'unknown'");
+  expect(css).toContain('body[data-palace-room="library"] .palace-chat-dock:not(.is-open)');
+  expect(css).toContain('.palace-chat-launch');
+  expect(css).toContain('.restored-floating-controls .theme-orb');
+  expect(shell).toContain("Switch to Daylight");
+  expect(shell).toContain("Switch to Nightfall");
+ });
  it('keeps Library search and Letters accessible without redundant mobile floating links',()=>{
   expect(css).toContain('[data-palace-room="library"] .full-topbar .global-search-live');
   expect(css).toContain('[data-palace-room="library"] .restored-floating-controls .notification-anchor');
