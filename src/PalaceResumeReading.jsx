@@ -32,15 +32,17 @@ export default function PalaceResumeReading({memberId}){
    const work=row.works;
    const chapterPercent=chapterReadingPercent(row.chapter_progress_percent);
    const date=new Date(row.updated_at);
-   const dateLabel=Number.isFinite(date.getTime())?'Last opened '+date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):'Your saved reading place';
+   const hasDate=Number.isFinite(date.getTime());
+   const dateLabel=hasDate?'Last opened '+date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):'Your saved reading place';
+   const resumeLabel=row.chapter_id?'Resume chapter':'View story';
    return <Link key={row.work_id} to={readingReturnPath(row)}>
     <span className="palace-resume-cover palace-rating-anchor">{work.cover_url?<img src={work.cover_url} alt="" loading="lazy" decoding="async"/>:<span aria-hidden="true">☾ ✦</span>}<StoryRatingBadge rating={work.rating}/></span>
     <span className="palace-resume-copy"><strong>{work.title}</strong><small>{dateLabel}</small>
      {chapterPercent!==null&&row.chapter_id&&<span className="palace-resume-progress">
-      <span className="palace-resume-progress-track" role="progressbar" aria-label={'Chapter progress for '+work.title} aria-valuemin={0} aria-valuemax={100} aria-valuenow={chapterPercent}><i style={{width:chapterPercent+'%'}}/></span>
+      <span className="palace-resume-progress-track" role="progressbar" aria-label={'Chapter progress for '+work.title} aria-valuetext={chapterPercent+' percent through the chapter'} aria-valuemin={0} aria-valuemax={100} aria-valuenow={chapterPercent}><i style={{width:chapterPercent+'%'}}/></span>
       <small>{chapterPercent}% through chapter</small>
      </span>}
-     <b>Continue reading →</b></span>
+     <b>{resumeLabel} →</b></span>
    </Link>;
   })}</div>
  </section>;
