@@ -185,3 +185,31 @@
     grid-template-rows:minmax(42px,auto)!important;gap:0!important;min-height:0!important;
   }
 }
+
+/* The envelope seen in the screenshot is the actual Palace Chat button,
+   portalled to document.body. Do not confuse it with the Letters shortcut.
+   Chat stays reachable as a 44px launcher just above the dock. */
+@media(max-width:720px){
+ body[data-palace-room="library"] .palace-chat-dock:not(.is-open){
+   right:10px!important;
+   bottom:calc(94px + env(safe-area-inset-bottom,0px))!important;
+   max-width:44px!important;
+ }
+ body[data-palace-room="library"] .palace-chat-dock:not(.is-open) .palace-chat-launch{
+   width:44px!important;min-width:44px!important;height:44px!important;
+   min-height:44px!important;padding:0!important;gap:0!important;
+   display:grid!important;place-items:center!important;border-radius:50%!important;
+   box-shadow:0 6px 18px rgba(9,8,30,.28)!important;
+ }
+ body[data-palace-room="library"] .palace-chat-dock:not(.is-open) .palace-chat-launch>span:nth-child(2){
+   display:none!important;
+ }
+ body[data-palace-room="library"] .palace-chat-dock:not(.is-open) .palace-chat-launch>span:first-child{
+   display:inline!important;font-size:1.1rem!important;
+ }
+ /* The mobile More sheet already has a working Nightfall/Daylight switch.
+    Avoid a second floating theme control over text on this one room. */
+ .palace-shell[data-palace-room="library"] .restored-floating-controls .theme-orb{
+   display:none!important;
+ }
+}
