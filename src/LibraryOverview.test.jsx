@@ -22,6 +22,20 @@ describe('My Library overview presentation',()=>{
   expect(screen.getByRole('link',{name:/Notes & Bookmarks/}).getAttribute('href')).toBe('/library?tab=notes');
   expect(screen.getByRole('link',{name:/History/}).getAttribute('href')).toBe('/library?tab=history');
  });
+ it('offers one useful reading invitation instead of two empty shelf panels',()=>{
+  const finished={
+   progress:[{work_id:'done',completed:true,updated_at:'2026-10-15T12:00:00Z',
+    works:{id:'done',title:'A Finished Book',slug:'finished-book'}}],
+   subscriptions:[{work_id:'done',enabled:true,works:{id:'done',title:'A Finished Book',slug:'finished-book'}}]
+  };
+  render(<MemoryRouter><LibraryOverview library={finished} organizers={{}}/></MemoryRouter>);
+  expect(screen.getByRole('region',{name:'Find your next reading journey'})).toBeTruthy();
+  expect(screen.queryByRole('region',{name:'Your place in the story'})).toBeNull();
+  expect(screen.queryByRole('region',{name:'Saved for another night'})).toBeNull();
+  expect(screen.getByRole('link',{name:/Revisit finished stories/}).getAttribute('href')).toBe('/library?tab=finished');
+  expect(screen.getByRole('link',{name:/Finished works \(1\)/}).getAttribute('href')).toBe('/library?tab=finished');
+  expect(screen.getByRole('link',{name:/Following \(1\)/}).getAttribute('href')).toBe('/library?tab=following');
+ });
  it('does not claim new updates when no last-reading position exists',()=>{
   render(<MemoryRouter><LibraryOverview library={{subscriptions:[{work_id:'new',works:{id:'new',title:'Unopened',slug:'unopened',last_published_at:'2026-10-20T12:00:00Z'}}]}} organizers={{}}/></MemoryRouter>);
   expect(screen.getByText(/Nothing new is confirmed against your recorded reading positions/)).toBeTruthy();
