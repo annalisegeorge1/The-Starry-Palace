@@ -4,7 +4,7 @@ import {act,cleanup,fireEvent,render,screen,waitFor,within} from '@testing-libra
 import {MemoryRouter} from 'react-router-dom';
 import PalaceChatDrawer from './PalaceChatDrawer';
 import {watchPalaceChatRoom} from './palaceChatRealtime';
-import {getLetters,searchMembers,editLetterMessage,setConversationPreference} from './palaceData';
+import {getLetters,sendLetter,searchMembers,editLetterMessage,setConversationPreference} from './palaceData';
 import {getPalaceGroupChatOverview,getPalaceGroupMessages,createPalaceGroupChat,respondPalaceGroupInvite,sendPalaceGroupMessage,editPalaceGroupMessage,setPalaceGroupIdentity,pinPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
 
 vi.mock('./palaceChatRealtime',()=>({watchPalaceChatRoom:vi.fn(()=>()=>{})}));
@@ -60,6 +60,18 @@ describe('Palace quick chat',()=>{
   fireEvent.click(screen.getByRole('button',{name:'Back to inbox'}));
   fireEvent.click(screen.getByRole('button',{name:/Favourites/}));
   expect(screen.getByRole('button',{name:'River'})).toBeTruthy();
+ });
+ it('does not suggest a duplicate send after a successful write when inbox sync fails',async()=>{
+  let sent=false;
+  sendLetter.mockImplementation(async()=>{sent=true});
+  getLetters.mockImplementation(()=>sent?Promise.reject(new Error('offline during refresh')):Promise.resolve(direct));
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.change(screen.getByRole('textbox',{name:'Write a private message'}),{target:{value:'Important note'}});
+  fireEvent.click(screen.getByRole('button',{name:/Send/}));
+  await waitFor(()=>expect(sendLetter).toHaveBeenCalledTimes(1));
+  await screen.findByText(/Message sent\. The conversation is syncing/);
+  expect(screen.getByRole('textbox',{name:'Write a private message'}).value).toBe('');
  });
  it('searches only locally loaded message text within the opened thread',async()=>{
   getLetters.mockResolvedValue({...direct,messages:[{id:'moon-note',conversation_id:'direct-one',sender_id:'member-two',body:'The Moonlit Orchard',created_at:'2026-10-21T12:00:00Z'}]});
