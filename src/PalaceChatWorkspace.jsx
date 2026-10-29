@@ -9,7 +9,7 @@ import './palace-chat-workspace.css';
 export default function PalaceChatWorkspace(){
  const {session}=useAuth();
  if(!session?.user?.id)return null;
- return <main className="palace-chat-workspace-page" aria-label="Palace Messenger">
+ return <section className="palace-chat-workspace-page" aria-label="Palace Messenger">
   <header className="palace-chat-workspace-intro">
    <div><p className="eyebrow">THE STARRY PALACE · PRIVATE CONVERSATIONS</p>
     <h1>Palace Messenger</h1>
@@ -21,5 +21,5 @@ export default function PalaceChatWorkspace(){
   </header>
   <PalaceChatDrawer key={session.user.id} userId={session.user.id} workspace/>
   <p className="palace-chat-workspace-privacy">Direct messages and invitation-only circles remain subject to each member’s permissions. Message search covers only the messages currently loaded in your browser.</p>
- </main>;
+ </section>;
 }
