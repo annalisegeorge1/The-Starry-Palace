@@ -395,6 +395,12 @@ function FrameShell({children}){
  const commandNeedle=commandQuery.trim().toLowerCase();
  const commandMatches=commandItems.filter(item=>commandNeedle&&[item.label,item.detail].join(' ').toLowerCase().includes(commandNeedle)).slice(0,12);
  const activeRoom=visibleRooms.find(r=>location.pathname===r.path||r.sections.some(([,p])=>{const target=resolveRoomPath(p);return target&&location.pathname===target.split('?')[0]})||(r.id==='reading'&&['/comics','/comic/','/work/','/classic/','/lost-works','/tags','/series'].some(p=>location.pathname.startsWith(p)))||(r.id==='writing'&&location.pathname.startsWith('/writing'))||(r.id==='life'&&['/palace-life','/club/','/search','/honour','/activity'].some(p=>location.pathname.startsWith(p))||(r.id==='life'&&location.pathname.startsWith('/member/')&&location.pathname!==('/member/'+(shellProfile?.username||''))))||(r.id==='events'&&location.pathname.startsWith('/events'))||(r.id==='treasury'&&location.pathname.startsWith('/treasury'))||(r.id==='settings'&&location.pathname.startsWith('/settings')));
+ React.useEffect(()=>{
+  // Chat is portalled to document.body, outside .palace-shell. Keep its
+  // room-specific mobile position synchronized without altering chat state.
+  document.body.dataset.palaceRoom=activeRoom?.id||'unknown';
+  return()=>{delete document.body.dataset.palaceRoom};
+ },[activeRoom?.id]);
  const currentHref=location.pathname+location.search;
  const activeSection=activeRoom?.sections.find(([,path])=>resolveRoomPath(path)===currentHref);
  const passageMap={
