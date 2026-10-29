@@ -25,3 +25,10 @@ export function readingReturnPath(row){
  const base='/work/'+encodeURIComponent(String(row.works.slug));
  return row.chapter_id?base+'/chapter/'+encodeURIComponent(String(row.chapter_id)):base;
 }
+
+/* Search only the fetched private preview, with accent and whitespace tolerance. */
+export function searchHomeReading(rows,query=''){
+ const folded=value=>String(value??'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase().replace(/\s+/g,' ').trim();
+ const needle=folded(query);
+ return Array.isArray(rows)?rows.filter(row=>row?.works&&folded(row.works.title).includes(needle)):[];
+}

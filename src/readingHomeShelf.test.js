@@ -1,5 +1,5 @@
 import {describe,expect,it} from 'vitest';
-import {selectHomeReading,visibleHomeReading,chapterReadingPercent,readingReturnPath} from './readingHomeShelf';
+import {selectHomeReading,visibleHomeReading,chapterReadingPercent,readingReturnPath,searchHomeReading} from './readingHomeShelf';
 
 const row=(id,extra={})=>({
  work_id:id,chapter_id:'chapter-'+id,completed:false,chapter_progress_percent:47,
@@ -35,6 +35,12 @@ describe('private home reading shelf',()=>{
   expect(chapterReadingPercent(190)).toBe(100);
   expect(chapterReadingPercent('')).toBeNull();
   expect(chapterReadingPercent('unknown')).toBeNull();
+ });
+ it('finds accented titles despite alternate accents and extra spaces',()=>{
+  const items=[row('a',{works:{title:'Café at Midnight',slug:'cafe',publication_status:'published'}}),row('b')];
+  expect(searchHomeReading(items,'  cafe   at midnight ')).toEqual([items[0]]);
+  expect(searchHomeReading(items,'WORK B')).toEqual([items[1]]);
+  expect(searchHomeReading(null,'x')).toEqual([]);
  });
  it('keeps a safe chapter destination, or falls back to the work',()=>{
   expect(readingReturnPath(row('a',{chapter_id:'chapter 1'}))).toBe('/work/story-a/chapter/chapter%201');

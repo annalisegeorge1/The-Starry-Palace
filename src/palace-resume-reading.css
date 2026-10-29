@@ -26,3 +26,16 @@
 @media(hover:hover){.palace-resume-shelf>a:hover{transform:translateY(-2px)}}
 @media(prefers-reduced-motion:reduce){.palace-resume-shelf>a,.palace-resume-progress-track i{transition:none}}
 @media(max-width:520px){.palace-resume-shelf>a{gap:10px;padding:11px}.palace-resume-cover{flex-basis:60px;height:84px}}
+
+/* Expandable private shelf: comfortable searching without disturbing the chapter cards. */
+.palace-resume-controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px 12px;margin-top:16px}
+.palace-resume-controls label{font-size:.86rem;font-weight:650}
+.palace-resume-controls input{flex:1 1 190px;min-width:0;max-width:360px;min-height:44px;padding:10px 12px;border:1px solid #a18bc584;border-radius:12px;color:inherit;background:var(--card,rgba(35,30,59,.86));font:inherit}
+.palace-resume-controls button{min-height:44px;border-radius:12px;border:1px solid #bca5e38c;padding:9px 15px;background:linear-gradient(125deg,#a28ad02b,#8db8f023);color:inherit;font:inherit;font-weight:650;cursor:pointer}
+.palace-resume-controls :is(input,button):focus-visible{outline:3px solid #a788ef;outline-offset:2px}
+.palace-resume-empty{margin:16px 0 0;line-height:1.5}
+@media(max-width:520px){.palace-resume-controls label{width:100%}.palace-resume-controls input{max-width:none;font-size:16px}.palace-resume-controls button{width:100%}}
+
+.palace-resume-controls select{min-height:44px;max-width:220px;min-width:155px;padding:9px 12px;border:1px solid #a18bc584;border-radius:12px;background:var(--card,rgba(35,30,59,.86));color:inherit;font:inherit}
+.palace-resume-controls select:focus-visible{outline:3px solid #a788ef;outline-offset:2px}
+@media(max-width:520px){.palace-resume-controls select{width:100%;max-width:none;font-size:16px}}
