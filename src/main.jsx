@@ -681,7 +681,8 @@ class PalaceRootBoundary extends React.Component{
 function PalaceChatHost(){
  const {session}=useAuth();
  const location=useLocation();
- if(!session?.user?.id||location.pathname==='/chat')return null;
+ if(!session?.user?.id)return null;
+ if(location.pathname==='/chat')return null;
  // Chat is rendered outside the Palace content's stacking/scroll container.
  // Its fixed coordinates now use the viewport, never a transformed main.
  if(typeof document==='undefined')return null;
