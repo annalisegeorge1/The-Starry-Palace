@@ -124,6 +124,30 @@ describe('Writing Chamber glass and usability pass',()=>{
   expect(css).toContain('min-height:44px!important;');
   expect(css).not.toContain('word-break:break-all');
  });
+ it('lets desktop writers hide and restore chapter navigation without touching the manuscript',()=>{
+  expect(room).toContain('id="writer-chapter-rail" className="writing-studio-rail"');
+  expect(room).toContain('className="writer-rail-quick-toggle"');
+  expect(room).toContain("aria-controls={!railCollapsed?'writer-chapter-rail':undefined}");
+  expect(room).toContain('aria-expanded={!railCollapsed}');
+  expect(room).toContain("aria-label={railCollapsed?'Show chapter sidebar':'Hide chapter sidebar'}");
+  expect(room).toContain("onClick={()=>setRailCollapsed(v=>!v)}");
+  expect(room).toContain("localStorage.setItem('palace-writer-rail',railCollapsed?'collapsed':'open')");
+  expect(css).toContain('/* MANUSCRIPT-FIRST DESKTOP');
+  expect(css).toContain('.writer-toolbar-utilities');
+  expect(css).toContain('@media(min-width:1121px)');
+  expect(css).toContain('body.writing-desk-open:not(.focus-editor)');
+  expect(css).toContain('display:inline-flex!important;');
+ });
+ it('normalizes the Folder label and tightens only surrounding editor chrome',()=>{
+  expect(room).toContain('className="chapter-folder-assignment"><span>Folder</span>');
+  expect(css).toContain('.chapter-row-extras .chapter-folder-assignment>span');
+  expect(css).toContain('font:700 .72rem/1.35 system-ui');
+  expect(css).toContain('.manuscript-sticky-toolbar .writer-chapter-jump');
+  expect(css).toContain('.manuscript-sticky-toolbar .manuscript-type-ribbon');
+  expect(css).toContain('.manuscript-sticky-toolbar .writer-format-scroll');
+  expect(css).toContain('@media(min-width:761px)');
+  expect(css).toContain('.full-palace-shell.daylight .writer-rail-quick-toggle');
+ });
  it('has visible keyboard focus and small-screen touch-safe controls',()=>{
   expect(css).toContain(':focus-visible');
   expect(css).toContain('@media(max-width:650px)');
