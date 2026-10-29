@@ -4,6 +4,9 @@ import {createPortal} from 'react-dom';
 import {Link} from 'react-router-dom';
 import {supabase} from './supabase';
 import {watchPalaceChatRoom} from './palaceChatRealtime';
+import {buildPalaceDirectPreviews} from './palaceChatDirectPreview';
+import {filterPalaceDirectInbox,findPalaceChatMessages} from './palaceChatInboxModel';
+import './palace-chat-workspace.css';
 import {getMyProfile,getLetters,sendLetter,sendLetterPhoto,editLetterMessage,searchMembers,setConversationPreference} from './palaceData';
 import {createPalaceGroupChat,getPalaceGroupChatOverview,getPalaceGroupMessages,sendPalaceGroupMessage,sendPalaceGroupPhoto,editPalaceGroupMessage,respondPalaceGroupInvite,invitePalaceGroupMember,removePalaceGroupMember,leavePalaceGroupChat,setPalaceGroupMuted,markPalaceGroupRead,PALACE_GROUP_COLOURS,setPalaceGroupIdentity,pinPalaceGroupMessage,getPinnedPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
 import './palace-chat-drawer.css';
@@ -30,10 +33,10 @@ const nameOf=p=>p?.display_name||p?.username||'Palace member';
 const dateOf=d=>d?new Date(d).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'';
 const errorText=e=>e?.message||'The Palace could not complete that action. Please try again.';
 
-export default function PalaceChatDrawer({userId}){
+export default function PalaceChatDrawer({userId,workspace=false}){
  const[selfProfile,setSelfProfile]=useState(null);
  useEffect(()=>{let active=true;setSelfProfile(null);Promise.resolve().then(()=>getMyProfile(userId)).then(p=>{if(active)setSelfProfile(p)}).catch(()=>{});return()=>{active=false}},[userId]);
- const[open,setOpen]=useState(false);
+ const[open,setOpen]=useState(Boolean(workspace));
  const[threadOpen,setThreadOpen]=useState(false);
  const[loadingDirect,setLoadingDirect]=useState(true);
  const[refreshToken,setRefreshToken]=useState(0);
@@ -59,6 +62,9 @@ export default function PalaceChatDrawer({userId}){
  const[actionMenu,setActionMenu]=useState(null);
  const[search,setSearch]=useState('');
  const[unreadOnly,setUnreadOnly]=useState(false);
+ const[starredOnly,setStarredOnly]=useState(false);
+ const[messageSearch,setMessageSearch]=useState('');
+ const[searchWithinThread,setSearchWithinThread]=useState(false);
  const[historyLoading,setHistoryLoading]=useState(false);
  const[hasOlder,setHasOlder]=useState(false);
  const[quiet,setQuiet]=useState(false);
@@ -97,8 +103,10 @@ export default function PalaceChatDrawer({userId}){
  const draftsKey=roomId?draftKey(userId,tab,roomId):'';
  const currentDraft=roomId?(drafts[draftsKey]??(()=>{try{return localStorage.getItem(draftsKey)||''}catch{return ''}})()):'';
  const directRows=(direct?.conversations||[]).filter(c=>!c.preference?.archived&&c.conversations?.kind==='direct');
+ const directPreviews=buildPalaceDirectPreviews(direct?.messages,{formatTime:dateOf,isGif:body=>Boolean(parsePalaceGif(body))});
  const groupRows=groupData.groups.filter(g=>palaceChatMatchesGroup(g,search)&&(!unreadOnly||palaceChatUnreadGroup(g)));
- const visibleDirect=directRows.filter(c=>[c.correspondent?.username,c.correspondent?.display_name].join(' ').toLowerCase().includes(search.toLowerCase())&&(!unreadOnly||c.unread));
+ const visibleDirect=filterPalaceDirectInbox(directRows,search,starredOnly?'starred':unreadOnly?'unread':'all',directPreviews);
+ const messageMatches=findPalaceChatMessages(messages,messageSearch);
  const directUnread=directRows.filter(c=>c.unread&&!c.preference?.muted).length;
  const groupUnread=groupData.groups.filter(g=>!g.muted&&palaceChatUnreadGroup(g)).length;
  const unread=directUnread+groupUnread+groupData.invitations.length;
@@ -107,7 +115,7 @@ export default function PalaceChatDrawer({userId}){
   const preview=URL.createObjectURL(photoFile);setPhotoPreview(preview);
   return()=>URL.revokeObjectURL(preview);
  },[photoFile]);
- useEffect(()=>{setPhotoFile(null);setEditingMessage(null);setGifOpen(false)},[roomId,tab]);
+ useEffect(()=>{setPhotoFile(null);setEditingMessage(null);setGifOpen(false);setSearchWithinThread(false);setMessageSearch('')},[roomId,tab]);
  useEffect(()=>()=>{if(holdRef.current?.timer)window.clearTimeout(holdRef.current.timer)},[]);
  useEffect(()=>{
   if(!actionMenu)return;
@@ -117,7 +125,7 @@ export default function PalaceChatDrawer({userId}){
   return()=>{document.removeEventListener('keydown',onKey);window.clearTimeout(timer)};
  },[actionMenu]);
 
- useEffect(()=>{setOpen(false);setThreadOpen(false);setLoadingDirect(true);setTab('direct');setDirect(null);setGroupData({groups:[],invitations:[]});setSelectedDirect('');setSelectedGroup('');setGroupMessages({chatId:'',items:[]});setNewWhileAway(false);setLiveStatus('polling');lastAcknowledgedRef.current={roomId:'',messageId:''};setReplyTarget(null);setStorySharing(false);setPinnedPreview({chatId:'',messageId:'',message:null});setDrafts({});setError('');setNotice('');setCreating(false);setManaging(false);setSearch('');setUnreadOnly(false);setHistoryLoading(false);setHasOlder(false);historyScrollRef.current=null;exhaustedHistoryRef.current.clear()},[userId]);
+ useEffect(()=>{setOpen(Boolean(workspace));setThreadOpen(false);setLoadingDirect(true);setTab('direct');setDirect(null);setGroupData({groups:[],invitations:[]});setSelectedDirect('');setSelectedGroup('');setGroupMessages({chatId:'',items:[]});setNewWhileAway(false);setLiveStatus('polling');lastAcknowledgedRef.current={roomId:'',messageId:''};setReplyTarget(null);setStorySharing(false);setPinnedPreview({chatId:'',messageId:'',message:null});setDrafts({});setError('');setNotice('');setCreating(false);setManaging(false);setSearch('');setUnreadOnly(false);setStarredOnly(false);setMessageSearch('');setSearchWithinThread(false);setHistoryLoading(false);setHasOlder(false);historyScrollRef.current=null;exhaustedHistoryRef.current.clear()},[userId,workspace]);
  useEffect(()=>{
   if(!userId)return;
   let alive=true;
@@ -235,7 +243,7 @@ export default function PalaceChatDrawer({userId}){
   historyScrollRef.current=null;
  },[groupMessages]);
  useEffect(()=>{const update=()=>setQuiet(document.body.classList.contains('reader-focus-mode')||document.body.classList.contains('writer-focus-mode'));update();const obs=new MutationObserver(update);obs.observe(document.body,{attributes:true,attributeFilter:['class']});return()=>obs.disconnect()},[]);
- useEffect(()=>{const handle=e=>{if(e.key!=='Escape'||!open)return;if(actionMenu){setActionMenu(null)}else if(creating){setCreating(false)}else if(managing){setManaging(false)}else if(threadOpen){setThreadOpen(false)}else setOpen(false)};window.addEventListener('keydown',handle);return()=>window.removeEventListener('keydown',handle)},[open,creating,managing,threadOpen,actionMenu]);
+ useEffect(()=>{const handle=e=>{if(e.key!=='Escape'||!open)return;if(actionMenu){setActionMenu(null)}else if(creating){setCreating(false)}else if(managing){setManaging(false)}else if(threadOpen){setThreadOpen(false)}else if(!workspace)setOpen(false)};window.addEventListener('keydown',handle);return()=>window.removeEventListener('keydown',handle)},[open,creating,managing,threadOpen,actionMenu,workspace]);
  if(!userId||dataOwner!==userId)return null;
 
  function acknowledgeVisibleGroupMessage(){
@@ -459,6 +467,19 @@ export default function PalaceChatDrawer({userId}){
   }catch(e){setError(errorText(e))}
   finally{setBusy(false)}
  }
+ async function toggleFavorite(){
+  if(!activeDirect||busy)return;
+  const id=activeDirect.conversation_id;
+  const previous=activeDirect.preference||{};
+  const starred=!previous.starred;
+  setBusy(true);setError('');
+  try{
+   const next=await setConversationPreference(userId,id,{starred,muted:!!previous.muted,archived:false});
+   setDirect(d=>d?{...d,conversations:d.conversations.map(c=>c.conversation_id===id?{...c,preference:{...previous,...next,starred}}:c)}:d);
+   setNotice(starred?'Added to favourites.':'Removed from favourites.');
+  }catch(e){setError(errorText(e))}
+  finally{setBusy(false)}
+ }
  async function mutate(action,success){
   if(busy)return;setBusy(true);setError('');
   try{await action();setGroupData(await getPalaceGroupChatOverview(userId));setNotice(success||'Saved.')}
@@ -499,13 +520,9 @@ export default function PalaceChatDrawer({userId}){
   setMemberSearch('');setMemberResults([]);
  }
  const owner=activeGroup?.ownerId===userId;
- const previewDirect=c=>{
-  const last=(direct?.messages||[]).filter(m=>m.conversation_id===c.conversation_id).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at))[0];
-  if(!last)return {text:'Start your conversation',time:''};
-  return {text:last.media_path?'📷 Photo':parsePalaceGif(last.body)?'🎞 GIF':String(last.body||'Message').replace(/\s+/g,' ').slice(0,82),time:dateOf(last.created_at)};
- };
+ const previewDirect=c=>directPreviews.get(c.conversation_id)||{text:'Start your conversation',time:''};
  if(quiet&&!open)return null;
- return <div data-chat-type={tab} data-circle-colour={tab==='groups'?(activeGroup?.colorKey||'moonlit'):'moonlit'} className={'palace-chat-dock palace-chat-v2'+(open?' is-open':'')+(open&&threadOpen?' is-thread-open':'')+(open&&!threadOpen&&!creating?' is-inbox-empty':'')+(chatPaused?' is-quiet':'')}>
+ return <div data-chat-type={tab} data-circle-colour={tab==='groups'?(activeGroup?.colorKey||'moonlit'):'moonlit'} className={'palace-chat-dock palace-chat-v2'+(workspace?' is-workspace':'')+(open?' is-open':'')+(open&&threadOpen?' is-thread-open':'')+(open&&!threadOpen&&!creating?' is-inbox-empty':'')+(chatPaused?' is-quiet':'')}>
   {!open?<button type="button" className="palace-chat-launch" aria-label={'Open Palace chat'+(unread?' · '+unread+' new items':'')} aria-expanded={false} onClick={()=>{setActionMenu(null);setThreadOpen(false);setOpen(true)}}><span aria-hidden="true">✉</span><span>Chat</span>{unread>0&&<b>{unread>99?'99+':unread}</b>}</button>:
   <section className="palace-chat-panel" aria-label="Palace Chat" role="region">
    <header className="palace-chat-heading"><div className="palace-chat-brand"><span className="palace-chat-brand-mark" aria-hidden="true">✦</span><div className="palace-chat-brand-copy"><small>PRIVATE CONVERSATIONS</small><strong>Palace Chat</strong></div></div>
@@ -516,18 +533,19 @@ export default function PalaceChatDrawer({userId}){
      {tab==='groups'&&<button type="button" className="palace-chat-header-group-settings" aria-label="Group settings" aria-expanded={managing} onClick={()=>{setManaging(v=>!v);setIdentity({title:activeGroup.title,description:activeGroup.description||'',colorKey:activeGroup.colorKey||'moonlit'})}}>⚙</button>}
     </div>}
     <details className="palace-chat-help"><summary aria-label="How Palace Chat works" title="Chat tips and shortcuts">?</summary><div className="palace-chat-help-card"><strong>Palace Chat guide</strong><p>Choose a conversation to read and reply. Use <b>Direct</b> for one-to-one messages, or <b>Groups</b> for private circles.</p><p><b>Message options:</b> press and hold a bubble (or right-click it). You can copy, edit your own message, reply in groups, and pin messages when hosting a group.</p><p><b>Writing:</b> Ctrl/⌘ + Enter sends; Enter starts a new line. Use Emoji, GIF or Photo beside your message.</p><small>Messages stay within the conversation you open.</small></div></details>
-     <div className="palace-chat-header-actions"><button type="button" onClick={()=>setChatPaused(v=>!v)} aria-pressed={chatPaused} title="Compact chat launcher when minimized" aria-label={chatPaused?'Turn off quiet launcher':'Use quiet launcher'}>☾</button><button type="button" onClick={()=>{setActionMenu(null);setOpen(false)}} aria-label="Minimize Palace chat">−</button></div></header>
+     <div className="palace-chat-header-actions">{active&&threadOpen&&<button type="button" aria-pressed={searchWithinThread} aria-label={searchWithinThread?"Close message search":"Search messages in this conversation"} onClick={()=>{setSearchWithinThread(v=>!v);setMessageSearch("")}}>⌕</button>}{!workspace&&<Link to="/chat" className="palace-chat-expand" aria-label="Open full Palace Messenger" title="Open full Messenger">⤢</Link>}{tab==='direct'&&threadOpen&&activeDirect&&<button type="button" disabled={busy} onClick={toggleFavorite} aria-pressed={!!activeDirect.preference?.starred} aria-label={activeDirect.preference?.starred?'Remove conversation from favourites':'Add conversation to favourites'} title="Favourite conversation">{activeDirect.preference?.starred?'★':'☆'}</button>}<button type="button" onClick={()=>setChatPaused(v=>!v)} aria-pressed={chatPaused} title="Compact chat launcher when minimized" aria-label={chatPaused?'Turn off quiet launcher':'Use quiet launcher'}>☾</button>{workspace?<Link className="palace-chat-close-workspace" to="/" aria-label="Return to Palace home">✕</Link>:<button type="button" onClick={()=>{setActionMenu(null);setOpen(false)}} aria-label="Minimize Palace chat">−</button>}</div></header>
    <nav className="palace-chat-tabs" aria-label="Chat type">
-    <button type="button" aria-pressed={tab==='direct'} onClick={()=>{setActionMenu(null);setThreadOpen(false);setTab('direct');setSearch('');setUnreadOnly(false);setCreating(false);setManaging(false);setError('')}}>✉ Direct {directUnread>0&&<span>{directUnread}</span>}</button>
-    <button type="button" aria-pressed={tab==='groups'} onClick={()=>{setActionMenu(null);setThreadOpen(false);setTab('groups');setSearch('');setUnreadOnly(false);setCreating(false);setManaging(false);setError('')}}>♧ Groups {(groupUnread+groupData.invitations.length)>0&&<span>{groupUnread+groupData.invitations.length}</span>}</button>
+    <button type="button" aria-pressed={tab==='direct'} onClick={()=>{setActionMenu(null);setThreadOpen(false);setTab('direct');setSearch('');setUnreadOnly(false);setStarredOnly(false);setCreating(false);setManaging(false);setError('')}}>✉ Direct {directUnread>0&&<span>{directUnread}</span>}</button>
+    <button type="button" aria-pressed={tab==='groups'} onClick={()=>{setActionMenu(null);setThreadOpen(false);setTab('groups');setSearch('');setUnreadOnly(false);setStarredOnly(false);setCreating(false);setManaging(false);setError('')}}>♧ Groups {(groupUnread+groupData.invitations.length)>0&&<span>{groupUnread+groupData.invitations.length}</span>}</button>
    </nav>
    <div className="palace-chat-tools"><input aria-label="Find a conversation" placeholder={tab==='groups'?'Find a circle or member…':'Search direct conversations…'} value={search} onChange={e=>setSearch(e.target.value)}/>
     {tab==='direct'?<Link to="/letters" onClick={()=>setOpen(false)}>All letters ↗</Link>:<button type="button" onClick={()=>{setCreating(v=>!v);setManaging(false);setMemberResults([]);setMemberSearch('');setError('')}}>{creating?'Cancel':'＋ Group'}</button>}
    </div>
    {!creating&&<div className="palace-chat-inbox-refine" aria-label="Conversation filters">
     <span>{tab==='groups'?groupData.groups.length+' private circles':loadingDirect&&!direct?'Loading direct conversations…':error&&!direct?'Could not load direct conversations':directRows.length+' direct conversations'}</span>
-    <button type="button" aria-pressed={unreadOnly} onClick={()=>setUnreadOnly(v=>!v)}>{unreadOnly?'✓ Unread only':'Unread only'}</button>
-    {(search||unreadOnly)&&<button type="button" className="palace-chat-clear-filter" onClick={()=>{setSearch('');setUnreadOnly(false)}}>Clear filters</button>}
+    <button type="button" aria-pressed={unreadOnly} onClick={()=>{setUnreadOnly(v=>!v);setStarredOnly(false)}}>{unreadOnly?'✓ Unread only':'Unread only'}</button>
+    {tab==='direct'&&<button type="button" aria-pressed={starredOnly} onClick={()=>{setStarredOnly(v=>!v);setUnreadOnly(false)}}>{starredOnly?'★ Favourites':'☆ Favourites'}</button>}
+    {(search||unreadOnly||starredOnly)&&<button type="button" className="palace-chat-clear-filter" onClick={()=>{setSearch('');setUnreadOnly(false);setStarredOnly(false)}}>Clear filters</button>}
    </div>}
    {notice&&<p className="palace-chat-notice" role="status">{notice}</p>}
    {error&&<p className="palace-chat-error" role="alert">{error}</p>}
@@ -545,11 +563,11 @@ export default function PalaceChatDrawer({userId}){
     <div className="palace-chat-people" aria-label={tab==='groups'?'Groups':'Direct conversations'}>
      {tab==='direct'?visibleDirect.map(c=><button type="button" key={c.conversation_id} aria-label={nameOf(c.correspondent)} onClick={()=>{setActionMenu(null);setSelectedDirect(c.conversation_id);setThreadOpen(true);setManaging(false)}} aria-pressed={activeDirect?.conversation_id===c.conversation_id}>
       <MemberAvatar className="palace-chat-list-avatar" profile={c.correspondent}/>
-      <span className="palace-chat-list-details"><span className="palace-chat-list-name">{nameOf(c.correspondent)}</span><small className="palace-chat-list-preview">{previewDirect(c).text}</small></span>
+      <span className="palace-chat-list-details"><span className="palace-chat-list-name">{nameOf(c.correspondent)}</span><small className="palace-chat-list-preview">{previewDirect(c).text}</small>{c.preference?.starred&&<small className="palace-chat-favourite-indicator">★ Favourite</small>}</span>
       <span className="palace-chat-list-meta">{previewDirect(c).time&&<small>{previewDirect(c).time}</small>}{c.unread&&<span className="palace-chat-unread-spark" aria-label="Unread messages">●</span>}</span>
      </button>):
       groupRows.map(g=><button type="button" key={g.id} aria-label={g.title} onClick={()=>{setActionMenu(null);setSelectedGroup(g.id);setThreadOpen(true);setManaging(false);setIdentity({title:g.title,description:g.description||'',colorKey:g.colorKey||'moonlit'})}} aria-pressed={activeGroup?.id===g.id} title={g.description||g.title}><span className="palace-chat-room-symbol" aria-hidden="true">✧</span><span className="palace-chat-list-details"><span className="palace-chat-room-name">{g.title}</span><small className="palace-chat-list-preview">{g.description||'Private group conversation'}</small></span><span className="palace-chat-list-meta">{palaceChatUnreadGroup(g)&&<span className="palace-chat-unread-spark" aria-label="Unread messages">●</span>}{g.muted&&<span className="palace-chat-muted-symbol" title="Muted" aria-label="Muted">◌</span>}</span></button>)}
-     {((tab==='groups'&&!groupRows.length)||(tab==='direct'&&!visibleDirect.length))&&(search||unreadOnly)&&<span className="palace-chat-filter-empty">No matching conversations. Clear filters to see your other rooms.</span>}
+     {((tab==='groups'&&!groupRows.length)||(tab==='direct'&&!visibleDirect.length))&&(search||unreadOnly||starredOnly)&&<span className="palace-chat-filter-empty">No matching conversations. Clear filters to see your other rooms.</span>}
     </div>
     {active?<><div className="palace-chat-correspondent"><button className="palace-chat-thread-back" type="button" onClick={()=>{setActionMenu(null);setThreadOpen(false)}} aria-label="Back to conversations">← Conversations</button><div className="palace-chat-person">{tab==='direct'?<MemberAvatar className="palace-chat-person-avatar" profile={activeDirect?.correspondent}/>:<span className="palace-chat-person-avatar" aria-hidden="true">✧</span>}<div className="palace-chat-person-copy"><strong>{openedRoomName}</strong><small>{tab==='groups'?activeGroup.members.length+' members · Invitation-only group':'Private correspondence · Palace boundaries apply'}</small><small className="palace-chat-connection" role="status"><i aria-hidden="true" className={liveStatus==='live'?'is-live':''}/>{liveStatus==='live'?'Live updates':'Refreshes automatically'}</small>{tab==='groups'&&activeGroup.description&&<p className="palace-chat-circle-description">{activeGroup.description}</p>}</div></div>{tab==='groups'&&<button type="button" aria-expanded={managing} onClick={()=>{setManaging(v=>!v);setIdentity({title:activeGroup.title,description:activeGroup.description||'',colorKey:activeGroup.colorKey||'moonlit'})}}>Members & settings ⚙</button>}</div>
      {tab==='groups'&&managing&&<section className="palace-chat-settings" aria-label="Group settings">
@@ -564,6 +582,7 @@ export default function PalaceChatDrawer({userId}){
      {tab==='groups'&&<div className="palace-chat-sharing-actions"><button type="button" aria-expanded={storySharing} onClick={()=>{setStorySharing(v=>!v);setStoryResults([]);setStoryQuery('')}}>✧ {storySharing?'Close story shelf':'Share a Palace story'}</button></div>}
      {tab==='groups'&&storySharing&&<section className="palace-chat-share-shelf" aria-label="Share a published Palace story"><form onSubmit={findStories}><input aria-label="Find a published story to share" placeholder="Search published story titles…" value={storyQuery} onChange={e=>setStoryQuery(e.target.value)} minLength={2} maxLength={90}/><button disabled={busy||storyQuery.trim().length<2}>Find</button></form><div>{storyResults.map(w=><button type="button" key={w.id} disabled={busy} onClick={()=>shareStory(w)}><strong>{w.title}</strong><small>Share with this circle ↗</small></button>)}</div><small>Only published Palace stories can be shared.</small></section>}
      {tab==='groups'&&hasOlder&&messages.length>0&&<div className="palace-chat-earlier"><button type="button" onClick={loadOlderGroupMessages} disabled={historyLoading} aria-label="Load earlier group messages">{historyLoading?'Gathering earlier messages…':'↑ Earlier messages'}</button></div>}
+     {searchWithinThread&&<div className="palace-chat-message-search"><label htmlFor="palace-chat-inthread-search">Find in loaded messages</label><input id="palace-chat-inthread-search" type="search" value={messageSearch} onChange={e=>setMessageSearch(e.target.value)} placeholder="Search this conversation"/><span role="status">{messageSearch.trim()?messageMatches.length+' matching loaded '+(messageMatches.length===1?'message':'messages'):'Only messages currently loaded are searched'}</span>{messageMatches.slice(0,8).map(m=><button type="button" key={m.id} onClick={()=>jumpToQuotedMessage(m.id)}>{String(m.body||'Message').slice(0,70)}</button>)}</div>}
      <div className="palace-chat-messages" ref={messageRef} role="log" aria-label="Conversation messages" aria-live="polite" onScroll={e=>{const el=e.currentTarget;const pinned=el.scrollHeight-el.scrollTop-el.clientHeight<80;scrollPinned.current=pinned;if(pinned){setNewWhileAway(false);if(tab==='groups')acknowledgeVisibleGroupMessage();else acknowledgeVisibleDirectMessage()}}}>
       {messages.length?messages.map((m,index)=><React.Fragment key={m.id}>{(index===0||new Date(messages[index-1].created_at).toDateString()!==new Date(m.created_at).toDateString())&&<div className="palace-chat-date-divider" role="separator"><span>{new Date(m.created_at).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</span></div>}<div data-chat-message={m.id}
         tabIndex={0} role="group" aria-label={'Message from '+(m.sender_id===userId?'you':tab==='groups'?nameOf(m.profiles):openedRoomName)+'. Press and hold for actions.'}
