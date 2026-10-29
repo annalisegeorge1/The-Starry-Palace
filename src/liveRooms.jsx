@@ -815,8 +815,17 @@ export {SettingsLive} from './SettingsRoom';
 export {ActivityLive} from './PalaceActivityRoom';
 export function LibraryLive({Frame}){
  const[historyChapters,setHistoryChapters]=useState({});
- const{session}=useAuth();const navigate=useNavigate();const location=useLocation();const[data,setData]=useState(null);const[org,setOrg]=useState(null);const[error,setError]=useState('');const[tab,setTab]=useState(()=>palaceTabFromSearch(location.search,LIBRARY_TABS,'overview'));const[dialog,setDialog]=useState(null);const[form,setForm]=useState({});const[query,setQuery]=useState('');
- const load=()=>Promise.all([getLibrary(session.user.id),getLibraryOrganizers(session.user.id)]).then(async ([a,b])=>{setData(a);setOrg(b);try{setHistoryChapters(await getStoryHistoryMetadata((a.progress||[]).map(x=>x.work_id)))}catch{setHistoryChapters({})}}).catch(e=>setError(e.message));useEffect(()=>{load()},[session.user.id]);
+ const{session}=useAuth();const navigate=useNavigate();const location=useLocation();const[libraryState,setLibraryState]=useState({ownerId:null,data:null,org:null});const ownerRef=useRef(session.user.id);ownerRef.current=session.user.id;const requestRef=useRef(0);const data=libraryState.ownerId===session.user.id?libraryState.data:null;const org=libraryState.ownerId===session.user.id?libraryState.org:null;const[error,setError]=useState('');const[tab,setTab]=useState(()=>palaceTabFromSearch(location.search,LIBRARY_TABS,'overview'));const[dialog,setDialog]=useState(null);const[form,setForm]=useState({});const[query,setQuery]=useState('');
+ const load=()=>{const memberId=session.user.id;const requestId=++requestRef.current;const isCurrent=()=>ownerRef.current===memberId&&requestRef.current===requestId;
+  setError('');
+  return Promise.all([getLibrary(memberId),getLibraryOrganizers(memberId)]).then(async ([a,b])=>{
+   if(!isCurrent())return;
+   setLibraryState({ownerId:memberId,data:a,org:b});
+   try{const chapters=await getStoryHistoryMetadata((a.progress||[]).map(x=>x.work_id));if(isCurrent())setHistoryChapters(chapters)}
+   catch{if(isCurrent())setHistoryChapters({})}
+  }).catch(e=>{if(isCurrent())setError(e.message)});
+ };
+ useEffect(()=>{setLibraryState({ownerId:null,data:null,org:null});setHistoryChapters({});setQuery('');load()},[session.user.id]);
  const q=query.trim().toLowerCase();const matches=(...values)=>!q||values.filter(Boolean).join(' ').toLowerCase().includes(q);
  const storyHasNew=x=>!!(x?.updated_at&&x?.works?.last_published_at&&new Date(x.works.last_published_at)>new Date(x.updated_at));const storyReopened=x=>!!x?.completed&&storyHasNew(x);const storyFinished=x=>!!x?.completed&&!storyHasNew(x);const storyNeedsReading=x=>!x?.completed||storyReopened(x);
  const unfinished=(data?.progress.filter(storyNeedsReading)||[]).filter(x=>matches(x.works?.title)).sort((a,b)=>new Date(b.updated_at||0)-new Date(a.updated_at||0));
