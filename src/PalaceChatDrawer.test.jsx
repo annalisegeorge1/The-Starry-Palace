@@ -39,11 +39,24 @@ beforeEach(()=>{
 afterEach(cleanup);
 describe('Palace quick chat',()=>{
 
+ it('makes full Messenger unmistakable from the quick-chat inbox and a thread',async()=>{
+  mount();
+  fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  expect(screen.getByRole('link',{name:'Open the full Palace Messenger page'}).getAttribute('href')).toBe('/chat');
+  expect(screen.getByText('Palace Chat')).toBeTruthy();
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  const tools=screen.getByRole('group',{name:'Conversation tools'});
+  expect(within(tools).getByRole('link',{name:'Switch to full Palace Messenger'}).getAttribute('href')).toBe('/chat');
+  expect(within(tools).getByRole('button',{name:'Search messages in this conversation'})).toBeTruthy();
+  expect(within(tools).getByRole('button',{name:'Add conversation to favourites'})).toBeTruthy();
+ });
  it('opens the full Messenger directly without showing a second quick launcher',async()=>{
   render(<MemoryRouter><PalaceChatDrawer userId={user} workspace/></MemoryRouter>);
   expect(await screen.findByRole('region',{name:'Palace Chat'})).toBeTruthy();
   expect(screen.queryByRole('button',{name:/Open Palace chat/})).toBeNull();
   expect(screen.getByRole('link',{name:'Return to Palace home'}).getAttribute('href')).toBe('/');
+  expect(screen.getByText('Palace Messenger')).toBeTruthy();
+  expect(screen.queryByRole('button',{name:'Close Palace chat'})).toBeNull();
  });
  it('opens the full Messenger from quick chat without replacing ongoing conversations',async()=>{
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
