@@ -1,0 +1,91 @@
+/*
+ * Screenshot-led mobile comfort pass, October 2026.
+ * Scoped to Reading Rooms and member Chamber. Preserve all story content,
+ * archive controls, reader actions, navigation destinations, theme palettes
+ * and artwork. Global search remains reachable via the top-bar search icon.
+ */
+@media (max-width:720px){
+  /* A second full-width global search bar consumes valuable height above the
+     Reading Room's own query and filters. The command/search button stays. */
+  .palace-shell[data-palace-room="reading"] .full-topbar .global-search-live{
+    display:none!important;
+  }
+  .palace-shell[data-palace-room="reading"] .full-topbar{
+    min-height:0!important;
+    height:auto!important;
+    padding-block:8px!important;
+  }
+  .palace-shell[data-palace-room="reading"] .full-topbar-row{
+    grid-template-rows:minmax(42px,auto)!important;
+    gap:0!important;
+    min-height:0!important;
+  }
+  .palace-shell[data-palace-room="reading"] .chic-reading-tools{
+    position:relative!important;
+    top:auto!important;
+    z-index:auto!important;
+    margin-block:12px!important;
+  }
+  /* Give the catalogue result count its own breathing room instead of
+     squeezing it beside a three-button density control on small phones. */
+  .palace-shell[data-palace-room="reading"] .reading-catalogue-controls{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:12px!important;
+    align-items:start!important;
+  }
+  .palace-shell[data-palace-room="reading"] .reading-catalogue-controls>div[role="group"]{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:5px!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  .palace-shell[data-palace-room="reading"] .reading-catalogue-controls>div[role="group"] button{
+    min-width:0!important;
+    padding:9px 6px!important;
+    overflow-wrap:normal!important;
+    font-size:clamp(.72rem,3.1vw,.82rem)!important;
+    min-height:44px!important;
+  }
+  /* The screenshot shows the lower actions competing with the cards.
+     Keep all controls accessible but give content space to scroll past dock. */
+  .palace-shell[data-palace-room="reading"] main.palace-main-stage,
+  .palace-shell[data-palace-room="palace"] main.palace-main-stage{
+    padding-bottom:calc(160px + env(safe-area-inset-bottom,0px))!important;
+  }
+  .palace-shell[data-palace-room="reading"] .legacy-reading-page{
+    scroll-margin-top:74px;
+    padding-bottom:24px;
+  }
+  .palace-shell[data-palace-room="reading"] :is(.reading-catalogue-controls,.reading-mode-tabs,.chic-reading-tools){
+    scroll-margin-top:78px!important;
+  }
+  /* Letters is already in the top bar. Suppress only its duplicated
+     floating shortcut; the day/night toggle remains available. */
+  .palace-shell[data-palace-room="reading"] .restored-floating-controls .notification-anchor,
+  .palace-shell[data-palace-room="palace"] .restored-floating-controls .notification-anchor{
+    display:none!important;
+  }
+  .palace-shell[data-palace-room="reading"] .restored-floating-controls,
+  .palace-shell[data-palace-room="palace"] .restored-floating-controls{
+    right:10px!important;
+    bottom:calc(99px + env(safe-area-inset-bottom,0px))!important;
+  }
+  /* Keep the raised Write destination but avoid visually presenting it as
+     the active room while the reader is browsing stories. */
+  .palace-shell[data-palace-room="reading"] .mobile-palace-dock .mobile-dock-write:not(.active){
+    filter:saturate(.8)!important;
+  }
+}
+@media (max-width:430px){
+  .palace-shell[data-palace-room="reading"] .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row{
+    padding:13px!important;
+  }
+  .palace-shell[data-palace-room="reading"] .legacy-reading-page .story-shelf.refined.chic-story-catalogue .story-row h2{
+    line-height:1.27!important;
+  }
+  .palace-shell[data-palace-room="reading"] .legacy-reading-page .story-shelf.refined.chic-story-catalogue .reading-story-context-summary>p{
+    line-height:1.58!important;
+  }
+}
