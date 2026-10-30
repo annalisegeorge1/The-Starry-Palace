@@ -6,6 +6,7 @@ import {supabase} from './supabase';
 import {watchPalaceChatRoom} from './palaceChatRealtime';
 import {buildPalaceDirectPreviews} from './palaceChatDirectPreview';
 import {filterPalaceDirectInbox,findPalaceChatMessages} from './palaceChatInboxModel';
+import {collectPalaceSharedMedia,groupPalaceSharedMedia} from './palaceChatSharedMedia';
 import './palace-chat-workspace.css';
 import {getMyProfile,getLetters,sendLetter,sendLetterPhoto,editLetterMessage,searchMembers,setConversationPreference} from './palaceData';
 import {createPalaceGroupChat,getPalaceGroupChatOverview,getPalaceGroupMessages,sendPalaceGroupMessage,sendPalaceGroupPhoto,editPalaceGroupMessage,respondPalaceGroupInvite,invitePalaceGroupMember,removePalaceGroupMember,leavePalaceGroupChat,setPalaceGroupMuted,markPalaceGroupRead,PALACE_GROUP_COLOURS,setPalaceGroupIdentity,pinPalaceGroupMessage,getPinnedPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
@@ -65,6 +66,8 @@ export default function PalaceChatDrawer({userId,workspace=false}){
  const[starredOnly,setStarredOnly]=useState(false);
  const[messageSearch,setMessageSearch]=useState('');
  const[searchWithinThread,setSearchWithinThread]=useState(false);
+ const[showSharedMedia,setShowSharedMedia]=useState(false);
+ const[mediaFilter,setMediaFilter]=useState('all');
  const[historyLoading,setHistoryLoading]=useState(false);
  const[hasOlder,setHasOlder]=useState(false);
  const[quiet,setQuiet]=useState(false);
@@ -107,6 +110,8 @@ export default function PalaceChatDrawer({userId,workspace=false}){
  const groupRows=groupData.groups.filter(g=>palaceChatMatchesGroup(g,search)&&(!unreadOnly||palaceChatUnreadGroup(g)));
  const visibleDirect=filterPalaceDirectInbox(directRows,search,starredOnly?'starred':unreadOnly?'unread':'all',directPreviews);
  const messageMatches=findPalaceChatMessages(messages,messageSearch);
+ const sharedMedia=collectPalaceSharedMedia(messages,body=>Boolean(parsePalaceGif(body)));
+ const filteredSharedMedia=groupPalaceSharedMedia(sharedMedia,mediaFilter);
  const directUnread=directRows.filter(c=>c.unread&&!c.preference?.muted).length;
  const groupUnread=groupData.groups.filter(g=>!g.muted&&palaceChatUnreadGroup(g)).length;
  const unread=directUnread+groupUnread+groupData.invitations.length;
@@ -115,7 +120,7 @@ export default function PalaceChatDrawer({userId,workspace=false}){
   const preview=URL.createObjectURL(photoFile);setPhotoPreview(preview);
   return()=>URL.revokeObjectURL(preview);
  },[photoFile]);
- useEffect(()=>{setPhotoFile(null);setEditingMessage(null);setGifOpen(false);setSearchWithinThread(false);setMessageSearch('')},[roomId,tab]);
+ useEffect(()=>{setPhotoFile(null);setEditingMessage(null);setGifOpen(false);setSearchWithinThread(false);setMessageSearch('');setShowSharedMedia(false);setMediaFilter('all')},[roomId,tab]);
  useEffect(()=>()=>{if(holdRef.current?.timer)window.clearTimeout(holdRef.current.timer)},[]);
  useEffect(()=>{
   if(!actionMenu)return;
@@ -125,7 +130,7 @@ export default function PalaceChatDrawer({userId,workspace=false}){
   return()=>{document.removeEventListener('keydown',onKey);window.clearTimeout(timer)};
  },[actionMenu]);
 
- useEffect(()=>{setOpen(Boolean(workspace));setThreadOpen(false);setLoadingDirect(true);setTab('direct');setDirect(null);setGroupData({groups:[],invitations:[]});setSelectedDirect('');setSelectedGroup('');setGroupMessages({chatId:'',items:[]});setNewWhileAway(false);setLiveStatus('polling');lastAcknowledgedRef.current={roomId:'',messageId:''};setReplyTarget(null);setStorySharing(false);setPinnedPreview({chatId:'',messageId:'',message:null});setDrafts({});setError('');setNotice('');setCreating(false);setManaging(false);setSearch('');setUnreadOnly(false);setStarredOnly(false);setMessageSearch('');setSearchWithinThread(false);setHistoryLoading(false);setHasOlder(false);historyScrollRef.current=null;exhaustedHistoryRef.current.clear()},[userId,workspace]);
+ useEffect(()=>{setOpen(Boolean(workspace));setThreadOpen(false);setLoadingDirect(true);setTab('direct');setDirect(null);setGroupData({groups:[],invitations:[]});setSelectedDirect('');setSelectedGroup('');setGroupMessages({chatId:'',items:[]});setNewWhileAway(false);setLiveStatus('polling');lastAcknowledgedRef.current={roomId:'',messageId:''};setReplyTarget(null);setStorySharing(false);setPinnedPreview({chatId:'',messageId:'',message:null});setDrafts({});setError('');setNotice('');setCreating(false);setManaging(false);setSearch('');setUnreadOnly(false);setStarredOnly(false);setMessageSearch('');setSearchWithinThread(false);setShowSharedMedia(false);setMediaFilter('all');setHistoryLoading(false);setHasOlder(false);historyScrollRef.current=null;exhaustedHistoryRef.current.clear()},[userId,workspace]);
  useEffect(()=>{
   if(!userId)return;
   let alive=true;
@@ -584,6 +589,7 @@ export default function PalaceChatDrawer({userId,workspace=false}){
     {active?<><div className="palace-chat-correspondent"><button className="palace-chat-thread-back" type="button" onClick={()=>{setActionMenu(null);setThreadOpen(false)}} aria-label="Back to conversations">← Conversations</button><div className="palace-chat-person">{tab==='direct'?<MemberAvatar className="palace-chat-person-avatar" profile={activeDirect?.correspondent}/>:<span className="palace-chat-person-avatar" aria-hidden="true">✧</span>}<div className="palace-chat-person-copy"><strong>{openedRoomName}</strong><small>{tab==='groups'?activeGroup.members.length+' members · Invitation-only group':'Private correspondence · Palace boundaries apply'}</small><small className="palace-chat-connection" role="status"><i aria-hidden="true" className={liveStatus==='live'?'is-live':''}/>{liveStatus==='live'?'Live updates':'Refreshes automatically'}</small>{tab==='groups'&&activeGroup.description&&<p className="palace-chat-circle-description">{activeGroup.description}</p>}</div></div>{tab==='groups'&&<button type="button" aria-expanded={managing} onClick={()=>{setManaging(v=>!v);setIdentity({title:activeGroup.title,description:activeGroup.description||'',colorKey:activeGroup.colorKey||'moonlit'})}}>Members & settings ⚙</button>}</div>
      {active&&threadOpen&&<div className="palace-chat-thread-actions" role="group" aria-label="Conversation tools">
  <button type="button" aria-pressed={searchWithinThread} aria-label={searchWithinThread?"Close message search":"Search messages in this conversation"} onClick={()=>{setSearchWithinThread(v=>!v);setMessageSearch('')}}>{searchWithinThread?'✕ Close search':'⌕ Search messages'}</button>
+ <button type="button" aria-pressed={showSharedMedia} aria-label={showSharedMedia?"Close shared media":"Show shared media"} onClick={()=>{setShowSharedMedia(v=>!v);setMediaFilter("all")}}>{showSharedMedia?"✕ Close media":"▤ Shared media"}</button>
  {tab==='direct'&&activeDirect&&<button type="button" disabled={busy} onClick={toggleFavorite} aria-pressed={!!activeDirect.preference?.starred} aria-label={activeDirect.preference?.starred?'Remove conversation from favourites':'Add conversation to favourites'}>{activeDirect.preference?.starred?'★ Favourited':'☆ Favourite'}</button>}
  {!workspace&&<Link to="/chat" aria-label="Switch to full Palace Messenger">Full Messenger ↗</Link>}
  </div>}
@@ -599,6 +605,16 @@ export default function PalaceChatDrawer({userId,workspace=false}){
      {tab==='groups'&&<div className="palace-chat-sharing-actions"><button type="button" aria-expanded={storySharing} onClick={()=>{setStorySharing(v=>!v);setStoryResults([]);setStoryQuery('')}}>✧ {storySharing?'Close story shelf':'Share a Palace story'}</button></div>}
      {tab==='groups'&&storySharing&&<section className="palace-chat-share-shelf" aria-label="Share a published Palace story"><form onSubmit={findStories}><input aria-label="Find a published story to share" placeholder="Search published story titles…" value={storyQuery} onChange={e=>setStoryQuery(e.target.value)} minLength={2} maxLength={90}/><button disabled={busy||storyQuery.trim().length<2}>Find</button></form><div>{storyResults.map(w=><button type="button" key={w.id} disabled={busy} onClick={()=>shareStory(w)}><strong>{w.title}</strong><small>Share with this circle ↗</small></button>)}</div><small>Only published Palace stories can be shared.</small></section>}
      {tab==='groups'&&hasOlder&&messages.length>0&&<div className="palace-chat-earlier"><button type="button" onClick={loadOlderGroupMessages} disabled={historyLoading} aria-label="Load earlier group messages">{historyLoading?'Gathering earlier messages…':'↑ Earlier messages'}</button></div>}
+     {active&&threadOpen&&showSharedMedia&&<section className="palace-chat-shared-media" aria-label="Shared media in this conversation">
+       <header><div><strong>Shared in this conversation</strong><small>{sharedMedia.length} items from currently loaded messages</small></div><button type="button" aria-label="Close shared media panel" onClick={()=>setShowSharedMedia(false)}>×</button></header>
+       <nav aria-label="Filter shared media">{[['all','Everything'],['photo','Photos'],['gif','GIFs'],['story','Stories']].map(([value,label])=><button type="button" key={value} aria-pressed={mediaFilter===value} onClick={()=>setMediaFilter(value)}>{label}</button>)}</nav>
+       {filteredSharedMedia.length?<div className="palace-chat-media-grid">{filteredSharedMedia.map(item=><div className="palace-chat-media-item" key={item.id}>
+        <div className="palace-chat-media-preview">{item.kind==='photo'?<PalaceChatPhoto path={item.path}/>:item.kind==='gif'?<PalaceChatGif body={item.body}/>:<span aria-hidden="true">✧</span>}</div>
+        {item.kind==='story'&&<Link to={'/work/'+encodeURIComponent(item.slug)} aria-label={'Read shared story '+item.title}>{item.title}</Link>}
+        <button type="button" onClick={()=>{setShowSharedMedia(false);jumpToQuotedMessage(item.messageId||item.id)}} aria-label={'Find '+item.kind+' in conversation'}>Find message ↗</button>
+       </div>)}</div>:<p>No {mediaFilter==='all'?'shared items':mediaFilter==='photo'?'photos':mediaFilter==='gif'?'GIFs':'stories'} in the messages loaded here.</p>}
+       {sharedMedia.length>filteredSharedMedia.length&&<small>Showing the most recent {filteredSharedMedia.length} items. Load earlier messages to see older items.</small>}
+      </section>}
      {active&&threadOpen&&searchWithinThread&&<div className="palace-chat-message-search"><label htmlFor="palace-chat-inthread-search">Find in loaded messages</label><input id="palace-chat-inthread-search" type="search" value={messageSearch} onChange={e=>setMessageSearch(e.target.value)} placeholder="Search this conversation"/><span role="status">{messageSearch.trim()?messageMatches.length+' matching loaded '+(messageMatches.length===1?'message':'messages'):'Only messages currently loaded are searched'}</span>{messageMatches.slice(0,8).map(m=><button type="button" key={m.id} onClick={()=>jumpToQuotedMessage(m.id)}>{String(m.body||'Message').slice(0,70)}</button>)}</div>}
      <div className="palace-chat-messages" ref={messageRef} role="log" aria-label="Conversation messages" aria-live="polite" onScroll={e=>{const el=e.currentTarget;const pinned=el.scrollHeight-el.scrollTop-el.clientHeight<80;scrollPinned.current=pinned;if(pinned){setNewWhileAway(false);if(tab==='groups')acknowledgeVisibleGroupMessage();else acknowledgeVisibleDirectMessage()}}}>
       {messages.length?messages.map((m,index)=><React.Fragment key={m.id}>{(index===0||new Date(messages[index-1].created_at).toDateString()!==new Date(m.created_at).toDateString())&&<div className="palace-chat-date-divider" role="separator"><span>{new Date(m.created_at).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</span></div>}<div data-chat-message={m.id}
