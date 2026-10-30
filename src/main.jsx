@@ -90,6 +90,7 @@ import './palace-mobile-overlap-repair.css';
 import './reader-layout-choices.css';
 import './reader-page-turn.css';
 import './reader-streamlined.css';
+import './writing-chamber-calm.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
