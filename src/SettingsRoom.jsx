@@ -11,13 +11,16 @@ import {PalaceDialog,State} from './PalaceLivePrimitives';
 import {SETTINGS_TABS,palaceTabFromSearch,palaceTabUrl} from './palaceTabNavigation';
 import {getSettings,updatePrivacy,updateNotifications,requestAccountExport,requestAccountDeletion,cancelAccountDeletion,setForumThreadPreference,setMemberBoundary} from './palaceData';
 import {IN_APP_NOTIFICATION_CATEGORIES,notificationPreset,notificationFormPatch} from './notificationSettingsModel';
+import {EMAIL_ALERT_TOPICS,EMAIL_ALERT_DEFAULT_TOPICS,EMAIL_ALERT_FREQUENCIES,emailAlertFormPatch} from './emailAlertPreferences';
+// Keep new controls inactive until its migration and provider verification pass.
+const EMAIL_ALERT_SCHEMA_READY=import.meta.env.VITE_PALACE_EMAIL_SCHEMA_READY==='true';
 
 export function SettingsLive({Frame}){
  const{session}=useAuth();const navigate=useNavigate();const location=useLocation();const[data,setData]=useState(null);const[error,setError]=useState('');const[saved,setSaved]=useState('');const[settingsVersion,setSettingsVersion]=useState(0);const[tab,setTab]=useState(()=>palaceTabFromSearch(location.search,SETTINGS_TABS,'privacy'));const[deletionDialog,setDeletionDialog]=useState(false);const[currentPassword,setCurrentPassword]=useState('');const[newPassword,setNewPassword]=useState('');const[confirmPassword,setConfirmPassword]=useState('');const[passwordBusy,setPasswordBusy]=useState(false);
  const load=()=>getSettings(session.user.id).then(setData).catch(e=>setError(e.message));useEffect(()=>{load()},[session.user.id]);
  useEffect(()=>{const next=palaceTabFromSearch(location.search,SETTINGS_TABS,'privacy');setTab(current=>current===next?current:next)},[location.search]);
  function choose(next){if(!SETTINGS_TABS.includes(next))return;setTab(next);navigate(palaceTabUrl('/settings',next,SETTINGS_TABS,'privacy'),{preventScrollReset:true});window.scrollTo({top:0,left:0,behavior:'auto'})}
- async function save(e){e.preventDefault();setSaved('');setError('');const f=new FormData(e.currentTarget);try{if(tab==='privacy'){const privacy={discovery_visibility:f.get('discovery_visibility'),reading_activity_visibility:f.get('reading_activity_visibility'),writing_activity_visibility:f.get('writing_activity_visibility'),clubs_visibility:f.get('clubs_visibility'),honours_visibility:f.get('honours_visibility'),gifts_visibility:f.get('gifts_visibility'),follower_counts_visible:f.has('follower_counts_visible'),online_status_visible:f.has('online_status_visible'),recommendation_learning:f.has('recommendation_learning')};const p=await updatePrivacy(session.user.id,privacy);setData(d=>({...d,privacy:p}));setSaved('Your Palace boundaries are saved.')}else if(tab==='notifications'){const notifications=notificationFormPatch(f);const n=await updateNotifications(session.user.id,notifications);setData(d=>({...d,notifications:n}));setSaved('Notification choices saved. Your email preference is recorded; email delivery is not active yet.')}}catch(e){setError(e.message)}}
+ async function save(e){e.preventDefault();setSaved('');setError('');const f=new FormData(e.currentTarget);try{if(tab==='privacy'){const privacy={discovery_visibility:f.get('discovery_visibility'),reading_activity_visibility:f.get('reading_activity_visibility'),writing_activity_visibility:f.get('writing_activity_visibility'),clubs_visibility:f.get('clubs_visibility'),honours_visibility:f.get('honours_visibility'),gifts_visibility:f.get('gifts_visibility'),follower_counts_visible:f.has('follower_counts_visible'),online_status_visible:f.has('online_status_visible'),recommendation_learning:f.has('recommendation_learning')};const p=await updatePrivacy(session.user.id,privacy);setData(d=>({...d,privacy:p}));setSaved('Your Palace boundaries are saved.')}else if(tab==='notifications'){const notifications={...notificationFormPatch(f),...(EMAIL_ALERT_SCHEMA_READY?emailAlertFormPatch(f):{})};const n=await updateNotifications(session.user.id,notifications);setData(d=>({...d,notifications:n}));setSaved('Notification choices saved. Your email preference is recorded; email delivery is not active yet.')}}catch(e){setError(e.message)}}
  async function applyPrivacyPreset(kind){
   const presets={
    open:{discovery_visibility:'everyone',reading_activity_visibility:'public',writing_activity_visibility:'public',clubs_visibility:'public',honours_visibility:'public',gifts_visibility:'public',follower_counts_visible:true,online_status_visible:false,recommendation_learning:true},
@@ -84,10 +87,20 @@ export function SettingsLive({Frame}){
  </section>
  <section className="settings-email-delivery" aria-labelledby="palace-email-notices-heading">
   <p className="eyebrow">EMAIL ALERTS</p>
-  <h3 id="palace-email-notices-heading">News from the Palace, delivered thoughtfully.</h3>
-  <p>The email delivery service is being prepared. You can record your preference for an optional email digest now, but <strong>no activity emails are currently sent</strong>. Security and sign-in emails are separate.</p>
-  <div className="switch-list"><label><input type="checkbox" name="email_digest" defaultChecked={!!data.notifications.email_digest}/> I would like an optional Palace email digest once available.</label></div>
-  <p>In-Palace presets never opt you into email. Per-event email alerts and frequency choices will be added only after secure sending and unsubscribe support are ready.</p>
+  <h3 id="palace-email-notices-heading">Choose which Palace moments reach your inbox.</h3>
+  {!EMAIL_ALERT_SCHEMA_READY&&<p role="status">Email sending is being prepared. These delivery choices are a preview and cannot be activated yet. Existing Palace alerts inside the site still work.</p>}
+  <div className="switch-list"><label><input type="checkbox" name="email_digest" defaultChecked={!!data.notifications.email_digest}/> Keep my existing interest in a future Palace email digest.</label></div>
+  <div className="switch-list"><label><input type="checkbox" name="email_alerts_enabled" disabled={!EMAIL_ALERT_SCHEMA_READY} defaultChecked={!!data.notifications.email_alerts_enabled}/> Send me optional Palace activity emails when available.</label></div>
+  <div className="settings-grid">
+   <label>Email frequency<select name="email_frequency" disabled={!EMAIL_ALERT_SCHEMA_READY} defaultValue={data.notifications.email_frequency||'daily'}>
+    {EMAIL_ALERT_FREQUENCIES.map(mode=><option key={mode} value={mode}>{mode==='immediate'?'As events happen':mode==='daily'?'Daily digest':'Weekly digest'}</option>)}
+   </select></label>
+  </div>
+  <h3>Which activities may generate emails?</h3>
+  <div className="switch-list two-col">
+   {EMAIL_ALERT_TOPICS.map(([key,label])=><label key={key}><input type="checkbox" disabled={!EMAIL_ALERT_SCHEMA_READY} name={'email_topic_'+key} defaultChecked={(data.notifications.email_topics||EMAIL_ALERT_DEFAULT_TOPICS).includes(key)}/>{label}</label>)}
+  </div>
+  <p>Emails will contain only generic notice summaries, never private letters or draft contents. Sign-in and security emails are separate. Every activity email will include an unsubscribe link.</p>
  </section>
  <div className="save-row"><button>Save notification settings</button>{saved&&<span role="status">{saved}</span>}</div>
 </form>}
