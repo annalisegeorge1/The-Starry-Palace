@@ -60,6 +60,14 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  const[drafts,setDrafts]=useState({});
  const[busy,setBusy]=useState(false);
  const[liveStatus,setLiveStatus]=useState('polling');
+ const[deviceOnline,setDeviceOnline]=useState(()=>typeof navigator==='undefined'||navigator.onLine!==false);
+ useEffect(()=>{
+  const onOnline=()=>setDeviceOnline(true);
+  const onOffline=()=>setDeviceOnline(false);
+  window.addEventListener('online',onOnline);
+  window.addEventListener('offline',onOffline);
+  return()=>{window.removeEventListener('online',onOnline);window.removeEventListener('offline',onOffline)};
+ },[]);
  const[newWhileAway,setNewWhileAway]=useState(false);
  const[error,setError]=useState('');
  const[notice,setNotice]=useState('');
@@ -702,7 +710,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
     {active&&threadOpen&&<div className="palace-chat-thread-identity">
      <button type="button" className="palace-chat-header-back" aria-label="Back to inbox" onClick={()=>{setActionMenu(null);setThreadOpen(false)}}>←</button>
      {tab==='direct'?<MemberAvatar className="palace-chat-header-avatar" profile={activeDirect?.correspondent}/>:<span className="palace-chat-header-avatar" aria-hidden="true">✧</span>}
-     <span className="palace-chat-header-person"><strong>{openedRoomName}</strong><small><i aria-hidden="true" className={liveStatus==='live'?'is-live':''}/>{liveStatus==='live'?'Live updates':'Refreshes automatically'}</small></span>
+     <span className="palace-chat-header-person"><strong>{openedRoomName}</strong><small><i aria-hidden="true" className={!deviceOnline?'is-offline':liveStatus==='live'?'is-live':''}/>{!deviceOnline?'Offline':liveStatus==='live'?'Live updates':'Refreshes automatically'}</small></span>
      {tab==='groups'&&<button type="button" className="palace-chat-header-group-settings" aria-label="Group settings" aria-expanded={managing} onClick={()=>{setManaging(v=>!v);setIdentity({title:activeGroup.title,description:activeGroup.description||'',colorKey:activeGroup.colorKey||'moonlit'})}}>⚙</button>}
     </div>}
     <details className="palace-chat-help"><summary aria-label="How Palace Chat works" title="Chat tips and shortcuts">?</summary><div className="palace-chat-help-card"><strong>Palace Chat guide</strong><p>Choose a conversation to read and reply. Use <b>Direct</b> for one-to-one messages, or <b>Groups</b> for private circles.</p><p><b>Message options:</b> press and hold a bubble (or right-click it). You can copy, edit your own message, reply in groups, and pin messages when hosting a group.</p><p><b>Writing:</b> Ctrl/⌘ + Enter sends; Enter starts a new line. Use Emoji, GIF or Photo beside your message.</p><small>Messages stay within the conversation you open.</small></div></details>
@@ -766,7 +774,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
       groupRows.map(g=><button type="button" key={g.id} aria-label={g.title} onClick={()=>{setActionMenu(null);setSelectedGroup(g.id);setThreadOpen(true);setManaging(false);setIdentity({title:g.title,description:g.description||'',colorKey:g.colorKey||'moonlit'})}} aria-pressed={activeGroup?.id===g.id} title={g.description||g.title}><span className="palace-chat-room-symbol" aria-hidden="true">✧</span><span className="palace-chat-list-details"><span className="palace-chat-room-name">{g.title}</span><small className="palace-chat-list-preview">{g.description||'Private group conversation'}</small></span><span className="palace-chat-list-meta">{palaceChatUnreadGroup(g)&&<span className="palace-chat-unread-spark" aria-label="Unread messages">●</span>}{g.muted&&<span className="palace-chat-muted-symbol" title="Muted" aria-label="Muted">◌</span>}</span></button>)}
      {((tab==='groups'&&!groupRows.length)||(tab==='direct'&&!visibleDirect.length))&&(search||unreadOnly||starredOnly)&&<span className="palace-chat-filter-empty">No matching conversations. Clear filters to see your other rooms.</span>}
     </div>
-    {active?<><div className="palace-chat-correspondent"><button className="palace-chat-thread-back" type="button" onClick={()=>{setActionMenu(null);setThreadOpen(false)}} aria-label="Back to conversations">← Conversations</button><div className="palace-chat-person">{tab==='direct'?<MemberAvatar className="palace-chat-person-avatar" profile={activeDirect?.correspondent}/>:<span className="palace-chat-person-avatar" aria-hidden="true">✧</span>}<div className="palace-chat-person-copy"><strong>{openedRoomName}</strong><small>{tab==='groups'?activeGroup.members.length+' members · Invitation-only group':'Private correspondence · Palace boundaries apply'}</small><small className="palace-chat-connection" role="status"><i aria-hidden="true" className={liveStatus==='live'?'is-live':''}/>{liveStatus==='live'?'Live updates':'Refreshes automatically'}</small>{tab==='groups'&&activeGroup.description&&<p className="palace-chat-circle-description">{activeGroup.description}</p>}</div></div>{tab==='groups'&&<button type="button" aria-expanded={managing} onClick={()=>{setManaging(v=>!v);setIdentity({title:activeGroup.title,description:activeGroup.description||'',colorKey:activeGroup.colorKey||'moonlit'})}}>Members & settings ⚙</button>}</div>
+    {active?<><div className="palace-chat-correspondent"><button className="palace-chat-thread-back" type="button" onClick={()=>{setActionMenu(null);setThreadOpen(false)}} aria-label="Back to conversations">← Conversations</button><div className="palace-chat-person">{tab==='direct'?<MemberAvatar className="palace-chat-person-avatar" profile={activeDirect?.correspondent}/>:<span className="palace-chat-person-avatar" aria-hidden="true">✧</span>}<div className="palace-chat-person-copy"><strong>{openedRoomName}</strong><small>{tab==='groups'?activeGroup.members.length+' members · Invitation-only group':'Private correspondence · Palace boundaries apply'}</small><small className="palace-chat-connection" role="status"><i aria-hidden="true" className={!deviceOnline?'is-offline':liveStatus==='live'?'is-live':''}/>{!deviceOnline?'Offline':liveStatus==='live'?'Live updates':'Refreshes automatically'}</small>{tab==='groups'&&activeGroup.description&&<p className="palace-chat-circle-description">{activeGroup.description}</p>}</div></div>{tab==='groups'&&<button type="button" aria-expanded={managing} onClick={()=>{setManaging(v=>!v);setIdentity({title:activeGroup.title,description:activeGroup.description||'',colorKey:activeGroup.colorKey||'moonlit'})}}>Members & settings ⚙</button>}</div>
  {tab==='direct'&&activeDirect&&safetyOpen&&<section className="palace-chat-safety" aria-label="Private conversation safety">
   <header><strong>Safety & boundaries</strong><button type="button" onClick={()=>setSafetyOpen(false)} aria-label="Close safety tools">×</button></header>
   <p>Blocking limits contact. Reporting sends a confidential notice for moderator review. Reports do not automatically remove messages.</p>
@@ -827,7 +835,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
         <><PalaceChatGif body={m.body}/>{m.media_path&&<PalaceChatPhoto path={m.media_path}/>}</>}
        {m.edited_at&&<small className="palace-chat-edited-mark" title={'Edited '+new Date(m.edited_at).toLocaleString()}>Edited</small>}
        {tab==='groups'&&m.works?.slug&&<Link className="palace-chat-shared-story" to={'/work/'+encodeURIComponent(m.works.slug)} onClick={()=>setOpen(false)}><span aria-hidden="true">✧</span><span><small>PALACE STORY</small><strong>{m.works.title}</strong></span><span aria-hidden="true">↗</span></Link>}
-       <small>{dateOf(m.created_at)}</small>
+       <small className="palace-chat-timestamp">{dateOf(m.created_at)}</small>
        {PALACE_CHAT_V3_ENABLED&&<PalaceChatReactionBar message={m} rows={reactionRows.roomId===roomId?reactionRows.rows:[]} userId={userId} disabled={busy||(tab==='direct'&&boundary.blocked)} onReact={reactToMessage}/>}
        {/* Message actions appear only on long-press, right-click, or keyboard context menu. */}
       </div></React.Fragment>):<p className="palace-chat-empty">Nothing written here yet. Begin with a hello. ✦</p>}
