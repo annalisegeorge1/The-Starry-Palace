@@ -4,12 +4,12 @@ import {act,cleanup,fireEvent,render,screen,waitFor,within} from '@testing-libra
 import {MemoryRouter} from 'react-router-dom';
 import PalaceChatDrawer from './PalaceChatDrawer';
 import {watchPalaceChatRoom} from './palaceChatRealtime';
-import {getLetters,sendLetter,searchMembers,editLetterMessage,setConversationPreference} from './palaceData';
+import {getLetters,getDirectConversationMessages,sendLetter,searchMembers,editLetterMessage,setConversationPreference} from './palaceData';
 import {getPalaceGroupChatOverview,getPalaceGroupMessages,createPalaceGroupChat,respondPalaceGroupInvite,sendPalaceGroupMessage,editPalaceGroupMessage,setPalaceGroupIdentity,pinPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
 
 vi.mock('./palaceChatRealtime',()=>({watchPalaceChatRoom:vi.fn(()=>()=>{})}));
 vi.mock('./palaceData',()=>({
- getLetters:vi.fn(),sendLetter:vi.fn(),sendLetterPhoto:vi.fn(),editLetterMessage:vi.fn(),searchMembers:vi.fn(),setConversationPreference:vi.fn().mockResolvedValue(undefined)
+ getLetters:vi.fn(),getDirectConversationMessages:vi.fn(),DIRECT_HISTORY_PAGE_SIZE:60,sendLetter:vi.fn(),sendLetterPhoto:vi.fn(),editLetterMessage:vi.fn(),searchMembers:vi.fn(),setConversationPreference:vi.fn().mockResolvedValue(undefined)
 }));
 vi.mock('./palaceGroupChatData',()=>({
  getPalaceGroupChatOverview:vi.fn(),getPalaceGroupMessages:vi.fn(),createPalaceGroupChat:vi.fn(),
@@ -26,6 +26,7 @@ function mount(){return render(<MemoryRouter><PalaceChatDrawer userId={user}/></
 beforeEach(()=>{
  vi.clearAllMocks();
  getLetters.mockResolvedValue(direct);
+ getDirectConversationMessages.mockResolvedValue([]);
  getPalaceGroupChatOverview.mockResolvedValue(groups);
  getPalaceGroupMessages.mockResolvedValue([{id:'m1',chat_id:'group-one',sender_id:'member-two',body:'Welcome to the circle',created_at:'2026-10-08T13:00:00Z',profiles:{display_name:'River'}}]);
  searchMembers.mockResolvedValue([{id:'member-three',username:'nightwind',display_name:'Night Wind'}]);
@@ -263,6 +264,24 @@ describe('Palace quick chat',()=>{
   expect(screen.queryByRole('button',{name:/Quiet Writers/})).toBeNull();
   fireEvent.click(screen.getByRole('button',{name:'Clear filters'}));
   expect(screen.getByRole('button',{name:/Quiet Writers/})).toBeTruthy();
+ });
+ it('loads and retains older direct messages beyond the inbox preview',async()=>{
+  const recent=Array.from({length:60},(_,index)=>({
+   id:'dm-'+index,conversation_id:'direct-one',sender_id:'member-two',body:'Private letter '+index,
+   created_at:new Date(Date.UTC(2026,9,12,12,0,index)).toISOString(),status:'active'
+  }));
+  const older=[{id:'original-letter',conversation_id:'direct-one',sender_id:'member-two',
+   body:'A much older private note',created_at:'2026-10-11T09:00:00.000Z',status:'active'}];
+  getDirectConversationMessages.mockImplementation((member,id,limit,before)=>Promise.resolve(before?older:recent));
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(await screen.findByRole('button',{name:'Load earlier direct messages'}));
+  expect(await screen.findByText('A much older private note')).toBeTruthy();
+  expect(getDirectConversationMessages).toHaveBeenCalledWith(user,'direct-one',60,recent[0].created_at);
+  const connection=watchPalaceChatRoom.mock.calls.find(call=>call[1]?.kind==='direct')?.[1];
+  await act(async()=>{await connection.onChange()});
+  expect(screen.getByText('A much older private note')).toBeTruthy();
+  expect(screen.queryByRole('button',{name:'Load earlier direct messages'})).toBeNull();
  });
  it('loads earlier group messages, preserves them on a fresh live fetch and stops at history end',async()=>{
   const latest=Array.from({length:100},(_,index)=>({
