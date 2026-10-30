@@ -21,3 +21,18 @@
 .daylight .manuscript-folder-add :is(input,select),.daylight .chapter-folder-assignment select{background:#fff;color:#413454;border-color:#d2c5e0}.daylight .manuscript-folder-add button{color:#fff;background:#68539c}
 @media(max-width:760px){.manuscript-folder-organiser{padding:.6rem}.manuscript-folder-add{grid-template-columns:minmax(0,1fr) 94px}.manuscript-folder-add button{grid-column:1/-1}.chapter-row-extras{flex-wrap:nowrap;overflow-x:auto}}
 @media(prefers-reduced-motion:reduce){.manuscript-folder-organiser *{transition:none!important}}
+
+/* Chapter ordering: drag handle is a separate control; the whole row is
+ * intentionally not draggable to protect click and text selection. */
+.writer-chapter-drag-tip{display:block;padding:.3rem .65rem;color:var(--ink-muted,#c7c1dc);line-height:1.45;font-size:.74rem}
+.writer-order-notice{margin:.3rem .5rem;padding:.55rem .7rem;border:1px solid rgba(170,201,222,.27);border-radius:10px;font-size:.75rem;color:var(--ink-muted,#dce7ee)}
+.writer-chapter-drag-handle{cursor:grab;display:inline-flex;align-items:center;justify-content:center;flex:none;min-width:34px;min-height:34px;border:1px solid rgba(160,180,228,.4);background:rgba(80,76,148,.3);color:#e5dcfc;border-radius:9px;font-size:1.15rem;touch-action:pan-y}
+.writer-chapter-drag-handle:active{cursor:grabbing}.writer-chapter-drag-handle:disabled{opacity:.42;cursor:not-allowed}
+.chapter-manager-row.is-dragging{opacity:.6}
+.chapter-manager-row.is-drop-target{box-shadow:inset 0 3px 0 #8adbd5}
+.chapter-manager-row.is-drop-target.drop-after{box-shadow:inset 0 -3px 0 #8adbd5}
+.chapter-manager-row .writer-chapter-drag-handle:focus-visible{outline:3px solid #a4eff2;outline-offset:2px}
+.daylight .writer-chapter-drag-handle{background:#f5f1ff;color:#3e3160;border-color:#b9a5da}
+@media (pointer:coarse){.writer-chapter-drag-handle{min-width:42px;min-height:42px}}
+
+.snapshot-list-filters{display:flex;flex-wrap:wrap;gap:.45rem;margin:.65rem 0}.snapshot-list-filters button{min-height:36px;border:1px solid rgba(174,174,229,.35);border-radius:12px;padding:.42rem .75rem;background:rgba(78,75,142,.22);color:#ece7fc;cursor:pointer}.snapshot-list-filters button.active{background:#61538f;border-color:#b9ade7}.snapshot-list-filters button:focus-visible{outline:2px solid #ade6e7;outline-offset:2px}.daylight .snapshot-list-filters button{background:#faf7ff;color:#4d4169}.daylight .snapshot-list-filters button.active{background:#d9d0ee}

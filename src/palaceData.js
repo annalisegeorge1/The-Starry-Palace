@@ -1194,7 +1194,7 @@ export async function searchPalace(term){
  }
 }
 
-export async function getWorkBySlug(slug){const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,language,completion_status,publication_status,visibility,comment_policy,constructive_criticism,translation_policy,download_policy,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(id,username,display_name,avatar_url,title),chapters(id,title,position,status,word_count,scheduled_for,published_at)').eq('slug',slug).maybeSingle();if(error)throw error;if(!data)return null;data.chapters=(data.chapters||[]).sort((a,b)=>a.position-b.position);return data}
+export async function getWorkBySlug(slug){const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,language,completion_status,publication_status,visibility,comment_policy,constructive_criticism,translation_policy,download_policy,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(id,username,display_name,avatar_url,title),chapters(id,title,position,status,word_count,scheduled_for,published_at,updated_at)').eq('slug',slug).maybeSingle();if(error)throw error;if(!data)return null;data.chapters=(data.chapters||[]).sort((a,b)=>a.position-b.position);return data}
 export async function getWorkExport(slug){
  const work=await getWorkBySlug(slug);if(!work)return null;
  const{data:chapters,error}=await needClient().from('chapters').select('id,title,position,body_html,status,revision_note,word_count,created_at,updated_at,published_at').eq('work_id',work.id).order('position');
@@ -1247,8 +1247,17 @@ export async function reorderWorkChapters(workId,chapterIds){
 function plainWordCount(text){return text.replace(/<[^>]*>/g,' ').trim().split(/\s+/).filter(Boolean).length}
 export async function saveChapter(userId,chapterId,patch){const body=patch.body_html??'';const{data,error}=await needClient().from('chapters').update({title:patch.title?.trim(),body_html:body,word_count:plainWordCount(body),revision_note:patch.revision_note??'',updated_at:new Date().toISOString()}).eq('id',chapterId).select().single();if(error)throw error;return data}
 export async function getChapterSnapshots(chapterId){
- const{data,error}=await needClient().from('chapter_revision_snapshots').select('id,chapter_id,created_by,label,title,body_html,revision_note,word_count,source_revision,created_at').eq('chapter_id',chapterId).order('created_at',{ascending:false}).limit(30);
- if(error)throw error;return data||[]
+ // Keep named checkpoints accessible even when autosave creates many automatic
+ // versions. Queries remain subject to the existing per-author RLS policies.
+ const fields='id,chapter_id,created_by,label,title,body_html,revision_note,word_count,source_revision,created_at';
+ const base=()=>needClient().from('chapter_revision_snapshots').select(fields).eq('chapter_id',chapterId);
+ const [named,automatic]=await Promise.all([
+  base().or('label.is.null,label.neq."Automatic safety checkpoint"').order('created_at',{ascending:false}).limit(80),
+  base().eq('label','Automatic safety checkpoint').order('created_at',{ascending:false}).limit(80)
+ ]);
+ if(named.error)throw named.error;
+ if(automatic.error)throw automatic.error;
+ return [...(named.data||[]),...(automatic.data||[])].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
 }
 export async function createChapterSnapshot(userId,chapter,label=''){
  if(!chapter?.id)throw new Error('Open a chapter before creating a snapshot.');
