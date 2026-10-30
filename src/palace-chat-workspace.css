@@ -153,3 +153,114 @@
   flex:0 0 38px;
  }
 }
+
+/* Shared content is derived only from the messages already visible in the
+   active private room. Existing photo renderer resolves signed media. */
+.palace-chat-v2 .palace-chat-shared-media{
+ flex:0 0 auto;min-height:0;max-height:min(340px,43%);overflow-y:auto;
+ border-bottom:1px solid var(--chat3-border,rgba(171,152,219,.4));
+ background:var(--chat3-subtle,rgba(42,37,76,.94));color:var(--chat3-ink,inherit);
+ padding:10px 13px;display:grid;gap:10px;
+}
+.palace-chat-v2 .palace-chat-shared-media>header{
+ display:flex;align-items:center;justify-content:space-between;gap:10px;
+ padding:0!important;border:0!important;background:transparent!important;
+}
+.palace-chat-v2 .palace-chat-shared-media>header>div{display:grid;gap:3px}
+.palace-chat-v2 .palace-chat-shared-media>header strong{font-size:.93rem}
+.palace-chat-v2 .palace-chat-shared-media>header small{font-size:.73rem;opacity:.77}
+.palace-chat-v2 .palace-chat-shared-media :is(button,a){color:inherit}
+.palace-chat-v2 .palace-chat-shared-media>header button{
+ min-width:40px;min-height:40px;border-radius:12px;
+ background:rgba(155,132,215,.14);border:1px solid rgba(187,172,233,.48);
+}
+.palace-chat-v2 .palace-chat-shared-media nav{display:flex;gap:6px;overflow-x:auto}
+.palace-chat-v2 .palace-chat-shared-media nav button{
+ flex:0 0 auto;min-height:40px;border:1px solid rgba(180,158,223,.43);border-radius:11px;
+ padding:7px 11px;background:rgba(139,116,208,.12);
+}
+.palace-chat-v2 .palace-chat-shared-media nav button[aria-pressed=true]{
+ background:linear-gradient(115deg,rgba(156,130,235,.42),rgba(83,163,209,.21));font-weight:750;
+}
+.palace-chat-v2 .palace-chat-media-grid{
+ display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:9px;
+}
+.palace-chat-v2 .palace-chat-media-item{
+ min-width:0;display:flex;flex-direction:column;gap:6px;padding:8px;
+ border:1px solid rgba(179,156,231,.34);border-radius:13px;
+ background:rgba(142,116,213,.09);
+}
+.palace-chat-v2 .palace-chat-media-preview{
+ width:100%;height:100px;display:grid;place-items:center;overflow:hidden;
+ border-radius:9px;background:rgba(87,79,142,.13);
+}
+.palace-chat-v2 .palace-chat-media-preview :is(img,video){width:100%;height:100%;object-fit:cover}
+.palace-chat-v2 .palace-chat-media-preview>span{font:700 1.8rem Georgia,serif}
+.palace-chat-v2 .palace-chat-media-item>a{font-size:.78rem;line-height:1.4;overflow-wrap:anywhere}
+.palace-chat-v2 .palace-chat-media-item>button{
+ margin-top:auto;min-height:38px;font:650 .74rem system-ui,sans-serif;
+ border:1px solid rgba(184,156,228,.4);border-radius:9px;
+ background:rgba(130,116,209,.2);
+}
+.palace-chat-v2 .palace-chat-shared-media :is(button,a):focus-visible{outline:3px solid #aedbff;outline-offset:2px}
+
+/* Desktop: actual two-pane workspace. The inbox stays visible alongside the
+   selected direct conversation. Quick Chat and all mobile views stay intact. */
+@media(min-width:1000px){
+ .palace-chat-v2.palace-chat-dock.is-workspace.is-open[data-chat-type="direct"].is-thread-open>.palace-chat-panel{
+  display:grid!important;
+  grid-template-columns:minmax(265px,32%) minmax(0,1fr);
+  grid-template-rows:auto auto auto auto minmax(0,1fr) auto auto;
+  align-items:stretch;gap:0;min-height:0;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-heading{
+  grid-column:1/-1;grid-row:1;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-tabs{
+  display:flex!important;grid-column:1;grid-row:2;min-width:0;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-tools{
+  display:flex!important;grid-column:1;grid-row:3;min-width:0;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-inbox-refine{
+  display:flex!important;grid-column:1;grid-row:4;min-width:0;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-people{
+  display:flex!important;grid-column:1;grid-row:5 / span 2;
+  overflow-y:auto!important;overflow-x:hidden!important;min-height:0!important;
+  border-right:1px solid var(--chat3-border,rgba(173,149,221,.36));
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-people>button{
+  min-height:65px!important;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-thread-actions{
+  grid-column:2;grid-row:2;min-width:0;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-correspondent{
+  display:flex!important;grid-column:2;grid-row:3;min-width:0;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-message-search,
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-shared-media{
+  grid-column:2;grid-row:4;min-width:0;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-messages{
+  display:flex!important;grid-column:2;grid-row:5;min-width:0;min-height:0!important;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-jump-latest{
+  grid-column:2;grid-row:5;align-self:end;justify-self:center;z-index:2;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-composer-shell{
+  grid-column:2;grid-row:6;min-width:0;min-height:0;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-select-hint{display:none!important}
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-panel>footer{
+  display:flex!important;grid-column:1/-1;grid-row:7;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-connection{display:none}
+}
+@media(max-width:720px){
+ .palace-chat-v2 .palace-chat-shared-media{max-height:42dvh;padding:8px 10px}
+ .palace-chat-v2 .palace-chat-media-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .palace-chat-v2 .palace-chat-thread-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .palace-chat-v2 .palace-chat-thread-actions>button:last-of-type{grid-column:1/-1}
+}
