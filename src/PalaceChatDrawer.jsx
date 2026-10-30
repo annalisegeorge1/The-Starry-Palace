@@ -12,7 +12,7 @@ import {makePalaceDirectQuoteDraft} from './palaceDirectQuote';
 import {PALACE_CHAT_V3_ENABLED,getPalaceReactions,changePalaceReaction} from './palaceChatV3';
 import PalaceChatReactionBar from './PalaceChatReactionBar';
 import './palace-chat-workspace.css';
-import {getMyProfile,getLetters,getDirectConversationMessages,DIRECT_HISTORY_PAGE_SIZE,sendLetter,sendLetterPhoto,editLetterMessage,searchMembers,setConversationPreference,getMemberBoundary,setMemberBoundary,reportConversation} from './palaceData';
+import {getMyProfile,getLetters,getDirectConversationMessages,DIRECT_HISTORY_PAGE_SIZE,sendLetter,sendLetterPhoto,editLetterMessage,searchMembers,setConversationPreference,getMemberBoundary,setMemberBoundary,reportConversation,submitCommunityReport} from './palaceData';
 import {createPalaceGroupChat,getPalaceGroupChatOverview,getPalaceGroupMessages,sendPalaceGroupMessage,sendPalaceGroupPhoto,editPalaceGroupMessage,respondPalaceGroupInvite,invitePalaceGroupMember,removePalaceGroupMember,leavePalaceGroupChat,setPalaceGroupMuted,markPalaceGroupRead,PALACE_GROUP_COLOURS,setPalaceGroupIdentity,pinPalaceGroupMessage,getPinnedPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
 import './palace-chat-drawer.css';
 import './palace-chat-groups.css';
@@ -77,6 +77,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  const[safetyOpen,setSafetyOpen]=useState(false);
  const[boundary,setBoundary]=useState({muted:false,blocked:false});
  const[reportReason,setReportReason]=useState('');
+ const[reportedGroupMessage,setReportedGroupMessage]=useState(null);
  const[reactionRows,setReactionRows]=useState({roomId:'',rows:[]});
  const[reactionRefresh,setReactionRefresh]=useState(0);
  const[historyLoading,setHistoryLoading]=useState(false);
@@ -154,7 +155,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   const preview=URL.createObjectURL(photoFile);setPhotoPreview(preview);
   return()=>URL.revokeObjectURL(preview);
  },[photoFile]);
- useEffect(()=>{setPhotoFile(null);setEditingMessage(null);setGifOpen(false);setSearchWithinThread(false);setMessageSearch('');setShowSharedMedia(false);setMediaFilter('all');setShowCirclePrompts(false);setSafetyOpen(false);setReportReason('')},[roomId,tab]);
+ useEffect(()=>{setPhotoFile(null);setEditingMessage(null);setGifOpen(false);setSearchWithinThread(false);setMessageSearch('');setShowSharedMedia(false);setMediaFilter('all');setShowCirclePrompts(false);setSafetyOpen(false);setReportReason('');setReportedGroupMessage(null)},[roomId,tab]);
  useEffect(()=>()=>{if(holdRef.current?.timer)window.clearTimeout(holdRef.current.timer)},[]);
  useEffect(()=>{
   if(!actionMenu)return;
@@ -499,6 +500,8 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
    setDraft(makePalaceDirectQuoteDraft(message,message.sender_id===userId?'you':openedRoomName,currentDraft));
    setNotice('Quotation added to your draft. This is a text quote, not a linked reply.');
    window.requestAnimationFrame(()=>composerRef.current?.focus());
+  }else if(action==='report'&&message.sender_id!==userId){
+   setReportReason('');if(tab==='direct')setSafetyOpen(true);else setReportedGroupMessage(message);
   }else if(action==='copy'){
    if(!navigator.clipboard?.writeText){setError('Copy is unavailable in this browser.');return}
    navigator.clipboard.writeText(message.body).then(()=>setNotice('Message copied.')).catch(()=>setError('The message could not be copied.'));
@@ -590,6 +593,19 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
    setBoundary({muted:!!saved.muted,blocked:!!saved.blocked});
    setNotice(blocked?'Member blocked. You can unblock them here.':'Member unblocked.');
   }catch(e){setError('Your safety preference could not be saved. '+errorText(e))}
+  finally{setBusy(false)}
+ }
+ async function submitGroupReport(e){
+  e.preventDefault();
+  if(!reportedGroupMessage||!reportReason.trim()||busy)return;
+  setBusy(true);setError('');
+  try{
+   await submitCommunityReport(userId,'member',reportedGroupMessage.sender_id,reportReason.trim().slice(0,2000),{
+    chat_id:roomId,message_id:reportedGroupMessage.id,context:'private_group_message'
+   });
+   setNotice('Group-message report submitted to Palace moderators.');
+   setReportReason('');setReportedGroupMessage(null);
+  }catch(e){setError('The report was not submitted. '+errorText(e))}
   finally{setBusy(false)}
  }
  async function submitDirectReport(e){
@@ -733,6 +749,11 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   <button type="button" disabled={busy} aria-label={boundary.blocked?'Unblock this member':'Block this member'} onClick={()=>updateSafetyBoundary(!boundary.blocked)}>{boundary.blocked?'Unblock member':'Block member'}</button>
   <form onSubmit={submitDirectReport}><label>Report a concern<textarea aria-label="Reason for reporting this conversation" rows={3} maxLength={2000} value={reportReason} onChange={e=>setReportReason(e.target.value)} placeholder="Describe the message or behavior and when it happened." required/></label><button type="submit" disabled={busy||!reportReason.trim()}>Submit report</button></form>
  </section>}
+ {tab==='groups'&&reportedGroupMessage&&<section className="palace-chat-safety" aria-label="Report a group message">
+  <header><strong>Report this group message</strong><button type="button" aria-label="Cancel group report" onClick={()=>setReportedGroupMessage(null)}>×</button></header>
+  <p>Explain the concern. A moderator will review the report; the message is not removed automatically.</p>
+  <form onSubmit={submitGroupReport}><label>Reason for report<textarea aria-label="Reason for reporting group message" rows={3} maxLength={2000} required value={reportReason} onChange={e=>setReportReason(e.target.value)}/></label><button type="submit" disabled={busy||!reportReason.trim()}>Send group report</button></form>
+ </section>}
  {tab==='groups'&&managing&&<section className="palace-chat-settings" aria-label="Group settings">
       <div className="palace-chat-settings-top"><strong>Members</strong><button type="button" disabled={busy} onClick={()=>mutate(()=>setPalaceGroupMuted(activeGroup.id,userId,!activeGroup.muted),activeGroup.muted?'Group unmuted.':'Group muted.')}>{activeGroup.muted?'Unmute':'Mute'}</button></div>
       <ul>{activeGroup.members.map(m=><li key={m.id}><MemberAvatar profile={m}/><span>{nameOf(m)} {m.id===activeGroup.ownerId?'· host':''}</span>{owner&&m.id!==userId&&<button type="button" disabled={busy} onClick={()=>{if(window.confirm('Remove '+nameOf(m)+' from this group?'))mutate(()=>removePalaceGroupMember(activeGroup.id,m.id),'Member removed.')}}>Remove</button>}</li>)}</ul>
@@ -807,6 +828,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
     {tab==='direct'&&PALACE_CHAT_V3_ENABLED&&<button type="button" role="menuitem" aria-label="Reply to message" onClick={()=>applyMessageAction('reply')}><span aria-hidden="true">↩</span><span>Linked reply</span></button>}
     {tab==='direct'&&<button type="button" role="menuitem" aria-label="Quote in draft" onClick={()=>applyMessageAction('quote')}><span aria-hidden="true">↩</span><span>Quote in draft</span></button>}
     {actionMenu.message.sender_id===userId&&!parsePalaceGif(actionMenu.message.body)&&<button type="button" role="menuitem" aria-label="Edit message" onClick={()=>applyMessageAction('edit')}><span aria-hidden="true">✎</span><span>Edit message</span></button>}
+    {actionMenu.message.sender_id!==userId&&<button type="button" role="menuitem" aria-label="Report message" onClick={()=>applyMessageAction('report')}><span aria-hidden="true">⚑</span><span>Report message</span></button>}
     <button type="button" role="menuitem" aria-label="Copy text" onClick={()=>applyMessageAction('copy')}><span aria-hidden="true">⧉</span><span>Copy text</span></button>
     {tab==='groups'&&owner&&<button type="button" role="menuitem" aria-label={activeGroup?.pinnedMessageId===actionMenu.message.id?'Unpin message':'Pin message'} disabled={busy} onClick={()=>applyMessageAction('pin')}><span aria-hidden="true">✧</span><span>{activeGroup?.pinnedMessageId===actionMenu.message.id?'Unpin message':'Pin message'}</span></button>}
     <button type="button" className="palace-chat-action-dismiss" role="menuitem" onClick={()=>setActionMenu(null)}>Cancel</button>
