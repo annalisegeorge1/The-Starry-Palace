@@ -1,8 +1,9 @@
 import {describe,it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
-const css=readFileSync(new URL('../src/palace-mobile-overlap-repair.css',import.meta.url),'utf8');
-const main=readFileSync(new URL('../src/main.jsx',import.meta.url),'utf8');
-const live=readFileSync(new URL('../src/liveRooms.jsx',import.meta.url),'utf8');
+import {resolve} from 'node:path';
+const css=readFileSync(resolve(process.cwd(),'src/palace-mobile-overlap-repair.css'),'utf8');
+const main=readFileSync(resolve(process.cwd(),'src/main.jsx'),'utf8');
+const live=readFileSync(resolve(process.cwd(),'src/liveRooms.jsx'),'utf8');
 describe('Android layout repair guardrails',()=>{
  it('loads the narrow-screen fixes after legacy styles',()=>{
   const imports=[...main.matchAll(/import '\.\/[^']+\.css';/g)].map(m=>m[0]);
