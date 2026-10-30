@@ -13,10 +13,13 @@ describe('reader-selectable page layouts',()=>{
   expect(new Set(READER_LAYOUT_VALUES).size).toBe(4);
   expect(READER_LAYOUTS.every(x=>x.label&&x.description&&x.short)).toBe(true);
   expect(readerLayoutLabel('journal')).toBe('Journal');
-  expect(readerLayoutLabel('invalid')).toBe('Book');
+  expect(readerLayoutLabel('invalid')).toBe('Full Page');
  });
  it('persists local reader choice, keeps existing text controls and resets',()=>{
-  expect(rooms).toContain("readPalaceChoice('palace-reader-layout',READER_LAYOUT_VALUES,'book')");
+  expect(rooms).toContain("readPalaceChoice('palace-reader-layout',READER_LAYOUT_VALUES,'full')");
+  expect(rooms).toContain("setReaderLayout('full')");
+  expect(classic).toContain("readPalaceChoice(LAYOUT_KEY,READER_LAYOUT_VALUES,'full')");
+  expect(classic).toContain("setLayout('full')");
   expect(rooms).toContain("writePalacePreference('palace-reader-layout',next)");
   expect(rooms).toContain("removePalacePreference(key)");
   expect(rooms).toContain("changeMeasure('wide')");
