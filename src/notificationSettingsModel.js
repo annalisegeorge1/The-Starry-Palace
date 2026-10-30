@@ -33,7 +33,7 @@ export function notificationFormPatch(form){
  const quiet=form.has('quiet_hours_enabled');
  const start=String(form.get('quiet_hours_start')||'').trim();
  const end=String(form.get('quiet_hours_end')||'').trim();
- if(quiet&&(!/^([01]\\d|2[0-3]):[0-5]\\d$/.test(start)||!/^([01]\\d|2[0-3]):[0-5]\\d$/.test(end)))
+ if(quiet&&(!/^([01]\d|2[0-3]):[0-5]\d$/.test(start)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(end)))
   throw new Error('Choose both start and end times for quiet hours.');
  return {
   ...Object.fromEntries(IN_APP_NOTIFICATION_CATEGORIES.map(([key])=>[key,form.has(key)])),
