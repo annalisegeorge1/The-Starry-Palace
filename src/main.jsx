@@ -99,6 +99,7 @@ import './mobile-dashboard-home-calm.css';
 import './mobile-palace-compact-pass.css';
 import './settings-mobile-native.css';
 import './mobile-dock-header-fix.css';
+import './mobile-global-shell-palace-polish.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
