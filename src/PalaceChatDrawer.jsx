@@ -35,20 +35,20 @@ const nameOf=p=>p?.display_name||p?.username||'Palace member';
 const dateOf=d=>d?new Date(d).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'';
 const errorText=e=>e?.message||'The Palace could not complete that action. Please try again.';
 
-export default function PalaceChatDrawer({userId,workspace=false}){
+export default function PalaceChatDrawer({userId,workspace=false,initialRoom=null}){
  const[selfProfile,setSelfProfile]=useState(null);
  useEffect(()=>{let active=true;setSelfProfile(null);Promise.resolve().then(()=>getMyProfile(userId)).then(p=>{if(active)setSelfProfile(p)}).catch(()=>{});return()=>{active=false}},[userId]);
  const[open,setOpen]=useState(Boolean(workspace));
- const[threadOpen,setThreadOpen]=useState(false);
+ const[threadOpen,setThreadOpen]=useState(Boolean(initialRoom?.roomId));
  const[loadingDirect,setLoadingDirect]=useState(true);
  const[refreshToken,setRefreshToken]=useState(0);
- const[tab,setTab]=useState('direct');
+ const[tab,setTab]=useState(initialRoom?.tab==='groups'?'groups':'direct');
  const[direct,setDirect]=useState(null);
  const[dataOwner,setDataOwner]=useState(userId);
  const[groupData,setGroupData]=useState({groups:[],invitations:[]});
  const[groupAvailable,setGroupAvailable]=useState(true);
- const[selectedDirect,setSelectedDirect]=useState('');
- const[selectedGroup,setSelectedGroup]=useState('');
+ const[selectedDirect,setSelectedDirect]=useState(initialRoom?.tab==='direct'?initialRoom.roomId||'':'');
+ const[selectedGroup,setSelectedGroup]=useState(initialRoom?.tab==='groups'?initialRoom.roomId||'':'');
  const[groupMessages,setGroupMessages]=useState({chatId:'',items:[]});
  const[drafts,setDrafts]=useState({});
  const[busy,setBusy]=useState(false);
@@ -132,7 +132,7 @@ export default function PalaceChatDrawer({userId,workspace=false}){
   return()=>{document.removeEventListener('keydown',onKey);window.clearTimeout(timer)};
  },[actionMenu]);
 
- useEffect(()=>{setOpen(Boolean(workspace));setThreadOpen(false);setLoadingDirect(true);setTab('direct');setDirect(null);setGroupData({groups:[],invitations:[]});setSelectedDirect('');setSelectedGroup('');setGroupMessages({chatId:'',items:[]});setNewWhileAway(false);setLiveStatus('polling');lastAcknowledgedRef.current={roomId:'',messageId:''};setReplyTarget(null);setStorySharing(false);setShowCirclePrompts(false);setPinnedPreview({chatId:'',messageId:'',message:null});setDrafts({});setError('');setNotice('');setCreating(false);setManaging(false);setSearch('');setUnreadOnly(false);setStarredOnly(false);setMessageSearch('');setSearchWithinThread(false);setShowSharedMedia(false);setMediaFilter('all');setHistoryLoading(false);setHasOlder(false);historyScrollRef.current=null;exhaustedHistoryRef.current.clear()},[userId,workspace]);
+ useEffect(()=>{setOpen(Boolean(workspace));setThreadOpen(Boolean(initialRoom?.roomId));setTab(initialRoom?.tab==='groups'?'groups':'direct');setLoadingDirect(true);setTab('direct');setDirect(null);setGroupData({groups:[],invitations:[]});setSelectedDirect(initialRoom?.tab==='direct'?initialRoom.roomId||'':'');setSelectedGroup(initialRoom?.tab==='groups'?initialRoom.roomId||'':'');setGroupMessages({chatId:'',items:[]});setNewWhileAway(false);setLiveStatus('polling');lastAcknowledgedRef.current={roomId:'',messageId:''};setReplyTarget(null);setStorySharing(false);setShowCirclePrompts(false);setPinnedPreview({chatId:'',messageId:'',message:null});setDrafts({});setError('');setNotice('');setCreating(false);setManaging(false);setSearch('');setUnreadOnly(false);setStarredOnly(false);setMessageSearch('');setSearchWithinThread(false);setShowSharedMedia(false);setMediaFilter('all');setHistoryLoading(false);setHasOlder(false);historyScrollRef.current=null;exhaustedHistoryRef.current.clear()},[userId,workspace]);
  useEffect(()=>{
   if(!userId)return;
   let alive=true;
@@ -563,7 +563,7 @@ export default function PalaceChatDrawer({userId,workspace=false}){
      {tab==='groups'&&<button type="button" className="palace-chat-header-group-settings" aria-label="Group settings" aria-expanded={managing} onClick={()=>{setManaging(v=>!v);setIdentity({title:activeGroup.title,description:activeGroup.description||'',colorKey:activeGroup.colorKey||'moonlit'})}}>⚙</button>}
     </div>}
     <details className="palace-chat-help"><summary aria-label="How Palace Chat works" title="Chat tips and shortcuts">?</summary><div className="palace-chat-help-card"><strong>Palace Chat guide</strong><p>Choose a conversation to read and reply. Use <b>Direct</b> for one-to-one messages, or <b>Groups</b> for private circles.</p><p><b>Message options:</b> press and hold a bubble (or right-click it). You can copy, edit your own message, reply in groups, and pin messages when hosting a group.</p><p><b>Writing:</b> Ctrl/⌘ + Enter sends; Enter starts a new line. Use Emoji, GIF or Photo beside your message.</p><small>Messages stay within the conversation you open.</small></div></details>
-     <div className="palace-chat-header-actions">{!workspace&&<Link to="/chat" className="palace-chat-expand" aria-label="Open full Palace Messenger" title="Open full Messenger">⤢</Link>}<button type="button" onClick={()=>setChatPaused(v=>!v)} aria-pressed={chatPaused} title="Compact chat launcher when minimized" aria-label={chatPaused?'Turn off quiet launcher':'Use quiet launcher'}>☾</button>{workspace?<Link className="palace-chat-close-workspace" to="/" aria-label="Return to Palace home">✕</Link>:<button type="button" onClick={()=>{setActionMenu(null);setOpen(false)}} aria-label="Minimize Palace chat">−</button>}</div></header>
+     <div className="palace-chat-header-actions">{!workspace&&<Link to="/chat" state={{palaceChat:{tab,roomId:threadOpen?roomId:null}}} className="palace-chat-expand" aria-label="Open full Palace Messenger" title="Open full Messenger">⤢</Link>}<button type="button" onClick={()=>setChatPaused(v=>!v)} aria-pressed={chatPaused} title="Compact chat launcher when minimized" aria-label={chatPaused?'Turn off quiet launcher':'Use quiet launcher'}>☾</button>{workspace?<Link className="palace-chat-close-workspace" to="/" aria-label="Return to Palace home">✕</Link>:<button type="button" onClick={()=>{setActionMenu(null);setOpen(false)}} aria-label="Minimize Palace chat">−</button>}</div></header>
    <nav className="palace-chat-tabs" aria-label="Chat type">
     <button type="button" aria-pressed={tab==='direct'} onClick={()=>{setActionMenu(null);setThreadOpen(false);setTab('direct');setSearch('');setUnreadOnly(false);setStarredOnly(false);setCreating(false);setManaging(false);setError('')}}>✉ Direct {directUnread>0&&<span>{directUnread}</span>}</button>
     <button type="button" aria-pressed={tab==='groups'} onClick={()=>{setActionMenu(null);setThreadOpen(false);setTab('groups');setSearch('');setUnreadOnly(false);setStarredOnly(false);setCreating(false);setManaging(false);setError('')}}>♧ Groups {(groupUnread+groupData.invitations.length)>0&&<span>{groupUnread+groupData.invitations.length}</span>}</button>
@@ -604,7 +604,7 @@ export default function PalaceChatDrawer({userId,workspace=false}){
  <button type="button" aria-pressed={searchWithinThread} aria-label={searchWithinThread?"Close message search":"Search messages in this conversation"} onClick={()=>{setSearchWithinThread(v=>!v);setShowSharedMedia(false);setMessageSearch('')}}>{searchWithinThread?'✕ Close search':'⌕ Search messages'}</button>
  <button type="button" aria-pressed={showSharedMedia} aria-label={showSharedMedia?"Close shared media":"Show shared media"} onClick={()=>{setShowSharedMedia(v=>!v);setSearchWithinThread(false);setMessageSearch("");setMediaFilter("all")}}>{showSharedMedia?"✕ Close media":"▤ Shared media"}</button>
  {tab==='direct'&&activeDirect&&<button type="button" disabled={busy} onClick={toggleFavorite} aria-pressed={!!activeDirect.preference?.starred} aria-label={activeDirect.preference?.starred?'Remove conversation from favourites':'Add conversation to favourites'}>{activeDirect.preference?.starred?'★ Favourited':'☆ Favourite'}</button>}
- {!workspace&&<Link to="/chat" aria-label="Switch to full Palace Messenger">Full Messenger ↗</Link>}
+ {!workspace&&<Link to="/chat" state={{palaceChat:{tab,roomId:threadOpen?roomId:null}}} aria-label="Switch to full Palace Messenger">Full Messenger ↗</Link>}
  </div>}
  {tab==='groups'&&managing&&<section className="palace-chat-settings" aria-label="Group settings">
       <div className="palace-chat-settings-top"><strong>Members</strong><button type="button" disabled={busy} onClick={()=>mutate(()=>setPalaceGroupMuted(activeGroup.id,userId,!activeGroup.muted),activeGroup.muted?'Group unmuted.':'Group muted.')}>{activeGroup.muted?'Unmute':'Mute'}</button></div>
@@ -665,7 +665,7 @@ export default function PalaceChatDrawer({userId,workspace=false}){
     </>:<div className="palace-chat-empty"><p>{tab==='groups'?'No groups yet.':loadingDirect?'Loading your private conversations…':error?'Conversations could not be loaded.':'No open direct conversations yet.'}</p><p>{tab==='groups'?'Start a private circle and invite members, or accept an invitation above.':'Begin or accept a correspondence in Palace Letters.'}</p>{tab==='direct'&&<Link to="/letters" onClick={()=>setOpen(false)}>Open Palace Letters →</Link>}{tab==='groups'&&<button type="button" onClick={()=>setCreating(true)}>＋ Create a group</button>}</div>}
    </>}
    {active&&!creating&&!threadOpen&&<p className="palace-chat-select-hint">Choose a name above to open their conversation.</p>}
-   <footer><small>{tab==='groups'?'Members-only group':'Private conversation'}{chatPaused?' · Quiet mode':''}</small>{!workspace&&<Link className="palace-chat-full-route" to="/chat" aria-label="Open the full Palace Messenger page">Full Messenger ↗</Link>}{workspace?<Link className="palace-chat-mobile-close" to="/" aria-label="Exit Messenger and return home">Exit Messenger <span aria-hidden="true">×</span></Link>:<button type="button" className="palace-chat-mobile-close" aria-label="Close Palace chat" onClick={()=>{setActionMenu(null);setOpen(false)}}>Close chat <span aria-hidden="true">×</span></button>}</footer>
+   <footer><small>{tab==='groups'?'Members-only group':'Private conversation'}{chatPaused?' · Quiet mode':''}</small>{!workspace&&<Link className="palace-chat-full-route" to="/chat" state={{palaceChat:{tab,roomId:threadOpen?roomId:null}}} aria-label="Open the full Palace Messenger page">Full Messenger ↗</Link>}{workspace?<Link className="palace-chat-mobile-close" to="/" aria-label="Exit Messenger and return home">Exit Messenger <span aria-hidden="true">×</span></Link>:<button type="button" className="palace-chat-mobile-close" aria-label="Close Palace chat" onClick={()=>{setActionMenu(null);setOpen(false)}}>Close chat <span aria-hidden="true">×</span></button>}</footer>
   </section>}
   {open&&actionMenu&&actionMenu.roomId===roomId&&createPortal(<div className="palace-chat-actions-backdrop" onPointerDown={e=>{if(e.target===e.currentTarget)setActionMenu(null)}} onClick={e=>{if(e.target===e.currentTarget)setActionMenu(null)}}>
    <div ref={actionMenuRef} className="palace-chat-actions-menu" role="menu" aria-label="Message actions" style={{top:actionMenu.top,left:actionMenu.left}}>
