@@ -312,8 +312,8 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   if(!sentRoom||busy)return;
   setBusy(true);setError('');setNotice('Sending GIF…');
   try{
-   if(sentKind==='groups')await sendPalaceGroupMessage(sentRoom,userId,body,replyTarget?.chatId===sentRoom?{replyToId:replyTarget.id}:{});
-   else await sendLetter(userId,sentRoom,body);
+   if(sentKind==='groups')await sendPalaceGroupMessage(roomId,userId,body,replyTarget?.chatId===roomId?{replyToId:replyTarget.id}:{});
+   else await sendLetter(userId,roomId,body);
   }catch(e){setError('GIF not confirmed. '+errorText(e));setNotice('');setBusy(false);return}
   setGifOpen(false);setReplyTarget(null);scrollPinned.current=true;setNotice('GIF sent.');
   try{
@@ -335,8 +335,8 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   let path='',sent=false;
   try{
    path=await uploadPalaceChatPhoto({kind:sentKind==='groups'?'group':'direct',roomId:sentRoom,userId,file});
-   if(sentKind==='groups')await sendPalaceGroupPhoto(sentRoom,userId,path,caption,replyTarget?.chatId===sentRoom?{replyToId:replyTarget.id}:{});
-   else await sendLetterPhoto(userId,sentRoom,path,caption);
+   if(sentKind==='groups')await sendPalaceGroupPhoto(roomId,userId,path,caption,replyTarget?.chatId===roomId?{replyToId:replyTarget.id}:{});
+   else await sendLetterPhoto(userId,roomId,path,caption);
    sent=true;
   }catch(e){
    if(path&&!sent)await discardPalaceChatPhoto(path).catch(()=>{});
