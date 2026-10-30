@@ -1,0 +1,35 @@
+/* Final mobile chat contrast and spacing refinements.
+   Connection status is a local network indicator, not user presence. */
+@media(max-width:720px){
+ .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-bubble>.palace-chat-timestamp{
+  color:rgba(255,255,255,.85)!important;
+  opacity:1!important;
+  text-shadow:0 1px 2px rgba(14,9,35,.24);
+  font-size:.7rem!important;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-more-trigger{
+  width:36px!important;
+  height:36px!important;
+  min-width:36px!important;
+  min-height:36px!important;
+  padding:4px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  border-color:transparent!important;
+  border-radius:9px!important;
+  font-size:1.15rem!important;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace):not(.is-thread-open) .palace-chat-people{
+  padding-top:12px!important;
+  border-top:0!important;
+ }
+ .palace-chat-v2 .palace-chat-header-person .is-offline,
+ .palace-chat-v2 .palace-chat-connection .is-offline{
+  background:#a4a7b6!important;
+  box-shadow:0 0 0 3px rgba(164,167,182,.18)!important;
+ }
+ html[data-palace-theme="daylight"] .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-bubble>.palace-chat-timestamp{
+  color:#464057!important;
+  text-shadow:none!important;
+ }
+}
