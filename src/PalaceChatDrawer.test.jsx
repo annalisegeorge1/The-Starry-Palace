@@ -4,12 +4,12 @@ import {act,cleanup,fireEvent,render,screen,waitFor,within} from '@testing-libra
 import {MemoryRouter} from 'react-router-dom';
 import PalaceChatDrawer from './PalaceChatDrawer';
 import {watchPalaceChatRoom} from './palaceChatRealtime';
-import {getLetters,getDirectConversationMessages,sendLetter,searchMembers,editLetterMessage,setConversationPreference,getMemberBoundary,setMemberBoundary,reportConversation} from './palaceData';
+import {getLetters,getDirectConversationMessages,sendLetter,searchMembers,editLetterMessage,setConversationPreference,getMemberBoundary,setMemberBoundary,reportConversation,submitCommunityReport} from './palaceData';
 import {getPalaceGroupChatOverview,getPalaceGroupMessages,createPalaceGroupChat,respondPalaceGroupInvite,sendPalaceGroupMessage,editPalaceGroupMessage,setPalaceGroupIdentity,pinPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
 
 vi.mock('./palaceChatRealtime',()=>({watchPalaceChatRoom:vi.fn(()=>()=>{})}));
 vi.mock('./palaceData',()=>({
- getLetters:vi.fn(),getDirectConversationMessages:vi.fn(),DIRECT_HISTORY_PAGE_SIZE:60,sendLetter:vi.fn(),sendLetterPhoto:vi.fn(),editLetterMessage:vi.fn(),searchMembers:vi.fn(),setConversationPreference:vi.fn().mockResolvedValue(undefined),getMemberBoundary:vi.fn(),setMemberBoundary:vi.fn(),reportConversation:vi.fn()
+ getLetters:vi.fn(),getDirectConversationMessages:vi.fn(),DIRECT_HISTORY_PAGE_SIZE:60,sendLetter:vi.fn(),sendLetterPhoto:vi.fn(),editLetterMessage:vi.fn(),searchMembers:vi.fn(),setConversationPreference:vi.fn().mockResolvedValue(undefined),getMemberBoundary:vi.fn(),setMemberBoundary:vi.fn(),reportConversation:vi.fn(),submitCommunityReport:vi.fn()
 }));
 vi.mock('./palaceGroupChatData',()=>({
  getPalaceGroupChatOverview:vi.fn(),getPalaceGroupMessages:vi.fn(),createPalaceGroupChat:vi.fn(),
@@ -30,6 +30,7 @@ beforeEach(()=>{
  getMemberBoundary.mockResolvedValue({muted:false,blocked:false});
  setMemberBoundary.mockResolvedValue({muted:false,blocked:true});
  reportConversation.mockResolvedValue({id:'report-test'});
+ submitCommunityReport.mockResolvedValue({id:'group-report-test'});
  getPalaceGroupChatOverview.mockResolvedValue(groups);
  getPalaceGroupMessages.mockResolvedValue([{id:'m1',chat_id:'group-one',sender_id:'member-two',body:'Welcome to the circle',created_at:'2026-10-08T13:00:00Z',profiles:{display_name:'River'}}]);
  searchMembers.mockResolvedValue([{id:'member-three',username:'nightwind',display_name:'Night Wind'}]);
@@ -369,6 +370,20 @@ describe('Palace quick chat',()=>{
   await screen.findByText('Poetry Circle');
   fireEvent.click(screen.getByRole('button',{name:'Join'}));
   await waitFor(()=>expect(respondPalaceGroupInvite).toHaveBeenCalledWith('group-invite',true));
+ });
+ it('submits an explicit private group-message report with message evidence metadata',async()=>{
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(screen.getByRole('button',{name:/Groups/}));
+  await screen.findByText('Welcome to the circle');
+  fireEvent.contextMenu(screen.getByText('Welcome to the circle').closest('.palace-chat-bubble'));
+  fireEvent.click(screen.getByRole('menuitem',{name:'Report message'}));
+  fireEvent.change(screen.getByRole('textbox',{name:'Reason for reporting group message'}),{target:{value:'Repeated harassment'}});
+  expect(submitCommunityReport).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole('button',{name:'Send group report'}));
+  await waitFor(()=>expect(submitCommunityReport).toHaveBeenCalledWith(user,'member','member-two','Repeated harassment',{
+   chat_id:'group-one',message_id:'m1',context:'private_group_message'
+  }));
+  expect(screen.getByText(/Group-message report submitted/)).toBeTruthy();
  });
  it('replies to a specific group message and clears the reply after sending',async()=>{
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
