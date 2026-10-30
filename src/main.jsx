@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { createPortal } from 'react-dom';
 import { BrowserRouter, Link, NavLink, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { AuthProvider, ProtectedRoute, useAuth } from './auth';
+import FullWorkReader from './FullWorkReader';
 import { PalaceRouteSeo } from './usePalaceSeo';
 import { supabase } from './supabase';
 import './style.css';
@@ -87,6 +88,7 @@ import './writing-chamber-lustre-pass.css';
 import './mobile-reading-chamber-review.css';
 import './palace-mobile-overlap-repair.css';
 import './reader-layout-choices.css';
+import './reader-page-turn.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
@@ -709,6 +711,7 @@ function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo
  <Route path="/writing/:slug" element={<ProtectedRoute><WorkStudioLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/work/:slug" element={<WorkLive Frame={Frame}/>}/>
  <Route path="/work/:slug/chapter/:chapterId" element={<ChapterLive Frame={Frame}/>}/>
+ <Route path="/work/:slug/full" element={<FullWorkReader Frame={Frame}/>}/>
  <Route path="/palace-life" element={<ProtectedRoute><PalaceLifeLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/club/:slug" element={<ProtectedRoute><ClubLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/events" element={<EventsLive Frame={Frame}/>}/>
