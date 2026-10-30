@@ -9,7 +9,7 @@ import {filterPalaceDirectInbox,findPalaceChatMessages} from './palaceChatInboxM
 import {collectPalaceSharedMedia,groupPalaceSharedMedia} from './palaceChatSharedMedia';
 import {PALACE_READING_CIRCLE_PROMPTS,makePalaceCircleDraft} from './palaceReadingCirclePrompts';
 import './palace-chat-workspace.css';
-import {getMyProfile,getLetters,sendLetter,sendLetterPhoto,editLetterMessage,searchMembers,setConversationPreference} from './palaceData';
+import {getMyProfile,getLetters,getDirectConversationMessages,DIRECT_HISTORY_PAGE_SIZE,sendLetter,sendLetterPhoto,editLetterMessage,searchMembers,setConversationPreference} from './palaceData';
 import {createPalaceGroupChat,getPalaceGroupChatOverview,getPalaceGroupMessages,sendPalaceGroupMessage,sendPalaceGroupPhoto,editPalaceGroupMessage,respondPalaceGroupInvite,invitePalaceGroupMember,removePalaceGroupMember,leavePalaceGroupChat,setPalaceGroupMuted,markPalaceGroupRead,PALACE_GROUP_COLOURS,setPalaceGroupIdentity,pinPalaceGroupMessage,getPinnedPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
 import './palace-chat-drawer.css';
 import './palace-chat-groups.css';
@@ -50,6 +50,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  const[selectedDirect,setSelectedDirect]=useState(initialRoom?.tab==='direct'?initialRoom.roomId||'':'');
  const[selectedGroup,setSelectedGroup]=useState(initialRoom?.tab==='groups'?initialRoom.roomId||'':'');
  const[groupMessages,setGroupMessages]=useState({chatId:'',items:[]});
+ const[directHistory,setDirectHistory]=useState({roomId:'',items:[],hasOlder:false,loading:false});
  const[drafts,setDrafts]=useState({});
  const[busy,setBusy]=useState(false);
  const[liveStatus,setLiveStatus]=useState('polling');
@@ -93,6 +94,9 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  const holdRef=useRef(null);
  const actionMenuRef=useRef(null);
  const historyScrollRef=useRef(null);
+ const directScrollRef=useRef(null);
+ const selectedDirectRef=useRef(selectedDirect);
+ selectedDirectRef.current=selectedDirect;
  const exhaustedHistoryRef=useRef(new Set());
  const selectedGroupRef=useRef(selectedGroup);
  selectedGroupRef.current=selectedGroup;
@@ -102,7 +106,8 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  const activeGroup=groupData.groups.find(g=>g.id===selectedGroup);
  const active=tab==='direct'?activeDirect:activeGroup;
  const roomId=tab==='direct'?activeDirect?.conversation_id:activeGroup?.id;
- const messages=tab==='direct'?(direct?.messages||[]).filter(m=>m.conversation_id===roomId).slice().reverse():groupMessages.chatId===roomId?groupMessages.items:[];
+ const recentDirect=(direct?.messages||[]).filter(m=>m.conversation_id===roomId);
+ const messages=tab==='direct'?mergePalaceGroupMessages(recentDirect,directHistory.roomId===roomId?directHistory.items:[]):groupMessages.chatId===roomId?groupMessages.items:[];
  const latestMessage=messages[messages.length-1]||null;
  const latestMessageId=latestMessage?.id||'';
  const pinnedMessage=tab==='groups'&&activeGroup?.pinnedMessageId?(messages.find(m=>m.id===activeGroup.pinnedMessageId)||((pinnedPreview.chatId===roomId&&pinnedPreview.messageId===activeGroup.pinnedMessageId)?pinnedPreview.message:null)):null;
@@ -135,7 +140,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   return()=>{document.removeEventListener('keydown',onKey);window.clearTimeout(timer)};
  },[actionMenu]);
 
- useEffect(()=>{setOpen(Boolean(workspace));setThreadOpen(Boolean(initialRoom?.roomId));setTab(initialRoom?.tab==='groups'?'groups':'direct');setLoadingDirect(true);setDirect(null);setGroupData({groups:[],invitations:[]});setSelectedDirect(initialRoom?.tab==='direct'?initialRoom.roomId||'':'');setSelectedGroup(initialRoom?.tab==='groups'?initialRoom.roomId||'':'');setGroupMessages({chatId:'',items:[]});setNewWhileAway(false);setLiveStatus('polling');lastAcknowledgedRef.current={roomId:'',messageId:''};setReplyTarget(null);setStorySharing(false);setShowCirclePrompts(false);setPinnedPreview({chatId:'',messageId:'',message:null});setDrafts({});setError('');setNotice('');setCreating(false);setManaging(false);setSearch('');setUnreadOnly(false);setStarredOnly(false);setShowArchived(false);setMessageSearch('');setSearchWithinThread(false);setShowSharedMedia(false);setMediaFilter('all');setHistoryLoading(false);setHasOlder(false);historyScrollRef.current=null;exhaustedHistoryRef.current.clear()},[userId,workspace]);
+ useEffect(()=>{setOpen(Boolean(workspace));setThreadOpen(Boolean(initialRoom?.roomId));setTab(initialRoom?.tab==='groups'?'groups':'direct');setLoadingDirect(true);setDirect(null);setGroupData({groups:[],invitations:[]});setSelectedDirect(initialRoom?.tab==='direct'?initialRoom.roomId||'':'');setSelectedGroup(initialRoom?.tab==='groups'?initialRoom.roomId||'':'');setGroupMessages({chatId:'',items:[]});setDirectHistory({roomId:'',items:[],hasOlder:false,loading:false});setNewWhileAway(false);setLiveStatus('polling');lastAcknowledgedRef.current={roomId:'',messageId:''};setReplyTarget(null);setStorySharing(false);setShowCirclePrompts(false);setPinnedPreview({chatId:'',messageId:'',message:null});setDrafts({});setError('');setNotice('');setCreating(false);setManaging(false);setSearch('');setUnreadOnly(false);setStarredOnly(false);setShowArchived(false);setMessageSearch('');setSearchWithinThread(false);setShowSharedMedia(false);setMediaFilter('all');setHistoryLoading(false);setHasOlder(false);historyScrollRef.current=null;directScrollRef.current=null;exhaustedHistoryRef.current.clear()},[userId,workspace]);
  useEffect(()=>{
   if(!userId)return;
   let alive=true;
@@ -175,6 +180,19 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   const timer=window.setInterval(()=>{if(document.visibilityState==='visible')refresh()},60000);
   return()=>{alive=false;window.clearInterval(timer)};
  },[open,tab,selectedGroup]);
+ // Load selected direct thread independently from its limited inbox preview.
+ useEffect(()=>{
+  if(!open||tab!=='direct'||!selectedDirect){setDirectHistory({roomId:'',items:[],hasOlder:false,loading:false});return}
+  let alive=true;const id=selectedDirect;
+  setDirectHistory({roomId:id,items:[],hasOlder:false,loading:true});
+  getDirectConversationMessages(userId,id,DIRECT_HISTORY_PAGE_SIZE).then(rows=>{
+   if(alive&&selectedDirectRef.current===id)
+    setDirectHistory({roomId:id,items:rows,hasOlder:rows.length===DIRECT_HISTORY_PAGE_SIZE,loading:false});
+  }).catch(e=>{
+   if(alive&&selectedDirectRef.current===id){setDirectHistory({roomId:id,items:[],hasOlder:false,loading:false});setError('Earlier direct messages could not be loaded. '+errorText(e))}
+  });
+  return()=>{alive=false};
+ },[open,tab,selectedDirect,userId]);
  // RLS-protected live events wake a fresh fetch. Polling remains a fallback
  // when a connection is lost or an older client cannot subscribe.
  useEffect(()=>{
@@ -252,6 +270,13 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   el.scrollTop=Math.max(0,el.scrollHeight-anchor.height+anchor.top);
   historyScrollRef.current=null;
  },[groupMessages]);
+ useLayoutEffect(()=>{
+  const anchor=directScrollRef.current;
+  if(!anchor||anchor.roomId!==directHistory.roomId)return;
+  const el=messageRef.current;if(!el)return;
+  el.scrollTop=Math.max(0,el.scrollHeight-anchor.height+anchor.top);
+  directScrollRef.current=null;
+ },[directHistory]);
  useEffect(()=>{const update=()=>setQuiet(document.body.classList.contains('reader-focus-mode')||document.body.classList.contains('writer-focus-mode'));update();const obs=new MutationObserver(update);obs.observe(document.body,{attributes:true,attributeFilter:['class']});return()=>obs.disconnect()},[]);
  useEffect(()=>{const handle=e=>{if(e.key!=='Escape'||!open)return;if(actionMenu){setActionMenu(null)}else if(creating){setCreating(false)}else if(managing){setManaging(false)}else if(threadOpen){setThreadOpen(false)}else if(!workspace)setOpen(false)};window.addEventListener('keydown',handle);return()=>window.removeEventListener('keydown',handle)},[open,creating,managing,threadOpen,actionMenu,workspace]);
  if(!userId||dataOwner!==userId)return null;
@@ -299,6 +324,23 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   }catch(e){
    if(selectedGroupRef.current===chatId){historyScrollRef.current=null;setError(errorText(e))}
   }finally{if(selectedGroupRef.current===chatId)setHistoryLoading(false)}
+ }
+ async function loadOlderDirectMessages(){
+  if(tab!=='direct'||!roomId||directHistory.loading||!directHistory.hasOlder||!messages.length)return;
+  const id=roomId,cursor=oldestPalaceGroupMessage(messages);if(!cursor)return;
+  const el=messageRef.current;
+  if(el)directScrollRef.current={roomId:id,height:el.scrollHeight,top:el.scrollTop};
+  scrollPinned.current=false;
+  setDirectHistory(d=>d.roomId===id?{...d,loading:true}:d);
+  setError('');
+  try{
+   const rows=await getDirectConversationMessages(userId,id,DIRECT_HISTORY_PAGE_SIZE,cursor);
+   if(selectedDirectRef.current!==id)return;
+   setDirectHistory(d=>d.roomId===id?{roomId:id,items:mergePalaceGroupMessages(d.items,rows),hasOlder:rows.length===DIRECT_HISTORY_PAGE_SIZE,loading:false}:d);
+   if(!rows.length)directScrollRef.current=null;
+  }catch(e){
+   if(selectedDirectRef.current===id){directScrollRef.current=null;setDirectHistory(d=>d.roomId===id?{...d,loading:false}:d);setError('Earlier messages could not be loaded. '+errorText(e))}
+  }
  }
  function insertChatEmoji(emoji){
   if(!roomId)return;
@@ -639,6 +681,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   <div>{PALACE_READING_CIRCLE_PROMPTS.map(prompt=><button type="button" key={prompt.id} onClick={()=>{setDraft(makePalaceCircleDraft(prompt.text,currentDraft));setShowCirclePrompts(false);composerRef.current?.focus()}}><small>{prompt.category}</small><span>{prompt.text}</span></button>)}</div>
  </section>}
      {tab==='groups'&&storySharing&&<section className="palace-chat-share-shelf" aria-label="Share a published Palace story"><form onSubmit={findStories}><input aria-label="Find a published story to share" placeholder="Search published story titles…" value={storyQuery} onChange={e=>setStoryQuery(e.target.value)} minLength={2} maxLength={90}/><button disabled={busy||storyQuery.trim().length<2}>Find</button></form><div>{storyResults.map(w=><button type="button" key={w.id} disabled={busy} onClick={()=>shareStory(w)}><strong>{w.title}</strong><small>Share with this circle ↗</small></button>)}</div><small>Only published Palace stories can be shared.</small></section>}
+     {tab==='direct'&&directHistory.roomId===roomId&&directHistory.hasOlder&&messages.length>0&&<div className="palace-chat-earlier"><button type="button" onClick={loadOlderDirectMessages} disabled={directHistory.loading} aria-label="Load earlier direct messages">{directHistory.loading?'Gathering earlier letters…':'↑ Earlier direct messages'}</button></div>}
      {tab==='groups'&&hasOlder&&messages.length>0&&<div className="palace-chat-earlier"><button type="button" onClick={loadOlderGroupMessages} disabled={historyLoading} aria-label="Load earlier group messages">{historyLoading?'Gathering earlier messages…':'↑ Earlier messages'}</button></div>}
      {active&&threadOpen&&showSharedMedia&&<section className="palace-chat-shared-media" aria-label="Shared media in this conversation">
        <header><div><strong>Shared in this conversation</strong><small>{sharedMedia.length} items from currently loaded messages</small></div><button type="button" aria-label="Close shared media panel" onClick={()=>setShowSharedMedia(false)}>×</button></header>
