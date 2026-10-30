@@ -16,14 +16,14 @@
    grid-template-rows:minmax(42px,auto)!important;
    min-height:42px!important;
  }
- /* A multi-row toolbar sitting underneath a sticky mobile shell hides the
-    chapter. It belongs to the document flow, immediately above the editor. */
+ /* The bar stays within reach for the entire chapter, but only its small
+    controls remain visible until the writer opens the tool drawer. */
  body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar{
-   position:relative!important;
-   top:auto!important;
+   position:sticky!important;
+   top:58px!important;
+   inset-block-start:58px!important;
    bottom:auto!important;
-   inset-block-start:auto!important;
-   z-index:1!important;
+   z-index:19!important;
    box-shadow:0 4px 12px rgba(10,12,30,.15)!important;
    margin-bottom:.45rem!important;
    max-width:100%!important;
@@ -153,4 +153,173 @@
 @media(prefers-reduced-motion:reduce){
  body.writing-desk-open .manuscript-sticky-toolbar,
  body.writing-desk-open .chic-editor-form>.chic-studio-buttons{transition:none!important}
+}
+
+/* Writer-requested mobile ergonomics: a persistent retractable formatting
+ * drawer and a page-width manuscript, not a narrow book page inside a card.
+ * The actual contenteditable, autosave and publishing logic remain intact. */
+.writer-mobile-tools-strip{display:none}
+@media(max-width:760px){
+ body.writing-desk-open .full-stage>main,
+ body.writing-desk-open .palace-main-stage{
+  max-width:100%!important;
+  width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+  padding-left:6px!important;
+  padding-right:6px!important;
+ }
+ body.writing-desk-open .legacy-editor-page{
+  max-width:none!important;
+  width:100%!important;
+  min-width:0!important;
+  margin-inline:0!important;
+  padding-left:0!important;
+  padding-right:0!important;
+  box-sizing:border-box!important;
+ }
+ body.writing-desk-open .writing-studio-grid,
+ body.writing-desk-open .writing-studio-grid.rail-collapsed{
+  display:block!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  max-width:none!important;
+  width:100%!important;
+  min-width:0!important;
+  margin-inline:0!important;
+  padding-inline:0!important;
+  gap:0!important;
+  box-sizing:border-box!important;
+ }
+ body.writing-desk-open .writing-studio-grid>.writing-editor-workspace,
+ body.writing-desk-open .writing-studio-grid.rail-collapsed>.writing-editor-workspace,
+ body.writing-desk-open .chic-editor-form{
+  display:block!important;
+  max-width:none!important;
+  width:100%!important;
+  min-width:0!important;
+  margin-inline:0!important;
+  padding-inline:0!important;
+  box-sizing:border-box!important;
+ }
+ body.writing-desk-open .chic-editor-form>.writing-page-stage,
+ body.writing-desk-open .chic-editor-form>.manuscript-sheet-frame{
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:6px 0 18px!important;
+  box-sizing:border-box!important;
+ }
+ body.writing-desk-open .chic-editor-form>.manuscript-sheet-frame .legacy-writing-canvas{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+  margin:0!important;
+  padding:clamp(18px,4vw,28px) clamp(12px,3.8vw,21px) 72px!important;
+  overflow-wrap:break-word!important;
+  word-break:normal!important;
+ }
+ body.writing-desk-open .manuscript-sheet-heading{
+  max-width:100%!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+ }
+ body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar{
+  position:sticky!important;
+  top:58px!important;
+  inset-block-start:58px!important;
+  z-index:19!important;
+  overflow:visible!important;
+  box-sizing:border-box!important;
+  max-height:calc(100dvh - 76px);
+  padding:.3rem .35rem!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-mobile-tools-strip{
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr) auto!important;
+  align-items:center!important;
+  gap:.35rem!important;
+  min-width:0!important;
+  width:100%!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-mobile-tools-toggle,
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-mobile-save-now{
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  min-height:41px!important;
+  min-width:0!important;
+  padding:.45rem .65rem!important;
+  border-radius:10px!important;
+  border:1px solid rgba(194,175,245,.35)!important;
+  background:rgba(104,84,168,.30)!important;
+  color:#f4ebff!important;
+  font-size:.76rem!important;
+  font-weight:700!important;
+  white-space:nowrap;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-mobile-save-state{
+  min-width:0!important;
+  font-size:.66rem!important;
+  line-height:1.32!important;
+  color:#d7e6ec!important;
+  overflow-wrap:anywhere!important;
+  text-align:center;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar :is(.writer-mobile-tools-toggle,.writer-mobile-save-now):focus-visible{
+  outline:2px solid #b6eae5!important;
+  outline-offset:2px!important;
+ }
+ /* Collapsed state leaves only a 41px Tools strip visible while the reader
+    scrolls; the rich controls are not destroyed, only visually retracted. */
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="false"]>:not(.writer-mobile-tools-strip){
+  display:none!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"]{
+  overflow-y:auto!important;
+  overscroll-behavior-y:contain;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"]>:not(.writer-mobile-tools-strip){
+  min-width:0!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"] .writer-format-navigator{
+  width:100%!important;
+  max-width:100%!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-toolbar-utilities{
+  min-width:0!important;
+ }
+ body.writing-desk-open .manuscript-sheet-frame .legacy-writing-canvas :is(p,li,blockquote){
+  max-width:100%!important;
+ }
+ /* Both site chrome and the chapter tools remain usable when focus mode hides
+    the fixed Palace header. */
+ body.focus-editor.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar,
+ body.writing-desk-open .focus-editor .chic-editor-form>.manuscript-sticky-toolbar{
+  top:0!important;
+  inset-block-start:0!important;
+ }
+ body.daylight.writing-desk-open .manuscript-sticky-toolbar :is(.writer-mobile-tools-toggle,.writer-mobile-save-now),
+ .daylight body.writing-desk-open .manuscript-sticky-toolbar :is(.writer-mobile-tools-toggle,.writer-mobile-save-now){
+  color:#483562!important;
+  background:#f1eafb!important;
+  border-color:#c5b3e2!important;
+ }
+ body.daylight.writing-desk-open .manuscript-sticky-toolbar .writer-mobile-save-state,
+ .daylight body.writing-desk-open .manuscript-sticky-toolbar .writer-mobile-save-state{
+  color:#45385f!important;
+ }
+}
+@media(max-width:400px){
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-mobile-tools-strip{
+  gap:.2rem!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-mobile-tools-toggle,
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-mobile-save-now{
+  padding:.4rem .4rem!important;
+  font-size:.7rem!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-mobile-save-state{font-size:.6rem!important}
 }
