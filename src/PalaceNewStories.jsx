@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom';
 import {configured,supabase} from './supabase';
 import './palace-home-stories.css';
 import StoryRatingBadge from './StoryRatingBadge';
+import PalaceLaunchStart from './PalaceLaunchStart';
+import {palaceStoryPath} from './palaceLaunchDiscovery';
 
 /** An honest, chronological public shelf—not a popularity ranking. */
 export default function PalaceNewStories(){
@@ -16,18 +18,20 @@ export default function PalaceNewStories(){
   async function load(){
    try{
     const{data,error}=await supabase.from('works')
-     .select('id,title,slug,summary,rating,cover_url,last_published_at,profiles!works_author_id_fkey(username,display_name)')
+     .select('id,title,slug,summary,rating,work_type,completion_status,publication_status,visibility,cover_url,last_published_at,profiles!works_author_id_fkey(username,display_name)')
      .eq('publication_status','published')
-     .order('last_published_at',{ascending:false}).limit(4);
+     .eq('visibility','public')
+     .order('last_published_at',{ascending:false}).limit(16);
     if(!active)return;
     if(error)throw error;
-    setWorks((data||[]).filter(w=>w.slug));setStatus('ready');
+    setWorks((data||[]).filter(w=>w.slug&&w.publication_status==='published'&&w.visibility==='public'));setStatus('ready');
    }catch{if(active)setStatus('error')}
   }
   load();
   return()=>{active=false};
  },[]);
  return <section className={'home-live-worlds palace-first-shelf home-shelf-'+view} aria-label="Newly published stories">
+  <PalaceLaunchStart status={status} works={works}/>
   <div className="section-heading"><div><p className="eyebrow">NEWLY OPENED WORLDS</p>
    <h2>Fresh from the Reading Rooms.</h2>
    <p>Newly published stories, ready for your next reading break.</p>
@@ -48,7 +52,7 @@ export default function PalaceNewStories(){
   {status==='ready'&&works.length>0&&<>
    <div className="home-shelf-toolbar"><span>Newest publications</span><div role="group" aria-label="Story shelf layout"><button type="button" aria-pressed={view==='covers'} onClick={()=>chooseView('covers')}>Covers</button><button type="button" aria-pressed={view==='list'} onClick={()=>chooseView('list')}>List</button></div></div>
    <div className="home-world-grid">
-   {works.map(w=><Link to={'/work/'+w.slug} key={w.id}>
+   {works.slice(0,4).map(w=><Link to={palaceStoryPath(w.slug)} key={w.id}>
     <div className="home-world-cover palace-rating-anchor">{w.cover_url?<img loading="lazy" decoding="async" src={w.cover_url} alt=""/>:<span aria-hidden="true">☾<b>✦</b></span>}<StoryRatingBadge rating={w.rating}/></div>
     <div><small>{w.last_published_at?new Date(w.last_published_at).toLocaleDateString(undefined,{month:'short',day:'numeric'}):'New'}</small>
      <h3>{w.title}</h3><p>{w.summary||'Enter this world to begin reading.'}</p>
