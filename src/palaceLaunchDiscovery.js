@@ -8,7 +8,7 @@ export function choosePalaceStartingStory(works=[]) {
   w && w.slug && w.title && typeof w.summary==='string' && w.summary.trim() &&
   w.publication_status==='published' && w.visibility==='public' &&
   w.completion_status==='complete' &&
-  w.rating==='general' && ['original','poetry'].includes(w.work_type)
+  w.rating==='general' && ['original','poetry','fanwork'].includes(w.work_type)
  );
  // Existing query is chronological. Keep that order; don't invent statistics.
  return candidates[0]||null;
