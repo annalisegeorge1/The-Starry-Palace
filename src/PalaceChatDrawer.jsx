@@ -307,6 +307,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  },[directHistory]);
  useEffect(()=>{const update=()=>setQuiet(document.body.classList.contains('reader-focus-mode')||document.body.classList.contains('writer-focus-mode'));update();const obs=new MutationObserver(update);obs.observe(document.body,{attributes:true,attributeFilter:['class']});return()=>obs.disconnect()},[]);
  useEffect(()=>{const handle=e=>{if(e.key!=='Escape'||!open)return;if(actionMenu){setActionMenu(null)}else if(conversationOptionsOpen){setConversationOptionsOpen(false);conversationOptionsRef.current?.querySelector('button')?.focus()}else if(creating){setCreating(false)}else if(managing){setManaging(false)}else if(threadOpen){setThreadOpen(false)}else if(!workspace)setOpen(false)};window.addEventListener('keydown',handle);return()=>window.removeEventListener('keydown',handle)},[open,creating,managing,threadOpen,actionMenu,conversationOptionsOpen,workspace]);
+ useEffect(()=>{if(!threadOpen||!open)setConversationOptionsOpen(false)},[threadOpen,open]);
  useEffect(()=>{
   if(!conversationOptionsOpen)return;
   const dismiss=e=>{if(!conversationOptionsRef.current?.contains(e.target))setConversationOptionsOpen(false)};
