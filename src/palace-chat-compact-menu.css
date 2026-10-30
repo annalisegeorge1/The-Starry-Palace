@@ -1,0 +1,105 @@
+/* Messenger conversation overflow menu — added last to prevent legacy
+   quick-chat controls from expanding into full-width mobile action grids. */
+.palace-chat-v2 .palace-chat-more-wrap{
+ position:relative!important;display:flex;align-items:center;flex:0 0 auto;
+ min-width:0;z-index:40;
+}
+.palace-chat-v2 .palace-chat-more-trigger{
+ width:43px!important;min-width:43px!important;height:43px!important;min-height:43px!important;
+ padding:0!important;display:grid!important;place-items:center!important;
+ border:1px solid var(--pc-line,rgba(192,168,242,.54))!important;
+ border-radius:12px!important;
+ color:var(--pc-ink,#faf7ff)!important;
+ background:linear-gradient(135deg,rgba(158,120,215,.28),rgba(77,147,197,.20))!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.12)!important;
+ cursor:pointer;
+}
+.palace-chat-v2 .palace-chat-more-trigger>span{
+ font:700 1.6rem/1 system-ui,sans-serif!important;
+ transform:translateY(-4px);letter-spacing:2px;
+}
+.palace-chat-v2 .palace-chat-more-trigger[aria-expanded=true]{
+ border-color:rgba(174,213,240,.85)!important;
+ background:linear-gradient(130deg,rgba(149,110,224,.48),rgba(71,147,201,.34))!important;
+}
+.palace-chat-v2 .palace-chat-options-dropdown{
+ position:absolute!important;top:calc(100% + 10px)!important;right:0!important;left:auto!important;
+ width:min(288px,calc(100vw - 24px))!important;max-width:calc(100vw - 24px)!important;
+ max-height:min(410px,calc(100dvh - 156px))!important;overflow-y:auto!important;overflow-x:hidden!important;
+ display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:3px!important;
+ padding:9px!important;margin:0!important;border:1px solid var(--pc-line,rgba(191,166,238,.6))!important;
+ border-radius:17px!important;
+ background:var(--pc-elevated,#252442)!important;
+ color:var(--pc-ink,#f7f3ff)!important;
+ box-shadow:0 20px 50px rgba(6,8,27,.36),inset 0 1px 0 rgba(255,255,255,.12)!important;
+ isolation:isolate;z-index:150!important;
+ overscroll-behavior:contain;
+ scrollbar-width:thin;
+}
+.palace-chat-v2 .palace-chat-options-label{
+ display:block!important;padding:7px 10px 3px!important;margin:0!important;
+ color:var(--pc-muted,#cfc5e5)!important;
+ font:700 .62rem/1.25 system-ui,sans-serif!important;letter-spacing:.13em!important;
+}
+.palace-chat-v2 .palace-chat-options-divider{
+ display:block!important;height:1px!important;min-height:1px!important;flex:none!important;
+ background:var(--pc-line,rgba(181,160,231,.27))!important;margin:5px 7px!important;
+}
+.palace-chat-v2 .palace-chat-options-dropdown> :is(button,a){
+ display:flex!important;align-items:center!important;justify-content:flex-start!important;
+ flex:0 0 auto!important;gap:12px!important;
+ min-width:0!important;width:100%!important;min-height:42px!important;height:auto!important;
+ padding:9px 11px!important;margin:0!important;border-radius:10px!important;
+ background:transparent!important;border:1px solid transparent!important;
+ color:var(--pc-ink,#f7f3ff)!important;
+ box-sizing:border-box!important;box-shadow:none!important;
+ font:600 .83rem/1.35 system-ui,sans-serif!important;text-align:left!important;
+ text-decoration:none!important;white-space:normal!important;cursor:pointer;
+}
+.palace-chat-v2 .palace-chat-options-dropdown> :is(button,a):hover,
+.palace-chat-v2 .palace-chat-options-dropdown> :is(button,a):focus-visible{
+ background:linear-gradient(110deg,rgba(149,113,206,.32),rgba(66,141,191,.16))!important;
+ border-color:rgba(190,170,242,.35)!important;
+}
+.palace-chat-v2 .palace-chat-options-dropdown> :is(button,a)[aria-pressed=true]{
+ background:linear-gradient(110deg,rgba(149,113,206,.24),rgba(66,141,191,.13))!important;
+}
+.palace-chat-v2 .palace-chat-options-dropdown> :is(button,a)>span[aria-hidden]{
+ width:20px!important;min-width:20px!important;font-size:1.05rem!important;
+ text-align:center!important;opacity:.92!important;
+}
+.palace-chat-v2 .palace-chat-options-dropdown>button:disabled{opacity:.45!important;cursor:wait!important}
+.palace-chat-v2 .palace-chat-more-trigger:focus-visible,
+.palace-chat-v2 .palace-chat-options-dropdown :is(button,a):focus-visible{
+ outline:3px solid #b8dfff!important;outline-offset:2px!important;
+}
+@media(max-width:720px){
+ /* Conversation controls belong behind the three dots. The message thread
+    regains the space previously occupied by seven oversized action buttons. */
+ .palace-chat-v2.palace-chat-dock.is-open.is-thread-open .palace-chat-heading{
+  z-index:100!important;overflow:visible!important;
+ }
+ .palace-chat-v2.is-thread-open .palace-chat-heading>.palace-chat-help,
+ .palace-chat-v2.is-thread-open .palace-chat-header-actions>.palace-chat-expand,
+ .palace-chat-v2.is-thread-open .palace-chat-header-actions>button[aria-pressed]{
+  display:none!important;
+ }
+ .palace-chat-v2.is-thread-open .palace-chat-header-actions{gap:7px!important}
+ .palace-chat-v2.is-thread-open .palace-chat-more-trigger{
+  width:42px!important;min-width:42px!important;height:42px!important;min-height:42px!important;
+ }
+ .palace-chat-v2.is-thread-open .palace-chat-options-dropdown{
+  width:min(276px,calc(100vw - 22px))!important;
+  max-height:min(370px,calc(100dvh - 146px))!important;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open.is-thread-open>.palace-chat-panel>footer{
+  display:none!important;
+ }
+}
+@media(max-width:360px){
+ .palace-chat-v2 .palace-chat-options-dropdown{right:-44px!important}
+ .palace-chat-v2.is-thread-open .palace-chat-header-actions{gap:4px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-chat-v2 .palace-chat-more-trigger{transition:none!important}
+}
