@@ -18,7 +18,7 @@ export default function PalaceLaunchStart({works=[],status='ready'}){
     {start.cover_url?<img src={start.cover_url} alt="" loading="lazy" decoding="async"/>:<span aria-hidden="true">☾<small>✦</small></span>}
    </div>
    <div className="palace-launch-feature-body">
-    <p className="palace-launch-kicker">A FINISHED STORY TO BEGIN WITH · GENERAL AUDIENCES</p>
+    <p className="palace-launch-kicker">A FINISHED {start.work_type==='fanwork'?'FANWORK':'STORY'} TO BEGIN WITH · GENERAL AUDIENCES</p>
     <h3>{start.title}</h3>
     <p className="palace-launch-description">{start.summary}</p>
     <p className="palace-launch-author">By {start.profiles?.display_name||start.profiles?.username||'a Palace writer'}</p>
