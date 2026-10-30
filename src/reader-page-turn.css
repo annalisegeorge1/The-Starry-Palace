@@ -1,0 +1,40 @@
+/* Page turning is optional. Continuous scrolling remains default. */
+.reader-flow-select{display:flex!important;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem;min-width:0}
+.reader-flow-select>span{font-weight:700}
+.reader-flow-select>div{display:flex;gap:.4rem;flex-wrap:wrap}
+.reader-flow-select button{min-height:39px}
+.reader-full-work-link{display:inline-flex;align-items:center;justify-content:center;gap:.35rem;border:1px solid rgba(161,146,205,.45);padding:.48rem .75rem;border-radius:12px;color:inherit;text-decoration:none;background:rgba(142,112,201,.12);font-weight:700}
+.reader-full-work-link:focus-visible,.palace-page-nav button:focus-visible,.palace-page-viewport:focus-visible{outline:3px solid #a4dfec;outline-offset:3px}
+.reader-page.restored .palace-page-turn{max-width:100%;min-width:0;margin:1.2rem auto 2rem}
+.reader-page.restored.measure-narrow .palace-page-turn{max-width:min(710px,100%)}
+.reader-page.restored.measure-standard .palace-page-turn{max-width:min(950px,100%)}
+.reader-page.restored.measure-wide .palace-page-turn{max-width:100%}
+.reader-page.restored.layout-full .palace-page-turn{max-width:100%}
+.palace-page-viewport{width:100%;max-width:100%;overflow:hidden;position:relative;border:1px solid rgba(161,146,205,.4);border-radius:14px;background:rgba(126,102,184,.06);touch-action:pan-y}
+.palace-page-columns{height:var(--palace-page-height,68dvh);width:var(--palace-page-width,100%);column-width:var(--palace-page-width,100%);column-gap:0;column-fill:auto;box-sizing:border-box;padding:clamp(16px,3vw,35px);overflow:visible;transition:transform .2s ease;line-height:inherit}
+.palace-page-columns :is(h2,h3){break-after:avoid}
+.palace-page-columns p{break-inside:auto;margin:0 0 1.15em}
+.palace-page-columns :is(ul,ol,blockquote){break-inside:avoid}
+.palace-page-nav{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;margin:.75rem 0}
+.palace-page-nav button{border-radius:10px;min-height:42px;padding:.55rem .7rem;background:rgba(110,90,173,.18);border:1px solid rgba(158,140,209,.35);color:inherit}
+.palace-page-nav button:disabled{opacity:.4}
+.palace-page-nav span{font-size:.85rem;font-weight:700}
+.palace-page-hint{font-size:.78rem;opacity:.73;margin:.3rem 0 1.3rem}
+.palace-full-work-reader .palace-full-chapter{margin:1.6rem auto 3.2rem;max-width:min(1100px,100%);scroll-margin-top:80px}
+.palace-full-work-reader .palace-full-chapter>h2{margin:0 0 1rem;font-size:clamp(1.35rem,3vw,1.95rem);line-height:1.3}
+.palace-full-work-reader .palace-full-chapter .chapter-text{margin:0 auto;max-width:100%}
+.palace-full-work-reader .palace-full-chapter .chapter-text p{margin-bottom:1.25em}
+.palace-full-work-reader .palace-full-chapter-nav{display:flex;flex-wrap:wrap;gap:.4rem;padding:.75rem 0}
+.palace-full-work-reader .palace-full-chapter-nav a{border:1px solid rgba(160,146,204,.4);border-radius:9px;padding:.4rem .7rem;color:inherit}
+.palace-full-work-reader .palace-full-reader-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.55rem;margin:1rem 0}
+.palace-full-work-reader .palace-full-reader-actions select{min-width:0;max-width:100%}
+.palace-full-work-reader .palace-full-reader-heading{margin:1.1rem 0 1.8rem}
+.palace-full-work-reader .palace-full-reader-heading p{opacity:.8}
+.palace-full-work-reader .palace-full-reader-content{max-width:100%;min-width:0}
+.palace-full-work-reader .palace-page-columns .palace-full-chapter{break-before:column;max-width:none;margin:0;padding:0}
+.palace-full-work-reader .palace-page-columns .palace-full-chapter:first-child{break-before:auto}
+.palace-full-work-reader .palace-page-columns .palace-full-chapter .chapter-text{padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+@media(max-width:600px){.palace-page-columns{padding:14px}.palace-page-nav{gap:.35rem}.palace-page-nav button{padding:.4rem .55rem;font-size:.79rem}.palace-page-nav span{font-size:.74rem}.palace-full-work-reader .palace-full-chapter{margin-bottom:2.4rem}}
+@media(prefers-reduced-motion:reduce){.palace-page-columns{transition:none}}
+
+@media(min-width:920px){.palace-page-viewport.palace-page-spread::after{content:'';position:absolute;top:3%;bottom:3%;left:50%;border-left:1px solid rgba(155,138,200,.25);pointer-events:none}.palace-page-viewport.palace-page-spread .palace-page-columns{column-rule:1px solid rgba(155,138,200,.18)}}
