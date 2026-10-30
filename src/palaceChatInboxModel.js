@@ -4,7 +4,9 @@ const stamp=v=>{const n=Date.parse(v||'');return Number.isFinite(n)?n:0};
 export function filterPalaceDirectInbox(rows=[],query='',mode='all',previews=new Map()){
  const needle=fold(query);
  return (Array.isArray(rows)?rows:[]).filter(row=>{
-  if(!row||row.preference?.archived||row.conversations?.kind!=='direct')return false;
+  if(!row||row.conversations?.kind!=='direct')return false;
+  if(mode==='archived')return Boolean(row.preference?.archived)&&(!needle||[row.correspondent?.username,row.correspondent?.display_name,previews.get(row.conversation_id)?.text].map(fold).join(' ').includes(needle));
+  if(row.preference?.archived)return false;
   if(mode==='unread'&&!row.unread)return false;
   if(mode==='starred'&&!row.preference?.starred)return false;
   const details=[row.correspondent?.username,row.correspondent?.display_name,previews.get(row.conversation_id)?.text].map(fold).join(' ');

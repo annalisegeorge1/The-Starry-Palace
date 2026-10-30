@@ -4,12 +4,12 @@ import {act,cleanup,fireEvent,render,screen,waitFor,within} from '@testing-libra
 import {MemoryRouter} from 'react-router-dom';
 import PalaceChatDrawer from './PalaceChatDrawer';
 import {watchPalaceChatRoom} from './palaceChatRealtime';
-import {getLetters,sendLetter,searchMembers,editLetterMessage,setConversationPreference} from './palaceData';
+import {getLetters,getDirectConversationMessages,sendLetter,searchMembers,editLetterMessage,setConversationPreference,getMemberBoundary,setMemberBoundary,reportConversation,submitCommunityReport} from './palaceData';
 import {getPalaceGroupChatOverview,getPalaceGroupMessages,createPalaceGroupChat,respondPalaceGroupInvite,sendPalaceGroupMessage,editPalaceGroupMessage,setPalaceGroupIdentity,pinPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
 
 vi.mock('./palaceChatRealtime',()=>({watchPalaceChatRoom:vi.fn(()=>()=>{})}));
 vi.mock('./palaceData',()=>({
- getLetters:vi.fn(),sendLetter:vi.fn(),sendLetterPhoto:vi.fn(),editLetterMessage:vi.fn(),searchMembers:vi.fn(),setConversationPreference:vi.fn().mockResolvedValue(undefined)
+ getLetters:vi.fn(),getDirectConversationMessages:vi.fn(),DIRECT_HISTORY_PAGE_SIZE:60,sendLetter:vi.fn(),sendLetterPhoto:vi.fn(),editLetterMessage:vi.fn(),searchMembers:vi.fn(),setConversationPreference:vi.fn().mockResolvedValue(undefined),getMemberBoundary:vi.fn(),setMemberBoundary:vi.fn(),reportConversation:vi.fn(),submitCommunityReport:vi.fn()
 }));
 vi.mock('./palaceGroupChatData',()=>({
  getPalaceGroupChatOverview:vi.fn(),getPalaceGroupMessages:vi.fn(),createPalaceGroupChat:vi.fn(),
@@ -26,6 +26,11 @@ function mount(){return render(<MemoryRouter><PalaceChatDrawer userId={user}/></
 beforeEach(()=>{
  vi.clearAllMocks();
  getLetters.mockResolvedValue(direct);
+ getDirectConversationMessages.mockResolvedValue([]);
+ getMemberBoundary.mockResolvedValue({muted:false,blocked:false});
+ setMemberBoundary.mockResolvedValue({muted:false,blocked:true});
+ reportConversation.mockResolvedValue({id:'report-test'});
+ submitCommunityReport.mockResolvedValue({id:'group-report-test'});
  getPalaceGroupChatOverview.mockResolvedValue(groups);
  getPalaceGroupMessages.mockResolvedValue([{id:'m1',chat_id:'group-one',sender_id:'member-two',body:'Welcome to the circle',created_at:'2026-10-08T13:00:00Z',profiles:{display_name:'River'}}]);
  searchMembers.mockResolvedValue([{id:'member-three',username:'nightwind',display_name:'Night Wind'}]);
@@ -45,10 +50,34 @@ describe('Palace quick chat',()=>{
   expect(screen.getByRole('link',{name:'Open the full Palace Messenger page'}).getAttribute('href')).toBe('/chat');
   expect(screen.getByText('Palace Chat')).toBeTruthy();
   fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  expect(screen.queryByRole('group',{name:'Conversation tools'})).toBeNull();
+  expect(document.querySelector('.palace-chat-thread-actions')).toBeNull();
+  fireEvent.click(screen.getByRole('button',{name:'More conversation options'}));
   const tools=screen.getByRole('group',{name:'Conversation tools'});
   expect(within(tools).getByRole('link',{name:'Switch to full Palace Messenger'}).getAttribute('href')).toBe('/chat');
   expect(within(tools).getByRole('button',{name:'Search messages in this conversation'})).toBeTruthy();
   expect(within(tools).getByRole('button',{name:'Add conversation to favourites'})).toBeTruthy();
+ });
+ it('closes compact options on Escape, outside tap and after selecting an action',async()=>{
+  mount();
+  fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  const more=screen.getByRole('button',{name:'More conversation options'});
+  expect(more.getAttribute('aria-expanded')).toBe('false');
+  fireEvent.click(more);
+  expect(more.getAttribute('aria-expanded')).toBe('true');
+  expect(screen.getByRole('group',{name:'Conversation tools'})).toBeTruthy();
+  fireEvent.keyDown(window,{key:'Escape'});
+  expect(screen.queryByRole('group',{name:'Conversation tools'})).toBeNull();
+  expect(screen.getByRole('button',{name:'Back to inbox'})).toBeTruthy();
+  fireEvent.click(more);
+  fireEvent.pointerDown(document.body);
+  expect(screen.queryByRole('group',{name:'Conversation tools'})).toBeNull();
+  fireEvent.click(more);
+  fireEvent.click(screen.getByRole('button',{name:'Show shared media'}));
+  expect(screen.queryByRole('group',{name:'Conversation tools'})).toBeNull();
+  expect(more.getAttribute('aria-expanded')).toBe('false');
+  expect(screen.getByRole('region',{name:'Shared media in this conversation'})).toBeTruthy();
  });
  it('opens the full Messenger directly without showing a second quick launcher',async()=>{
   render(<MemoryRouter><PalaceChatDrawer userId={user} workspace/></MemoryRouter>);
@@ -63,12 +92,61 @@ describe('Palace quick chat',()=>{
   const link=await screen.findByRole('link',{name:'Open full Palace Messenger'});
   expect(link.getAttribute('href')).toBe('/chat');
  });
+ it('confirms member blocking and disables direct-message sending until unblocked',async()=>{
+  const confirm=vi.spyOn(window,'confirm').mockReturnValue(true);
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(screen.getByRole('button',{name:'More conversation options'}));
+  fireEvent.click(screen.getByRole('button',{name:'Conversation safety tools'}));
+  fireEvent.click(screen.getByRole('button',{name:'Block this member'}));
+  await waitFor(()=>expect(setMemberBoundary).toHaveBeenCalledWith(user,'member-two',{muted:false,blocked:true}));
+  expect(screen.getByText(/You blocked this member/)).toBeTruthy();
+  fireEvent.change(screen.getByRole('textbox',{name:'Write a private message'}),{target:{value:'Hello'}});
+  expect(screen.getByRole('button',{name:/Send/}).disabled).toBe(true);
+  confirm.mockRestore();
+ });
+ it('reports a private conversation through the existing Council moderation workflow',async()=>{
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(screen.getByRole('button',{name:'More conversation options'}));
+  fireEvent.click(screen.getByRole('button',{name:'Conversation safety tools'}));
+  fireEvent.change(screen.getByRole('textbox',{name:'Reason for reporting this conversation'}),{target:{value:'Repeated unwanted contact'}});
+  fireEvent.click(screen.getByRole('button',{name:'Submit report'}));
+  await waitFor(()=>expect(reportConversation).toHaveBeenCalledWith(user,'direct-one','member-two','Repeated unwanted contact'));
+  expect(screen.getByText(/Report submitted to Palace moderators/)).toBeTruthy();
+ });
+ it('mutes a direct conversation using the existing member preference without removing its messages',async()=>{
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(screen.getByRole('button',{name:'More conversation options'}));
+  fireEvent.click(screen.getByRole('button',{name:'Mute this conversation'}));
+  await waitFor(()=>expect(setConversationPreference).toHaveBeenCalledWith(user,'direct-one',expect.objectContaining({muted:true,archived:false})));
+  fireEvent.click(screen.getByRole('button',{name:'More conversation options'}));
+  expect(screen.getByRole('button',{name:'Unmute this conversation'})).toBeTruthy();
+  expect(screen.getByRole('log',{name:'Conversation messages'})).toBeTruthy();
+ });
+ it('archives a direct conversation and restores it from the archived inbox',async()=>{
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(screen.getByRole('button',{name:'More conversation options'}));
+  fireEvent.click(screen.getByRole('button',{name:'Archive this conversation'}));
+  await waitFor(()=>expect(setConversationPreference).toHaveBeenCalledWith(user,'direct-one',expect.objectContaining({archived:true})));
+  expect(screen.queryByRole('button',{name:'River'})).toBeNull();
+  fireEvent.click(screen.getByRole('button',{name:/Archived \(1\)/}));
+  const restore=screen.getByRole('button',{name:'Restore archived conversation with River'});
+  fireEvent.click(restore);
+  await waitFor(()=>expect(setConversationPreference).toHaveBeenLastCalledWith(user,'direct-one',expect.objectContaining({archived:false})));
+  fireEvent.click(screen.getByRole('button',{name:/Archived/}));
+  expect(screen.getByRole('button',{name:'River'})).toBeTruthy();
+ });
  it('stars a direct conversation and filters favourites from existing private records',async()=>{
   getLetters.mockResolvedValue({...direct,conversations:[direct.conversations[0]]});
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
   fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(screen.getByRole('button',{name:'More conversation options'}));
   fireEvent.click(screen.getByRole('button',{name:'Add conversation to favourites'}));
   await waitFor(()=>expect(setConversationPreference).toHaveBeenCalledWith(user,'direct-one',expect.objectContaining({starred:true,archived:false})));
+  fireEvent.click(screen.getByRole('button',{name:'More conversation options'}));
   await screen.findByRole('button',{name:'Remove conversation from favourites'});
   fireEvent.click(screen.getByRole('button',{name:'Back to inbox'}));
   fireEvent.click(screen.getByRole('button',{name:/Favourites/}));
@@ -90,6 +168,7 @@ describe('Palace quick chat',()=>{
   getLetters.mockResolvedValue({...direct,messages:[{id:'moon-note',conversation_id:'direct-one',sender_id:'member-two',body:'The Moonlit Orchard',created_at:'2026-10-21T12:00:00Z'}]});
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
   fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(screen.getByRole('button',{name:'More conversation options'}));
   fireEvent.click(screen.getByRole('button',{name:'Search messages in this conversation'}));
   fireEvent.change(screen.getByRole('searchbox',{name:'Find in loaded messages'}),{target:{value:'moonlit'}});
   expect(screen.getByText('1 matching loaded message')).toBeTruthy();
@@ -100,11 +179,13 @@ describe('Palace quick chat',()=>{
   getLetters.mockResolvedValue({...direct,messages:[{id:'gallery-note',conversation_id:'direct-one',sender_id:'member-two',body:'A normal private note',created_at:'2026-10-21T12:00:00Z'}]});
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
   fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(screen.getByRole('button',{name:'More conversation options'}));
   fireEvent.click(screen.getByRole('button',{name:'Show shared media'}));
   expect(screen.getByRole('region',{name:'Shared media in this conversation'})).toBeTruthy();
   expect(screen.getByText(/No shared items in the messages loaded here/)).toBeTruthy();
   fireEvent.click(screen.getByRole('button',{name:'Photos'}));
   expect(screen.getByText(/No photos in the messages loaded here/)).toBeTruthy();
+  fireEvent.click(screen.getByRole('button',{name:'More conversation options'}));
   fireEvent.click(screen.getByRole('button',{name:'Search messages in this conversation'}));
   expect(screen.queryByRole('region',{name:'Shared media in this conversation'})).toBeNull();
   expect(screen.getByRole('searchbox',{name:'Find in loaded messages'})).toBeTruthy();
@@ -243,6 +324,37 @@ describe('Palace quick chat',()=>{
   fireEvent.click(screen.getByRole('button',{name:'Clear filters'}));
   expect(screen.getByRole('button',{name:/Quiet Writers/})).toBeTruthy();
  });
+ it('quotes a direct message in the draft without sending or inventing a linked reply',async()=>{
+  getLetters.mockResolvedValue({...direct,messages:[{
+   id:'quote-one',conversation_id:'direct-one',sender_id:'member-two',
+   body:'We will meet at the palace',created_at:'2026-10-20T12:00:00Z',status:'active'
+  }]});
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.contextMenu(screen.getByRole('log',{name:'Conversation messages'}).querySelector('[data-chat-message="quote-one"]'));
+  fireEvent.click(screen.getByRole('menuitem',{name:'Quote in draft'}));
+  expect(screen.getByRole('textbox',{name:'Write a private message'}).value).toContain('↩ Quoting River: “We will meet at the palace”');
+  expect(sendLetter).not.toHaveBeenCalled();
+  expect(screen.getByText(/text quote, not a linked reply/)).toBeTruthy();
+ });
+ it('loads and retains older direct messages beyond the inbox preview',async()=>{
+  const recent=Array.from({length:60},(_,index)=>({
+   id:'dm-'+index,conversation_id:'direct-one',sender_id:'member-two',body:'Private letter '+index,
+   created_at:new Date(Date.UTC(2026,9,12,12,0,index)).toISOString(),status:'active'
+  }));
+  const older=[{id:'original-letter',conversation_id:'direct-one',sender_id:'member-two',
+   body:'A much older private note',created_at:'2026-10-11T09:00:00.000Z',status:'active'}];
+  getDirectConversationMessages.mockImplementation((member,id,limit,before)=>Promise.resolve(before?older:recent));
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(await screen.findByRole('button',{name:'Load earlier direct messages'}));
+  expect(await screen.findByText('A much older private note')).toBeTruthy();
+  expect(getDirectConversationMessages).toHaveBeenCalledWith(user,'direct-one',60,recent[0].created_at);
+  const connection=watchPalaceChatRoom.mock.calls.find(call=>call[1]?.kind==='direct')?.[1];
+  await act(async()=>{await connection.onChange()});
+  expect(screen.getByText('A much older private note')).toBeTruthy();
+  expect(screen.queryByRole('button',{name:'Load earlier direct messages'})).toBeNull();
+ });
  it('loads earlier group messages, preserves them on a fresh live fetch and stops at history end',async()=>{
   const latest=Array.from({length:100},(_,index)=>({
    id:'recent-'+index,chat_id:'group-one',sender_id:'member-two',
@@ -292,6 +404,20 @@ describe('Palace quick chat',()=>{
   await screen.findByText('Poetry Circle');
   fireEvent.click(screen.getByRole('button',{name:'Join'}));
   await waitFor(()=>expect(respondPalaceGroupInvite).toHaveBeenCalledWith('group-invite',true));
+ });
+ it('submits an explicit private group-message report with message evidence metadata',async()=>{
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(screen.getByRole('button',{name:/Groups/}));
+  await screen.findByText('Welcome to the circle');
+  fireEvent.contextMenu(screen.getByText('Welcome to the circle').closest('.palace-chat-bubble'));
+  fireEvent.click(screen.getByRole('menuitem',{name:'Report message'}));
+  fireEvent.change(screen.getByRole('textbox',{name:'Reason for reporting group message'}),{target:{value:'Repeated harassment'}});
+  expect(submitCommunityReport).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole('button',{name:'Send group report'}));
+  await waitFor(()=>expect(submitCommunityReport).toHaveBeenCalledWith(user,'member','member-two','Repeated harassment',{
+   chat_id:'group-one',message_id:'m1',context:'private_group_message'
+  }));
+  expect(screen.getByText(/Group-message report submitted/)).toBeTruthy();
  });
  it('replies to a specific group message and clears the reply after sending',async()=>{
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));

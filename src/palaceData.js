@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import {PALACE_CHAT_V3_ENABLED} from './palaceChatV3';
 import {INITIAL_FANDOM_DIRECTORY} from './palaceFandomCatalogue';
 
 function needClient(){if(!supabase) throw new Error('The Palace data connection is not configured.');return supabase}
@@ -762,7 +763,7 @@ export async function getLetters(userId){
  const ids=conversations.map(x=>x.conversation_id);
  let messages=[];
  if(ids.length){
-  const r=await needClient().from('messages').select('id,conversation_id,sender_id,body,created_at,edited_at,media_path,status').in('conversation_id',ids).eq('status','active').order('created_at',{ascending:false}).limit(100);
+  const r=await needClient().from('messages').select('id,conversation_id,sender_id,body,created_at,edited_at,media_path,status'+(PALACE_CHAT_V3_ENABLED?',reply_to_id':'')).in('conversation_id',ids).eq('status','active').order('created_at',{ascending:false}).limit(100);
   if(r.error)throw r.error;
   messages=r.data||[];
  }
@@ -792,7 +793,35 @@ export async function getLetters(userId){
   messages
  }
 }
-export async function sendLetter(userId,conversationId,body){const text=body.trim();if(!text)throw new Error('Your letter is empty.');const{data,error}=await needClient().from('messages').insert({conversation_id:conversationId,sender_id:userId,body:text}).select().single();if(error)throw error;return data}
+/** Fetch one direct thread in RLS-restricted pages, not the 100-message
+ * cross-conversation inbox preview. Explicit active membership is checked
+ * before requesting any message rows. */
+export const DIRECT_HISTORY_PAGE_SIZE=60;
+export async function getDirectConversationMessages(userId,conversationId,limit=DIRECT_HISTORY_PAGE_SIZE,before=null){
+ if(!userId||!conversationId)throw new Error('Select a private conversation first.');
+ const bounded=Math.max(1,Math.min(80,Number(limit)||DIRECT_HISTORY_PAGE_SIZE));
+ const membership=await needClient().from('conversation_members')
+  .select('conversation_id').eq('conversation_id',conversationId).eq('user_id',userId).is('left_at',null).maybeSingle();
+ if(membership.error)throw membership.error;
+ if(!membership.data)throw new Error('This private conversation is not available to your account.');
+ let request=needClient().from('messages')
+  .select('id,conversation_id,sender_id,body,created_at,edited_at,media_path,status'+(PALACE_CHAT_V3_ENABLED?',reply_to_id':''))
+  .eq('conversation_id',conversationId).eq('status','active');
+ if(before){
+  if(!Number.isFinite(Date.parse(before)))throw new Error('Invalid conversation history position.');
+  request=request.lt('created_at',before);
+ }
+ const response=await request.order('created_at',{ascending:false}).limit(bounded);
+ if(response.error)throw response.error;
+ return (response.data||[]).reverse();
+}
+export async function sendLetter(userId,conversationId,body,options={}){
+ const text=String(body||'').trim();if(!text)throw new Error('Your letter is empty.');
+ const row={conversation_id:conversationId,sender_id:userId,body:text};
+ if(PALACE_CHAT_V3_ENABLED&&options.replyToId)row.reply_to_id=options.replyToId;
+ const{data,error}=await needClient().from('messages').insert(row).select().single();
+ if(error)throw error;return data;
+}
 export async function sendLetterPhoto(userId,conversationId,mediaPath,caption=''){
  const text=String(caption||'').trim();
  if(text.length>3000)throw new Error('Photo caption is too long.');
@@ -814,7 +843,7 @@ export async function requestPalaceLetter(userId,recipientId,introText=''){
  const text=introText.trim();const{data,error}=await needClient().from('message_requests').insert({sender_id:userId,recipient_id:recipientId,intro_text:text||'A Palace member would like to begin a correspondence.'}).select('id,status,conversation_id,recipient_id,created_at').single();if(error)throw error;return data
 }
 export async function reportConversation(userId,conversationId,reportedUserId,reason){
- const text=reason.trim();if(!text)throw new Error('Tell the Council what happened first.');const{data,error}=await needClient().from('conversation_reports').insert({reporter_id:userId,conversation_id:conversationId,reported_user_id:reportedUserId,reason:text,status:'open'}).select().single();if(error)throw error;return data
+ const text=reason.trim();if(!text)throw new Error('Tell the Council what happened first.');const{data,error}=await needClient().from('conversation_reports').insert({reporter_id:userId,conversation_id:conversationId,reported_user_id:reportedUserId,reason:text,status:'submitted'}).select().single();if(error)throw error;return data
 }
 
 export async function submitCommunityReport(userId,targetKind,targetId,reason,evidence={}){

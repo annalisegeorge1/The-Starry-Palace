@@ -39,7 +39,7 @@ describe('Palace Chat professional visual finish',()=>{
   expect(style).toContain('.palace-chat-v2 .palace-chat-bubble.mine');
   expect(style).toContain('.palace-chat-v2 .palace-chat-compose .palace-chat-send');
   expect(view).toContain('className="palace-chat-send"');
-  expect(view).toContain('disabled={busy||!currentDraft.trim()}');
+  expect(view).toContain('disabled={busy||!currentDraft.trim()||(tab===\'direct\'&&boundary.blocked)}');
  });
  it('matches Nightfall/Daylight and respects the phone viewport',()=>{
   expect(style).toContain('html[data-palace-theme="daylight"] .palace-chat-v2');
