@@ -792,6 +792,28 @@ export async function getLetters(userId){
   messages
  }
 }
+/** Fetch one direct thread in RLS-restricted pages, not the 100-message
+ * cross-conversation inbox preview. Explicit active membership is checked
+ * before requesting any message rows. */
+export const DIRECT_HISTORY_PAGE_SIZE=60;
+export async function getDirectConversationMessages(userId,conversationId,limit=DIRECT_HISTORY_PAGE_SIZE,before=null){
+ if(!userId||!conversationId)throw new Error('Select a private conversation first.');
+ const bounded=Math.max(1,Math.min(80,Number(limit)||DIRECT_HISTORY_PAGE_SIZE));
+ const membership=await needClient().from('conversation_members')
+  .select('conversation_id').eq('conversation_id',conversationId).eq('user_id',userId).is('left_at',null).maybeSingle();
+ if(membership.error)throw membership.error;
+ if(!membership.data)throw new Error('This private conversation is not available to your account.');
+ let request=needClient().from('messages')
+  .select('id,conversation_id,sender_id,body,created_at,edited_at,media_path,status')
+  .eq('conversation_id',conversationId).eq('status','active');
+ if(before){
+  if(!Number.isFinite(Date.parse(before)))throw new Error('Invalid conversation history position.');
+  request=request.lt('created_at',before);
+ }
+ const response=await request.order('created_at',{ascending:false}).limit(bounded);
+ if(response.error)throw response.error;
+ return (response.data||[]).reverse();
+}
 export async function sendLetter(userId,conversationId,body){const text=body.trim();if(!text)throw new Error('Your letter is empty.');const{data,error}=await needClient().from('messages').insert({conversation_id:conversationId,sender_id:userId,body:text}).select().single();if(error)throw error;return data}
 export async function sendLetterPhoto(userId,conversationId,mediaPath,caption=''){
  const text=String(caption||'').trim();
