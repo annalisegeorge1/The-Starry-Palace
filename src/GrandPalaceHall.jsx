@@ -1,6 +1,7 @@
 import {WriterAward,PalaceBanner} from './PaintedPalaceArt';
 import './grand-palace-emblems.css';
 import PalaceEmblem from './PalaceEmblem';
+import PalaceGlowIcon from './PalaceGlowIcon';
 import React,{useEffect,useState} from 'react';
 import{Link,useSearchParams}from'react-router-dom';
 import GrandPalaceExpansion from './GrandPalaceExpansion';
@@ -44,11 +45,11 @@ export default function GrandPalaceHall({Frame}){
  <section className="grand-your-court"><div className="grand-court-banner"><PalaceBanner palace={mine}/></div><div className="grand-my-crest"><PalaceEmblem palace={mine} size={67} decorative/></div><div><p className="eyebrow">YOUR PERMANENT GRAND PALACE</p><h2>{mine?.name}</h2><p>{mine?.motto}</p><small>Your contribution this quarter: <b>{Number(data.my_contribution||0)} verified points</b>. A maximum of 30 points per member per UTC day counts toward the race.</small></div><Link to="/chamber" className="button-moonstone">Your chamber →</Link></section>
  
  <nav className="grand-palace-tabs" aria-label="Explore Grand Palace rooms">
- <button type="button" key="overview" aria-pressed={tab==='overview'} className={'grand-palace-tab '+(tab==='overview'?'active':'')} onClick={()=>goTab('overview')}><span className="grand-palace-tab-icon" aria-hidden="true">✧</span><span className="grand-palace-tab-copy"><strong>Palace Home</strong><small>Your welcome hall</small></span></button>
-<button type="button" key="courts" aria-pressed={tab==='courts'} className={'grand-palace-tab '+(tab==='courts'?'active':'')} onClick={()=>goTab('courts')}><span className="grand-palace-tab-icon" aria-hidden="true">☾</span><span className="grand-palace-tab-copy"><strong>The Courts</strong><small>Lore & regalia</small></span></button>
-<button type="button" key="arts" aria-pressed={tab==='arts'} className={'grand-palace-tab '+(tab==='arts'?'active':'')} onClick={()=>goTab('arts')}><span className="grand-palace-tab-icon" aria-hidden="true">✦</span><span className="grand-palace-tab-copy"><strong>Palace Arts</strong><small>Create & explore</small></span></button>
-<button type="button" key="commons" aria-pressed={tab==='commons'} className={'grand-palace-tab '+(tab==='commons'?'active':'')} onClick={()=>goTab('commons')}><span className="grand-palace-tab-icon" aria-hidden="true">♧</span><span className="grand-palace-tab-copy"><strong>Common Room</strong><small>Friends & tidings</small></span></button>
-<button type="button" key="treasury" aria-pressed={tab==='treasury'} className={'grand-palace-tab '+(tab==='treasury'?'active':'')} onClick={()=>goTab('treasury')}><span className="grand-palace-tab-icon" aria-hidden="true">♛</span><span className="grand-palace-tab-copy"><strong>Royal Treasury</strong><small>Honours & prizes</small></span></button>
+ <button type="button" key="overview" aria-pressed={tab==='overview'} className={'grand-palace-tab '+(tab==='overview'?'active':'')} onClick={()=>goTab('overview')}><PalaceGlowIcon name="star-home" tone="home" size="mini" className="grand-palace-tab-icon"/><span className="grand-palace-tab-copy"><strong>Palace Home</strong><small>Your welcome hall</small></span></button>
+<button type="button" key="courts" aria-pressed={tab==='courts'} className={'grand-palace-tab '+(tab==='courts'?'active':'')} onClick={()=>goTab('courts')}><PalaceGlowIcon name="moon-court" tone="courts" size="mini" className="grand-palace-tab-icon"/><span className="grand-palace-tab-copy"><strong>The Courts</strong><small>Lore & regalia</small></span></button>
+<button type="button" key="arts" aria-pressed={tab==='arts'} className={'grand-palace-tab '+(tab==='arts'?'active':'')} onClick={()=>goTab('arts')}><PalaceGlowIcon name="creative-star" tone="arts" size="mini" className="grand-palace-tab-icon"/><span className="grand-palace-tab-copy"><strong>Palace Arts</strong><small>Create & explore</small></span></button>
+<button type="button" key="commons" aria-pressed={tab==='commons'} className={'grand-palace-tab '+(tab==='commons'?'active':'')} onClick={()=>goTab('commons')}><PalaceGlowIcon name="tea-cup" tone="common" size="mini" className="grand-palace-tab-icon"/><span className="grand-palace-tab-copy"><strong>Common Room</strong><small>Friends & tidings</small></span></button>
+<button type="button" key="treasury" aria-pressed={tab==='treasury'} className={'grand-palace-tab '+(tab==='treasury'?'active':'')} onClick={()=>goTab('treasury')}><PalaceGlowIcon name="vault" tone="treasury" size="mini" className="grand-palace-tab-icon"/><span className="grand-palace-tab-copy"><strong>Royal Treasury</strong><small>Honours & prizes</small></span></button>
  </nav>
  <div className="grand-palace-room" key={tab}>
  {tab==='overview'&&<>
