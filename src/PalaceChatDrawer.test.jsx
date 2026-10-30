@@ -4,12 +4,12 @@ import {act,cleanup,fireEvent,render,screen,waitFor,within} from '@testing-libra
 import {MemoryRouter} from 'react-router-dom';
 import PalaceChatDrawer from './PalaceChatDrawer';
 import {watchPalaceChatRoom} from './palaceChatRealtime';
-import {getLetters,getDirectConversationMessages,sendLetter,searchMembers,editLetterMessage,setConversationPreference} from './palaceData';
+import {getLetters,getDirectConversationMessages,sendLetter,searchMembers,editLetterMessage,setConversationPreference,getMemberBoundary,setMemberBoundary,reportConversation} from './palaceData';
 import {getPalaceGroupChatOverview,getPalaceGroupMessages,createPalaceGroupChat,respondPalaceGroupInvite,sendPalaceGroupMessage,editPalaceGroupMessage,setPalaceGroupIdentity,pinPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
 
 vi.mock('./palaceChatRealtime',()=>({watchPalaceChatRoom:vi.fn(()=>()=>{})}));
 vi.mock('./palaceData',()=>({
- getLetters:vi.fn(),getDirectConversationMessages:vi.fn(),DIRECT_HISTORY_PAGE_SIZE:60,sendLetter:vi.fn(),sendLetterPhoto:vi.fn(),editLetterMessage:vi.fn(),searchMembers:vi.fn(),setConversationPreference:vi.fn().mockResolvedValue(undefined)
+ getLetters:vi.fn(),getDirectConversationMessages:vi.fn(),DIRECT_HISTORY_PAGE_SIZE:60,sendLetter:vi.fn(),sendLetterPhoto:vi.fn(),editLetterMessage:vi.fn(),searchMembers:vi.fn(),setConversationPreference:vi.fn().mockResolvedValue(undefined),getMemberBoundary:vi.fn(),setMemberBoundary:vi.fn(),reportConversation:vi.fn()
 }));
 vi.mock('./palaceGroupChatData',()=>({
  getPalaceGroupChatOverview:vi.fn(),getPalaceGroupMessages:vi.fn(),createPalaceGroupChat:vi.fn(),
@@ -27,6 +27,9 @@ beforeEach(()=>{
  vi.clearAllMocks();
  getLetters.mockResolvedValue(direct);
  getDirectConversationMessages.mockResolvedValue([]);
+ getMemberBoundary.mockResolvedValue({muted:false,blocked:false});
+ setMemberBoundary.mockResolvedValue({muted:false,blocked:true});
+ reportConversation.mockResolvedValue({id:'report-test'});
  getPalaceGroupChatOverview.mockResolvedValue(groups);
  getPalaceGroupMessages.mockResolvedValue([{id:'m1',chat_id:'group-one',sender_id:'member-two',body:'Welcome to the circle',created_at:'2026-10-08T13:00:00Z',profiles:{display_name:'River'}}]);
  searchMembers.mockResolvedValue([{id:'member-three',username:'nightwind',display_name:'Night Wind'}]);
@@ -63,6 +66,27 @@ describe('Palace quick chat',()=>{
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
   const link=await screen.findByRole('link',{name:'Open full Palace Messenger'});
   expect(link.getAttribute('href')).toBe('/chat');
+ });
+ it('confirms member blocking and disables direct-message sending until unblocked',async()=>{
+  const confirm=vi.spyOn(window,'confirm').mockReturnValue(true);
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(screen.getByRole('button',{name:'Conversation safety tools'}));
+  fireEvent.click(screen.getByRole('button',{name:'Block this member'}));
+  await waitFor(()=>expect(setMemberBoundary).toHaveBeenCalledWith(user,'member-two',{muted:false,blocked:true}));
+  expect(screen.getByText(/You blocked this member/)).toBeTruthy();
+  fireEvent.change(screen.getByRole('textbox',{name:'Write a private message'}),{target:{value:'Hello'}});
+  expect(screen.getByRole('button',{name:/Send/}).disabled).toBe(true);
+  confirm.mockRestore();
+ });
+ it('reports a private conversation through the existing Council moderation workflow',async()=>{
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(screen.getByRole('button',{name:'Conversation safety tools'}));
+  fireEvent.change(screen.getByRole('textbox',{name:'Reason for reporting this conversation'}),{target:{value:'Repeated unwanted contact'}});
+  fireEvent.click(screen.getByRole('button',{name:'Submit report'}));
+  await waitFor(()=>expect(reportConversation).toHaveBeenCalledWith(user,'direct-one','member-two','Repeated unwanted contact'));
+  expect(screen.getByText(/Report submitted to Palace moderators/)).toBeTruthy();
  });
  it('mutes a direct conversation using the existing member preference without removing its messages',async()=>{
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
