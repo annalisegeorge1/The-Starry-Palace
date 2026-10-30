@@ -9,11 +9,12 @@ import './palace-icons.css';
 const shapes={
  'book-open':<><path d="M12 6.5c-2.8-2.2-6-2.7-9-2v14c3-.7 6.2-.2 9 2 2.8-2.2 6-2.7 9-2v-14c-3-.7-6.2-.2-9 2Z"/><path d="M12 6.5v14"/></>,
  'library':<><path d="M4 4.5v15M9 4.5v15M14 5.5v14M19 3.5l2 16"/><path d="M2 20.5h20M3.2 8h7M14 10h7"/></>,
- 'pen-line':<><path d="m4 20 4.5-1 10.6-10.6-3.5-3.5L5 15.5 4 20Z"/><path d="m13.8 6.7 3.5 3.5M4 20h16"/></>,
+ 'pen-line':<><path d="M9 19V5a3 3 0 0 1 6 0v14l-3 3-3-3Z"/><path d="M9 8h6M11 19h2"/></>, 
  'panels':<><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16M3 12h9M12 9h9"/></>,
+ 'comic-book':<><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16M5.2 7.5h4.4v4.5H8l-1.6 1.4V12H5.2V7.5ZM14.5 8h4M14.5 11h4M14.5 15h3.5"/></>, 
  'calendar':<><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M7 14h3M14 14h3M7 18h3"/></>,
  'crown':<><path d="m3 8 4.5 4L12 5l4.5 7L21 8l-2 11H5L3 8Z"/><path d="M5 19h14M8 15h8"/></>,
- 'history':<><path d="M3.5 10a9 9 0 1 1 1 7"/><path d="M3.5 4v6h6M12 7.5V13l3.5 2.5"/></>,
+ 'history':<><path d="M4 9a8.5 8.5 0 1 1 .9 7.5"/><path d="M4 4v5h5M12 7.5V12l3 2"/></>, 
  'moon':<path d="M20.5 14.8A8.5 8.5 0 0 1 9.2 3.5 8.5 8.5 0 1 0 20.5 14.8Z"/>,
  'sparkles':<><path d="m12 2 1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9L12 2ZM20 18l.7 1.3L22 20l-1.3.7L20 22l-.7-1.3L18 20l1.3-.7L20 18Z"/></>,
  'shuffle':<><path d="M3 7h3c4 0 5 10 10 10h5"/><path d="m17.5 13.5 3.5 3.5-3.5 3.5M3 17h3c2.2 0 3.5-2.3 4.7-4.4M13.2 9.1C14 7.8 14.8 7 16 7h5M17.5 3.5 21 7l-3.5 3.5"/></>,
@@ -55,7 +56,7 @@ const shapes={
 };
 const routeNames=[
  [/^\/writing/, 'pen-line'], [/^\/reading|^\/work\/|^\/fandoms/,'book-open'],
- [/^\/comics\/studio/,'panels'], [/^\/comics/,'image'],
+ [/^\/comics\/studio/,'comic-book'], [/^\/comics/,'image'],
  [/^\/library\?tab=history/,'history'], [/^\/library/,'library'],
  [/^\/events|^\/calendar/,'calendar'], [/^\/treasury/,'crown'],
  [/^\/tags/,'tags'], [/^\/search/,'search'],
