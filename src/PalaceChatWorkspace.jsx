@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link,useLocation} from 'react-router-dom';
 import {useAuth} from './auth';
 import PalaceChatDrawer from './PalaceChatDrawer';
 import './palace-chat-workspace.css';
@@ -8,6 +8,8 @@ import './palace-chat-workspace.css';
    No second storage system, no duplicate subscriptions, and no new privileges. */
 export default function PalaceChatWorkspace(){
  const {session}=useAuth();
+ const location=useLocation();
+ const initialRoom=location.state?.palaceChat?.roomId?location.state.palaceChat:null;
  if(!session?.user?.id)return null;
  return <section className="palace-chat-workspace-page" aria-label="Palace Messenger">
   <header className="palace-chat-workspace-intro">
@@ -19,7 +21,7 @@ export default function PalaceChatWorkspace(){
     <Link to="/palace-life">Palace Life</Link>
    </nav>
   </header>
-  <PalaceChatDrawer key={session.user.id} userId={session.user.id} workspace/>
+  <PalaceChatDrawer key={session.user.id} userId={session.user.id} workspace initialRoom={initialRoom}/>
   <p className="palace-chat-workspace-privacy">Direct messages and invitation-only circles remain subject to each member’s permissions. Message search covers only the messages currently loaded in your browser.</p>
  </section>;
 }
