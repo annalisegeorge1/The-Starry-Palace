@@ -1,10 +1,20 @@
 import PalaceEmblem from './PalaceEmblem';
+import PalaceGlowIcon from './PalaceGlowIcon';
 import React,{useEffect,useState} from 'react';
 import{Link}from'react-router-dom';
 import{getGrandPalaceCeremonyHall}from'./ceremonyApi';
 import{loreForPalace}from'./grandPalaceLore';
 import{CEREMONY_STAGES,ceremonyStage,nextCeremonyStage,ceremonyProgress,ceremonyOrnaments,ceremonyQuarterLabel}from'./grandPalaceCeremony';
 import './grand-palace-ceremony.css';
+
+const CEREMONY_ICON_NAMES={
+ 'Founding Crest':'founding-crest',
+ 'Awakened Court':'awakened-star',
+ 'Starlit Court':'starlit-moon',
+ 'Regal Court':'regal-crown',
+ 'Sovereign Constellation':'sovereign-constellation'
+};
+const CEREMONY_TONES=['courts','silver','courts','gold','treasury'];
 
 function LegacyStandard({court,large=false}){
  const lore=loreForPalace(court),stage=ceremonyStage(court.average_points),
@@ -35,7 +45,7 @@ export default function GrandPalaceCeremony({myPalaceId=null}){
  return <section id="grand-legacy" className="grand-ceremony" aria-labelledby="grand-ceremony-title">
    <header className="grand-ceremony-head"><div><p className="eyebrow">THE ROYAL ARCHIVES · A LIVING LEGACY</p><h2 id="grand-ceremony-title">The Hall of Celestial Standards</h2>
    <p>Each Palace earns its regalia through verified creation. Every quarterly victory leaves a permanent star around its crest—even when a new season begins.</p></div>
-   <span className="grand-ceremony-seal" aria-hidden="true">✧ ♛ ☾</span></header>
+   <span className="grand-ceremony-seal" aria-hidden="true"><PalaceGlowIcon name="celestial-star" tone="silver" size="mini"/><PalaceGlowIcon name="vault-crown" tone="treasury" size="small"/><PalaceGlowIcon name="crescent-moon" tone="courts" size="mini"/></span></header>
    {error&&<p role="alert" className="grand-notice error">{error}</p>}
    {!data&&!error&&<p className="grand-ceremony-loading" role="status">Opening the royal archives…</p>}
    {data&&<><div className="grand-ceremony-gallery" role="group" aria-label="Choose a Grand Palace's historic banner">
@@ -64,19 +74,19 @@ export default function GrandPalaceCeremony({myPalaceId=null}){
       </div>
     </section>}
    <div className="grand-ceremony-path">{CEREMONY_STAGES.map((stage,i)=><article key={stage.name} className={'grand-ceremony-tier '+(level.min>=stage.min?'achieved':'')}>
-     <span aria-hidden="true">{stage.glyph}</span><strong>{stage.name}</strong><small>{stage.min.toLocaleString()} points per member</small>
+     <PalaceGlowIcon name={CEREMONY_ICON_NAMES[stage.name]||'ceremony-sigil'} tone={CEREMONY_TONES[i]||'courts'} size="small" className="grand-ceremony-tier-icon"/><strong>{stage.name}</strong><small>{stage.min.toLocaleString()} points per member</small>
    </article>)}</div>
    <section className="grand-legacy-chronicle"><div className="section-heading"><div><p className="eyebrow">THE BOOK OF SEASONS</p><h2>The Eternal Record · Hall of Champions</h2><p>Archived titles, winning courts and awarded top-ten placements. Recorded victories never reset.</p></div></div>
       {chronicle.length?<div className="grand-legacy-seasons">{chronicle.map(record=><article key={record.quarter_start}>
        <header><span aria-hidden="true">{record.winner_sigil}</span><div><small>{ceremonyQuarterLabel(record.quarter_start)} · THE VICTORIOUS COURT</small><h3>{record.winner_name}</h3><p>{Number(record.verified_points).toLocaleString()} verified season points</p></div></header>
        {(record.champions||[]).length>0&&<div className="grand-legacy-champions">{record.champions.map(champ=><Link to={'/member/'+encodeURIComponent(champ.username)} key={champ.username}>
-         {champ.avatar_url?<img src={champ.avatar_url} alt="" loading="lazy"/>:<span aria-hidden="true">♛</span>}
+         {champ.avatar_url?<img src={champ.avatar_url} alt="" loading="lazy"/>:<PalaceGlowIcon name="victory-laurel" tone="gold" size="mini"/>}
          <strong>{champ.display_name||champ.username}</strong><small>Rank {champ.rank} · {champ.box_tier} box</small>
        </Link>)}</div>}
-       </article>)}</div>:<div className="grand-legacy-empty"><span aria-hidden="true">☾</span><h3>The first star has not yet been set.</h3><p>The inaugural quarterly race is still underway. At settlement, its real winning court and qualifying champions will take their places in the archive.</p></div>}
+       </article>)}</div>:<div className="grand-legacy-empty"><PalaceGlowIcon name="crescent-moon" tone="courts" size="hero"/><h3>The first star has not yet been set.</h3><p>The inaugural quarterly race is still underway. At settlement, its real winning court and qualifying champions will take their places in the archive.</p></div>}
    </section>
    {laurels.length>0&&<section className="grand-legacy-laurels"><div className="section-heading"><div><p className="eyebrow">THE CONSTELLATION OF ACHIEVEMENT</p><h2>New Laurels</h2><p>Verified Platinum and Emerald achievements this season.</p></div></div>
-    <div>{laurels.map((x,i)=><Link to={'/member/'+encodeURIComponent(x.username)} key={x.username+'-'+x.achievement_name+'-'+i}><span aria-hidden="true">✦</span><strong>{x.display_name||x.username}</strong><small>{x.achievement_name} · {x.tier}</small></Link>)}</div>
+    <div>{laurels.map((x,i)=><Link to={'/member/'+encodeURIComponent(x.username)} key={x.username+'-'+x.achievement_name+'-'+i}><PalaceGlowIcon name="ceremony-sigil" tone="treasury" size="small"/><strong>{x.display_name||x.username}</strong><small>{x.achievement_name} · {x.tier}</small></Link>)}</div>
    </section>}
    </>}
  </section>;
