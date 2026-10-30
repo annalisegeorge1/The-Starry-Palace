@@ -74,3 +74,194 @@
   .community-pulse-row.social-pulse>button>.palace-icon{width:1.05rem;height:1.05rem}
   .palace-resume-card .resume-icon .palace-icon{width:1.35rem;height:1.35rem}
 }
+
+
+/* Pearl-lit indigo icon tiles — inspired by the site's established header
+   treatment, without modifying the header or the sidebar navigation.
+   Dark onyx-blue glass, a fine lilac rim, bevel light and bright linework. */
+.palace-shell{
+  --palace-glyph-white:#f7f5ff;
+  --palace-glyph-rim:rgba(185,174,235,.52);
+  --palace-glyph-rim-light:rgba(235,225,255,.29);
+  --palace-glyph-glass:linear-gradient(153deg,rgba(59,61,105,.91) 0%,rgba(28,34,66,.95) 53%,rgba(19,28,54,.99) 100%);
+  --palace-glyph-shadow:inset 0 1px 0 rgba(248,240,255,.17),inset 0 -1px 0 rgba(6,9,28,.39),0 3px 10px rgba(4,8,29,.25);
+}
+.palace-shell .palace-icon{
+  stroke:currentColor;
+  color:inherit;
+  filter:drop-shadow(0 0 1px rgba(255,255,255,.09));
+}
+.palace-shell :is(
+  .palace-home-shortcuts-calm>a>span,
+  .palace-resume-card .resume-icon,
+  .palace-hub-path-icon,
+  .prism-room-wayfinder-glyph,
+  .library-overview-shortcut-icon,
+  .palace-now-glyph,
+  .library-overview-start-mark,
+  .palace-chronicle-marker
+):has(>.palace-icon){
+  display:inline-grid!important;
+  place-items:center!important;
+  flex:0 0 auto!important;
+  width:42px!important;height:42px!important;
+  min-width:42px!important;min-height:42px!important;
+  padding:6px!important;
+  box-sizing:border-box!important;
+  border:1px solid var(--palace-glyph-rim)!important;
+  border-radius:13px!important;
+  background:var(--palace-glyph-glass)!important;
+  box-shadow:var(--palace-glyph-shadow)!important;
+  color:var(--palace-glyph-white)!important;
+  text-shadow:none!important;
+}
+.palace-shell :is(
+  .palace-home-shortcuts-calm>a>span,
+  .palace-resume-card .resume-icon,
+  .palace-hub-path-icon,
+  .prism-room-wayfinder-glyph,
+  .library-overview-shortcut-icon,
+  .palace-now-glyph,
+  .library-overview-start-mark,
+  .palace-chronicle-marker
+):has(>.palace-icon)>.palace-icon{
+  display:block!important;
+  width:23px!important;height:23px!important;
+  min-width:0!important;
+  color:#f6f4ff!important;
+  stroke-width:2.05!important;
+  filter:drop-shadow(0 0 2px rgba(219,211,255,.13));
+}
+.palace-shell .palace-home-shortcuts-calm>a:nth-child(-n+2)>span:has(>.palace-icon){
+  width:49px!important;height:49px!important;
+  min-width:49px!important;min-height:49px!important;
+  border-radius:15px!important;
+  background:linear-gradient(148deg,rgba(75,77,131,.95),rgba(28,36,74,.98))!important;
+}
+.palace-shell .palace-home-shortcuts-calm>a:nth-child(-n+2)>span>.palace-icon{
+  width:26px!important;height:26px!important;
+}
+.palace-shell .palace-home-shortcuts-calm>a:hover>span:has(>.palace-icon),
+.palace-shell .palace-hub-paths>a:hover .palace-hub-path-icon:has(>.palace-icon),
+.palace-shell .prism-room-wayfinder-link:hover .prism-room-wayfinder-glyph:has(>.palace-icon),
+.palace-shell .library-overview-shortcuts>a:hover .library-overview-shortcut-icon:has(>.palace-icon){
+  border-color:rgba(226,218,255,.82)!important;
+  box-shadow:inset 0 1px 0 rgba(252,247,255,.27),0 0 12px rgba(143,141,246,.18)!important;
+}
+.palace-shell .prism-room-wayfinder-glyph:has(>.palace-icon){
+  width:37px!important;height:37px!important;
+  min-width:37px!important;min-height:37px!important;
+  border-radius:11px!important;
+}
+.palace-shell .prism-room-wayfinder-glyph>.palace-icon{
+  width:20px!important;height:20px!important;
+}
+.palace-shell .palace-hub-path-icon:has(>.palace-icon),
+.palace-shell .library-overview-shortcut-icon:has(>.palace-icon){
+  width:41px!important;height:41px!important;
+  min-width:41px!important;min-height:41px!important;
+}
+.palace-shell .palace-hub-path-icon>.palace-icon,
+.palace-shell .library-overview-shortcut-icon>.palace-icon{
+  width:22px!important;height:22px!important;
+}
+.palace-shell .palace-moon-prompt .moon-prompt-mark:has(>.palace-icon){
+  display:grid!important;
+  place-items:center!important;
+  position:relative!important;
+  border:1px solid var(--palace-glyph-rim)!important;
+  border-radius:13px!important;
+  background:var(--palace-glyph-glass)!important;
+  box-shadow:var(--palace-glyph-shadow)!important;
+  color:var(--palace-glyph-white)!important;
+}
+.palace-shell .palace-moon-prompt .moon-prompt-mark>.palace-icon{
+  width:23px!important;height:23px!important;color:#f5f1ff!important;
+}
+.palace-shell .palace-moon-prompt .moon-prompt-mark>b>.palace-icon{
+  color:#d5c6fd!important;
+  width:10px!important;height:10px!important;
+}
+.palace-shell :is(.palace-journey-arrow,.palace-hub-path-arrow) .palace-icon{
+  color:#edeaff!important;stroke-width:2.2!important;
+}
+.palace-shell :is(.palace-emoji-toggle,.palace-chat-photo-toggle,.palace-chat-header-group-settings,.palace-calendar-icon):has(.palace-icon){
+  border:1px solid var(--palace-glyph-rim)!important;
+  border-radius:11px!important;
+  background:var(--palace-glyph-glass)!important;
+  color:#f7f4ff!important;
+  box-shadow:var(--palace-glyph-shadow)!important;
+}
+.palace-shell :is(.palace-emoji-toggle,.palace-chat-photo-toggle,.palace-chat-header-group-settings,.palace-calendar-icon) .palace-icon{
+  width:19px!important;height:19px!important;
+  color:#f7f4ff!important;
+  stroke-width:2!important;
+}
+.palace-shell :is(.palace-dialog .dialog-close,.chamber-art-arrange>button):has(>.palace-icon){
+  border:1px solid rgba(180,169,223,.28)!important;
+  border-radius:10px!important;
+  background:rgba(27,33,63,.64)!important;
+  color:#eeeaff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07)!important;
+}
+.palace-shell .community-pulse-row.social-pulse>button>.palace-icon{
+  color:#f4f1ff!important;
+  width:20px!important;height:20px!important;
+  padding:7px!important;
+  box-sizing:content-box!important;
+  border-radius:11px!important;
+  border:1px solid var(--palace-glyph-rim)!important;
+  background:var(--palace-glyph-glass)!important;
+  box-shadow:var(--palace-glyph-shadow)!important;
+}
+.palace-shell .manuscript-dashboard-pulse article>span:has(>.palace-icon),
+.palace-shell .manuscript-stage-cards article>span:has(>.palace-icon){
+  display:inline-grid!important;
+  place-items:center!important;
+  width:36px!important;height:36px!important;
+  min-width:36px!important;
+  padding:7px!important;
+  box-sizing:border-box!important;
+  border:1px solid var(--palace-glyph-rim)!important;
+  border-radius:11px!important;
+  background:var(--palace-glyph-glass)!important;
+  box-shadow:var(--palace-glyph-shadow)!important;
+}
+.palace-shell .manuscript-dashboard-pulse article>span>.palace-icon,
+.palace-shell .manuscript-stage-cards article>span>.palace-icon{
+  color:#f4f1ff!important;
+  width:20px!important;height:20px!important;
+}
+.palace-shell.daylight{
+  --palace-glyph-rim:rgba(117,104,167,.45);
+  --palace-glyph-glass:linear-gradient(150deg,#42446e 0%,#262d50 90%);
+  --palace-glyph-shadow:inset 0 1px 0 rgba(255,255,255,.23),0 3px 10px rgba(32,28,69,.18);
+}
+@media(max-width:760px){
+  .palace-shell .prism-room-wayfinder-glyph:has(>.palace-icon){
+    width:30px!important;height:30px!important;
+    min-width:30px!important;min-height:30px!important;
+    border-radius:10px!important;
+    padding:4px!important;
+  }
+  .palace-shell .prism-room-wayfinder-glyph>.palace-icon{
+    width:18px!important;height:18px!important;
+  }
+  .palace-shell .palace-home-shortcuts-calm>a:nth-child(n+3)>span:has(>.palace-icon){
+    width:36px!important;height:36px!important;
+    min-width:36px!important;min-height:36px!important;
+    padding:6px!important;
+    border-radius:11px!important;
+  }
+  .palace-shell .palace-home-shortcuts-calm>a:nth-child(n+3)>span>.palace-icon{
+    width:20px!important;height:20px!important;
+  }
+  .palace-shell .palace-resume-card .resume-icon:has(>.palace-icon){
+    width:46px!important;height:46px!important;
+    min-width:46px!important;min-height:46px!important;
+  }
+  .palace-shell .prism-room-wayfinder-link{gap:8px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .palace-shell :is(.palace-home-shortcuts-calm,.library-overview-shortcuts) .palace-icon{transition:none!important}
+}
