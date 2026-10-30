@@ -445,10 +445,15 @@ export function ReadingLive({Frame}){
  // The database has already filtered and ordered the ENTIRE archive.
  const advancedFiltered=advancedResults;
  return <Frame><PrismWayfinder active="reading"/><section data-reading-layout={readingChoices.layout} className={"legacy-reading-page chic-reading-page"+(advancedView?' advanced-search-mode':'')}>
-  <section className="legacy-reading-intro chic-reading-intro"><p className="eyebrow">FIND YOUR NEXT WORLD</p><h1>{advancedView?'Search with precision. Wander with style.':'Stories first. Filters when you need them.'}</h1><p>{advancedView?'Build a constellation with text, include and exclude tags, rating, status and origin—without leaving the Reading Rooms.':'All Stories brings the Palace together. Original Fiction includes creator-owned work and readable Palace Classics, while Fandom remains clearly separate.'}</p></section>
+  <section className="legacy-reading-intro chic-reading-intro reading-intro-calm"><p className="eyebrow">FIND YOUR NEXT WORLD</p><h1>{advancedView?'Search with precision. Wander with style.':'Stories first. Filters when you need them.'}</h1><p>{advancedView?'Build a constellation with text, include and exclude tags, rating, status and origin—without leaving the Reading Rooms.':'All Stories brings the Palace together. Original Fiction includes creator-owned work and readable Palace Classics, while Fandom remains clearly separate.'}</p></section>
   {!session&&<GuestReadingInvitation returnTo="/reading" context="discover"/>}
-  <nav className="reading-mode-tabs" aria-label="Reading discovery views"><Link aria-current={!advancedView&&readingChoices.discoveryMode==='browse'?'page':undefined} className={!advancedView&&readingChoices.discoveryMode==='browse'?'active':''} to="/reading" onClick={()=>setReadingChoice('discoveryMode','browse')}>Stories</Link><Link aria-current={!advancedView&&readingChoices.discoveryMode==='discover'?'page':undefined} className={!advancedView&&readingChoices.discoveryMode==='discover'?'active':''} to="/reading" onClick={()=>setReadingChoice('discoveryMode','discover')}>Discover</Link><Link aria-current={advancedView?'page':undefined} className={advancedView?'active':''} to="/reading?view=search">Advanced search</Link><Link to="/tags">Tags room</Link></nav>
-  <div className="legacy-work-kind-tabs chic-reading-kind-tabs three-way" aria-label="Reading room type"><button aria-pressed={origin==='all'} className={origin==='all'?'active':''} onClick={()=>setOrigin('all')}><span>All Stories</span><small>Member fiction, fandom & Palace Classics</small></button><button aria-pressed={origin==='original'} className={origin==='original'?'active':''} onClick={()=>setOrigin('original')}><span>Original Fiction</span><small>Creator-owned worlds & readable classics</small></button><button aria-pressed={origin==='fandom'} className={origin==='fandom'?'active':''} onClick={()=>setOrigin('fandom')}><span>Fandom</span><small>Transformative & fan works</small></button></div>
+  <nav className="reading-unified-tabs" aria-label="Browse by story type">
+    <button type="button" aria-pressed={origin==='all'} className={origin==='all'?'active':''} onClick={()=>setOrigin('all')}>All Stories</button>
+    <button type="button" aria-pressed={origin==='original'} className={origin==='original'?'active':''} onClick={()=>setOrigin('original')}>Original Fiction</button>
+    <button type="button" aria-pressed={origin==='fandom'} className={origin==='fandom'?'active':''} onClick={()=>setOrigin('fandom')}>Fandom</button>
+    <Link className={advancedView?'active':''} aria-current={advancedView?'page':undefined} to="/reading?view=search">Advanced Search</Link>
+    <details className="reading-extra-views"><summary>Explore ▾</summary><div><Link to="/reading" onClick={()=>setReadingChoice('discoveryMode','browse')}>Stories</Link><Link to="/reading" onClick={()=>setReadingChoice('discoveryMode','discover')}>Discover</Link><Link to="/tags">Tags room</Link></div></details>
+   </nav>
   {advancedView&&<section className="reading-advanced-search">
    <div className="advanced-search-command"><div><p className="eyebrow">DEEP SEARCH · READER CONTROLLED</p><h2>Build your constellation.</h2><p>Choose what must be present, what must stay out, then refine the shelf. Tags remain a full Palace room too.</p></div><Link to="/tags">Open the Tags room →</Link></div>
    <form className="advanced-search-bar" onSubmit={runAdvancedSearch}><span aria-hidden="true">⌕</span><input value={advancedText} onChange={e=>setAdvancedText(e.target.value)} placeholder="Title, summary, phrase, author cue…"/><button disabled={advancedBusy}>{advancedBusy?'Gathering…':'Search worlds'}</button></form>
@@ -496,14 +501,14 @@ export function ReadingLive({Frame}){
   </section>
   </>}
   {!advancedView&&<>
-  <section className="reading-scope-selector" aria-label="Choose how widely to browse">
+  <section className="reading-scope-selector reading-scope-calm" aria-label="Choose how widely to browse">
    <div><p className="eyebrow">THE READING ATLAS</p><h2>Every world. Your way.</h2><p>{archiveBrowseEnabled?'Searching all published stories across the Palace.':'Your loaded stories, verified classics and personal reading lenses remain close by.'}</p></div>
    <div className="reading-scope-options" role="group" aria-label="Reading scope">
     <button type="button" aria-pressed={archiveBrowseEnabled} className={archiveBrowseEnabled?'selected':''} onClick={browseAllPublished}><span aria-hidden="true">✦</span> Entire published archive</button>
     <button type="button" aria-pressed={!archiveBrowseEnabled} className={!archiveBrowseEnabled?'selected':''} onClick={browseLoadedShelves}><span aria-hidden="true">☾</span> Shelves &amp; classics</button>
    </div>
   </section>
-  <section className="legacy-reading-tools chic-reading-tools">
+  <section className="legacy-reading-tools chic-reading-tools reading-search-calm">
    <div className="reading-search" role="search"><span aria-hidden="true">⌕</span><input aria-label={archiveBrowseEnabled?'Search all published Reading Room stories':'Search the currently loaded Reading Room stories'} value={query} onChange={e=>setQuery(e.target.value)} placeholder="Title, writer, fandom or tag…"/></div>
    <div className="reading-result-count" aria-live="polite"><strong>{archiveBrowseEnabled?(archiveBrowse.snapshot?visibleTotal.toLocaleString():'…'):catalogue.length.toLocaleString()}</strong><span>{archiveBrowseEnabled?'matching published stories · archive-wide':('matching among '+allReadingWorks.length+' loaded '+(allReadingWorks.length===1?'work':'works'))}</span></div>
   </section>
