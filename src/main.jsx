@@ -18,6 +18,7 @@ import {WriterWelcome} from './WriterWelcome';
 import {PalaceRoomDirectory,PalaceHomeCulturePaths,PalaceHomeMore} from './PalaceHomeWelcome';
 import PalaceSidebarNavigation from './PalaceSidebarNavigation';
 import PalaceNewStories from './PalaceNewStories';
+import PalaceEmailUnsubscribe from './PalaceEmailUnsubscribe';
 import PalaceHomeHub from './PalaceHomeHub';
 // Chat code and its CSS load only for authenticated members.
 // Visitors should not download private messaging features.
@@ -713,6 +714,7 @@ function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo
  <Route path="/treasury" element={<ProtectedRoute><TreasuryLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/treasury/catalogue" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><TreasuryCatalogueLazy Frame={Frame}/></React.Suspense></ProtectedRoute>}/>
  <Route path="/lost-works" element={<React.Suspense fallback={<RouteLoading/>}><PalaceLostWorksRoom Frame={Frame}/></React.Suspense>}/>
+ <Route path="/email/unsubscribe" element={<PalaceEmailUnsubscribe/>}/>
  <Route path="/settings" element={<ProtectedRoute><SettingsLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/activity" element={<ProtectedRoute><ActivityLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/library" element={<ProtectedRoute><LibraryLive Frame={Frame}/></ProtectedRoute>}/>
