@@ -30,3 +30,47 @@
  .palace-home-shortcuts-calm>a:nth-child(-n+2)>span .palace-icon{width:1.5em;height:1.5em}
  .prism-room-wayfinder-glyph .palace-icon{width:1.12em;height:1.12em}
 }
+
+
+/* Match internal controls throughout the Palace without touching navigation chrome. */
+.community-pulse-row.social-pulse>button>.palace-icon{
+  width:1.17rem;height:1.17rem;
+  margin-bottom:1px;
+  color:#c9b9f1;
+}
+.community-pulse-row.social-pulse>button:nth-child(2)>.palace-icon{color:#e6c58f}
+.community-pulse-row.social-pulse>button:nth-child(3)>.palace-icon{color:#a5dfd4}
+.community-pulse-row.social-pulse>button:nth-child(4)>.palace-icon{color:#a9cfff}
+.community-pulse-row.social-pulse>button:nth-child(5)>.palace-icon{color:#dfb9ea}
+.community-pulse-row.social-pulse>button:nth-child(6)>.palace-icon{color:#aec1e6}
+.library-overview-shortcut-icon:has(.palace-icon),
+.library-overview-start-mark:has(.palace-icon),
+.palace-chronicle-marker:has(.palace-icon){
+  display:inline-grid;
+  place-items:center;
+}
+.library-overview-shortcut-icon .palace-icon{
+  width:1.25em;height:1.25em;color:#d4c3f3;
+}
+.library-overview-start-mark .palace-icon{width:2.1rem;height:2.1rem}
+.library-overview-cover .palace-icon{width:1.55rem;height:1.55rem}
+.library-overview-updates .palace-icon{width:1rem;height:1rem}
+.writer-work-release .palace-icon{width:1.1rem;height:1.1rem}
+.writer-work-resume .palace-icon{width:.9rem;height:.9rem}
+.manuscript-dashboard-pulse .palace-icon,
+.manuscript-stage-cards .palace-icon{width:1.13rem;height:1.13rem}
+.manuscript-dashboard-chapter-actions .palace-icon{width:1rem;height:1rem}
+.palace-chronicle-record .palace-icon,
+.palace-chronicle-marker .palace-icon{width:1.25rem;height:1.25rem}
+.palace-emoji-toggle .palace-icon,.palace-chat-photo-toggle .palace-icon{
+  width:1.15rem;height:1.15rem;vertical-align:middle;
+}
+.palace-chat-header-group-settings .palace-icon{width:1.1rem;height:1.1rem}
+.palace-emoji-panel header .palace-icon{width:1rem;height:1rem}
+.palace-dialog .dialog-close .palace-icon{width:1.25rem;height:1.25rem}
+.palace-state-sigil .palace-icon{width:1.9rem;height:1.9rem}
+.chamber-art-arrange .palace-icon{width:1.1rem;height:1.1rem}
+@media(max-width:760px){
+  .community-pulse-row.social-pulse>button>.palace-icon{width:1.05rem;height:1.05rem}
+  .palace-resume-card .resume-icon .palace-icon{width:1.35rem;height:1.35rem}
+}
