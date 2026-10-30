@@ -2,7 +2,10 @@ import {supabase} from './supabase';
 
 /* OFF until staging migration + RLS tests pass and the flag is deliberately set
  * in a separate preview environment. Never silently probe production tables. */
-export const PALACE_CHAT_V3_ENABLED=import.meta.env.VITE_PALACE_MESSENGER_V3==='enabled';
+// Hard disabled for production promotion. An environment variable alone
+// must not activate an untested database schema on a shared production backend.
+// Enable only in a separately approved follow-up after staging RLS tests.
+export const PALACE_CHAT_V3_ENABLED=false;
 export const PALACE_REACTIONS=Object.freeze([
  {key:'heart',emoji:'❤️',label:'Heart'},
  {key:'star',emoji:'⭐',label:'Star'},
