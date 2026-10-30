@@ -34,3 +34,5 @@
 .chapter-manager-row .writer-chapter-drag-handle:focus-visible{outline:3px solid #a4eff2;outline-offset:2px}
 .daylight .writer-chapter-drag-handle{background:#f5f1ff;color:#3e3160;border-color:#b9a5da}
 @media (pointer:coarse){.writer-chapter-drag-handle{min-width:42px;min-height:42px}}
+
+.snapshot-list-filters{display:flex;flex-wrap:wrap;gap:.45rem;margin:.65rem 0}.snapshot-list-filters button{min-height:36px;border:1px solid rgba(174,174,229,.35);border-radius:12px;padding:.42rem .75rem;background:rgba(78,75,142,.22);color:#ece7fc;cursor:pointer}.snapshot-list-filters button.active{background:#61538f;border-color:#b9ade7}.snapshot-list-filters button:focus-visible{outline:2px solid #ade6e7;outline-offset:2px}.daylight .snapshot-list-filters button{background:#faf7ff;color:#4d4169}.daylight .snapshot-list-filters button.active{background:#d9d0ee}
