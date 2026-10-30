@@ -308,46 +308,57 @@ export default function PalaceChatDrawer({userId,workspace=false}){
  async function sendGif(url){
   const body=encodePalaceGif(url);
   if(!body){setError('That GIF is unavailable. Please choose another.');return}
-  if(!roomId||busy)return;
-  setBusy(true);setError('');setNotice('');
+  const sentRoom=roomId,sentKind=tab;
+  if(!sentRoom||busy)return;
+  setBusy(true);setError('');setNotice('Sending GIF…');
   try{
-   if(tab==='groups'){
-    await sendPalaceGroupMessage(roomId,userId,body,replyTarget?.chatId===roomId?{replyToId:replyTarget.id}:{});
-    const fresh=await getPalaceGroupMessages(roomId);
-    setGroupMessages(previous=>({chatId:roomId,items:previous.chatId===roomId?mergePalaceGroupMessages(previous.items,fresh):fresh}));
+   if(sentKind==='groups')await sendPalaceGroupMessage(sentRoom,userId,body,replyTarget?.chatId===sentRoom?{replyToId:replyTarget.id}:{});
+   else await sendLetter(userId,sentRoom,body);
+  }catch(e){setError('GIF not confirmed. '+errorText(e));setNotice('');setBusy(false);return}
+  setGifOpen(false);setReplyTarget(null);scrollPinned.current=true;setNotice('GIF sent.');
+  try{
+   if(sentKind==='groups'){
+    const fresh=await getPalaceGroupMessages(sentRoom);
+    setGroupMessages(previous=>previous.chatId===sentRoom?{chatId:sentRoom,items:mergePalaceGroupMessages(previous.items,fresh)}:previous);
     setGroupData(await getPalaceGroupChatOverview(userId));
-   }else{
-    await sendLetter(userId,roomId,body);
-    setDirect(await getLetters(userId));
-   }
-   setGifOpen(false);setReplyTarget(null);scrollPinned.current=true;
-  }catch(e){setError(errorText(e))}
-  finally{setBusy(false)}
+   }else setDirect(await getLetters(userId));
+  }catch{
+   setNotice('GIF sent. Conversation sync is pending; avoid sending it again.');
+   setRefreshToken(v=>v+1);
+  }finally{setBusy(false)}
  }
  async function sendPhoto(e){
-  e.preventDefault();if(!roomId||!photoFile||busy)return;
-  setBusy(true);setError('');setNotice('');
-  let path='';let sent=false;
+  e.preventDefault();
+  const sentRoom=roomId,sentKind=tab,sentDraftKey=draftsKey,file=photoFile,caption=currentDraft.trim();
+  if(!sentRoom||!file||busy)return;
+  setBusy(true);setError('');setNotice('Sending photo…');
+  let path='',sent=false;
   try{
-   path=await uploadPalaceChatPhoto({kind:tab==='groups'?'group':'direct',roomId,userId,file:photoFile});
-   const caption=currentDraft.trim();
-   if(tab==='groups'){
-    await sendPalaceGroupPhoto(roomId,userId,path,caption,replyTarget?.chatId===roomId?{replyToId:replyTarget.id}:{});
-    sent=true;
-    const fresh=await getPalaceGroupMessages(roomId);
-    setGroupMessages(p=>({chatId:roomId,items:p.chatId===roomId?mergePalaceGroupMessages(p.items,fresh):fresh}));
-    setGroupData(await getPalaceGroupChatOverview(userId));
-   }else{
-    await sendLetterPhoto(userId,roomId,path,caption);
-    sent=true;
-    setDirect(await getLetters(userId));
-   }
-   setPhotoFile(null);setDraft('');setReplyTarget(null);
-   if(photoInputRef.current)photoInputRef.current.value='';
-   scrollPinned.current=true;
+   path=await uploadPalaceChatPhoto({kind:sentKind==='groups'?'group':'direct',roomId:sentRoom,userId,file});
+   if(sentKind==='groups')await sendPalaceGroupPhoto(sentRoom,userId,path,caption,replyTarget?.chatId===sentRoom?{replyToId:replyTarget.id}:{});
+   else await sendLetterPhoto(userId,sentRoom,path,caption);
+   sent=true;
   }catch(e){
    if(path&&!sent)await discardPalaceChatPhoto(path).catch(()=>{});
-   setError(errorText(e));
+   setError('Photo not confirmed. Your caption draft is preserved. '+errorText(e));
+   setNotice('');setBusy(false);return;
+  }
+  // The attachment message was confirmed; never retry it due to a refresh error.
+  setPhotoFile(null);
+  setDrafts(previous=>({...previous,[sentDraftKey]:''}));
+  try{localStorage.removeItem(sentDraftKey)}catch{}
+  setReplyTarget(null);
+  if(photoInputRef.current)photoInputRef.current.value='';
+  scrollPinned.current=true;setNotice('Photo sent.');
+  try{
+   if(sentKind==='groups'){
+    const fresh=await getPalaceGroupMessages(sentRoom);
+    setGroupMessages(previous=>previous.chatId===sentRoom?{chatId:sentRoom,items:mergePalaceGroupMessages(previous.items,fresh)}:previous);
+    setGroupData(await getPalaceGroupChatOverview(userId));
+   }else setDirect(await getLetters(userId));
+  }catch{
+   setNotice('Photo sent. Conversation sync is pending; avoid sending it again.');
+   setRefreshToken(v=>v+1);
   }finally{setBusy(false)}
  }
  async function saveEditedMessage(e){
