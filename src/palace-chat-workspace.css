@@ -299,3 +299,18 @@
  .palace-chat-v2 .palace-chat-circle-prompts>div{grid-template-columns:1fr}
  .palace-chat-v2 .palace-chat-circle-prompts button{min-height:55px}
 }
+
+/* Keep delivery/error feedback visible in the desktop split view instead of
+   letting auto-placed grid children fall into a clipped implicit row. */
+@media(min-width:1000px){
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-panel{
+  position:relative;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-panel>.palace-chat-notice,
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-panel>.palace-chat-error{
+  position:absolute!important;
+  top:116px;right:12px;
+  max-width:min(60%,450px);z-index:7;
+  border-radius:12px;box-shadow:0 10px 28px rgba(8,9,28,.27);
+ }
+}
