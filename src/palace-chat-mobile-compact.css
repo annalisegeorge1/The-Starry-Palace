@@ -1,0 +1,133 @@
+/* Mobile Palace Chat: native-feeling inbox, no giant footer shortcuts.
+   The desktop drawer and full Messenger retain their existing controls. */
+.palace-chat-v2 .palace-chat-mobile-back{display:none}
+@media(max-width:720px){
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace)::before{
+    content:"";position:fixed;inset:0;
+    z-index:-1;pointer-events:none;
+    background:rgba(6,8,24,.76);
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace)>.palace-chat-panel{
+    background:#171b30!important;
+    color:#f5f2ff!important;
+    isolation:isolate;
+    box-shadow:0 16px 60px rgba(3,4,16,.8)!important;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-heading{
+    padding:8px 11px!important;
+    min-height:57px!important;
+    gap:7px!important;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-brand{
+    display:flex!important;align-items:center!important;gap:10px!important;min-width:0!important;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-mobile-back{
+    display:inline-grid!important;place-items:center!important;flex:0 0 40px!important;
+    width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;
+    padding:0!important;
+    background:rgba(255,255,255,.085)!important;
+    color:#fff!important;
+    border:1px solid rgba(200,193,244,.3)!important;
+    border-radius:11px!important;
+    font:600 1.5rem/1 system-ui,sans-serif!important;
+    cursor:pointer;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-brand-mark,
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-brand-copy>small{
+    display:none!important;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-brand-copy>strong{
+    display:block!important;font-size:1.1rem!important;
+    line-height:1.25!important;letter-spacing:normal!important;
+  }
+  /* One back arrow owns mobile navigation. Avoid duplicate back/minimize/expand. */
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-header-back,
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-header-actions>.palace-chat-expand,
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-header-actions>button[aria-label="Minimize Palace chat"]{
+    display:none!important;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace)>.palace-chat-panel>footer{
+    display:none!important;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-tabs{
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    gap:0!important;padding:2px 12px 5px!important;
+    background:#1d213a!important;
+    border-bottom:1px solid rgba(190,184,230,.2)!important;
+    flex:none!important;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-tabs>button{
+    flex:0 1 auto!important;min-height:36px!important;
+    width:auto!important;padding:7px 18px!important;
+    font-size:.84rem!important;line-height:1.2!important;
+    border:0!important;border-radius:0!important;box-shadow:none!important;
+    background:transparent!important;color:#c7c4e1!important;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-tabs>button:first-child{
+    border-right:1px solid rgba(195,187,231,.28)!important;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-tabs>button[aria-pressed=true]{
+    color:#fff!important;font-weight:800!important;
+    box-shadow:inset 0 -2px 0 #a7c3ee!important;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-advanced-controls.is-quiet-single,
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace).is-thread-open .palace-chat-advanced-controls{
+    display:none!important;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-advanced-controls>summary{
+    font-size:.73rem!important;padding:5px 13px!important;
+    color:#d4cfe9!important;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-people button .palace-chat-list-preview{
+    color:#e4e6f6!important;
+    opacity:1!important;
+    font-size:.78rem!important;line-height:1.5!important;
+    text-shadow:none!important;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-list-meta small{
+    color:#cbd1e8!important;opacity:1!important;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace):not(.is-thread-open) .palace-chat-select-hint{
+    display:flex!important;
+    flex:1 1 auto!important;min-height:125px!important;
+    align-items:center!important;justify-content:center!important;
+    flex-direction:column!important;
+    gap:9px!important;
+    margin:0!important;padding:16px 22px!important;
+    text-align:center!important;
+    background:#171b30!important;
+    color:#e5e5f8!important;
+    opacity:1!important;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-select-hint .palace-chat-empty-moon{
+    display:block;font-size:2.45rem;line-height:1;
+    color:#c1b9f4;opacity:.8;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-select-hint strong{
+    font:600 1.03rem/1.35 Georgia,serif;color:#f5f1ff!important;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-select-hint p{
+    margin:0!important;max-width:31ch;
+    font-size:.83rem!important;line-height:1.55!important;
+    color:#cbd0e9!important;
+  }
+  .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) :is(.palace-chat-mobile-back,.palace-chat-people button,.palace-chat-tabs button):focus-visible{
+    outline:3px solid #b6dcff!important;outline-offset:2px!important;
+  }
+  html[data-palace-theme="daylight"] .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace)>.palace-chat-panel,
+  html[data-palace-theme="daylight"] .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-select-hint{
+    background:#f3f0fa!important;color:#342b53!important;
+  }
+  html[data-palace-theme="daylight"] .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-select-hint strong{
+    color:#352b52!important;
+  }
+  html[data-palace-theme="daylight"] .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-select-hint p{
+    color:#5e597a!important;
+  }
+  html[data-palace-theme="daylight"] .palace-chat-v2.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-people button .palace-chat-list-preview{
+    color:#433954!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .palace-chat-v2 .palace-chat-mobile-back{transition:none!important}
+}
