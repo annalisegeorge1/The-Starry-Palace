@@ -1278,7 +1278,9 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain("const full=[...(data?.chapters||[])].sort((a,b)=>a.position-b.position)");
     expect(live).toContain('await reorderWorkChapters(data.id,next.map(x=>x.id))');
     expect(live).toContain('access.owner&&<div className="chapter-order-controls"');
-    expect(live).toContain("Reordering chapters…");
+    expect(live).toContain("Saving chapter order…");
+    expect(live).toContain("chapterDragStart(event,chapterId)");
+    expect(live).toContain("isManuscriptDragAvailable");
     expect(next).toContain('Owner-only chapter order controls — full-book order remains authoritative.');
   });
 

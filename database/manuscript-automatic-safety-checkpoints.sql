@@ -2,6 +2,11 @@
 -- manuscript edits; no publication, visibility, ownership or schedule changes.
 -- Reuses the existing owner/collaborator-protected revision snapshot table.
 -- Checkpoints are in the database, not the user's browser.
+-- Lock down the snapshots table to the minimum app permissions.
+-- The existing RLS owner/collaborator policies remain authoritative.
+revoke all on public.chapter_revision_snapshots from public,anon,authenticated;
+grant select,insert,delete on public.chapter_revision_snapshots to authenticated;
+alter table public.chapter_revision_snapshots enable row level security;
 create or replace function private.palace_chapter_safety_checkpoint()
 returns trigger
 language plpgsql
