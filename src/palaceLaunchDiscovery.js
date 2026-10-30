@@ -19,7 +19,7 @@ export function palaceStoryPath(slug) {
  return '/work/'+encodeURIComponent(safe);
 }
 export const PALACE_FIRST_READING_DOORS=Object.freeze([
- {id:'original',symbol:'✦',title:'Original fiction',description:'Find a new world and its storyteller.',href:'/reading'},
+ {id:'original',symbol:'✦',title:'Stories & poetry',description:'Explore all published Palace stories.',href:'/reading'},
  {id:'fanworks',symbol:'◈',title:'Fanfiction & fandoms',description:'Meet familiar worlds through new voices.',href:'/fandoms'},
  {id:'comics',symbol:'▤',title:'Comics & visual stories',description:'Read stories told in pictures.',href:'/comics'}
 ]);
