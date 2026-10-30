@@ -43,6 +43,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  const[selfProfile,setSelfProfile]=useState(null);
  useEffect(()=>{let active=true;setSelfProfile(null);Promise.resolve().then(()=>getMyProfile(userId)).then(p=>{if(active)setSelfProfile(p)}).catch(()=>{});return()=>{active=false}},[userId]);
  const[open,setOpen]=useState(Boolean(workspace));
+ useEffect(()=>{if(workspace)return;const openFromHeader=()=>{setActionMenu(null);setThreadOpen(false);setOpen(true)};window.addEventListener("palace-chat-open",openFromHeader);return()=>window.removeEventListener("palace-chat-open",openFromHeader)},[workspace]);
  const[threadOpen,setThreadOpen]=useState(Boolean(initialRoom?.roomId));
  const[loadingDirect,setLoadingDirect]=useState(true);
  const[refreshToken,setRefreshToken]=useState(0);
@@ -729,7 +730,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
     <button type="button" aria-pressed={tab==='direct'} onClick={()=>{setActionMenu(null);setThreadOpen(false);setTab('direct');setSearch('');setUnreadOnly(false);setStarredOnly(false);setShowArchived(false);setCreating(false);setManaging(false);setError('')}}>✉ Direct {directUnread>0&&<span>{directUnread}</span>}</button>
     <button type="button" aria-pressed={tab==='groups'} onClick={()=>{setActionMenu(null);setThreadOpen(false);setTab('groups');setSearch('');setUnreadOnly(false);setStarredOnly(false);setShowArchived(false);setCreating(false);setManaging(false);setError('')}}>♧ Groups {(groupUnread+groupData.invitations.length)>0&&<span>{groupUnread+groupData.invitations.length}</span>}</button>
    </nav>
-   <div className="palace-chat-tools"><input aria-label="Find a conversation" placeholder={tab==='groups'?'Find a circle or member…':'Search direct conversations…'} value={search} onChange={e=>setSearch(e.target.value)}/>
+   <details className="palace-chat-advanced-controls"><summary aria-label="Search and filter conversations">⌕ Filters</summary><div className="palace-chat-tools"><input aria-label="Find a conversation" placeholder={tab==='groups'?'Find a circle or member…':'Search direct conversations…'} value={search} onChange={e=>setSearch(e.target.value)}/>
     {tab==='direct'?<Link to="/letters" onClick={()=>setOpen(false)}>All letters ↗</Link>:<button type="button" onClick={()=>{setCreating(v=>!v);setManaging(false);setMemberResults([]);setMemberSearch('');setError('')}}>{creating?'Cancel':'＋ Group'}</button>}
    </div>
    {!creating&&<div className="palace-chat-inbox-refine" aria-label="Conversation filters">
@@ -739,6 +740,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
     {tab==='direct'&&<button type="button" aria-pressed={showArchived} onClick={()=>{setShowArchived(v=>!v);setThreadOpen(false);setUnreadOnly(false);setStarredOnly(false)}}>{showArchived?'✓ Archived':`Archived (${archivedCount})`}</button>}
     {(search||unreadOnly||starredOnly||showArchived)&&<button type="button" className="palace-chat-clear-filter" onClick={()=>{setSearch('');setUnreadOnly(false);setStarredOnly(false);setShowArchived(false)}}>Clear filters</button>}
    </div>}
+   </details>
    {notice&&<p className="palace-chat-notice" role="status">{notice}</p>}
    {error&&<p className="palace-chat-error" role="alert">{error}</p>}
    {tab==='direct'&&error&&!direct&&<button type="button" className="palace-chat-retry" onClick={()=>{setLoadingDirect(true);setError('');setRefreshToken(n=>n+1)}}>Retry loading conversations</button>}
