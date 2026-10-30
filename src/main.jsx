@@ -100,6 +100,7 @@ import './mobile-palace-compact-pass.css';
 import './settings-mobile-native.css';
 import './mobile-dock-header-fix.css';
 import './mobile-global-shell-palace-polish.css';
+import './grand-palace-heritage-regalia.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
