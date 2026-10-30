@@ -1,0 +1,32 @@
+/* Content-only icon system; intentionally excludes the sidebar and top bar. */
+.palace-icon{display:inline-block;flex-shrink:0;vertical-align:-.13em;overflow:visible;fill:none}
+.palace-home-shortcuts-calm>a>span:has(.palace-icon),
+.palace-hub-path-icon:has(.palace-icon),
+.prism-room-wayfinder-glyph:has(.palace-icon),
+.resume-icon:has(.palace-icon),
+.palace-now-glyph:has(.palace-icon){display:inline-grid;place-items:center}
+.palace-home-shortcuts-calm>a>span .palace-icon{width:1.5em;height:1.5em}
+.palace-home-shortcuts-calm>a:nth-child(-n+2)>span .palace-icon{width:1.65em;height:1.65em}
+.palace-resume-card .resume-icon .palace-icon{width:1.45em;height:1.45em}
+.palace-home-shortcuts-calm>a:nth-child(1)>span{color:#dfc6ff!important}
+.palace-home-shortcuts-calm>a:nth-child(2)>span{color:#b5d7ff!important}
+.palace-home-shortcuts-calm>a:nth-child(3)>span{color:#b9d6eb!important}
+.palace-home-shortcuts-calm>a:nth-child(4)>span{color:#d5c2ec!important}
+.palace-home-shortcuts-calm>a:nth-child(5)>span{color:#e9c894!important}
+.palace-home-shortcuts-calm>a:nth-child(6)>span{color:#c0d5ec!important}
+.palace-hub-path-icon:has(.palace-icon) .palace-icon{width:1.36em;height:1.36em}
+.prism-room-wayfinder-glyph .palace-icon{width:1.07em;height:1.07em}
+.palace-now-glyph .palace-icon{width:1.28em;height:1.28em}
+.palace-moon-prompt .moon-prompt-mark .palace-icon{width:1.55rem;height:1.55rem}
+.palace-moon-prompt .moon-prompt-actions .palace-icon{width:1rem;height:1rem;vertical-align:-.15em;margin-right:.34rem}
+.palace-journey-arrow .palace-icon,.palace-hub-path-arrow .palace-icon{width:.85em;height:.85em}
+.palace-hub-recent .palace-icon{width:1em;height:1em}
+.palace-arrange-icon .palace-icon{width:1.08rem;height:1.08rem}
+.palace-arrange-icon[disabled] .palace-icon{opacity:.55}
+.palace-calendar-icon .palace-icon{width:1rem;height:1rem}
+.palace-reading-layout-button .palace-icon{width:1rem;height:1rem;margin-right:6px;vertical-align:-.15em}
+@media(max-width:760px){
+ .palace-home-shortcuts-calm>a>span .palace-icon{width:1.35em;height:1.35em}
+ .palace-home-shortcuts-calm>a:nth-child(-n+2)>span .palace-icon{width:1.5em;height:1.5em}
+ .prism-room-wayfinder-glyph .palace-icon{width:1.12em;height:1.12em}
+}
