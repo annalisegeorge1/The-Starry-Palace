@@ -63,6 +63,27 @@ describe('Palace quick chat',()=>{
   const link=await screen.findByRole('link',{name:'Open full Palace Messenger'});
   expect(link.getAttribute('href')).toBe('/chat');
  });
+ it('mutes a direct conversation using the existing member preference without removing its messages',async()=>{
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(screen.getByRole('button',{name:'Mute this conversation'}));
+  await waitFor(()=>expect(setConversationPreference).toHaveBeenCalledWith(user,'direct-one',expect.objectContaining({muted:true,archived:false})));
+  expect(screen.getByRole('button',{name:'Unmute this conversation'})).toBeTruthy();
+  expect(screen.getByRole('log',{name:'Conversation messages'})).toBeTruthy();
+ });
+ it('archives a direct conversation and restores it from the archived inbox',async()=>{
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(screen.getByRole('button',{name:'Archive this conversation'}));
+  await waitFor(()=>expect(setConversationPreference).toHaveBeenCalledWith(user,'direct-one',expect.objectContaining({archived:true})));
+  expect(screen.queryByRole('button',{name:'River'})).toBeNull();
+  fireEvent.click(screen.getByRole('button',{name:/Archived \(1\)/}));
+  const restore=screen.getByRole('button',{name:'Restore archived conversation with River'});
+  fireEvent.click(restore);
+  await waitFor(()=>expect(setConversationPreference).toHaveBeenLastCalledWith(user,'direct-one',expect.objectContaining({archived:false})));
+  fireEvent.click(screen.getByRole('button',{name:/Archived/}));
+  expect(screen.getByRole('button',{name:'River'})).toBeTruthy();
+ });
  it('stars a direct conversation and filters favourites from existing private records',async()=>{
   getLetters.mockResolvedValue({...direct,conversations:[direct.conversations[0]]});
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
