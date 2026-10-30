@@ -9,6 +9,7 @@ A home for original fiction, fanfiction, poetry, comics, literary classics and c
 - A first reader understands the proposition and opens a real story or a reading room.
 - The Start Reading slot recommends **only** public, published, completed, general-rated original fiction or poetry. It does **not** claim a story is short unless verified against published chapters.
 - Readers can share published public stories using their canonical thestarrypalace.com URL.
+- The first discovery doorway links to all published stories (not a pre-applied original-fiction filter); never imply a genre filter is active when it is not.
 - Writers can discover the Writer's Door without login; drafting and community interaction remain gated.
 - No invented popular works, testimonials, user counts, or editorial endorsement.
 
