@@ -50,6 +50,7 @@ const shapes={
  'feather':<><path d="M3 21 18.5 5.5a4 4 0 0 1 0 6L12 18H6Z"/><path d="M3 21c6-5 10-8 15-10"/></>,
  'palette':<><path d="M12 3a9 9 0 1 0 0 18h1a2 2 0 0 0 1.5-3.5A2 2 0 0 1 16 14h2a3 3 0 0 0 3-3 9 9 0 0 0-9-8Z"/><circle cx="7" cy="10" r="1"/><circle cx="10" cy="6.5" r="1"/><circle cx="16" cy="7" r="1"/></>,
  'map':<><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6ZM9 3v15M15 6v15"/></>,
+ 'smile':<><circle cx="12" cy="12" r="9"/><path d="M8 14c1 1.5 2.4 2.2 4 2.2s3-.7 4-2.2"/><path d="M8.5 9.5h.01M15.5 9.5h.01"/></>,
  'sun':<><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></>
 };
 const routeNames=[
