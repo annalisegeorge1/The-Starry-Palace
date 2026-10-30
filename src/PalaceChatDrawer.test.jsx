@@ -319,6 +319,18 @@ describe('Palace quick chat',()=>{
    title:'Moonlight Readers',description:'Poems, tales and tea.',colorKey:'moonlit'
   }));
  });
+ it('places a Reading Circle question into an editable unsent draft',async()=>{
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(screen.getByRole('button',{name:/Groups/}));
+  fireEvent.click(await screen.findByRole('button',{name:'Moonlight Readers'}));
+  fireEvent.click(screen.getByRole('button',{name:/Reading Circle ideas/}));
+  expect(screen.getByRole('region',{name:'Reading Circle discussion ideas'})).toBeTruthy();
+  expect(screen.getByText(/Nothing is sent automatically/)).toBeTruthy();
+  fireEvent.click(screen.getByRole('button',{name:/Which moment stayed with you/}));
+  expect(screen.getByRole('textbox',{name:'Write a group message'}).value).toMatch(/Which moment stayed with you/);
+  expect(sendPalaceGroupMessage).not.toHaveBeenCalled();
+  expect(screen.queryByRole('region',{name:'Reading Circle discussion ideas'})).toBeNull();
+ });
  it('shares only a selected published story with a structured story reference',async()=>{
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
   fireEvent.click(screen.getByRole('button',{name:/Groups/}));
