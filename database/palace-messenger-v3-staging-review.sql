@@ -5,6 +5,13 @@
 -- This is intentionally in database/, not supabase/migrations/.
 begin;
 
+-- Existing messages UPDATE permission currently permits changing columns beyond
+-- message text. This expansion must restrict browser edits to body alone to
+-- prevent an author relocating messages across rooms or mutating sender_id.
+-- Review every existing write path on isolated staging before approving:
+revoke update on public.messages from authenticated;
+grant update (body) on public.messages to authenticated;
+
 -- A directly quoted reply must never refer to a message in another conversation.
 -- The composite foreign key enforces the invariant even if a client is malicious.
 create unique index if not exists messages_id_conversation_unique_v3
@@ -90,5 +97,6 @@ commit;
 --   and delete only their own reaction.
 -- * ensure the direct-message UPDATE policy cannot move message ownership
 --   or conversation_id; tighten it as needed before allowing client updates.
+-- * verify direct-message editing can still update body and trigger-edited_at,
 -- * validate rate limiting, moderation, backup/restore, execution plan,
 --   API exposure and all Supabase security advisors before migration.
