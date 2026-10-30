@@ -588,7 +588,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
     <span>{tab==='groups'?groupData.groups.length+' private circles':loadingDirect&&!direct?'Loading direct conversations…':error&&!direct?'Could not load direct conversations':directRows.length+' direct conversations'}</span>
     <button type="button" aria-pressed={unreadOnly} onClick={()=>{setUnreadOnly(v=>!v);setStarredOnly(false)}}>{unreadOnly?'✓ Unread only':'Unread only'}</button>
     {tab==='direct'&&<button type="button" aria-pressed={starredOnly} onClick={()=>{setStarredOnly(v=>!v);setUnreadOnly(false)}}>{starredOnly?'★ Favourites':'☆ Favourites'}</button>
-    {tab==='direct'&&<button type="button" aria-pressed={showArchived} onClick={()=>{setShowArchived(v=>!v);setThreadOpen(false);setUnreadOnly(false);setStarredOnly(false)}}>{showArchived?'✓ Archived':`Archived (${archivedCount})`}</button>}}
+    {tab==='direct'&&<button type="button" aria-pressed={showArchived} onClick={()=>{setShowArchived(v=>!v);setThreadOpen(false);setUnreadOnly(false);setStarredOnly(false)}}>{showArchived?'✓ Archived':`Archived (${archivedCount})`}</button>}
     {(search||unreadOnly||starredOnly||showArchived)&&<button type="button" className="palace-chat-clear-filter" onClick={()=>{setSearch('');setUnreadOnly(false);setStarredOnly(false);setShowArchived(false)}}>Clear filters</button>}
    </div>}
    {notice&&<p className="palace-chat-notice" role="status">{notice}</p>}
@@ -621,7 +621,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  <button type="button" aria-pressed={showSharedMedia} aria-label={showSharedMedia?"Close shared media":"Show shared media"} onClick={()=>{setShowSharedMedia(v=>!v);setSearchWithinThread(false);setMessageSearch("");setMediaFilter("all")}}>{showSharedMedia?"✕ Close media":"▤ Shared media"}</button>
  {tab==='direct'&&activeDirect&&<button type="button" disabled={busy} onClick={toggleFavorite} aria-pressed={!!activeDirect.preference?.starred} aria-label={activeDirect.preference?.starred?'Remove conversation from favourites':'Add conversation to favourites'}>{activeDirect.preference?.starred?'★ Favourited':'☆ Favourite'}</button>}
  {tab==='direct'&&activeDirect&&<button type="button" disabled={busy} aria-pressed={!!activeDirect.preference?.muted} aria-label={activeDirect.preference?.muted?'Unmute this conversation':'Mute this conversation'} onClick={()=>updateDirectPreference(activeDirect.conversation_id,{muted:!activeDirect.preference?.muted},activeDirect.preference?.muted?'Conversation notifications unmuted.':'Conversation muted.')}>{activeDirect.preference?.muted?'◉ Unmute':'◌ Mute'}</button>}
- {tab==='direct'&&activeDirect&&<button type="button" disabled={busy} aria-label="Archive this conversation" onClick={()=>updateDirectPreference(activeDirect.conversation_id,{archived:true},'Conversation archived. Restore it from Archived.')}>Archive</button>
+ {tab==='direct'&&activeDirect&&<button type="button" disabled={busy} aria-label="Archive this conversation" onClick={()=>updateDirectPreference(activeDirect.conversation_id,{archived:true},'Conversation archived. Restore it from Archived.')}>Archive</button>}
  {!workspace&&<Link to="/chat" state={{palaceChat:{tab,roomId:threadOpen?roomId:null}}} aria-label="Switch to full Palace Messenger">Full Messenger ↗</Link>}
  </div>}
  {tab==='groups'&&managing&&<section className="palace-chat-settings" aria-label="Group settings">
