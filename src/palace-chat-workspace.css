@@ -264,3 +264,38 @@
  .palace-chat-v2 .palace-chat-thread-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
  .palace-chat-v2 .palace-chat-thread-actions>button:last-of-type{grid-column:1/-1}
 }
+
+/* Invitation-only reading circles: prompts fill drafts, never send messages. */
+.palace-chat-v2 .palace-chat-sharing-actions{display:flex;flex-wrap:wrap;gap:7px}
+.palace-chat-v2 .palace-chat-circle-prompts{
+ flex:0 0 auto;max-height:255px;overflow-y:auto;min-height:0;
+ border-block:1px solid var(--chat3-border,rgba(180,157,223,.39));
+ background:var(--chat3-subtle,rgba(46,39,79,.85));
+ padding:10px 12px;
+}
+.palace-chat-v2 .palace-chat-circle-prompts>header{
+ display:flex;flex-direction:column!important;gap:4px!important;
+ border:0!important;padding:0 0 9px!important;background:transparent!important;
+}
+.palace-chat-v2 .palace-chat-circle-prompts>header strong{font-size:.93rem}
+.palace-chat-v2 .palace-chat-circle-prompts>header small{font-size:.75rem;line-height:1.5}
+.palace-chat-v2 .palace-chat-circle-prompts>div{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+}
+.palace-chat-v2 .palace-chat-circle-prompts button{
+ min-height:72px;min-width:0;display:flex;flex-direction:column;gap:5px;
+ border:1px solid rgba(183,155,233,.43);border-radius:13px;
+ padding:10px;text-align:left;line-height:1.4;
+ background:linear-gradient(120deg,rgba(135,102,195,.16),rgba(66,136,177,.11));
+ color:inherit;cursor:pointer;
+}
+.palace-chat-v2 .palace-chat-circle-prompts button small{
+ font-size:.69rem;text-transform:uppercase;letter-spacing:.08em;opacity:.75;
+}
+.palace-chat-v2 .palace-chat-circle-prompts button span{font-size:.83rem}
+.palace-chat-v2 .palace-chat-circle-prompts button:focus-visible{outline:3px solid #aedbff;outline-offset:2px}
+@media(max-width:720px){
+ .palace-chat-v2 .palace-chat-circle-prompts{max-height:235px}
+ .palace-chat-v2 .palace-chat-circle-prompts>div{grid-template-columns:1fr}
+ .palace-chat-v2 .palace-chat-circle-prompts button{min-height:55px}
+}
