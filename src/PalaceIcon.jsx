@@ -68,6 +68,6 @@ export function palaceIconForRoute(route){
   const path=String(route||'');
   return routeNames.find(([pattern])=>pattern.test(path))?.[1]||'sparkles';
 }
-export default function PalaceIcon({name='sparkles',size=22,className='',strokeWidth=1.85}){
+export default function PalaceIcon({name='sparkles',size=22,className='',strokeWidth=2.05}){
   return <svg xmlns="http://www.w3.org/2000/svg" className={'palace-icon'+(className?' '+className:'')} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">{shapes[name]||shapes.sparkles}</svg>;
 }
