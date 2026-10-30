@@ -60,7 +60,7 @@
     display:grid!important;
     grid-column:auto!important;
     grid-row:auto!important;
-    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
     overflow:visible!important;
     width:100%!important;
     max-width:100%!important;
@@ -131,5 +131,11 @@
   #palace-content[data-palace-route^="/letters"] .chic-letters-head .letters-stats>span{
     padding:6px!important;
     font-size:.62rem!important;
+  }
+}
+
+@media(min-width:561px) and (max-width:760px){
+  #palace-content[data-palace-route^="/letters"] .chic-letters-head .letters-stats{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
   }
 }
