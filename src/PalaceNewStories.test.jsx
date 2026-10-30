@@ -55,6 +55,9 @@ it('does not recommend explicit, unfinished or unlisted titles as safe starting 
  render(<MemoryRouter><PalaceNewStories/></MemoryRouter>);
  expect(await screen.findByText(/Pick a doorway that interests you/)).toBeTruthy();
  expect(screen.queryByRole('link',{name:/Start reading/})).toBeNull();
- expect(screen.queryByRole('link',{name:/Adult Only/})).toBeNull();
+ // Public Explicit works remain discoverable in the ordinary rating-labelled shelf,
+ // but must never appear as the Start Reading recommendation.
+ expect(screen.getByRole('link',{name:/Adult Only/})).toBeTruthy();
+ expect(screen.queryByText(/A FINISHED STORY TO BEGIN WITH/)).toBeNull();
  expect(screen.queryByRole('link',{name:/Unlisted/})).toBeNull();
 });
