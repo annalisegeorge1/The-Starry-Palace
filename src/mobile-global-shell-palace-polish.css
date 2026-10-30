@@ -1,0 +1,287 @@
+/* Global mobile shell and Writing / Grand Palace readability pass.
+ * Scoped to the actual full Palace shell. Keeps topbar and sidebar icons intact.
+ * An opaque, isolated header masks scrolled cards; the end spacer and main padding
+ * provide a landing area after the last content so the fixed dock cannot trap it. */
+@media(max-width:760px){
+ .palace-shell.full-palace-shell{
+   --palace-mobile-dock-clearance:calc(154px + env(safe-area-inset-bottom,0px));
+ }
+ .palace-shell.full-palace-shell .full-stage>header.topbar.full-topbar{
+   position:sticky!important;
+   top:0!important;
+   z-index:9999!important;
+   isolation:isolate!important;
+   opacity:1!important;
+   background:#0d142b!important;
+   background-color:#0d142b!important;
+   background-image:linear-gradient(112deg,#121931,#0d142b 64%,#141b38)!important;
+   -webkit-backdrop-filter:blur(16px) saturate(115%)!important;
+   backdrop-filter:blur(16px) saturate(115%)!important;
+   box-shadow:0 9px 22px rgba(4,7,25,.46)!important;
+   border-bottom:1px solid rgba(195,184,237,.31)!important;
+   overflow:visible!important;
+ }
+ .palace-shell.full-palace-shell .full-stage>header.topbar.full-topbar::before{
+   content:"";
+   position:absolute;
+   inset:0;
+   z-index:0!important;
+   background:linear-gradient(112deg,#121931,#0d142b 64%,#141b38)!important;
+   pointer-events:none;
+ }
+ .palace-shell.full-palace-shell .full-stage>header.topbar.full-topbar>.full-topbar-row{
+   position:relative!important;
+   z-index:1!important;
+ }
+ .palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar{
+   background:#f0ecfa!important;
+   background-color:#f0ecfa!important;
+   background-image:linear-gradient(112deg,#f4effb,#e9e6f8)!important;
+   border-bottom-color:rgba(96,80,147,.26)!important;
+   box-shadow:0 8px 20px rgba(35,28,70,.13)!important;
+ }
+ .palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar::before{
+   background:linear-gradient(112deg,#f4effb,#e9e6f8)!important;
+ }
+ .palace-shell.full-palace-shell .full-stage{
+   height:auto!important;
+   min-height:100dvh!important;
+   overflow:visible!important;
+ }
+ .palace-shell.full-palace-shell .full-stage>main#palace-content{
+   height:auto!important;
+   min-height:0!important;
+   overflow:visible!important;
+   padding-bottom:var(--palace-mobile-dock-clearance)!important;
+   scroll-padding-bottom:var(--palace-mobile-dock-clearance)!important;
+   box-sizing:border-box!important;
+ }
+ .palace-shell.full-palace-shell .full-stage>.palace-mobile-end-spacer{
+   display:block!important;
+   position:relative!important;
+   flex:0 0 auto!important;
+   height:calc(126px + env(safe-area-inset-bottom,0px))!important;
+   min-height:126px!important;
+   pointer-events:none!important;
+ }
+ .palace-shell.full-palace-shell .full-stage>main#palace-content :is(
+   .grand-ranked-courts,.grand-paths,.grand-palace-room,.duel-type-arcade,
+   .chic-draft-list,.duel-match-doors,.grand-daily-whisper,.writer-work-card
+ ){
+   scroll-margin-block-end:var(--palace-mobile-dock-clearance)!important;
+ }
+ html,body{
+   scroll-padding-bottom:calc(132px + env(safe-area-inset-bottom,0px));
+ }
+ /* The Palace tabs belong to the document, not a second sticky layer that
+    could float underneath the real opaque header. */
+ .palace-shell.full-palace-shell .grand-palace-tabs{
+   position:relative!important;
+   top:auto!important;
+   z-index:1!important;
+   display:flex!important;
+   flex-wrap:nowrap!important;
+   justify-content:flex-start!important;
+   gap:9px!important;
+   padding:9px 11px!important;
+   margin-inline:0!important;
+   overflow-x:auto!important;
+   overflow-y:hidden!important;
+   scroll-snap-type:x proximity;
+   scroll-padding-inline:12px;
+   -webkit-overflow-scrolling:touch;
+   scrollbar-width:none;
+ }
+ .palace-shell.full-palace-shell .grand-palace-tabs::-webkit-scrollbar{display:none}
+ .palace-shell.full-palace-shell .grand-palace-tabs>.grand-palace-tab{
+   flex:0 0 88px!important;
+   min-width:88px!important;
+   max-width:94px!important;
+   margin:0!important;
+   padding:7px 5px!important;
+   box-sizing:border-box!important;
+   scroll-snap-align:start;
+ }
+ .palace-shell.full-palace-shell .grand-palace-tab-copy strong{
+   font-size:.65rem!important;
+   line-height:1.24!important;
+ }
+ /* Compact leaderboard cards; keep their crest and rank hierarchy. */
+ .palace-shell.full-palace-shell .grand-ranked-courts{
+   display:grid!important;
+   gap:8px!important;
+ }
+ .palace-shell.full-palace-shell .grand-ranked-courts article{
+   display:grid!important;
+   grid-template-columns:20px 39px minmax(0,1fr) auto!important;
+   align-items:center!important;
+   column-gap:8px!important;
+   row-gap:4px!important;
+   padding:9px 10px!important;
+   min-height:67px!important;
+   height:auto!important;
+   box-sizing:border-box!important;
+ }
+ .palace-shell.full-palace-shell .grand-ranked-courts .grand-rank-crest{
+   width:38px!important;
+   min-width:38px!important;
+   max-width:38px!important;
+   height:42px!important;
+   display:grid!important;
+   place-items:center!important;
+ }
+ .palace-shell.full-palace-shell .grand-ranked-courts .grand-rank-copy{
+   min-width:0!important;
+   gap:2px!important;
+ }
+ .palace-shell.full-palace-shell .grand-ranked-courts .grand-rank-copy>strong{
+   font-size:.82rem!important;
+   line-height:1.22!important;
+ }
+ .palace-shell.full-palace-shell .grand-ranked-courts .grand-rank-points{
+   display:flex!important;
+   flex-direction:column!important;
+   align-items:flex-end!important;
+   justify-content:center!important;
+   min-width:46px!important;
+   margin:0!important;
+   white-space:nowrap!important;
+ }
+ .palace-shell.full-palace-shell .grand-ranked-courts .grand-rank-points b{
+   font-size:.96rem!important;
+   font-weight:750!important;
+   line-height:1.15!important;
+   font-variant-numeric:tabular-nums;
+ }
+ .palace-shell.full-palace-shell .grand-ranked-courts .grand-rank-points small{
+   font-size:.61rem!important;
+   line-height:1.15!important;
+   color:#d9d3eb!important;
+   white-space:nowrap!important;
+ }
+ /* Stronger category descriptions in the Grand Palace destinations. */
+ .palace-shell.full-palace-shell .grand-path-foot{
+   color:#eee8ff!important;
+   opacity:1!important;
+   font-size:clamp(.66rem,2.65vw,.76rem)!important;
+   line-height:1.35!important;
+ }
+ .palace-shell.full-palace-shell .grand-path-foot b{
+   color:#f2edff!important;
+ }
+ /* Writing section pills intentionally scroll in a single row. A faded
+    trailing edge hints that more rooms can be reached with a swipe. */
+ .palace-shell.full-palace-shell .writing-tabs.chic-writing-tabs.palace-writing-icons-tabs{
+   position:relative!important;
+   z-index:1!important;
+   display:flex!important;
+   flex-wrap:nowrap!important;
+   gap:9px!important;
+   overflow-x:auto!important;
+   overflow-y:hidden!important;
+   width:100%!important;
+   min-width:0!important;
+   padding:6px 14px 11px 7px!important;
+   margin-bottom:12px!important;
+   scroll-padding-inline:8px;
+   scroll-snap-type:x proximity;
+   -webkit-overflow-scrolling:touch;
+   mask-image:linear-gradient(to right,#000 0%,#000 91%,transparent 100%);
+   -webkit-mask-image:linear-gradient(to right,#000 0%,#000 91%,transparent 100%);
+ }
+ .palace-shell.full-palace-shell .writing-tabs.chic-writing-tabs.palace-writing-icons-tabs>button{
+   flex:0 0 auto!important;
+   scroll-snap-align:start;
+   min-width:max-content!important;
+   max-width:230px!important;
+   gap:7px!important;
+   padding:7px 11px!important;
+ }
+ .palace-shell.full-palace-shell .palace-duel-competition-info{
+   display:flex!important;
+   flex-wrap:nowrap!important;
+   justify-content:space-between!important;
+   align-items:center!important;
+   width:100%!important;
+   min-width:0!important;
+   gap:12px!important;
+ }
+ .palace-shell.full-palace-shell .palace-duel-competition-info>strong{
+   flex:1 1 auto!important;
+   min-width:0!important;
+   font-size:clamp(1.07rem,4vw,1.3rem)!important;
+   line-height:1.25!important;
+ }
+ .palace-shell.full-palace-shell .palace-duel-competition-info>.palace-info-mark-trigger,
+ .palace-shell.full-palace-shell .palace-duel-competition-info>.palace-info-mark{
+   margin-left:auto!important;
+   flex:0 0 auto!important;
+ }
+ /* Clean two-column filter area: full-width in-list search, matching 50/50
+    status and sort controls, and the result/status row below them. */
+ .palace-shell.full-palace-shell .chic-writing-library-tools{
+   display:grid!important;
+   grid-template-columns:repeat(2,minmax(0,1fr))!important;
+   column-gap:10px!important;
+   row-gap:10px!important;
+   width:100%!important;
+   min-width:0!important;
+   align-items:center!important;
+ }
+ .palace-shell.full-palace-shell .chic-writing-library-tools>.writing-library-search{
+   grid-column:1/-1!important;
+   min-width:0!important;
+   width:100%!important;
+ }
+ .palace-shell.full-palace-shell .chic-writing-library-tools>select{
+   min-width:0!important;
+   width:100%!important;
+   max-width:100%!important;
+   height:46px!important;
+   margin:0!important;
+   box-sizing:border-box!important;
+   text-overflow:ellipsis;
+   padding-inline:8px 24px!important;
+ }
+ .palace-shell.full-palace-shell .chic-writing-library-tools>.writing-library-result-bar{
+   grid-column:1/-1!important;
+   width:100%!important;
+   min-width:0!important;
+ }
+ /* Manuscript numbers stay clear, but the supporting labels no longer fade
+    into the dark background. */
+ .palace-shell.full-palace-shell .writer-work-card .writer-work-card-stats{
+   gap:10px 16px!important;
+ }
+ .palace-shell.full-palace-shell .writer-work-card .writer-work-card-stats>div{
+   min-width:0!important;
+   gap:5px!important;
+ }
+ .palace-shell.full-palace-shell .writer-work-card .writer-work-card-stats dt{
+   font:.77rem/1.4 system-ui,sans-serif!important;
+   color:#e1daee!important;
+   opacity:1!important;
+   letter-spacing:.005em!important;
+ }
+ .palace-shell.full-palace-shell .writer-work-card .writer-work-card-stats dd{
+   font-size:1.15rem!important;
+   line-height:1.15!important;
+   color:#faf7ff!important;
+ }
+ .palace-shell.full-palace-shell.daylight .grand-path-foot,
+ .palace-shell.full-palace-shell.daylight .grand-ranked-courts .grand-rank-points small{
+   color:#534665!important;
+ }
+ .palace-shell.full-palace-shell.daylight .writer-work-card .writer-work-card-stats dt{
+   color:#5a4d6f!important;
+ }
+ .palace-shell.full-palace-shell.daylight .writer-work-card .writer-work-card-stats dd{
+   color:#31253f!important;
+ }
+}
+/* No extra halo or unnecessary transitions for reduced-motion users. */
+@media(prefers-reduced-motion:reduce){
+ .palace-shell.full-palace-shell :is(.grand-palace-tabs,.writing-tabs.chic-writing-tabs){
+   scroll-behavior:auto!important;
+ }
+}
