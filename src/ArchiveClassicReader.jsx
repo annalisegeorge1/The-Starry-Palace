@@ -48,7 +48,7 @@ function ArchiveClassicReaderEdition({record,text,prepared}){
  const [tone,setTone]=useState(()=>readPalaceChoice(TONE_KEY,['palace','paper','soft'],'palace'));
  const [width,setWidth]=useState(()=>readPalaceChoice(WIDTH_KEY,['narrow','standard','wide'],'standard'));
  const [leading,setLeading]=useState(()=>readPalaceChoice(LEADING_KEY,['compact','comfortable','airy'],'comfortable'));
- const [layout,setLayout]=useState(()=>readPalaceChoice(LAYOUT_KEY,READER_LAYOUT_VALUES,'book'));
+ const [layout,setLayout]=useState(()=>readPalaceChoice(LAYOUT_KEY,READER_LAYOUT_VALUES,'full'));
  const readerRef=useRef(null);
  const pendingHeadingRef=useRef(null);
  const pendingPageTopRef=useRef(true);
@@ -98,7 +98,7 @@ function ArchiveClassicReaderEdition({record,text,prepared}){
   if(kind==='layout'&&READER_LAYOUT_VALUES.includes(value)){setLayout(value);writePalacePreference(LAYOUT_KEY,value)}
  }
  function resetSettings(){
-  setFontSize(19);setTone('palace');setWidth('standard');setLeading('comfortable');setLayout('book');
+  setFontSize(19);setTone('palace');setWidth('standard');setLeading('comfortable');setLayout('full');
   for(const key of [FONT_KEY,TONE_KEY,WIDTH_KEY,LEADING_KEY,LAYOUT_KEY])removePalacePreference(key);
  }
  const activeHeading=[...contents].reverse().find(item=>item.pageIndex<=current);
