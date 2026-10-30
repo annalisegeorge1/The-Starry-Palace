@@ -1,0 +1,113 @@
+/* Prose-first published chapter reader. Scoped to the single chapter view.
+ * Preserve author text, Full Page layout, saved preferences and existing
+ * authenticated progress / notes / praise behavior. */
+.palace-shell .reader-page.reader-streamlined .reader-chapter-head{
+ max-width:min(720px,100%);margin:0 auto .5rem!important;
+ padding:.25rem 0 .45rem!important;border-bottom:0!important;
+}
+.palace-shell .reader-page.reader-streamlined .reader-back-row{
+ margin:0 0 .8rem!important;display:flex;flex-wrap:wrap;
+ align-items:center;justify-content:space-between;gap:.4rem .8rem;
+}
+.palace-shell .reader-page.reader-streamlined .reader-back-row>a{
+ font-size:.8rem;font-weight:650;opacity:.9;text-decoration:none;
+}
+.palace-shell .reader-page.reader-streamlined .reader-head-actions{
+ display:flex;flex-wrap:wrap;align-items:center;gap:.3rem;max-width:100%;
+}
+.palace-shell .reader-page.reader-streamlined .reader-head-actions>button{
+ min-height:36px!important;min-width:0;padding:.38rem .55rem!important;
+ font-size:.72rem!important;line-height:1.2!important;
+ border-radius:9px!important;white-space:nowrap;
+}
+.palace-shell .reader-page.reader-streamlined .reader-title-line{
+ display:flex;align-items:flex-start;justify-content:space-between;gap:.6rem;min-width:0
+}
+.palace-shell .reader-page.reader-streamlined .reader-chapter-head h1{
+ flex:1 1 auto;min-width:0;max-width:none;
+ margin:0 0 .35rem!important;
+ font-size:clamp(1.9rem,4vw,2.85rem)!important;
+ line-height:1.16!important;letter-spacing:-.018em!important;
+}
+.palace-shell .reader-page.reader-streamlined .reader-title-bookmark{
+ display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+ width:40px;height:40px;min-height:40px;
+ border:1px solid rgba(164,150,215,.38);border-radius:12px;
+ background:rgba(124,105,185,.14);font-size:1.38rem;
+ color:inherit;text-decoration:none;cursor:pointer;
+}
+.palace-shell .reader-page.reader-streamlined .reader-title-bookmark.is-saved{
+ background:rgba(120,169,184,.22);border-color:rgba(123,202,194,.55)
+}
+.palace-shell .reader-page.reader-streamlined .reader-title-bookmark:disabled{opacity:.5;cursor:wait}
+.palace-shell .reader-page.reader-streamlined :is(.reader-title-bookmark,.reader-chapter-chooser>summary,.reader-full-work-link):focus-visible{
+ outline:3px solid #a8e1ef;outline-offset:2px
+}
+.palace-shell .reader-page.reader-streamlined .reader-meta{
+ display:flex;flex-wrap:wrap;align-items:center;gap:.3rem .8rem;
+ font-size:.78rem;line-height:1.45;opacity:.88;
+ margin:.1rem 0 .35rem;
+}
+.palace-shell .reader-page.reader-streamlined .reader-meta>span{white-space:normal}
+.palace-shell .reader-page.reader-streamlined .reader-progress-slim{
+ width:100%;height:2px!important;opacity:.78;
+ margin:.5rem 0 .65rem!important;
+}
+.palace-shell .reader-page.reader-streamlined .reader-secondary-actions{
+ display:flex;align-items:center;flex-wrap:wrap;gap:.25rem .65rem;
+ margin:.15rem 0 0;
+}
+.palace-shell .reader-page.reader-streamlined .reader-secondary-actions .reader-full-work-link{
+ display:inline-flex;min-height:30px;width:auto!important;
+ margin:0!important;padding:.25rem .35rem!important;
+ background:transparent!important;border:0!important;
+ box-shadow:none!important;border-radius:0!important;
+ color:inherit!important;font-size:.75rem;font-weight:650;
+ text-decoration:underline;text-decoration-color:rgba(152,159,204,.5);
+ text-underline-offset:3px;
+}
+.palace-shell .reader-page.reader-streamlined .reader-chapter-chooser{min-width:0;max-width:100%}
+.palace-shell .reader-page.reader-streamlined .reader-chapter-chooser>summary{
+ cursor:pointer;padding:.35rem .5rem;border-radius:9px;
+ border:1px solid rgba(156,147,204,.32);
+ font-size:.73rem;font-weight:650;
+}
+.palace-shell .reader-page.reader-streamlined .reader-chapter-chooser .reader-quick-jump{
+ display:block;min-width:0;max-width:min(360px,80vw);margin:.35rem 0 .1rem;
+}
+.palace-shell .reader-page.reader-streamlined .reader-chapter-chooser .reader-quick-jump select{
+ min-width:0;max-width:100%;min-height:40px;
+}
+.palace-shell .reader-page.reader-streamlined .reader-story-passage-status{margin:0;font-size:.75rem;padding:.3rem 0}
+.palace-shell .reader-page.restored.reader-streamlined.measure-narrow .chapter-text.restored{max-width:min(590px,100%)!important}
+.palace-shell .reader-page.restored.reader-streamlined.measure-standard .chapter-text.restored{max-width:min(700px,100%)!important}
+.palace-shell .reader-page.restored.reader-streamlined.measure-wide .chapter-text.restored{max-width:min(860px,100%)!important}
+.palace-shell .reader-page.reader-streamlined .chapter-text.restored{
+ margin:1rem auto 2rem!important;min-height:0;
+ font-kerning:normal;overflow-wrap:break-word;
+}
+.palace-shell:not(.daylight) .reader-page.reader-streamlined.tone-palace .chapter-text.restored{color:#e0e2e8!important}
+.palace-shell .reader-page.reader-streamlined.leading-compact .chapter-text.restored{line-height:1.48!important}
+.palace-shell .reader-page.reader-streamlined.leading-comfortable .chapter-text.restored{line-height:1.7!important}
+.palace-shell .reader-page.reader-streamlined.leading-airy .chapter-text.restored{line-height:1.9!important}
+.palace-shell .reader-page.reader-streamlined:not(.layout-compact) .chapter-text.restored>p{margin-bottom:1.24em}
+.palace-shell .reader-page.reader-streamlined .reader-landmark-map{max-width:min(700px,100%);margin:1.25rem auto}
+.palace-shell .reader-page.reader-streamlined .reader-nav-actions{gap:.5rem;flex-wrap:wrap}
+.palace-shell .reader-page.reader-streamlined .reader-comment-link{
+ min-height:42px;display:inline-flex;align-items:center;padding:.55rem .8rem
+}
+@media(max-width:760px){
+ body:has(.reader-page.reader-streamlined) .restored-floating-controls{display:none!important}
+ .palace-shell .reader-page.reader-streamlined .reader-back-row{gap:.4rem;margin-bottom:.7rem!important}
+ .palace-shell .reader-page.reader-streamlined .reader-head-actions{
+  width:100%;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:.3rem
+ }
+ .palace-shell .reader-page.reader-streamlined .reader-head-actions>button{
+  width:100%;padding:.42rem .18rem!important;font-size:.68rem!important;min-height:38px!important
+ }
+ .palace-shell .reader-page.reader-streamlined .reader-chapter-head h1{font-size:clamp(1.75rem,6.2vw,2.45rem)!important}
+ .palace-shell .reader-page.reader-streamlined .reader-title-bookmark{width:38px;height:38px}
+ .palace-shell .reader-page.reader-streamlined .chapter-text.restored{margin-top:.7rem!important}
+}
+@media(max-width:375px){.palace-shell .reader-page.reader-streamlined .reader-head-actions>button{font-size:.61rem!important}}
+@media(prefers-reduced-motion:reduce){.palace-shell .reader-page.reader-streamlined *{scroll-behavior:auto!important}}
