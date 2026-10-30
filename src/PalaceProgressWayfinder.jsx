@@ -1,15 +1,16 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import PalaceInfoMark from './PalaceInfoMark';
+import PalaceGlowIcon from './PalaceGlowIcon';
 import {CELESTIAL_ECONOMY_LAYERS,CELESTIAL_FAIRNESS_NOTES} from './creativePointGuide';
 import './palace-progress-wayfinder.css';
 
 /* Navigation only: this component neither awards points nor assumes a badge
  * or title has been unlocked. All progress is authoritative elsewhere. */
 const DOORS=[
- {id:'duels',icon:'✒',eyebrow:'CREATE & COMPETE',title:'Ink Duels',detail:'Write, draw or challenge another creator.',to:'/writing?tab=duels',action:'Enter the arena'},
- {id:'achievements',icon:'✦',eyebrow:'GROW AT YOUR PACE',title:'Achievement paths',detail:'Follow the milestones you have actually earned.',to:'/treasury?tab=achievements',action:'See my badges'},
- {id:'titles',icon:'♕',eyebrow:'WEAR YOUR HONOUR',title:'Celestial titles',detail:'See your next court or wear an unlocked name.',to:'/treasury?tab=titles',action:'Visit my titles'}
+ {id:'duels',icon:'crossed-quills',tone:'duels',eyebrow:'CREATE & COMPETE',title:'Ink Duels',detail:'Write, draw or challenge another creator.',to:'/writing?tab=duels',action:'Enter the arena'},
+ {id:'achievements',icon:'milestone-path',tone:'silver',eyebrow:'GROW AT YOUR PACE',title:'Achievement paths',detail:'Follow the milestones you have actually earned.',to:'/treasury?tab=achievements',action:'See my badges'},
+ {id:'titles',icon:'regal-crown',tone:'gold',eyebrow:'WEAR YOUR HONOUR',title:'Celestial titles',detail:'See your next court or wear an unlocked name.',to:'/treasury?tab=titles',action:'Visit my titles'}
 ];
 export default function PalaceProgressWayfinder(){
  return <section className="grand-progress-wayfinder" aria-labelledby="grand-progress-wayfinder-title">
@@ -30,7 +31,7 @@ export default function PalaceProgressWayfinder(){
   </header>
   <div className="grand-progress-wayfinder-doors">
    {DOORS.map(door=><Link key={door.id} className={'grand-progress-wayfinder-door door-'+door.id} to={door.to}>
-    <span className="grand-progress-wayfinder-icon" aria-hidden="true">{door.icon}</span>
+    <PalaceGlowIcon name={door.icon} tone={door.tone} size="small" className="grand-progress-wayfinder-icon"/>
     <span className="grand-progress-wayfinder-copy">
      <small>{door.eyebrow}</small>
      <strong>{door.title}</strong>
