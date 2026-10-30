@@ -1,0 +1,23 @@
+/* My Palace home: quieter hierarchy, preserve all six destinations. */
+@media(min-width:761px){
+.legacy-home-dashboard.palace-command-centre .palace-home-shortcuts-calm{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:9px!important}
+.legacy-home-dashboard .palace-home-shortcuts-calm>a{min-width:0!important;min-height:64px!important;padding:11px 12px!important;box-shadow:none!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:9px!important}
+.legacy-home-dashboard .palace-home-shortcuts-calm>a:nth-child(-n+2){grid-column:span 3!important;min-height:88px!important;background:linear-gradient(110deg,rgba(74,75,137,.4),rgba(47,91,132,.32))!important;border-color:rgba(158,176,243,.36)!important;font-weight:700!important}
+.legacy-home-dashboard .palace-home-shortcuts-calm>a:nth-child(n+3){grid-column:span 1!important;background:rgba(55,50,93,.17)!important;border-color:rgba(177,172,219,.17)!important}
+.legacy-home-dashboard .palace-home-shortcuts-calm>a>span{font-size:1.4rem!important;color:#c4c9f6!important}
+.legacy-home-dashboard .palace-home-shortcuts-calm>a:nth-child(-n+2)>span{font-size:1.7rem!important}
+.legacy-home-dashboard .palace-home-shortcuts-calm>a>small{font-size:.85rem!important;color:#e5e4f7!important}
+.legacy-home-dashboard .palace-moon-prompt{align-items:start!important}
+.legacy-home-dashboard .moon-prompt-actions{align-self:end!important}
+}
+.legacy-home-dashboard .palace-home-identity{box-shadow:none!important}
+.legacy-home-dashboard .palace-home-pulse{box-shadow:none!important}
+.legacy-home-dashboard .palace-moon-prompt .moon-prompt-actions>a{background:linear-gradient(110deg,#6866b8,#407fa6)!important;color:white!important}
+.legacy-home-dashboard .palace-moon-prompt .moon-prompt-actions>button{background:transparent!important;box-shadow:none!important}
+body[data-palace-room="palace"] .palace-chat-fab,body[data-palace-room="home"] .palace-chat-fab{font-size:.82rem}
+@media(max-width:760px){
+.legacy-home-dashboard .palace-home-shortcuts-calm{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+.legacy-home-dashboard .palace-home-shortcuts-calm>a:nth-child(-n+2){min-height:72px!important;background:rgba(80,87,148,.3)!important}
+.legacy-home-dashboard .palace-home-shortcuts-calm>a:nth-child(n+3){min-height:49px!important;padding:8px!important}
+.legacy-home-dashboard .palace-home-shortcuts-calm>a>span{font-size:1.3rem!important}
+}

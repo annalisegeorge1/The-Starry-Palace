@@ -193,14 +193,6 @@ export function ChamberLive({Frame}){
   nightstand?.[0]&&{icon:'✦',kicker:'A DOOR YOU HAVE NOT OPENED',title:nightstand[0].title,copy:nightstand[0].summary||'A story chosen from the interests you asked the Palace to remember.',to:'/work/'+nightstand[0].slug,action:'Take a look',tone:'discover'}
  ].filter(Boolean).slice(0,6);
  return <Frame privateArea><State loading={!data&&!error} error={error}>{p&&<section className="legacy-home-dashboard palace-command-centre">
-   <nav className="legacy-home-tabs" aria-label="My Palace sections">
-    <Link className="active" aria-current="page" to="/chamber">Home</Link>
-    <Link to={"/member/"+p.username}>My chamber</Link>
-    <Link to="/activity">Notifications{unread?' · '+unread:''}</Link>
-    <Link to="/letters">Messages{counts.letterRequests?' · '+counts.letterRequests:''}</Link>
-    <Link to="/events?tab=calendar">Calendar</Link>
-   </nav>
-
    <section className="legacy-home-hero palace-belonging-panel palace-command-hero"><img className="palace-belonging-art" src="/assets/palace/palace-belonging.gif" alt=""/>
     <div className="palace-home-welcome"><p className="eyebrow">✦ MY PALACE</p><h1><span className="palace-welcome-line">Welcome home,</span><span className="palace-member-name">{p.display_name||p.username}.</span></h1><div className="palace-home-identity"><Link className="palace-home-avatar" to={"/member/"+p.username} aria-label="Open my chamber"><MemberAvatar profile={p} style={{width:"100%",height:"100%"}}/></Link><div><small>YOUR PALACE TITLE</small><strong>{p.title||'Palace Member'}</strong>{p.status_line&&<em>{p.status_line}</em>}</div><Link to={"/member/"+p.username}>My chamber →</Link></div><p className="palace-home-intro">Pick up what matters next. Everything else can remain quiet until you are ready.</p></div>
     <div className="palace-home-pulse" aria-label="Your Palace today">
@@ -210,7 +202,7 @@ export function ChamberLive({Frame}){
     </div>
    </section>
 
-   <nav className="palace-home-shortcuts" aria-label="My Palace quick actions">
+   <nav className="palace-home-shortcuts palace-home-shortcuts-calm" aria-label="My Palace quick actions">
     <Link to="/writing"><span>✎</span><small>Writing</small></Link>
     <Link to="/library"><span>▤</span><small>Library</small></Link>
     <Link to="/comics/studio"><span>◈</span><small>Comic Studio</small></Link>
