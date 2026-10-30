@@ -1200,6 +1200,31 @@ export async function getWorkExport(slug){
  const{data:chapters,error}=await needClient().from('chapters').select('id,title,position,body_html,status,revision_note,word_count,created_at,updated_at,published_at').eq('work_id',work.id).order('position');
  if(error)throw error;return{work,chapters:chapters||[]}
 }
+/** Read only published chapter bodies for the full-work reader.
+ * Never call getWorkExport here: it also returns drafts for authors.
+ * The publication and visibility guards precede the chapter fetch, and
+ * Supabase RLS remains authoritative for access to every chapter.
+ */
+export async function getPublishedWorkForReading(slug){
+ const work=await getWorkBySlug(slug);
+ if(!work||work.publication_status!=='published'||work.visibility==='private')return null;
+ const published=(work.chapters||[]).filter(ch=>ch.status==='published');
+ if(!published.length)return {work,chapters:[]};
+ const batches=[];
+ // Supabase/PostgREST can limit default row counts. Fetch the complete work
+ // in bounded chunks rather than silently truncating long manuscripts.
+ for(let i=0;i<published.length;i+=70){
+  const selected=published.slice(i,i+70).map(ch=>ch.id);
+  const {data,error}=await needClient().from('chapters')
+   .select('id,work_id,title,position,body_html,status,word_count')
+   .eq('work_id',work.id).eq('status','published').in('id',selected);
+  if(error)throw error;
+  batches.push(...(data||[]));
+ }
+ const order=new Map(published.map((ch,i)=>[ch.id,i]));
+ batches.sort((a,b)=>(order.get(a.id)??Infinity)-(order.get(b.id)??Infinity));
+ return {work,chapters:batches};
+}
 export async function getChapter(workSlug,chapterId){const work=await getWorkBySlug(workSlug);if(!work)return null;const{data,error}=await needClient().from('chapters').select('id,work_id,title,position,body_html,status,revision,revision_note,scheduled_for,published_at,word_count,star_count,updated_at').eq('id',chapterId).eq('work_id',work.id).maybeSingle();if(error)throw error;return data?{work,chapter:data}:null}
 export async function getMyChapterStar(userId,chapterId){
  const{data,error}=await needClient().from('chapter_stars').select('chapter_id').eq('user_id',userId).eq('chapter_id',chapterId).maybeSingle();
