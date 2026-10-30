@@ -68,6 +68,18 @@ const shapes={
  'creative-star':<><path d="m5 20 11-12M11 5l3-2 1.5 3L19 7l-2 3 1 3-4 1-2 3-3-2-4 2 1-5-3-2 4-1 4-4Z"/></>,
  'tea-cup':<><path d="M4 9h13v5a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6V9Z"/><path d="M17 10h2a3 3 0 0 1 0 6h-3M3 21h17M7 4c-2 2 2 2 0 4M12 3c-2 2 2 2 0 4"/></>,
  'vault':<><rect x="3" y="5" width="18" height="15" rx="2"/><path d="M3 9h18M8 9v11M14 13h3M14 16h3"/><path d="m12 3 2.6 2L12 7l-2.6-2L12 3Z"/></>,
+ // Grand Palace regalia, built in the same 24px pearl-stroke language as every other Palace icon.
+ 'celestial-star':<><path d="M12 2.8 14.1 9.5 20.8 12l-6.7 2.5L12 21.2l-2.1-6.7L3.2 12l6.7-2.5L12 2.8Z"/><path d="M19.2 3.5v3M17.7 5h3M4 18v2M3 19h2"/></>,
+ 'vault-crown':<><path d="m2.8 8 4.5 4.2L12 5l4.7 7.2L21.2 8l-2 10.2H4.8L2.8 8Z"/><path d="M5 21h14M5.6 18.2h12.8M9.1 15h5.8"/><circle cx="3" cy="6" r="1"/><circle cx="12" cy="3" r="1"/><circle cx="21" cy="6" r="1"/></>,
+ 'crescent-moon':<><path d="M19.4 15.4A8.4 8.4 0 0 1 8.6 4.6a8.7 8.7 0 1 0 10.8 10.8Z"/><path d="m18 4 .7 1.8L20.5 6.5l-1.8.7L18 9l-.7-1.8-1.8-.7 1.8-.7L18 4Z"/><path d="M21 12h.01"/></>,
+ 'treasure-crown':<><path d="m4 8 3.7 3L12 5.5l4.3 5.5L20 8l-1.5 7h-13L4 8Z"/><path d="M6.1 15v4.2c0 .9.7 1.3 1.5 1.3h8.8c.8 0 1.5-.4 1.5-1.3V15M9 18h6"/><path d="m12 2.5 1 1.1L12 4.7l-1-1.1 1-1.1Z"/></>,
+ 'founding-crest':<><path d="m12 2.4 8 3.2v6c0 4.7-3 8-8 10-5-2-8-5.3-8-10v-6l8-3.2Z"/><path d="m12 6.4 1.2 4.4 4.4 1.2-4.4 1.2-1.2 4.4-1.2-4.4-4.4-1.2 4.4-1.2L12 6.4Z"/></>,
+ 'awakened-star':<><path d="M12 3 14.5 9.5 21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z"/><path d="M3 4h3M4.5 2.5v3M18.5 19.5h3M20 18v3"/></>,
+ 'starlit-moon':<><path d="M18.4 15.3A7.9 7.9 0 0 1 8.7 5.5 8.1 8.1 0 1 0 18.4 15.3Z"/><path d="m18.5 3 .8 2.2L21.5 6l-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2ZM20 11v2M19 12h2"/></>,
+ 'regal-crown':<><path d="m3 8 4.5 4 4.5-7 4.5 7L21 8l-2 11H5L3 8Z"/><path d="M5 19h14M8 15h8M12 2v1M19.5 3.5l-1 1M4.5 3.5l1 1"/></>,
+ 'sovereign-constellation':<><path d="m3.7 7.5 7.8-4 8.6 5.6-4.5 10.6-10.1-2.4-1.8-9.8Z"/><path d="m11.5 3.5 2.1 7.6 6.5-2M13.6 11.1l2 8.6M13.6 11.1l-9.9-3.6M5.5 17.3l8.1-6.2"/><circle cx="3.7" cy="7.5" r="1.1"/><circle cx="11.5" cy="3.5" r="1.1"/><circle cx="20.1" cy="9.1" r="1.1"/><circle cx="15.6" cy="19.7" r="1.1"/><circle cx="5.5" cy="17.3" r="1.1"/></>,
+ 'ceremony-sigil':<><circle cx="12" cy="12" r="8.8"/><path d="M12 5.8 13.7 10.3 18.2 12l-4.5 1.7L12 18.2l-1.7-4.5L5.8 12l4.5-1.7L12 5.8Z"/><path d="M12 1.5v1.8M12 20.7v1.8M1.5 12h1.8M20.7 12h1.8"/></>,
+ 'victory-laurel':<><path d="M8 17.7c-3.4-1.4-4.7-4.8-3.5-8.8M16 17.7c3.4-1.4 4.7-4.8 3.5-8.8M6.2 8.5l-2.9-1M6 12l-3 .8M8.3 16.3l-2 2M17.8 8.5l2.9-1M18 12l3 .8M15.7 16.3l2 2"/><path d="m7 9 3.2 2.5L12 6.5l1.8 5L17 9l-1.3 7.2H8.3L7 9Z"/><path d="M9 20h6"/></>,
  'sun':<><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></>
 };
 const routeNames=[
