@@ -1,0 +1,80 @@
+/* Calm, trust-first author workspace. Visual changes only: editor and save
+   coordinator are intentionally untouched. Import AFTER earlier desk styles. */
+body.writing-desk-open .chic-work-studio-head {margin-bottom:.85rem}
+.writer-workspace-modes{display:inline-flex;align-items:center;flex-wrap:nowrap;gap:.24rem;padding:.22rem;border:1px solid rgba(170,166,227,.33);border-radius:12px;background:rgba(42,40,89,.44)}
+.writer-workspace-modes button{border:0!important;border-radius:9px!important;padding:.5rem .8rem!important;min-height:40px!important;background:transparent!important;color:#cfc4eb!important;font-size:.76rem!important;white-space:nowrap}
+.writer-workspace-modes button.active{background:rgba(145,123,214,.36)!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(184,173,244,.35)}
+.writer-workspace-modes button:focus-visible,.writer-chapter-manage-toggle:focus-visible{outline:2px solid #9dece5;outline-offset:2px}
+.writer-compact-chapter-nav{border-radius:12px!important;padding:.45rem!important;box-shadow:none!important}
+.writer-compact-chapter-nav select{flex:1;min-width:0}
+body.writing-desk-open .chapter-manager-row>.chapter-row-extras{display:none!important}
+body.writing-desk-open .chapter-manager-row.is-managing>.chapter-row-extras{display:flex!important}
+body.writing-desk-open .chapter-manager-row>.writer-chapter-manage-toggle{
+ display:flex!important;grid-column:1!important;justify-self:end;width:auto!important;min-width:95px!important;
+ align-items:center;justify-content:center;gap:.25rem;min-height:32px!important;max-width:100%!important;
+ padding:.3rem .65rem!important;border-radius:9px;border:1px solid rgba(155,155,213,.3);
+ color:#d4c9e8;background:rgba(113,99,173,.13);font-size:.71rem;letter-spacing:.015em
+}
+body.writing-desk-open .chapter-manager-row.is-managing>.writer-chapter-manage-toggle{background:rgba(130,105,190,.31);color:#fff}
+body.writing-desk-open .chapter-manager-row{gap:.12rem!important;padding-bottom:.22rem!important}
+body.writing-desk-open .chapter-manager-row>button:first-child{padding:.55rem .6rem!important}
+body.writing-desk-open .manuscript-folder-organiser{padding:.68rem!important;box-shadow:none!important}
+body.writing-desk-open .manuscript-overview{padding:.65rem .7rem!important;box-shadow:none!important}
+body.writing-desk-open .manuscript-overview-ring{transform:scale(.86);transform-origin:center}
+body.writing-desk-open .writing-studio-rail{border-radius:16px!important}
+body.writing-desk-open .writer-chapter-drag-tip{font-size:.67rem}
+body.writing-desk-open .editor-save-cluster .legacy-save-state{display:none!important}
+body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar{
+ gap:.28rem!important;padding:.42rem .55rem!important;box-shadow:0 6px 16px rgba(7,11,33,.14)!important;border-radius:13px!important;
+}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-chapter-jump{padding-bottom:.3rem!important}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-chapter-jump-actions>button{min-height:36px!important}
+body.writing-desk-open .writer-toolbar-save-state{font-weight:700;white-space:normal!important}
+body.writing-desk-open .writer-toolbar-save-state.state-attention{border-color:rgba(255,136,166,.55)!important}
+body.writing-desk-open .writer-toolbar-save-state.state-pending i{background:#f4d394!important}
+body.writing-desk-open .writer-toolbar-save-state.state-attention i{background:#f1a3b2!important}
+body.writing-desk-open .writer-toolbar-save-state.state-recovery i{background:#f4cc8f!important}
+.writer-appearance-accordion{border:1px solid rgba(176,166,226,.22);border-radius:10px;background:rgba(109,92,184,.075);min-width:0}
+.writer-appearance-accordion>summary{display:flex;align-items:center;gap:.5rem;cursor:pointer;color:#d7cdeb;padding:.35rem .7rem;font-size:.72rem;min-height:34px}
+.writer-appearance-accordion>summary>span{font-size:.65rem;color:#c2b5d8}
+.writer-appearance-accordion[open]>summary{border-bottom:1px solid rgba(177,161,226,.2)}
+.writer-appearance-accordion .manuscript-type-ribbon{margin:.35rem;max-width:100%}
+.writer-more-formatting{min-width:0;border:1px solid rgba(180,169,229,.24);border-radius:10px;background:rgba(108,94,180,.075)}
+.writer-more-formatting>summary{cursor:pointer;display:flex;align-items:center;gap:.5rem;padding:.42rem .68rem;min-height:36px;color:#dfd4f7;font-size:.73rem;font-weight:700}
+.writer-more-formatting>summary>small{font-weight:400;color:#c4b8db;font-size:.66rem}
+.writer-more-formatting[open]>summary{border-bottom:1px solid rgba(177,161,226,.2)}
+.writer-more-panel{padding:.48rem .6rem;display:flex;gap:.55rem;align-items:center;flex-wrap:wrap}
+.writer-more-panel .editor-tool-group{display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;padding-right:.6rem;border-right:1px solid rgba(182,175,227,.2)}
+.writer-more-panel button{min-height:38px;min-width:36px;border:1px solid rgba(179,167,231,.34);border-radius:8px;padding:.4rem .5rem;color:#f0eaff;background:rgba(100,87,176,.2);font-size:.73rem}
+.writer-more-panel :is(button):focus-visible,.writer-more-formatting>summary:focus-visible,.writer-appearance-accordion>summary:focus-visible{outline:2px solid #a8e9ed;outline-offset:2px}
+body.writing-desk-open .manuscript-dashboard--compact{padding:.55rem .8rem!important;margin:.4rem auto .75rem!important;background:rgba(39,36,82,.28)!important;box-shadow:none!important;border-radius:12px!important}
+.manuscript-dashboard--compact>header{gap:.4rem!important}
+.manuscript-dashboard--compact>header h2{font-size:1rem!important;margin:0!important}
+.manuscript-dashboard--compact>header p:not(.eyebrow),.manuscript-dashboard--compact>header .eyebrow,.manuscript-dashboard--compact .manuscript-dashboard-pulse{display:none!important}
+.manuscript-dashboard--compact>header>button{min-height:34px!important;padding:.32rem .6rem!important}
+.manuscript-recent-activity ul{list-style:none;margin:.5rem 0;padding:0;display:grid;gap:.4rem}
+.manuscript-recent-activity li button{width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.4rem;text-align:left}
+.manuscript-recent-activity li span{font-size:.65rem;color:#c6bbde}
+.manuscript-activity-summary{margin:.6rem 0 0!important}
+.daylight .writer-workspace-modes{background:#f4effa;border-color:#d4c7e6}
+.daylight .writer-workspace-modes button{color:#5e4c78!important}
+.daylight .writer-workspace-modes button.active{background:#e0d5f1!important;color:#443164!important}
+.daylight body.writing-desk-open .chapter-manager-row>.writer-chapter-manage-toggle,body.daylight.writing-desk-open .chapter-manager-row>.writer-chapter-manage-toggle{color:#483562;background:#f5effb;border-color:#d1c4e1}
+.daylight .writer-appearance-accordion,.daylight .writer-more-formatting{background:#faf8ff;border-color:#d4c7e8}
+.daylight .writer-appearance-accordion>summary,.daylight .writer-more-formatting>summary{color:#4b3866}
+.daylight .writer-appearance-accordion>summary>span,.daylight .writer-more-formatting>summary>small{color:#6d5a7a}
+.daylight .writer-more-panel button{background:#f0eafb;color:#46365e;border-color:#d0c4e4}
+.daylight body.writing-desk-open .manuscript-dashboard--compact{background:#fff!important;border-color:#d9cbea}
+.daylight .manuscript-recent-activity li span{color:#6b607a}
+@media(max-width:760px){
+ body.writing-desk-open .chic-work-studio-head{padding:.65rem!important;gap:.6rem!important}
+ .writer-workspace-modes{width:100%;justify-content:space-around}
+ .writer-workspace-modes button{flex:1}
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-chapter-jump-actions .writer-toolbar-wordcount{display:none!important}
+ body.writing-desk-open .writer-toolbar-save-state{max-width:none!important;overflow:visible!important;text-overflow:clip!important}
+ .writer-more-panel{gap:.36rem}
+ .writer-more-panel .editor-tool-group{border-right:0;padding:0}
+ .writer-appearance-accordion .manuscript-type-ribbon{flex-wrap:wrap;overflow:visible}
+ .writer-more-formatting>summary{min-height:42px}
+}
+@media(prefers-reduced-motion:reduce){.writer-workspace-modes *, .writer-more-formatting *, .writer-appearance-accordion *{transition:none!important}}
