@@ -7,7 +7,10 @@ const live=readFileSync(resolve(process.cwd(),'src/liveRooms.jsx'),'utf8');
 describe('Android layout repair guardrails',()=>{
  it('loads the narrow-screen fixes after legacy styles',()=>{
   const imports=[...main.matchAll(/import '\.\/[^']+\.css';/g)].map(m=>m[0]);
-  expect(imports.at(-1)).toContain('palace-mobile-overlap-repair.css');
+  expect(imports.some(item=>item.includes('palace-mobile-overlap-repair.css'))).toBe(true);
+  const mobileIndex=imports.findIndex(item=>item.includes('palace-mobile-overlap-repair.css'));
+  const layoutsIndex=imports.findIndex(item=>item.includes('reader-layout-choices.css'));
+  expect(layoutsIndex).toBeGreaterThan(mobileIndex);
  });
  it('returns chapter toolbar and publish actions to document flow on phones',()=>{
   expect(css).toMatch(/body\.writing-desk-open \.chic-editor-form>\.manuscript-sticky-toolbar\s*\{\s*position:sticky!important/);
