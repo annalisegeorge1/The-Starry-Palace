@@ -1,0 +1,16 @@
+# DO NOT deploy before authorization, sender/domain verification and staging checks.
+name = "palace-email-alerts"
+main = "src/index.js"
+compatibility_date = "2026-10-29"
+workers_dev = false
+
+[vars]
+PALACE_EMAILS_ENABLED = "false"
+PALACE_EMAIL_FROM = "notifications@thestarrypalace.com"
+SUPABASE_URL = "https://sservftxygunkacmwsad.supabase.co"
+
+[triggers]
+crons = ["*/15 * * * *"]
+
+[[send_email]]
+name = "EMAIL"
