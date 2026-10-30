@@ -73,6 +73,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  const[messageSearch,setMessageSearch]=useState('');
  const[searchWithinThread,setSearchWithinThread]=useState(false);
  const[showSharedMedia,setShowSharedMedia]=useState(false);
+ const[conversationOptionsOpen,setConversationOptionsOpen]=useState(false);
  const[mediaFilter,setMediaFilter]=useState('all');
  const[safetyOpen,setSafetyOpen]=useState(false);
  const[boundary,setBoundary]=useState({muted:false,blocked:false});
@@ -102,6 +103,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  const photoInputRef=useRef(null);
  const holdRef=useRef(null);
  const actionMenuRef=useRef(null);
+ const conversationOptionsRef=useRef(null);
  const historyScrollRef=useRef(null);
  const directScrollRef=useRef(null);
  const selectedDirectRef=useRef(selectedDirect);
@@ -155,7 +157,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   const preview=URL.createObjectURL(photoFile);setPhotoPreview(preview);
   return()=>URL.revokeObjectURL(preview);
  },[photoFile]);
- useEffect(()=>{setPhotoFile(null);setEditingMessage(null);setGifOpen(false);setSearchWithinThread(false);setMessageSearch('');setShowSharedMedia(false);setMediaFilter('all');setShowCirclePrompts(false);setSafetyOpen(false);setReportReason('');setReportedGroupMessage(null)},[roomId,tab]);
+ useEffect(()=>{setPhotoFile(null);setEditingMessage(null);setGifOpen(false);setSearchWithinThread(false);setMessageSearch('');setShowSharedMedia(false);setConversationOptionsOpen(false);setMediaFilter('all');setShowCirclePrompts(false);setSafetyOpen(false);setReportReason('');setReportedGroupMessage(null)},[roomId,tab]);
  useEffect(()=>()=>{if(holdRef.current?.timer)window.clearTimeout(holdRef.current.timer)},[]);
  useEffect(()=>{
   if(!actionMenu)return;
@@ -303,7 +305,13 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   directScrollRef.current=null;
  },[directHistory]);
  useEffect(()=>{const update=()=>setQuiet(document.body.classList.contains('reader-focus-mode')||document.body.classList.contains('writer-focus-mode'));update();const obs=new MutationObserver(update);obs.observe(document.body,{attributes:true,attributeFilter:['class']});return()=>obs.disconnect()},[]);
- useEffect(()=>{const handle=e=>{if(e.key!=='Escape'||!open)return;if(actionMenu){setActionMenu(null)}else if(creating){setCreating(false)}else if(managing){setManaging(false)}else if(threadOpen){setThreadOpen(false)}else if(!workspace)setOpen(false)};window.addEventListener('keydown',handle);return()=>window.removeEventListener('keydown',handle)},[open,creating,managing,threadOpen,actionMenu,workspace]);
+ useEffect(()=>{const handle=e=>{if(e.key!=='Escape'||!open)return;if(actionMenu){setActionMenu(null)}else if(conversationOptionsOpen){setConversationOptionsOpen(false);conversationOptionsRef.current?.querySelector('button')?.focus()}else if(creating){setCreating(false)}else if(managing){setManaging(false)}else if(threadOpen){setThreadOpen(false)}else if(!workspace)setOpen(false)};window.addEventListener('keydown',handle);return()=>window.removeEventListener('keydown',handle)},[open,creating,managing,threadOpen,actionMenu,conversationOptionsOpen,workspace]);
+ useEffect(()=>{
+  if(!conversationOptionsOpen)return;
+  const dismiss=e=>{if(!conversationOptionsRef.current?.contains(e.target))setConversationOptionsOpen(false)};
+  document.addEventListener('pointerdown',dismiss);
+  return()=>document.removeEventListener('pointerdown',dismiss);
+ },[conversationOptionsOpen]);
  if(!userId||dataOwner!==userId)return null;
 
  function acknowledgeVisibleGroupMessage(){
@@ -694,7 +702,27 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
      {tab==='groups'&&<button type="button" className="palace-chat-header-group-settings" aria-label="Group settings" aria-expanded={managing} onClick={()=>{setManaging(v=>!v);setIdentity({title:activeGroup.title,description:activeGroup.description||'',colorKey:activeGroup.colorKey||'moonlit'})}}>⚙</button>}
     </div>}
     <details className="palace-chat-help"><summary aria-label="How Palace Chat works" title="Chat tips and shortcuts">?</summary><div className="palace-chat-help-card"><strong>Palace Chat guide</strong><p>Choose a conversation to read and reply. Use <b>Direct</b> for one-to-one messages, or <b>Groups</b> for private circles.</p><p><b>Message options:</b> press and hold a bubble (or right-click it). You can copy, edit your own message, reply in groups, and pin messages when hosting a group.</p><p><b>Writing:</b> Ctrl/⌘ + Enter sends; Enter starts a new line. Use Emoji, GIF or Photo beside your message.</p><small>Messages stay within the conversation you open.</small></div></details>
-     <div className="palace-chat-header-actions">{!workspace&&<Link to="/chat" state={{palaceChat:{tab,roomId:threadOpen?roomId:null}}} className="palace-chat-expand" aria-label="Open full Palace Messenger" title="Open full Messenger">⤢</Link>}<button type="button" onClick={()=>setChatPaused(v=>!v)} aria-pressed={chatPaused} title="Compact chat launcher when minimized" aria-label={chatPaused?'Turn off quiet launcher':'Use quiet launcher'}>☾</button>{workspace?<Link className="palace-chat-close-workspace" to="/" aria-label="Return to Palace home">✕</Link>:<button type="button" onClick={()=>{setActionMenu(null);setOpen(false)}} aria-label="Minimize Palace chat">−</button>}</div></header>
+     <div className="palace-chat-header-actions">
+     {active&&threadOpen&&<div className="palace-chat-more-wrap" ref={conversationOptionsRef}>
+       <button type="button" className="palace-chat-more-trigger" aria-label="More conversation options" title="Conversation options" aria-expanded={conversationOptionsOpen} aria-haspopup="true" onClick={()=>setConversationOptionsOpen(v=>!v)}><span aria-hidden="true">⋯</span></button>
+       {conversationOptionsOpen&&<div className="palace-chat-options-dropdown" role="group" aria-label="Conversation tools">
+         <small className="palace-chat-options-label">EXPLORE</small>
+         <button type="button" aria-pressed={searchWithinThread} aria-label={searchWithinThread?"Close message search":"Search messages in this conversation"} onClick={()=>{setSearchWithinThread(v=>!v);setShowSharedMedia(false);setMessageSearch('');setConversationOptionsOpen(false)}}><span aria-hidden="true">⌕</span>{searchWithinThread?'Close search':'Search messages'}</button>
+         <button type="button" aria-pressed={showSharedMedia} aria-label={showSharedMedia?"Close shared media":"Show shared media"} onClick={()=>{setShowSharedMedia(v=>!v);setSearchWithinThread(false);setMessageSearch('');setMediaFilter('all');setConversationOptionsOpen(false)}}><span aria-hidden="true">▤</span>{showSharedMedia?'Close shared media':'Shared media'}</button>
+         {tab==='direct'&&activeDirect&&<>
+           <div className="palace-chat-options-divider"/>
+           <small className="palace-chat-options-label">CONVERSATION</small>
+           <button type="button" disabled={busy} aria-pressed={!!activeDirect.preference?.starred} aria-label={activeDirect.preference?.starred?'Remove conversation from favourites':'Add conversation to favourites'} onClick={()=>{setConversationOptionsOpen(false);toggleFavorite()}}><span aria-hidden="true">{activeDirect.preference?.starred?'★':'☆'}</span>{activeDirect.preference?.starred?'Remove favourite':'Add to favourites'}</button>
+           <button type="button" disabled={busy} aria-pressed={!!activeDirect.preference?.muted} aria-label={activeDirect.preference?.muted?'Unmute this conversation':'Mute this conversation'} onClick={()=>{setConversationOptionsOpen(false);updateDirectPreference(activeDirect.conversation_id,{muted:!activeDirect.preference?.muted},activeDirect.preference?.muted?'Conversation notifications unmuted.':'Conversation muted.')}}><span aria-hidden="true">◌</span>{activeDirect.preference?.muted?'Unmute':'Mute'}</button>
+           <button type="button" disabled={busy} aria-label="Archive this conversation" onClick={()=>{setConversationOptionsOpen(false);updateDirectPreference(activeDirect.conversation_id,{archived:true},'Conversation archived. Restore it from Archived.')}}><span aria-hidden="true">▣</span>Archive</button>
+           <button type="button" aria-expanded={safetyOpen} aria-label="Conversation safety tools" onClick={()=>{setSafetyOpen(v=>!v);setConversationOptionsOpen(false)}}><span aria-hidden="true">⚑</span>Safety & reporting</button>
+         </>}
+         {!workspace&&<>
+           <div className="palace-chat-options-divider"/>
+           <Link to="/chat" state={{palaceChat:{tab,roomId:threadOpen?roomId:null}}} aria-label="Switch to full Palace Messenger" onClick={()=>setConversationOptionsOpen(false)}><span aria-hidden="true">⤢</span>Full Messenger</Link>
+         </>}
+       </div>}
+     </div>}{!workspace&&<Link to="/chat" state={{palaceChat:{tab,roomId:threadOpen?roomId:null}}} className="palace-chat-expand" aria-label="Open full Palace Messenger" title="Open full Messenger">⤢</Link>}<button type="button" onClick={()=>setChatPaused(v=>!v)} aria-pressed={chatPaused} title="Compact chat launcher when minimized" aria-label={chatPaused?'Turn off quiet launcher':'Use quiet launcher'}>☾</button>{workspace?<Link className="palace-chat-close-workspace" to="/" aria-label="Return to Palace home">✕</Link>:<button type="button" onClick={()=>{setActionMenu(null);setOpen(false)}} aria-label="Minimize Palace chat">−</button>}</div></header>
    <nav className="palace-chat-tabs" aria-label="Chat type">
     <button type="button" aria-pressed={tab==='direct'} onClick={()=>{setActionMenu(null);setThreadOpen(false);setTab('direct');setSearch('');setUnreadOnly(false);setStarredOnly(false);setShowArchived(false);setCreating(false);setManaging(false);setError('')}}>✉ Direct {directUnread>0&&<span>{directUnread}</span>}</button>
     <button type="button" aria-pressed={tab==='groups'} onClick={()=>{setActionMenu(null);setThreadOpen(false);setTab('groups');setSearch('');setUnreadOnly(false);setStarredOnly(false);setShowArchived(false);setCreating(false);setManaging(false);setError('')}}>♧ Groups {(groupUnread+groupData.invitations.length)>0&&<span>{groupUnread+groupData.invitations.length}</span>}</button>
@@ -734,15 +762,6 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
      {((tab==='groups'&&!groupRows.length)||(tab==='direct'&&!visibleDirect.length))&&(search||unreadOnly||starredOnly)&&<span className="palace-chat-filter-empty">No matching conversations. Clear filters to see your other rooms.</span>}
     </div>
     {active?<><div className="palace-chat-correspondent"><button className="palace-chat-thread-back" type="button" onClick={()=>{setActionMenu(null);setThreadOpen(false)}} aria-label="Back to conversations">← Conversations</button><div className="palace-chat-person">{tab==='direct'?<MemberAvatar className="palace-chat-person-avatar" profile={activeDirect?.correspondent}/>:<span className="palace-chat-person-avatar" aria-hidden="true">✧</span>}<div className="palace-chat-person-copy"><strong>{openedRoomName}</strong><small>{tab==='groups'?activeGroup.members.length+' members · Invitation-only group':'Private correspondence · Palace boundaries apply'}</small><small className="palace-chat-connection" role="status"><i aria-hidden="true" className={liveStatus==='live'?'is-live':''}/>{liveStatus==='live'?'Live updates':'Refreshes automatically'}</small>{tab==='groups'&&activeGroup.description&&<p className="palace-chat-circle-description">{activeGroup.description}</p>}</div></div>{tab==='groups'&&<button type="button" aria-expanded={managing} onClick={()=>{setManaging(v=>!v);setIdentity({title:activeGroup.title,description:activeGroup.description||'',colorKey:activeGroup.colorKey||'moonlit'})}}>Members & settings ⚙</button>}</div>
-     {active&&threadOpen&&<div className="palace-chat-thread-actions" role="group" aria-label="Conversation tools">
- <button type="button" aria-pressed={searchWithinThread} aria-label={searchWithinThread?"Close message search":"Search messages in this conversation"} onClick={()=>{setSearchWithinThread(v=>!v);setShowSharedMedia(false);setMessageSearch('')}}>{searchWithinThread?'✕ Close search':'⌕ Search messages'}</button>
- <button type="button" aria-pressed={showSharedMedia} aria-label={showSharedMedia?"Close shared media":"Show shared media"} onClick={()=>{setShowSharedMedia(v=>!v);setSearchWithinThread(false);setMessageSearch("");setMediaFilter("all")}}>{showSharedMedia?"✕ Close media":"▤ Shared media"}</button>
- {tab==='direct'&&activeDirect&&<button type="button" disabled={busy} onClick={toggleFavorite} aria-pressed={!!activeDirect.preference?.starred} aria-label={activeDirect.preference?.starred?'Remove conversation from favourites':'Add conversation to favourites'}>{activeDirect.preference?.starred?'★ Favourited':'☆ Favourite'}</button>}
- {tab==='direct'&&activeDirect&&<button type="button" disabled={busy} aria-pressed={!!activeDirect.preference?.muted} aria-label={activeDirect.preference?.muted?'Unmute this conversation':'Mute this conversation'} onClick={()=>updateDirectPreference(activeDirect.conversation_id,{muted:!activeDirect.preference?.muted},activeDirect.preference?.muted?'Conversation notifications unmuted.':'Conversation muted.')}>{activeDirect.preference?.muted?'◉ Unmute':'◌ Mute'}</button>}
- {tab==='direct'&&activeDirect&&<button type="button" disabled={busy} aria-label="Archive this conversation" onClick={()=>updateDirectPreference(activeDirect.conversation_id,{archived:true},'Conversation archived. Restore it from Archived.')}>Archive</button>}
- {tab==='direct'&&activeDirect&&<button type="button" aria-expanded={safetyOpen} aria-label="Conversation safety tools" onClick={()=>setSafetyOpen(v=>!v)}>⚑ Safety</button>}
- {!workspace&&<Link to="/chat" state={{palaceChat:{tab,roomId:threadOpen?roomId:null}}} aria-label="Switch to full Palace Messenger">Full Messenger ↗</Link>}
- </div>}
  {tab==='direct'&&activeDirect&&safetyOpen&&<section className="palace-chat-safety" aria-label="Private conversation safety">
   <header><strong>Safety & boundaries</strong><button type="button" onClick={()=>setSafetyOpen(false)} aria-label="Close safety tools">×</button></header>
   <p>Blocking limits contact. Reporting sends a confidential notice for moderator review. Reports do not automatically remove messages.</p>
