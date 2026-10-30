@@ -1,15 +1,23 @@
 /** AO3-style precision with Palace-native terminology; only loaded works are
  * filtered here. The UI labels this scope honestly while more pages load. */
 export const READING_SORT_OPTIONS=[
- ['updated','Date updated: newest'],
- ['published','Date published: newest'],
- ['oldest','Date published: oldest'],
- ['title','Title: A–Z'],
- ['words','Word count: longest'],
- ['chapters','Chapters: most'],
- ['comments','Comments: most'],
- ['bookmarks','Bookmarks: most'],
+ ['updated','Updated: newest first','archive'],
+ ['published','Published: newest first','archive'],
+ ['oldest','Published: oldest first','archive'],
+ ['title','Title: A–Z','archive'],
+ ['words','Word count: longest first','archive'],
+ ['chapters','Chapters: most first','archive'],
+ ['comments','Comments: most first','archive'],
+ ['updated_oldest','Updated: oldest first','loaded'],
+ ['title_desc','Title: Z–A','loaded'],
+ ['words_asc','Word count: shortest first','loaded'],
+ ['chapters_asc','Chapters: fewest first','loaded'],
+ ['comments_asc','Comments: fewest first','loaded'],
+ ['bookmarks','Bookmarks: most first','loaded'],
+ ['bookmarks_asc','Bookmarks: fewest first','loaded']
 ];
+/** The live archive RPC supports only the archive-marked modes. */
+export const isArchiveReadingSort=key=>READING_SORT_OPTIONS.some(([id,,scope])=>id===key&&scope==='archive');
 export const READING_FACET_ORDER=['fandom','character','relationship','warning','genre','trope','additional','theme','mood','setting','format','other'];
 export const READING_FACET_NAMES={
  fandom:'Fandoms',character:'Characters',relationship:'Relationships',
@@ -47,16 +55,23 @@ export function matchesReadingFacets(work,included=[],excluded=[]){
 }
 export function sortReadingWorks(works=[],sort='updated'){
  const date=(w,key)=>{const time=Date.parse(w?.[key]||'');return Number.isFinite(time)?time:null};
- const metric=(w,key)=>{const value=w?.reading_stats?.[key];return value===null||value===undefined||!Number.isFinite(Number(value))?null:Number(value)};
- const keys=['words','chapters','comments','bookmarks'];
- return [...works].sort((a,b)=>{
-  if(sort==='title')return String(a.title||'').localeCompare(String(b.title||''))||String(a.id).localeCompare(String(b.id));
-  const val=w=>keys.includes(sort)?metric(w,sort):date(w,sort==='updated'?'last_published_at':'first_published_at');
-  const av=val(a),bv=val(b);
-  // Missing aggregated metadata must not place a work ahead of known values.
-  if(av===null&&bv!==null)return 1;
-  if(bv===null&&av!==null)return -1;
-  if(av!==null&&bv!==null&&av!==bv)return sort==='oldest'?av-bv:bv-av;
-  return (date(b,'last_published_at')||0)-(date(a,'last_published_at')||0)||String(a.title||'').localeCompare(String(b.title||''))||String(a.id).localeCompare(String(b.id));
+ const numericSorts=new Set(['words','words_asc','chapters','chapters_asc','comments','comments_asc','bookmarks','bookmarks_asc']);
+ const key=sort.replace(/_asc$/,'');
+ const metric=w=>{const value=w?.reading_stats?.[key];return value==null||value===''||!Number.isFinite(Number(value))?null:Number(value)};
+ const dateKey=['published','oldest'].includes(sort)?'first_published_at':'last_published_at';
+ const ascending=['oldest','updated_oldest','words_asc','chapters_asc','comments_asc','bookmarks_asc'].includes(sort);
+ const titleSort=(a,b)=>String(a?.title||'').localeCompare(String(b?.title||''),undefined,{sensitivity:'base',numeric:true});
+ const tie=(a,b)=>(date(b,'last_published_at')??0)-(date(a,'last_published_at')??0)||titleSort(a,b)||String(a?.id||'').localeCompare(String(b?.id||''));
+ return [...(Array.isArray(works)?works:[])].sort((a,b)=>{
+  if(['title','title_desc'].includes(sort)){
+   const diff=titleSort(a,b);
+   return (sort==='title_desc'?-diff:diff)||tie(a,b);
+  }
+  const av=numericSorts.has(sort)?metric(a):date(a,dateKey);
+  const bv=numericSorts.has(sort)?metric(b):date(b,dateKey);
+  if(av==null&&bv!=null)return 1;
+  if(bv==null&&av!=null)return -1;
+  if(av!=null&&bv!=null&&av!==bv)return ascending?av-bv:bv-av;
+  return tie(a,b);
  });
 }

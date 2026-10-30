@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {buildReadingFacets,matchesReadingFacets,sortReadingWorks,READING_SORT_OPTIONS} from './readingFacetModel';
+import {buildReadingFacets,matchesReadingFacets,sortReadingWorks,READING_SORT_OPTIONS,isArchiveReadingSort} from './readingFacetModel';
 const tag=(id,name,category='trope')=>({tags:{id,name,category,status:'canonical'}});
 const works=[
  {id:'w1',title:'Sky',first_published_at:'2025-01-01',last_published_at:'2026-01-15',reading_stats:{words:1800,chapters:2,comments:1,bookmarks:0},work_tags:[tag('f1','Dragon Age','fandom'),tag('t1','Slow burn')]},
@@ -30,4 +30,14 @@ describe('faceted Palace story catalogue',()=>{
   expect(sortReadingWorks(works,'words')).not.toBe(works);
   expect(READING_SORT_OPTIONS.length).toBeGreaterThanOrEqual(8);
  });
+ it('orders loaded shelf in reverse without presenting it as archive-wide',()=>{
+  const reverse={updated_oldest:['w2','w1','w3'],title_desc:['w1','w3','w2'],words_asc:['w1','w2','w3'],chapters_asc:['w1','w2','w3'],comments_asc:['w1','w2','w3'],bookmarks_asc:['w1','w2','w3']};
+  for(const [mode,expected] of Object.entries(reverse))expect(sortReadingWorks(works,mode).map(w=>w.id)).toEqual(expected);
+  expect(isArchiveReadingSort('words')).toBe(true);
+  expect(isArchiveReadingSort('title_desc')).toBe(false);
+  expect(isArchiveReadingSort('bookmarks')).toBe(false);
+  expect(isArchiveReadingSort('bookmarks_asc')).toBe(false);
+  expect(isArchiveReadingSort('invalid')).toBe(false);
+ });
+
 });
