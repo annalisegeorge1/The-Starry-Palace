@@ -4,7 +4,7 @@ import {act,cleanup,fireEvent,render,screen,waitFor,within} from '@testing-libra
 import {MemoryRouter} from 'react-router-dom';
 import PalaceChatDrawer from './PalaceChatDrawer';
 import {watchPalaceChatRoom} from './palaceChatRealtime';
-import {getLetters,searchMembers,editLetterMessage,setConversationPreference} from './palaceData';
+import {getLetters,sendLetter,searchMembers,editLetterMessage,setConversationPreference} from './palaceData';
 import {getPalaceGroupChatOverview,getPalaceGroupMessages,createPalaceGroupChat,respondPalaceGroupInvite,sendPalaceGroupMessage,editPalaceGroupMessage,setPalaceGroupIdentity,pinPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
 
 vi.mock('./palaceChatRealtime',()=>({watchPalaceChatRoom:vi.fn(()=>()=>{})}));
@@ -39,6 +39,76 @@ beforeEach(()=>{
 afterEach(cleanup);
 describe('Palace quick chat',()=>{
 
+ it('makes full Messenger unmistakable from the quick-chat inbox and a thread',async()=>{
+  mount();
+  fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  expect(screen.getByRole('link',{name:'Open the full Palace Messenger page'}).getAttribute('href')).toBe('/chat');
+  expect(screen.getByText('Palace Chat')).toBeTruthy();
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  const tools=screen.getByRole('group',{name:'Conversation tools'});
+  expect(within(tools).getByRole('link',{name:'Switch to full Palace Messenger'}).getAttribute('href')).toBe('/chat');
+  expect(within(tools).getByRole('button',{name:'Search messages in this conversation'})).toBeTruthy();
+  expect(within(tools).getByRole('button',{name:'Add conversation to favourites'})).toBeTruthy();
+ });
+ it('opens the full Messenger directly without showing a second quick launcher',async()=>{
+  render(<MemoryRouter><PalaceChatDrawer userId={user} workspace/></MemoryRouter>);
+  expect(await screen.findByRole('region',{name:'Palace Chat'})).toBeTruthy();
+  expect(screen.queryByRole('button',{name:/Open Palace chat/})).toBeNull();
+  expect(screen.getByRole('link',{name:'Return to Palace home'}).getAttribute('href')).toBe('/');
+  expect(screen.getByText('Palace Messenger')).toBeTruthy();
+  expect(screen.queryByRole('button',{name:'Close Palace chat'})).toBeNull();
+ });
+ it('opens the full Messenger from quick chat without replacing ongoing conversations',async()=>{
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  const link=await screen.findByRole('link',{name:'Open full Palace Messenger'});
+  expect(link.getAttribute('href')).toBe('/chat');
+ });
+ it('stars a direct conversation and filters favourites from existing private records',async()=>{
+  getLetters.mockResolvedValue({...direct,conversations:[direct.conversations[0]]});
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(screen.getByRole('button',{name:'Add conversation to favourites'}));
+  await waitFor(()=>expect(setConversationPreference).toHaveBeenCalledWith(user,'direct-one',expect.objectContaining({starred:true,archived:false})));
+  await screen.findByRole('button',{name:'Remove conversation from favourites'});
+  fireEvent.click(screen.getByRole('button',{name:'Back to inbox'}));
+  fireEvent.click(screen.getByRole('button',{name:/Favourites/}));
+  expect(screen.getByRole('button',{name:'River'})).toBeTruthy();
+ });
+ it('does not suggest a duplicate send after a successful write when inbox sync fails',async()=>{
+  let sent=false;
+  sendLetter.mockImplementation(async()=>{sent=true});
+  getLetters.mockImplementation(()=>sent?Promise.reject(new Error('offline during refresh')):Promise.resolve(direct));
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.change(screen.getByRole('textbox',{name:'Write a private message'}),{target:{value:'Important note'}});
+  fireEvent.click(screen.getByRole('button',{name:/Send/}));
+  await waitFor(()=>expect(sendLetter).toHaveBeenCalledTimes(1));
+  await screen.findByText(/Message sent\. The conversation is syncing/);
+  expect(screen.getByRole('textbox',{name:'Write a private message'}).value).toBe('');
+ });
+ it('searches only locally loaded message text within the opened thread',async()=>{
+  getLetters.mockResolvedValue({...direct,messages:[{id:'moon-note',conversation_id:'direct-one',sender_id:'member-two',body:'The Moonlit Orchard',created_at:'2026-10-21T12:00:00Z'}]});
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(screen.getByRole('button',{name:'Search messages in this conversation'}));
+  fireEvent.change(screen.getByRole('searchbox',{name:'Find in loaded messages'}),{target:{value:'moonlit'}});
+  expect(screen.getByText('1 matching loaded message')).toBeTruthy();
+ });
+
+
+ it('opens shared media for only the currently loaded conversation and returns to message search',async()=>{
+  getLetters.mockResolvedValue({...direct,messages:[{id:'gallery-note',conversation_id:'direct-one',sender_id:'member-two',body:'A normal private note',created_at:'2026-10-21T12:00:00Z'}]});
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(screen.getByRole('button',{name:'Show shared media'}));
+  expect(screen.getByRole('region',{name:'Shared media in this conversation'})).toBeTruthy();
+  expect(screen.getByText(/No shared items in the messages loaded here/)).toBeTruthy();
+  fireEvent.click(screen.getByRole('button',{name:'Photos'}));
+  expect(screen.getByText(/No photos in the messages loaded here/)).toBeTruthy();
+  fireEvent.click(screen.getByRole('button',{name:'Search messages in this conversation'}));
+  expect(screen.queryByRole('region',{name:'Shared media in this conversation'})).toBeNull();
+  expect(screen.getByRole('searchbox',{name:'Find in loaded messages'})).toBeTruthy();
+ });
  it('keeps unread Direct conversations unread until the person opens that thread',async()=>{
   getLetters.mockResolvedValue({
    ...direct,
@@ -248,6 +318,18 @@ describe('Palace quick chat',()=>{
   await waitFor(()=>expect(setPalaceGroupIdentity).toHaveBeenCalledWith('group-one',{
    title:'Moonlight Readers',description:'Poems, tales and tea.',colorKey:'moonlit'
   }));
+ });
+ it('places a Reading Circle question into an editable unsent draft',async()=>{
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(screen.getByRole('button',{name:/Groups/}));
+  fireEvent.click(await screen.findByRole('button',{name:'Moonlight Readers'}));
+  fireEvent.click(screen.getByRole('button',{name:/Reading Circle ideas/}));
+  expect(screen.getByRole('region',{name:'Reading Circle discussion ideas'})).toBeTruthy();
+  expect(screen.getByText(/Nothing is sent automatically/)).toBeTruthy();
+  fireEvent.click(screen.getByRole('button',{name:/Which moment stayed with you/}));
+  expect(screen.getByRole('textbox',{name:'Write a group message'}).value).toMatch(/Which moment stayed with you/);
+  expect(sendPalaceGroupMessage).not.toHaveBeenCalled();
+  expect(screen.queryByRole('region',{name:'Reading Circle discussion ideas'})).toBeNull();
  });
  it('shares only a selected published story with a structured story reference',async()=>{
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));

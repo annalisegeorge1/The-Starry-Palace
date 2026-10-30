@@ -1,0 +1,316 @@
+/* Palace Messenger: a real room, sharing the secure quick-chat engine.
+   The floating launcher stays unchanged elsewhere. */
+.palace-chat-workspace-page{
+ width:min(1230px,100%);min-width:0;margin:0 auto;
+ padding:clamp(12px,2.5vw,28px) clamp(12px,3vw,30px) 32px;
+ display:flex;flex-direction:column;gap:18px;
+}
+.palace-chat-workspace-intro{
+ display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;
+ gap:18px;padding:clamp(20px,3vw,30px);border-radius:24px;
+ border:1px solid rgba(178,154,240,.43);
+ background:radial-gradient(circle at 86% -40%,rgba(66,183,207,.25),transparent 58%),
+ linear-gradient(118deg,rgba(121,90,193,.30),rgba(69,96,174,.15)),var(--card,#23223c);
+ box-shadow:0 15px 36px rgba(18,16,49,.12),inset 0 1px rgba(255,255,255,.12);
+}
+.palace-chat-workspace-intro>div{flex:1 1 320px;min-width:0}
+.palace-chat-workspace-intro .eyebrow{font-size:.7rem;letter-spacing:.14em;margin:0 0 9px}
+.palace-chat-workspace-intro h1{margin:0 0 7px;font:700 clamp(1.8rem,3.4vw,2.85rem)/1.13 Georgia,serif;color:inherit}
+.palace-chat-workspace-intro p:not(.eyebrow){margin:0;max-width:62ch;line-height:1.55}
+.palace-chat-workspace-intro nav{display:flex;gap:9px;flex-wrap:wrap}
+.palace-chat-workspace-intro nav a{min-height:44px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(180,163,238,.51);border-radius:12px;padding:10px 14px;font-weight:700;text-decoration:none;color:inherit;background:rgba(153,118,227,.13)}
+.palace-chat-v2.palace-chat-dock.is-workspace.is-open{
+ position:relative!important;inset:auto!important;top:auto!important;bottom:auto!important;
+ left:auto!important;right:auto!important;z-index:auto!important;
+ display:flex!important;flex:1 1 auto!important;width:100%!important;min-width:0!important;
+ max-width:100%!important;height:min(760px,78dvh)!important;min-height:520px!important;
+ margin:0!important;
+}
+.palace-chat-v2.palace-chat-dock.is-workspace.is-open>.palace-chat-panel{
+ width:100%!important;max-width:none!important;height:100%!important;max-height:none!important;
+ min-height:0!important;display:flex!important;flex-direction:column!important;
+ overflow:hidden!important;border-radius:22px!important;
+}
+.palace-chat-v2.is-workspace .palace-chat-people{max-width:none!important}
+.palace-chat-v2.is-workspace .palace-chat-people>button{max-width:100%!important;width:100%!important}
+.palace-chat-v2.is-workspace .palace-chat-messages .palace-chat-bubble{max-width:min(78%,580px)!important}
+.palace-chat-v2 .palace-chat-expand,.palace-chat-v2 .palace-chat-close-workspace{
+ display:inline-grid;place-items:center;flex:0 0 39px;width:39px;height:39px;
+ padding:0;border-radius:11px;border:1px solid rgba(198,184,241,.44);
+ background:rgba(255,255,255,.12);color:#f8f4ff!important;font-size:1.25rem;
+ text-decoration:none;box-sizing:border-box;
+}
+.palace-chat-v2 .palace-chat-header-actions :is(a,button):focus-visible,
+.palace-chat-workspace-page a:focus-visible{
+ outline:3px solid #acd9ff;outline-offset:2px;
+}
+.palace-chat-v2 .palace-chat-inbox-refine{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 12px}
+.palace-chat-v2 .palace-chat-inbox-refine button{flex:0 0 auto;min-height:36px}
+.palace-chat-v2 .palace-chat-favourite-indicator{font-size:.68rem;color:var(--pc-muted,#d4cafa)}
+.palace-chat-v2 .palace-chat-message-search{
+ display:flex;flex-wrap:wrap;gap:7px;align-items:center;max-height:170px;overflow:auto;
+ padding:11px 14px;border-bottom:1px solid var(--pc-line,rgba(177,157,222,.36));
+ background:var(--pc-subtle,rgba(37,34,67,.9));color:var(--pc-ink,#fff);
+}
+.palace-chat-v2 .palace-chat-message-search label{font-size:.75rem;font-weight:750}
+.palace-chat-v2 .palace-chat-message-search input{
+ flex:1 1 165px;min-height:42px;min-width:0;padding:9px 11px;border-radius:10px;
+ border:1px solid var(--pc-line,rgba(177,157,222,.36));
+ color:var(--pc-ink,#fff);background:var(--pc-field,rgba(26,23,47,.8));font:inherit;font-size:.86rem;
+}
+.palace-chat-v2 .palace-chat-message-search>span{font-size:.72rem;width:100%}
+.palace-chat-v2 .palace-chat-message-search>button{
+ min-height:35px;max-width:100%;overflow-wrap:anywhere;border-radius:8px;
+ border:1px solid var(--pc-line,rgba(177,157,222,.36));background:var(--pc-elevated,rgba(100,84,162,.3));
+ color:inherit;padding:7px 10px;text-align:left;
+}
+.palace-chat-workspace-privacy{margin:0;font-size:.8rem;line-height:1.55;opacity:.76}
+@media(max-width:720px){
+ .palace-chat-workspace-page{padding:8px 7px calc(125px + env(safe-area-inset-bottom,0px));gap:10px}
+ .palace-chat-workspace-intro{padding:13px 15px;border-radius:15px;gap:9px}
+ .palace-chat-workspace-intro h1{font-size:1.55rem}
+ .palace-chat-workspace-intro .eyebrow{font-size:.61rem}
+ .palace-chat-workspace-intro p:not(.eyebrow){font-size:.82rem}
+ .palace-chat-workspace-intro nav{width:100%}
+ .palace-chat-workspace-intro nav a{font-size:.78rem;min-height:40px}
+ .palace-chat-v2.palace-chat-dock.is-workspace.is-open{
+  position:relative!important;top:auto!important;bottom:auto!important;left:auto!important;right:auto!important;
+  height:clamp(480px,72dvh,790px)!important;min-height:480px!important;
+ }
+ .palace-chat-v2.palace-chat-dock.is-workspace.is-open>.palace-chat-panel{
+  border-radius:15px!important;
+ }
+ .palace-chat-v2.is-workspace .palace-chat-messages .palace-chat-bubble{max-width:87%!important}
+ .palace-chat-v2 .palace-chat-message-search{max-height:145px;padding:8px 10px}
+}
+@media(max-width:380px){
+ .palace-chat-v2 .palace-chat-inbox-refine>span{width:100%}
+ .palace-chat-v2 .palace-chat-inbox-refine button{font-size:.74rem}
+}
+
+/* Preserve quick-chat message search and favourite actions on narrow phones.
+   An older conversation-first rule intentionally hid all pressed controls;
+   these are now meaningful, explicitly labeled actions. */
+@media(max-width:720px){
+ .palace-chat-v2.is-thread-open .palace-chat-header-actions button[aria-label="Search messages in this conversation"],
+ .palace-chat-v2.is-thread-open .palace-chat-header-actions button[aria-label="Close message search"],
+ .palace-chat-v2.is-thread-open .palace-chat-header-actions button[aria-label="Add conversation to favourites"],
+ .palace-chat-v2.is-thread-open .palace-chat-header-actions button[aria-label="Remove conversation from favourites"]{
+  display:grid!important;place-items:center!important;
+ }
+ .palace-chat-v2 .palace-chat-heading .palace-chat-header-actions{
+  gap:5px!important;
+ }
+ .palace-chat-v2 .palace-chat-heading .palace-chat-header-actions :is(button,.palace-chat-expand,.palace-chat-close-workspace){
+  width:38px!important;min-width:38px!important;height:38px!important;min-height:38px!important;
+ }
+ .palace-shell:has(.palace-chat-workspace-page) .restored-floating-controls{
+  display:none!important;
+ }
+}
+
+/* Conversation actions live below the compact mobile identity header, rather
+   than competing for pixels with the name, back button, and close control. */
+.palace-chat-v2 .palace-chat-thread-actions{
+ display:flex!important;align-items:center!important;flex-wrap:wrap;flex:0 0 auto;
+ gap:7px;padding:7px 12px;min-width:0;
+ border-bottom:1px solid var(--pc-line,rgba(180,160,225,.36));
+ background:var(--pc-elevated,rgba(48,42,78,.9));
+}
+.palace-chat-v2 .palace-chat-thread-actions :is(button,a),
+.palace-chat-v2 .palace-chat-full-route{
+ display:inline-flex!important;align-items:center;justify-content:center;
+ min-height:40px;min-width:0;padding:8px 12px;
+ border-radius:11px;border:1px solid var(--pc-line,rgba(179,160,225,.45));
+ background:var(--pc-field,rgba(62,52,99,.6));
+ color:var(--pc-ink,#f9f5ff)!important;
+ font:650 .78rem/1.3 system-ui,sans-serif;text-decoration:none;cursor:pointer;
+}
+.palace-chat-v2 .palace-chat-thread-actions button[aria-pressed=true]{
+ background:linear-gradient(120deg,rgba(171,137,232,.31),rgba(91,154,211,.19));
+ border-color:rgba(183,163,246,.72);
+}
+.palace-chat-v2 .palace-chat-thread-actions :is(button,a):focus-visible,
+.palace-chat-v2 .palace-chat-full-route:focus-visible{outline:3px solid #aad7ff;outline-offset:2px}
+.palace-chat-v2.is-thread-open .palace-chat-full-route{display:none!important}
+@media(max-width:720px){
+ .palace-chat-v2 .palace-chat-thread-actions{
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:7px 9px;
+ }
+ .palace-chat-v2:not(.is-workspace) .palace-chat-thread-actions a{
+  grid-column:1 / -1;
+ }
+ .palace-chat-v2 .palace-chat-thread-actions :is(button,a){
+  width:100%;min-height:44px;padding:8px 7px;font-size:clamp(.71rem,3vw,.79rem);
+ }
+ .palace-chat-v2.palace-chat-dock.is-open:not(.is-thread-open)>.palace-chat-panel>footer>small{
+  display:none;
+ }
+ .palace-chat-v2.palace-chat-dock.is-open:not(.is-thread-open)>.palace-chat-panel>footer .palace-chat-full-route{
+  min-height:44px;
+ }
+ .palace-chat-v2 .palace-chat-heading .palace-chat-header-actions :is(button,.palace-chat-expand,.palace-chat-close-workspace){
+  flex:0 0 38px;
+ }
+}
+
+/* Shared content is derived only from the messages already visible in the
+   active private room. Existing photo renderer resolves signed media. */
+.palace-chat-v2 .palace-chat-shared-media{
+ flex:0 0 auto;min-height:0;max-height:min(340px,43%);overflow-y:auto;
+ border-bottom:1px solid var(--chat3-border,rgba(171,152,219,.4));
+ background:var(--chat3-subtle,rgba(42,37,76,.94));color:var(--chat3-ink,inherit);
+ padding:10px 13px;display:grid;gap:10px;
+}
+.palace-chat-v2 .palace-chat-shared-media>header{
+ display:flex;align-items:center;justify-content:space-between;gap:10px;
+ padding:0!important;border:0!important;background:transparent!important;
+}
+.palace-chat-v2 .palace-chat-shared-media>header>div{display:grid;gap:3px}
+.palace-chat-v2 .palace-chat-shared-media>header strong{font-size:.93rem}
+.palace-chat-v2 .palace-chat-shared-media>header small{font-size:.73rem;opacity:.77}
+.palace-chat-v2 .palace-chat-shared-media :is(button,a){color:inherit}
+.palace-chat-v2 .palace-chat-shared-media>header button{
+ min-width:40px;min-height:40px;border-radius:12px;
+ background:rgba(155,132,215,.14);border:1px solid rgba(187,172,233,.48);
+}
+.palace-chat-v2 .palace-chat-shared-media nav{display:flex;gap:6px;overflow-x:auto}
+.palace-chat-v2 .palace-chat-shared-media nav button{
+ flex:0 0 auto;min-height:40px;border:1px solid rgba(180,158,223,.43);border-radius:11px;
+ padding:7px 11px;background:rgba(139,116,208,.12);
+}
+.palace-chat-v2 .palace-chat-shared-media nav button[aria-pressed=true]{
+ background:linear-gradient(115deg,rgba(156,130,235,.42),rgba(83,163,209,.21));font-weight:750;
+}
+.palace-chat-v2 .palace-chat-media-grid{
+ display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:9px;
+}
+.palace-chat-v2 .palace-chat-media-item{
+ min-width:0;display:flex;flex-direction:column;gap:6px;padding:8px;
+ border:1px solid rgba(179,156,231,.34);border-radius:13px;
+ background:rgba(142,116,213,.09);
+}
+.palace-chat-v2 .palace-chat-media-preview{
+ width:100%;height:100px;display:grid;place-items:center;overflow:hidden;
+ border-radius:9px;background:rgba(87,79,142,.13);
+}
+.palace-chat-v2 .palace-chat-media-preview :is(img,video){width:100%;height:100%;object-fit:cover}
+.palace-chat-v2 .palace-chat-media-preview>span{font:700 1.8rem Georgia,serif}
+.palace-chat-v2 .palace-chat-media-item>a{font-size:.78rem;line-height:1.4;overflow-wrap:anywhere}
+.palace-chat-v2 .palace-chat-media-item>button{
+ margin-top:auto;min-height:38px;font:650 .74rem system-ui,sans-serif;
+ border:1px solid rgba(184,156,228,.4);border-radius:9px;
+ background:rgba(130,116,209,.2);
+}
+.palace-chat-v2 .palace-chat-shared-media :is(button,a):focus-visible{outline:3px solid #aedbff;outline-offset:2px}
+
+/* Desktop: actual two-pane workspace. The inbox stays visible alongside the
+   selected direct conversation. Quick Chat and all mobile views stay intact. */
+@media(min-width:1000px){
+ .palace-chat-v2.palace-chat-dock.is-workspace.is-open[data-chat-type="direct"].is-thread-open>.palace-chat-panel{
+  display:grid!important;
+  grid-template-columns:minmax(265px,32%) minmax(0,1fr);
+  grid-template-rows:auto auto auto auto minmax(0,1fr) auto auto;
+  align-items:stretch;gap:0;min-height:0;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-heading{
+  grid-column:1/-1;grid-row:1;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-tabs{
+  display:flex!important;grid-column:1;grid-row:2;min-width:0;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-tools{
+  display:flex!important;grid-column:1;grid-row:3;min-width:0;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-inbox-refine{
+  display:flex!important;grid-column:1;grid-row:4;min-width:0;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-people{
+  display:flex!important;grid-column:1;grid-row:5 / span 2;
+  overflow-y:auto!important;overflow-x:hidden!important;min-height:0!important;
+  border-right:1px solid var(--chat3-border,rgba(173,149,221,.36));
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-people>button{
+  min-height:65px!important;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-thread-actions{
+  grid-column:2;grid-row:2;min-width:0;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-correspondent{
+  display:flex!important;grid-column:2;grid-row:3;min-width:0;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-message-search,
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-shared-media{
+  grid-column:2;grid-row:4;min-width:0;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-messages{
+  display:flex!important;grid-column:2;grid-row:5;min-width:0;min-height:0!important;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-jump-latest{
+  grid-column:2;grid-row:5;align-self:end;justify-self:center;z-index:2;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-composer-shell{
+  grid-column:2;grid-row:6;min-width:0;min-height:0;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-select-hint{display:none!important}
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-panel>footer{
+  display:flex!important;grid-column:1/-1;grid-row:7;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-connection{display:none}
+}
+@media(max-width:720px){
+ .palace-chat-v2 .palace-chat-shared-media{max-height:42dvh;padding:8px 10px}
+ .palace-chat-v2 .palace-chat-media-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .palace-chat-v2 .palace-chat-thread-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .palace-chat-v2 .palace-chat-thread-actions>button:last-of-type{grid-column:1/-1}
+}
+
+/* Invitation-only reading circles: prompts fill drafts, never send messages. */
+.palace-chat-v2 .palace-chat-sharing-actions{display:flex;flex-wrap:wrap;gap:7px}
+.palace-chat-v2 .palace-chat-circle-prompts{
+ flex:0 0 auto;max-height:255px;overflow-y:auto;min-height:0;
+ border-block:1px solid var(--chat3-border,rgba(180,157,223,.39));
+ background:var(--chat3-subtle,rgba(46,39,79,.85));
+ padding:10px 12px;
+}
+.palace-chat-v2 .palace-chat-circle-prompts>header{
+ display:flex;flex-direction:column!important;gap:4px!important;
+ border:0!important;padding:0 0 9px!important;background:transparent!important;
+}
+.palace-chat-v2 .palace-chat-circle-prompts>header strong{font-size:.93rem}
+.palace-chat-v2 .palace-chat-circle-prompts>header small{font-size:.75rem;line-height:1.5}
+.palace-chat-v2 .palace-chat-circle-prompts>div{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+}
+.palace-chat-v2 .palace-chat-circle-prompts button{
+ min-height:72px;min-width:0;display:flex;flex-direction:column;gap:5px;
+ border:1px solid rgba(183,155,233,.43);border-radius:13px;
+ padding:10px;text-align:left;line-height:1.4;
+ background:linear-gradient(120deg,rgba(135,102,195,.16),rgba(66,136,177,.11));
+ color:inherit;cursor:pointer;
+}
+.palace-chat-v2 .palace-chat-circle-prompts button small{
+ font-size:.69rem;text-transform:uppercase;letter-spacing:.08em;opacity:.75;
+}
+.palace-chat-v2 .palace-chat-circle-prompts button span{font-size:.83rem}
+.palace-chat-v2 .palace-chat-circle-prompts button:focus-visible{outline:3px solid #aedbff;outline-offset:2px}
+@media(max-width:720px){
+ .palace-chat-v2 .palace-chat-circle-prompts{max-height:235px}
+ .palace-chat-v2 .palace-chat-circle-prompts>div{grid-template-columns:1fr}
+ .palace-chat-v2 .palace-chat-circle-prompts button{min-height:55px}
+}
+
+/* Keep delivery/error feedback visible in the desktop split view instead of
+   letting auto-placed grid children fall into a clipped implicit row. */
+@media(min-width:1000px){
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-panel{
+  position:relative;
+ }
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-panel>.palace-chat-notice,
+ .palace-chat-v2.is-workspace[data-chat-type="direct"].is-thread-open .palace-chat-panel>.palace-chat-error{
+  position:absolute!important;
+  top:116px;right:12px;
+  max-width:min(60%,450px);z-index:7;
+  border-radius:12px;box-shadow:0 10px 28px rgba(8,9,28,.27);
+ }
+}
