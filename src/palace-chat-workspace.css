@@ -314,3 +314,25 @@
   border-radius:12px;box-shadow:0 10px 28px rgba(8,9,28,.27);
  }
 }
+
+/* Direct inbox organizer: archived conversations stay recoverable and visible
+   only in the member's own Archived view. */
+.palace-chat-v2 .palace-chat-archived-row{
+ display:grid;grid-template-columns:42px minmax(0,1fr) auto;align-items:center;gap:10px;
+ padding:11px 12px;min-width:0;border-bottom:1px solid var(--chat3-border,rgba(176,149,225,.29));
+ color:var(--chat3-ink,inherit);
+}
+.palace-chat-v2 .palace-chat-archived-row>span:not(.palace-chat-list-avatar){
+ min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:650;font-size:.87rem;
+}
+.palace-chat-v2 .palace-chat-archived-row>button{
+ min-height:44px;padding:9px 13px;border-radius:11px;border:1px solid rgba(177,154,221,.44);
+ background:linear-gradient(110deg,rgba(150,116,222,.26),rgba(87,151,193,.13));
+ color:inherit;font-weight:650;
+}
+.palace-chat-v2 .palace-chat-archived-row>button:focus-visible{outline:3px solid #abd8ff;outline-offset:2px}
+.palace-chat-v2 .palace-chat-archived-row>button:disabled{opacity:.5;cursor:wait}
+@media(max-width:720px){
+ .palace-chat-v2 .palace-chat-inbox-refine{flex-wrap:wrap!important}
+ .palace-chat-v2 .palace-chat-archived-row{grid-template-columns:36px minmax(0,1fr) auto;padding:9px}
+}
