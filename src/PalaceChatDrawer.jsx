@@ -8,6 +8,7 @@ import {buildPalaceDirectPreviews} from './palaceChatDirectPreview';
 import {filterPalaceDirectInbox,findPalaceChatMessages} from './palaceChatInboxModel';
 import {collectPalaceSharedMedia,groupPalaceSharedMedia} from './palaceChatSharedMedia';
 import {PALACE_READING_CIRCLE_PROMPTS,makePalaceCircleDraft} from './palaceReadingCirclePrompts';
+import {makePalaceDirectQuoteDraft} from './palaceDirectQuote';
 import './palace-chat-workspace.css';
 import {getMyProfile,getLetters,getDirectConversationMessages,DIRECT_HISTORY_PAGE_SIZE,sendLetter,sendLetterPhoto,editLetterMessage,searchMembers,setConversationPreference} from './palaceData';
 import {createPalaceGroupChat,getPalaceGroupChatOverview,getPalaceGroupMessages,sendPalaceGroupMessage,sendPalaceGroupPhoto,editPalaceGroupMessage,respondPalaceGroupInvite,invitePalaceGroupMember,removePalaceGroupMember,leavePalaceGroupChat,setPalaceGroupMuted,markPalaceGroupRead,PALACE_GROUP_COLOURS,setPalaceGroupIdentity,pinPalaceGroupMessage,getPinnedPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
@@ -468,6 +469,10 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
    setReplyTarget({id:message.id,body:message.body,chatId:roomId});
    setStorySharing(false);
    window.requestAnimationFrame(()=>composerRef.current?.focus());
+  }else if(action==='quote'&&tab==='direct'){
+   setDraft(makePalaceDirectQuoteDraft(message,message.sender_id===userId?'you':openedRoomName,currentDraft));
+   setNotice('Quotation added to your draft. This is a text quote, not a linked reply.');
+   window.requestAnimationFrame(()=>composerRef.current?.focus());
   }else if(action==='copy'){
    if(!navigator.clipboard?.writeText){setError('Copy is unavailable in this browser.');return}
    navigator.clipboard.writeText(message.body).then(()=>setNotice('Message copied.')).catch(()=>setError('The message could not be copied.'));
@@ -732,6 +737,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
    <div ref={actionMenuRef} className="palace-chat-actions-menu" role="menu" aria-label="Message actions" style={{top:actionMenu.top,left:actionMenu.left}}>
     <small>MESSAGE OPTIONS</small>
     {tab==='groups'&&<button type="button" role="menuitem" aria-label="Reply" onClick={()=>applyMessageAction('reply')}><span aria-hidden="true">↩</span><span>Reply</span></button>}
+    {tab==='direct'&&<button type="button" role="menuitem" aria-label="Quote in draft" onClick={()=>applyMessageAction('quote')}><span aria-hidden="true">↩</span><span>Quote in draft</span></button>}
     {actionMenu.message.sender_id===userId&&!parsePalaceGif(actionMenu.message.body)&&<button type="button" role="menuitem" aria-label="Edit message" onClick={()=>applyMessageAction('edit')}><span aria-hidden="true">✎</span><span>Edit message</span></button>}
     <button type="button" role="menuitem" aria-label="Copy text" onClick={()=>applyMessageAction('copy')}><span aria-hidden="true">⧉</span><span>Copy text</span></button>
     {tab==='groups'&&owner&&<button type="button" role="menuitem" aria-label={activeGroup?.pinnedMessageId===actionMenu.message.id?'Unpin message':'Pin message'} disabled={busy} onClick={()=>applyMessageAction('pin')}><span aria-hidden="true">✧</span><span>{activeGroup?.pinnedMessageId===actionMenu.message.id?'Unpin message':'Pin message'}</span></button>}
