@@ -1,0 +1,122 @@
+/* Mobile shell structural repair.
+   The navigation is fixed OUTSIDE .full-stage, so a real end-of-document
+   spacer is required in addition to any padding inside <main>. */
+.palace-mobile-end-spacer{display:none}
+@media(max-width:760px){
+  html,body,#root{
+    scroll-padding-bottom:calc(148px + env(safe-area-inset-bottom,0px));
+  }
+  .palace-shell.full-palace-shell .full-stage{
+    min-height:100dvh!important;
+    height:auto!important;
+    overflow:visible!important;
+  }
+  .palace-shell.full-palace-shell .full-stage > main#palace-content{
+    min-height:0!important;
+    height:auto!important;
+    overflow:visible!important;
+    padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))!important;
+    scroll-padding-bottom:calc(140px + env(safe-area-inset-bottom,0px))!important;
+    box-sizing:border-box!important;
+  }
+  .palace-shell.full-palace-shell .full-stage > .palace-mobile-end-spacer{
+    display:block!important;
+    position:relative!important;
+    height:calc(142px + env(safe-area-inset-bottom,0px))!important;
+    min-height:142px!important;
+    width:100%!important;
+    flex:none!important;
+    pointer-events:none!important;
+    visibility:hidden!important;
+    clear:both!important;
+  }
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"] .legacy-home-dashboard{
+    padding-bottom:28px!important;
+    overflow:visible!important;
+  }
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"] .palace-moon-prompt{
+    position:relative!important;
+    width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+    margin-bottom:20px!important;
+    padding:13px 14px!important;
+    gap:8px!important;
+  }
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"] .palace-moon-prompt > div:nth-child(2){
+    min-width:0!important;
+    width:100%!important;
+    box-sizing:border-box!important;
+  }
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"] .palace-moon-prompt small{
+    font-size:.64rem!important;
+    line-height:1.35!important;
+    letter-spacing:.09em!important;
+    margin:0 0 6px!important;
+  }
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"] .palace-moon-prompt h2{
+    font:600 clamp(1rem,4.1vw,1.13rem)/1.38 Georgia,'Times New Roman',serif!important;
+    letter-spacing:-.005em!important;
+    max-width:100%!important;
+    text-wrap:pretty!important;
+    overflow-wrap:break-word!important;
+    margin:0!important;
+  }
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"] .palace-moon-prompt p{
+    font-size:.81rem!important;
+    line-height:1.48!important;
+    color:#d8d1e5!important;
+    opacity:1!important;
+    margin:7px 0 0!important;
+  }
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"] .moon-prompt-actions{
+    position:relative!important;
+    grid-column:1!important;
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+    width:100%!important;
+    margin:6px 0 0!important;
+  }
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"] .moon-prompt-actions :is(button,a){
+    min-width:0!important;
+    min-height:44px!important;
+    width:100%!important;
+    padding:9px 7px!important;
+    box-sizing:border-box!important;
+  }
+  /* Opaque, stacking-isolated sticky surface. Blur is decorative only;
+     transparency must never allow MY PALACE to show through the controls. */
+  .palace-shell.full-palace-shell .full-stage > header.topbar.full-topbar{
+    position:sticky!important;
+    top:0!important;
+    z-index:500!important;
+    background:#0d142c!important;
+    background-color:#0d142c!important;
+    border-bottom:1px solid rgba(193,182,235,.27)!important;
+    -webkit-backdrop-filter:blur(16px) saturate(115%)!important;
+    backdrop-filter:blur(16px) saturate(115%)!important;
+    box-shadow:0 8px 22px rgba(5,8,23,.36)!important;
+    isolation:isolate!important;
+    opacity:1!important;
+    backface-visibility:hidden;
+  }
+  .palace-shell.full-palace-shell .full-stage > header.topbar.full-topbar > .full-topbar-row{
+    position:relative!important;
+    z-index:1!important;
+  }
+  .palace-shell.full-palace-shell.daylight .full-stage > header.topbar.full-topbar{
+    background:#f0ecfa!important;
+    background-color:#f0ecfa!important;
+    border-bottom-color:rgba(99,82,151,.24)!important;
+    box-shadow:0 8px 22px rgba(40,27,85,.12)!important;
+  }
+  .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/chamber"] .palace-moon-prompt p{
+    color:#635870!important;
+  }
+}
+@media(max-width:380px){
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"] .palace-moon-prompt h2{
+    font-size:1rem!important;
+  }
+}
