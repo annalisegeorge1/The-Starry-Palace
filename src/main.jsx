@@ -92,6 +92,7 @@ import './reader-page-turn.css';
 import './reader-streamlined.css';
 import './writing-chamber-calm.css';
 import './my-palace-calm.css';
+import './reading-story-first.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
