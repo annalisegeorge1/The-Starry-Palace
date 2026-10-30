@@ -89,6 +89,7 @@ import './mobile-reading-chamber-review.css';
 import './palace-mobile-overlap-repair.css';
 import './reader-layout-choices.css';
 import './reader-page-turn.css';
+import './reader-streamlined.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
