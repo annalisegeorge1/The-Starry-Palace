@@ -450,3 +450,38 @@
     color:#645572!important;
   }
 }
+
+
+/* Quiet mobile ticker: single line of verified announcements, not another card. */
+@media(max-width:700px){
+  .palace-shell .palace-tidings-bar{
+    height:24px!important;
+    min-height:24px!important;
+    gap:6px!important;
+    padding:0 9px!important;
+    background:rgba(30,27,63,.23)!important;
+    border:0!important;
+    border-bottom:1px solid rgba(182,169,224,.11)!important;
+    box-shadow:none!important;
+    overflow:hidden!important;
+  }
+  .palace-shell .palace-tidings-brand{font-size:.68rem!important}
+  .palace-shell .palace-tidings-kind{font-size:.63rem!important}
+  .palace-shell .palace-tidings-link{
+    min-width:0!important;
+    overflow:hidden!important;
+    white-space:nowrap!important;
+    text-overflow:ellipsis!important;
+    font-size:.66rem!important;
+  }
+  .palace-shell .palace-tidings-close{
+    min-width:24px!important;
+    min-height:24px!important;
+    display:grid!important;
+    place-items:center!important;
+    padding:0!important;
+  }
+  html,body{
+    scroll-padding-bottom:calc(134px + env(safe-area-inset-bottom,0px));
+  }
+}
