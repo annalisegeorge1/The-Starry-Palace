@@ -19,7 +19,8 @@ describe('Reading atlas archive vs classics',()=>{
   expect(reading).toContain("readingChoices.catalogueScope==='archive'");
   expect(reading).toContain("readerLens==='all'");
   expect(reading).toContain("vibeDoor==='all'");
-  expect(reading).toContain("catalogueSort!=='bookmarks'");
+  expect(reading).toContain("isArchiveReadingSort(catalogueSort)");
+  expect(reading).toContain("if(!isArchiveReadingSort(value))setReadingChoice('catalogueScope','loaded');");
   expect(reading).toContain('onClick={browseAllPublished}');
   expect(reading).toContain('onClick={browseLoadedShelves}');
   expect(reading).toContain('readerLens!==\'all\'');
@@ -40,6 +41,7 @@ describe('Reading atlas archive vs classics',()=>{
   expect(p.catalogueSort).toBe('chapters');
   expect(p.tagLabels).toEqual({'tag-a':'Royal intrigue'});
   expect(cleanReadingDiscovery({catalogueSort:'bookmarks'}).catalogueSort).toBe('bookmarks');
+  expect(cleanReadingDiscovery({catalogueSort:'title_desc'}).catalogueSort).toBe('title_desc');
  });
  it('allows page changes only within the reported server result count',()=>{
   const onPage=vi.fn();

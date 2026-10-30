@@ -12,7 +12,7 @@ import ReadingArchivePager from './ReadingArchivePager';
 import usePublishedBrowse from './usePublishedBrowse';
 import './archive-wide-search.css';
 import './reading-archive-atlas.css';
-import {buildReadingFacets,matchesReadingFacets,sortReadingWorks} from './readingFacetModel';
+import {buildReadingFacets,matchesReadingFacets,sortReadingWorks,isArchiveReadingSort} from './readingFacetModel';
 import useReadingDiscoveryState from './useReadingDiscoveryState';
 import useManuscriptReconnect from './useManuscriptReconnect';
 import MemberAvatar from './MemberAvatar';
@@ -292,7 +292,7 @@ export function ReadingLive({Frame}){
  // intentionally stay on the member's local reading shelf.
  const archiveBrowseEnabled=!inAdvancedSearch&&readingChoices.discoveryMode==='browse'
   &&readingChoices.catalogueScope==='archive'&&readerLens==='all'
-  &&vibeDoor==='all'&&catalogueSort!=='bookmarks';
+  &&vibeDoor==='all'&&isArchiveReadingSort(catalogueSort);
  const archiveBrowse=usePublishedBrowse({
   enabled:archiveBrowseEnabled,identity:session?.user?.id||'guest',
   text:query,include:includedTags,exclude:excludedTags,rating,status,origin,sort:catalogueSort
@@ -300,12 +300,12 @@ export function ReadingLive({Frame}){
  function browseAllPublished(){
   setReadingChoice('catalogueScope','archive');
   setReaderLens('all');setVibeDoor('all');
-  if(catalogueSort==='bookmarks')setCatalogueSort('updated');
+  if(!isArchiveReadingSort(catalogueSort))setCatalogueSort('updated');
  }
  function browseLoadedShelves(){setReadingChoice('catalogueScope','loaded')}
  function updateCatalogueSort(value){
   setCatalogueSort(value);
-  if(value==='bookmarks')setReadingChoice('catalogueScope','loaded');
+  if(!isArchiveReadingSort(value))setReadingChoice('catalogueScope','loaded');
  }
  function identifyReadingTag(tag){
   setReadingChoice('tagLabels',previous=>({...previous,[String(tag.id)]:String(tag.name||'').slice(0,140)}));
@@ -511,7 +511,7 @@ export function ReadingLive({Frame}){
   </section>
   {!archiveBrowseEnabled&&readerLens!=='all'&&<p className="reading-scope-note">Personal lenses search your currently loaded reading shelf. Choose “Entire published archive” to return to public browsing.</p>}
   {!archiveBrowseEnabled&&vibeDoor!=='all'&&<p className="reading-scope-note">Mood suggestions come from loaded stories, not archive-wide rankings.</p>}
-  {!archiveBrowseEnabled&&catalogueSort==='bookmarks'&&<p className="reading-scope-note">Bookmark sorting covers loaded stories. Other sorts can use the complete published archive.</p>}
+  {!archiveBrowseEnabled&&!isArchiveReadingSort(catalogueSort)&&<p className="reading-scope-note">This sort orders loaded stories and Classics only. Choose an archive-wide sort to rank all published stories.</p>}
   {activeReadingFilters.length>0&&<nav className="reading-filter-trail" aria-label="Active Reading Room filters"><span className="reading-filter-title">YOUR CURRENT CHOICES</span><div>{activeReadingFilters.map(item=><button type="button" key={item.key} onClick={()=>removeReadingFilter(item.key)} aria-label={'Remove '+item.label+' filter'}><span>{item.label}</span><b aria-hidden="true">×</b></button>)}</div><button type="button" className="reading-filter-clear" onClick={clearReadingFilters}>Clear all filters →</button></nav>}
   {session&&<section className="reading-reader-lenses" aria-label="Your private reading lenses"><div><small>MY READING LENSES</small><span>Private to you · never changes public discovery ranking</span></div><nav>{[['all','All'],['unread','Unread'],['reading','In progress'],['new','New chapters'],['saved','Saved'],['following','Following'],['finished','Finished']].map(([key,label])=><button type="button" key={key} className={readerLens===key?'active':''} aria-pressed={readerLens===key} onClick={()=>setReaderLens(key)}>{label}</button>)}</nav>{(readerLens!=='all'||query||rating!=='all'||status!=='all'||vibeDoor!=='all')&&<button type="button" className="quiet-button" onClick={clearReadingFilters}>Clear reading filters</button>}</section>}
   {readingNotice&&<p className="reading-partial-notice" role="status">✧ {readingNotice}</p>}
