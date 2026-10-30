@@ -28,3 +28,7 @@
 .chic-editor-form .writer-sprint-orbit{padding:8px 12px;min-height:0}
 @media(max-width:760px){.chic-editor-form .writer-stats-calm{gap:4px 9px;padding:8px}.writer-stats-calm .writer-progress-inline{flex-basis:100%}.writer-stats-calm .writer-goal-details-panel{left:0;right:auto}.writer-stats-calm .writer-stats-actions-panel{right:0}.writer-chapter-more-items{right:0}.chic-editor-form .manuscript-sheet-frame{padding-top:16px}}
 @media(prefers-reduced-motion:reduce){.writer-progress-track i{transition:none}}
+
+/* Place the writing progress in the document flow, not the sidebar grid. */
+body.writing-desk-open .palace-shell.full-palace-shell .chic-editor-form>.writer-stats-calm{grid-column:1/-1!important;grid-row:auto!important;position:static!important;float:none!important;width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;align-self:stretch!important;margin:.75rem 0 1rem!important;justify-content:space-between!important}
+body.writing-desk-open .palace-shell.full-palace-shell .chic-editor-form>.writer-stats-calm .writer-progress-inline{flex:1 1 320px}
