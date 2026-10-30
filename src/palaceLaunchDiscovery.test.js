@@ -14,6 +14,7 @@ describe('honest Palace newcomer recommendations',()=>{
    story({id:'eligible'})
   ];
   expect(choosePalaceStartingStory(candidates)?.id).toBe('eligible');
+  expect(choosePalaceStartingStory([story({work_type:'fanwork'})])?.work_type).toBe('fanwork');
  });
  it('never presents incomplete or unrated work as a completed safe starting recommendation',()=>{
   expect(choosePalaceStartingStory([
