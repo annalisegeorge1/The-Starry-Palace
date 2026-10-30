@@ -202,6 +202,26 @@ export function ChamberLive({Frame}){
     </div>
    </section>
 
+
+   <section className="palace-home-mobile-hero" aria-label="Welcome to your Palace">
+    <img className="palace-mobile-hero-art" src="/assets/palace/palace-belonging.gif" alt="" loading="lazy"/>
+    <div className="palace-mobile-welcome-copy">
+     <p className="palace-mobile-eyebrow">✦ MY PALACE</p>
+     <h1><span>Welcome home,</span><span>{p.display_name||p.username}.</span></h1>
+     <div className="palace-mobile-identity">
+      <Link className="palace-mobile-avatar" to={"/member/"+p.username} aria-label="Open my chamber"><MemberAvatar profile={p} style={{width:"100%",height:"100%"}}/></Link>
+      <div><small>YOUR PALACE TITLE</small><strong>{p.title||'Palace Member'}</strong>{p.status_line&&<em>{p.status_line}</em>}</div>
+      <Link to={"/member/"+p.username}>Profile ↗</Link>
+     </div>
+     <p className="palace-mobile-welcome-intro">Pick up what matters next. Everything else can remain quiet until you are ready.</p>
+    </div>
+    <div className="palace-mobile-stats" aria-label="Your Palace today">
+     <span><strong>{attentionTotal}</strong> Attention</span>
+     <span><strong>{(counts.scheduledComics||0)+(counts.scheduledChapters||0)}</strong> Scheduled</span>
+     <span><strong>{counts.saved||0}</strong> Saved</span>
+    </div>
+   </section>
+
    <nav className="palace-home-shortcuts palace-home-shortcuts-calm" aria-label="My Palace quick actions">
     <Link to="/writing"><span>✎</span><small>Writing</small></Link>
     <Link to="/library"><span>▤</span><small>Library</small></Link>
