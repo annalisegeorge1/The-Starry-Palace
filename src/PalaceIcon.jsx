@@ -52,6 +52,22 @@ const shapes={
  'palette':<><path d="M12 3a9 9 0 1 0 0 18h1a2 2 0 0 0 1.5-3.5A2 2 0 0 1 16 14h2a3 3 0 0 0 3-3 9 9 0 0 0-9-8Z"/><circle cx="7" cy="10" r="1"/><circle cx="10" cy="6.5" r="1"/><circle cx="16" cy="7" r="1"/></>,
  'map':<><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6ZM9 3v15M15 6v15"/></>,
  'smile':<><circle cx="12" cy="12" r="9"/><path d="M8 14c1 1.5 2.4 2.2 4 2.2s3-.7 4-2.2"/><path d="M8.5 9.5h.01M15.5 9.5h.01"/></>,
+ 'flash-story':<><path d="M6 3h8l4 4v14H6V3Z"/><path d="M14 3v4h4M8.5 12h3M8.5 16H11M15 11l-1.4 3.2h2.6L13.5 19l.6-3.5h-2"/></>,
+ 'verse':<><path d="M5 5h11M5 9h8M5 13h10M5 17h6"/><path d="m18 14 3 3-3 3-3-3 3-3Z"/></>,
+ 'haiku':<><path d="M17.5 4A7.3 7.3 0 0 0 19 15.5 7.6 7.6 0 1 1 17.5 4Z"/><path d="M5 15.5h7M5 18.5h9M5 21h5"/></>,
+ 'drabble':<><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><text x="12" y="15.3" textAnchor="middle" stroke="none" fill="currentColor" fontFamily="system-ui, sans-serif" fontWeight="800" fontSize="9.2">100</text></>,
+ 'dialogue':<><path d="M4 4h11a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3H9l-5 4V7a3 3 0 0 1 3-3Z"/><path d="M9 9h5M9 12h3"/></>,
+ 'brush-star':<><path d="m4 20 6-2 8.5-9-3.5-3.5-8.6 9L4 20Z"/><path d="m13.5 7.5 3.5 3.5M18 2l1 2.3L21.5 5l-2.5.9L18 8l-1-2.1L14.5 5l2.5-.7L18 2Z"/></>,
+ 'wildcard':<><path d="m12 2 2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4L12 2Z"/><path d="M18.5 3.5v3M17 5h3"/></>,
+ 'file-pen':<><path d="M5 2.5h9l4 4v8M14 2.5v4h4M5 2.5v19h9"/><path d="m13 19 5-5 2.5 2.5-5 5-3.2.6.7-3.1Z"/></>,
+ 'paired-quills':<><path d="M5 20 15 5a4 4 0 0 1 3-1 4 4 0 0 1-1 4L8 17l-3 3Z"/><path d="M11 21 6 15M18 13l2 2-5 6M8 12l3 2"/></>,
+ 'relay-pages':<><path d="M4 6h10v11H4V6ZM10 3h10v11h-3"/><path d="m8 20 3 2 3-2M11 17v5M16 9l2 2-2 2"/></>,
+ 'crossed-quills':<><path d="M4 20 16 4c1.5-2 4-2 4 0s-.5 4-2 5L6 20H4ZM20 20 8 4c-1.5-2-4-2-4 0s.5 4 2 5L18 20h2Z"/></>,
+ 'star-home':<><path d="M3 10 12 3l9 7v10H3V10Z"/><path d="m12 9 .9 2.5L15.5 12l-2.6.9L12 15.5l-.9-2.6-2.6-.9 2.6-.5L12 9Z"/></>,
+ 'moon-court':<><path d="M20 15.2A8.7 8.7 0 0 1 8.8 4 8.7 8.7 0 1 0 20 15.2Z"/><path d="M18 3v4M16 5h4M20 10h.01"/></>,
+ 'creative-star':<><path d="m5 20 11-12M11 5l3-2 1.5 3L19 7l-2 3 1 3-4 1-2 3-3-2-4 2 1-5-3-2 4-1 4-4Z"/></>,
+ 'tea-cup':<><path d="M4 9h13v5a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6V9Z"/><path d="M17 10h2a3 3 0 0 1 0 6h-3M3 21h17M7 4c-2 2 2 2 0 4M12 3c-2 2 2 2 0 4"/></>,
+ 'vault':<><rect x="3" y="5" width="18" height="15" rx="2"/><path d="M3 9h18M8 9v11M14 13h3M14 16h3"/><path d="m12 3 2.6 2L12 7l-2.6-2L12 3Z"/></>,
  'sun':<><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></>
 };
 const routeNames=[
