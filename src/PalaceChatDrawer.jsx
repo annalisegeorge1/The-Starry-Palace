@@ -9,6 +9,8 @@ import {filterPalaceDirectInbox,findPalaceChatMessages} from './palaceChatInboxM
 import {collectPalaceSharedMedia,groupPalaceSharedMedia} from './palaceChatSharedMedia';
 import {PALACE_READING_CIRCLE_PROMPTS,PALACE_READING_CIRCLE_KITS,makePalaceCircleDraft} from './palaceReadingCirclePrompts';
 import {makePalaceDirectQuoteDraft} from './palaceDirectQuote';
+import {PALACE_CHAT_V3_ENABLED,getPalaceReactions,changePalaceReaction} from './palaceChatV3';
+import PalaceChatReactionBar from './PalaceChatReactionBar';
 import './palace-chat-workspace.css';
 import {getMyProfile,getLetters,getDirectConversationMessages,DIRECT_HISTORY_PAGE_SIZE,sendLetter,sendLetterPhoto,editLetterMessage,searchMembers,setConversationPreference,getMemberBoundary,setMemberBoundary,reportConversation} from './palaceData';
 import {createPalaceGroupChat,getPalaceGroupChatOverview,getPalaceGroupMessages,sendPalaceGroupMessage,sendPalaceGroupPhoto,editPalaceGroupMessage,respondPalaceGroupInvite,invitePalaceGroupMember,removePalaceGroupMember,leavePalaceGroupChat,setPalaceGroupMuted,markPalaceGroupRead,PALACE_GROUP_COLOURS,setPalaceGroupIdentity,pinPalaceGroupMessage,getPinnedPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
@@ -75,6 +77,8 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  const[safetyOpen,setSafetyOpen]=useState(false);
  const[boundary,setBoundary]=useState({muted:false,blocked:false});
  const[reportReason,setReportReason]=useState('');
+ const[reactionRows,setReactionRows]=useState({roomId:'',rows:[]});
+ const[reactionRefresh,setReactionRefresh]=useState(0);
  const[historyLoading,setHistoryLoading]=useState(false);
  const[hasOlder,setHasOlder]=useState(false);
  const[quiet,setQuiet]=useState(false);
@@ -112,6 +116,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  const roomId=tab==='direct'?activeDirect?.conversation_id:activeGroup?.id;
  const recentDirect=(direct?.messages||[]).filter(m=>m.conversation_id===roomId);
  const messages=tab==='direct'?mergePalaceGroupMessages(directHistory.roomId===roomId?directHistory.items:[],recentDirect):groupMessages.chatId===roomId?groupMessages.items:[];
+ const reactionMessageIds=messages.slice(-120).map(m=>m.id).filter(Boolean).join(',');
  const latestMessage=messages[messages.length-1]||null;
  const latestMessageId=latestMessage?.id||'';
  const pinnedMessage=tab==='groups'&&activeGroup?.pinnedMessageId?(messages.find(m=>m.id===activeGroup.pinnedMessageId)||((pinnedPreview.chatId===roomId&&pinnedPreview.messageId===activeGroup.pinnedMessageId)?pinnedPreview.message:null)):null;
@@ -137,6 +142,14 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   getMemberBoundary(userId,otherUserId).then(row=>{if(current)setBoundary({muted:!!row.muted,blocked:!!row.blocked})}).catch(()=>{if(current)setBoundary({muted:false,blocked:false})});
   return()=>{current=false};
  },[userId,tab,otherUserId]);
+ useEffect(()=>{
+  if(!PALACE_CHAT_V3_ENABLED||!open||!roomId||!reactionMessageIds){setReactionRows({roomId:'',rows:[]});return}
+  let alive=true;
+  getPalaceReactions(tab,reactionMessageIds.split(',')).then(rows=>{
+   if(alive)setReactionRows({roomId,rows});
+  }).catch(e=>{if(alive)setError('Reactions could not be loaded. '+errorText(e))});
+  return()=>{alive=false};
+ },[open,roomId,tab,reactionMessageIds,reactionRefresh]);
  useEffect(()=>{if(!photoFile){setPhotoPreview('');return}
   const preview=URL.createObjectURL(photoFile);setPhotoPreview(preview);
   return()=>URL.revokeObjectURL(preview);
@@ -479,6 +492,9 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
    setReplyTarget({id:message.id,body:message.body,chatId:roomId});
    setStorySharing(false);
    window.requestAnimationFrame(()=>composerRef.current?.focus());
+  }else if(action==='reply'&&tab==='direct'&&PALACE_CHAT_V3_ENABLED){
+   setReplyTarget({id:message.id,body:message.body,chatId:roomId});
+   window.requestAnimationFrame(()=>composerRef.current?.focus());
   }else if(action==='quote'&&tab==='direct'){
    setDraft(makePalaceDirectQuoteDraft(message,message.sender_id===userId?'you':openedRoomName,currentDraft));
    setNotice('Quotation added to your draft. This is a text quote, not a linked reply.');
@@ -502,7 +518,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   setBusy(true);setError('');setNotice('Sending your message…');
   try{
    if(sentKind==='groups')await sendPalaceGroupMessage(sentRoomId,userId,text,replyTarget?.chatId===sentRoomId?{replyToId:replyTarget.id}:{});
-   else await sendLetter(userId,sentRoomId,text);
+   else await sendLetter(userId,sentRoomId,text,PALACE_CHAT_V3_ENABLED&&replyTarget?.chatId===sentRoomId?{replyToId:replyTarget.id}:{});
   }catch(e){
    setNotice('');
    setError('Message not confirmed. Your draft is preserved. '+errorText(e));
@@ -555,6 +571,13 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
    if(accept){setSelectedGroup(invite.id);setNotice('You joined '+invite.title+'.')}
    else setNotice('Invitation declined.');
   }catch(e){setError(errorText(e))}
+  finally{setBusy(false)}
+ }
+ async function reactToMessage(messageId,key,current){
+  if(!PALACE_CHAT_V3_ENABLED||busy||!roomId)return;
+  setBusy(true);setError('');
+  try{await changePalaceReaction(tab,messageId,userId,key,current);setReactionRefresh(v=>v+1)}
+  catch(e){setError('Reaction was not saved. '+errorText(e))}
   finally{setBusy(false)}
  }
  async function updateSafetyBoundary(blocked){
@@ -749,7 +772,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
         onKeyDown={e=>{if(e.target!==e.currentTarget)return;if((e.shiftKey&&e.key==='F10')||e.key==='ContextMenu'||e.key==='Enter'||e.key===' '){e.preventDefault();openMessageActions(m,e.currentTarget)} }}
         className={'palace-chat-bubble'+(m.sender_id===userId?' mine':'')+(actionMenu?.message.id===m.id?' has-active-actions':'')}>
        <div className="palace-chat-sender"><MemberAvatar className="palace-chat-message-avatar" memberId={m.sender_id} profile={tab==='groups'?(m.profiles||activeGroup?.members.find(p=>p.id===m.sender_id)):m.sender_id===userId?selfProfile:activeDirect?.correspondent}/>{tab==='groups'&&m.sender_id!==userId&&<strong>{nameOf(m.profiles)}</strong>}</div>
-       {tab==='groups'&&m.reply_to_id&&<button type="button" className="palace-chat-reply-quote" onClick={()=>jumpToQuotedMessage(m.reply_to_id)} aria-label="Jump to replied message"><small>↩ Reply to {nameOf(messages.find(item=>item.id===m.reply_to_id)?.profiles)}</small><p>{messages.find(item=>item.id===m.reply_to_id)?.body?.slice(0,145)||'An earlier group message'}</p></button>}
+       {(tab==='groups'||PALACE_CHAT_V3_ENABLED)&&m.reply_to_id&&<button type="button" className="palace-chat-reply-quote" onClick={()=>jumpToQuotedMessage(m.reply_to_id)} aria-label="Jump to replied message"><small>↩ Reply to {nameOf(messages.find(item=>item.id===m.reply_to_id)?.profiles)}</small><p>{messages.find(item=>item.id===m.reply_to_id)?.body?.slice(0,145)||'An earlier group message'}</p></button>}
        {editingMessage===m.id?
         <form className="palace-chat-edit-form" onSubmit={saveEditedMessage}>
          <textarea aria-label="Edit your message" autoFocus value={editBody} maxLength={3000} onChange={e=>setEditBody(e.target.value)} rows={3}/>
@@ -759,11 +782,12 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
        {m.edited_at&&<small className="palace-chat-edited-mark" title={'Edited '+new Date(m.edited_at).toLocaleString()}>Edited</small>}
        {tab==='groups'&&m.works?.slug&&<Link className="palace-chat-shared-story" to={'/work/'+encodeURIComponent(m.works.slug)} onClick={()=>setOpen(false)}><span aria-hidden="true">✧</span><span><small>PALACE STORY</small><strong>{m.works.title}</strong></span><span aria-hidden="true">↗</span></Link>}
        <small>{dateOf(m.created_at)}</small>
+       {PALACE_CHAT_V3_ENABLED&&<PalaceChatReactionBar message={m} rows={reactionRows.roomId===roomId?reactionRows.rows:[]} userId={userId} disabled={busy||(tab==='direct'&&boundary.blocked)} onReact={reactToMessage}/>}
        {/* Message actions appear only on long-press, right-click, or keyboard context menu. */}
       </div></React.Fragment>):<p className="palace-chat-empty">Nothing written here yet. Begin with a hello. ✦</p>}
      </div>
      {newWhileAway&&messages.length>0&&<button type="button" className="palace-chat-jump-latest" onClick={jumpToLatest}>New messages · Jump to latest ↓</button>}
-     {tab==='groups'&&replyTarget?.chatId===roomId&&<div className="palace-chat-replying"><span>Replying to: {replyTarget.body.slice(0,96)}{replyTarget.body.length>96?'…':''}</span><button type="button" aria-label="Cancel group reply" onClick={()=>setReplyTarget(null)}>×</button></div>}
+     {(tab==='groups'||PALACE_CHAT_V3_ENABLED)&&replyTarget?.chatId===roomId&&<div className="palace-chat-replying"><span>Replying to: {replyTarget.body.slice(0,96)}{replyTarget.body.length>96?'…':''}</span><button type="button" aria-label={tab==='groups'?"Cancel group reply":"Cancel reply"} onClick={()=>setReplyTarget(null)}>×</button></div>}
      <div className="palace-chat-composer-shell"><div className="palace-chat-compose-tools"><PalaceEmojiPicker label="Palace Chat" onPick={insertChatEmoji}/><button type="button" className="palace-chat-gif-toggle" aria-expanded={gifOpen} onClick={()=>setGifOpen(v=>!v)}>🎞️ GIF</button><button type="button" className="palace-chat-photo-toggle" aria-label="Attach photo" disabled={busy} onClick={()=>photoInputRef.current?.click()}>▧ Photo</button><input ref={photoInputRef} className="palace-chat-photo-file" type="file" accept="image/jpeg,image/png,image/webp,image/avif" aria-label="Choose photo to send" onChange={e=>{const file=e.target.files?.[0];if(file){if(!['image/jpeg','image/png','image/webp','image/avif'].includes(file.type)||file.size>18*1024*1024){setError('Use a JPEG, PNG, WebP or AVIF photo under 18 MB.');e.target.value='';return}setPhotoFile(file);setGifOpen(false)}}}/></div>
      {gifOpen&&<PalaceGiphyPicker busy={busy} onSend={sendGif} onClose={()=>setGifOpen(false)}/>}
      {photoFile&&<form className="palace-chat-photo-stage" onSubmit={sendPhoto}><div>{photoPreview&&<img src={photoPreview} alt="Selected photo preview"/>}<span><strong>{photoFile.name}</strong><small>Private photo · {Math.round(photoFile.size/1024)} KB · {currentDraft.trim()?'Your drafted text becomes its caption':'Add an optional caption below'}</small></span></div><footer><button type="button" onClick={()=>{setPhotoFile(null);if(photoInputRef.current)photoInputRef.current.value=''}}>Cancel</button><button type="submit" disabled={busy}>{busy?'Sending…':'Send photo ↗'}</button></footer></form>}
@@ -779,6 +803,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
    <div ref={actionMenuRef} className="palace-chat-actions-menu" role="menu" aria-label="Message actions" style={{top:actionMenu.top,left:actionMenu.left}}>
     <small>MESSAGE OPTIONS</small>
     {tab==='groups'&&<button type="button" role="menuitem" aria-label="Reply" onClick={()=>applyMessageAction('reply')}><span aria-hidden="true">↩</span><span>Reply</span></button>}
+    {tab==='direct'&&PALACE_CHAT_V3_ENABLED&&<button type="button" role="menuitem" aria-label="Reply to message" onClick={()=>applyMessageAction('reply')}><span aria-hidden="true">↩</span><span>Linked reply</span></button>}
     {tab==='direct'&&<button type="button" role="menuitem" aria-label="Quote in draft" onClick={()=>applyMessageAction('quote')}><span aria-hidden="true">↩</span><span>Quote in draft</span></button>}
     {actionMenu.message.sender_id===userId&&!parsePalaceGif(actionMenu.message.body)&&<button type="button" role="menuitem" aria-label="Edit message" onClick={()=>applyMessageAction('edit')}><span aria-hidden="true">✎</span><span>Edit message</span></button>}
     <button type="button" role="menuitem" aria-label="Copy text" onClick={()=>applyMessageAction('copy')}><span aria-hidden="true">⧉</span><span>Copy text</span></button>
