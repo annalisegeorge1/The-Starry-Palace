@@ -285,3 +285,95 @@
    scroll-behavior:auto!important;
  }
 }
+
+
+/* Screenshot-driven fixes: content panels must flow with the document.
+   Legacy polish.css gave the Writing tabs and work filters different
+   sticky offsets, creating two floating surfaces over manuscript cards. */
+@media(max-width:760px){
+ .palace-shell.full-palace-shell #palace-content .writing-tabs.chic-writing-tabs.palace-writing-icons-tabs,
+ .palace-shell.full-palace-shell #palace-content .writing-library-tools.chic-writing-library-tools{
+   position:static!important;
+   top:auto!important;
+   inset-block-start:auto!important;
+   z-index:auto!important;
+   transform:none!important;
+   contain:none!important;
+ }
+ .palace-shell.full-palace-shell #palace-content .writing-tabs.chic-writing-tabs.palace-writing-icons-tabs{
+   margin:0 0 14px!important;
+   width:100%!important;
+   max-width:100%!important;
+   box-sizing:border-box!important;
+   background:rgba(24,24,57,.9)!important;
+   -webkit-backdrop-filter:none!important;
+   backdrop-filter:none!important;
+ }
+ .palace-shell.full-palace-shell #palace-content .writing-library-tools.chic-writing-library-tools{
+   width:100%!important;
+   max-width:100%!important;
+   margin:12px auto 16px!important;
+   box-sizing:border-box!important;
+   background:linear-gradient(125deg,rgba(48,39,91,.93),rgba(23,49,78,.93))!important;
+   box-shadow:none!important;
+   -webkit-backdrop-filter:none!important;
+   backdrop-filter:none!important;
+ }
+ .palace-shell.full-palace-shell #palace-content .chic-writing-library-tools select{
+   font-size:clamp(.81rem,3.3vw,.92rem)!important;
+   padding-inline:10px 23px!important;
+ }
+ /* The celebration log previously reserved a third flex column for the
+    acknowledgement button, crushing the prose into just a few characters. */
+ .palace-shell.full-palace-shell .grand-celebration-archive article{
+   display:grid!important;
+   grid-template-columns:44px minmax(0,1fr)!important;
+   grid-auto-rows:auto!important;
+   column-gap:12px!important;
+   row-gap:10px!important;
+   align-items:start!important;
+   min-width:0!important;
+   padding:13px!important;
+ }
+ .palace-shell.full-palace-shell .grand-celebration-archive article>.grand-celebration-archive-glyph{
+   grid-column:1!important;
+   grid-row:1!important;
+   margin:0!important;
+   align-self:start!important;
+ }
+ .palace-shell.full-palace-shell .grand-celebration-archive article>div{
+   grid-column:2!important;
+   grid-row:1!important;
+   width:100%!important;
+   min-width:0!important;
+   max-width:100%!important;
+   overflow-wrap:break-word!important;
+   word-break:normal!important;
+   white-space:normal!important;
+   margin:0!important;
+ }
+ .palace-shell.full-palace-shell .grand-celebration-archive article>div :is(strong,p,small){
+   display:block!important;
+   width:auto!important;
+   max-width:100%!important;
+   overflow-wrap:break-word!important;
+   word-break:normal!important;
+   white-space:normal!important;
+   line-height:1.45!important;
+ }
+ .palace-shell.full-palace-shell .grand-celebration-archive article>button{
+   grid-column:2!important;
+   grid-row:2!important;
+   justify-self:end!important;
+   margin:0!important;
+   max-width:100%!important;
+   min-height:40px!important;
+   padding:9px 13px!important;
+ }
+ .palace-shell.full-palace-shell.daylight #palace-content .writing-tabs.chic-writing-tabs.palace-writing-icons-tabs{
+   background:rgba(245,241,252,.95)!important;
+ }
+ .palace-shell.full-palace-shell.daylight #palace-content .writing-library-tools.chic-writing-library-tools{
+   background:linear-gradient(120deg,#f7f0fd,#edf1fb)!important;
+ }
+}
