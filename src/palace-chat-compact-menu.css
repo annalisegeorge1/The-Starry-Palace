@@ -84,6 +84,11 @@
  .palace-chat-v2.is-thread-open .palace-chat-header-actions>button[aria-pressed]{
   display:none!important;
  }
+ /* Older conversation-first CSS hides pressed header buttons. The items in
+    this popover are intentional controls, so keep them visible. */
+ .palace-chat-v2.is-thread-open .palace-chat-header-actions .palace-chat-options-dropdown>button[aria-pressed]{
+  display:flex!important;
+ }
  .palace-chat-v2.is-thread-open .palace-chat-header-actions{gap:7px!important}
  .palace-chat-v2.is-thread-open .palace-chat-more-trigger{
   width:42px!important;min-width:42px!important;height:42px!important;min-height:42px!important;
