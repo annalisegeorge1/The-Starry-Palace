@@ -78,3 +78,7 @@ body.writing-desk-open .manuscript-dashboard--compact{padding:.55rem .8rem!impor
  .writer-more-formatting>summary{min-height:42px}
 }
 @media(prefers-reduced-motion:reduce){.writer-workspace-modes *, .writer-more-formatting *, .writer-appearance-accordion *{transition:none!important}}
+
+/* Prior mobile stylesheet hides the old full-width ribbon. The new folded
+   appearance panel must reveal it when intentionally opened. */
+@media(max-width:760px){body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar .writer-appearance-accordion[open] .manuscript-type-ribbon{display:flex!important}}
