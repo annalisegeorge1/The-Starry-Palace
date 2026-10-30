@@ -1,0 +1,182 @@
+/* The Palace's shared midnight-glass illustration system, extended
+   to cross-room doors, Salon prompts, daily ritual and Palace Pulse.
+   Only content cards are affected; navigation remains untouched. */
+
+/* Creative doors: preserve their two-column reading hierarchy. */
+.palace-shell.full-palace-shell .grand-progress-wayfinder-door >
+.grand-progress-wayfinder-icon.palace-heritage-icon{
+  display:inline-grid!important;
+  place-items:center!important;
+  flex:0 0 42px!important;
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  min-height:42px!important;
+  padding:7px!important;
+  border-radius:13px!important;
+  margin:0!important;
+  font-size:inherit!important;
+}
+.palace-shell.full-palace-shell .grand-progress-wayfinder-door >
+.grand-progress-wayfinder-icon.palace-heritage-icon>.palace-icon{
+  width:24px!important;
+  height:24px!important;
+}
+.palace-shell.full-palace-shell .grand-progress-wayfinder-door .grand-progress-wayfinder-copy{
+  min-width:0!important;
+  flex:1 1 auto;
+}
+.palace-shell.full-palace-shell .grand-progress-wayfinder-door.door-duels
+  >.grand-progress-wayfinder-icon.palace-heritage-icon{--heritage-rgb:230 166 216}
+.palace-shell.full-palace-shell .grand-progress-wayfinder-door.door-achievements
+  >.grand-progress-wayfinder-icon.palace-heritage-icon{--heritage-rgb:172 220 245}
+.palace-shell.full-palace-shell .grand-progress-wayfinder-door.door-titles
+  >.grand-progress-wayfinder-icon.palace-heritage-icon{--heritage-rgb:232 195 144}
+
+/* Salon cards: a real illustration per topic, no font glyph fallback. */
+.palace-shell.full-palace-shell .salon-prompt-grid article
+  >.salon-prompt-icon.palace-heritage-icon{
+  display:inline-grid!important;
+  place-items:center!important;
+  position:relative!important;
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+  margin:0 0 7px!important;
+  padding:8px!important;
+  font-size:inherit!important;
+  line-height:1!important;
+  border-radius:13px!important;
+  color:#f8f6ff!important;
+}
+.palace-shell.full-palace-shell .salon-prompt-grid article
+  >.salon-prompt-icon.palace-heritage-icon>.palace-icon{
+  width:24px!important;
+  height:24px!important;
+  color:#f9f6ff!important;
+}
+.palace-shell.full-palace-shell .salon-prompt-grid article>small{
+  display:block;
+  margin:0 0 5px;
+}
+.palace-shell.full-palace-shell .salon-prompt-grid article>h4,
+.palace-shell.full-palace-shell .salon-prompt-grid article>p{
+  max-width:100%;
+  min-width:0;
+  overflow-wrap:break-word;
+}
+/* The optional daily ritual should feel like the same Palace room. */
+.palace-shell.full-palace-shell .palace-ritual-strip>.ritual-sigil.palace-heritage-icon{
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+  padding:8px!important;
+  border-radius:13px!important;
+  font-size:inherit!important;
+  line-height:1!important;
+  flex:0 0 44px!important;
+  margin:0!important;
+}
+.palace-shell.full-palace-shell .palace-ritual-strip>.ritual-sigil.palace-heritage-icon>.palace-icon{
+  width:24px!important;
+  height:24px!important;
+}
+
+/* Pulse remains a compact, scannable four-row directory, with the glyph
+   now a proper glass tile rather than text floating beside its count. */
+.palace-shell.full-palace-shell .palace-pulse-card>button{
+  display:grid!important;
+  grid-template-columns:39px minmax(0,1fr) auto!important;
+  column-gap:12px!important;
+  align-items:center!important;
+  justify-items:stretch!important;
+  min-height:62px!important;
+  width:100%!important;
+  text-align:left!important;
+  box-sizing:border-box!important;
+}
+.palace-shell.full-palace-shell .palace-pulse-card>button
+  >.palace-pulse-icon.palace-heritage-icon{
+  grid-column:1!important;
+  display:inline-grid!important;
+  place-items:center!important;
+  width:38px!important;
+  height:38px!important;
+  min-width:38px!important;
+  min-height:38px!important;
+  padding:7px!important;
+  margin:0!important;
+  border-radius:12px!important;
+  font-size:inherit!important;
+  color:#f8f6ff!important;
+}
+.palace-shell.full-palace-shell .palace-pulse-card>button
+  >.palace-pulse-icon.palace-heritage-icon>.palace-icon{
+  width:22px!important;
+  height:22px!important;
+  min-width:0!important;
+  min-height:0!important;
+  color:#f9f6ff!important;
+}
+.palace-shell.full-palace-shell .palace-pulse-card>button>strong{
+  grid-column:2!important;
+  min-width:0!important;
+  overflow-wrap:break-word;
+}
+.palace-shell.full-palace-shell .palace-pulse-card>button>b{
+  grid-column:3!important;
+  text-align:right!important;
+  justify-self:end!important;
+  font-variant-numeric:tabular-nums;
+}
+.palace-shell.full-palace-shell .palace-pulse-card>button:focus-visible{
+  outline:2px solid #b2d5ff;
+  outline-offset:2px;
+}
+@media(max-width:760px){
+  .palace-shell.full-palace-shell .grand-progress-wayfinder-door{
+    align-items:flex-start!important;
+    min-width:0!important;
+    gap:12px!important;
+  }
+  .palace-shell.full-palace-shell .salon-prompt-grid article
+    >.salon-prompt-icon.palace-heritage-icon{
+    width:42px!important;
+    height:42px!important;
+    min-width:42px!important;
+    min-height:42px!important;
+  }
+  .palace-shell.full-palace-shell .palace-pulse-card>button{
+    padding-block:8px!important;
+  }
+}
+@media(max-width:370px){
+  .palace-shell.full-palace-shell .palace-pulse-card>button{
+    grid-template-columns:35px minmax(0,1fr) auto!important;
+    column-gap:9px!important;
+  }
+  .palace-shell.full-palace-shell .palace-pulse-card>button
+    >.palace-pulse-icon.palace-heritage-icon{
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+    min-height:34px!important;
+  }
+}
+/* In Daylight, the intentionally dark glass icons retain pearl-white
+   linework; supporting content remains governed by the Daylight palette. */
+.palace-shell.daylight.full-palace-shell
+  .palace-pulse-card>button>.palace-pulse-icon.palace-heritage-icon,
+.palace-shell.daylight.full-palace-shell
+  .salon-prompt-grid article>.salon-prompt-icon.palace-heritage-icon{
+  color:#f9f6ff!important;
+}
+@media(prefers-reduced-motion:reduce){
+  .palace-shell .palace-pulse-icon,
+  .palace-shell .salon-prompt-icon,
+  .palace-shell .grand-progress-wayfinder-icon{
+    transition:none!important;
+  }
+}
