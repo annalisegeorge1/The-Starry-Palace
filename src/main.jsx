@@ -98,6 +98,7 @@ import './chat-topbar-calm.css';
 import './mobile-dashboard-home-calm.css';
 import './mobile-palace-compact-pass.css';
 import './settings-mobile-native.css';
+import './mobile-dock-header-fix.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
@@ -503,6 +504,7 @@ function FrameShell({children}){
     <div><span className="palace-footer-mark" aria-hidden="true">☾<b>✦</b></span><div><strong>The Starry Palace</strong><small>Gather. Have a cup of tea. Write and read with me.</small></div></div>
     <nav aria-label="Palace footer"><Link to="/writers">For Writers</Link><Link to="/code">Palace Code</Link><Link to="/council/governance">Council</Link><Link to="/beta">Beta feedback</Link><Link to="/search">Search</Link>{session&&<Link to="/settings">Settings & Safety</Link>}</nav>
    </footer>
+   <div className="palace-mobile-end-spacer" aria-hidden="true"/>
   </div>
   {commandOpen&&<div className="palace-command-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setCommandOpen(false)}}>
     <section id="palace-command-dialog" className="palace-command" role="dialog" aria-modal="true" aria-label="Palace quick navigation and search">
