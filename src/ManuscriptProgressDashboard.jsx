@@ -5,7 +5,7 @@ import {manuscriptRecentActivity,manuscriptDraftReadiness} from './manuscriptWri
 const stages=[['idea','✧','Idea'],['drafting','✎','Drafting'],['revising','◈','Revising'],['proofreading','⌕','Proofreading'],['ready','✦','Ready']];
 const initial={target_words:0,target_chapters:0,target_date:'',intention:''};
 const stageOf=(ch,p)=>ch.status==='published'?'published':ch.scheduled_for?'scheduled':p?.stage||'drafting';
-export default function ManuscriptProgressDashboard({work,chapters=[],onChapter}){
+export default function ManuscriptProgressDashboard({work,chapters=[],onChapter,compact=false}){
  const[state,setState]=useState(null),[goal,setGoal]=useState(initial),[expanded,setExpanded]=useState(false),[editing,setEditing]=useState(null),[busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState('');
  useEffect(()=>{let active=true;setState(null);if(work?.id)getManuscriptProgress(work.id).then(x=>{if(active){setState(x);setGoal({...initial,...x.goal})}}).catch(e=>{if(active)setError(e.message)});return()=>{active=false}},[work?.id]);
  const plans=state?.chapters||[];
@@ -25,13 +25,13 @@ export default function ManuscriptProgressDashboard({work,chapters=[],onChapter}
  }).slice(0,5);
  async function saveGoal(){if(busy)return;setBusy(true);setError('');setNotice('');try{const x=await saveManuscriptStoryGoal(work.id,goal);setState(x);setNotice('Manuscript milestones saved.') }catch(e){setError(e.message)}finally{setBusy(false)}}
  async function savePlan(id,draft){if(busy)return;setBusy(true);setError('');setNotice('');try{setState(await saveManuscriptChapterPlan(id,draft));setEditing(null);setNotice('Chapter revision plan saved.')}catch(e){setError(e.message)}finally{setBusy(false)}}
- return <section className="manuscript-dashboard" aria-label="Private manuscript progress dashboard">
-  <header><div><p className="eyebrow">THE MANUSCRIPT COMPASS</p><h2>Your story, from first spark to final page.</h2><p>Private planning space. Nothing here publishes, schedules or changes a chapter's actual text.</p></div><button type="button" aria-expanded={expanded} onClick={()=>setExpanded(v=>!v)}>{expanded?'Close compass':'Open manuscript compass ✧'}</button></header>
+ return <section className={"manuscript-dashboard"+(compact&&!expanded?" manuscript-dashboard--compact":"")} aria-label="Private manuscript progress dashboard">
+  <header><div><p className="eyebrow">THE MANUSCRIPT COMPASS</p><h2>Your manuscript compass</h2><p>Private planning space. Nothing here publishes, schedules or changes a chapter's actual text.</p></div><button type="button" aria-expanded={expanded} onClick={()=>setExpanded(v=>!v)}>{expanded?'Hide progress details':'Progress & goals ✧'}</button></header>
   <div className="manuscript-dashboard-pulse">
    <article><span aria-hidden="true">✎</span><strong>{totalWords.toLocaleString()}</strong><small>Words written</small></article>
    <article><span aria-hidden="true">▤</span><strong>{ordered.length}</strong><small>Chapters</small></article>
    <article><span aria-hidden="true">✦</span><strong>{totalPublished}</strong><small>Published</small></article>
-   <article><span aria-hidden="true">◷</span><strong>{scheduled}</strong><small>Scheduled</small></article>
+   <article><span aria-hidden="true">◷</span><strong>{target?percent+"%":"—"}</strong><small>Goal progress</small></article>
   </div>
   {expanded&&<div className="manuscript-dashboard-body">
    <div className="manuscript-dashboard-goals"><div><h3>Milestones</h3><p>A personal target, never a publishing requirement.</p></div><div className="manuscript-dashboard-goal-grid"><label>Word goal<input type="number" min="0" max="5000000" value={goal.target_words||0} onChange={e=>setGoal(g=>({...g,target_words:e.target.value}))}/></label><label>Planned chapters<input type="number" min="0" max="2000" value={goal.target_chapters||0} onChange={e=>setGoal(g=>({...g,target_chapters:e.target.value}))}/></label><label>Personal target date<input type="date" value={goal.target_date||''} onChange={e=>setGoal(g=>({...g,target_date:e.target.value}))}/></label><label className="manuscript-dashboard-intention">Story intention<input maxLength={280} value={goal.intention||''} onChange={e=>setGoal(g=>({...g,intention:e.target.value}))} placeholder="What do you want this story to become?"/></label></div><div className="manuscript-dashboard-meter"><div><span>Word goal</span><strong>{target?percent+'%':'Set a goal'}</strong></div><div className="manuscript-dashboard-track"><i style={{width:percent+'%'}}/></div><small>{totalWords.toLocaleString()} of {target?target.toLocaleString():'—'} words</small></div><button disabled={busy||!state} onClick={saveGoal} type="button">Save milestones</button></div>
