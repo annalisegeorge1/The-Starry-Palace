@@ -323,3 +323,156 @@
  }
  body.writing-desk-open .manuscript-sticky-toolbar .writer-mobile-save-state{font-size:.6rem!important}
 }
+
+/* Expanded Tools: concise horizontal action strip. Only the selected secondary
+   panel opens; formatting, chapter management and typography are all retained. */
+.writer-mobile-chapter-toggle{display:none}
+@media(max-width:760px){
+ body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar[data-mobile-tools-open="true"]{
+  display:flex!important;
+  flex-direction:row!important;
+  flex-wrap:wrap!important;
+  align-items:flex-start!important;
+  align-content:flex-start!important;
+  gap:.28rem!important;
+  padding:.32rem .35rem!important;
+  max-height:min(54dvh,370px)!important;
+  overflow-y:auto!important;
+  overscroll-behavior-y:contain;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"]>.writer-mobile-tools-strip{
+  order:0;flex:0 0 100%!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"]>.writer-format-navigator{
+  order:1;flex:0 0 100%!important;
+  min-height:38px!important;
+  padding:0!important;
+  margin:0!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"]>.writer-mobile-chapter-toggle{
+  display:flex!important;
+  order:2;
+  flex:1 1 0!important;
+  justify-content:center;
+  align-items:center;
+  gap:.3rem;
+  height:36px!important;
+  min-height:36px!important;
+  min-width:0!important;
+  padding:.35rem .35rem!important;
+  border:1px solid rgba(174,164,220,.35)!important;
+  background:rgba(104,84,168,.18)!important;
+  color:#e5d9fa!important;
+  font-size:.69rem!important;
+  border-radius:9px!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"]>.writer-appearance-accordion{
+  order:3;
+  flex:1 1 0!important;
+  min-width:0!important;
+  max-width:100%!important;
+  margin:0!important;
+  border-radius:9px!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"]>.writer-more-formatting{
+  order:4;
+  flex:1 1 0!important;
+  min-width:0!important;
+  max-width:100%!important;
+  margin:0!important;
+  border-radius:9px!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"] :is(.writer-appearance-accordion,.writer-more-formatting)>summary{
+  min-width:0!important;
+  height:36px!important;
+  min-height:36px!important;
+  line-height:1.2!important;
+  padding:.35rem .25rem!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  white-space:nowrap!important;
+  gap:0!important;
+  font-size:.69rem!important;
+  font-weight:700!important;
+  text-align:center;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"]>.writer-appearance-accordion>summary>span,
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"]>.writer-more-formatting>summary>small{
+  display:none!important;
+ }
+ /* Only the active panel uses additional vertical space. */
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"]>:is(.writer-appearance-accordion,.writer-more-formatting)[open]{
+  flex:0 0 100%!important;
+  max-width:100%!important;
+  width:100%!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"]>.writer-chapter-jump{
+  order:5;
+  display:none!important;
+  flex:0 0 100%!important;
+  margin:0!important;
+  padding:.35rem 0!important;
+  min-width:0!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"][data-mobile-chapter-open="true"]>.writer-chapter-jump{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:.32rem!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"]>.writer-toolbar-utilities{
+  order:6;
+  display:none!important;
+  flex:0 0 100%!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"][data-mobile-chapter-open="true"]>.writer-toolbar-utilities{
+  display:flex!important;
+  flex-wrap:wrap!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"]>.editor-shortcut-hint{
+  display:none!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"] .writer-chapter-jump-actions{
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  overflow-x:auto!important;
+  max-width:100%!important;
+  gap:.28rem!important;
+  padding-bottom:.25rem!important;
+  scrollbar-width:thin;
+ }
+ /* Save and status are already in the always-visible top strip; preserve
+    their actions while eliminating the duplicated controls in the chapter row. */
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"] .writer-chapter-jump-actions>.writer-toolbar-save-state,
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"] .writer-chapter-jump-actions>.button-starlight{
+  display:none!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"] .writer-format-scroll{
+  flex-wrap:nowrap!important;
+  max-width:100%!important;
+  overflow-x:auto!important;
+  min-height:37px!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"] .writer-format-scroll button{
+  min-height:34px!important;
+  padding:.32rem .48rem!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"] .writer-more-panel{
+  padding:.32rem!important;
+  gap:.3rem!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar[data-mobile-tools-open="true"] .writer-appearance-accordion .manuscript-type-ribbon{
+  margin:.25rem!important;
+  padding:.25rem!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-mobile-chapter-toggle:focus-visible{
+  outline:2px solid #ade4df!important;
+  outline-offset:2px!important;
+ }
+ body.daylight.writing-desk-open .manuscript-sticky-toolbar .writer-mobile-chapter-toggle,
+ .daylight body.writing-desk-open .manuscript-sticky-toolbar .writer-mobile-chapter-toggle{
+  color:#483562!important;
+  background:#f1eafb!important;
+  border-color:#c5b3e2!important;
+ }
+}
