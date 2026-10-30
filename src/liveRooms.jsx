@@ -1085,12 +1085,12 @@ export function PalaceLifeLive({Frame}){
  return <Frame privateArea><PrismWayfinder active="commons"/><section className="legacy-life-page">
   <section className="room-title life-head legacy-life-head"><p className="eyebrow">PALACE LIFE</p><h1>Gather where the room fits the conversation.</h1><p className="lede">Conversations and the Moonlight lounge gather in Commons, with clubs and member discovery nearby.</p></section>
   <section className="community-pulse-row restored social-pulse">
-   <button onClick={()=>chooseRoom('stars')}><strong>{counts.stars}</strong><span>New Stars</span><small>Introductions beneath the same sky</small></button>
-   <button onClick={()=>chooseRoom('highlights')}><strong>{counts.highlights}</strong><span>highlights</span><small>Community recognition</small></button>
-   <button onClick={()=>chooseRoom('clubs')}><strong>{counts.clubs}</strong><span>your circles</span><small>Joined or stewarded</small></button>
-   <button onClick={()=>chooseRoom('forum')}><strong>{counts.commons}</strong><span>Commons threads</span><small>Longer conversations</small></button>
-   <button onClick={()=>chooseRoom('clubs')}><strong>{counts.invites}</strong><span>invitations</span><small>Waiting at your door</small></button>
-   <button onClick={()=>chooseRoom('clubs')}><strong>{counts.requests}</strong><span>steward queue</span><small>Membership decisions</small></button>
+   <button onClick={()=>chooseRoom('stars')}><PalaceIcon name="users"/><strong>{counts.stars}</strong><span>New Stars</span><small>Introductions beneath the same sky</small></button>
+   <button onClick={()=>chooseRoom('highlights')}><PalaceIcon name="trophy"/><strong>{counts.highlights}</strong><span>highlights</span><small>Community recognition</small></button>
+   <button onClick={()=>chooseRoom('clubs')}><PalaceIcon name="users"/><strong>{counts.clubs}</strong><span>your circles</span><small>Joined or stewarded</small></button>
+   <button onClick={()=>chooseRoom('forum')}><PalaceIcon name="messages"/><strong>{counts.commons}</strong><span>Commons threads</span><small>Longer conversations</small></button>
+   <button onClick={()=>chooseRoom('clubs')}><PalaceIcon name="bell"/><strong>{counts.invites}</strong><span>invitations</span><small>Waiting at your door</small></button>
+   <button onClick={()=>chooseRoom('clubs')}><PalaceIcon name="shield"/><strong>{counts.requests}</strong><span>steward queue</span><small>Membership decisions</small></button>
   </section>
   <nav className="life-tabs restored" aria-label="Palace Life rooms">
    {[['commons','♢ Commons'],['clubs','✦ Clubs'],['forum','⌕ Forum'],['stars','✧ Discover Members']].map(([k,l])=><button type="button" key={k} className={room===k?'active':''} aria-current={room===k?'page':undefined} onClick={()=>chooseRoom(k)}>{l}</button>)}
