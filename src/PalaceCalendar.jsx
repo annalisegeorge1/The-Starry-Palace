@@ -1,4 +1,5 @@
 import {useId,useState} from 'react';
+import PalaceIcon from './PalaceIcon';
 import {localDay,monthDays,eventOnDay,heritageOnDay} from './calendarModel';
 import {heritageVisualTheme} from './heritageVisualTheme';
 import './neon-map.css';
@@ -18,7 +19,7 @@ export default function PalaceCalendar({items=[],kind='writing'}){
  function reset(){const now=new Date();setMonth(new Date(now.getFullYear(),now.getMonth(),1));setSelected(localDay(now));}
  function keyboard(e,position){const offset={ArrowLeft:-1,ArrowRight:1,ArrowUp:-7,ArrowDown:7}[e.key];let next=offset===undefined?null:position+offset;if(e.key==='Home')next=0;if(e.key==='End')next=days.length-1;if(next===null)return;e.preventDefault();e.currentTarget.parentElement.querySelector('[data-day-index="'+Math.max(0,Math.min(days.length-1,next))+'"]')?.focus();}
  return <section className={'palace-month-calendar '+kind} aria-label={kind==='heritage'?'Heritage calendar':'Writing events calendar'}>
-  <header><div><p className="eyebrow">{kind==='heritage'?'HERITAGE & COMMUNITY':'WRITING GATHERINGS'}</p><h2 id={id} aria-live="polite">{label}</h2></div><div className="calendar-month-controls"><button type="button" onClick={()=>move(-1)} aria-label="Previous month">‹</button><button type="button" onClick={reset}>Today</button><button type="button" onClick={()=>move(1)} aria-label="Next month">›</button></div></header>
+  <header><div><p className="eyebrow">{kind==='heritage'?'HERITAGE & COMMUNITY':'WRITING GATHERINGS'}</p><h2 id={id} aria-live="polite">{label}</h2></div><div className="calendar-month-controls"><button type="button" onClick={()=>move(-1)} aria-label="Previous month" className="palace-calendar-icon"><PalaceIcon name="chevron-left"/></button><button type="button" onClick={reset}>Today</button><button type="button" onClick={()=>move(1)} aria-label="Next month" className="palace-calendar-icon"><PalaceIcon name="chevron-right"/></button></div></header>
   {kind==='heritage'&&<div className="calendar-heritage-legend" aria-label="Cultural calendar colour key">{[['festival','Festival'],['heritage','Heritage'],['history','History'],['language','Language'],['awareness','Awareness'],['commemoration','Commemoration']].map(([type,label])=><span key={type} className={'legend-'+type}><i aria-hidden="true"/>{label}</span>)}</div>}
   <div className="calendar-weekdays" aria-hidden="true">{Array.from({length:7},(_,i)=><span key={i}>{new Date(2026,5,7+i).toLocaleDateString(undefined,{weekday:'short'})}</span>)}</div>
   <div className="palace-calendar-days" role="group" aria-labelledby={id}>

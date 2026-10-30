@@ -1,4 +1,5 @@
 import React,{useState} from 'react';
+import PalaceIcon,{palaceIconForRoute} from './PalaceIcon';
 import {Link,useNavigate} from 'react-router-dom';
 import {palaceSignInDoor} from './palaceDoorway';
 import {palaceRecentDoorKey,readPalaceRecentDoors} from './palaceRecentDoors';
@@ -50,15 +51,15 @@ export default function PalaceHomeHub({memberId,children}){
    </div>
    <div className="palace-hub-art"><img src="/assets/palace/palace-belonging.gif" alt="" decoding="async"/><span>YOUR PALACE · A PLACE TO BELONG</span></div>
   </section>
-  {recent.length>0&&<nav className="palace-hub-recent" aria-label="Recently visited Palace rooms"><span>Pick up your path</span>{recent.map(door=><Link key={door.path} to={door.path}><span aria-hidden="true">{door.icon}</span>{door.label}<span aria-hidden="true">↗</span></Link>)}</nav>}
+  {recent.length>0&&<nav className="palace-hub-recent" aria-label="Recently visited Palace rooms"><span>Pick up your path</span>{recent.map(door=><Link key={door.path} to={door.path}><span aria-hidden="true"><PalaceIcon name={palaceIconForRoute(door.path)}/></span>{door.label}<span aria-hidden="true">↗</span></Link>)}</nav>}
   {children}
   <section className="palace-hub-discovery" aria-labelledby="palace-discovery-title">
    <header><div><p className="palace-hub-eyebrow">FOLLOW YOUR CURIOSITY</p><h2 id="palace-discovery-title">What brings you here today?</h2></div>
-    <form role="search" aria-label="Discover stories and creators" onSubmit={event=>{event.preventDefault();if(query.trim())navigate('/search?q='+encodeURIComponent(query.trim()))}}><label className="hub-search-label" htmlFor="hub-search">Search the Palace</label><input id="hub-search" value={query} onChange={event=>setQuery(event.target.value)} placeholder="A story, writer, fandom…"/><button type="submit" aria-label="Search the Palace">⌕</button></form>
+    <form role="search" aria-label="Discover stories and creators" onSubmit={event=>{event.preventDefault();if(query.trim())navigate('/search?q='+encodeURIComponent(query.trim()))}}><label className="hub-search-label" htmlFor="hub-search">Search the Palace</label><input id="hub-search" value={query} onChange={event=>setQuery(event.target.value)} placeholder="A story, writer, fandom…"/><button type="submit" aria-label="Search the Palace"><PalaceIcon name="search"/></button></form>
    </header>
    <div className="palace-hub-lenses" role="group" aria-label="Choose a discovery path">{['read','create','gather'].map(key=><button key={key} type="button" aria-pressed={view===key} aria-controls="palace-discovery-paths" onClick={()=>setView(key)}>{key==='read'?'Read':key==='create'?'Create':'Gather'}</button>)}</div>
    <p className="palace-hub-description" aria-live="polite">{descriptions[view]}</p>
-   <nav id="palace-discovery-paths" className="palace-hub-paths" aria-label={view+' discovery destinations'}>{paths[view].map(([icon,title,description,path,protectedPath])=><Link key={path} to={protectedPath&&!member?palaceSignInDoor(path):path}><span className="palace-hub-path-icon" aria-hidden="true">{icon}</span><span><strong>{title}</strong><small>{description}</small></span><span className="palace-hub-path-arrow" aria-hidden="true">↗</span></Link>)}</nav>
+   <nav id="palace-discovery-paths" className="palace-hub-paths" aria-label={view+' discovery destinations'}>{paths[view].map(([icon,title,description,path,protectedPath])=><Link key={path} to={protectedPath&&!member?palaceSignInDoor(path):path}><span className="palace-hub-path-icon" aria-hidden="true"><PalaceIcon name={palaceIconForRoute(path)}/></span><span><strong>{title}</strong><small>{description}</small></span><span className="palace-hub-path-arrow" aria-hidden="true"><PalaceIcon name="arrow-up-right"/></span></Link>)}</nav>
   </section>
  </>;
 }
