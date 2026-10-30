@@ -96,6 +96,19 @@ describe('Palace quick chat',()=>{
  });
 
 
+ it('opens shared media for only the currently loaded conversation and returns to message search',async()=>{
+  getLetters.mockResolvedValue({...direct,messages:[{id:'gallery-note',conversation_id:'direct-one',sender_id:'member-two',body:'A normal private note',created_at:'2026-10-21T12:00:00Z'}]});
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.click(screen.getByRole('button',{name:'Show shared media'}));
+  expect(screen.getByRole('region',{name:'Shared media in this conversation'})).toBeTruthy();
+  expect(screen.getByText(/No shared items in the messages loaded here/)).toBeTruthy();
+  fireEvent.click(screen.getByRole('button',{name:'Photos'}));
+  expect(screen.getByText(/No photos in the messages loaded here/)).toBeTruthy();
+  fireEvent.click(screen.getByRole('button',{name:'Search messages in this conversation'}));
+  expect(screen.queryByRole('region',{name:'Shared media in this conversation'})).toBeNull();
+  expect(screen.getByRole('searchbox',{name:'Find in loaded messages'})).toBeTruthy();
+ });
  it('keeps unread Direct conversations unread until the person opens that thread',async()=>{
   getLetters.mockResolvedValue({
    ...direct,
