@@ -7,7 +7,7 @@ import {watchPalaceChatRoom} from './palaceChatRealtime';
 import {buildPalaceDirectPreviews} from './palaceChatDirectPreview';
 import {filterPalaceDirectInbox,findPalaceChatMessages} from './palaceChatInboxModel';
 import {collectPalaceSharedMedia,groupPalaceSharedMedia} from './palaceChatSharedMedia';
-import {PALACE_READING_CIRCLE_PROMPTS,makePalaceCircleDraft} from './palaceReadingCirclePrompts';
+import {PALACE_READING_CIRCLE_PROMPTS,PALACE_READING_CIRCLE_KITS,makePalaceCircleDraft} from './palaceReadingCirclePrompts';
 import {makePalaceDirectQuoteDraft} from './palaceDirectQuote';
 import './palace-chat-workspace.css';
 import {getMyProfile,getLetters,getDirectConversationMessages,DIRECT_HISTORY_PAGE_SIZE,sendLetter,sendLetterPhoto,editLetterMessage,searchMembers,setConversationPreference} from './palaceData';
@@ -684,6 +684,9 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  {tab==='groups'&&showCirclePrompts&&<section className="palace-chat-circle-prompts" aria-label="Reading Circle discussion ideas">
   <header><strong>Begin a literary conversation</strong><small>Choose a question to edit in your message. Nothing is sent automatically.</small></header>
   <div>{PALACE_READING_CIRCLE_PROMPTS.map(prompt=><button type="button" key={prompt.id} onClick={()=>{setDraft(makePalaceCircleDraft(prompt.text,currentDraft));setShowCirclePrompts(false);composerRef.current?.focus()}}><small>{prompt.category}</small><span>{prompt.text}</span></button>)}</div>
+  <h4>Guided circle sessions</h4>
+  <div>{PALACE_READING_CIRCLE_KITS.map(kit=><button type="button" key={kit.id} aria-label={'Start '+kit.name+' session draft'} onClick={()=>{setDraft(makePalaceCircleDraft(kit.text,currentDraft));setShowCirclePrompts(false);composerRef.current?.focus()}}><small>{kit.name}</small><span>{kit.label}</span></button>)}</div>
+  <small>Every session idea stays editable and unsent until you press Send.</small>
  </section>}
      {tab==='groups'&&storySharing&&<section className="palace-chat-share-shelf" aria-label="Share a published Palace story"><form onSubmit={findStories}><input aria-label="Find a published story to share" placeholder="Search published story titles…" value={storyQuery} onChange={e=>setStoryQuery(e.target.value)} minLength={2} maxLength={90}/><button disabled={busy||storyQuery.trim().length<2}>Find</button></form><div>{storyResults.map(w=><button type="button" key={w.id} disabled={busy} onClick={()=>shareStory(w)}><strong>{w.title}</strong><small>Share with this circle ↗</small></button>)}</div><small>Only published Palace stories can be shared.</small></section>}
      {tab==='direct'&&directHistory.roomId===roomId&&directHistory.hasOlder&&messages.length>0&&<div className="palace-chat-earlier"><button type="button" onClick={loadOlderDirectMessages} disabled={directHistory.loading} aria-label="Load earlier direct messages">{directHistory.loading?'Gathering earlier letters…':'↑ Earlier direct messages'}</button></div>}
