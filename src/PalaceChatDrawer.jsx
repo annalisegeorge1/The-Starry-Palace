@@ -518,7 +518,8 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   setBusy(true);setError('');setNotice('Sending your message…');
   try{
    if(sentKind==='groups')await sendPalaceGroupMessage(sentRoomId,userId,text,replyTarget?.chatId===sentRoomId?{replyToId:replyTarget.id}:{});
-   else await sendLetter(userId,sentRoomId,text,PALACE_CHAT_V3_ENABLED&&replyTarget?.chatId===sentRoomId?{replyToId:replyTarget.id}:{});
+   else if(PALACE_CHAT_V3_ENABLED)await sendLetter(userId,sentRoomId,text,replyTarget?.chatId===sentRoomId?{replyToId:replyTarget.id}:{});
+   else await sendLetter(userId,sentRoomId,text);
   }catch(e){
    setNotice('');
    setError('Message not confirmed. Your draft is preserved. '+errorText(e));
