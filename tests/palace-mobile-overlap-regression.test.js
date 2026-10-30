@@ -19,6 +19,14 @@ describe('Android layout repair guardrails',()=>{
   expect(css).toContain('body.writing-desk-open .chic-editor-form>.manuscript-sheet-frame .legacy-writing-canvas');
   expect(live).toContain('aria-controls="writer-mobile-formatting-panel"');
   expect(live).toContain('data-mobile-tools-open={mobileToolsOpen?"true":"false"}');
+  expect(live).toContain('data-mobile-chapter-open={mobileChapterToolsOpen?"true":"false"}');
+  expect(live).toContain('className="writer-mobile-chapter-toggle"');
+  expect(live).toContain('ref={mobileAppearanceRef}');
+  expect(live).toContain('ref={mobileMoreRef}');
+  expect(css).toContain('max-height:min(54dvh,370px)!important');
+  expect(css).toContain('flex-wrap:nowrap!important');
+  expect(css).toContain('[data-mobile-chapter-open="true"]>.writer-chapter-jump');
+  expect(live).toContain('onClick={openPrivateChapterPreview}');
   expect(live).toContain('onClick={quickSaveChapter}');
   expect(live).toContain('onClick={publish}');
  });
