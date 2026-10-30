@@ -363,3 +363,16 @@
 .palace-chat-v2 .palace-chat-safety-blocked{margin:0;padding:10px 13px;font-size:.81rem;border-top:1px solid rgba(185,155,220,.3)}
 .palace-chat-v2 .palace-chat-safety :is(button,textarea):focus-visible{outline:3px solid #b6dcff;outline-offset:2px}
 @media(max-width:720px){.palace-chat-v2 .palace-chat-safety{max-height:40dvh;padding:10px 12px}}
+
+/* V3 reaction controls are withheld until the staging-only schema and RLS
+   regression suite are explicitly approved and enabled. */
+.palace-chat-v2 .palace-chat-reactions{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:5px;position:relative;min-width:0}
+.palace-chat-v2 .palace-chat-reactions>button,.palace-chat-v2 .palace-chat-reaction-choices button{
+ min-height:35px;min-width:35px;padding:5px 9px;
+ color:var(--pc-ink,inherit);background:var(--pc-elevated,rgba(72,60,122,.4));
+ border:1px solid rgba(178,154,226,.35);border-radius:12px;font-size:.82rem;cursor:pointer
+}
+.palace-chat-v2 .palace-chat-reactions button[aria-pressed=true]{border-color:rgba(174,218,236,.75);background:linear-gradient(115deg,rgba(152,106,218,.35),rgba(67,166,192,.24))}
+.palace-chat-v2 .palace-chat-reaction-choices{display:flex;flex-wrap:wrap;gap:3px;width:100%;padding:5px 2px}
+.palace-chat-v2 .palace-chat-reactions :is(button):focus-visible{outline:3px solid #add9ff;outline-offset:2px}
+@media(max-width:720px){.palace-chat-v2 .palace-chat-reactions>button{min-height:40px}}
