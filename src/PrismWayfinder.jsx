@@ -1,4 +1,5 @@
 import React from 'react';
+import PalaceIcon,{palaceIconForRoute} from './PalaceIcon';
 import {Link} from 'react-router-dom';
 import {useAuth} from './auth';
 import {palaceSignInDoor} from './palaceDoorway';
@@ -55,13 +56,13 @@ export default function PrismWayfinder({active='writing'}){
  const doors=palaceJourneyDoors(active,signedIn);
  return <nav className="prism-room-wayfinder palace-journey-strip" aria-label="Where to go next in the Palace">
   <div className="prism-room-wayfinder-intro">
-   <span aria-hidden="true">✦</span><div><small>KEEP EXPLORING</small><strong>Where next?</strong></div>
+   <span aria-hidden="true"><PalaceIcon name="compass"/></span><div><small>KEEP EXPLORING</small><strong>Where next?</strong></div>
   </div>
   <div className="prism-room-wayfinder-links">
    {doors.map(door=><Link key={door.id} to={door.to} className={'prism-room-wayfinder-link prism-hue-'+door.colour}>
-    <span className="prism-room-wayfinder-glyph" aria-hidden="true">{door.icon}</span>
+    <span className="prism-room-wayfinder-glyph" aria-hidden="true"><PalaceIcon name={palaceIconForRoute(door.to)} /></span>
     <span className="prism-room-wayfinder-label"><strong>{door.label}</strong><small>{door.hint}</small></span>
-    <span className="palace-journey-arrow" aria-hidden="true">↗</span>
+    <span className="palace-journey-arrow" aria-hidden="true"><PalaceIcon name="arrow-up-right"/></span>
    </Link>)}
   </div>
  </nav>;
