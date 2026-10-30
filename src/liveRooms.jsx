@@ -226,7 +226,7 @@ export function ChamberLive({Frame}){
    <nav className="palace-home-shortcuts palace-home-shortcuts-calm" aria-label="My Palace quick actions">
     <Link to="/writing"><span><PalaceIcon name="pen-line"/></span><small>Writing</small></Link>
     <Link to="/library"><span><PalaceIcon name="library"/></span><small>Library</small></Link>
-    <Link to="/comics/studio"><span><PalaceIcon name="panels"/></span><small>Comic Studio</small></Link>
+    <Link to="/comics/studio"><span><PalaceIcon name="comic-book"/></span><small>Comic Studio</small></Link>
     <Link to="/events?tab=calendar"><span><PalaceIcon name="calendar"/></span><small>Calendar</small></Link>
     <Link to="/treasury"><span><PalaceIcon name="crown"/></span><small>Treasury</small></Link>
     <Link to="/library?tab=history"><span><PalaceIcon name="history"/></span><small>History</small></Link>
@@ -253,7 +253,7 @@ export function ChamberLive({Frame}){
         <span className="resume-icon"><PalaceIcon name="book-open"/></span><div><small>STORY READING</small><h3>{currentRead?.title||'Find your next world'}</h3><p>{currentStory?currentStoryPercent+'% of story'+(currentChapterPercent>1?' · '+currentChapterPercent+'% through this chapter':' · your place is saved privately'):'The Reading Rooms are ready when you are.'}</p></div><b>{currentStory?'Continue reading →':'Browse stories →'}</b>
       </Link>
       <Link className={"palace-resume-card"+(comicHasNew?' has-new-panels':'')} to={comicHref}>
-        <span className="resume-icon"><PalaceIcon name="panels"/></span><div><small>{comicHasNew?'NEW PANELS':'COMIC READING'}</small><h3>{currentComic?.comics?.title||'Enter the Comics Gallery'}</h3><p>{comicHasNew?'A newer episode arrived after your last reading place.':currentComic?'Your last panel is waiting for you.':'Illustrated worlds are gathered in the Gallery.'}</p></div><b>{comicHasNew?'Read new →':currentComic?'Continue comic →':'Browse comics →'}</b>
+        <span className="resume-icon"><PalaceIcon name="comic-book"/></span><div><small>{comicHasNew?'NEW PANELS':'COMIC READING'}</small><h3>{currentComic?.comics?.title||'Enter the Comics Gallery'}</h3><p>{comicHasNew?'A newer episode arrived after your last reading place.':currentComic?'Your last panel is waiting for you.':'Illustrated worlds are gathered in the Gallery.'}</p></div><b>{comicHasNew?'Read new →':currentComic?'Continue comic →':'Browse comics →'}</b>
       </Link>
     </div>
    </section>
