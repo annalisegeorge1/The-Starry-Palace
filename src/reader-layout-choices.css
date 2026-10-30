@@ -1,0 +1,142 @@
+/* Reader-selected page layouts, never changes published manuscript content.
+ * Existing font, line-spacing, measure and color preferences stay independent. */
+.palace-shell .reader-page.restored.layout-book .chapter-text.restored{
+ border:1px solid rgba(172,155,220,.26);
+ background:linear-gradient(160deg,rgba(153,136,204,.07),rgba(47,37,89,.045));
+ box-shadow:0 15px 38px rgba(8,6,25,.13);
+ padding:clamp(22px,3.8vw,55px)!important;
+}
+.palace-shell .reader-page.restored.layout-book.measure-narrow .chapter-text.restored{max-width:min(710px,100%)}
+.palace-shell .reader-page.restored.layout-book.measure-standard .chapter-text.restored{max-width:min(855px,100%)}
+.palace-shell .reader-page.restored.layout-book.measure-wide .chapter-text.restored{max-width:min(980px,100%)}
+.palace-shell .reader-page.restored.layout-full{
+ max-width:min(1480px,100%)!important;
+ padding-inline:clamp(9px,2vw,28px)!important;
+}
+.palace-shell .reader-page.restored.layout-full .chapter-text.restored{
+ background:transparent!important;border:0!important;border-radius:0!important;
+ box-shadow:none!important;padding:clamp(12px,2vw,30px)!important;
+}
+.palace-shell .reader-page.restored.layout-full.measure-narrow .chapter-text.restored{max-width:min(760px,100%)}
+.palace-shell .reader-page.restored.layout-full.measure-standard .chapter-text.restored{max-width:min(1050px,100%)}
+.palace-shell .reader-page.restored.layout-full.measure-wide .chapter-text.restored{max-width:100%}
+.palace-shell .reader-page.restored.layout-journal .chapter-text.restored{
+ border:1px solid rgba(160,143,204,.24)!important;
+ border-left:4px solid rgba(178,150,224,.64)!important;
+ border-radius:5px 17px 17px 5px!important;
+ background:linear-gradient(110deg,rgba(128,112,166,.13),rgba(130,105,180,.035))!important;
+ box-shadow:0 10px 28px rgba(7,5,25,.10)!important;
+ padding:clamp(24px,4vw,58px)!important;
+}
+.palace-shell .reader-page.restored.layout-journal .chapter-text.restored>p{margin-bottom:1.65em}
+.palace-shell .reader-page.restored.layout-journal.measure-narrow .chapter-text.restored{max-width:min(710px,100%)}
+.palace-shell .reader-page.restored.layout-journal.measure-standard .chapter-text.restored{max-width:min(825px,100%)}
+.palace-shell .reader-page.restored.layout-journal.measure-wide .chapter-text.restored{max-width:min(960px,100%)}
+.palace-shell .reader-page.restored.layout-compact .chapter-text.restored{
+ background:transparent!important;border:0!important;border-radius:4px!important;
+ box-shadow:none!important;padding:clamp(10px,1.5vw,22px)!important;
+ margin-top:16px!important;margin-bottom:24px!important;
+}
+.palace-shell .reader-page.restored.layout-compact .chapter-text.restored>p{margin-bottom:.8em}
+.palace-shell .reader-page.restored.layout-compact .chapter-text.restored :is(h2,h3){margin-top:1.15em;margin-bottom:.5em}
+.palace-shell .reader-page.restored.layout-compact.measure-narrow .chapter-text.restored{max-width:min(675px,100%)}
+.palace-shell .reader-page.restored.layout-compact.measure-standard .chapter-text.restored{max-width:min(900px,100%)}
+.palace-shell .reader-page.restored.layout-compact.measure-wide .chapter-text.restored{max-width:100%}
+/* Hosted classics share the same reader's layout choice, but keep their own
+ * pagination, chapter navigator, original text and translation metadata. */
+.archive-classic-experience.layout-book .archive-classic-page{
+ box-shadow:0 12px 32px rgba(8,6,25,.10);
+ background:linear-gradient(155deg,rgba(148,131,191,.06),var(--archive-paper))!important;
+}
+.archive-classic-experience.layout-full .archive-classic-page{
+ max-width:100%!important;border:0!important;border-radius:0!important;
+ box-shadow:none!important;padding:clamp(12px,2vw,26px)!important;
+}
+.archive-classic-experience.layout-journal .archive-classic-page{
+ border-left:4px solid rgba(173,145,219,.7)!important;
+ border-radius:5px 14px 14px 5px!important;
+ background:linear-gradient(110deg,rgba(145,117,195,.11),var(--archive-paper))!important;
+ padding:clamp(22px,4vw,52px)!important;
+}
+.archive-classic-experience.layout-journal .archive-classic-page p{margin-bottom:1.7em}
+.archive-classic-experience.layout-compact .archive-classic-page{
+ max-width:100%!important;padding:clamp(12px,2vw,24px)!important;
+ border:0!important;border-radius:4px!important;box-shadow:none!important;
+}
+.archive-classic-experience.layout-compact .archive-classic-page p{margin-bottom:.85em}
+.archive-classic-experience .archive-classic-reader-toolbar{grid-template-columns:repeat(5,minmax(0,1fr)) auto}
+.archive-classic-experience .archive-classic-reset{min-width:0}
+/* Accessible interactive layout previews within Aa Reader. */
+.palace-shell .reader-page .reader-controls-panel.enhanced>.reader-layout-options{
+ display:block;grid-column:1/-1;min-width:0;
+ padding:10px 12px;border-radius:13px;
+ border:1px solid rgba(171,154,219,.25);
+}
+.palace-shell .reader-page .reader-controls-panel.enhanced>.reader-layout-options>span{
+ display:block;font-weight:800;font-size:.81rem;margin:0 0 9px;
+}
+.palace-shell .reader-page .reader-layout-option-grid{
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:9px;width:100%;min-width:0;
+}
+.palace-shell .reader-page .reader-layout-option-grid>button{
+ display:flex;flex-direction:column;align-items:stretch;
+ min-width:0;min-height:106px;gap:4px;padding:10px;
+ border:1px solid rgba(170,151,224,.4);border-radius:12px;
+ background:rgba(127,107,183,.075);
+ text-align:left;color:inherit;cursor:pointer;
+}
+.palace-shell .reader-page .reader-layout-option-grid>button.active{
+ background:rgba(128,99,199,.25);border-color:rgba(184,167,239,.86);
+ box-shadow:inset 0 0 0 1px rgba(170,155,240,.37);
+}
+.palace-shell .reader-page .reader-layout-option-grid>button strong{font-size:.83rem;line-height:1.3}
+.palace-shell .reader-page .reader-layout-option-grid>button small{font-size:.72rem;opacity:.81}
+.palace-shell .reader-page .reader-layout-mini{
+ display:grid;gap:3px;align-content:center;
+ width:100%;height:34px;max-width:90px;
+ padding:5px 8px;border-radius:5px;background:rgba(183,165,227,.13);
+}
+.palace-shell .reader-page .reader-layout-mini i{
+ display:block;height:3px;min-width:0;border-radius:4px;background:currentColor;opacity:.45
+}
+.palace-shell .reader-page .reader-layout-mini i:last-child{width:72%}
+.palace-shell .reader-page .reader-layout-mini-book{max-width:50px;margin-inline:auto;border:1px solid currentColor}
+.palace-shell .reader-page .reader-layout-mini-full{max-width:100%;border:0}
+.palace-shell .reader-page .reader-layout-mini-journal{max-width:68px;border-left:3px solid rgba(188,153,236,.9)}
+.palace-shell .reader-page .reader-layout-mini-compact{gap:1px;height:27px}
+.palace-shell .reader-page .reader-layout-live-description{
+ display:block;margin-top:10px;font-size:.74rem;line-height:1.45;opacity:.82;
+}
+.palace-shell .reader-page .reader-layout-option-grid>button:focus-visible{outline:3px solid #a1e6f2;outline-offset:2px}
+.palace-shell.daylight .reader-page .reader-layout-option-grid>button,
+.palace-shell .reader-page.tone-paper .reader-layout-option-grid>button,
+.palace-shell .reader-page.tone-soft .reader-layout-option-grid>button{
+ color:#40334f;border-color:#bbadd9;background:rgba(250,248,254,.78);
+}
+.palace-shell.daylight .reader-page .reader-layout-option-grid>button.active,
+.palace-shell .reader-page.tone-paper .reader-layout-option-grid>button.active,
+.palace-shell .reader-page.tone-soft .reader-layout-option-grid>button.active{
+ background:#e4dafa;border-color:#7454ab;
+}
+@media(max-width:840px){
+ .archive-classic-experience .archive-classic-reader-toolbar{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .archive-classic-experience .archive-classic-reset{grid-column:auto}
+}
+@media(max-width:660px){
+ .palace-shell .reader-page.restored.layout-full{padding-inline:5px!important}
+ .palace-shell .reader-page.restored.layout-full .chapter-text.restored{padding-inline:clamp(10px,3vw,20px)!important}
+ .palace-shell .reader-page.restored.layout-book .chapter-text.restored{padding:clamp(15px,4vw,24px)!important}
+ .palace-shell .reader-page.restored.layout-journal .chapter-text.restored{padding:clamp(17px,4vw,28px)!important}
+ .palace-shell .reader-page.restored.layout-compact .chapter-text.restored{padding-inline:8px!important}
+ .palace-shell .reader-page .reader-layout-option-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .palace-shell .reader-page .reader-layout-option-grid>button{min-height:88px}
+ .archive-classic-experience .archive-classic-reader-toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:375px){
+ .palace-shell .reader-page .reader-layout-option-grid{gap:6px}
+ .palace-shell .reader-page .reader-layout-option-grid>button{padding:8px}
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .reader-page .reader-layout-option-grid>button{transition:none!important}
+}
