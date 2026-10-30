@@ -1,4 +1,5 @@
 import React,{useEffect,useMemo,useState} from 'react';
+import PalaceIcon from './PalaceIcon';
 import {Link} from 'react-router-dom';
 import {buildPalaceChronicle,filterPalaceChronicle,groupPalaceChronicle,PALACE_CHRONICLE_TYPES} from './palaceHistoryArchiveModel';
 import './palace-history-archive.css';
@@ -38,8 +39,8 @@ export default function PalaceHistoryArchive({life,stories=[],loadState='idle',o
    </details>
   </header>
   <nav className="palace-chronicle-doors" aria-label="Your reading history and Palace archives">
-   <Link to="/library?tab=history"><span aria-hidden="true">☾</span> My reading history ↗</Link>
-   <Link to="/library?tab=continue"><span aria-hidden="true">▤</span> Continue reading ↗</Link>
+   <Link to="/library?tab=history"><span aria-hidden="true"><PalaceIcon name="history"/></span> My reading history ↗</Link>
+   <Link to="/library?tab=continue"><span aria-hidden="true"><PalaceIcon name="book-open"/></span> Continue reading ↗</Link>
    <Link to="/events?tab=heritage">Cultural histories ↗</Link>
    <Link to="/lost-works">Literary archive ↗</Link>
   </nav>
@@ -67,7 +68,7 @@ export default function PalaceHistoryArchive({life,stories=[],loadState='idle',o
   {groups.length?<div className="palace-chronicle-sections">{groups.map(group=><section key={group.key} className="palace-chronicle-month">
     <header><h3>{group.label}</h3><span>{group.items.length} shown</span></header>
     <div className="palace-chronicle-list">{group.items.map(item=><article className={'palace-chronicle-record is-'+item.kind} key={item.id}>
-     <div className="palace-chronicle-marker" aria-hidden="true">{item.kind==='stories'?'▤':item.kind==='forum'?'✎':item.kind==='stars'?'✦':'♛'}</div>
+     <div className="palace-chronicle-marker" aria-hidden="true"><PalaceIcon name={item.kind==='stories'?'book-open':item.kind==='forum'?'messages':item.kind==='stars'?'users':'trophy'}/></div>
      <div className="palace-chronicle-record-body">
       <div className="palace-chronicle-meta"><span className="palace-chronicle-label">{item.kind==='stories'?'STORY · ':item.kind==='forum'?'COMMONS · ':item.kind==='stars'?'INTRODUCTION · ':'RECOGNITION · '}{item.label}</span><time dateTime={item.at?new Date(item.at).toISOString():undefined}>{formatDate(item.at)}</time></div>
       <h4>{item.href?<Link to={item.href}>{item.title}</Link>:item.title}</h4>
@@ -82,7 +83,7 @@ export default function PalaceHistoryArchive({life,stories=[],loadState='idle',o
      <div className="palace-chronicle-record-actions">{item.href?<Link to={item.href}>Read story <span aria-hidden="true">↗</span></Link>:<button type="button" onClick={()=>onVisitRoom(item.room)}>View room <span aria-hidden="true">↗</span></button>}</div>
     </article>)}</div>
    </section>)}</div>:
-   <div className="palace-chronicle-empty"><span aria-hidden="true">☾</span><h3>{filtered?'No moments match your filters.':loading?'The chronicle is still gathering.':'No recorded moments yet.'}</h3>
+   <div className="palace-chronicle-empty"><span aria-hidden="true"><PalaceIcon name="history"/></span><h3>{filtered?'No moments match your filters.':loading?'The chronicle is still gathering.':'No recorded moments yet.'}</h3>
     <p>{filtered?'Try another search or a wider date range.':'Published stories and shared Palace moments will appear here as they are recorded.'}</p>
     {filtered&&<button type="button" onClick={()=>{setQuery('');setKind('all');setPeriod('any')}}>Show all moments</button>}
    </div>}
