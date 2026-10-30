@@ -11,6 +11,12 @@ describe('Palace Messenger inbox',()=>{
   const source=[a,b,c];expect(filterPalaceDirectInbox(source).map(x=>x.conversation_id)).toEqual(['b','c','a']);
   expect(source).toEqual([a,b,c]);
  });
+ it('shows archived threads only inside the deliberate Archived inbox',()=>{
+  const rows=[row('a'),row('archived',{archived:true,name:'Moonlight'}),row('quiet',{archived:true,name:'Solstice'})];
+  expect(filterPalaceDirectInbox(rows,'','all').map(x=>x.conversation_id)).toEqual(['a']);
+  expect(filterPalaceDirectInbox(rows,'','archived').map(x=>x.conversation_id)).toEqual(['archived','quiet']);
+  expect(filterPalaceDirectInbox(rows,'solstice','archived').map(x=>x.conversation_id)).toEqual(['quiet']);
+ });
  it('filters unread or favourites and never displays archived threads',()=>{
   const rows=[row('reader',{unread:true}),row('writer',{starred:true}),row('hidden',{archived:true})];
   expect(filterPalaceDirectInbox(rows,'','unread').map(x=>x.conversation_id)).toEqual(['reader']);
