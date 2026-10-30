@@ -17,7 +17,7 @@ describe('honest Palace newcomer recommendations',()=>{
  });
  it('never presents incomplete or unrated work as a completed safe starting recommendation',()=>{
   expect(choosePalaceStartingStory([
-   story({rating:null}),story({completion_status:null}),story({work_type:'fanwork'}),
+   story({rating:null}),story({completion_status:null}),story({work_type:'essay'}),
    story({summary:''}),story({title:''}),story({slug:null})
   ])).toBeNull();
   expect(choosePalaceStartingStory([])).toBeNull();
