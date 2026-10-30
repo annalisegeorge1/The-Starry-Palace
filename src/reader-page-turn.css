@@ -36,3 +36,5 @@
 .palace-full-work-reader .palace-page-columns .palace-full-chapter .chapter-text{padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
 @media(max-width:600px){.palace-page-columns{padding:14px}.palace-page-nav{gap:.35rem}.palace-page-nav button{padding:.4rem .55rem;font-size:.79rem}.palace-page-nav span{font-size:.74rem}.palace-full-work-reader .palace-full-chapter{margin-bottom:2.4rem}}
 @media(prefers-reduced-motion:reduce){.palace-page-columns{transition:none}}
+
+@media(min-width:920px){.palace-page-viewport.palace-page-spread::after{content:'';position:absolute;top:3%;bottom:3%;left:50%;border-left:1px solid rgba(155,138,200,.25);pointer-events:none}.palace-page-viewport.palace-page-spread .palace-page-columns{column-rule:1px solid rgba(155,138,200,.18)}}

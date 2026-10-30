@@ -45,6 +45,8 @@ describe('page turns and whole-work reading safety',()=>{
   expect(paged).toContain("e.key==='ArrowLeft'");
   expect(paged).toContain('onTouchStart={touchStart}');
   expect(paged).toContain('onTouchEnd={touchEnd}');
+  expect(paged).toContain('viewport.clientWidth>=920?2:1');
+  expect(paged).toContain('geometry.spread===2');
   expect(styles).toContain('column-width:var(--palace-page-width');
   expect(styles).toContain('@media(max-width:600px)');
   expect(main).toContain('path="/work/:slug/full"');
