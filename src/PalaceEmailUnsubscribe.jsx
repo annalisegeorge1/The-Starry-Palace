@@ -1,13 +1,12 @@
 import React,{useEffect,useState} from 'react';
-import {Link,useSearchParams} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {supabase} from './supabase';
 const UUID=/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i;
 
 /** Public opt-out path; the token can only disable emails, never reveal a user. */
 export default function PalaceEmailUnsubscribe(){
- const [params]=useSearchParams();
+ const [token]=useState(()=>typeof window==='undefined'?null:new URLSearchParams(window.location.hash.replace(/^#/, '')).get('token'));
  const [state,setState]=useState('working');
- const token=params.get('token');
  useEffect(()=>{
   let active=true;
   if(typeof window!=='undefined')window.history.replaceState(null,'','/email/unsubscribe');

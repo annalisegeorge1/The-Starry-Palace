@@ -23,7 +23,7 @@ export function preparePalaceEmail(batch) {
  if(!count)throw new Error('No supported email topics');
  const frequency=['daily','weekly'].includes(batch.frequency)?batch.frequency:'new';
  const title=frequency==='new'?'A new Palace notification awaits':'Your '+frequency+' Palace digest';
- const unsubscribe='https://thestarrypalace.com/email/unsubscribe?token='+token;
+ const unsubscribe='https://thestarrypalace.com/email/unsubscribe#token='+token;
  const destination='https://thestarrypalace.com/activity';
  const list=Object.entries(topics).map(([key,n])=>n+' '+TOPIC_LABELS[key]);
  const text=title+'\n\n'+list.join('\n')+'\n\nOpen your notifications: '+destination+'\n\nUnsubscribe: '+unsubscribe+'\nPreferences: https://thestarrypalace.com/settings?tab=notifications';

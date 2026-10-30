@@ -39,6 +39,8 @@ create index if not exists palace_email_jobs_ready_idx
   on private.palace_email_jobs (status,next_attempt_at,created_at);
 create index if not exists palace_email_jobs_user_idx
   on private.palace_email_jobs (user_id,status,created_at);
+alter table private.palace_email_tokens enable row level security;
+alter table private.palace_email_jobs enable row level security;
 revoke all on private.palace_email_tokens, private.palace_email_jobs from public,anon,authenticated;
 
 create or replace function private.enqueue_palace_email_notice()
