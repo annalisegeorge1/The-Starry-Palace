@@ -86,6 +86,7 @@ import './palace-muted-midnight-core.css';
 import './writing-chamber-lustre-pass.css';
 import './mobile-reading-chamber-review.css';
 import './palace-mobile-overlap-repair.css';
+import './reader-layout-choices.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 

@@ -3,6 +3,7 @@ import {loadClassicReading} from './classicBackgroundLoader';
 import ClassicBookCover from './ClassicBookCover';
 import {clampClassicPage,classicPageKey} from './archiveReaderModel';
 import {readPalaceChoice,readPalaceNumber,writePalacePreference,removePalacePreference} from './browserPreferences';
+import {READER_LAYOUTS,READER_LAYOUT_VALUES} from './readerLayoutModel';
 import './archive-classic-reader.css';
 import './archive-classic-open-story.css';
 import {classicChapterChoices,classicNumericPage,CLASSIC_NUMERIC_PAGE_THRESHOLD} from './classicNavigatorModel';
@@ -14,6 +15,7 @@ const FONT_KEY='palace-classic-font';
 const TONE_KEY='palace-classic-tone';
 const WIDTH_KEY='palace-classic-width';
 const LEADING_KEY='palace-classic-leading';
+const LAYOUT_KEY='palace-reader-layout';
 const FONT_MIN=16,FONT_MAX=28;
 
 // Each hosted classic has its own reading session. Remounting the edition
@@ -46,6 +48,7 @@ function ArchiveClassicReaderEdition({record,text,prepared}){
  const [tone,setTone]=useState(()=>readPalaceChoice(TONE_KEY,['palace','paper','soft'],'palace'));
  const [width,setWidth]=useState(()=>readPalaceChoice(WIDTH_KEY,['narrow','standard','wide'],'standard'));
  const [leading,setLeading]=useState(()=>readPalaceChoice(LEADING_KEY,['compact','comfortable','airy'],'comfortable'));
+ const [layout,setLayout]=useState(()=>readPalaceChoice(LAYOUT_KEY,READER_LAYOUT_VALUES,'book'));
  const readerRef=useRef(null);
  const pendingHeadingRef=useRef(null);
  const pendingPageTopRef=useRef(true);
@@ -92,10 +95,11 @@ function ArchiveClassicReaderEdition({record,text,prepared}){
   if(kind==='tone'){setTone(value);writePalacePreference(TONE_KEY,value)}
   if(kind==='width'){setWidth(value);writePalacePreference(WIDTH_KEY,value)}
   if(kind==='leading'){setLeading(value);writePalacePreference(LEADING_KEY,value)}
+  if(kind==='layout'&&READER_LAYOUT_VALUES.includes(value)){setLayout(value);writePalacePreference(LAYOUT_KEY,value)}
  }
  function resetSettings(){
-  setFontSize(19);setTone('palace');setWidth('standard');setLeading('comfortable');
-  for(const key of [FONT_KEY,TONE_KEY,WIDTH_KEY,LEADING_KEY])removePalacePreference(key);
+  setFontSize(19);setTone('palace');setWidth('standard');setLeading('comfortable');setLayout('book');
+  for(const key of [FONT_KEY,TONE_KEY,WIDTH_KEY,LEADING_KEY,LAYOUT_KEY])removePalacePreference(key);
  }
  const activeHeading=[...contents].reverse().find(item=>item.pageIndex<=current);
  const activeSourceIndex=chosenHeading!==null?chosenHeading:activeHeading?.sourceIndex??null;
@@ -106,7 +110,7 @@ function ArchiveClassicReaderEdition({record,text,prepared}){
   if(target!==null)changePage(target);
  }
 
- return <article ref={readerRef} className={'archive-reader-sheet archive-classic-experience tone-'+tone+' width-'+width+' leading-'+leading} style={{'--classic-font-size':fontSize+'px'}}>
+ return <article ref={readerRef} className={'archive-reader-sheet archive-classic-experience tone-'+tone+' width-'+width+' leading-'+leading+' layout-'+layout} style={{'--classic-font-size':fontSize+'px'}}>
   <header className="archive-classic-frontmatter archive-classic-compact-heading">
    <p className="archive-classic-kicker">PALACE CLASSICS · {record?.host_mode==='excerpt'?'HOSTED EXCERPT':'HOSTED EDITION'}</p>
    <ClassicBookCover record={record} className="archive-classic-frontmatter-cover"/>
@@ -133,6 +137,7 @@ function ArchiveClassicReaderEdition({record,text,prepared}){
     <span className="archive-classic-font-steps"><button type="button" aria-label="Decrease classic text size" disabled={fontSize<=FONT_MIN} onClick={()=>changeSetting('font',fontSize-1)}>A−</button><output>{fontSize}px</output><button type="button" aria-label="Increase classic text size" disabled={fontSize>=FONT_MAX} onClick={()=>changeSetting('font',fontSize+1)}>A＋</button></span>
    </label>
    <label>Page tone<select value={tone} onChange={e=>changeSetting('tone',e.target.value)}><option value="palace">Moonlit</option><option value="paper">Paper</option><option value="soft">Soft grey</option></select></label>
+   <label>Page layout<select aria-label="Classic reading page layout" value={layout} onChange={e=>changeSetting('layout',e.target.value)}>{READER_LAYOUTS.map(option=><option key={option.value} value={option.value}>{option.label}</option>)}</select></label>
    <label>Text width<select value={width} onChange={e=>changeSetting('width',e.target.value)}><option value="narrow">Narrow</option><option value="standard">Book</option><option value="wide">Wide</option></select></label>
    <label>Line spacing<select value={leading} onChange={e=>changeSetting('leading',e.target.value)}><option value="compact">Compact</option><option value="comfortable">Comfortable</option><option value="airy">Airy</option></select></label>
    <button type="button" className="archive-classic-reset" onClick={resetSettings}>Reset appearance</button>
