@@ -1,0 +1,147 @@
+/* One discreet top-bar chat entry; keep drawer and safety actions intact. */
+.palace-chat-dock:not(.is-workspace):not(.is-open) .palace-chat-launch{display:none!important}
+.palace-top-chat-trigger{cursor:pointer;display:inline-flex;align-items:center;justify-content:center;min-width:36px;border:0;background:transparent;color:inherit;font-size:1.15rem}
+.palace-chat-dock .palace-chat-advanced-controls{padding:3px 9px}
+.palace-chat-dock .palace-chat-advanced-controls>summary{cursor:pointer;list-style:none;font-size:.77rem;color:var(--ui-muted,#bdb9d5);padding:5px 9px}
+.palace-chat-dock .palace-chat-advanced-controls>summary::-webkit-details-marker{display:none}
+.palace-chat-dock .palace-chat-advanced-controls:not([open]) .palace-chat-tools,.palace-chat-dock .palace-chat-advanced-controls:not([open]) .palace-chat-inbox-refine{display:none!important}
+.palace-chat-dock.is-open:not(.is-workspace) .palace-chat-panel{box-shadow:-18px 0 48px rgba(5,5,17,.44)!important}
+@media(max-width:760px){.palace-top-chat-trigger{min-width:38px;min-height:40px}}
+
+
+/* Palace Letters on phones: a correspondence room, not another oversized
+   landing hero. Overrides the earlier four fixed-width statistics columns. */
+@media(max-width:760px){
+  #palace-content[data-palace-route^="/letters"]{
+    min-width:0!important;
+    width:100%!important;
+    box-sizing:border-box!important;
+    padding-bottom:calc(108px + env(safe-area-inset-bottom,0px))!important;
+  }
+  #palace-content[data-palace-route^="/letters"] .chic-letters-head,
+  #palace-content[data-palace-route^="/letters"] .chic-letters-top-actions,
+  #palace-content[data-palace-route^="/letters"] .chic-new-letter,
+  #palace-content[data-palace-route^="/letters"] .chic-letter-requests,
+  #palace-content[data-palace-route^="/letters"] .chic-letters-toolbar,
+  #palace-content[data-palace-route^="/letters"] .chic-letters-layout{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+  }
+  #palace-content[data-palace-route^="/letters"] .chic-letters-head{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:7px!important;
+    padding:14px 2px 6px!important;
+    margin:0 auto 5px!important;
+  }
+  #palace-content[data-palace-route^="/letters"] .chic-letters-head>.eyebrow{
+    font-size:.68rem!important;
+    letter-spacing:.12em!important;
+    margin:0!important;
+    line-height:1.3!important;
+  }
+  #palace-content[data-palace-route^="/letters"] .chic-letters-head>h1{
+    font-size:clamp(1.9rem,8vw,2.65rem)!important;
+    line-height:1.08!important;
+    letter-spacing:-.035em!important;
+    margin:1px 0!important;
+  }
+  #palace-content[data-palace-route^="/letters"] .chic-letters-head>.lede{
+    font-size:.83rem!important;
+    line-height:1.45!important;
+    color:#c8c3d8!important;
+    max-width:38ch!important;
+    margin:0 0 6px!important;
+  }
+  #palace-content[data-palace-route^="/letters"] .chic-letters-head .letters-stats{
+    display:grid!important;
+    grid-column:auto!important;
+    grid-row:auto!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    overflow:visible!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    gap:7px!important;
+    margin:0!important;
+  }
+  #palace-content[data-palace-route^="/letters"] .chic-letters-head .letters-stats>span{
+    min-width:0!important;
+    min-height:55px!important;
+    width:auto!important;
+    padding:7px 9px!important;
+    border-radius:10px!important;
+    font-size:.67rem!important;
+    line-height:1.3!important;
+    box-sizing:border-box!important;
+    overflow-wrap:anywhere;
+  }
+  #palace-content[data-palace-route^="/letters"] .chic-letters-head .letters-stats strong{
+    display:block!important;
+    font-size:1.15rem!important;
+    margin:0 0 2px!important;
+  }
+  #palace-content[data-palace-route^="/letters"] .chic-letters-top-actions{
+    min-height:0!important;
+    display:flex!important;
+    flex-direction:row!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    flex-wrap:wrap!important;
+    gap:8px!important;
+    padding:8px!important;
+    margin:8px auto 10px!important;
+    border-radius:12px!important;
+  }
+  #palace-content[data-palace-route^="/letters"] .chic-letters-top-actions>button{
+    width:auto!important;
+    min-width:0!important;
+    min-height:42px!important;
+    padding:8px 14px!important;
+    font-size:.9rem!important;
+    border-radius:10px!important;
+    white-space:normal!important;
+  }
+  #palace-content[data-palace-route^="/letters"] .chic-letters-top-actions>button{
+    background:linear-gradient(110deg,#7061ad,#487da4)!important;
+    color:#fff!important;
+    border:1px solid rgba(202,200,247,.35)!important;
+    box-shadow:none!important;
+  }
+  #palace-content[data-palace-route^="/letters"] .chic-letters-top-actions>span{
+    max-width:100%!important;
+    text-align:left!important;
+    font-size:.68rem!important;
+    line-height:1.4!important;
+    opacity:.85!important;
+  }
+  #palace-content[data-palace-route^="/letters"] .chic-letters-toolbar{
+    margin:8px auto!important;
+    padding:8px!important;
+  }
+  #palace-content[data-palace-route^="/letters"] .chic-letters-layout{
+    min-height:0!important;
+    border-radius:14px!important;
+  }
+  #palace-content[data-palace-route^="/letters"] .chic-letter-paper{
+    min-height:420px!important;
+  }
+}
+@media(max-width:370px){
+  #palace-content[data-palace-route^="/letters"] .chic-letters-head .letters-stats{
+    gap:4px!important;
+  }
+  #palace-content[data-palace-route^="/letters"] .chic-letters-head .letters-stats>span{
+    padding:6px!important;
+    font-size:.62rem!important;
+  }
+}
+
+@media(min-width:561px) and (max-width:760px){
+  #palace-content[data-palace-route^="/letters"] .chic-letters-head .letters-stats{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  }
+}
