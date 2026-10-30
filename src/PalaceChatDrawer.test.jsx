@@ -265,6 +265,19 @@ describe('Palace quick chat',()=>{
   fireEvent.click(screen.getByRole('button',{name:'Clear filters'}));
   expect(screen.getByRole('button',{name:/Quiet Writers/})).toBeTruthy();
  });
+ it('quotes a direct message in the draft without sending or inventing a linked reply',async()=>{
+  getLetters.mockResolvedValue({...direct,messages:[{
+   id:'quote-one',conversation_id:'direct-one',sender_id:'member-two',
+   body:'We will meet at the palace',created_at:'2026-10-20T12:00:00Z',status:'active'
+  }]});
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  fireEvent.contextMenu(screen.getByText('We will meet at the palace').closest('.palace-chat-bubble'));
+  fireEvent.click(screen.getByRole('menuitem',{name:'Quote in draft'}));
+  expect(screen.getByRole('textbox',{name:'Write a private message'}).value).toContain('↩ Quoting River: “We will meet at the palace”');
+  expect(sendLetter).not.toHaveBeenCalled();
+  expect(screen.getByText(/text quote, not a linked reply/)).toBeTruthy();
+ });
  it('loads and retains older direct messages beyond the inbox preview',async()=>{
   const recent=Array.from({length:60},(_,index)=>({
    id:'dm-'+index,conversation_id:'direct-one',sender_id:'member-two',body:'Private letter '+index,
