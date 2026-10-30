@@ -730,8 +730,8 @@ describe('Starry Palace launch safety',()=>{
 
   it('shows exact private chapter place and clearer end-of-chapter navigation',()=>{
     const polish=read('src/polish.css');
-    expect(live).toContain('YOUR PLACE IN THIS CHAPTER');
-    expect(live).toContain('Private place saved');
+    expect(live).toContain('reader-saved-place');
+    expect(live).toContain('✦ Place saved');
     expect(live).toContain('reader-nav-context');
     expect(live).toContain('reader-nav-actions');
     expect(polish).toContain('.reader-place-status');
@@ -1320,8 +1320,8 @@ describe('Starry Palace launch safety',()=>{
   it('keeps long reading sessions navigable and intentionally quiet',()=>{
     const next=read('src/palace-next.css');
     expect(live).toContain('readerFocus');
-    expect(live).toContain('Quiet focus');
-    expect(live).toContain('Exit quiet focus');
+    expect(live).toContain('Zen mode');
+    expect(live).toContain('Exit Zen mode');
     expect(live).toContain('readerLandmarks');
     expect(live).toContain('jumpReaderLandmark');
     expect(live).toContain('Chapter map');
