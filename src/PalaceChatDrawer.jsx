@@ -34,6 +34,7 @@ import './palace-chat-context-polish.css';
 import './palace-chat-conversation-first.css';
 import './palace-chat-compact-menu.css';
 import './palace-chat-mobile-compact.css';
+import './palace-chat-final-details.css';
 
 const draftKey=(user,kind,id)=>'palace-chat-draft:'+user+':'+kind+':'+id;
 const nameOf=p=>p?.display_name||p?.username||'Palace member';
