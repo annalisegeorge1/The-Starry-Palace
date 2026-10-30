@@ -10,7 +10,7 @@ import {collectPalaceSharedMedia,groupPalaceSharedMedia} from './palaceChatShare
 import {PALACE_READING_CIRCLE_PROMPTS,PALACE_READING_CIRCLE_KITS,makePalaceCircleDraft} from './palaceReadingCirclePrompts';
 import {makePalaceDirectQuoteDraft} from './palaceDirectQuote';
 import './palace-chat-workspace.css';
-import {getMyProfile,getLetters,getDirectConversationMessages,DIRECT_HISTORY_PAGE_SIZE,sendLetter,sendLetterPhoto,editLetterMessage,searchMembers,setConversationPreference} from './palaceData';
+import {getMyProfile,getLetters,getDirectConversationMessages,DIRECT_HISTORY_PAGE_SIZE,sendLetter,sendLetterPhoto,editLetterMessage,searchMembers,setConversationPreference,getMemberBoundary,setMemberBoundary,reportConversation} from './palaceData';
 import {createPalaceGroupChat,getPalaceGroupChatOverview,getPalaceGroupMessages,sendPalaceGroupMessage,sendPalaceGroupPhoto,editPalaceGroupMessage,respondPalaceGroupInvite,invitePalaceGroupMember,removePalaceGroupMember,leavePalaceGroupChat,setPalaceGroupMuted,markPalaceGroupRead,PALACE_GROUP_COLOURS,setPalaceGroupIdentity,pinPalaceGroupMessage,getPinnedPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
 import './palace-chat-drawer.css';
 import './palace-chat-groups.css';
@@ -72,6 +72,9 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  const[searchWithinThread,setSearchWithinThread]=useState(false);
  const[showSharedMedia,setShowSharedMedia]=useState(false);
  const[mediaFilter,setMediaFilter]=useState('all');
+ const[safetyOpen,setSafetyOpen]=useState(false);
+ const[boundary,setBoundary]=useState({muted:false,blocked:false});
+ const[reportReason,setReportReason]=useState('');
  const[historyLoading,setHistoryLoading]=useState(false);
  const[hasOlder,setHasOlder]=useState(false);
  const[quiet,setQuiet]=useState(false);
@@ -127,11 +130,18 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  const groupUnread=groupData.groups.filter(g=>!g.muted&&palaceChatUnreadGroup(g)).length;
  const unread=directUnread+groupUnread+groupData.invitations.length;
  const openedRoomName=tab==='direct'?nameOf(activeDirect?.correspondent):activeGroup?.title;
+ const otherUserId=activeDirect?.correspondent?.id;
+ useEffect(()=>{
+  if(tab!=='direct'||!otherUserId){setBoundary({muted:false,blocked:false});return}
+  let current=true;
+  getMemberBoundary(userId,otherUserId).then(row=>{if(current)setBoundary({muted:!!row.muted,blocked:!!row.blocked})}).catch(()=>{if(current)setBoundary({muted:false,blocked:false})});
+  return()=>{current=false};
+ },[userId,tab,otherUserId]);
  useEffect(()=>{if(!photoFile){setPhotoPreview('');return}
   const preview=URL.createObjectURL(photoFile);setPhotoPreview(preview);
   return()=>URL.revokeObjectURL(preview);
  },[photoFile]);
- useEffect(()=>{setPhotoFile(null);setEditingMessage(null);setGifOpen(false);setSearchWithinThread(false);setMessageSearch('');setShowSharedMedia(false);setMediaFilter('all');setShowCirclePrompts(false)},[roomId,tab]);
+ useEffect(()=>{setPhotoFile(null);setEditingMessage(null);setGifOpen(false);setSearchWithinThread(false);setMessageSearch('');setShowSharedMedia(false);setMediaFilter('all');setShowCirclePrompts(false);setSafetyOpen(false);setReportReason('')},[roomId,tab]);
  useEffect(()=>()=>{if(holdRef.current?.timer)window.clearTimeout(holdRef.current.timer)},[]);
  useEffect(()=>{
   if(!actionMenu)return;
@@ -355,7 +365,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   const body=encodePalaceGif(url);
   if(!body){setError('That GIF is unavailable. Please choose another.');return}
   const sentRoom=roomId,sentKind=tab;
-  if(!sentRoom||busy)return;
+  if(!sentRoom||busy||(sentKind==='direct'&&boundary.blocked))return;
   setBusy(true);setError('');setNotice('Sending GIF…');
   try{
    if(sentKind==='groups')await sendPalaceGroupMessage(roomId,userId,body,replyTarget?.chatId===roomId?{replyToId:replyTarget.id}:{});
@@ -376,7 +386,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  async function sendPhoto(e){
   e.preventDefault();
   const sentRoom=roomId,sentKind=tab,sentDraftKey=draftsKey,file=photoFile,caption=currentDraft.trim();
-  if(!sentRoom||!file||busy)return;
+  if(!sentRoom||!file||busy||(sentKind==='direct'&&boundary.blocked))return;
   setBusy(true);setError('');setNotice('Sending photo…');
   let path='',sent=false;
   try{
@@ -488,7 +498,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  async function send(e){
   e.preventDefault();
   const text=currentDraft.trim(),sentRoomId=roomId,sentKind=tab,sentDraftKey=draftsKey;
-  if(!sentRoomId||!text||busy)return;
+  if(!sentRoomId||!text||busy||(sentKind==='direct'&&boundary.blocked))return;
   setBusy(true);setError('');setNotice('Sending your message…');
   try{
    if(sentKind==='groups')await sendPalaceGroupMessage(sentRoomId,userId,text,replyTarget?.chatId===sentRoomId?{replyToId:replyTarget.id}:{});
@@ -545,6 +555,27 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
    if(accept){setSelectedGroup(invite.id);setNotice('You joined '+invite.title+'.')}
    else setNotice('Invitation declined.');
   }catch(e){setError(errorText(e))}
+  finally{setBusy(false)}
+ }
+ async function updateSafetyBoundary(blocked){
+  if(!otherUserId||busy)return;
+  if(blocked&&!window.confirm('Block this member? New contact will be restricted, and you can unblock them later.'))return;
+  const prior=boundary;setBusy(true);setError('');
+  try{
+   const saved=await setMemberBoundary(userId,otherUserId,{muted:!!prior.muted,blocked});
+   setBoundary({muted:!!saved.muted,blocked:!!saved.blocked});
+   setNotice(blocked?'Member blocked. You can unblock them here.':'Member unblocked.');
+  }catch(e){setError('Your safety preference could not be saved. '+errorText(e))}
+  finally{setBusy(false)}
+ }
+ async function submitDirectReport(e){
+  e.preventDefault();
+  if(!otherUserId||!roomId||!reportReason.trim()||busy)return;
+  setBusy(true);setError('');
+  try{
+   await reportConversation(userId,roomId,otherUserId,reportReason.trim().slice(0,2000));
+   setNotice('Report submitted to Palace moderators for review.');setReportReason('');setSafetyOpen(false);
+  }catch(e){setError('The report was not submitted. '+errorText(e))}
   finally{setBusy(false)}
  }
  async function updateDirectPreference(conversationId,patch,success){
@@ -669,8 +700,15 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  {tab==='direct'&&activeDirect&&<button type="button" disabled={busy} onClick={toggleFavorite} aria-pressed={!!activeDirect.preference?.starred} aria-label={activeDirect.preference?.starred?'Remove conversation from favourites':'Add conversation to favourites'}>{activeDirect.preference?.starred?'★ Favourited':'☆ Favourite'}</button>}
  {tab==='direct'&&activeDirect&&<button type="button" disabled={busy} aria-pressed={!!activeDirect.preference?.muted} aria-label={activeDirect.preference?.muted?'Unmute this conversation':'Mute this conversation'} onClick={()=>updateDirectPreference(activeDirect.conversation_id,{muted:!activeDirect.preference?.muted},activeDirect.preference?.muted?'Conversation notifications unmuted.':'Conversation muted.')}>{activeDirect.preference?.muted?'◉ Unmute':'◌ Mute'}</button>}
  {tab==='direct'&&activeDirect&&<button type="button" disabled={busy} aria-label="Archive this conversation" onClick={()=>updateDirectPreference(activeDirect.conversation_id,{archived:true},'Conversation archived. Restore it from Archived.')}>Archive</button>}
+ {tab==='direct'&&activeDirect&&<button type="button" aria-expanded={safetyOpen} aria-label="Conversation safety tools" onClick={()=>setSafetyOpen(v=>!v)}>⚑ Safety</button>}
  {!workspace&&<Link to="/chat" state={{palaceChat:{tab,roomId:threadOpen?roomId:null}}} aria-label="Switch to full Palace Messenger">Full Messenger ↗</Link>}
  </div>}
+ {tab==='direct'&&activeDirect&&safetyOpen&&<section className="palace-chat-safety" aria-label="Private conversation safety">
+  <header><strong>Safety & boundaries</strong><button type="button" onClick={()=>setSafetyOpen(false)} aria-label="Close safety tools">×</button></header>
+  <p>Blocking limits contact. Reporting sends a confidential notice for moderator review. Reports do not automatically remove messages.</p>
+  <button type="button" disabled={busy} aria-label={boundary.blocked?'Unblock this member':'Block this member'} onClick={()=>updateSafetyBoundary(!boundary.blocked)}>{boundary.blocked?'Unblock member':'Block member'}</button>
+  <form onSubmit={submitDirectReport}><label>Report a concern<textarea aria-label="Reason for reporting this conversation" rows={3} maxLength={2000} value={reportReason} onChange={e=>setReportReason(e.target.value)} placeholder="Describe the message or behavior and when it happened." required/></label><button type="submit" disabled={busy||!reportReason.trim()}>Submit report</button></form>
+ </section>}
  {tab==='groups'&&managing&&<section className="palace-chat-settings" aria-label="Group settings">
       <div className="palace-chat-settings-top"><strong>Members</strong><button type="button" disabled={busy} onClick={()=>mutate(()=>setPalaceGroupMuted(activeGroup.id,userId,!activeGroup.muted),activeGroup.muted?'Group unmuted.':'Group muted.')}>{activeGroup.muted?'Unmute':'Mute'}</button></div>
       <ul>{activeGroup.members.map(m=><li key={m.id}><MemberAvatar profile={m}/><span>{nameOf(m)} {m.id===activeGroup.ownerId?'· host':''}</span>{owner&&m.id!==userId&&<button type="button" disabled={busy} onClick={()=>{if(window.confirm('Remove '+nameOf(m)+' from this group?'))mutate(()=>removePalaceGroupMember(activeGroup.id,m.id),'Member removed.')}}>Remove</button>}</li>)}</ul>
@@ -729,7 +767,8 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
      <div className="palace-chat-composer-shell"><div className="palace-chat-compose-tools"><PalaceEmojiPicker label="Palace Chat" onPick={insertChatEmoji}/><button type="button" className="palace-chat-gif-toggle" aria-expanded={gifOpen} onClick={()=>setGifOpen(v=>!v)}>🎞️ GIF</button><button type="button" className="palace-chat-photo-toggle" aria-label="Attach photo" disabled={busy} onClick={()=>photoInputRef.current?.click()}>▧ Photo</button><input ref={photoInputRef} className="palace-chat-photo-file" type="file" accept="image/jpeg,image/png,image/webp,image/avif" aria-label="Choose photo to send" onChange={e=>{const file=e.target.files?.[0];if(file){if(!['image/jpeg','image/png','image/webp','image/avif'].includes(file.type)||file.size>18*1024*1024){setError('Use a JPEG, PNG, WebP or AVIF photo under 18 MB.');e.target.value='';return}setPhotoFile(file);setGifOpen(false)}}}/></div>
      {gifOpen&&<PalaceGiphyPicker busy={busy} onSend={sendGif} onClose={()=>setGifOpen(false)}/>}
      {photoFile&&<form className="palace-chat-photo-stage" onSubmit={sendPhoto}><div>{photoPreview&&<img src={photoPreview} alt="Selected photo preview"/>}<span><strong>{photoFile.name}</strong><small>Private photo · {Math.round(photoFile.size/1024)} KB · {currentDraft.trim()?'Your drafted text becomes its caption':'Add an optional caption below'}</small></span></div><footer><button type="button" onClick={()=>{setPhotoFile(null);if(photoInputRef.current)photoInputRef.current.value=''}}>Cancel</button><button type="submit" disabled={busy}>{busy?'Sending…':'Send photo ↗'}</button></footer></form>}
-     <form className="palace-chat-compose" onSubmit={send}><label className="sr-only" htmlFor="palace-quick-chat-message">Your message</label><textarea ref={composerRef} id="palace-quick-chat-message" aria-label={tab==='groups'?'Write a group message':'Write a private message'} placeholder={tab==='groups'?'Write to your circle…':'Write a little note…'} rows={1} maxLength={3000} value={currentDraft} onChange={e=>setDraft(e.target.value)} onInput={e=>{const field=e.currentTarget;field.style.height='auto';field.style.height=Math.min(112,Math.max(46,field.scrollHeight))+'px'}} onKeyDown={e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();if(currentDraft.trim())e.currentTarget.form?.requestSubmit()}}}/><button type="submit" className="palace-chat-send" disabled={busy||!currentDraft.trim()}>{busy?'Sending…':<>Send <span aria-hidden="true">↗</span></>}</button></form>
+     {tab==='direct'&&boundary.blocked&&<p className="palace-chat-safety-blocked" role="status">You blocked this member. Unblock them in Safety to resume sending.</p>}
+     <form className="palace-chat-compose" onSubmit={send}><label className="sr-only" htmlFor="palace-quick-chat-message">Your message</label><textarea ref={composerRef} id="palace-quick-chat-message" aria-label={tab==='groups'?'Write a group message':'Write a private message'} placeholder={tab==='groups'?'Write to your circle…':'Write a little note…'} rows={1} maxLength={3000} value={currentDraft} onChange={e=>setDraft(e.target.value)} onInput={e=>{const field=e.currentTarget;field.style.height='auto';field.style.height=Math.min(112,Math.max(46,field.scrollHeight))+'px'}} onKeyDown={e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();if(currentDraft.trim())e.currentTarget.form?.requestSubmit()}}}/><button type="submit" className="palace-chat-send" disabled={busy||!currentDraft.trim()||(tab==='direct'&&boundary.blocked)}>{busy?'Sending…':<>Send <span aria-hidden="true">↗</span></>}</button></form>
      <small className="palace-chat-draft-hint">{currentDraft?'Draft kept on this device':'Ctrl/⌘ + Enter to send · Enter for a new line'}</small></div>
     </>:<div className="palace-chat-empty"><p>{tab==='groups'?'No groups yet.':loadingDirect?'Loading your private conversations…':error?'Conversations could not be loaded.':'No open direct conversations yet.'}</p><p>{tab==='groups'?'Start a private circle and invite members, or accept an invitation above.':'Begin or accept a correspondence in Palace Letters.'}</p>{tab==='direct'&&<Link to="/letters" onClick={()=>setOpen(false)}>Open Palace Letters →</Link>}{tab==='groups'&&<button type="button" onClick={()=>setCreating(true)}>＋ Create a group</button>}</div>}
    </>}
