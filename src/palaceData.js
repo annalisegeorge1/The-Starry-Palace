@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import {PALACE_CHAT_V3_ENABLED} from './palaceChatV3';
 import {INITIAL_FANDOM_DIRECTORY} from './palaceFandomCatalogue';
 
 function needClient(){if(!supabase) throw new Error('The Palace data connection is not configured.');return supabase}
@@ -762,7 +763,7 @@ export async function getLetters(userId){
  const ids=conversations.map(x=>x.conversation_id);
  let messages=[];
  if(ids.length){
-  const r=await needClient().from('messages').select('id,conversation_id,sender_id,body,created_at,edited_at,media_path,status').in('conversation_id',ids).eq('status','active').order('created_at',{ascending:false}).limit(100);
+  const r=await needClient().from('messages').select('id,conversation_id,sender_id,body,created_at,edited_at,media_path,status'+(PALACE_CHAT_V3_ENABLED?',reply_to_id':'')).in('conversation_id',ids).eq('status','active').order('created_at',{ascending:false}).limit(100);
   if(r.error)throw r.error;
   messages=r.data||[];
  }
@@ -804,7 +805,7 @@ export async function getDirectConversationMessages(userId,conversationId,limit=
  if(membership.error)throw membership.error;
  if(!membership.data)throw new Error('This private conversation is not available to your account.');
  let request=needClient().from('messages')
-  .select('id,conversation_id,sender_id,body,created_at,edited_at,media_path,status')
+  .select('id,conversation_id,sender_id,body,created_at,edited_at,media_path,status'+(PALACE_CHAT_V3_ENABLED?',reply_to_id':''))
   .eq('conversation_id',conversationId).eq('status','active');
  if(before){
   if(!Number.isFinite(Date.parse(before)))throw new Error('Invalid conversation history position.');
@@ -814,7 +815,13 @@ export async function getDirectConversationMessages(userId,conversationId,limit=
  if(response.error)throw response.error;
  return (response.data||[]).reverse();
 }
-export async function sendLetter(userId,conversationId,body){const text=body.trim();if(!text)throw new Error('Your letter is empty.');const{data,error}=await needClient().from('messages').insert({conversation_id:conversationId,sender_id:userId,body:text}).select().single();if(error)throw error;return data}
+export async function sendLetter(userId,conversationId,body,options={}){
+ const text=String(body||'').trim();if(!text)throw new Error('Your letter is empty.');
+ const row={conversation_id:conversationId,sender_id:userId,body:text};
+ if(PALACE_CHAT_V3_ENABLED&&options.replyToId)row.reply_to_id=options.replyToId;
+ const{data,error}=await needClient().from('messages').insert(row).select().single();
+ if(error)throw error;return data;
+}
 export async function sendLetterPhoto(userId,conversationId,mediaPath,caption=''){
  const text=String(caption||'').trim();
  if(text.length>3000)throw new Error('Photo caption is too long.');
