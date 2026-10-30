@@ -94,6 +94,7 @@ import './writing-chamber-calm.css';
 import './my-palace-calm.css';
 import './reading-story-first.css';
 import './my-chamber-calm.css';
+import './chat-topbar-calm.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
