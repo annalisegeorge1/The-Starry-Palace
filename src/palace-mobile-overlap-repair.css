@@ -1,0 +1,156 @@
+/* Mobile layout repair from real Android screenshots — Oct 30, 2026.
+ * This file deliberately loads after legacy Palace styles. No editor text,
+ * publishing logic, account data or manuscript save behavior is changed. */
+@media(max-width:760px){
+ /* On the writer route, the header magnifier already opens search. The second
+    permanent search row takes away the space needed to see the manuscript. */
+ body.writing-desk-open .palace-shell.full-palace-shell .global-search-live{
+   display:none!important;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .full-topbar{
+   min-height:0!important;
+   padding-top:max(7px,env(safe-area-inset-top))!important;
+   padding-bottom:7px!important;
+ }
+ body.writing-desk-open .palace-shell.full-palace-shell .full-topbar-row{
+   grid-template-rows:minmax(42px,auto)!important;
+   min-height:42px!important;
+ }
+ /* A multi-row toolbar sitting underneath a sticky mobile shell hides the
+    chapter. It belongs to the document flow, immediately above the editor. */
+ body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar{
+   position:relative!important;
+   top:auto!important;
+   bottom:auto!important;
+   inset-block-start:auto!important;
+   z-index:1!important;
+   box-shadow:0 4px 12px rgba(10,12,30,.15)!important;
+   margin-bottom:.45rem!important;
+   max-width:100%!important;
+   min-width:0!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-chapter-jump{
+   min-width:0!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-chapter-jump-main{
+   min-width:0!important;
+   max-width:100%!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-chapter-jump-main select{
+   min-width:0!important;
+   max-width:100%!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-format-navigator{
+   min-width:0!important;
+   max-width:100%!important;
+ }
+ /* The former bottom action bar overlaid actual lines in the manuscript and
+    collided with the main mobile navigation dock. Place it after the page. */
+ body.writing-desk-open .chic-editor-form>.chic-studio-buttons{
+   position:static!important;
+   inset:auto!important;
+   bottom:auto!important;
+   top:auto!important;
+   z-index:auto!important;
+   float:none!important;
+   display:grid!important;
+   grid-template-columns:repeat(2,minmax(0,1fr))!important;
+   align-items:stretch!important;
+   gap:.48rem!important;
+   width:100%!important;
+   max-width:100%!important;
+   min-width:0!important;
+   box-sizing:border-box!important;
+   margin:.75rem 0 1.25rem!important;
+   padding:.65rem!important;
+   box-shadow:none!important;
+   transform:none!important;
+ }
+ body.writing-desk-open .chic-editor-form>.chic-studio-buttons .studio-button-note{
+   grid-column:1/-1!important;
+   flex:none!important;
+   min-width:0!important;
+   width:100%!important;
+   margin:0!important;
+ }
+ body.writing-desk-open .chic-editor-form>.chic-studio-buttons>button{
+   min-width:0!important;
+   max-width:100%!important;
+   width:100%!important;
+   min-height:43px!important;
+   padding:.55rem .48rem!important;
+   white-space:normal!important;
+   font-size:.76rem!important;
+   line-height:1.25!important;
+ }
+ /* The header and bottom dock already provide Palace Letters and navigation;
+    theme remains in the sidebar. Avoid two unrelated floating badges covering
+    text, a calendar, and writing controls. */
+ .palace-shell.full-palace-shell .restored-floating-controls{
+   display:none!important;
+ }
+ /* Palace Almanac: the empty-state link used to steal nearly all the row width,
+    causing every word in the message to break into 2–3 characters. */
+ .palace-shell.full-palace-shell .palace-almanac-card .following-chamber-empty.compact{
+   display:grid!important;
+   grid-template-columns:minmax(0,1fr)!important;
+   grid-template-rows:auto!important;
+   justify-items:start!important;
+   align-items:start!important;
+   gap:.5rem!important;
+   min-width:0!important;
+   width:100%!important;
+   max-width:100%!important;
+   box-sizing:border-box!important;
+   padding:1rem!important;
+ }
+ .palace-shell.full-palace-shell .palace-almanac-card .following-chamber-empty.compact>*{
+   position:static!important;
+   grid-column:1/-1!important;
+   min-width:0!important;
+   max-width:100%!important;
+   float:none!important;
+ }
+ .palace-shell.full-palace-shell .palace-almanac-card .following-chamber-empty.compact>p{
+   width:100%!important;
+   display:block!important;
+   font-size:.86rem!important;
+   line-height:1.55!important;
+   white-space:normal!important;
+   word-break:normal!important;
+   overflow-wrap:break-word!important;
+   margin:0!important;
+ }
+ .palace-shell.full-palace-shell .palace-almanac-card .following-chamber-empty.compact>a{
+   display:inline-flex!important;
+   width:auto!important;
+   max-width:100%!important;
+   white-space:normal!important;
+   flex-wrap:wrap!important;
+   overflow-wrap:break-word!important;
+   font-size:.85rem!important;
+   line-height:1.4!important;
+ }
+ .palace-shell.full-palace-shell .palace-almanac-card,
+ .palace-shell.full-palace-shell .palace-almanac-card .section-heading{
+   min-width:0!important;
+   max-width:100%!important;
+ }
+ .palace-shell.full-palace-shell .palace-almanac-card .section-heading{
+   flex-wrap:wrap!important;
+ }
+}
+@media(max-width:400px){
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-chapter-jump-actions{
+   flex-wrap:wrap!important;
+   overflow-x:visible!important;
+ }
+ body.writing-desk-open .manuscript-sticky-toolbar .writer-toolbar-save-state{
+   max-width:100%!important;
+   white-space:normal!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ body.writing-desk-open .manuscript-sticky-toolbar,
+ body.writing-desk-open .chic-editor-form>.chic-studio-buttons{transition:none!important}
+}
