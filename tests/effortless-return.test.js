@@ -29,7 +29,8 @@ describe('effortless reading and writing regression protection',()=>{
   const shelf=readFileSync(resolve(process.cwd(),'src/ReaderChapterShelf.jsx'),'utf8');
   expect(shelf).toContain('id="palace-reader-chapters"');
   expect(reader).toContain('Back to chapter start');
-  expect(reader).toContain('Chapter list ↓');
+  expect(reader).toContain('reader-chapter-chooser');
+  expect(reader).toContain('Leave a comment →');
  });
  it('opens the writing desk from the last edited chapter',()=>{
   expect(writer).toContain('chooseWritingResumeTarget(works)');

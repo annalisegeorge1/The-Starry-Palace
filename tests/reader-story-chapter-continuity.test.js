@@ -31,17 +31,18 @@ describe('Reader continuity from story to chapter, writer and private Library',(
   expect(chapter).toContain('disabled={readerSaveBusy||readerSaved===null}');
   expect(chapter).toContain('className="reader-story-passage-status" role="status"');
  });
- it('gives chapter readers the writer, Reading Rooms, and My Library doors',()=>{
-  expect(chapter).toContain('className="reader-story-passage"');
-  expect(chapter).toContain('aria-label="Continue your Palace reading journey"');
-  expect(chapter).toContain('<Link to="/reading">');
-  expect(chapter).toContain('encodeURIComponent(data.work.profiles.username)');
-  expect(chapter).toContain('<Link to="/library?tab=continue">');
-  expect(chapter).toContain('Sign in to save</Link>');
+ it('gives chapter readers clear story, saving and navigation doors without duplicate global tabs',()=>{
+  expect(chapter).not.toContain('className="reader-story-passage"');
+  expect(chapter).not.toContain('aria-label="Continue your Palace reading journey"');
+  expect(chapter).toContain('reader-title-bookmark');
+  expect(chapter).toContain('aria-label="Sign in to save this story"');
   expect(chapter).toContain("encodeURIComponent('/work/'+data.work.slug+'/chapter/'+data.chapter.id)");
+  expect(chapter).toContain('reader-full-work-link');
+  expect(chapter).toContain('readable.length>1&&<details className="reader-chapter-chooser"');
   expect(chapter).toContain('<ReaderChapterShelf chapters={readable} chapterId={chapterId} workSlug={slug}/>');
   expect(read('src/ReaderChapterShelf.jsx')).toContain('id="palace-reader-chapters"');
   expect(chapter).toContain('Back to chapter start');
+  expect(chapter).toContain('Leave a comment →');
  });
  it('turns guest Save/Follow controls on the story overview into a working sign-in link',()=>{
   expect(story).toContain('{session?<><button className={readerState.saved?');
