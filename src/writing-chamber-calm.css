@@ -1,0 +1,53 @@
+/* Writing Chamber: calm, prose-first editing without hiding safety controls. */
+.chic-editor-form .writer-stats-calm{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 14px;margin:8px 0;background:rgba(21,23,45,.45);border:1px solid rgba(180,170,229,.16);border-radius:12px;box-shadow:none}
+.writer-stats-calm .writer-progress-inline{display:flex;align-items:center;gap:10px;flex:1 1 230px;min-width:0;font-size:.81rem;color:#dad8ed}
+.writer-stats-calm .writer-progress-inline strong{white-space:nowrap;font-size:.9rem}
+.writer-progress-track{height:4px;flex:1 1 75px;min-width:42px;border-radius:99px;background:rgba(190,181,226,.18);overflow:hidden}
+.writer-progress-track i{display:block;height:100%;border-radius:99px;background:#a9a2dc}
+.writer-goal-details,.writer-stats-actions,.writer-chapter-more{position:relative;font-size:.82rem}
+.writer-goal-details>summary,.writer-stats-actions>summary,.writer-chapter-more>summary{cursor:pointer;color:#dcd9ef;list-style:none;border-radius:8px;padding:7px 10px}
+.writer-goal-details>summary::-webkit-details-marker,.writer-stats-actions>summary::-webkit-details-marker,.writer-chapter-more>summary::-webkit-details-marker{display:none}
+.writer-goal-details>summary:hover,.writer-stats-actions>summary:hover,.writer-chapter-more>summary:hover{background:rgba(196,185,245,.12)}
+.writer-goal-details-panel,.writer-stats-actions-panel,.writer-chapter-more-items{position:absolute;z-index:45;right:0;top:calc(100% + 5px);width:max-content;max-width:min(310px,90vw);display:flex;flex-direction:column;gap:8px;padding:12px;background:#25213d;border:1px solid #6b6188;border-radius:12px;box-shadow:0 14px 35px #080615aa;color:#eeeaf9}
+.writer-goal-details-panel label{display:flex;gap:8px;align-items:center}
+.writer-goal-details-panel input{width:82px;max-width:100%;color:inherit;background:#17172c;border:1px solid #746b92;padding:6px}
+.writer-goal-details-panel .goal-presets{display:flex;gap:5px;flex-wrap:wrap}
+.writer-goal-details-panel p{font-size:.78rem;color:#d0cbe0;margin:0}
+.writer-stats-actions-panel button,.writer-chapter-more-items button{display:block;text-align:left;min-width:175px;padding:8px 10px;color:#eeeaf9;background:transparent;border:0;border-radius:7px;cursor:pointer}
+.writer-stats-actions-panel button:hover,.writer-chapter-more-items button:hover{background:#40395c}
+.writer-chapter-more>summary{font-weight:700;font-size:1.2rem;line-height:1}
+.writer-chapter-jump-actions .writer-quick-save{font-size:.82rem;padding:7px 11px;border-radius:8px}
+.chic-editor-form .manuscript-sticky-toolbar{border-radius:12px;padding-block:5px;box-shadow:none}
+.chic-editor-form .editor-shortcut-hint{font-size:.7rem;opacity:.72}
+.chic-editor-form .manuscript-sheet-frame{padding-top:clamp(20px,3vw,42px)}
+.chic-editor-form .legacy-writing-canvas{line-height:1.72}
+.chic-editor-form .legacy-chapter-title input{font-size:clamp(1.3rem,2.2vw,2rem);text-align:left;line-height:1.3}
+.chic-editor-form .writer-toolbar-help summary{min-width:30px}
+.chic-editor-form .writer-toolbar-help-icon{font-size:.85rem}
+.chic-editor-form .legacy-goal-progress{display:none}
+.chic-editor-form .writer-sprint-orbit{padding:8px 12px;min-height:0}
+@media(max-width:760px){.chic-editor-form .writer-stats-calm{gap:4px 9px;padding:8px}.writer-stats-calm .writer-progress-inline{flex-basis:100%}.writer-stats-calm .writer-goal-details-panel{left:0;right:auto}.writer-stats-calm .writer-stats-actions-panel{right:0}.writer-chapter-more-items{right:0}.chic-editor-form .manuscript-sheet-frame{padding-top:16px}}
+@media(prefers-reduced-motion:reduce){.writer-progress-track i{transition:none}}
+
+/* Place the writing progress in the document flow, not the sidebar grid. */
+body.writing-desk-open .palace-shell.full-palace-shell .chic-editor-form>.writer-stats-calm{grid-column:1/-1!important;grid-row:auto!important;position:static!important;float:none!important;width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;align-self:stretch!important;margin:.75rem 0 1rem!important;justify-content:space-between!important}
+body.writing-desk-open .palace-shell.full-palace-shell .chic-editor-form>.writer-stats-calm .writer-progress-inline{flex:1 1 320px}
+
+/* Desktop: genuinely compact sticky toolbar, not a four-row cockpit. */
+@media(min-width:761px){
+body.writing-desk-open .palace-shell.full-palace-shell .chic-editor-form>.manuscript-sticky-toolbar{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;gap:4px 9px!important;padding:5px 8px!important;min-height:0!important}
+body.writing-desk-open .manuscript-sticky-toolbar>.writer-chapter-jump{flex:1 1 100%!important;width:100%!important;min-height:0!important;padding:0 0 3px!important;margin:0!important}
+body.writing-desk-open .manuscript-sticky-toolbar>.writer-appearance-accordion{display:none!important}
+body.writing-desk-open .manuscript-sticky-toolbar>.writer-format-navigator{flex:1 1 auto!important;width:auto!important;min-width:240px!important;max-width:100%!important;margin:0!important}
+body.writing-desk-open .manuscript-sticky-toolbar>.writer-more-formatting{flex:0 0 auto!important;width:auto!important;margin:0!important}
+body.writing-desk-open .manuscript-sticky-toolbar>.writer-toolbar-utilities{flex:0 0 auto!important;width:auto!important;margin:0 0 0 auto!important;gap:4px!important}
+body.writing-desk-open .manuscript-sticky-toolbar>.editor-shortcut-hint{display:none!important}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-format-scroll button{min-height:32px!important;height:32px!important;padding:3px 9px!important}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-format-arrow{min-height:32px!important;height:32px!important}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-chapter-jump-main select{min-height:31px!important;height:31px!important}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-chapter-jump-actions button{min-height:30px!important;height:30px!important}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-more-formatting>summary{font-size:.78rem!important;padding:6px 9px!important;white-space:nowrap!important}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-more-formatting>summary small{display:none!important}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-toolbar-help>summary{padding:4px!important}
+body.writing-desk-open .manuscript-sticky-toolbar .writer-rail-quick-toggle{padding:5px 9px!important;min-height:30px!important}
+}
