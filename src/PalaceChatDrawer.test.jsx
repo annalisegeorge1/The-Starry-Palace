@@ -272,7 +272,7 @@ describe('Palace quick chat',()=>{
   }]});
   mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
   fireEvent.click(await screen.findByRole('button',{name:'River'}));
-  fireEvent.contextMenu(screen.getByText('We will meet at the palace').closest('.palace-chat-bubble'));
+  fireEvent.contextMenu(screen.getByRole('log',{name:'Conversation messages'}).querySelector('[data-chat-message="quote-one"]'));
   fireEvent.click(screen.getByRole('menuitem',{name:'Quote in draft'}));
   expect(screen.getByRole('textbox',{name:'Write a private message'}).value).toContain('↩ Quoting River: “We will meet at the palace”');
   expect(sendLetter).not.toHaveBeenCalled();
