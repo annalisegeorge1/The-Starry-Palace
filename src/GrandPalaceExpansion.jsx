@@ -1,6 +1,7 @@
 import './grand-palace-expansion.css';
 import React,{useEffect,useState} from 'react';
 import GrandPalaceCelebrations from './GrandPalaceCelebrations';
+import PalaceGlowIcon from './PalaceGlowIcon';
 import{Link}from'react-router-dom';
 import{getCelestialVaultStatus,enterCelestialVault,claimCelestialBadgeGrandmaster,getGrandPalaceCommonRoom,postGrandPalaceCommonMessage,removeGrandPalaceCommonMessage}from'./grandPalaceData';
 export default function GrandPalaceExpansion({view='all'}){
@@ -21,7 +22,7 @@ export default function GrandPalaceExpansion({view='all'}){
  return <div className="grand-expansion">
   {error&&<p role="alert" className="grand-notice error">{error}</p>}{notice&&<p role="status" className="grand-notice">{notice}</p>}
   {view!=='commons'&&<section className="grand-celestial-vault" id="celestial-vault">
-   <div className="grand-vault-sigil" aria-hidden="true"><span>✧</span>♛<span>☾</span></div>
+   <div className="grand-vault-sigil" aria-hidden="true"><PalaceGlowIcon name="celestial-star" tone="silver" size="small"/><PalaceGlowIcon name="vault-crown" tone="treasury" size="hero"/><PalaceGlowIcon name="crescent-moon" tone="courts" size="small"/></div>
    <p className="eyebrow">BEYOND EMERALD · THE CELESTIAL SOVEREIGN BOX</p><h2>Almost impossible. Never unobtainable.</h2>
    <p className="grand-vault-lede">A celestial rarity reserved for extraordinary luck—or completing every founding badge family at Emerald tier. No money can purchase entries or improve the odds.</p>
    <div className="grand-vault-odds"><div><small>ODDS PER ENTRY</small><strong>1 in 1,000,000</strong></div><div><small>ENTRY COST</small><strong>1 point</strong></div><div><small>DAILY LIMIT</small><strong>{Math.max(0,3-Number(vault?.entries_today||0))}/3 remaining</strong></div></div>
@@ -43,7 +44,7 @@ export default function GrandPalaceExpansion({view='all'}){
     <textarea id="grand-common-composer" value={body} maxLength={1000} onChange={e=>setBody(e.target.value)} rows={4} placeholder="Share a thoughtful message with your Grand Palace…"/>
     <div className="grand-common-compose-foot"><small>{body.length}/1000 · 10 characters minimum</small><button type="submit" disabled={!!busy||body.trim().length<10||Number(room?.message_count_today||0)>=5}>Post to my Palace ✦</button></div>
    </form>
-   <div className="grand-court-posts">{(room?.messages||[]).length?room.messages.slice().reverse().map(p=><article key={p.id}><header><div className="grand-common-author"><span>{p.avatar_url?<img src={p.avatar_url} alt=""/>:'☾'}</span><div><strong>{p.author_name||p.author_handle}</strong><small>@{p.author_handle} · {p.kind==='quest'?'Quest response':p.kind==='introduction'?'Introduction':'Court conversation'}</small></div></div><time>{new Date(p.created_at).toLocaleDateString(undefined,{month:'short',day:'numeric'})}</time></header><p>{p.body}</p>{p.is_mine&&<button type="button" onClick={()=>action('Message removal',()=>removeGrandPalaceCommonMessage(p.id))}>Remove my post</button>}</article>):<div className="grand-empty-court"><span>☾</span><strong>Your Palace's first words are still waiting.</strong><p>Be the one to welcome the next member into the court.</p></div>}</div>
+   <div className="grand-court-posts">{(room?.messages||[]).length?room.messages.slice().reverse().map(p=><article key={p.id}><header><div className="grand-common-author"><span>{p.avatar_url?<img src={p.avatar_url} alt=""/>:'☾'}</span><div><strong>{p.author_name||p.author_handle}</strong><small>@{p.author_handle} · {p.kind==='quest'?'Quest response':p.kind==='introduction'?'Introduction':'Court conversation'}</small></div></div><time>{new Date(p.created_at).toLocaleDateString(undefined,{month:'short',day:'numeric'})}</time></header><p>{p.body}</p>{p.is_mine&&<button type="button" onClick={()=>action('Message removal',()=>removeGrandPalaceCommonMessage(p.id))}>Remove my post</button>}</article>):<div className="grand-empty-court"><PalaceGlowIcon name="moon-court" tone="courts" size="hero"/><strong>Your Palace's first words are still waiting.</strong><p>Be the one to welcome the next member into the court.</p></div>}</div>
   </section>}
  </div>;
 }
