@@ -843,7 +843,7 @@ export async function requestPalaceLetter(userId,recipientId,introText=''){
  const text=introText.trim();const{data,error}=await needClient().from('message_requests').insert({sender_id:userId,recipient_id:recipientId,intro_text:text||'A Palace member would like to begin a correspondence.'}).select('id,status,conversation_id,recipient_id,created_at').single();if(error)throw error;return data
 }
 export async function reportConversation(userId,conversationId,reportedUserId,reason){
- const text=reason.trim();if(!text)throw new Error('Tell the Council what happened first.');const{data,error}=await needClient().from('conversation_reports').insert({reporter_id:userId,conversation_id:conversationId,reported_user_id:reportedUserId,reason:text,status:'open'}).select().single();if(error)throw error;return data
+ const text=reason.trim();if(!text)throw new Error('Tell the Council what happened first.');const{data,error}=await needClient().from('conversation_reports').insert({reporter_id:userId,conversation_id:conversationId,reported_user_id:reportedUserId,reason:text,status:'submitted'}).select().single();if(error)throw error;return data
 }
 
 export async function submitCommunityReport(userId,targetKind,targetId,reason,evidence={}){
