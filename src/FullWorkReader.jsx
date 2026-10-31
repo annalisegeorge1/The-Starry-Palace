@@ -5,6 +5,7 @@ import {safeReaderHtml} from './readerHtmlSanitizer';
 import {readPalaceChoice,readPalaceNumber,writePalacePreference} from './browserPreferences';
 import {readerFlow} from './readerFlowModel';
 import PalacePagedReader from './PalacePagedReader';
+import {PalaceTopicHelp} from './PalaceGuidebook';
 
 const layoutOptions=['book','full','journal','compact'];
 const escapeHeading=s=>String(s||'Untitled chapter').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
@@ -76,7 +77,7 @@ export default function FullWorkReader({Frame}){
   {work&&<article className={'reader-page restored palace-full-work-reader measure-wide tone-'+tone+' layout-'+layout}>
    <header className="palace-full-reader-heading">
     <Link to={'/work/'+work.slug}>← Story overview</Link>
-    <p className="eyebrow">READ THE FULL WORK</p>
+    <p className="eyebrow">READ THE FULL WORK <PalaceTopicHelp id="reading-modes"/></p>
     <h1>{work.title}</h1>
     <p>{chapters.length} published chapter{chapters.length===1?'':'s'} · {chapters.reduce((n,ch)=>n+(Number(ch.word_count)||0),0).toLocaleString()} words</p>
     <p>Read the published chapters together without changing the author's work. Drafts and scheduled chapters are excluded.</p>
