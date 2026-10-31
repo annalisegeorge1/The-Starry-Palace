@@ -13,14 +13,14 @@ The Starry Palace is operated by Annalise Pierre. Privacy questions or requests 
 
 ### 2. Minimum age and children
 
-The proposed minimum age to create or use an account is **12 years old**. The Palace asks members for a date of birth during registration or, for existing accounts, before further account access. Account creation is blocked when the supplied date indicates that the person is under 12. A creator may set a higher minimum reader age for a published story or comic.
+The proposed minimum age to create or use an account is **13 years old**. The Palace asks members for a date of birth during registration or, for existing accounts, before further account access. Account creation is blocked when the supplied date indicates that the person is under 13. People under 13 must not create or use a Palace account. A creator may set a higher minimum reader age for a published story or comic.
 
 Age is self-declared; the Palace does not currently verify identity or a person's date of birth. The age control can be evaded by someone who supplies false information. Do not treat it as verified identity, parental consent, or a guarantee that a person cannot see unsuitable material. Because members may be under 18, counsel must confirm the rules for collecting children's information, parental consent, notices, and age-appropriate safeguards in every jurisdiction where the Palace is offered before this policy is published.
 
 ### 3. Information the Palace handles
 
 - **Account and sign-in information:** email address, authentication identifiers, password authentication data handled by the sign-in provider, and account metadata needed to operate the account.
-- **Date of birth:** collected to check the 12-year account minimum and to enforce creator-selected minimum reader ages. The date is stored in a private database table, not in a public profile, and the registration flow removes it from the temporary sign-up metadata after saving it to that private table. The Palace receives a self-declared date, not identity documents.
+- **Date of birth:** collected to check the 13-year account minimum and to enforce creator-selected minimum reader ages. The date is stored in a private database table, not in a public profile, and the registration flow removes it from the temporary sign-up metadata after saving it to that private table. The Palace receives a self-declared date, not identity documents.
 - **Profile and community information:** chosen username, display name, avatar, profile details, interests, public posts, comments, messages, follows, blocks, reports and feature settings, depending on what a member chooses to provide or use.
 - **Creative content:** manuscripts, chapters, comics, images, captions, comments and other material members create or upload. Drafts are intended to remain accessible only to their author and authorised collaborators; publication and visibility settings determine the audience for published work.
 - **Feature and device information:** reading progress, saved items, notifications, preferences, browser session data and device-local composer drafts, depending on the feature and browser used.
