@@ -47,7 +47,8 @@ describe('restored familiar Palace navigation',()=>{
  });
  it('lists Council and Code directly but only opens their detail links when visiting',()=>{
   mount();
-  const stewardship=screen.getByRole('navigation',{name:'Palace stewardship'});
+  const stewardship=screen.getByRole('navigation',{name:'Palace guidance and stewardship'});
+  expect(within(stewardship).getByRole('link',{name:'Palace Guidebook'}).getAttribute('href')).toBe('/guidebook');
   expect(within(stewardship).getByRole('link',{name:/Palace Council/})).toBeTruthy();
   expect(within(stewardship).getByRole('link',{name:/Palace Code/})).toBeTruthy();
   expect(screen.queryByRole('link',{name:'Voting Chamber'})).toBeNull();
