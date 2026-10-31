@@ -109,6 +109,7 @@ import './member-chamber-title-tabs-heritage.css';
 import './tablet-landscape-readable-layout.css';
 import './treasury-heritage-icons.css';
 import './palace-life-discovery-heritage.css';
+import './tag-constellation-mobile-calm.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 

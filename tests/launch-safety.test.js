@@ -1453,7 +1453,9 @@ describe('Starry Palace launch safety',()=>{
     expect(data).toContain("rpc('search_palace_tags'");
     expect(data).toContain("rpc('create_community_tag'");
     expect(live).toContain('3,000+ TAGS · MEMBER-EXTENSIBLE');
-    expect(live).toContain('Can’t find it? Name it.');
+    expect(live).toContain('Can’t find a tag?');
+    expect(live).toContain('createCommunityTag(newTag,newTagCategory)');
+    expect(live).toContain('className="tag-create-open"');
     expect(live).toContain('Add & attach tag ✦');
     expect(live).toContain('COMIC CONSTELLATION');
   });
