@@ -1,0 +1,81 @@
+name: Palace managed Auth and Storage (isolated local integration)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/palace-managed-security.yml'
+      - 'tests/security-db/local-managed-*.sql'
+      - 'tests/security-db/local-managed-*.mjs'
+      - 'tests/security-db/hosted-storage-staging-setup-2026-10-31.sql'
+      - 'database/PROPOSED-guard-work-collaboration-role-escalation-2026-10-31.sql'
+
+permissions:
+  contents: read
+
+jobs:
+  local-managed-auth-storage:
+    # This is an intentionally opt-in security review workflow, not a
+    # production-deployment workflow and never links to any hosted project.
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'codex/creator-protection-review-2026-10-31'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PALACE_LOCAL_SUPABASE_DIR: /tmp/palace-auth-security
+    steps:
+      - name: Checkout review branch
+        uses: actions/checkout@v4
+      - name: Node.js for synthetic SDK tests
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked project SDK dependencies
+        run: npm ci --ignore-scripts
+      - name: Install pinned Supabase CLI 2.122.0
+        uses: supabase/setup-cli@v1
+        with:
+          version: 2.122.0
+      - name: Install PostgreSQL client
+        run: sudo apt-get -qq update && sudo apt-get -qq install -y postgresql-client
+      - name: Initialize disposable Supabase project, with local email confirmation
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$PALACE_LOCAL_SUPABASE_DIR"
+          cd "$PALACE_LOCAL_SUPABASE_DIR"
+          supabase init --yes
+          test -f supabase/config.toml
+          sed -i 's/^enable_confirmations = false/enable_confirmations = true/' supabase/config.toml
+          grep -Eq '^enable_confirmations = true' supabase/config.toml
+          echo "Ephemeral local Auth confirmation is enabled; no remote project linked."
+      - name: Start LOCAL Auth, PostgREST, Storage and Mailpit
+        working-directory: ${{ env.PALACE_LOCAL_SUPABASE_DIR }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Avoid logging even disposable localhost signing keys.
+          if ! supabase start -x realtime,imgproxy,postgres-meta,studio,edge-runtime,logflare,vector,supavisor > "$RUNNER_TEMP/palace-local-start.log" 2>&1; then
+            sed -E 's/(SECRET|ANON|SERVICE_ROLE|PUBLISHABLE|PASSWORD)[_A-Z]*[=:][^ ]+/[local credential redacted]/g' "$RUNNER_TEMP/palace-local-start.log" | tail -n 35
+            exit 1
+          fi
+          echo "Isolated local Supabase services started."
+      - name: Prepare synthetic local-only tables, policies and collaborator guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PGPASSWORD=postgres
+          for source in \
+            tests/security-db/local-managed-foundation.sql \
+            database/PROPOSED-guard-work-collaboration-role-escalation-2026-10-31.sql \
+            tests/security-db/hosted-storage-staging-setup-2026-10-31.sql; do
+            psql -X -v ON_ERROR_STOP=1 -h 127.0.0.1 -p 54322 -U postgres -d postgres -f "$source" > /dev/null
+          done
+          echo "Local-only isolated schema and Storage policies applied."
+      - name: Real local GoTrue signup, JWT, RLS, Storage and revocation tests
+        run: node tests/security-db/local-managed-auth-storage.mjs
+      - name: Destroy local Supabase volumes
+        if: always()
+        shell: bash
+        working-directory: ${{ env.PALACE_LOCAL_SUPABASE_DIR }}
+        run: supabase stop --no-backup || true

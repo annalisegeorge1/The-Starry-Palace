@@ -25,3 +25,80 @@ jobs:
         run: npm ci
       - name: Test and build
         run: npm run verify
+
+  security-sql-fixtures:
+    name: Synthetic security RPC checks (ephemeral database)
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: palace_synthetic
+          POSTGRES_PASSWORD: test-only-password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d palace_synthetic"
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      PGHOST: localhost
+      PGPORT: '5432'
+      PGUSER: postgres
+      PGPASSWORD: test-only-password
+      PGDATABASE: palace_synthetic
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PostgreSQL client
+        run: sudo apt-get -qq update && sudo apt-get -qq install -y postgresql-client
+      - name: Create synthetic-only fixtures
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/security-db/fixture-schema.sql
+      - name: Compile proposed SQL in disposable PostgreSQL
+        run: |
+          for script in \
+            database/PROPOSED-guard-grand-palace-identity-discovery-2026-10-31.sql \
+            database/PROPOSED-restrict-praise-state-visibility-2026-10-31.sql \
+            database/PROPOSED-guard-bookmark-counts-by-reader-age-2026-10-31.sql \
+            database/PROPOSED-hide-unpublished-lore-chapter-metadata-2026-10-31.sql \
+            database/PROPOSED-guard-shares-by-reader-age-2026-10-31.sql \
+            database/PROPOSED-guard-praise-awards-by-reader-age-2026-10-31.sql \
+            database/PROPOSED-public-tag-counts-visible-content-only-2026-10-31.sql; do
+            psql -X -v ON_ERROR_STOP=1 -f "$script"
+          done
+      - name: Exercise privacy guards with synthetic identities
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/security-db/fixture-assertions.sql
+      - name: Test actual PostgreSQL anon/authenticated roles and manuscript RLS
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/security-db/fixture-role-rls-assertions.sql
+
+      - name: Prepare synthetic collaboration invitation access policies
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/security-db/fixture-collaboration-schema.sql
+      - name: Compile proposed invitation role-guard in disposable database
+        run: psql -X -v ON_ERROR_STOP=1 -f database/PROPOSED-guard-work-collaboration-role-escalation-2026-10-31.sql
+      - name: Verify collaborators cannot self-promote or redirect invitations
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/security-db/fixture-collaboration-assertions.sql
+      - name: Build synthetic private file metadata and access helpers
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/security-db/fixture-storage-schema.sql
+      - name: Test comic originals, reader copies and chat photo RLS
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/security-db/fixture-storage-rls-assertions.sql
+      - name: Initialize ephemeral JWT signing key
+        run: echo "PALACE_TEST_JWT_SECRET=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
+      - name: Start disposable PostgREST 14 for HTTP permission tests
+        run: |
+          docker run --rm -d --name palace-test-postgrest --network host \
+            -e PGRST_DB_URI="postgres://palace_ci_authenticator:palace-ephemeral-ci-only-password@127.0.0.1:5432/palace_synthetic" \
+            -e PGRST_DB_SCHEMAS=public,storage \
+            -e PGRST_DB_ANON_ROLE=anon \
+            -e PGRST_JWT_SECRET="$PALACE_TEST_JWT_SECRET" \
+            postgrest/postgrest:v14.18
+          for attempt in $(seq 1 45); do
+            if curl -fsS -o /dev/null http://127.0.0.1:3000/; then exit 0; fi
+            sleep 2
+          done
+          docker logs palace-test-postgrest
+          exit 1
+      - name: Exercise signed JWTs and API permissions with synthetic accounts
+        run: python3 tests/security-db/postgrest-http-assertions.py
+      - name: Stop disposable API
+        if: always()
+        run: docker rm -f palace-test-postgrest 2>/dev/null || true
+

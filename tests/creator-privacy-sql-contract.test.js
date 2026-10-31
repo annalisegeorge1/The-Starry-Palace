@@ -1,0 +1,55 @@
+import {describe,expect,it} from 'vitest';
+import {readFileSync} from 'node:fs';
+import {resolve} from 'node:path';
+
+// These are source-contract checks for UNAPPLIED SQL candidates.
+// Passing does NOT mean the SQL has been executed, or that RLS/RPC
+// behavior has been tested with real Postgres roles in staging.
+const readSql=file=>readFileSync(resolve(process.cwd(),'database',file),'utf8')
+  .replace(/--[^\n]*/g,'');
+
+const praise=readSql('PROPOSED-restrict-praise-state-visibility-2026-10-31.sql');
+const bookmarks=readSql('PROPOSED-guard-bookmark-counts-by-reader-age-2026-10-31.sql');
+const palaceIdentity=readSql('PROPOSED-guard-grand-palace-identity-discovery-2026-10-31.sql');
+const lore=readSql('PROPOSED-hide-unpublished-lore-chapter-metadata-2026-10-31.sql');
+
+describe('staged creator privacy SQL contract (not a database integration test)',()=>{
+ it('preserves the public praise RPC signature and pins its definer search path',()=>{
+  expect(praise).toMatch(/create or replace function public\.get_palace_praise_state\s*\(\s*p_target_kind text,\s*p_target_id uuid\s*\)/i);
+  expect(praise).toMatch(/returns jsonb\s+language plpgsql\s+security definer\s+set search_path to ''/i);
+ });
+ it('guards both work and chapter praise using existing visibility checks',()=>{
+  expect(praise).toMatch(/private\.is_work_owner\(w\.id\)/i);
+  expect(praise).toMatch(/private\.is_accepted_work_collaborator\(w\.id\)/i);
+  expect(praise).toMatch(/private\.member_meets_age\(w\.minimum_reader_age\)/i);
+  expect(praise).toMatch(/private\.can_read_chapter\(c\.work_id, c\.status\)/i);
+  expect(praise).toMatch(/if not coalesce\(v_allowed, false\) then[\s\S]*?return jsonb_build_object/i);
+  expect(praise).toMatch(/where giver_id = v_user and target_kind = p_target_kind and target_id = p_target_id/i);
+ });
+ it('preserves count RPC output and request limits with age-aware access',()=>{
+  expect(bookmarks).toMatch(/create or replace function public\.get_reading_room_bookmark_counts\s*\(\s*p_work_ids uuid\[\]\s*\)/i);
+  expect(bookmarks).toMatch(/returns table\(work_id uuid, bookmark_count bigint\)\s+language sql\s+stable\s+security definer\s+set search_path to ''/i);
+  expect(bookmarks).toMatch(/cardinality\(p_work_ids\) between 1 and 100/i);
+  expect(bookmarks).toMatch(/w\.publication_status = 'published'/i);
+  expect(bookmarks).toMatch(/private\.member_meets_age\(w\.minimum_reader_age\)/i);
+  expect(bookmarks).toMatch(/w\.visibility = 'members' and \(select auth\.uid\(\)\) is not null/i);
+  expect(bookmarks).toMatch(/private\.is_accepted_work_collaborator\(w\.id\)/i);
+ });
+ it('aligns the publicly callable Grand Palace identity RPC with profile discovery privacy',()=>{
+  expect(palaceIdentity).toMatch(/create or replace function public\.get_grand_palace_identity\(p_member uuid\)/i);
+  expect(palaceIdentity).toMatch(/stable security definer\s+set search_path to ''/i);
+  expect(palaceIdentity).toMatch(/where p\.id=p_member\s+and private\.viewer_can_discover_profile\(p\.id\)/i);
+  expect(palaceIdentity).not.toMatch(/p\.visibility\s*<>\s*'hidden'/i);
+  expect(palaceIdentity).toMatch(/'palace_id'/i);
+  expect(palaceIdentity).toMatch(/'honours'/i);
+ });
+ it('hides draft unlock chapter identifiers and titles from non-owner lore readers',()=>{
+  expect(lore).toMatch(/create or replace function public\.get_work_lore\(p_work_id uuid\)/i);
+  expect(lore).toMatch(/security definer\s+set search_path to ''/i);
+  expect(lore).toMatch(/unlock_chapter_id', case[\s\S]*?when unlock\.status = 'published' then unlock\.id[\s\S]*?else null/i);
+  expect(lore).toMatch(/unlock_chapter', case[\s\S]*?unlock\.id is not null and \(v_user = v_owner or unlock\.status = 'published'\)/i);
+  expect(lore).toMatch(/c\.id = l\.unlock_chapter_id and c\.work_id = l\.work_id/i);
+  expect(lore).toMatch(/l\.reveal_mode = 'after_chapter'[\s\S]*?unlock\.status = 'published'[\s\S]*?unlock\.position <= v_progress_position/i);
+  expect(lore).toMatch(/private\.member_meets_age\(w\.minimum_reader_age\)/i);
+ });
+});
