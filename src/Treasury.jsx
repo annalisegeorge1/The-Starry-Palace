@@ -4,6 +4,7 @@ import badges from './badges.json';
 import originals from './originalBadges.json';
 import PalaceBadge from './PalaceBadge';
 import PalaceGlowIcon from './PalaceGlowIcon';
+import {PalaceTopicHelp} from './PalaceGuidebook';
 import PalaceGift, { giftCourt, giftCourts, giftEdition, giftEditions } from './PalaceGift';
 import { ascendPalaceGift, createGiftTradeOffer, getGiftCatalogue, getGiftTrades, getTreasury, removeProfileAchievementShowcase, removeProfileGiftShowcase, respondGiftTradeOffer, searchMembers, setProfileAchievementShowcase, setProfileGiftShowcase } from './palaceData';
 import './treasury.css';
@@ -150,12 +151,12 @@ export default function Treasury({Frame}) {
  return <Frame privateArea><div className="treasury-gallery">
   <section className="room-title treasury-catalogue-head">
    <p className="eyebrow">COLLECT · ACHIEVE · CELEBRATE</p>
-   <h1>Your Royal Treasury</h1>
+   <h1>Your Royal Treasury <PalaceTopicHelp id="treasury"/></h1>
    <p className="lede">The original 175 Palace badges, the expanded achievement paths, and 600 painted treasures in the live gift collection live together here.</p>
    <p>Catalogue views are previews only. Earned badges, owned gifts, duplicate counts and showcase choices remain tied to verified Palace activity.</p>
   </section>
 
-  <section className="catalogue-celestial-doorway"><div><p className="eyebrow">CELESTIAL HONOURS</p><h2>Special titles now live in the Royal Treasury.</h2><p>Your Celestial Points, earned title constellations and point history have their own chamber so the Full Catalogue can stay focused on badges and treasures.</p></div><a href="/treasury?tab=titles" className="button-moonstone">Open Celestial Titles →</a></section>
+  <section className="catalogue-celestial-doorway"><div><p className="eyebrow">CELESTIAL HONOURS</p><h2>Special titles now live in the Royal Treasury. <PalaceTopicHelp id="titles"/></h2><p>Your Celestial Points, earned title constellations and point history have their own chamber so the Full Catalogue can stay focused on badges and treasures.</p></div><a href="/treasury?tab=titles" className="button-moonstone">Open Celestial Titles →</a></section>
 
   <div className="badge-collection-switch treasury-collection-switch" role="group" aria-label="Treasury collection">
    <button aria-pressed={collection!=='gifts'} onClick={()=>choose('expanded')}><PalaceGlowIcon name="milestone-path" tone="silver" size="mini" className="treasury-catalogue-tab-icon"/>Badges</button>
@@ -179,7 +180,7 @@ export default function Treasury({Frame}) {
     <article><strong>{duplicateDistinct}</strong><span>duplicate gifts</span></article>
     <article><strong>{ascendableDistinct}</strong><span>ready to ascend</span></article>
    </section>
-   <details className="treasury-collection-tools"><summary>Explore courts & duplicate exchange</summary>   <section className="gift-exchange-desk"><div><p className="eyebrow">DUPLICATE EXCHANGE</p><h2>Trade without giving up your only copy.</h2><p>Trades exchange one duplicate tier for one duplicate tier. Ownership is checked again when the recipient accepts.</p></div><div className="gift-exchange-stats"><span><strong>{pendingIncoming.length}</strong> incoming</span><span><strong>{pendingOutgoing.length}</strong> outgoing</span><button disabled={!duplicateRows.length} onClick={openTrade}>{duplicateRows.length?'Propose a trade':'No duplicates to trade'}</button></div></section>
+   <details className="treasury-collection-tools"><summary>Explore courts & duplicate exchange</summary><div className="palace-page-help-link"><PalaceTopicHelp id="trading"/> Check how duplicates and tiers work</div>   <section className="gift-exchange-desk"><div><p className="eyebrow">DUPLICATE EXCHANGE</p><h2>Trade without giving up your only copy.</h2><p>Trades exchange one duplicate tier for one duplicate tier. Ownership is checked again when the recipient accepts.</p></div><div className="gift-exchange-stats"><span><strong>{pendingIncoming.length}</strong> incoming</span><span><strong>{pendingOutgoing.length}</strong> outgoing</span><button disabled={!duplicateRows.length} onClick={openTrade}>{duplicateRows.length?'Propose a trade':'No duplicates to trade'}</button></div></section>
    {(pendingIncoming.length>0||pendingOutgoing.length>0)&&<section className="gift-trade-list">{[...pendingIncoming,...pendingOutgoing].map(t=>{const incoming=t.recipient_id===session.user.id;return <article key={t.id}><div><small>{incoming?'INCOMING':'OUTGOING'} · {t.status}</small><h3>{incoming?(t.offerer?.display_name||t.offerer?.username||'Palace member'):(t.recipient?.display_name||t.recipient?.username||'Palace member')}</h3><p><strong>{t.offeredGift?.name||'Treasure'} · {t.offered_tier}</strong><span> ⇄ </span><strong>{t.requestedGift?.name||'Treasure'} · {t.requested_tier}</strong></p>{t.note&&<blockquote>{t.note}</blockquote>}</div><div>{incoming?<><button disabled={!!tradeBusy} onClick={()=>respondTrade(t.id,'accept')}>Accept trade</button><button className="quiet-button" disabled={!!tradeBusy} onClick={()=>respondTrade(t.id,'decline')}>Decline</button></>:<button className="quiet-button" disabled={!!tradeBusy} onClick={()=>respondTrade(t.id,'cancel')}>Cancel offer</button>}</div></article>})}</section>}
    <div className="gift-court-atlas" aria-label="Palace court atlas">
     {giftCourts.map((c,index)=>{const progress=courtProgress.get(c.name)||{owned:0,total:0};return <button key={c.slug} aria-pressed={selectedCourt===c.name} className={selectedCourt===c.name?'active':''} style={{'--court-accent':c.accent,'--court-glow':c.glow}} onClick={()=>setGiftCourt(selectedCourt===c.name?'all':c.name)}>
