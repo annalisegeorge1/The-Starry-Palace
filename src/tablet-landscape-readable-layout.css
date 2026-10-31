@@ -1,0 +1,341 @@
+/* Landscape/tablet content-width repair — the permanent sidebar leaves
+   far less usable space than window.innerWidth suggests. Reflow content
+   cards, not the sidebar, member data, rewards or manuscript controls.
+   Mobile phone designs (<=760px) and wide desktop remain unchanged. */
+@media(min-width:761px) and (max-width:1400px) {
+  /* Keep the sticky topbar on ONE row until search is explicitly opened.
+     Search remains keyboard/touch accessible via the real magnifier. */
+  .palace-shell.full-palace-shell .full-stage>header.topbar.full-topbar {
+    position:sticky!important;
+    top:0!important;
+    z-index:120!important;
+    height:auto!important;
+    min-height:0!important;
+    padding:10px clamp(10px,1.3vw,18px)!important;
+    isolation:isolate!important;
+    background:#0e162f!important;
+    background-image:linear-gradient(120deg,#111934,#0d142b 72%,#141c38)!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+    box-shadow:0 8px 18px rgba(4,8,26,.35)!important;
+    border-bottom:1px solid rgba(175,171,227,.28)!important;
+  }
+  .palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar {
+    background:#f0eaf8!important;
+    background-image:linear-gradient(120deg,#f4f0fb,#e7e9fa)!important;
+    border-bottom-color:rgba(104,93,155,.24)!important;
+    box-shadow:0 7px 16px rgba(35,26,65,.12)!important;
+  }
+  .palace-shell.full-palace-shell .full-topbar>.full-topbar-row {
+    display:flex!important;
+    flex-wrap:wrap!important;
+    align-items:center!important;
+    column-gap:9px!important;
+    row-gap:8px!important;
+    min-width:0!important;
+    max-width:100%!important;
+  }
+  .palace-shell.full-palace-shell .full-topbar .full-brand {
+    flex:1 1 auto!important;
+    min-width:0!important;
+    gap:8px!important;
+  }
+  .palace-shell.full-palace-shell .full-topbar .full-brand>a {
+    min-width:0!important;
+    gap:8px!important;
+  }
+  .palace-shell.full-palace-shell .full-topbar .full-brand strong {
+    font-size:clamp(1rem,1.75vw,1.35rem)!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+  .palace-shell.full-palace-shell .full-topbar .full-brand>small,
+  .palace-shell.full-palace-shell .full-topbar .top-room-context,
+  .palace-shell.full-palace-shell .full-topbar .command-trigger.palace-home-command-trigger {
+    display:none!important;
+  }
+  .palace-shell.full-palace-shell .full-topbar .full-top-actions {
+    display:flex!important;
+    flex:0 0 auto!important;
+    grid-column:auto!important;
+    margin-left:auto!important;
+    align-items:center!important;
+    justify-self:auto!important;
+    gap:5px!important;
+    min-width:0!important;
+  }
+  .palace-shell.full-palace-shell .full-topbar .palace-mobile-home-search-trigger {
+    display:inline-grid!important;
+    place-items:center!important;
+    flex:0 0 42px!important;
+    width:42px!important;
+    height:42px!important;
+    min-width:42px!important;
+    padding:8px!important;
+    border:1px solid rgba(180,169,225,.4)!important;
+    border-radius:12px!important;
+    background:rgba(65,63,116,.25)!important;
+    color:inherit!important;
+    cursor:pointer;
+  }
+  .palace-shell.full-palace-shell .full-topbar .palace-mobile-home-search-trigger[aria-expanded=true] {
+    border-color:rgba(202,195,245,.85)!important;
+    background:rgba(111,99,183,.42)!important;
+  }
+  .palace-shell.full-palace-shell .full-topbar form.global-search-live.palace-global-search-collapsed {
+    display:none!important;
+    visibility:hidden!important;
+    height:0!important;
+    padding:0!important;
+    margin:0!important;
+    border:0!important;
+  }
+  .palace-shell.full-palace-shell .full-topbar form.global-search-live.palace-global-search-expanded {
+    order:3!important;
+    display:flex!important;
+    visibility:visible!important;
+    flex:1 1 100%!important;
+    grid-column:1/-1!important;
+    grid-row:auto!important;
+    width:100%!important;
+    min-width:0!important;
+    height:46px!important;
+    margin:0!important;
+  }
+  .palace-shell.full-palace-shell .full-topbar .write-action {
+    display:inline-grid!important;
+    place-items:center!important;
+    flex:0 0 42px!important;
+    width:42px!important;
+    min-width:42px!important;
+    height:42px!important;
+    min-height:42px!important;
+    padding:0!important;
+    gap:0!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+    font-size:1.25rem!important;
+  }
+  .palace-shell.full-palace-shell .full-topbar .write-action>span {display:none!important}
+  .palace-shell.full-palace-shell .full-topbar .top-icon-link{
+    width:42px!important;
+    height:42px!important;
+    min-width:42px!important;
+    min-height:42px!important;
+    flex:0 0 42px!important;
+  }
+  .palace-shell.full-palace-shell .palace-passage{
+    position:relative!important;
+    top:auto!important;
+    z-index:4!important;
+    min-width:0!important;
+  }
+  .palace-shell.full-palace-shell .palace-passage-doors{
+    min-width:0!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    overscroll-behavior-x:contain;
+    scrollbar-width:thin;
+  }
+  .palace-shell.full-palace-shell .palace-passage-doors>a{
+    flex:0 0 auto!important;
+    min-width:145px!important;
+  }
+  .palace-shell.full-palace-shell .full-stage>main#palace-content{
+    min-width:0!important;
+    scroll-padding-top:78px!important;
+  }
+  .palace-shell.full-palace-shell :is(#chamber-palace,#chamber-worlds,#chamber-notes,#chamber-honours,#chamber-about){
+    scroll-margin-top:80px!important;
+  }
+
+  /* Royal boxes: 5 hard-coded columns leave ~100px per card on tablets,
+     and literally split "Monarch" in half. Favor a real minimum card width. */
+  .palace-shell.full-palace-shell .grand-palace-hall .grand-box-grid{
+    display:grid!important;
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,235px),1fr))!important;
+    gap:13px!important;
+    min-width:0!important;
+  }
+  .palace-shell.full-palace-shell .grand-box-grid>.grand-box{
+    min-width:0!important;
+    width:auto!important;
+    max-width:none!important;
+    padding:15px!important;
+  }
+  .palace-shell.full-palace-shell .grand-box-grid>.grand-box>small,
+  .palace-shell.full-palace-shell .grand-box-grid>.grand-box>h3,
+  .palace-shell.full-palace-shell .grand-box-grid>.grand-box>p{
+    min-width:0!important;
+    max-width:100%!important;
+    white-space:normal!important;
+    word-break:normal!important;
+    overflow-wrap:break-word!important;
+    hyphens:none!important;
+  }
+  .palace-shell.full-palace-shell .grand-box-grid>.grand-box>h3{
+    font-size:clamp(1rem,1.65vw,1.24rem)!important;
+    line-height:1.27!important;
+  }
+
+  /* Commons: the in-page right rail must not be another squeezed column
+     after the outer Palace sidebar has already taken tablet screen width. */
+  .palace-shell.full-palace-shell .palace-social-layout{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:16px!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  .palace-shell.full-palace-shell .palace-social-layout>.palace-social-column,
+  .palace-shell.full-palace-shell .palace-social-layout>.palace-social-rail{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+  }
+  .palace-shell.full-palace-shell .palace-social-rail>.chic-rail-card{
+    min-width:0!important;
+    width:100%!important;
+    max-width:100%!important;
+  }
+  .palace-shell.full-palace-shell .salon-prompt-grid{
+    display:grid!important;
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))!important;
+    gap:13px!important;
+    min-width:0!important;
+  }
+  .palace-shell.full-palace-shell .salon-prompt-grid>article{
+    min-width:0!important;
+    max-width:100%!important;
+    width:100%!important;
+    box-sizing:border-box!important;
+  }
+  .palace-shell.full-palace-shell .palace-almanac-card .following-chamber-empty.compact{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    grid-template-rows:auto!important;
+    gap:9px!important;
+    justify-items:start!important;
+    align-items:start!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    box-sizing:border-box!important;
+  }
+  .palace-shell.full-palace-shell .palace-almanac-card .following-chamber-empty.compact>*{
+    grid-column:1/-1!important;
+    width:auto!important;
+    min-width:0!important;
+    max-width:100%!important;
+    position:static!important;
+    float:none!important;
+    word-break:normal!important;
+    overflow-wrap:break-word!important;
+  }
+  .palace-shell.full-palace-shell .palace-almanac-card .following-chamber-empty.compact>p{
+    display:block!important;
+    width:100%!important;
+    white-space:normal!important;
+    line-height:1.55!important;
+    margin:0!important;
+    word-break:normal!important;
+    overflow-wrap:break-word!important;
+  }
+  .palace-shell.full-palace-shell .palace-almanac-card .following-chamber-empty.compact>a{
+    display:inline-flex!important;
+    justify-self:start!important;
+    white-space:normal!important;
+  }
+  .palace-shell.full-palace-shell .palace-almanac-card .section-heading{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    justify-content:space-between!important;
+    align-items:flex-start!important;
+    gap:12px!important;
+  }
+
+  /* My Palace: two useful feature doors followed by a 2x2 supporting grid,
+     not four 90px mini-cards with one-letter labels. */
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"]
+    .legacy-home-dashboard.palace-command-centre>.palace-home-shortcuts-calm{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:11px!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"]
+    .palace-home-shortcuts-calm>a,
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"]
+    .palace-home-shortcuts-calm>a:nth-child(-n+2),
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"]
+    .palace-home-shortcuts-calm>a:nth-child(n+3){
+    grid-column:span 1!important;
+    display:flex!important;
+    flex-direction:row!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    min-height:70px!important;
+    padding:12px!important;
+    gap:10px!important;
+    box-sizing:border-box!important;
+    text-align:left!important;
+  }
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"]
+    .palace-home-shortcuts-calm>a>span{
+    display:inline-grid!important;
+    place-items:center!important;
+    flex:0 0 42px!important;
+    width:42px!important;
+    height:42px!important;
+    min-width:42px!important;
+    margin:0!important;
+    font-size:inherit!important;
+  }
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"]
+    .palace-home-shortcuts-calm>a>small{
+    display:block!important;
+    flex:1 1 auto!important;
+    min-width:0!important;
+    width:auto!important;
+    font-size:.86rem!important;
+    line-height:1.35!important;
+    white-space:normal!important;
+    word-break:normal!important;
+    overflow-wrap:break-word!important;
+    writing-mode:horizontal-tb!important;
+    text-orientation:mixed!important;
+  }
+
+  /* Keep library controls readable before the first draft, not overlaid. */
+  .palace-shell.full-palace-shell .chic-writing-library-tools{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    min-width:0!important;
+    max-width:100%!important;
+    gap:9px!important;
+  }
+  .palace-shell.full-palace-shell .chic-writing-library-tools .writing-library-search{
+    flex:1 1 100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+  }
+  .palace-shell.full-palace-shell .chic-writing-library-tools>select{
+    flex:1 1 calc(50% - 9px)!important;
+    width:auto!important;
+    min-width:0!important;
+    max-width:100%!important;
+    box-sizing:border-box!important;
+  }
+}
+@media(min-width:761px) and (max-width:950px){
+  .palace-shell.full-palace-shell .full-topbar .full-brand strong{
+    max-width:180px!important;
+  }
+}
