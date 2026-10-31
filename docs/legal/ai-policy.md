@@ -8,9 +8,11 @@ The Starry Palace exists to support writers, readers, poets, artists and storyte
 
 ### Member manuscripts and artwork
 
-The Palace does not use members' manuscripts or artwork to train AI models. The Palace does not currently offer a generative AI or AI-analysis feature that processes member submissions. Unpublished writing, private messages, identifiable member information and production database exports must not be placed into external AI coding assistants, test tools or model-training datasets. Development and support work should use source code, synthetic examples or properly redacted material.
+**The Palace has no intention of using AI models with member data on any front.** The Palace will not submit, expose, or make member data available to an AI model or AI service for training, fine-tuning, evaluation, prompting, generation, analysis, classification, moderation, recommendations, profiling, or any other AI processing. This applies to all member data: account and profile information, dates of birth, private messages, reports, activity and technical records, and all creative content, including drafts, published writing, images, comics, comments and uploaded files. The Palace will not build or offer an AI feature that processes member data, and will not give AI providers access to member data for such a feature.
 
-The Palace's hosting, authentication, database and storage providers process information to operate the website. That operational processing is separate from training an AI model. If the Palace proposes an AI feature that accesses member content, it will first describe the content involved, the purpose, provider, retention and member choices, and obtain any permission required before the feature is activated.
+People maintaining the Palace must not place member data, private messages, unpublished work, identifiable records or production database exports into AI coding assistants, test tools or other AI services. Development and troubleshooting must use source code, synthetic examples or properly redacted material that does not identify members or reveal their content.
+
+Hosting, authentication, database, storage and security providers may process information to deliver their contracted services as described in the Privacy Policy. The Palace will not direct them to use member data with AI models. This operational processing does not grant the Palace or a provider permission to use member data for AI training or other AI processing.
 
 ### Member use of AI
 
