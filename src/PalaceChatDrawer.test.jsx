@@ -278,6 +278,7 @@ describe('Palace quick chat',()=>{
   fireEvent.click(screen.getByRole('button',{name:'Juniper'}));
   expect(container.querySelector('.palace-chat-dock.is-thread-open')).toBeTruthy();
   expect(within(screen.getByRole('log',{name:'Conversation messages'})).getByText('Juniper letter')).toBeTruthy();
+  expect(screen.getByRole('button',{name:'Back to chat list'})).toBeTruthy();
   fireEvent.click(screen.getByRole('button',{name:'Back to conversations'}));
   expect(container.querySelector('.palace-chat-dock.is-thread-open')).toBeNull();
   fireEvent.click(screen.getByRole('button',{name:'River'}));
