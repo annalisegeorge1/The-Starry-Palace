@@ -32,16 +32,16 @@ describe('mobile Library screenshot fixes',()=>{
   expect(shell).toContain("document.body.dataset.palaceRoom=activeRoom?.id||'unknown'");
   expect(css).toContain('body[data-palace-room="library"] .palace-chat-dock:not(.is-open)');
   expect(css).toContain('.palace-chat-launch');
-  expect(css).toContain('.restored-floating-controls .theme-orb');
+  expect(shell).not.toContain('className="float-btn theme-orb"');
   expect(shell).toContain("Switch to Daylight");
   expect(shell).toContain("Switch to Nightfall");
  });
  it('keeps Library search and Letters accessible without redundant mobile floating links',()=>{
   expect(css).toContain('[data-palace-room="library"] .full-topbar .global-search-live');
-  expect(css).toContain('[data-palace-room="library"] .restored-floating-controls .notification-anchor');
+  expect(shell).toContain('className="mobile-palace-more"');
   expect(shell).toContain('aria-label="Open Palace quick navigation"');
-  expect(shell).toContain('className="float-btn palace-float-sigil notification-anchor" to="/letters"');
-  expect(shell).toContain('className="float-btn theme-orb"');
+  expect(shell).toContain('to="/letters" className={letterBadge?');
+  expect(shell).toContain('className="sidebar-theme"');
   expect(rooms).toContain('aria-label="Search the current Library shelf"');
  });
 });
