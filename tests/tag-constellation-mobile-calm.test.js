@@ -44,7 +44,11 @@ describe('Tag Constellation mobile discovery flow',()=>{
  it('styles only tags plus header surface rather than modifying header icons',()=>{
   expect(shell).toContain("import './tag-constellation-mobile-calm.css';");
   expect(css).toContain('.legacy-tags-page');
-  expect(css).toContain('padding-bottom:calc(160px');
+  expect(css).toContain('padding-bottom:calc(68px');
+  expect(tag).toContain('className="tag-quick-paths"');
+  expect(tag).toContain('className="tag-filter-backdrop"');
+  expect(tag).toContain('className="tag-filter-sheet-heading"');
+  expect(css).toContain('position:fixed!important;');
   expect(css).toContain('header.topbar.full-topbar');
   expect(css).not.toContain('.top-icon-link');
   expect(css).not.toContain('.write-action');
