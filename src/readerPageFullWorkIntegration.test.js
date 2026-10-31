@@ -10,6 +10,18 @@ const full=file('src/FullWorkReader.jsx');
 const paged=file('src/PalacePagedReader.jsx');
 const styles=file('src/reader-page-turn.css');
 describe('page turns and whole-work reading safety',()=>{
+ it('keeps full-work navigation calm without removing any reader settings',()=>{
+  expect(full).toContain('palace-full-chapter-jump');
+  expect(full).toContain('Jump to a chapter in this work');
+  expect(full).toContain('aria-controls="palace-full-work-settings"');
+  expect(full).toContain("flow==='scroll'?'pages':'scroll'");
+  expect(full).not.toContain('className="reader-flow-select"');
+  expect(full).not.toContain("Read the published chapters together without changing");
+  expect(full).toContain("writePalacePreference('palace-reader-layout',value)");
+  expect(full).toContain("writePalacePreference('palace-reader-flow',next)");
+  expect(full).toContain("safeReaderHtml(ch.body_html");
+  expect(styles).toContain('.palace-full-chapter-jump :is(summary,select):focus-visible');
+ });
  it('keeps chapter scrolling default and stores reader-selected page turns',()=>{
   expect(rooms).toContain("readPalaceChoice('palace-reader-flow',READER_FLOWS,'scroll')");
   expect(rooms).toContain("writePalacePreference('palace-reader-flow',flow)");

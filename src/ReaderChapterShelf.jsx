@@ -25,11 +25,10 @@ function ReaderChapterShelf({chapters=[],chapterId,workSlug}){
  const [page,setPage]=useState(()=>initialReaderChapterPage(chapters,chapterId));
  const matches=useMemo(()=>matchReaderChapters(chapters,query),[chapters,query]);
  const shelf=useMemo(()=>readerChapterPage(matches,page,READER_CHAPTER_PAGE_SIZE),[matches,page]);
- const currentIndex=chapters.findIndex(ch=>ch.id===chapterId);
  const readableTotal=chapters.length;
  return <section id="palace-reader-chapters" className="reader-chapter-shelf" aria-label="Browse this story's chapters">
   <details open={open} onToggle={event=>setOpen(event.currentTarget.open)}>
-   <summary><span className="reader-chapter-shelf-icon" aria-hidden="true">▤</span><span className="reader-chapter-shelf-heading"><small>THIS WORK · CHAPTERS</small><strong>Find another place in this story</strong><em>{readableTotal} readable {readableTotal===1?'chapter':'chapters'} · Your place: {Math.max(1,currentIndex+1)} of {readableTotal}</em></span><span className="reader-chapter-shelf-open" aria-hidden="true">{open?'Close −':'Explore +'}</span></summary>
+   <summary><span className="reader-chapter-shelf-icon" aria-hidden="true">▤</span><span className="reader-chapter-shelf-heading"><strong>Browse chapters</strong><em>{readableTotal} {readableTotal===1?'chapter':'chapters'} available</em></span><span className="reader-chapter-shelf-open" aria-hidden="true">{open?'Close −':'Explore +'}</span></summary>
    <div className="reader-chapter-shelf-body">
     <label className="reader-chapter-shelf-search"><span>Find a chapter by title or number</span><input type="search" aria-label="Search chapters in this story" value={query} placeholder="Try Chapter 12 or a chapter title…" onChange={event=>{setQuery(event.target.value);setPage(0)}}/></label>
     <div className="reader-chapter-shelf-results" role="status" aria-live="polite">{matches.length?'Showing '+shelf.start+'–'+shelf.end+' of '+matches.length+' chapters':'No chapters match this search.'}</div>

@@ -5,7 +5,8 @@ import {orderedReaderChapters,matchReaderChapters,initialReaderChapterPage,reade
 const chapters=Array.from({length:47},(_,i)=>({id:'ch'+(i+1),position:i+1,title:i===29?'The Falling Star':'Chapter '+(i+1),word_count:800,status:'published'}));
 describe('Compact long-work chapter shelf',()=>{
  it('opens directly from the Chapter list anchor, even for long books',()=>{
-  expect(shouldOpenReaderChapterShelf(8,'')).toBe(true);
+  expect(shouldOpenReaderChapterShelf(3,'')).toBe(true);
+  expect(shouldOpenReaderChapterShelf(8,'')).toBe(false);
   expect(shouldOpenReaderChapterShelf(47,'')).toBe(false);
   expect(shouldOpenReaderChapterShelf(47,'#palace-reader-chapters')).toBe(true);
  });
@@ -38,5 +39,15 @@ describe('Reader chapter anchor wiring',()=>{
   expect(source).toContain("window.addEventListener('hashchange',openFromHash)");
   expect(source).toContain("document.addEventListener('click',onChapterListClick)");
   expect(source).toContain("document.removeEventListener('click',onChapterListClick)");
+ });
+});
+
+describe('Calm chapter shelf without lost navigation',()=>{
+ it('keeps the heading concise and current chapter selection accessible in the list',()=>{
+  expect(source).toContain('Browse chapters');
+  expect(source).not.toContain('Your place:');
+  expect(source).toContain("aria-current={ch.id===chapterId?'page':undefined}");
+  expect(source).toContain('Search chapters in this story');
+  expect(source).toContain("setPage(initialReaderChapterPage(chapters,chapterId))");
  });
 });
