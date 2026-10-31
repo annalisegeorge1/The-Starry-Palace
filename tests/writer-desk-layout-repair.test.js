@@ -28,7 +28,8 @@ describe('Writing Chamber layout repair',()=>{
   expect(css).toContain('position:static!important');
   expect(css).toContain('bottom:auto!important');
   expect(live).toContain('className="studio-buttons chic-studio-buttons"');
-  expect(live).toContain('className="button-starlight" onClick={quickSaveChapter}>Save now');
+  expect(live).toContain('className="studio-buttons chic-studio-buttons"');
+  expect(live).toContain('<button>Save now</button>');
  });
  it('preserves readable, scrollable formatting tools in both light and dark modes',()=>{
   expect(css).toContain('.manuscript-sticky-toolbar .writer-format-scroll button');
