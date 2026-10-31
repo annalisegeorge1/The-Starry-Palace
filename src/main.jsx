@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { createPortal } from 'react-dom';
 import { BrowserRouter, Link, NavLink, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { AuthProvider, ProtectedRoute, useAuth } from './auth';
+import { PalaceAgeGate } from './PalaceAgeGate';
 import FullWorkReader from './FullWorkReader';
 import { PalaceRouteSeo } from './usePalaceSeo';
 import { supabase } from './supabase';
@@ -719,7 +720,7 @@ function PalaceChatHost(){
  );
 }
 
-function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo pathname={location.pathname}/><PalaceBuildFreshnessWatch/><NavigationReset/><RouteStateReset/><BlankScreenWatchdog/><Frame><RouteGuard><Routes>
+function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo pathname={location.pathname}/><PalaceBuildFreshnessWatch/><NavigationReset/><RouteStateReset/><BlankScreenWatchdog/><PalaceAgeGate Frame={Frame}><Frame><RouteGuard><Routes>
  <Route path="/" element={<Home/>}/><Route path="/login" element={<React.Suspense fallback={<RouteLoading/>}><PalaceLogin Frame={Frame}/></React.Suspense>}/><Route path="/auth/callback" element={<React.Suspense fallback={<RouteLoading/>}><PalaceAuthCallback Frame={Frame}/></React.Suspense>}/>
  <Route path="/welcome" element={<ProtectedRoute><OnboardingLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
@@ -754,7 +755,7 @@ function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo
  <Route path="/search" element={<SearchLive Frame={Frame}/>}/><Route path="/honour" element={<HonourLive Frame={Frame}/>}/><Route path="/council" element={<ProtectedRoute><CouncilLive Frame={Frame}/></ProtectedRoute>}/><Route path="/council/governance" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><PalaceGovernance Frame={Frame}/></React.Suspense></ProtectedRoute>}/><Route path="/code" element={<React.Suspense fallback={<RouteLoading/>}><PalaceCodeRoom Frame={Frame}/></React.Suspense>}/><Route path="/beta" element={<React.Suspense fallback={<RouteLoading/>}><PalaceBetaGuide Frame={Frame}/></React.Suspense>}/>
  <Route path="/member/:username" element={<MemberProfileLive Frame={Frame}/>}/>
  <Route path="*" element={<Frame><section className="lost-gates-page"><div className="lost-gates-orbit"><span>☾</span><i>✦</i></div><p className="eyebrow">BEYOND THE GATES</p><h1>You left palace grounds.</h1><p>The path thinned, the lamps disappeared, and somehow you wandered beyond the Palace walls.</p><div className="lost-gates-actions"><Link className="button" to="/">Return to the Palace</Link><Link to="/search">Search for a room →</Link></div></section></Frame>}/>
- </Routes></RouteGuard><PalaceChatHost/></Frame></AuthProvider>}
+ </Routes></RouteGuard><PalaceChatHost/></Frame></PalaceAgeGate></AuthProvider>}
 
 createRoot(document.getElementById('root')).render(<React.StrictMode><PalaceRootBoundary><BrowserRouter><App/></BrowserRouter></PalaceRootBoundary></React.StrictMode>);
 

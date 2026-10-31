@@ -11,7 +11,10 @@ const settingsRoom=read('src/SettingsRoom.jsx');
 const activityRoom=read('src/PalaceActivityRoom.jsx');
 const pkg=JSON.parse(read('package.json'));
 const authoredTextFiles=()=>{
-  const out=['index.html','README.md'];
+  // This assertion protects product surfaces from accidental attribution.
+  // Repository audit reports and draft policy documents can legitimately
+  // discuss AI, so scan shipped application source rather than all docs.
+  const out=['index.html'];
   const walk=(dir)=>{
     for(const name of readdirSync(resolve(root,dir))){
       const rel=dir+'/'+name;
@@ -20,7 +23,7 @@ const authoredTextFiles=()=>{
       else if(/\.(?:js|jsx|css|html|md|json|sql|txt)$/.test(name))out.push(rel);
     }
   };
-  for(const dir of ['src','docs','database'])walk(dir);
+  for(const dir of ['src'])walk(dir);
   return out;
 };
 

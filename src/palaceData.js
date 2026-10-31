@@ -1194,7 +1194,7 @@ export async function searchPalace(term){
  }
 }
 
-export async function getWorkBySlug(slug){const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,language,completion_status,publication_status,visibility,comment_policy,constructive_criticism,translation_policy,download_policy,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(id,username,display_name,avatar_url,title),chapters(id,title,position,status,word_count,scheduled_for,published_at,updated_at)').eq('slug',slug).maybeSingle();if(error)throw error;if(!data)return null;data.chapters=(data.chapters||[]).sort((a,b)=>a.position-b.position);return data}
+export async function getWorkBySlug(slug){const{data,error}=await needClient().from('works').select('id,author_id,title,slug,summary,work_type,rating,minimum_reader_age,language,completion_status,publication_status,visibility,comment_policy,constructive_criticism,translation_policy,download_policy,cover_url,first_published_at,last_published_at,profiles!works_author_id_fkey(id,username,display_name,avatar_url,title),chapters(id,title,position,status,word_count,scheduled_for,published_at,updated_at)').eq('slug',slug).maybeSingle();if(error)throw error;if(!data)return null;data.chapters=(data.chapters||[]).sort((a,b)=>a.position-b.position);return data}
 export async function getWorkExport(slug){
  const work=await getWorkBySlug(slug);if(!work)return null;
  const{data:chapters,error}=await needClient().from('chapters').select('id,title,position,body_html,status,revision_note,word_count,created_at,updated_at,published_at').eq('work_id',work.id).order('position');
@@ -1241,10 +1241,13 @@ export async function setChapterStar(userId,chapterId,starred){
  return starred
 }
 export async function saveWork(userId,workId,patch){
+ const rating=patch.rating;
+ const ratingFloor=({teen:13,mature:16,explicit:18})[rating]||12;
  const allowed={
   title:patch.title?.trim(),
   summary:patch.summary??'',
   rating:patch.rating,
+  minimum_reader_age:[12,13,16,18].includes(Number(patch.minimum_reader_age))?Math.max(ratingFloor,Number(patch.minimum_reader_age)):ratingFloor,
   language:patch.language?.trim()||'en',
   completion_status:patch.completion_status,
   visibility:patch.visibility,
@@ -1498,10 +1501,12 @@ export async function createComicDraft(userId,title){
 }
 export async function saveComicStudio(userId,comicId,patch){
  const title=String(patch.title||'').trim();if(!title)throw new Error('Give your comic a title.');
+ const ratingFloor=({teen:13,mature:16,explicit:18})[patch.rating]||12;
  const allowed={
   title:title.slice(0,180),
   summary:String(patch.summary||'').trim().slice(0,2000),
   rating:['general','teen','mature','explicit','not_rated'].includes(patch.rating)?patch.rating:'general',
+  minimum_reader_age:[12,13,16,18].includes(Number(patch.minimum_reader_age))?Math.max(ratingFloor,Number(patch.minimum_reader_age)):ratingFloor,
   completion_status:['in_progress','complete','hiatus','abandoned'].includes(patch.completion_status)?patch.completion_status:'in_progress',
   visibility:['public','members','private'].includes(patch.visibility)?patch.visibility:'private',
   reading_direction:['ltr','rtl','vertical'].includes(patch.reading_direction)?patch.reading_direction:'ltr',
