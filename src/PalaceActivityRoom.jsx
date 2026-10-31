@@ -5,6 +5,8 @@ import React,{useEffect,useRef,useState} from 'react';
 import {Link,useNavigate} from 'react-router-dom';
 import {useAuth} from './auth';
 import {State} from './PalaceLivePrimitives';
+import PalaceGlowIcon from './PalaceGlowIcon';
+import './palace-content-icon-refinement.css';
 import {getActivity,markNoticeRead,markAllNoticesRead,setNoticeSaved,dismissNotice} from './palaceData';
 
 export function ActivityLive({Frame}){
@@ -64,12 +66,12 @@ export function ActivityLive({Frame}){
  const m=data?.metrics||{};const savedCount=m.saved||0;
  return <Frame privateArea><section className="legacy-activity-page chic-activity-page">
   <section className="room-title activity-head chic-activity-head"><p className="eyebrow">SMALL STEPS, BRIGHT CONSTELLATIONS</p><h1>Moonlight Activity Room</h1><p className="lede">Your private notification centre gathers reading continuity, creative work, community and Palace notices without turning your attention into a public score.</p></section>
-  <section className="activity-private-banner restored chic-activity-private"><span>☾</span><div><strong>Your activity room is private.</strong><p>Reading continuity and personal activity remain account-level unless you explicitly choose to share something elsewhere.</p></div></section>
+  <section className="activity-private-banner restored chic-activity-private"><PalaceGlowIcon name="crescent-moon" tone="home" size="small" className="activity-private-sigil"/><div><strong>Your activity room is private.</strong><p>Reading continuity and personal activity remain account-level unless you explicitly choose to share something elsewhere.</p></div></section>
   <section className="activity-overview restored chic-activity-overview">
-   <article><span>✦</span><strong>{m.unread||0}</strong><small>unread notices</small></article>
-   <article><span>☆</span><strong>{savedCount}</strong><small>saved notices</small></article>
-   <article><span>▤</span><strong>{m.readingStops||0}</strong><small>reading stops</small></article>
-   <article><span>✎</span><strong>{m.publishedWorks||0}</strong><small>published works</small></article>
+   <article><PalaceGlowIcon name="celestial-star" tone="home" size="mini" className="activity-metric-sigil"/><strong>{m.unread||0}</strong><small>unread notices</small></article>
+   <article><PalaceGlowIcon name="bookmark" tone="courts" size="mini" className="activity-metric-sigil"/><strong>{savedCount}</strong><small>saved notices</small></article>
+   <article><PalaceGlowIcon name="book-open" tone="poetry" size="mini" className="activity-metric-sigil"/><strong>{m.readingStops||0}</strong><small>reading stops</small></article>
+   <article><PalaceGlowIcon name="feather" tone="fiction" size="mini" className="activity-metric-sigil"/><strong>{m.publishedWorks||0}</strong><small>published works</small></article>
   </section>
   <section className="activity-notice-panel chic-activity-panel">{actionError&&<div className="save-note life-action-error" role="alert">{actionError}<button type="button" className="quiet-button" onClick={()=>setActionError('')}>Dismiss</button></div>}
    <div className="section-heading"><div><p className="eyebrow">PALACE BELLS</p><h2>What needs your attention.</h2><p>{m.unread||0} unread notice{m.unread===1?'':'s'} across your private Palace activity.</p></div>{items.some(x=>x.unread)&&<button type="button" className="outline-button" disabled={!!noticeBusy} onClick={all}>{noticeBusy==='all'?'Marking read…':'Mark all read'}</button>}</div>
