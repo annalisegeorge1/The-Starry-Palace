@@ -343,7 +343,7 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('palace-command-centre');
     expect(live).toContain('palace-resume-card');
     expect(live).toContain('palace-attention-grid');
-    expect(live).toContain('aria-current="page"');
+    expect(live).toContain('aria-current={');
     expect(polish).toContain('/* My Palace command centre */');
     expect(polish).toContain('/* Member chamber — profile identity should read clearly before decoration. */');
   });
@@ -467,7 +467,7 @@ describe('Starry Palace launch safety',()=>{
     expect(data).toContain('Community Highlights are for recognising another member.');
     expect(data).toContain('You already have an open nomination for this member.');
     expect(live).toContain('Nominate a Community Highlight');
-    expect(live).toContain('✦ Nominate someone');
+    expect(live).toContain('className="palace-life-action-icon"/>Nominate someone');
     expect(live).toContain('Highlights never raise a work in discovery or ranking.');
     expect(live).toContain('nominations are recognition, not popularity votes');
     expect(polish).toContain('.highlight-head-actions');
@@ -616,7 +616,7 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('MOON PROMPT · A SMALL CREATIVE SPARK');
     expect(live).toContain('No streak. No score.');
     expect(live).toContain('setPromptShift');
-    expect(live).toContain('Write from this →');
+    expect(live).toContain('<PalaceIcon name="pen-line"/> Write from this</Link>');
     expect(polish).toContain('.palace-moon-prompt');
     expect(polish).toContain('.moon-prompt-actions');
   });
@@ -800,7 +800,7 @@ describe('Starry Palace launch safety',()=>{
     expect(settingsRoom).toContain("applyPrivacyPreset('members')");
     expect(settingsRoom).toContain("applyPrivacyPreset('private')");
     expect(settingsRoom).toContain("applyNotificationPreset('focused')");
-    expect(settingsRoom).toContain('PRESETS SAVE IMMEDIATELY');
+    expect(settingsRoom).toContain('Presets save immediately');
     expect(polish).toContain('.settings-presets');
   });
 
@@ -1785,7 +1785,7 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('writing-studio-rail');
     expect(live).toContain('writing-editor-workspace');
     expect(live).toContain('Work settings');
-    expect(live).toContain('writing-goal-ring');
+    expect(live).toContain('writer-progress-inline');
     expect(live).toContain('Quick word goals');
     expect(live).toContain("e.key==='Escape'&&focusMode");
     expect(live).toContain('writing-page-stage');

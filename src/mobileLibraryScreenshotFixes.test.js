@@ -40,7 +40,7 @@ describe('mobile Library screenshot fixes',()=>{
   expect(css).toContain('[data-palace-room="library"] .full-topbar .global-search-live');
   expect(css).toContain('[data-palace-room="library"] .restored-floating-controls .notification-anchor');
   expect(shell).toContain('aria-label="Open Palace quick navigation"');
-  expect(shell).toContain('className="top-icon-link" to="/letters"');
+  expect(shell).toContain('className="float-btn palace-float-sigil notification-anchor" to="/letters"');
   expect(shell).toContain('className="float-btn theme-orb"');
   expect(rooms).toContain('aria-label="Search the current Library shelf"');
  });

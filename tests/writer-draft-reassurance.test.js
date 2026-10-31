@@ -14,7 +14,7 @@ describe('writer safety and truthful save feedback',()=>{
   expect(live).toContain('writerBackupText({');
   expect(live).toContain('writerBackupFilename(data?.title,chapterTitle)');
   expect(live).toContain("new Blob([payload],{type:'text/plain;charset=utf-8'})");
-  expect(live).toContain('title="Download this chapter as plain text, independently of the cloud"');
+  expect(live).toContain('onClick={downloadDraftBackup}>↓ Download a text backup</button>');
   expect(live).toContain('Cloud save status has not changed.');
  });
  it('keeps autosave, change revisions and device recovery intact',()=>{

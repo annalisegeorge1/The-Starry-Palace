@@ -102,8 +102,9 @@ describe('Writing Chamber glass and usability pass',()=>{
   expect(css).not.toMatch(/(^|[;{}\\s])transform\\s*:/m);
  });
  it('keeps mobile chapter metrics and all real actions out of the narrow second column',()=>{
-  expect(room).toContain('className="legacy-editor-stats chic-editor-stats"');
-  expect(room).toContain('className="editor-stat-actions"');
+  expect(room).toContain('className="legacy-editor-stats chic-editor-stats writer-stats-calm"');
+  expect(room).toContain('className="writer-progress-inline"');
+  expect(room).toContain('className="writer-stats-actions"');
   expect(room).toContain('duplicateCurrentChapter');
   expect(room).toContain('openSnapshots');
   expect(css).toContain('/* LONG-SESSION MOBILE DESK');

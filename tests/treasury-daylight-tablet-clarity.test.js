@@ -33,7 +33,7 @@ describe('Treasury daylight and tablet follow-up',()=>{
  it('separates chat and theme controls without removing chat or Letters links',()=>{
   expect(css).toContain('.restored-floating-controls .notification-anchor{display:none!important}');
   expect(css).toContain('bottom:calc(91px + env(safe-area-inset-bottom,0px))');
-  expect(main).toContain('aria-label="Palace Letters"');
+  expect(main).toContain('aria-label="Open Palace Letters"');
   expect(main).toContain('<PalaceChatHost/>');
   expect(css).not.toContain('display:none!important}.palace-chat');
  });

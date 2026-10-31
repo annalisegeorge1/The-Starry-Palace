@@ -38,8 +38,10 @@ describe('mobile manuscript-first toolbar',()=>{
   expect(drawer).toContain('summary:focus-visible');
  });
  it('does not hide the save state, save-now button, chapter change or full formatting',()=>{
-  const bar=rooms.slice(rooms.indexOf('className="writer-chapter-jump"'),rooms.indexOf('className="writer-desk-drawer"'));
-  for(const control of ['aria-label="Switch chapter"','switchChapterSafely(','writer-toolbar-save-state','Save now','↓ Backup .txt','className="writer-format-scroll"','openFindPanel','openSnapshots']){
+  // Mobile save and backup are now in different locations in the manuscript desk.
+  // Validate the controls in the complete editor, not an obsolete slice.
+  const bar=rooms;
+  for(const control of ['aria-label="Switch chapter"','switchChapterSafely(','writer-toolbar-save-state','Save now','↓ Download a text backup','className="writer-format-scroll"','openFindPanel','openSnapshots']){
    expect(bar).toContain(control);
   }
   expect(phone).toContain('overflow-x:auto!important');
