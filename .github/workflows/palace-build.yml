@@ -70,6 +70,10 @@ jobs:
       - name: Test actual PostgreSQL anon/authenticated roles and manuscript RLS
         run: psql -X -v ON_ERROR_STOP=1 -f tests/security-db/fixture-role-rls-assertions.sql
 
+      - name: Build synthetic private file metadata and access helpers
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/security-db/fixture-storage-schema.sql
+      - name: Test comic originals, reader copies and chat photo RLS
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/security-db/fixture-storage-rls-assertions.sql
       - name: Initialize ephemeral JWT signing key
         run: echo "PALACE_TEST_JWT_SECRET=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
       - name: Start disposable PostgREST 14 for HTTP permission tests
