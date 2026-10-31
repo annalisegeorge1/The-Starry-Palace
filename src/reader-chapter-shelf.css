@@ -1,10 +1,10 @@
 /* One compact shelf instead of an always-expanded wall of links below long chapters. */
 .reader-page .reader-chapter-shelf{margin:clamp(22px,4vw,42px) 0 18px;min-width:0;scroll-margin-top:90px}
 .reader-chapter-shelf details{overflow:hidden;border:1px solid rgba(162,145,215,.45);border-radius:18px;background:linear-gradient(115deg,rgba(102,77,166,.13),rgba(48,130,161,.10));color:inherit}
-.reader-chapter-shelf summary{display:flex;align-items:center;gap:12px;min-height:82px;padding:16px clamp(14px,2.5vw,22px);cursor:pointer;list-style:none}
+.reader-chapter-shelf summary{display:flex;align-items:center;gap:12px;min-height:62px;padding:11px clamp(14px,2.5vw,20px);cursor:pointer;list-style:none}
 .reader-chapter-shelf summary::-webkit-details-marker{display:none}
-.reader-chapter-shelf-icon{flex:none;display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:rgba(133,102,200,.18);font-size:1.2rem}
-.reader-chapter-shelf-heading{display:grid;gap:3px;min-width:0}
+ .reader-chapter-shelf-icon{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:12px;background:rgba(133,102,200,.18);font-size:1.2rem}
+.reader-chapter-shelf-heading{display:grid;gap:2px;min-width:0}
 .reader-chapter-shelf-heading small{font:800 .65rem/1.4 system-ui,sans-serif;letter-spacing:.13em;opacity:.76}
 .reader-chapter-shelf-heading strong{font:650 clamp(1rem,2.1vw,1.18rem)/1.35 Georgia,serif;overflow-wrap:anywhere}
 .reader-chapter-shelf-heading em{font:500 .73rem/1.45 system-ui,sans-serif;opacity:.75}
