@@ -149,7 +149,7 @@ If a provision is found unenforceable, the remaining provisions continue to appl
 ### 21. Changes, questions and taking effect
 The Palace may amend its terms after giving appropriate notice of material changes, particularly changes affecting rights, privacy, payments or content policies. The final policy must identify the operator, contact details, date in force, minimum member age, linked Privacy Policy and report/appeal routes. Members will be informed when final terms take effect. The current document is **only a draft for review** and imposes no new live contractual terms.
 
-Questions and feedback are welcome at [contact email or form to be confirmed]. We want to build a place where writers can create, share, connect and find fellowship without surrendering ownership of their work.
+Questions and feedback are welcome at annalise.pierre.28@gmail.com. We want to build a place where writers can create, share, connect and find fellowship without surrendering ownership of their work.
 
 ---
 
