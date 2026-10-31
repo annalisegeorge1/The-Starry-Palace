@@ -54,3 +54,19 @@ export async function signedPalaceChatPhoto(path){
  if(error)throw error;
  return data.signedUrl;
 }
+
+/**
+ * View a private conversation photo using the viewer's current session.
+ * Unlike a signed URL, the authorization check happens on each download
+ * request; callers should display the returned Blob with a short-lived
+ * object URL and revoke that object URL when the component is removed.
+ */
+export async function downloadPalaceChatPhoto(path){
+ if(!supabase||typeof path!=='string'||!/^(direct|group)\/[0-9a-f-]{36}\/[0-9a-f-]{36}\/[0-9a-f-]{36}\.webp$/.test(path))
+  throw new Error('Invalid private photo location.');
+ const {data,error}=await supabase.storage.from(PALACE_CHAT_PHOTO_BUCKET).download(path);
+ if(error)throw error;
+ if(!data||typeof data.size!=='number'||typeof data.type!=='string')
+  throw new Error('Private photo could not be opened.');
+ return data;
+}
