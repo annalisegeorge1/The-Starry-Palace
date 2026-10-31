@@ -1,7 +1,7 @@
 import {describe,it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
 import {
- palaceRecentDoorKey,readPalaceRecentDoors,addPalaceRecentDoor,isSafeRecentPalacePath
+ palaceRecentDoorKey,readPalaceRecentDoors,addPalaceRecentDoor,isSafeRecentPalacePath,distinctRecentPalaceRooms,palaceRecentRoomGroup
 } from './palaceRecentDoors';
 
 const page=(label,path)=>({label,path,icon:'✦',detail:'Recently visited'});
@@ -64,5 +64,28 @@ describe('member-private Palace recent navigation',()=>{
   expect(main).toContain('readPalaceRecentDoors(safeLocalGet,recentDoorsKey)');
   expect(main).not.toContain("safeLocalGet('palace-recent-routes')");
   expect(main).not.toContain("safeLocalSet('palace-recent-routes'");
+ });
+});
+
+describe('recent home links represent distinct Palace rooms',()=>{
+ it('collapses multiple Treasury tabs without replacing the actual last-visited destination',()=>{
+  const doors=[
+   page('Badges & achievements','/treasury?tab=achievements'),
+   page('Full catalogue','/treasury/catalogue'),
+   page('Royal Treasury','/treasury'),
+   page('Reading Rooms','/reading'),
+   page('Writing Chamber','/writing')
+  ];
+  expect(distinctRecentPalaceRooms(doors).map(d=>d.label)).toEqual(['Badges & achievements','Reading Rooms','Writing Chamber']);
+  expect(distinctRecentPalaceRooms(doors)[0].path).toBe('/treasury?tab=achievements');
+ });
+ it('groups nested creator/reading paths but keeps unrelated rooms separate',()=>{
+  expect(palaceRecentRoomGroup('/treasury/catalogue?view=gifts')).toBe('treasury');
+  expect(palaceRecentRoomGroup('/treasury?tab=draw')).toBe('treasury');
+  expect(palaceRecentRoomGroup('/writing/draft')).toBe('writing');
+  expect(palaceRecentRoomGroup('/work/fiction/chapter/42')).toBe('reading');
+  expect(palaceRecentRoomGroup('/palace-life?room=clubs')).toBe('community');
+  expect(palaceRecentRoomGroup('/events?tab=calendar')).toBe('events');
+  expect(palaceRecentRoomGroup('https://example.com')).toBe('');
  });
 });
