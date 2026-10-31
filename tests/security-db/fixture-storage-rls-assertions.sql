@@ -2,6 +2,43 @@
 -- Mirrors live storage.objects read/write policy conditions reviewed 2026-10-31.
 -- No member records or file bytes; test only invented path strings and IDs.
 
+-- The live reader-page storage policy queries comic metadata tables;
+-- give synthetic callers the same SELECT access with their own RLS boundaries.
+grant select on public.comics,public.comic_episodes,public.comic_pages
+to anon,authenticated;
+alter table public.comics enable row level security;
+alter table public.comic_episodes enable row level security;
+alter table public.comic_pages enable row level security;
+
+create policy "published comics are readable" on public.comics
+for select to public using (
+ creator_id = (select auth.uid()) or (
+  publication_status='published'
+  and (visibility='public' or (visibility='members' and (select auth.uid()) is not null))
+  and private.member_meets_age(minimum_reader_age)
+ )
+);
+create policy "comic episodes readable" on public.comic_episodes
+for select to public using (
+ exists(select 1 from public.comics c where c.id=comic_episodes.comic_id
+  and (c.creator_id=(select auth.uid()) or (
+    c.publication_status='published' and comic_episodes.status='published'
+    and (c.visibility='public' or (c.visibility='members' and (select auth.uid()) is not null))
+    and private.member_meets_age(c.minimum_reader_age)
+  )))
+);
+create policy "comic pages readable" on public.comic_pages
+for select to public using (
+ exists(select 1 from public.comic_episodes e
+ join public.comics c on c.id=e.comic_id
+ where e.id=comic_pages.episode_id
+ and (c.creator_id=(select auth.uid()) or (
+  c.publication_status='published' and e.status='published'
+  and (c.visibility='public' or (c.visibility='members' and (select auth.uid()) is not null))
+  and private.member_meets_age(c.minimum_reader_age)
+  )))
+);
+
 grant usage on schema storage to anon,authenticated;
 grant select on storage.objects to anon,authenticated;
 grant insert,update,delete on storage.objects to authenticated;
