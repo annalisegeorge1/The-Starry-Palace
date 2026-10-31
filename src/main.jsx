@@ -105,6 +105,7 @@ import './palace-commons-heritage-icons.css';
 import './member-chamber-empty-heritage.css';
 import './member-chamber-title-tabs-heritage.css';
 import './tablet-landscape-readable-layout.css';
+import './treasury-heritage-icons.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
