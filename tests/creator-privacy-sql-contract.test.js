@@ -11,6 +11,7 @@ const readSql=file=>readFileSync(resolve(process.cwd(),'database',file),'utf8')
 const praise=readSql('PROPOSED-restrict-praise-state-visibility-2026-10-31.sql');
 const bookmarks=readSql('PROPOSED-guard-bookmark-counts-by-reader-age-2026-10-31.sql');
 const palaceIdentity=readSql('PROPOSED-guard-grand-palace-identity-discovery-2026-10-31.sql');
+const lore=readSql('PROPOSED-hide-unpublished-lore-chapter-metadata-2026-10-31.sql');
 
 describe('staged creator privacy SQL contract (not a database integration test)',()=>{
  it('preserves the public praise RPC signature and pins its definer search path',()=>{
@@ -41,5 +42,14 @@ describe('staged creator privacy SQL contract (not a database integration test)'
   expect(palaceIdentity).not.toMatch(/p\.visibility\s*<>\s*'hidden'/i);
   expect(palaceIdentity).toMatch(/'palace_id'/i);
   expect(palaceIdentity).toMatch(/'honours'/i);
+ });
+ it('hides draft unlock chapter identifiers and titles from non-owner lore readers',()=>{
+  expect(lore).toMatch(/create or replace function public\.get_work_lore\(p_work_id uuid\)/i);
+  expect(lore).toMatch(/security definer\s+set search_path to ''/i);
+  expect(lore).toMatch(/unlock_chapter_id', case[\s\S]*?when unlock\.status = 'published' then unlock\.id[\s\S]*?else null/i);
+  expect(lore).toMatch(/unlock_chapter', case[\s\S]*?unlock\.id is not null and \(v_user = v_owner or unlock\.status = 'published'\)/i);
+  expect(lore).toMatch(/c\.id = l\.unlock_chapter_id and c\.work_id = l\.work_id/i);
+  expect(lore).toMatch(/l\.reveal_mode = 'after_chapter'[\s\S]*?unlock\.status = 'published'[\s\S]*?unlock\.position <= v_progress_position/i);
+  expect(lore).toMatch(/private\.member_meets_age\(w\.minimum_reader_age\)/i);
  });
 });
