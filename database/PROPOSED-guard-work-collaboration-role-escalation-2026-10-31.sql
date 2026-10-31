@@ -15,6 +15,13 @@ as $function$
 declare
   v_actor uuid := auth.uid();
 begin
+  -- Preserve privileged administrative maintenance and recovery operations:
+  -- these two Supabase database roles already BYPASSRLS by design. Never
+  -- grant either role, or its credentials, to a browser or normal member.
+  if current_user in ('postgres','service_role') then
+    return new;
+  end if;
+
   if v_actor is null then
     raise exception 'Sign in to manage a writing collaboration.';
   end if;
