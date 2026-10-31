@@ -71,7 +71,7 @@ describe('member-room smoke checks with synthetic sessions',()=>{
   expect(await screen.findByRole('navigation',{name:'Palace Life rooms'})).toBeTruthy();
   await waitFor(()=>expect(services.getPalaceLife).toHaveBeenCalledWith('synthetic-test-member'));
   expect(screen.getByRole('button',{name:/Discover Members/}).getAttribute('aria-current')).toBe('page');
-  fireEvent.click(screen.getByRole('button',{name:/Clubs/}));
+  fireEvent.click(screen.getByRole('navigation',{name:'Palace Life rooms'}).querySelector('button[aria-current]')?.textContent==='Clubs'?screen.getByRole('navigation',{name:'Palace Life rooms'}).querySelector('button[aria-current]'):Array.from(screen.getByRole('navigation',{name:'Palace Life rooms'}).querySelectorAll('button')).find(button=>button.textContent==='Clubs'));
   expect(screen.getByTestId('member-route').textContent).toBe('/palace-life?room=clubs');
   expect(services.saveCommunityIntroduction).not.toHaveBeenCalled();
  });
