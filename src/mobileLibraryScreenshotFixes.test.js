@@ -38,7 +38,7 @@ describe('mobile Library screenshot fixes',()=>{
  });
  it('keeps Library search and Letters accessible without redundant mobile floating links',()=>{
   expect(css).toContain('[data-palace-room="library"] .full-topbar .global-search-live');
-  expect(shell).toContain('className="mobile-palace-more"');
+  expect(shell).toContain('className={"mobile-palace-more "+');
   expect(shell).toContain('aria-label="Open Palace quick navigation"');
   expect(shell).toContain('to="/letters" className={letterBadge?');
   expect(shell).toContain('className="sidebar-theme"');
