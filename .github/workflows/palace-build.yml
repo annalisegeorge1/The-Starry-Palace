@@ -25,3 +25,12 @@ jobs:
         run: npm ci
       - name: Test and build
         run: npm run verify
+      - name: Offline backup safety checks
+        shell: bash
+        run: |
+          bash -n scripts/security/owner-backup.sh
+          if env -u PALACE_DB_URL -u PALACE_BACKUP_PARENT -u AGE_RECIPIENT -u AGE_IDENTITY_FILE bash scripts/security/owner-backup.sh >/tmp/palace-backup-negative.log 2>&1; then
+            echo "Owner backup unexpectedly ran without credentials" >&2
+            exit 1
+          fi
+          grep -q 'PALACE_DB_URL' /tmp/palace-backup-negative.log
