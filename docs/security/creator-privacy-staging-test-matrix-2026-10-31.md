@@ -54,3 +54,29 @@ Use the actual Supabase client sign-in flow for distinct synthetic users rather 
 6. Review the broader metadata exposure of public tag usage counts, public Palace news, and sharing/reaction point awards before describing the audit as exhaustive.
 
 **Approval boundary:** The owner must explicitly approve a rollout after staged test results are reviewed. Until then, no merge to `main`, no Cloudflare policy changes, no Supabase Auth change and no production SQL deployment.
+
+## Expanded tests for proposed reward and tag adjustments
+
+Test these only with synthetic works, tags, comic metadata, controlled date-of-birth settings, and two distinct signed-in JWTs plus an anonymous client.
+
+| Feature | Scenario | Expected result |
+| --- | --- | --- |
+| Praise award | Age-13 account sends heart/star/moon/crown to known 18+ public work ID | Reject; no new praise, point ledger entry, or balance change |
+| Praise award | Age-13 account sends praise to known 18+ chapter ID | Reject; no new praise or point ledger entry |
+| Praise award | Eligible adult sends praise to published 18+ content | Original amounts, caps and idempotency still apply |
+| Sharing | Age-13 account calls share RPC with known 18+ work ID | Reject; neither giver nor creator gets points |
+| Sharing | Eligible adult shares public work | Existing weekly idempotency and daily cap preserved |
+| Tag discovery | Guest searches a tag present only on draft/hidden work/comic | `usage_count=0` in legacy and v2 search; family `used_count` not raised |
+| Tag discovery | Guest searches public published 18+ content | No age-ineligible usage counted |
+| Tag discovery | Adult searches published public/members age-eligible content | Correct totals for accessible works and comics |
+| Tag discovery | A tag belongs to both private draft and public published story | Only published audience-eligible link contributes to visible count |
+| Performance | Representative synthetic tag catalogue | Public tag search remains responsive at guest and signed-in scale |
+| Regression | All proposed RPCs | Same signatures, JSON keys, normal public reading, and error contracts |
+
+### Additional release checks
+
+- Run the tests from the actual PostgREST API with the service role **only** for setting up synthetic fixtures; never treat service-role results as proof of end-user permissions.
+- Observe both old and new results for public/members/18+ variants before staging SQL replacements.
+- Validate source-contract tests and a full build, then perform staging API and browser checks independently.
+- Archive a copy of the **function definitions**, not user data, to allow precise rollback.
+- Measure crawler policies on public discovery and avoid blocking legitimate readers or mainstream search indexing.
