@@ -130,6 +130,11 @@ begin
   select public.get_grand_palace_identity(owner_id) into v;
   if v is not null then raise exception 'blocked viewer saw Grand Palace identity'; end if;
 
+  -- Restore the intended initial privacy state for subsequent HTTP tests.
+  update public.privacy_preferences
+  set discovery_visibility='private'
+  where user_id=owner_id;
+
   raise notice 'Passed: synthetic guest, young member, adult, author, editor, blocked viewer; SQL functions were actually executed';
 end;
 $tests$;
