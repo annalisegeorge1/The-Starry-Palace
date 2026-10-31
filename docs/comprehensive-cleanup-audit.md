@@ -31,6 +31,12 @@ The build's main JS bundle changed from 1,169.66 kB (295.10 kB gzip) to 1,166.64
 
 The `PalaceTopicHelp` and `PalaceFirstRoomHint` components used by reading, writing, comics, settings, Treasury and Grand Palace screens previously lived in `PalaceGuidebook.jsx`. Those static imports prevented Vite from keeping the Guidebook page lazy. The components and their existing style rules now live in `PalaceGuidebookHints.jsx` and `palace-guidebook-hints.css`; callers import the helpers directly. The Guidebook page remains lazy-loaded. The helper behavior, accessible labels, local-storage dismissal, Nightfall/Daylight colors, breakpoints and other existing styles were preserved. No feature or art asset was removed.
 
+## CSS and asset observations
+
+The largest source stylesheets are `polish.css` (about 557 KiB), `palace-next.css` (216 KiB) and `style.css` (210 KiB); the read-only audit counted 12,627 `!important` declarations. The selector-overlap report found many repeats across themes, media queries and layer order, so it cannot justify removing rules by itself. A broader CSS consolidation should group selectors by computed property, theme and breakpoint, then compare screenshots in Nightfall and Daylight at desktop and mobile sizes. No broad stylesheet rewrite was made in this change.
+
+The public asset directory is about 132 MiB and includes authored artwork. Several large original badge and court illustrations are roughly 2.9–3.4 MiB each. Keep these originals; evaluate responsive WebP/AVIF derivatives, correct intrinsic sizing and lazy loading where the art is not immediately visible, with visual comparison before adoption.
+
 ## Security and reliability findings
 
 - The client source scan found no Supabase service-role key or service-role client configuration. The browser uses the public Supabase client configuration.
@@ -40,6 +46,7 @@ The `PalaceTopicHelp` and `PalaceFirstRoomHint` components used by reading, writ
 - The performance advisor flags the `profile_title_entitlements` SELECT policy for per-row `auth.uid()` evaluation. A migration could wrap the call as `(select auth.uid())`, after checking the authoritative migration history and validating query plans. This was not changed in production or source migrations.
 - Unused-index advisor entries are candidates for measurement, not automatic drop targets; verify workload coverage and index usage over a representative period before any removal.
 - `npm audit --omit=dev` reported zero production dependency vulnerabilities. The repository build still warns that the main JS and CSS chunks exceed 500 kB; further splitting should be measured against route loading and shared feature dependencies.
+- `src/liveRooms.jsx` is the largest application module at about 617 KiB and 2,587 lines. Its feature screens share data helpers and stateful flows, so splitting it safely needs route-by-route dependency and interaction checks. The current change only addresses the verified Guidebook eager-import path.
 
 ## Features, navigation and visual behavior
 
