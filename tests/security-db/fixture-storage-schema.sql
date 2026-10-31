@@ -15,6 +15,8 @@ create table storage.objects (
 );
 
 alter table public.comics add column cover_path text;
+alter table public.comics add column creator_id uuid;
+update public.comics set creator_id='00000000-0000-0000-0000-000000000001';
 create table public.comic_episodes(
  id uuid primary key, comic_id uuid references public.comics(id), status text
 );
@@ -100,12 +102,12 @@ set cover_path=case
  when id='60000000-0000-0000-0000-000000000001'
  then '00000000-0000-0000-0000-000000000001/private-cover.webp'
  else '00000000-0000-0000-0000-000000000001/adult-cover.webp' end;
-insert into public.comics(id,publication_status,visibility,minimum_reader_age,cover_path)
+insert into public.comics(id,publication_status,visibility,minimum_reader_age,cover_path,creator_id)
 values
  ('60000000-0000-0000-0000-000000000003','published','public',12,
- '00000000-0000-0000-0000-000000000001/public-cover.webp'),
+ '00000000-0000-0000-0000-000000000001/public-cover.webp','00000000-0000-0000-0000-000000000001'),
  ('60000000-0000-0000-0000-000000000004','published','members',13,
- '00000000-0000-0000-0000-000000000001/members-cover.webp');
+ '00000000-0000-0000-0000-000000000001/members-cover.webp','00000000-0000-0000-0000-000000000001');
 insert into public.comic_episodes(id,comic_id,status) values
  ('61000000-0000-0000-0000-000000000001','60000000-0000-0000-0000-000000000003','published'),
  ('61000000-0000-0000-0000-000000000002','60000000-0000-0000-0000-000000000002','published'),
