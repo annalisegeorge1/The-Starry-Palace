@@ -1,0 +1,75 @@
+# The Starry Palace — security release runbook (OWNER APPROVAL REQUIRED)
+
+**Prepared 31 October 2026. Status: planned; not executed.**
+
+The owner requested further preparation before implementing the set of protections. Nothing in this document authorizes a deployment. The draft PR is [#174](https://github.com/annalisegeorge1/The-Starry-Palace/pull/174).
+
+## Release principles
+
+1. **No member data in test fixtures or AI tools.** Use synthetic accounts, stories and private messages. Never export, copy or query real manuscripts to validate access controls.
+2. **A passing build is necessary but not sufficient.** The database changes require API authorization tests with real distinct test-account JWTs against an isolated staging database.
+3. **Small, reversible changes.** Keep a signed-off baseline for each function definition. Deploy and test one independently before the next.
+4. **Preserve creator rights.** Drafts remain private; original artwork remains with its owner; public reading/search and existing reading controls remain functional.
+5. **Don't silently change prices, point economics, badge issuance, settings, content ratings, age registration rules, or member-facing UI.**
+6. **Don't merge the review PR until staging results and owner approval are recorded.**
+
+## Gate 0 — staging and cost approval
+
+The connected Supabase project has no development branches as of this review. Creating one may involve a charge. **Quote any actual cost and obtain explicit approval before creating a hosted branch.** An isolated local stack is an acceptable alternative if the schema, extensions, storage and authentication configuration can be reproduced without touching production. Never use production data to seed it.
+
+## Gate 1 — verify infrastructure (read only)
+
+- Confirm Cloudflare zone routes, HTTPS redirection, managed WAF, DNS, current Pages origin, active Worker and rollback deployment.
+- Record whether AI bot policies are enabled, Search/Training/Agent behavior, Bot Preference Sync, robots.txt content and the effective live response after any later change.
+- Identify administrators, privileged service credentials and MFA status without copying passwords or secrets into the audit.
+- Take a fresh Supabase advisor report and inspect precise roles, function grants and RLS policy definitions.
+- Verify that code still contains the approved 13-year **account** minimum and creator-selected reading restrictions.
+
+## Gate 2 — prepare rollback
+
+Before each SQL change in staging, save the existing function definition and EXECUTE grants, and record the old output for representative synthetic roles. For production rollout later, verify a secure backup and an exact rollback plan for the targeted function. Do not undo database data or overwrite unrelated migrations. Keep the original live function definitions confidential to maintainers.
+
+## Gate 3 — stage the database proposals in this order
+
+All paths are in `database/` and start with `PROPOSED-`. **They have not been applied**.
+
+| Sequence | Candidate file | Risk addressed | Critical regression |
+| --- | --- | --- | --- |
+| 1 | `PROPOSED-guard-grand-palace-identity-discovery-2026-10-31.sql` | Hidden/blocked profiles exposed through Palace identity | Public Palace cards and owner access |
+| 2 | `PROPOSED-restrict-praise-state-visibility-2026-10-31.sql` | Private work/chapter reaction counts | Normal praise counts, collaborator access |
+| 3 | `PROPOSED-guard-bookmark-counts-by-reader-age-2026-10-31.sql` | Age-gated work bookmark counts | Visible story listings and bookmarks |
+| 4 | `PROPOSED-hide-unpublished-lore-chapter-metadata-2026-10-31.sql` | Draft chapter metadata in public lore | Lore unlock/reveal progression |
+| 5 | `PROPOSED-guard-shares-by-reader-age-2026-10-31.sql` | Underage share rewards on restricted work | Existing weekly/daily points and deduplication |
+| 6 | `PROPOSED-guard-praise-awards-by-reader-age-2026-10-31.sql` | Underage praise rewards on restricted work/chapter | Four praise tiers, daily limits, reward accounting |
+| 7 | `PROPOSED-public-tag-counts-visible-content-only-2026-10-31.sql` | Unpublished/private/age-ineligible tags reflected in search counts | Legacy and v2 tag discovery, family totals and performance |
+
+One tag-count candidate replaces three related functions. Do not stage it without testing query plans and a realistic synthetic tag catalogue. The other six replace one function each.
+
+For each candidate, compare output in distinct browser/API sessions: guest, author, accepted collaborator, unrelated adult, younger reader, blocked viewer. Validate no unauthorized rows or metadata are returned and no authorized operations break. Require no production user-data reads for test setup.
+
+## Gate 4 — search and AI bot controls
+
+- Review the staged `public/robots.txt` so **normal search indexing stays enabled** while specified AI crawlers receive disallow signals.
+- Validate site `/robots.txt`, `/sitemap.xml`, public reading and search pages after a preview deploy.
+- Enable Cloudflare's AI **Training** block on production only after owner approval and verification that selected behavior, origin Worker, managed robots.txt and user-agent matching do not cause legitimate search/reader issues.
+- Bot controls and content signals cannot guarantee protection against every unauthorized scraper; never describe them as foolproof.
+- Evaluate Bot Fight Mode separately. On Free plans it can cause challenges to desired automation and cannot be selectively bypassed with custom WAF rules.
+
+## Gate 5 — authentication, storage, reliability and policy alignment
+
+- Review Supabase leaked-password protection, admin MFA, and recovery options with tested fallback and compatibility before changing Auth configuration.
+- Validate private chat-photo and comic-originals storage rules with unrelated test JWTs.
+- Test private manuscript export, recovery, editor autosave, history and collaboration permissions.
+- Inventory cookies, local storage, analytics, email-delivery and third-party processors before claiming the public privacy policy is complete.
+- Verify data-retention and account deletion outcomes rather than promising immediate permanent deletion without evidence.
+- Reconcile the Privacy, Cookies and AI notices with actual provider configuration before separately approving policy changes.
+
+## Gate 6 — owner-reviewed implementation
+
+Collect staging evidence for all seven SQL candidates, tests, screenshot/browser review, current advisor findings, query performance and rollback checklists. Obtain explicit go/no-go approval. Deploy **in small increments**, monitor error logs and member feedback, and stop/roll back if core writing, reading, messaging, privacy or sign-in regresses.
+
+## What is and is not done
+
+**Done:** read-only configuration and security-definer review, proposed source changes, source-level regression tests and this release plan.
+
+**Not done:** create paid staging, execute SQL, impersonate accounts, validate live access by synthetic JWTs, change Cloudflare bot settings, merge PR, publish policy drafts, or deploy production.
