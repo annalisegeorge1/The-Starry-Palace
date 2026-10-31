@@ -155,3 +155,9 @@ reset role;
 
 select set_config('request.jwt.claim.sub','',false);
 select 'Synthetic real-role works/chapters RLS assertions passed' as result;
+
+-- Disposable PostgREST uses a low-privilege connection role with only
+-- permitted role switching. Password is a PUBLIC CI-only fixture, not an app secret.
+create role palace_ci_authenticator noinherit login password 'palace-ephemeral-ci-only-password';
+grant anon,authenticated to palace_ci_authenticator;
+grant usage on schema public to palace_ci_authenticator;
