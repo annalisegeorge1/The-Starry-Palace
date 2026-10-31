@@ -52,3 +52,15 @@ This branch stages `public/robots.txt`, a crawler test, this review document, fo
 A published lore response currently includes the chapter name and identifier for its unlock chapter without checking whether that chapter is published. An unapplied alternative is staged in `database/PROPOSED-hide-unpublished-lore-chapter-metadata-2026-10-31.sql`. The author retains their draft-chapter metadata; other readers are intended to see it only when the chapter is published. This is a source-level review item and requires synthetic-reader testing in staging.
 
 The public tag-search function also calculates usage totals over work and comic tags without an explicit published-status filter. Review whether this produces unwanted aggregate signals about nonpublic content before proposing changes.
+
+## Second privacy review — engagement age checks and tag counts
+
+The currently deployed `public.give_palace_praise` and `public.record_palace_share` SECURITY DEFINER RPCs check that a work is published and has a public/members visibility, but **do not independently enforce the work's minimum reader age** before awarding points. Someone who knows the work or chapter UUID might interact despite their account age restriction. No user activity or records were inspected. Two **unapplied** proposals add `private.member_meets_age(w.minimum_reader_age)` and preserve existing rewards/caps:
+- `database/PROPOSED-guard-praise-awards-by-reader-age-2026-10-31.sql`
+- `database/PROPOSED-guard-shares-by-reader-age-2026-10-31.sql`
+
+Public tag search has another metadata mismatch: `search_palace_tags`, `search_palace_tags_v2`, and `get_tag_family_counts` currently count links to **all** works and comics, regardless of publication status, visibility, or reading age. This could reveal aggregate interest in unpublished or hidden creative work. The **unapplied** `database/PROPOSED-public-tag-counts-visible-content-only-2026-10-31.sql` counts only published content discoverable by the current audience while preserving the public tag vocabulary, both search signatures, sorting semantics and family totals. Count values will differ among guest, younger and adult readers. Performance must be assessed with realistic synthetic catalog volume and compared against the existing queries.
+
+`tests/creator-engagement-and-tag-privacy-contract.test.js` checks that these proposals retain expected textual guards and reward limits; it cannot prove SQL execution, authorization, indexing performance or live account behavior. All seven proposed SQL files require staged regression testing, rollback verification, and owner approval before any production deployment.
+
+The 13-year account minimum remains distinct from the legacy public work content labels such as 12+; no change to registration ages or existing creative ratings was made.
