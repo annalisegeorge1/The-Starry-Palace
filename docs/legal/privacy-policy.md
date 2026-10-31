@@ -9,16 +9,16 @@ This policy explains how The Starry Palace handles information when visitors rea
 
 ### 1. Age and account eligibility
 
-The minimum age to create or use a Palace account is 12. Registration asks for a date of birth, and the account flow rejects a date that does not meet the minimum. Existing members may be asked to enter their date of birth before they continue using an account. The date is self-declared; the Palace does not verify identity or request identity documents for this check.
+The minimum age to create or use a Palace account is 13. Registration asks for a date of birth, and the account flow rejects a date that does not meet the minimum. Existing members may be asked to enter their date of birth before they continue using an account. The date is self-declared; the Palace does not verify identity or request identity documents for this check.
 
 Creators can set minimum reading ages for published stories and comics. The available floors are 12, 13, 16 and 18, subject to the selected content rating. The Palace uses the account date of birth to apply those limits to the work and its chapters, episodes, pages, comments and reader images. This control cannot prevent someone from lying about their age.
 
-The Palace does not independently verify age or record a separate guardian-consent approval. A child under 13 must not create an account unless prior parental consent required by the laws that apply to them has been obtained. Members aged 13–17 should involve a parent or guardian where local law requires it. The Palace does not knowingly create accounts for people under 12. If you believe an account was created by a child below the minimum, contact us.
+The Palace does not independently verify age or record a separate guardian-consent approval. People under 13 must not create or use a Palace account. Members aged 13–17 should involve a parent or guardian where local law requires it. If you believe an account was created by someone below the minimum, contact us.
 
 ### 2. Information we collect
 
 - **Account information:** email address, authentication identifier, sign-in and recovery state, and account settings.
-- **Date of birth:** the self-declared date used for the account minimum and creator-selected reader age limits. It is held in a private database table, is removed from temporary sign-up metadata after saving, and is not displayed on public profiles.
+- **Date of birth:** the self-declared date used for the 13-year account minimum and creator-selected reader age limits. It is held in a private database table, is removed from temporary sign-up metadata after saving, and is not displayed on public profiles.
 - **Profile and community information:** username, display name, profile details, avatar, preferences, posts, comments, messages, follows, blocks, reports and feature activity that members choose to provide or use.
 - **Creative content:** manuscripts, chapters, comics, images, captions, comments and other content members create or upload. Drafts are intended to remain available only to their author and authorised collaborators. Publication and visibility settings determine the audience for published work.
 - **Browser and device state:** sign-in session state, theme and reading preferences, reading progress, some dismissed notices and some temporary composer drafts stored in the browser.
