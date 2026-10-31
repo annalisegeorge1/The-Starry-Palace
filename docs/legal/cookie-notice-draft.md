@@ -3,6 +3,7 @@
 **WORKING DRAFT — NOT IN FORCE — NOT PUBLISHED**
 **Review date:** 31 October 2026
 **Platform:** thestarrypalace.com
+**Policy contact:** Annalise Pierre · annalise.pierre.28@gmail.com
 
 This is a draft notice for members and visitors. It separates cookies from other browser storage and does not claim a complete live inventory. The current application source has been reviewed, but the live Cloudflare, Supabase and hosting responses still need to be checked before this notice can be finalised.
 
