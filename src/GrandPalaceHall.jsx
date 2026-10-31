@@ -2,7 +2,7 @@ import {WriterAward,PalaceBanner} from './PaintedPalaceArt';
 import './grand-palace-emblems.css';
 import PalaceEmblem from './PalaceEmblem';
 import PalaceGlowIcon from './PalaceGlowIcon';
-import {PalaceTopicHelp} from './PalaceGuidebook';
+import {PalaceTopicHelp,PalaceFirstRoomHint} from './PalaceGuidebook';
 import React,{useEffect,useState} from 'react';
 import{Link,useSearchParams}from'react-router-dom';
 import GrandPalaceExpansion from './GrandPalaceExpansion';
@@ -41,6 +41,7 @@ export default function GrandPalaceHall({Frame}){
  <header className="grand-palace-hero"><p className="eyebrow">THE GRAND PALACE CONSTELLATION · TEN GREAT COURTS</p><h1>Ten Palaces. One sky. <PalaceTopicHelp id="courts"/></h1><p>Belong to your Grand Palace for life. Every verified creative contribution brightens your court, and a new season begins with each calendar quarter.</p>
  <div className="grand-hero-stats"><span className="grand-hero-court"><small>YOUR COURT</small><strong>{mine?.name||'Gathering your Palace…'}</strong></span><span><small>SEASON CLOSES</small><strong>{data?daysUntilSeasonEnd(data.ends_at)+' days remaining':'—'}</strong></span><span><small>SPENDABLE POINTS</small><strong>{Number(data?.balance||0).toLocaleString()}</strong></span></div>
  {ends&&<p className="grand-season-date">This season ends {ends} · next season starts immediately · competition hours follow UTC</p>}</header>
+ <PalaceFirstRoomHint id="courts"/>
  {error&&<p role="alert" className="grand-notice error">{error}</p>}{notice&&<p role="status" className="grand-notice">{notice}</p>}
  {data&&<>
  <section className="grand-your-court"><div className="grand-court-banner"><PalaceBanner palace={mine}/></div><div className="grand-my-crest"><PalaceEmblem palace={mine} size={67} decorative/></div><div><p className="eyebrow">YOUR PERMANENT GRAND PALACE</p><h2>{mine?.name}</h2><p>{mine?.motto}</p><small>Your contribution this quarter: <b>{Number(data.my_contribution||0)} verified points</b>. A maximum of 30 points per member per UTC day counts toward the race.</small></div><Link to="/chamber" className="button-moonstone">Your chamber →</Link></section>
