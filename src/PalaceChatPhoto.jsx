@@ -1,17 +1,30 @@
 import React,{useEffect,useState} from 'react';
-import {signedPalaceChatPhoto} from './palaceChatMedia';
-/* Only RLS-authorized conversation members can request signed, expiring
- * photo URLs. Stored messages contain a path, not a public asset URL. */
+import {downloadPalaceChatPhoto} from './palaceChatMedia';
+
+/* Fetch private photos with the current member session, rather than exposing
+ * a reusable signed Storage URL in the page. Only RLS-authorized conversation
+ * members can download the object. Local object URLs must be revoked when
+ * the path changes or this photo leaves the screen. */
 export default function PalaceChatPhoto({path}){
  const[url,setUrl]=useState('');
  const[error,setError]=useState('');
  const[attempt,setAttempt]=useState(0);
  const[expanded,setExpanded]=useState(false);
  useEffect(()=>{
-  let alive=true;setUrl('');setError('');
+  let alive=true;
+  let objectUrl='';
+  setUrl('');setError('');
   if(!path)return;
-  signedPalaceChatPhoto(path).then(result=>{if(alive)setUrl(result)}).catch(e=>{if(alive)setError(e.message||'Photo unavailable')});
-  return()=>{alive=false};
+  downloadPalaceChatPhoto(path).then(blob=>{
+   if(!alive)return;
+   if(typeof URL.createObjectURL!=='function')throw new Error('Private photo preview is unavailable in this browser.');
+   objectUrl=URL.createObjectURL(blob);
+   setUrl(objectUrl);
+  }).catch(e=>{if(alive)setError(e.message||'Photo unavailable')});
+  return()=>{
+   alive=false;
+   if(objectUrl)URL.revokeObjectURL(objectUrl);
+  };
  },[path,attempt]);
  if(!path)return null;
  if(error)return <div className="palace-chat-private-photo is-error" role="status"><span>Photo unavailable</span><button type="button" onClick={()=>setAttempt(a=>a+1)}>Retry</button></div>;
