@@ -1,4 +1,5 @@
 import React from 'react';
+import PalaceGlowIcon from './PalaceGlowIcon';
 import {availableTitleChoices} from './celestialTitleWardrobeModel';
 import './celestial-title-wardrobe.css';
 
@@ -9,7 +10,7 @@ export default function CelestialTitleWardrobe({options=[],currentTitle='',selec
  const selectedRow=titles.find(row=>row.title===selected);
  const canWear=!!selectedRow&&selected!==currentTitle&&!busy;
  return <section className="celestial-title-changing-room" aria-label="Choose a Palace title">
-  <span className="celestial-title-changing-sigil" aria-hidden="true">♕</span>
+  <PalaceGlowIcon name="regal-crown" tone="gold" size="hero" className="celestial-title-changing-sigil treasury-changing-emblem"/>
   <div className="celestial-title-changing-copy">
    <small>YOUR PALACE SIGNATURE</small>
    <strong>{currentTitle||'Palace Member'}</strong>
@@ -28,7 +29,7 @@ export default function CelestialTitleWardrobe({options=[],currentTitle='',selec
     </optgroup>}
    </select>
    <button type="button" onClick={()=>onWear?.(selected)} disabled={!canWear}>
-    {busy?'Placing your title…':selected===currentTitle?'Currently worn':'✦ Wear this title'}
+    {busy?'Placing your title…':selected===currentTitle?'Currently worn':'Wear this title'}
    </button>
   </div>
   {(notice||error)&&<p className={'celestial-title-changing-feedback'+(error?' is-error':'')} role={error?'alert':'status'}>{error||notice}</p>}
