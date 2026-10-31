@@ -29,11 +29,11 @@ Age is self-declared; the Palace does not currently verify identity or a person'
 
 ### 4. Why information is used
 
-The intended purposes are to create and secure accounts; enforce the account minimum age and creator-set reading limits; provide writing, reading, comics and community features; store drafts and deliver published work to the chosen audience; remember settings and reading progress; send account or feature notices; respond to reports and privacy requests; prevent abuse, fraud and security incidents; maintain and improve the service; and meet legal obligations. The date of birth is not intended for public display, advertising, behavioural profiling, or AI model training.
+The purposes are to create and secure accounts; enforce the account minimum age and creator-set reading limits; provide writing, reading, comics and community features; store drafts and deliver published work to the chosen audience; remember settings and reading progress; send account or feature notices; respond to reports and privacy requests; prevent abuse, fraud and security incidents; maintain and improve the service; and meet legal obligations. **The Palace has no intention of using AI models with member data for any purpose** and will not submit or expose member data to AI models or services for training, generation, analysis, moderation, recommendations, profiling, or other AI processing.
 
 ### 5. Private writing and AI
 
-Unpublished manuscripts, private messages, member records and production database exports must not be placed into AI coding assistants or test services. Development and troubleshooting should use code, synthetic data or properly redacted examples. The Palace does not intend to use member manuscripts or artwork to train AI models. If a future feature proposes processing member content with an AI service, the Palace should explain what is processed, why, which provider receives it, and how long it is retained, and obtain any separate permission required before activation.
+The Palace has no intention of using AI models with member data on any front. This applies to account and profile information, dates of birth, messages, reports, activity, technical records, drafts, published writing, artwork, comics, comments and uploaded files. The Palace will not offer an AI feature that processes member data or provide it to AI providers for such processing. People maintaining the Palace must not put member data, unpublished writing, private messages, identifiable records or production database exports into AI coding assistants or test services. Development and troubleshooting must use source code, synthetic data or properly redacted examples that do not identify members or reveal their content.
 
 ### 6. When information is shared
 
