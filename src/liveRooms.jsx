@@ -1376,7 +1376,7 @@ export function MemberProfileLive({Frame}){
    </div>
    <MemberAvatar as="div" className="legacy-profile-avatar" profile={p} frame={decor?.chamber_frame}/>
    <div className="legacy-profile-copy">
-    <p className="eyebrow chamber-title-mark"><span aria-hidden="true">✦</span>{(p.title||'PALACE MEMBER').toUpperCase()}</p>
+    <p className="eyebrow chamber-title-mark"><PalaceGlowIcon name="ceremony-sigil" tone="treasury" size="mini" className="chamber-title-marker-icon"/>{(p.title||'PALACE MEMBER').toUpperCase()}</p>
     <h1>{p.display_name||p.username}</h1>
     {own&&<span className="legacy-public-pill">YOUR PUBLIC CHAMBER</span>}
     <p className="legacy-profile-meta">@{p.username}{roles.length?' · '+roles.join(' · '):''}{p.pronouns?' · '+p.pronouns:''}</p>
@@ -1385,9 +1385,9 @@ export function MemberProfileLive({Frame}){
 
     <div className="chamber-atelier-worn-heading"><span>✧ CEREMONIAL REGALIA</span>{own&&<Link to="/treasury?tab=achievements">Choose displayed honours →</Link>}</div>
     <div className="chamber-crown-ribbon chamber-atelier-crown-ribbon" aria-label="Worn Palace identity">
-     <span className="chamber-crown-title"><i aria-hidden="true">♕</i><small>WORN TITLE</small><strong>{p.title||'Palace Member'}</strong></span>
-     {wornAchievement&&<span className={"chamber-crown-honour "+(wornAchievement.display_tier||'bronze')}><i aria-hidden="true">✦</i><small>{(wornAchievement.display_tier||'bronze').toUpperCase()} PATH</small><strong>{wornAchievement.achievement_families?.name||'Palace achievement'}</strong></span>}
-     {wornTreasure&&<span className={"chamber-crown-honour treasure "+(wornTreasure.display_tier||'bronze')}><i aria-hidden="true">◇</i><small>{(wornTreasure.display_tier||'bronze').toUpperCase()} TREASURE</small><strong>{wornTreasure.virtual_gifts?.name||'Palace treasure'}</strong></span>}
+     <span className="chamber-crown-title"><PalaceGlowIcon name="regal-crown" tone="gold" size="small" className="chamber-worn-regalia-icon"/><small>WORN TITLE</small><strong>{p.title||'Palace Member'}</strong></span>
+     {wornAchievement&&<span className={"chamber-crown-honour "+(wornAchievement.display_tier||'bronze')}><PalaceGlowIcon name="milestone-path" tone={wornAchievement.display_tier||'silver'} size="small" className="chamber-worn-regalia-icon"/><small>{(wornAchievement.display_tier||'bronze').toUpperCase()} PATH</small><strong>{wornAchievement.achievement_families?.name||'Palace achievement'}</strong></span>}
+     {wornTreasure&&<span className={"chamber-crown-honour treasure "+(wornTreasure.display_tier||'bronze')}><PalaceGlowIcon name="gift" tone={wornTreasure.display_tier||'treasury'} size="small" className="chamber-worn-regalia-icon"/><small>{(wornTreasure.display_tier||'bronze').toUpperCase()} TREASURE</small><strong>{wornTreasure.virtual_gifts?.name||'Palace treasure'}</strong></span>}
     </div>
     {p.availability&&<p className="legacy-availability">☾ {p.availability}</p>}
     <div className="legacy-profile-actions">
@@ -1404,7 +1404,13 @@ export function MemberProfileLive({Frame}){
     <div><strong>{counts.honours||0}</strong><span>DISPLAYED HONOURS</span></div>
    </div>
   </section>
-  <nav className="chamber-section-nav chic-chamber-tabs chamber-atelier-tabs" aria-label="Explore this chamber"><a href="#chamber-palace"><span>✧</span> Palace</a><a href="#chamber-about"><span>☾</span> About</a><a href="#chamber-worlds"><span>◈</span> Worlds</a><a href="#chamber-notes"><span>✎</span> Notes</a><a href="#chamber-honours"><span>♛</span> Gallery</a></nav>
+  <nav className="chamber-section-nav chic-chamber-tabs chamber-atelier-tabs" aria-label="Explore this chamber">
+   <a href="#chamber-palace"><PalaceGlowIcon name="ceremony-sigil" tone="courts" size="mini" className="chamber-tab-icon"/>Palace</a>
+   <a href="#chamber-about"><PalaceGlowIcon name="crescent-moon" tone="home" size="mini" className="chamber-tab-icon"/>About</a>
+   <a href="#chamber-worlds"><PalaceGlowIcon name="map" tone="arts" size="mini" className="chamber-tab-icon"/>Worlds</a>
+   <a href="#chamber-notes"><PalaceGlowIcon name="file-pen" tone="drafts" size="mini" className="chamber-tab-icon"/>Notes</a>
+   <a href="#chamber-honours"><PalaceGlowIcon name="treasure-crown" tone="treasury" size="mini" className="chamber-tab-icon"/>Gallery</a>
+  </nav>
   <div id="chamber-palace" className="chamber-atelier-palace-stage"><MemberPalaceShowcase profile={p} identity={data.grandIdentity} own={own}/></div>
   <MemberChamberDecor decor={decor} own={own} onSaved={setDecor}/>
   <section id="chamber-about" className="chamber-creator-overview">
