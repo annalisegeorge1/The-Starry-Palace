@@ -58,3 +58,5 @@ export function PalaceLegalPages(){
   {selected?<article className="palace-legal-paper"><MarkdownContent source={selected.content}/><footer>Questions about this policy? Contact <a href="mailto:annalise.pierre.28@gmail.com">annalise.pierre.28@gmail.com</a>.</footer></article>:<section className="palace-legal-cards">{policies.map(item=><Link key={item.id} to={`/legal/${item.id}`}><span>✦</span><div><h2>{item.title}</h2><p>{item.summary}</p></div><b aria-hidden="true">→</b></Link>)}</section>}
  </main>;
 }
+
+export default PalaceLegalPages;
