@@ -487,3 +487,45 @@
   border-color: rgba(103,88,164,.22);
   background-image: linear-gradient(135deg,rgba(248,243,255,.82),rgba(239,245,255,.78));
 }
+
+/* Landscape/tablet achievement shelves: the sidebar subtracts usable width.
+   Never force four 100px-wide trophies or vertically stacked arrange controls.
+   Mobile's existing one-column artwork layout remains unchanged. */
+@media(min-width:721px){
+ .palace-shell .chamber-atelier-gallery .legacy-showcase-grid.achievement-grid{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))!important;
+  width:100%!important;
+  min-width:0!important;
+  align-items:stretch!important;
+  gap:14px!important;
+ }
+ .palace-shell .chamber-atelier-gallery .legacy-showcase-grid.achievement-grid>.chamber-atelier-art-card{
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  grid-column:auto!important;
+ }
+ .palace-shell .chamber-atelier-gallery .legacy-showcase-grid.achievement-grid .chamber-art-arrange{
+  display:flex!important;
+  flex-direction:row!important;
+  justify-content:flex-start!important;
+  align-items:center!important;
+  flex-wrap:wrap!important;
+  gap:7px!important;
+ }
+ .palace-shell .chamber-atelier-gallery .legacy-showcase-grid.achievement-grid .chamber-art-arrange button{
+  min-width:40px!important;
+  min-height:40px!important;
+  white-space:normal!important;
+ }
+ .palace-shell .chamber-atelier-gallery .legacy-showcase-grid.achievement-grid .chamber-atelier-art-card>h3,
+ .palace-shell .chamber-atelier-gallery .legacy-showcase-grid.achievement-grid .chamber-atelier-art-card>p,
+ .palace-shell .chamber-atelier-gallery .legacy-showcase-grid.achievement-grid .chamber-atelier-art-card>small{
+  min-width:0!important;
+  word-break:normal!important;
+  overflow-wrap:break-word!important;
+  hyphens:none!important;
+ }
+}
