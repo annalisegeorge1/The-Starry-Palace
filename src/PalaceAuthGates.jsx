@@ -111,7 +111,7 @@ export function PalaceLogin({ Frame }) {
         </button>
         <div className="auth-divider"><span>or use a Palace password</span></div>
         <form onSubmit={submit}>
-          {mode === 'signup' && <><label htmlFor="palace-signup-birth-date">Date of birth</label><input id="palace-signup-birth-date" type="date" autoComplete="bday" max={(()=>{const d=new Date();d.setFullYear(d.getFullYear()-12);return d.toISOString().slice(0,10)})()} value={birthDate} onChange={event => setBirthDate(event.target.value)} required/><small className="password-note">The Palace minimum account age is 12. Your date of birth is stored privately for age eligibility and reader restrictions.</small></>}
+          {mode === 'signup' && <><label htmlFor="palace-signup-birth-date">Date of birth</label><input id="palace-signup-birth-date" type="date" autoComplete="bday" max={(()=>{const d=new Date();d.setFullYear(d.getFullYear()-13);return d.toISOString().slice(0,10)})()} value={birthDate} onChange={event => setBirthDate(event.target.value)} required/><small className="password-note">The Palace minimum account age is 13. Your date of birth is stored privately for age eligibility and reader restrictions.</small></>}
           <label htmlFor="palace-password">Password</label>
           <div className="password-field">
             <input id="palace-password" type={showPassword ? 'text' : 'password'}
