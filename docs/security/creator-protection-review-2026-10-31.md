@@ -47,3 +47,8 @@ Supabase references:
 
 ## Rollback and release boundary
 This branch stages `public/robots.txt`, a crawler test, this review document, three PROPOSED, unapplied SQL candidates, and SQL source-contract tests. SQL candidates require an isolated staging database and synthetic-user tests; never treat GitHub code checks as database integration validation. Revert the branch commit or restore the previous robots file (`User-agent: * / Allow: /`) if crawler guidance causes unexpected indexing results. Neither GitHub CI success nor advisory counts certify security. Do not merge to `main` or change Cloudflare/Supabase production without an owner-reviewed release decision.
+
+## Follow-up review — draft-linked lore metadata
+A published lore response currently includes the chapter name and identifier for its unlock chapter without checking whether that chapter is published. An unapplied alternative is staged in `database/PROPOSED-hide-unpublished-lore-chapter-metadata-2026-10-31.sql`. The author retains their draft-chapter metadata; other readers are intended to see it only when the chapter is published. This is a source-level review item and requires synthetic-reader testing in staging.
+
+The public tag-search function also calculates usage totals over work and comic tags without an explicit published-status filter. Review whether this produces unwanted aggregate signals about nonpublic content before proposing changes.
