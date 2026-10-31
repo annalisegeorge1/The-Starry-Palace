@@ -73,3 +73,11 @@ Collect staging evidence for all seven SQL candidates, tests, screenshot/browser
 **Done:** read-only configuration and security-definer review, proposed source changes, source-level regression tests and this release plan.
 
 **Not done:** create paid staging, execute SQL, impersonate accounts, validate live access by synthetic JWTs, change Cloudflare bot settings, merge PR, publish policy drafts, or deploy production.
+
+## Completed first validation — synthetic PostgreSQL CI
+
+A zero-production-data PostgreSQL 17 service now runs in the existing **Palace build checks** workflow for pull requests. The scripts `tests/security-db/fixture-schema.sql` and `tests/security-db/fixture-assertions.sql` create a disposable schema, compile all seven proposed SQL candidate files (nine functions), and execute role-simulation assertions using deliberately invented UUIDs, ages, story metadata and reaction counts.
+
+**First observed result:** [GitHub Actions run 41205701735](https://github.com/annalisegeorge1/The-Starry-Palace/actions/runs/41205701735), job **Synthetic security RPC checks (ephemeral database)** passed, including fixture creation, compiling proposals and synthetic role checks. The normal `test-and-build` job is a separate gate.
+
+**Important remaining boundary:** This CI uses `auth.uid()` backed by a controlled synthetic session variable and small test helper functions. It **does not** reproduce the full live Supabase Auth, JWT claims, PostgREST exposure/grants, actual RLS policy implementation, storage rules, network edge protections, or production migration history. A full isolated Supabase staging environment and signed-in JWT/PostgREST tests remain required before the proposals can be deployed.
