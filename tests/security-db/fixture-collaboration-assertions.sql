@@ -89,6 +89,18 @@ select set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000001'
 do $test$
 declare n integer;
 begin
+ -- Even the owner must not approve an invitation on behalf of another user.
+ declare
+  denied boolean := false;
+ begin
+  begin
+   update public.work_collaborators set status='accepted'
+   where work_id='10000000-0000-0000-0000-000000000001'
+    and user_id='00000000-0000-0000-0000-000000000003';
+  exception when others then denied := true; end;
+  if not denied then raise exception 'Owner accepted without recipient consent';end if;
+ end;
+
  update public.work_collaborators
  set role='co_writer',status='invited',responded_at=null,updated_at=now()
  where work_id='10000000-0000-0000-0000-000000000001'
