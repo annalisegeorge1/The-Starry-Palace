@@ -18,7 +18,8 @@ describe('Palace route continuity for visitors and members',()=>{
   expect(main).toContain("to={session?'/writing':palaceSignInDoor('/writing')}");
  });
  it('lets guests wander into genuinely public rooms instead of surprising them with login',()=>{
-  expect(passage).toContain("passageDoors.filter(x=>x.path!==currentHref&&!x.path.startsWith('/login'))");
+  expect(passage).not.toContain('function wanderFromHere()');
+  expect(main).toContain('Explore nearby rooms');
   expect(main).toContain("Sign in to enter · ");
   expect(passage).toContain("path:'/reading'");
  });
