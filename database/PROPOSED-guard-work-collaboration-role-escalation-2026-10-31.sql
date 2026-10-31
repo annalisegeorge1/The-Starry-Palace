@@ -45,6 +45,15 @@ begin
     if new.invited_by is distinct from old.invited_by then
       raise exception 'The collaboration inviter cannot be changed.';
     end if;
+    -- The author cannot accept or decline *for* a collaborator.
+    if (new.status in ('accepted','declined') and new.status is distinct from old.status)
+       or (new.role is distinct from old.role and new.status <> 'invited')
+    then
+      raise exception 'A changed collaboration role requires a fresh invitation and acceptance.';
+    end if;
+    if new.status = 'invited' then
+      new.responded_at := null;
+    end if;
     return new;
   end if;
 
