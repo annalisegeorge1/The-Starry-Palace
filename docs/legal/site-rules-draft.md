@@ -2,6 +2,7 @@
 ## Site Rules
 **WORKING DRAFT — NOT IN FORCE — NOT PUBLISHED**
 **Revised:** 31 October 2026
+**Policy contact:** Annalise Pierre · annalise.pierre.28@gmail.com
 
 The Palace welcomes writers, readers, poets, artists and storytellers. These short rules are meant to be easy to find and understand. They summarize the longer Terms of Service and Palace Code; those documents, the Privacy Policy and feature-specific rules should be read together once approved. Nothing here is live policy yet.
 
@@ -17,7 +18,7 @@ Do not try to access, copy or share another member's unpublished drafts, private
 The Palace is intended not to use member manuscripts or art to train AI models. People maintaining the website should use synthetic or properly redacted examples in AI coding tools, tests and support reports, not member drafts, messages, private data or production database exports.
 
 ### 4. Publish thoughtfully
-Choose a suitable rating, tags and content warnings. Sexualised content involving minors, child sexual exploitation material, grooming, credible threats and predatory conduct are prohibited. Do not claim that preservation of a work gives you ownership or permission to publish it. Confirm that you have the rights or permission needed for material you upload.
+Choose a suitable rating, tags and content warnings. Writers may restrict Mature or Explicit works so readers below the applicable age cannot access them, using the Palace age controls. This work-level restriction is separate from the minimum age for creating an account. Sexualised content involving minors, child sexual exploitation material, grooming, credible threats and predatory conduct are prohibited. Do not claim that preservation of a work gives you ownership or permission to publish it. Confirm that you have the rights or permission needed for material you upload.
 
 ### 5. Treat people with dignity
 No racism, homophobia, identity-based harassment, dehumanising attacks, bullying, stalking, doxxing, threats, sexual harassment, intimidation or unwanted repeated contact. Critique the work without targeting the person. Respect blocks, mutes, privacy choices, spoilers and room boundaries. Do not use another feature or account to get around a member's contact boundary.
@@ -37,4 +38,4 @@ External creator-support links are allowed in designated places. Check the desti
 ### 10. Keep feedback and appeals respectful
 Members may report problems and appeal eligible moderation decisions through the published route. Do not knowingly submit false reports or abuse an appeal process. Council status, social popularity, points and donations do not give anyone unlimited authority over another member.
 
-**Draft note:** The operator, contact information, minimum age, reporting routes and final appeal process must be confirmed before these rules take effect. These rules must not be published or deployed until approved.
+**Draft note:** The contact above is supplied for this draft. Confirm the exact account minimum age, age-control behaviour, reporting routes and final appeal process before these rules take effect. These rules must not be published or deployed until approved.
