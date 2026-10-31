@@ -80,7 +80,7 @@ jobs:
         run: |
           docker run --rm -d --name palace-test-postgrest --network host \
             -e PGRST_DB_URI="postgres://palace_ci_authenticator:palace-ephemeral-ci-only-password@127.0.0.1:5432/palace_synthetic" \
-            -e PGRST_DB_SCHEMAS=public \
+            -e PGRST_DB_SCHEMAS=public,storage \
             -e PGRST_DB_ANON_ROLE=anon \
             -e PGRST_JWT_SECRET="$PALACE_TEST_JWT_SECRET" \
             postgrest/postgrest:v14.18
