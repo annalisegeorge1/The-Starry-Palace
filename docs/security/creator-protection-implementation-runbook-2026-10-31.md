@@ -139,3 +139,13 @@ The old `signedPalaceChatPhoto` helper remains in code temporarily to avoid assu
 References:
 - https://supabase.com/docs/guides/storage/serving/downloads
 - https://supabase.com/docs/guides/storage/cdn/smart-cdn
+
+## Priority application-level authorization review — 31 October 2026
+
+RLS is active on the reviewed public data, but RLS alone does not prevent authorised users from changing **sensitive columns on a row they own**. A concrete concern exists in `public.work_collaborators`: the invited user's UPDATE policy restricts rows by `user_id`, not which fields or status transitions are editable. Live schema inspection found no trigger protecting the invitation's role or work identity. Broad UPDATE grants would permit an invited collaborator to submit a direct update that attempts to promote their own role, even though the Palace frontend offers only Accept/Decline. This issue is **in code and policy design**, not evidence that any user has exploited it.
+
+A new **eighth, unapplied SQL proposal**, `database/PROPOSED-guard-work-collaboration-role-escalation-2026-10-31.sql`, introduces a field-level and state-transition guard. It preserves the existing author invitation, author re-invitation, recipient accept/decline and removal flows. Owners cannot accept on behalf of invitees. Disposable fixtures in `tests/security-db/fixture-collaboration-*.sql` exercise both attempted privilege escalation and allowed author/invitee actions; the security job passed in [run 41222654715](https://github.com/annalisegeorge1/The-Starry-Palace/actions/runs/41222654715) after correcting a test that had mistakenly attempted to re-accept an already accepted invitation.
+
+The updated full Supabase application security assessment and phased release gates are at `docs/security/supabase-application-security-rollout-2026-10-31.md`. Before any live change, reproduce the candidate against an isolated Supabase project with actual synthetic Auth JWTs and the full existing table policies; confirm that invited editors cannot elevate themselves, accepted collaborators retain editor privileges, authors can re-invite or revoke, and no existing manuscripts are accessed in testing.
+
+**Supabase advisor context (configuration review only):** 69 RLS-enabled tables have no direct policies; 11 anonymous and 147 signed-in callable SECURITY DEFINER functions need individual privilege audits; leaked-password protection is disabled. Broad table-level grants exist, but the reviewed `public` relations have RLS enabled, and the single reviewed public view has `security_invoker=true`. Do not indiscriminately revoke grants, disable RLS or claim all advisory warnings are exploitable.
