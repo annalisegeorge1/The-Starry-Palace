@@ -42,6 +42,7 @@ import {
 } from './liveRooms';
 const DirectClassicReader=React.lazy(()=>importWithRecovery(()=>import('./DirectClassicReader')));
 const PalaceTagWorld=React.lazy(()=>importWithRecovery(()=>import('./PalaceTagWorld')));
+const PalaceLegalPagesLazy=React.lazy(()=>importWithRecovery(()=>import('./PalaceLegalPages')));
 import './palace-editorial-finish.css';
 import './palace-navigation-jewels.css';
 import './palace-regalia-rooms.css';
@@ -512,7 +513,7 @@ function FrameShell({children}){
    <main id="palace-content" data-palace-route={currentHref} className="palace-main-stage" tabIndex="-1">{children}</main>
    <footer className="palace-footer">
     <div><span className="palace-footer-mark" aria-hidden="true">☾<b>✦</b></span><div><strong>The Starry Palace</strong><small>Gather. Have a cup of tea. Write and read with me.</small></div></div>
-    <nav aria-label="Palace footer"><Link to="/writers">For Writers</Link><Link to="/code">Palace Code</Link><Link to="/council/governance">Council</Link><Link to="/beta">Beta feedback</Link><Link to="/search">Search</Link>{session&&<Link to="/settings">Settings & Safety</Link>}</nav>
+   <nav aria-label="Palace footer"><Link to="/writers">For Writers</Link><Link to="/code">Palace Code</Link><Link to="/legal">Policies & notices</Link><Link to="/council/governance">Council</Link><Link to="/beta">Beta feedback</Link><Link to="/search">Search</Link>{session&&<Link to="/settings">Settings & Safety</Link>}</nav>
    </footer>
    <div className="palace-mobile-end-spacer" aria-hidden="true"/>
   </div>
@@ -751,6 +752,7 @@ function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo
  <Route path="/chat" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><PalaceChatWorkspaceLazy/></React.Suspense></ProtectedRoute>}/>
  <Route path="/tags" element={<TagSearchLive Frame={Frame}/>}/>
  <Route path="/tag/:tagId" element={<React.Suspense fallback={<RouteLoading/>}><Frame><PalaceTagWorld/></Frame></React.Suspense>}/>
+ <Route path="/legal" element={<React.Suspense fallback={<RouteLoading/>}><PalaceLegalPagesLazy/></React.Suspense>}/><Route path="/legal/:policy" element={<React.Suspense fallback={<RouteLoading/>}><PalaceLegalPagesLazy/></React.Suspense>}/>
   <Route path="/fandoms" element={<React.Suspense fallback={<RouteLoading/>}><Frame><PalaceFandomAtlas/></Frame></React.Suspense>}/>
  <Route path="/search" element={<SearchLive Frame={Frame}/>}/><Route path="/honour" element={<HonourLive Frame={Frame}/>}/><Route path="/council" element={<ProtectedRoute><CouncilLive Frame={Frame}/></ProtectedRoute>}/><Route path="/council/governance" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><PalaceGovernance Frame={Frame}/></React.Suspense></ProtectedRoute>}/><Route path="/code" element={<React.Suspense fallback={<RouteLoading/>}><PalaceCodeRoom Frame={Frame}/></React.Suspense>}/><Route path="/beta" element={<React.Suspense fallback={<RouteLoading/>}><PalaceBetaGuide Frame={Frame}/></React.Suspense>}/>
  <Route path="/member/:username" element={<MemberProfileLive Frame={Frame}/>}/>
