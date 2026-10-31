@@ -10,4 +10,4 @@
 - **Bookmark postflight:** production function uses `private.member_meets_age(w.minimum_reader_age)`; `anon` and authenticated EXECUTE privileges retained. SQL executed as `anon` verified that none of the published 16+/18+ works produced a bookmark-count row.
 - These changes only replace SQL functions; no member data updates, file operations, DNS, Cloudflare, or frontend deployment.
 - **Rollback:** use the original function definitions captured in the read-only production audit and recorded in prior PR history, then reverify grants/signatures and behavior. A rollback would reintroduce disclosed metadata/statistics; prefer fix-forward if an API regression occurs.
-- **Remaining:** full member browser/device regression tests, six? See current PR for count of outstanding proposals; other reward and tag aggregate changes remain staged. No paid services.
+- **Remaining:** full member browser/device regression tests, four additional proposed privacy/age SQL files remain staged: praise state visibility, sharing awards, praise awards, and tag counts. No paid services.
