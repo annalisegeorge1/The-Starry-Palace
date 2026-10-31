@@ -70,6 +70,12 @@ jobs:
       - name: Test actual PostgreSQL anon/authenticated roles and manuscript RLS
         run: psql -X -v ON_ERROR_STOP=1 -f tests/security-db/fixture-role-rls-assertions.sql
 
+      - name: Prepare synthetic collaboration invitation access policies
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/security-db/fixture-collaboration-schema.sql
+      - name: Compile proposed invitation role-guard in disposable database
+        run: psql -X -v ON_ERROR_STOP=1 -f database/PROPOSED-guard-work-collaboration-role-escalation-2026-10-31.sql
+      - name: Verify collaborators cannot self-promote or redirect invitations
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/security-db/fixture-collaboration-assertions.sql
       - name: Build synthetic private file metadata and access helpers
         run: psql -X -v ON_ERROR_STOP=1 -f tests/security-db/fixture-storage-schema.sql
       - name: Test comic originals, reader copies and chat photo RLS
