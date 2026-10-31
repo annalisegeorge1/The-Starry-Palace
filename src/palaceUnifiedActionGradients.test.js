@@ -20,15 +20,14 @@ describe('Palace action gradients — screenshot refinement',()=>{
   expect(css).toContain('--palace-unified-action-ink:#302347');
   expect(css).toContain('--palace-unified-action-ink:#ffffff');
  });
- it('targets precisely the four controls shown without changing site structure',()=>{
+ it('targets the remaining three content actions without resurrecting removed Wander orb',()=>{
   expect(main).toContain("className={'global-search-live '+");
   expect(main).toContain('className="write-action"');
-  expect(main).toContain('className="palace-passage-wander"');
+  expect(main).not.toContain('className="palace-passage-wander"');
   expect(rooms).toContain('className="reading-compass-wander"');
   for(const selector of [
    '.full-topbar .global-search-live>button[type="submit"]',
    '.full-topbar .full-top-actions .write-action',
-   '.palace-passage .palace-passage-wander',
    '.legacy-reading-page .reading-compass .reading-compass-wander'
   ])expect(css).toContain(selector);
  });
