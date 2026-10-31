@@ -127,3 +127,33 @@
  .palace-shell .duel-prompt-tools>button{width:100%;min-height:45px;white-space:normal}
  .palace-shell .palace-duel-competition-info{align-items:center}
 }
+
+/* Shared understated Palace jewel: keep the help target and popover behaviour. */
+.palace-shell .palace-info-mark-trigger {
+ border-color:rgba(181,173,229,.48)!important;
+ border-radius:50%!important;
+ background:linear-gradient(135deg,rgba(104,83,157,.75),rgba(64,101,155,.65) 60%,rgba(43,118,122,.52))!important;
+ color:#f8f6ff!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 3px 9px rgba(12,12,42,.13)!important;
+ font-weight:700!important;
+}
+.palace-shell.daylight .palace-info-mark-trigger {
+ border-color:rgba(102,83,159,.38)!important;
+ background:linear-gradient(135deg,#e6d8f7,#dce7fb 60%,#d2eeed)!important;
+ color:#39305b!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.94),0 3px 9px rgba(39,29,76,.09)!important;
+}
+.palace-shell .palace-info-mark-trigger .palace-utility-icon {
+ display:block;width:17px;height:17px;stroke-width:1.9;
+}
+.palace-shell .palace-info-mark-trigger:hover,
+.palace-shell .palace-info-mark-trigger[aria-expanded="true"] {
+ border-color:#c9c7fb!important;
+ box-shadow:0 0 0 2px rgba(160,157,222,.20)!important;
+}
+.palace-shell .palace-info-mark-trigger:focus-visible {
+ outline:3px solid #b7d7fa!important;
+ outline-offset:2px!important;
+}
+.palace-shell.daylight .palace-info-mark-trigger:focus-visible {outline-color:#6751a6!important;}
+@media(prefers-reduced-motion:reduce){.palace-shell .palace-info-mark-trigger{transition:none!important}}
