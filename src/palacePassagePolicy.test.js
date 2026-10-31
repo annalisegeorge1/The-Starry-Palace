@@ -19,6 +19,18 @@ describe('Palace passage respects creative focus',()=>{
   expect(shouldShowPalacePassage('/work/moonlight')).toBe(true);
   expect(shouldShowPalacePassage('/writingroom')).toBe(true);
  });
+ it('keeps nearby shortcuts available in a compact accessible mobile disclosure',()=>{
+  const shell=readFileSync('src/main.jsx','utf8');
+  const css=readFileSync('src/tablet-landscape-readable-layout.css','utf8');
+  expect(shell).toContain('const [passageOpen,setPassageOpen]=useState(false)');
+  expect(shell).toContain('aria-controls="palace-passage-doors"');
+  expect(shell).toContain('aria-expanded={passageOpen}');
+  expect(shell).toContain('data-compact-open={passageOpen?');
+  expect(shell).toContain('setPassageOpen(false)');
+  expect(css).toContain('@media(max-width:1100px)');
+  expect(css).toContain('.palace-passage[data-compact-open="false"] .palace-passage-doors');
+  expect(css).toContain('.palace-passage[data-compact-open="true"] .palace-passage-doors');
+ });
  it('is implemented in the shared shell rather than hiding content with CSS',()=>{
   const code=readFileSync('src/main.jsx','utf8');
   expect(code).toContain("import {shouldShowPalacePassage} from './palacePassagePolicy';");
