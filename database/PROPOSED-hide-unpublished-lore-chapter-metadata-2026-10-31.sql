@@ -60,7 +60,7 @@ begin
       else false
     end,
     'unlock_chapter', case
-      when v_user = v_owner or unlock.status = 'published'
+      when unlock.id is not null and (v_user = v_owner or unlock.status = 'published')
       then jsonb_build_object('id',unlock.id,'title',unlock.title,'position',unlock.position)
       else null
     end,
