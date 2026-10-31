@@ -38,3 +38,24 @@ A rollback-only hosted PostgreSQL check confirmed that active synthetic conversa
 Subsequent Supabase security-advisor check returned **two informational RLS-without-policy entries** for the private synthetic tables; these are intentionally inaccessible directly to API clients. The staging bucket is private and has zero objects.
 
 **Still open:** use actual managed Supabase-issued access tokens to verify Storage REST upload/download and signed-link expiry/revocation, not merely SQL role simulation. Real login confirmation and test-only account management must be arranged securely. Keep project billing within the $0 Free plan; do not move staging into production.
+
+## Disposable managed Auth + Storage integration (31 October 2026)
+
+An **additional isolated local test** has now passed, using real Supabase GoTrue authentication and Storage services in Docker — not just emulated SQL roles. This is separate from the $0 hosted staging project, which remains intact and was **not** used for these accounts or files.
+
+- Files: `tests/security-db/local-managed-foundation.sql`, `tests/security-db/local-managed-auth-storage.mjs`, and `.github/workflows/palace-managed-security.yml`.
+- Local setup: pinned Supabase CLI **2.122.0**, Docker Postgres, GoTrue, PostgREST, Storage and Mailpit; email confirmation explicitly **enabled**. All credentials were generated locally and no hosted Supabase secrets were supplied to GitHub.
+- Test accounts: unique fake `@example.test` addresses, local-only admin-confirmed test users, password-based sign-ins, and a separate unconfirmed signup whose login must fail. Mailpit intercepts confirmation email instead of sending to the internet.
+- Private media: a synthetic single-pixel WebP is uploaded to a **private** bucket. An authorized member can download it; unrelated and guest accounts cannot. Other members cannot upload into the sender's folder; unsigned public-bucket URLs cannot fetch the private object.
+- Revocation: removing a synthetic member prevents their **subsequent authenticated download and newly created signed URLs**, even while their prior login session still exists.
+- **Important expected limitation confirmed by live local Storage testing:** a signed URL issued **before** membership revocation remained accessible until its expiry. A signed URL is a bearer link; neither sign-out nor a member's removal guarantees immediate revocation of a preissued link. Avoid giving long-lived private signed links to browsers. The staged `PalaceChatPhoto` enhancement downloads through the member's current authenticated session instead.
+- All synthetic user accounts, object bytes and Docker volumes were cleaned up. Only the source test files remain.
+
+**Verified:** [GitHub Actions run 41227332903](https://github.com/annalisegeorge1/The-Starry-Palace/actions/runs/41227332903), local integration job **passed**, **7 named integration checks** with real local Auth/Storage.
+
+**Limits:** This reproduces a **minimal** Palace collaboration/media schema. Hosted staging still has zero Auth users and zero Storage objects; the tests were not run against production members or the managed Supabase cloud Storage edge/CDN. More complete staging with the Palace's full schema and cross-device UI checks is required before a production rollout. The repo's CI currently gates this extra workflow to the approved review branch, so future independent branches do not accidentally run tests against the hosted project.
+
+Official testing references:
+- https://supabase.com/docs/guides/auth/testing-auth-flows
+- https://supabase.com/docs/guides/storage/serving/downloads
+- https://supabase.com/docs/guides/storage/cdn/smart-cdn
