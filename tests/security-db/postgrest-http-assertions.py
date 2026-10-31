@@ -42,8 +42,10 @@ def token(user, *, signing_secret=SECRET, expires_in=600):
     return f"{message}.{signature}"
 
 
-def call(path, *, user=None, raw_jwt=None, verb="GET", body=None, prefer=None):
+def call(path, *, user=None, raw_jwt=None, verb="GET", body=None, prefer=None, profile=None):
     headers = {"Accept": "application/json"}
+    if profile:
+        headers["Accept-Profile" if verb in ("GET", "HEAD") else "Content-Profile"] = profile
     if user:
         headers["Authorization"] = "Bearer " + token(user)
     if raw_jwt:
@@ -71,10 +73,10 @@ def call(path, *, user=None, raw_jwt=None, verb="GET", body=None, prefer=None):
 
 
 def expect(name, path, *, user=None, raw_jwt=None, verb="GET", body=None,
-           status=200, predicate=None, prefer=None):
+           status=200, predicate=None, prefer=None, profile=None):
     global checks
     code, value = call(path, user=user, raw_jwt=raw_jwt,
-                       verb=verb, body=body, prefer=prefer)
+                       verb=verb, body=body, prefer=prefer, profile=profile)
     if code != status or (predicate is not None and not predicate(value)):
         raise AssertionError(f"{name}: expected {status} and predicate, got status={code}, body={value!r}")
     checks += 1
@@ -151,5 +153,40 @@ expect("Forged JWT signature is rejected", "/works?select=id",
        status=401)
 expect("Expired JWT is rejected", "/works?select=id",
        raw_jwt=token(OWNER, expires_in=-3600), status=401)
+
+
+# Test-only PostgREST additionally exposes the synthetic storage.objects table.
+# This is an HTTP/JWT check of PostgreSQL metadata RLS, NOT the managed Supabase
+# Storage download, signed-URL, transformation or upload service.
+def storage_count(bucket, expected, *, user=None, label=None):
+    name = label or (user or "guest")
+    expect(f"Storage metadata {bucket} ({name})",
+           "/objects?select=bucket_id,name&bucket_id=eq." + bucket,
+           user=user, profile="storage", predicate=age_count(expected))
+
+
+storage_count("comic-covers", 1, label="guest public covers only")
+storage_count("comic-pages", 1, label="guest public reader page only")
+storage_count("comic-originals", 0, label="guest cannot read original artwork")
+storage_count("palace-chat-photos", 0, label="guest cannot read private chat photos")
+storage_count("comic-covers", 2, user=YOUNG)
+storage_count("comic-pages", 1, user=YOUNG)
+storage_count("comic-originals", 0, user=YOUNG)
+storage_count("palace-chat-photos", 0, user=YOUNG)
+storage_count("comic-covers", 3, user=ADULT)
+storage_count("comic-pages", 2, user=ADULT)
+storage_count("comic-originals", 1, user=ADULT, label="only own original")
+storage_count("palace-chat-photos", 1, user=ADULT, label="direct chat member")
+storage_count("comic-originals", 0, user=EDITOR)
+storage_count("palace-chat-photos", 1, user=EDITOR, label="group chat member")
+storage_count("comic-originals", 3, user=OWNER, label="owner original assets")
+storage_count("palace-chat-photos", 3, user=OWNER, label="owner direct + group photos")
+# Neither a stranger nor a public reader can upload into someone else's folder.
+expect("Unrelated user cannot insert into another creator's originals",
+       "/objects?select=bucket_id,name", user=YOUNG, profile="storage",
+       verb="POST",
+       body={"bucket_id": "comic-originals",
+             "name": OWNER + "/unauthorised-ci-example.png"},
+       status=403)
 
 print(f"PASS: {checks} synthetic HTTP/JWT/PostgREST access-control checks.")
