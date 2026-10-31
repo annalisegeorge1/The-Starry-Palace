@@ -4,23 +4,26 @@
 **Last updated:** 31 October 2026  
 **Contact:** Annalise Pierre · annalise.pierre.28@gmail.com
 
-This notice explains cookies and browser storage used by The Starry Palace. A cookie is stored and sent with website requests; local and session storage are separate browser features and are not automatically sent with every request.
+This notice explains what The Starry Palace may save in your browser and why. Cookies and browser storage are different: cookies are small files a website may save and receive again with a request; browser storage saves information in your browser on your device.
 
-### What the Palace uses
+### What is saved in your browser
 
-- **Sign-in session:** the Supabase browser client stores the signed-in session in browser storage so members can remain signed in and refresh a session. This is needed for sign-in features members choose to use.
-- **Preferences and feature state:** the app stores some settings, such as theme and reading preferences, as well as reading progress, dismissed guidance and selected device-local composer drafts. Some data may remain only on that browser and may not be synced to the account.
-- **Cookies:** the app source reviewed for this notice contains no direct cookie-writing code. A fresh, logged-out visit to the homepage on 31 October 2026 exposed no browser cookie to the page. Cloudflare, Supabase or another service may use cookies or similar technologies in other contexts, such as sign-in, security or service delivery.
-- **Advertising and analytics:** the reviewed application source contains no app-level advertising or analytics tag. The Palace does not currently use optional advertising or behavioural-tracking storage.
+- **Sign-in session:** When you sign in, the Palace saves your session in browser storage so you can stay signed in and refresh your session. This is needed for account features.
+- **Settings and reading activity:** Your browser may save preferences such as theme and reading settings, reading progress, and notices you have dismissed. These settings may be kept only on that device and may not sync to your account.
+- **Device-only writing data:** Some composer drafts or recovery copies may be saved in your browser. These are separate from manuscripts saved to your Palace account and may not sync. Keep another copy of important writing.
 
-The Palace does not currently show a cookie-preference banner because it has not identified optional app-level tracking to offer. If optional cookies, analytics, advertising or behavioural profiling are introduced, this notice will be updated and any consent required by law will be requested before those technologies are activated.
+### Cookies, security and tracking
+
+The Palace does not currently use its own advertising cookies or optional app-level analytics or behavioural-tracking tools. Cloudflare, Supabase or another service that helps deliver, sign in to or protect the Palace may use its own cookies or similar technologies for those services. Their use is governed by the provider's notices and may depend on how you use the site.
+
+The Palace does not currently offer optional advertising or analytics tracking, so it does not show an optional-cookie choice banner. If optional tracking is introduced, this notice will be updated and any consent required by law will be requested before it is enabled.
 
 ### Your choices
 
-Browser settings let you review, block or clear cookies and local storage. Clearing storage may sign you out, reset preferences or remove unsynced device-only writing. Keep a separate copy of important work. Blocking all storage may prevent sign-in and some requested features from working.
+You can block or clear cookies and browser storage in your browser settings. Clearing browser storage may sign you out, reset preferences or remove device-only writing or recovery data. It does not delete manuscripts already saved to your Palace account. Blocking all storage may prevent sign-in and some features from working.
 
-When you follow an external payment, video, social or other link, that provider may use its own cookies and storage. Its privacy and cookie notices apply to its service.
+When you follow an external payment, video, social or other link, that provider may use its own cookies and storage under its own privacy and cookie notices.
 
 ### Contact
 
-For questions about this notice or the browser data used by the Palace, email **annalise.pierre.28@gmail.com**.
+For questions about cookies or browser storage used by the Palace, email **annalise.pierre.28@gmail.com**.
