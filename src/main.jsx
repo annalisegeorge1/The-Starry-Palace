@@ -102,6 +102,7 @@ import './mobile-dock-header-fix.css';
 import './mobile-global-shell-palace-polish.css';
 import './grand-palace-heritage-regalia.css';
 import './palace-commons-heritage-icons.css';
+import './member-chamber-empty-heritage.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
