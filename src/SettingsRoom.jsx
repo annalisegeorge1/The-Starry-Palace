@@ -8,7 +8,7 @@ import {useAuth} from './auth';
 import {supabase} from './supabase';
 import MemberAvatar from './MemberAvatar';
 import {PalaceDialog,State} from './PalaceLivePrimitives';
-import {PalaceTopicHelp} from './PalaceGuidebook';
+import {PalaceTopicHelp} from './PalaceGuidebookHints';
 import {SETTINGS_TABS,palaceTabFromSearch,palaceTabUrl} from './palaceTabNavigation';
 import {getSettings,updatePrivacy,updateNotifications,requestAccountExport,requestAccountDeletion,cancelAccountDeletion,setForumThreadPreference,setMemberBoundary} from './palaceData';
 import {IN_APP_NOTIFICATION_CATEGORIES,notificationPreset,notificationFormPatch} from './notificationSettingsModel';

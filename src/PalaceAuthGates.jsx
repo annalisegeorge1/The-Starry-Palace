@@ -26,6 +26,7 @@ export function PalaceLogin({ Frame }) {
   const [mode, setMode] = useState(() => new URLSearchParams(location.search).get('mode') === 'signup' ? 'signup' : 'login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [birthDate, setBirthDate] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
@@ -42,7 +43,7 @@ export function PalaceLogin({ Frame }) {
     try {
       if (mode === 'signup') rememberPalaceAuthDestination(window.sessionStorage, destination);
       const result = mode === 'signup'
-        ? await supabase.auth.signUp({ email, password, options: { emailRedirectTo: palaceAuthRedirect(window.location.origin) } })
+        ? await supabase.auth.signUp({ email, password, options: { emailRedirectTo: palaceAuthRedirect(window.location.origin), data: { palace_birth_date: birthDate } } })
         : await supabase.auth.signInWithPassword({ email, password });
       if (result.error) throw result.error;
       if (mode === 'signup' && !result.data?.session)
@@ -54,13 +55,14 @@ export function PalaceLogin({ Frame }) {
 
   async function magic() {
     if (!email.trim()) { setMessage('Enter your email address first to request a magic link.'); return; }
+    if (mode === 'signup' && !birthDate) { setMessage('Enter your date of birth to create an account.'); return; }
     if (!supabase || busy) return;
     setBusy(true); setMessage('');
     try {
       rememberPalaceAuthDestination(window.sessionStorage, destination);
       const { error } = await supabase.auth.signInWithOtp({
         email: email.trim(),
-        options: { emailRedirectTo: palaceAuthRedirect(window.location.origin), shouldCreateUser: true },
+        options: { emailRedirectTo: palaceAuthRedirect(window.location.origin), shouldCreateUser: mode === 'signup', ...(mode === 'signup' ? { data: { palace_birth_date: birthDate } } : {}) },
       });
       if (error) throw error;
       setMessage('A passwordless entrance link has been sent. Check your inbox to enter the Palace.');
@@ -95,7 +97,7 @@ export function PalaceLogin({ Frame }) {
     </div>
     <div className="auth-panel palace-login-panel">
       {!configured ? <p role="alert">Sign-in is not configured.</p> : <>
-        {googleLoginEnabled() && <>
+        {googleLoginEnabled() && mode !== 'signup' && <>
           <button type="button" className="palace-google-login" disabled={busy || loading} onClick={google}>
             <GoogleLogo /> <span>Continue with Google</span>
           </button>
@@ -109,6 +111,7 @@ export function PalaceLogin({ Frame }) {
         </button>
         <div className="auth-divider"><span>or use a Palace password</span></div>
         <form onSubmit={submit}>
+          {mode === 'signup' && <><label htmlFor="palace-signup-birth-date">Date of birth</label><input id="palace-signup-birth-date" type="date" autoComplete="bday" max={(()=>{const d=new Date();d.setFullYear(d.getFullYear()-12);return d.toISOString().slice(0,10)})()} value={birthDate} onChange={event => setBirthDate(event.target.value)} required/><small className="password-note">The Palace minimum account age is 12. Your date of birth is stored privately for age eligibility and reader restrictions.</small></>}
           <label htmlFor="palace-password">Password</label>
           <div className="password-field">
             <input id="palace-password" type={showPassword ? 'text' : 'password'}
@@ -123,6 +126,7 @@ export function PalaceLogin({ Frame }) {
           {mode === 'signup' && <small className="password-note">Use at least 8 characters. Never use your inbox password.</small>}
           <button disabled={busy || loading}>{busy ? 'Please wait…' : mode === 'signup' ? 'Create my chamber' : 'Enter the Palace'}</button>
         </form>
+        {mode === 'signup' && <p className="palace-google-note">Use email to create a new account. Google sign-in is available for existing members.</p>}
         <button type="button" className="secondary" disabled={busy}
           onClick={() => { setMode(mode === 'signup' ? 'login' : 'signup'); setMessage(''); setPassword(''); }}>
           {mode === 'signup' ? 'Already a member? Sign in' : 'New beneath these stars? Create an account'}

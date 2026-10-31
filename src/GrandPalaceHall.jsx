@@ -2,7 +2,7 @@ import {WriterAward,PalaceBanner} from './PaintedPalaceArt';
 import './grand-palace-emblems.css';
 import PalaceEmblem from './PalaceEmblem';
 import PalaceGlowIcon from './PalaceGlowIcon';
-import {PalaceTopicHelp,PalaceFirstRoomHint} from './PalaceGuidebook';
+import {PalaceTopicHelp,PalaceFirstRoomHint} from './PalaceGuidebookHints';
 import React,{useEffect,useState} from 'react';
 import{Link,useSearchParams}from'react-router-dom';
 import GrandPalaceExpansion from './GrandPalaceExpansion';
