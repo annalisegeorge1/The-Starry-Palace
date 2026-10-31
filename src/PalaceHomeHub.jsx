@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import PalaceIcon,{palaceIconForRoute} from './PalaceIcon';
 import {Link,useNavigate} from 'react-router-dom';
 import {palaceSignInDoor} from './palaceDoorway';
-import {palaceRecentDoorKey,readPalaceRecentDoors} from './palaceRecentDoors';
+import {palaceRecentDoorKey,readPalaceRecentDoors,distinctRecentPalaceRooms} from './palaceRecentDoors';
 import './palace-home-hub.css';
 
 const paths={
@@ -38,8 +38,8 @@ export default function PalaceHomeHub({memberId,children}){
  const navigate=useNavigate();
  const member=Boolean(memberId);
  // Read by the current identity on every render; never retain another member's doors.
- const recent=readPalaceRecentDoors(key=>window.localStorage.getItem(key),palaceRecentDoorKey(memberId))
-  .filter(door=>door.path!=='/').slice(0,4);
+ const recent=distinctRecentPalaceRooms(readPalaceRecentDoors(key=>window.localStorage.getItem(key),palaceRecentDoorKey(memberId))
+  .filter(door=>door.path!=='/'),4);
  return <>
   <section className={'palace-hub-hero'+(member?' is-member':'')} aria-labelledby="palace-home-title">
    <div className="palace-hub-copy">
@@ -51,7 +51,7 @@ export default function PalaceHomeHub({memberId,children}){
    </div>
    <div className="palace-hub-art"><img src="/assets/palace/palace-belonging.gif" alt="" decoding="async"/><span>YOUR PALACE · A PLACE TO BELONG</span></div>
   </section>
-  {recent.length>0&&<nav className="palace-hub-recent" aria-label="Recently visited Palace rooms"><span>Pick up your path</span>{recent.map(door=><Link key={door.path} to={door.path}><span aria-hidden="true"><PalaceIcon name={palaceIconForRoute(door.path)}/></span>{door.label}<span aria-hidden="true">↗</span></Link>)}</nav>}
+  {recent.length>0&&<nav className="palace-hub-recent" aria-label="Recently visited Palace rooms"><span className="palace-hub-recent-heading"><strong>Pick up your path</strong><small>Your latest stop in each Palace room</small></span>{recent.map(door=><Link key={door.path} to={door.path}><span aria-hidden="true"><PalaceIcon name={palaceIconForRoute(door.path)}/></span>{door.label}<span aria-hidden="true">↗</span></Link>)}</nav>}
   {children}
   <section className="palace-hub-discovery" aria-labelledby="palace-discovery-title">
    <header><div><p className="palace-hub-eyebrow">FOLLOW YOUR CURIOSITY</p><h2 id="palace-discovery-title">What brings you here today?</h2></div>
