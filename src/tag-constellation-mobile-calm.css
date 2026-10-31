@@ -200,7 +200,7 @@
 }
 @media(max-width:760px){
  .palace-shell.full-palace-shell .legacy-tags-page{
-  padding-bottom:calc(160px + env(safe-area-inset-bottom,0px))!important;
+  padding-bottom:calc(68px + env(safe-area-inset-bottom,0px))!important;
  }
  .palace-shell.full-palace-shell .legacy-tags-page :is(.tag-results,.tag-selection-ledger,.tag-category-grid>article:last-child){
   scroll-margin-block-end:calc(142px + env(safe-area-inset-bottom,0px))!important;
@@ -247,5 +247,65 @@
  }
  .palace-shell.full-palace-shell .full-stage>header.topbar.full-topbar>.full-topbar-row{
   position:relative;z-index:1;
+ }
+}
+
+/* Discovery suggestions are optional rather than another permanent row of pills. */
+.palace-shell.full-palace-shell .legacy-tags-page .tag-quick-paths{
+ min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-tags-page .tag-quick-paths>summary{
+ display:inline-flex;align-items:center;min-height:38px;cursor:pointer;
+ font-weight:650;font-size:.78rem;color:inherit;
+}
+.palace-shell.full-palace-shell .legacy-tags-page .tag-quick-paths .tag-starting-doors{
+ margin-top:7px;max-width:100%;overflow-x:auto;flex-wrap:nowrap;
+ scrollbar-width:thin;padding-bottom:7px;
+}
+.palace-shell.full-palace-shell .legacy-tags-page .tag-quick-paths .tag-starting-doors>button{
+ flex:0 0 auto;white-space:nowrap;
+}
+.palace-shell.full-palace-shell .legacy-tags-page .tag-filter-sheet-heading{display:none}
+.palace-shell.full-palace-shell .legacy-tags-page .tag-filter-apply{display:none}
+.palace-shell.full-palace-shell .legacy-tags-page .tag-filter-backdrop{display:none}
+@media(max-width:760px){
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-filter-backdrop{
+  display:block!important;position:fixed!important;inset:0!important;z-index:10040!important;
+  border:0!important;border-radius:0!important;
+  background:rgba(2,5,22,.6)!important;
+  cursor:pointer;
+ }
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-library-extra-controls:not([hidden]){
+  position:fixed!important;
+  inset:auto 0 0 0!important;
+  z-index:10041!important;
+  box-sizing:border-box!important;width:100%!important;max-width:100%!important;
+  max-height:75dvh!important;overflow-y:auto!important;
+  display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+  gap:13px!important;
+  padding:18px max(18px,env(safe-area-inset-right,0px)) calc(22px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))!important;
+  border:1px solid rgba(178,168,231,.45)!important;border-radius:22px 22px 0 0!important;
+  background:linear-gradient(135deg,#222447,#132940)!important;
+  color:#f6f2ff!important;
+  box-shadow:0 -15px 60px rgba(1,3,20,.5)!important;
+ }
+ .palace-shell.full-palace-shell.daylight .legacy-tags-page .tag-library-extra-controls:not([hidden]){
+  background:linear-gradient(135deg,#f6effb,#e9f1fa)!important;color:#33304f!important;
+ }
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-filter-sheet-heading{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  font-size:1.06rem;
+ }
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-filter-sheet-heading>button{
+  min-width:44px;min-height:44px;background:transparent;border:1px solid rgba(173,166,224,.35);
+  border-radius:10px;color:inherit;font-size:1.2rem;cursor:pointer;
+ }
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-filter-apply{
+  display:block;min-height:44px;width:100%;margin:4px 0 0;
+  background:linear-gradient(120deg,#6553a7,#367e9a);border:0;border-radius:11px;
+  color:#fff;font-weight:720;cursor:pointer;
+ }
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-quick-paths .tag-starting-doors{
+  display:flex!important;
  }
 }
