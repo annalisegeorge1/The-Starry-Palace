@@ -97,3 +97,18 @@ The pull-request CI now launches a disposable PostgREST 14.18 HTTP server connec
 **Verified result:** [GitHub Actions run 41217243892](https://github.com/annalisegeorge1/The-Starry-Palace/actions/runs/41217243892) completed the synthetic database and HTTP security job successfully, reporting **25 passed HTTP/JWT/PostgREST checks**. The temporary services and invented data are removed after the job. A preceding fixture-only test run failed due to retained synthetic profile visibility; the fixture was corrected and this successful rerun verified the intended private state.
 
 **Still unverified:** this is a PostgREST API test, not managed Supabase Auth/GoTrue, Auth signup/email flows, Storage signed URLs, all live schemas/policies, original media download restrictions, the production Edge/Cloudflare configuration or a realistic browser regression suite. The synthetic helper definitions approximate the live project and are not a substitute for full staging. Actual production function replacements remain prohibited until the owner approves release after staging validation.
+
+## Synthetic Supabase Storage policy checks — 31 October 2026
+
+The pull-request CI now also uses `tests/security-db/fixture-storage-schema.sql` and `tests/security-db/fixture-storage-rls-assertions.sql`. These create **invented** comic covers, published reader-page references, original-art paths and direct/group-chat photo metadata in a disposable PostgreSQL `storage.objects` table. No actual image or media bytes are loaded.
+
+The test recreates the reviewed `storage.objects` policies for comic asset owner operations, published reader copies, original files and membership-gated chat photos; it also mirrors the live comic metadata SELECT policies so the storage checks cannot bypass the reader age and publication gates. It exercises real PostgreSQL `anon` and `authenticated` roles with synthetic session identities, verifying:
+- Signed-out users see public 12+ comic covers and published reader copies but cannot see originals or chat photos.
+- A 13-year-old member sees members-eligible covers while 18+ and draft comic pages remain inaccessible.
+- An unrelated adult sees published reader copies, but not another author's original files or private group chat photos.
+- Owners can access/upload their own comic originals and photos, while unrelated callers cannot upload into another author's folder.
+- Only direct conversation members and group members see the corresponding private chat photos.
+
+**Evidence:** [GitHub Actions run 41220450189](https://github.com/annalisegeorge1/The-Starry-Palace/actions/runs/41220450189), synthetic database security job **passed**. An earlier fixture run was stopped by missing comic metadata table grants, corrected to reflect the actual comic metadata RLS policy dependencies; the new run verified these permissions.
+
+**Limits:** This reproduces PostgreSQL *object metadata RLS*, not the complete managed Supabase Storage HTTP endpoints, signed-URL issuance/expiry, file transformations, bucket configuration in a hosted service, or the full production database. Continue to require separate hosted or equivalent full Supabase staging tests with real synthetic accounts before deployment.
