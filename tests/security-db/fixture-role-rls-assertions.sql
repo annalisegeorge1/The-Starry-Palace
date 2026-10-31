@@ -123,8 +123,11 @@ declare n integer;
 begin
  select count(*) into n from public.works where id='10000000-0000-0000-0000-000000000002';
  if n<>1 then raise exception 'editor cannot view assigned work';end if;
- select count(*) into n from public.chapters where id='20000000-0000-0000-0000-000000000002';
- if n<>0 then raise exception 'editor reached unassigned chapter: check fixture';end if;
+ select count(*) into n from public.chapters where id='20000000-0000-0000-0000-000000000005';
+ if n<>1 then raise exception 'editor cannot access assigned private chapter';end if;
+ update public.chapters set title=title where id='20000000-0000-0000-0000-000000000005';
+ get diagnostics n=row_count;
+ if n<>1 then raise exception 'editor cannot edit assigned private chapter';end if;
  update public.works set visibility=visibility
  where id='10000000-0000-0000-0000-000000000002';
  get diagnostics n=row_count;
