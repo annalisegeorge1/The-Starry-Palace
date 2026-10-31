@@ -34,3 +34,23 @@ it('never carries recent rooms between members or into the guest view',()=>{
  rerender(<MemoryRouter><PalaceHomeHub/></MemoryRouter>);
  expect(screen.queryByRole('navigation',{name:'Recently visited Palace rooms'})).toBeNull();
 });
+
+
+it('does not fill a homecoming with three separate Treasury links',()=>{
+ const key=palaceRecentDoorKey('member-one');
+ localStorage.setItem(key,JSON.stringify([
+  {path:'/treasury?tab=achievements',label:'Badges & achievements'},
+  {path:'/treasury/catalogue',label:'Full catalogue'},
+  {path:'/treasury',label:'Royal Treasury'},
+  {path:'/reading',label:'Reading Rooms'},
+  {path:'/writing',label:'Writing Chamber'}
+ ]));
+ render(<MemoryRouter><PalaceHomeHub memberId="member-one"/></MemoryRouter>);
+ const nav=screen.getByRole('navigation',{name:'Recently visited Palace rooms'});
+ const links=[...nav.querySelectorAll('a')];
+ expect(links).toHaveLength(3);
+ expect(links.map(link=>link.getAttribute('href'))).toEqual([
+  '/treasury?tab=achievements','/reading','/writing'
+ ]);
+ expect(screen.getByText('Your latest stop in each Palace room')).toBeTruthy();
+});
