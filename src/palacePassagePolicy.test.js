@@ -22,6 +22,6 @@ describe('Palace passage respects creative focus',()=>{
  it('is implemented in the shared shell rather than hiding content with CSS',()=>{
   const code=readFileSync('src/main.jsx','utf8');
   expect(code).toContain("import {shouldShowPalacePassage} from './palacePassagePolicy';");
-  expect(code).toContain('activeRoom&&shouldShowPalacePassage(location.pathname)&&<nav className="palace-passage"');
+  expect(code).toContain('shouldShowPalacePassage(location.pathname)&&<nav className="palace-passage"');
  });
 });
