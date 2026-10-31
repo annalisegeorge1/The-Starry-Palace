@@ -112,3 +112,16 @@ The test recreates the reviewed `storage.objects` policies for comic asset owner
 **Evidence:** [GitHub Actions run 41220450189](https://github.com/annalisegeorge1/The-Starry-Palace/actions/runs/41220450189), synthetic database security job **passed**. An earlier fixture run was stopped by missing comic metadata table grants, corrected to reflect the actual comic metadata RLS policy dependencies; the new run verified these permissions.
 
 **Limits:** This reproduces PostgreSQL *object metadata RLS*, not the complete managed Supabase Storage HTTP endpoints, signed-URL issuance/expiry, file transformations, bucket configuration in a hosted service, or the full production database. Continue to require separate hosted or equivalent full Supabase staging tests with real synthetic accounts before deployment.
+
+## Synthetic signed-JWT storage metadata API checks — 31 October 2026
+
+The disposable PostgREST service now exposes `storage.objects` **only inside the test container**, alongside the synthetic `public` schema. The Python HTTP checks use the `Accept-Profile: storage` API header and ephemeral JWTs to verify exactly which object metadata each synthetic guest, younger reader, adult, author and collaborator can see. They cover:
+- Guest public reader pages and covers, but no originals or private chat photos.
+- Member- and age-eligible reader covers and pages while excluding adult-only content for younger accounts.
+- Owner-only comic originals even when published reader copies are available to others.
+- Direct-conversation versus group-chat-photo membership.
+- Rejection of another user's attempt to insert into an author's original-artwork folder through the synthetic API.
+
+The first expanded HTTP run detected an expected-count mismatch caused by an earlier synthetic upload, not a privacy leak. After correcting that assertion, [GitHub Actions run 41220921656](https://github.com/annalisegeorge1/The-Starry-Palace/actions/runs/41220921656) successfully completed the disposable database security job and reported **42 signed-JWT HTTP/PostgREST checks passed**, including a deliberately forbidden insert rejected by row-level security.
+
+**Critical limitation:** exposing `storage.objects` to temporary PostgREST is an intentional **test-only setup**. It does not change the real Supabase Data API's exposed schemas, nor does it test Supabase Storage HTTP download/upload/signed-URL enforcement. Never expose the actual `storage` schema through the production Data API as a shortcut for testing; use managed Storage staging endpoints instead. No actual media bytes, member IDs, hosted account tokens or production secrets were involved.
