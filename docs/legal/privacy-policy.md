@@ -49,9 +49,9 @@ If a member follows an external payment or social link, that provider receives i
 
 ### 6. Cookies and browser storage
 
-The Palace application does not currently write cookies directly or use an app-level advertising or analytics tag. The browser may store a sign-in session, preferences, reading progress and some device-local drafts using local or session storage. Those items are not necessarily cookies and may not sync to the account. Clearing browser data can sign a member out, reset preferences or remove local-only text.
+When you sign in, the Palace saves your session in browser storage so you can remain signed in and use account features. Your browser may also save preferences, reading progress, dismissed notices and some device-only composer drafts or recovery copies. These items may not sync to your Palace account. Clearing browser storage may sign you out, reset preferences or remove device-only writing; it does not delete manuscripts already saved to your Palace account.
 
-Cloudflare, Supabase or a future embedded service may use storage or process request information as part of its own service. The separate Cookie and Browser Storage Notice describes what the Palace has identified. The Palace does not currently use optional advertising or behavioural-tracking storage.
+The Palace does not currently use its own advertising cookies or optional app-level analytics or behavioural-tracking tools. Cloudflare, Supabase and other service providers may use their own cookies or similar technologies to provide sign-in, security or service delivery. Their practices are described in their own notices and may depend on how you use the site. See the separate Cookie and Browser Storage Notice for details and browser controls.
 
 ### 7. Retention and deletion requests
 
