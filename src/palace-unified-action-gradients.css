@@ -1,6 +1,6 @@
 /*
  * Palace visual consistency · screenshot review, 9 October 2026.
- * Search, Write, both Wander buttons share the same soft three-stop
+ * Search, Write, and the reader's Wander action share the soft three-stop
  * lilac / blue / aqua gradient as the selected All Stories room tab.
  * Appearance only — do not alter sizes, positions, routes or interactions.
  */
@@ -19,13 +19,12 @@ html[data-palace-theme="nightfall"],.full-palace-shell.nightfall{
  --palace-unified-action-shadow:0 3px 11px rgba(12,10,45,.21);
 }
 /*
- * The shared gradient applies to the exact four annotated controls.
+ * The shared gradient applies to three remaining controls.
  * Keep each existing component's responsive dimensions and border radius.
  * Explicit backgrounds override earlier neon / saturated !important rules.
  */
 .full-palace-shell .full-topbar .global-search-live>button[type="submit"],
 .full-palace-shell .full-topbar .full-top-actions .write-action,
-.full-palace-shell .palace-passage .palace-passage-wander,
 .full-palace-shell .legacy-reading-page .reading-compass .reading-compass-wander{
  background:var(--palace-unified-action-gradient)!important;
  background-image:var(--palace-unified-action-gradient)!important;
@@ -34,16 +33,14 @@ html[data-palace-theme="nightfall"],.full-palace-shell.nightfall{
  box-shadow:var(--palace-unified-action-shadow)!important;
  text-shadow:none!important;
 }
-/* Preserve readable labels and the moon symbol on the long Wander card. */
+/* Preserve readable labels on Write and the reader's Wander card. */
 .full-palace-shell .full-topbar .full-top-actions .write-action span,
-.full-palace-shell .palace-passage .palace-passage-wander span,
 .full-palace-shell .legacy-reading-page .reading-compass .reading-compass-wander :is(span,b,small){
  color:inherit!important;
  text-shadow:none!important;
 }
 .full-palace-shell .full-topbar .global-search-live>button[type="submit"]:hover:not(:disabled),
 .full-palace-shell .full-topbar .full-top-actions .write-action:hover,
-.full-palace-shell .palace-passage .palace-passage-wander:hover,
 .full-palace-shell .legacy-reading-page .reading-compass .reading-compass-wander:hover:not(:disabled){
  background:var(--palace-unified-action-hover)!important;
  background-image:var(--palace-unified-action-hover)!important;
@@ -51,7 +48,6 @@ html[data-palace-theme="nightfall"],.full-palace-shell.nightfall{
 }
 .full-palace-shell .full-topbar .global-search-live>button[type="submit"]:focus-visible,
 .full-palace-shell .full-topbar .full-top-actions .write-action:focus-visible,
-.full-palace-shell .palace-passage .palace-passage-wander:focus-visible,
 .full-palace-shell .legacy-reading-page .reading-compass .reading-compass-wander:focus-visible{
  outline:3px solid var(--palace-unified-action-border)!important;
  outline-offset:3px;
@@ -64,7 +60,6 @@ html[data-palace-theme="nightfall"],.full-palace-shell.nightfall{
 @media(prefers-reduced-motion:reduce){
  .full-palace-shell .full-topbar .global-search-live>button[type="submit"],
  .full-palace-shell .full-topbar .full-top-actions .write-action,
- .full-palace-shell .palace-passage .palace-passage-wander,
  .full-palace-shell .legacy-reading-page .reading-compass .reading-compass-wander{
   transition:none!important;
  }
