@@ -234,4 +234,23 @@ expect("Declined invite cannot later be self-accepted",
        invite,user=YOUNG,verb="PATCH",body={"status":"accepted"},
        status=400,prefer="return=representation")
 
+# Match the existing Palace frontend's upsert-on-conflict invitation request.
+# An author must be able to re-invite without creating duplicate rows.
+code, invite_result = call(
+    "/work_collaborators?on_conflict=work_id,user_id",
+    user=OWNER, verb="POST",
+    body={"work_id": PUBLIC, "user_id": YOUNG, "role": "co_writer",
+          "status": "invited", "invited_by": OWNER,
+          "responded_at": None, "updated_at": "2026-10-31T12:00:00Z"},
+    prefer="resolution=merge-duplicates,return=representation",
+)
+if code not in (200, 201) or not isinstance(invite_result, list) or len(invite_result) != 1 or invite_result[0]["status"] != "invited":
+    raise AssertionError(f"Author's existing frontend upsert must remain usable: {code}, {invite_result!r}")
+checks += 1
+expect("Re-invited collaborator can accept after owner upsert",
+       invite,user=YOUNG,verb="PATCH",body={"status":"accepted"},
+       prefer="return=representation",
+       predicate=lambda v: isinstance(v, list) and len(v) == 1
+         and v[0]["role"]=="co_writer" and v[0]["status"]=="accepted")
+
 print(f"PASS: {checks} synthetic HTTP/JWT/PostgREST access-control checks.")
