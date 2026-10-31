@@ -1,7 +1,6 @@
 import React,{useCallback,useEffect,useId,useLayoutEffect,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
 import {palaceInfoPlacement} from './palaceInfoPlacement';
-import PalaceUtilityIcon from './PalaceUtilityIcon';
 import './PalaceInfoMark.css';
 
 /**
@@ -95,7 +94,7 @@ export default function PalaceInfoMark({title='How it works',variant='help',chil
     cancelLeave();
     const next=!pinned;
     setPinned(next);setHovered(false);setFocused(false);setDismissed(!next);
-   }}>{variant==='warning'?'!':<PalaceUtilityIcon name="help"/>}</button>
+   }}>{variant==='warning'?'!':'?'}</button>
   {open&&typeof document!=='undefined'&&createPortal(
    <div id={id} ref={panel} role="group" aria-label={title}
     className={'palace-info-mark-popover palace-info-floating'+(daylight?' daylight':'')}
