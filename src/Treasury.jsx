@@ -3,6 +3,7 @@ import { useAuth } from './auth';
 import badges from './badges.json';
 import originals from './originalBadges.json';
 import PalaceBadge from './PalaceBadge';
+import PalaceGlowIcon from './PalaceGlowIcon';
 import PalaceGift, { giftCourt, giftCourts, giftEdition, giftEditions } from './PalaceGift';
 import { ascendPalaceGift, createGiftTradeOffer, getGiftCatalogue, getGiftTrades, getTreasury, removeProfileAchievementShowcase, removeProfileGiftShowcase, respondGiftTradeOffer, searchMembers, setProfileAchievementShowcase, setProfileGiftShowcase } from './palaceData';
 import './treasury.css';
@@ -11,6 +12,7 @@ import {buildInventory} from './treasuryCollection';
 
 const tiers=['bronze','silver','gold','platinum','emerald'];
 const PAGE_SIZE=48;
+const TREASURY_COURT_ICONS=['crescent-moon','book-open','celestial-star','sovereign-constellation','feather','brush-star','archive','star-home','creative-star','image','moon-court','palette','sparkles','verse','celestial-star','tea-cup','creative-star','compass','founding-crest','messages','regal-crown'];
 
 export default function Treasury({Frame}) {
  const {session}=useAuth();
@@ -156,10 +158,10 @@ export default function Treasury({Frame}) {
   <section className="catalogue-celestial-doorway"><div><p className="eyebrow">CELESTIAL HONOURS</p><h2>Special titles now live in the Royal Treasury.</h2><p>Your Celestial Points, earned title constellations and point history have their own chamber so the Full Catalogue can stay focused on badges and treasures.</p></div><a href="/treasury?tab=titles" className="button-moonstone">Open Celestial Titles →</a></section>
 
   <div className="badge-collection-switch treasury-collection-switch" role="group" aria-label="Treasury collection">
-   <button aria-pressed={collection!=='gifts'} onClick={()=>choose('expanded')}>Badges</button>
-   <button aria-label="Gift collection" aria-pressed={collection==='gifts'} onClick={()=>choose('gifts')}>Gifts</button>
+   <button aria-pressed={collection!=='gifts'} onClick={()=>choose('expanded')}><PalaceGlowIcon name="milestone-path" tone="silver" size="mini" className="treasury-catalogue-tab-icon"/>Badges</button>
+   <button aria-label="Gift collection" aria-pressed={collection==='gifts'} onClick={()=>choose('gifts')}><PalaceGlowIcon name="gift" tone="treasury" size="mini" className="treasury-catalogue-tab-icon"/>Gifts</button>
   </div>
-  {collection!=='gifts'&&<div className="treasury-family-tabs" role="group" aria-label="Badge collections"><button aria-pressed={collection==='expanded'} onClick={()=>choose('expanded')}>Achievement paths · {badges.length}</button><button aria-pressed={collection==='originals'} onClick={()=>choose('originals')}>Palace originals</button></div>}
+  {collection!=='gifts'&&<div className="treasury-family-tabs" role="group" aria-label="Badge collections"><button aria-pressed={collection==='expanded'} onClick={()=>choose('expanded')}><PalaceGlowIcon name="milestone-path" tone="silver" size="mini" className="treasury-catalogue-tab-icon"/>Achievement paths · {badges.length}</button><button aria-pressed={collection==='originals'} onClick={()=>choose('originals')}><PalaceGlowIcon name="archive" tone="courts" size="mini" className="treasury-catalogue-tab-icon"/>Palace originals</button></div>}
   {collection==='gifts'?<>
    <div className="badge-controls gift-catalogue-controls">
     <label>Search gifts<input value={query} onChange={e=>setQuery(e.target.value)} type="search" placeholder="Name, court or catalogue number"/></label>
@@ -180,8 +182,8 @@ export default function Treasury({Frame}) {
    <details className="treasury-collection-tools"><summary>Explore courts & duplicate exchange</summary>   <section className="gift-exchange-desk"><div><p className="eyebrow">DUPLICATE EXCHANGE</p><h2>Trade without giving up your only copy.</h2><p>Trades exchange one duplicate tier for one duplicate tier. Ownership is checked again when the recipient accepts.</p></div><div className="gift-exchange-stats"><span><strong>{pendingIncoming.length}</strong> incoming</span><span><strong>{pendingOutgoing.length}</strong> outgoing</span><button disabled={!duplicateRows.length} onClick={openTrade}>{duplicateRows.length?'Propose a trade':'No duplicates to trade'}</button></div></section>
    {(pendingIncoming.length>0||pendingOutgoing.length>0)&&<section className="gift-trade-list">{[...pendingIncoming,...pendingOutgoing].map(t=>{const incoming=t.recipient_id===session.user.id;return <article key={t.id}><div><small>{incoming?'INCOMING':'OUTGOING'} · {t.status}</small><h3>{incoming?(t.offerer?.display_name||t.offerer?.username||'Palace member'):(t.recipient?.display_name||t.recipient?.username||'Palace member')}</h3><p><strong>{t.offeredGift?.name||'Treasure'} · {t.offered_tier}</strong><span> ⇄ </span><strong>{t.requestedGift?.name||'Treasure'} · {t.requested_tier}</strong></p>{t.note&&<blockquote>{t.note}</blockquote>}</div><div>{incoming?<><button disabled={!!tradeBusy} onClick={()=>respondTrade(t.id,'accept')}>Accept trade</button><button className="quiet-button" disabled={!!tradeBusy} onClick={()=>respondTrade(t.id,'decline')}>Decline</button></>:<button className="quiet-button" disabled={!!tradeBusy} onClick={()=>respondTrade(t.id,'cancel')}>Cancel offer</button>}</div></article>})}</section>}
    <div className="gift-court-atlas" aria-label="Palace court atlas">
-    {giftCourts.map(c=>{const progress=courtProgress.get(c.name)||{owned:0,total:0};return <button key={c.slug} aria-pressed={selectedCourt===c.name} className={selectedCourt===c.name?'active':''} style={{'--court-accent':c.accent,'--court-glow':c.glow}} onClick={()=>setGiftCourt(selectedCourt===c.name?'all':c.name)}>
-     <span className="court-atlas-sigil">{c.sigil}</span><span><strong>{c.name}</strong><small>{c.motto}</small><em>{progress.owned}/{progress.total} collected</em></span>
+    {giftCourts.map((c,index)=>{const progress=courtProgress.get(c.name)||{owned:0,total:0};return <button key={c.slug} aria-pressed={selectedCourt===c.name} className={selectedCourt===c.name?'active':''} style={{'--court-accent':c.accent,'--court-glow':c.glow}} onClick={()=>setGiftCourt(selectedCourt===c.name?'all':c.name)}>
+     <PalaceGlowIcon name={TREASURY_COURT_ICONS[index%TREASURY_COURT_ICONS.length]} tone={index%3===0?'courts':index%3===1?'treasury':'common'} size="small" className="court-atlas-sigil treasury-court-atlas-icon"/><span><strong>{c.name}</strong><small>{c.motto}</small><em>{progress.owned}/{progress.total} collected</em></span>
     </button>})}
    </div>
 </details>
