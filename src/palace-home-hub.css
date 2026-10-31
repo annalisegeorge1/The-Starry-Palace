@@ -73,3 +73,81 @@
 .palace-shell.full-palace-shell .home-shelf-list .home-world-grid>a:hover{transform:none!important}
 .palace-shell.full-palace-shell .home-shelf-list .home-world-grid>a:only-child{border-radius:14px!important}
 .palace-shell.full-palace-shell .palace-hub-discovery form:focus-within{outline:2px solid var(--ui-accent);outline-offset:3px}
+
+
+/* Recent links represent ONE recent destination per Palace room, not
+   a row of repeated Treasury tabs. Make the resulting links equal-width
+   and readable on phones and tablet landscape. */
+.palace-shell.full-palace-shell .palace-hub-recent{
+ display:grid!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ align-items:stretch!important;
+ gap:10px!important;
+ width:100%!important;
+ min-width:0!important;
+ box-sizing:border-box;
+}
+.palace-shell.full-palace-shell .palace-hub-recent>.palace-hub-recent-heading{
+ grid-column:1/-1!important;
+ display:grid!important;
+ gap:2px;
+ min-width:0!important;
+ margin-bottom:2px!important;
+}
+.palace-shell.full-palace-shell .palace-hub-recent-heading>strong{
+ font-size:1rem;
+ line-height:1.4;
+ font-weight:700;
+ color:var(--ui-text);
+}
+.palace-shell.full-palace-shell .palace-hub-recent-heading>small{
+ font-size:.72rem;
+ line-height:1.45;
+ font-weight:450;
+ color:var(--ui-muted);
+}
+.palace-shell.full-palace-shell .palace-hub-recent>a{
+ display:grid!important;
+ grid-template-columns:28px minmax(0,1fr) 14px!important;
+ align-items:center!important;
+ gap:10px!important;
+ padding:12px 14px!important;
+ width:100%!important;
+ max-width:none!important;
+ min-width:0!important;
+ min-height:56px!important;
+ border-radius:12px!important;
+ background:linear-gradient(120deg,rgba(117,86,161,.22),rgba(39,104,132,.14));
+ white-space:normal!important;
+ word-break:normal!important;
+ overflow-wrap:break-word!important;
+ text-align:left!important;
+}
+.palace-shell.full-palace-shell .palace-hub-recent>a>.palace-hub-recent-symbol{
+ display:grid;
+ place-items:center;
+ width:28px;height:28px;min-width:28px;
+ color:var(--ui-accent);
+}
+.palace-shell.full-palace-shell .palace-hub-recent>a>.palace-hub-recent-symbol svg{
+ width:22px;height:22px;
+}
+.palace-shell.full-palace-shell .palace-hub-recent>a>.palace-hub-recent-label{
+ min-width:0;
+ line-height:1.32;
+ font-size:.86rem;
+ font-weight:650;
+ overflow-wrap:break-word;
+}
+.palace-shell.full-palace-shell .palace-hub-recent>a>.palace-hub-recent-arrow{
+ justify-self:end;
+ color:var(--ui-muted);
+ font-size:.95rem;
+}
+@media(max-width:600px){
+ .palace-shell.full-palace-shell .palace-hub-recent{
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:9px!important;
+ }
+ .palace-shell.full-palace-shell .palace-hub-recent>a{min-height:54px!important}
+}
