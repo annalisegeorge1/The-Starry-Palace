@@ -1,0 +1,171 @@
+/* Member-profile regalia and chamber-room navigation.
+   Reuse the same original pearl-stroke SVG and midnight-glass
+   tiles as Royal Treasury, the Vault and Palace Life.
+   All five room links retain their original hrefs and labels. */
+
+/* The title above the name stays a small identification chip. */
+.palace-shell.full-palace-shell .member-chamber-atelier.chic-member-profile
+ .chamber-title-mark{
+ display:inline-flex!important;
+ flex-wrap:wrap;
+ align-items:center!important;
+ gap:6px!important;
+ vertical-align:middle;
+}
+.palace-shell.full-palace-shell .member-chamber-atelier.chic-member-profile
+ .chamber-title-mark>.chamber-title-marker-icon.palace-heritage-icon{
+ display:inline-grid!important;
+ width:23px!important;
+ height:23px!important;
+ min-width:23px!important;
+ min-height:23px!important;
+ border-radius:8px!important;
+ padding:3px!important;
+ margin:0!important;
+ line-height:1!important;
+ font-size:inherit!important;
+}
+.palace-shell.full-palace-shell .member-chamber-atelier.chic-member-profile
+ .chamber-title-mark>.chamber-title-marker-icon.palace-heritage-icon>.palace-icon{
+ width:15px!important;
+ height:15px!important;
+}
+
+/* Wearable title, badge and treasure remain compact 2-column regalia.
+   Reserve enough room for a full glass sigil so it never crowds the label. */
+.palace-shell.full-palace-shell .member-chamber-atelier.chic-member-profile
+ .chamber-atelier-crown-ribbon>span{
+ display:grid!important;
+ grid-template-columns:39px minmax(0,1fr)!important;
+ grid-auto-rows:auto!important;
+ column-gap:10px!important;
+ row-gap:3px!important;
+ align-content:center!important;
+ align-items:center!important;
+ min-width:0!important;
+ overflow:visible!important;
+}
+.palace-shell.full-palace-shell .member-chamber-atelier.chic-member-profile
+ .chamber-atelier-crown-ribbon>span>.chamber-worn-regalia-icon.palace-heritage-icon{
+ display:inline-grid!important;
+ grid-column:1!important;
+ grid-row:1/3!important;
+ align-self:center!important;
+ justify-self:start!important;
+ width:39px!important;
+ height:39px!important;
+ min-width:39px!important;
+ min-height:39px!important;
+ margin:0!important;
+ padding:7px!important;
+ border-radius:12px!important;
+ font-size:inherit!important;
+ color:#f8f6ff!important;
+}
+.palace-shell.full-palace-shell .member-chamber-atelier.chic-member-profile
+ .chamber-atelier-crown-ribbon>span>.chamber-worn-regalia-icon.palace-heritage-icon>.palace-icon{
+ display:block!important;
+ width:22px!important;
+ height:22px!important;
+ color:#f9f6ff!important;
+}
+.palace-shell.full-palace-shell .member-chamber-atelier.chic-member-profile
+ .chamber-atelier-crown-ribbon>span>small,
+.palace-shell.full-palace-shell .member-chamber-atelier.chic-member-profile
+ .chamber-atelier-crown-ribbon>span>strong{
+ grid-column:2!important;
+ min-width:0!important;
+ margin:0!important;
+ overflow-wrap:break-word!important;
+}
+.palace-shell.full-palace-shell .member-chamber-atelier.chic-member-profile
+ .chamber-atelier-crown-ribbon>span>small{
+ grid-row:1!important;
+ align-self:end!important;
+}
+.palace-shell.full-palace-shell .member-chamber-atelier.chic-member-profile
+ .chamber-atelier-crown-ribbon>span>strong{
+ grid-row:2!important;
+ align-self:start!important;
+}
+
+/* Five distinct room insignias. Do not change the existing tab layout,
+   routing, section IDs or global navigation. */
+.palace-shell.full-palace-shell .chamber-section-nav.chamber-atelier-tabs a{
+ display:flex!important;
+ flex-direction:column!important;
+ align-items:center!important;
+ justify-content:center!important;
+ gap:6px!important;
+ min-width:0!important;
+ text-align:center!important;
+ line-height:1.2!important;
+}
+.palace-shell.full-palace-shell .chamber-section-nav.chamber-atelier-tabs a
+ >.chamber-tab-icon.palace-heritage-icon{
+ display:inline-grid!important;
+ flex:0 0 31px!important;
+ width:31px!important;
+ height:31px!important;
+ min-width:31px!important;
+ min-height:31px!important;
+ margin:0 auto!important;
+ padding:5px!important;
+ border-radius:10px!important;
+ font-size:inherit!important;
+ line-height:1!important;
+ color:#f8f6ff!important;
+}
+.palace-shell.full-palace-shell .chamber-section-nav.chamber-atelier-tabs a
+ >.chamber-tab-icon.palace-heritage-icon>.palace-icon{
+ display:block!important;
+ width:19px!important;
+ height:19px!important;
+ color:#f9f6ff!important;
+}
+.palace-shell.full-palace-shell .chamber-section-nav.chamber-atelier-tabs a:is(:hover,:focus-visible)
+ >.chamber-tab-icon.palace-heritage-icon{
+ border-color:rgb(var(--heritage-rgb) / .91)!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.2),
+    0 0 11px rgb(var(--heritage-rgb) / .25)!important;
+}
+@media(max-width:640px){
+ .palace-shell.full-palace-shell .chamber-section-nav.chamber-atelier-tabs a{
+  gap:4px!important;
+  min-height:52px!important;
+  padding-block:6px!important;
+ }
+ .palace-shell.full-palace-shell .chamber-section-nav.chamber-atelier-tabs a
+  >.chamber-tab-icon.palace-heritage-icon{
+  width:29px!important;
+  height:29px!important;
+  min-width:29px!important;
+  min-height:29px!important;
+  flex-basis:29px!important;
+  padding:5px!important;
+ }
+ .palace-shell.full-palace-shell .chamber-section-nav.chamber-atelier-tabs a
+  >.chamber-tab-icon.palace-heritage-icon>.palace-icon{
+  width:18px!important;
+  height:18px!important;
+ }
+}
+@media(max-width:370px){
+ .palace-shell.full-palace-shell .member-chamber-atelier.chic-member-profile
+  .chamber-atelier-crown-ribbon>span{
+  grid-template-columns:35px minmax(0,1fr)!important;
+  column-gap:8px!important;
+ }
+ .palace-shell.full-palace-shell .member-chamber-atelier.chic-member-profile
+  .chamber-atelier-crown-ribbon>span>.chamber-worn-regalia-icon.palace-heritage-icon{
+  width:35px!important;
+  height:35px!important;
+  min-width:35px!important;
+  min-height:35px!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .chamber-section-nav.chamber-atelier-tabs .chamber-tab-icon{
+  transition:none!important;
+ }
+}
