@@ -69,3 +69,26 @@ jobs:
         run: psql -X -v ON_ERROR_STOP=1 -f tests/security-db/fixture-assertions.sql
       - name: Test actual PostgreSQL anon/authenticated roles and manuscript RLS
         run: psql -X -v ON_ERROR_STOP=1 -f tests/security-db/fixture-role-rls-assertions.sql
+
+      - name: Initialize ephemeral JWT signing key
+        run: echo "PALACE_TEST_JWT_SECRET=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
+      - name: Start disposable PostgREST 14 for HTTP permission tests
+        run: |
+          docker run --rm -d --name palace-test-postgrest --network host \
+            -e PGRST_DB_URI="postgres://palace_ci_authenticator:palace-ephemeral-ci-only-password@127.0.0.1:5432/palace_synthetic" \
+            -e PGRST_DB_SCHEMAS=public \
+            -e PGRST_DB_ANON_ROLE=anon \
+            -e PGRST_JWT_SECRET="$PALACE_TEST_JWT_SECRET" \
+            postgrest/postgrest:v14.18
+          for attempt in $(seq 1 45); do
+            if curl -fsS -o /dev/null http://127.0.0.1:3000/; then exit 0; fi
+            sleep 2
+          done
+          docker logs palace-test-postgrest
+          exit 1
+      - name: Exercise signed JWTs and API permissions with synthetic accounts
+        run: python3 tests/security-db/postgrest-http-assertions.py
+      - name: Stop disposable API
+        if: always()
+        run: docker rm -f palace-test-postgrest 2>/dev/null || true
+
