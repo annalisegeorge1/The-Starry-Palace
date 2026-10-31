@@ -51,7 +51,7 @@ export default function PalaceHomeHub({memberId,children}){
    </div>
    <div className="palace-hub-art"><img src="/assets/palace/palace-belonging.gif" alt="" decoding="async"/><span>YOUR PALACE · A PLACE TO BELONG</span></div>
   </section>
-  {recent.length>0&&<nav className="palace-hub-recent" aria-label="Recently visited Palace rooms"><span className="palace-hub-recent-heading"><strong>Pick up your path</strong><small>Your latest stop in each Palace room</small></span>{recent.map(door=><Link key={door.path} to={door.path}><span aria-hidden="true"><PalaceIcon name={palaceIconForRoute(door.path)}/></span>{door.label}<span aria-hidden="true">↗</span></Link>)}</nav>}
+  {recent.length>0&&<nav className="palace-hub-recent" aria-label="Recently visited Palace rooms"><span className="palace-hub-recent-heading"><strong>Pick up your path</strong><small>Your latest stop in each Palace room</small></span>{recent.map(door=><Link key={door.path} to={door.path}><span className="palace-hub-recent-symbol" aria-hidden="true"><PalaceIcon name={palaceIconForRoute(door.path)}/></span><span className="palace-hub-recent-label">{door.label}</span><span className="palace-hub-recent-arrow" aria-hidden="true">↗</span></Link>)}</nav>}
   {children}
   <section className="palace-hub-discovery" aria-labelledby="palace-discovery-title">
    <header><div><p className="palace-hub-eyebrow">FOLLOW YOUR CURIOSITY</p><h2 id="palace-discovery-title">What brings you here today?</h2></div>
