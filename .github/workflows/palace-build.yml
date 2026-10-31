@@ -67,3 +67,5 @@ jobs:
           done
       - name: Exercise privacy guards with synthetic identities
         run: psql -X -v ON_ERROR_STOP=1 -f tests/security-db/fixture-assertions.sql
+      - name: Test actual PostgreSQL anon/authenticated roles and manuscript RLS
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/security-db/fixture-role-rls-assertions.sql
