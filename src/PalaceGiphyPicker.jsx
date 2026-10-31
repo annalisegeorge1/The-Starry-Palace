@@ -40,7 +40,7 @@ export default function PalaceGiphyPicker({onSend,onClose,busy=false}){
      {g.preview?<img src={g.preview} loading="lazy" alt={g.title||'Animated GIF'} referrerPolicy="no-referrer"/>:<span>GIF unavailable</span>}
     </button>)}
    </div>
-  </>:<p className="palace-giphy-state">GIPHY search will be ready once the Palace's GIPHY Web developer key is added to the website build settings. No links to paste.</p>}
-  <footer><a href="https://giphy.com/" target="_blank" rel="noreferrer noopener" aria-label="Powered by GIPHY">Powered by <strong>GIPHY</strong> ↗</a><small>GIFs load from GIPHY · PG results</small></footer>
+  </>:<p className="palace-giphy-state">GIF search is temporarily unavailable.</p>}
+  <footer><a href="https://giphy.com/" target="_blank" rel="noreferrer noopener" aria-label="Powered by GIPHY">Powered by <strong>GIPHY</strong> ↗</a><small>Search terms go to GIPHY · PG results · Your chat text isn't sent for searching</small></footer>
  </section>;
 }
