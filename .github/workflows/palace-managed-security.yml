@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      PALACE_LOCAL_SUPABASE_DIR: ${{ runner.temp }}/palace-auth-security
+      PALACE_LOCAL_SUPABASE_DIR: /tmp/palace-auth-security
     steps:
       - name: Checkout review branch
         uses: actions/checkout@v4
