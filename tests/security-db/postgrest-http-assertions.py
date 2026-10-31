@@ -189,4 +189,49 @@ expect("Unrelated user cannot insert into another creator's originals",
              "name": OWNER + "/unauthorised-ci-example.png"},
        status=403)
 
+
+# Verify collaboration authorization at the actual signed-JWT HTTP boundary.
+# Earlier synthetic SQL leaves an owner's invitation to YOUNG pending with a
+# co_writer role; the client cannot mutate that scope or accept on their behalf.
+invite="/work_collaborators?work_id=eq."+PUBLIC+"&user_id=eq."+YOUNG
+expect("Invited collaborator can read own pending role",
+       invite+"&select=role,status",user=YOUNG,
+       predicate=lambda v: isinstance(v,list) and len(v)==1
+         and v[0]["role"]=="co_writer" and v[0]["status"]=="invited")
+expect("Unrelated member cannot see another's invitation",
+       invite+"&select=role,status",user=ADULT,predicate=age_count(0))
+expect("Invitee cannot rewrite assigned collaborator role",
+       invite,user=YOUNG,verb="PATCH",body={"role":"editor"},
+       status=400,prefer="return=representation")
+expect("Invitee cannot redirect an invitation to another work",
+       invite,user=YOUNG,verb="PATCH",body={"work_id":ADULT_WORK},
+       status=400,prefer="return=representation")
+expect("Owner cannot accept invitation without invitee consent",
+       invite,user=OWNER,verb="PATCH",body={"status":"accepted"},
+       status=400,prefer="return=representation")
+expect("Invitee can accept their assigned role",
+       invite,user=YOUNG,verb="PATCH",body={"status":"accepted"},
+       prefer="return=representation",
+       predicate=lambda v: isinstance(v,list) and len(v)==1
+         and v[0]["status"]=="accepted" and v[0]["role"]=="co_writer")
+expect("Accepted writer cannot silently lower/elevate their own role",
+       invite,user=YOUNG,verb="PATCH",body={"role":"editor"},
+       status=400,prefer="return=representation")
+expect("Author can send a fresh invitation to change assigned role",
+       invite,user=OWNER,verb="PATCH",body={"status":"invited","role":"editor"},
+       prefer="return=representation",
+       predicate=lambda v: isinstance(v,list) and len(v)==1
+         and v[0]["status"]=="invited" and v[0]["role"]=="editor")
+expect("Author still cannot accept after re-inviting",
+       invite,user=OWNER,verb="PATCH",body={"status":"accepted"},
+       status=400,prefer="return=representation")
+expect("Invitee can decline fresh invitation",
+       invite,user=YOUNG,verb="PATCH",body={"status":"declined"},
+       prefer="return=representation",
+       predicate=lambda v: isinstance(v,list) and len(v)==1
+         and v[0]["status"]=="declined")
+expect("Declined invite cannot later be self-accepted",
+       invite,user=YOUNG,verb="PATCH",body={"status":"accepted"},
+       status=400,prefer="return=representation")
+
 print(f"PASS: {checks} synthetic HTTP/JWT/PostgREST access-control checks.")
