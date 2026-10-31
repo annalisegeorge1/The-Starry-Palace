@@ -1,5 +1,7 @@
 -- EPHEMERAL CI ONLY: reproduce live RLS permission expressions for invitations.
 -- Use invented identities and no member manuscripts. No production access.
+-- Match the live composite primary key so frontend ON CONFLICT upserts work.
+alter table public.work_collaborators add constraint work_collaborators_pkey primary key(work_id,user_id);
 alter table public.work_collaborators add column invited_by uuid;
 alter table public.work_collaborators add column created_at timestamptz default now();
 alter table public.work_collaborators add column responded_at timestamptz;
