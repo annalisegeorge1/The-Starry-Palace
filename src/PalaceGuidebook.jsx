@@ -30,7 +30,7 @@ export default function PalaceGuidebook({Frame}){
   const target=document.getElementById(hash);
   if(target)requestAnimationFrame(()=>target.scrollIntoView({block:'start'}));
  },[]);
- return <Frame><main className="palace-guidebook-page">
+ return <Frame><section className="palace-guidebook-page">
   <header className="palace-guidebook-hero">
    <p className="eyebrow">THE PALACE GUIDEBOOK · OPEN TO EVERYONE</p>
    <h1>Find your way among the stars.</h1>
@@ -52,5 +52,5 @@ export default function PalaceGuidebook({Frame}){
    <Link to={topic.route}>Explore this Palace room →</Link>
   </article>)}</div>:<div className="palace-guidebook-empty"><strong>No topics match that search.</strong><p>Try a different word or see every section of the Guidebook.</p><button type="button" onClick={()=>{setGroup('All');setQuery('')}}>Show all topics</button></div>}
   <footer className="palace-guidebook-footer"><p>For conduct and member rights, the <Link to="/code">Palace Code</Link> takes precedence over short help summaries. For current eligibility, prize and account settings, review the live feature before taking action.</p><Link to="/beta">Report confusing guidance →</Link></footer>
- </main></Frame>;
+ </section></Frame>;
 }
