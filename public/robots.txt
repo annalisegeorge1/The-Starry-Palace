@@ -1,4 +1,28 @@
+# The Starry Palace welcomes ordinary search indexing.
+# AI model training and dataset collection are not authorized by the Palace.
+# robots.txt is a voluntary request; it is not a technical access barrier.
 User-agent: *
 Allow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
 
 Sitemap: https://thestarrypalace.com/sitemap.xml
