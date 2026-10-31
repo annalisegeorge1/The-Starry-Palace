@@ -46,3 +46,37 @@ export function addPalaceRecentDoor(previous,door){
  const safe=Array.isArray(previous)?previous.map(cleanDoor).filter(Boolean):[];
  return [fresh,...safe.filter(x=>x.path!==fresh.path)].slice(0,5);
 }
+
+
+/**
+ * The home welcome should offer recent ROOMS rather than allowing several
+ * tabs in one room to occupy all four shortcuts. Keep the original destination
+ * so selecting a shortcut still returns to that exact subpage.
+ * This only changes presentation; private per-member history stays untouched.
+ */
+export function palaceRecentRoomGroup(path){
+ if(!isSafeRecentPalacePath(path))return '';
+ const part=path.split(/[?#]/,1)[0].split('/')[1]||'home';
+ if(['reading','work','classic','series','fandoms','tags','tag','lost-works'].includes(part))return 'reading';
+ if(['writing','writers'].includes(part))return 'writing';
+ if(['comic','comics'].includes(part))return 'comics';
+ if(['palace-life','club','honour','member'].includes(part))return 'community';
+ if(['grand-palaces'].includes(part))return 'grand-palaces';
+ if(['treasury'].includes(part))return 'treasury';
+ if(['events'].includes(part))return 'events';
+ if(['chamber'].includes(part))return 'chamber';
+ if(['library'].includes(part))return 'library';
+ return part;
+}
+export function distinctRecentPalaceRooms(doors,limit=4){
+ const used=new Set();
+ const result=[];
+ for(const door of Array.isArray(doors)?doors:[]){
+  const group=palaceRecentRoomGroup(door?.path);
+  if(!group||used.has(group))continue;
+  used.add(group);
+  result.push(door);
+  if(result.length>=Math.max(1,Math.min(5,Number(limit)||4)))break;
+ }
+ return result;
+}
