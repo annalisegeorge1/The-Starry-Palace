@@ -1,0 +1,57 @@
+/* Quiet heritage-glass refinements for IN-CONTENT icons only.
+ * The approved top bar, global navigation, dock, artwork and page layout are untouched.
+ * Reuse PalaceGlowIcon: lilac-blue-teal rim light and consistent pearl SVG linework. */
+.palace-shell .member-palace-creative-room .member-palace-creative-mark {
+ display:inline-flex;align-items:center;justify-content:flex-end;
+ gap:8px;flex:0 0 auto;color:#cfcef7;
+}
+.palace-shell .member-palace-creative-room .member-palace-creative-mark>.palace-icon{
+ width:19px;height:19px;stroke-width:1.85;
+}
+.palace-shell .member-palace-creative-grid article>.member-palace-stat-sigil.palace-heritage-icon{
+ display:inline-grid!important;place-items:center!important;
+ margin:0 0 2px!important;
+ width:39px!important;height:39px!important;min-width:39px!important;min-height:39px!important;
+ font-size:initial!important;line-height:1!important;
+}
+.palace-shell .member-palace-creative-grid article>.member-palace-stat-sigil>.palace-icon{
+ width:21px!important;height:21px!important;
+}
+.palace-shell .creator-worlds-room .creator-shelf-block>header>div>.creator-shelf-sigil.palace-heritage-icon{
+ display:inline-grid!important;place-items:center!important;
+ width:39px!important;height:39px!important;min-width:39px!important;min-height:39px!important;
+ flex:0 0 auto!important;margin:0!important;
+}
+.palace-shell .creator-worlds-room .creator-shelf-block>header>div>.creator-shelf-sigil>.palace-icon{
+ width:22px!important;height:22px!important;
+}
+.palace-shell .chic-activity-private>.activity-private-sigil.palace-heritage-icon{
+ margin:0!important;flex:0 0 auto!important;
+ width:39px!important;height:39px!important;min-width:39px!important;min-height:39px!important;
+}
+.palace-shell .chic-activity-private>.activity-private-sigil>.palace-icon{
+ width:22px!important;height:22px!important;
+}
+.palace-shell .chic-activity-overview article{
+ grid-template-columns:34px auto minmax(0,1fr)!important;
+}
+.palace-shell .chic-activity-overview article>.activity-metric-sigil.palace-heritage-icon{
+ display:inline-grid!important;place-items:center!important;
+ width:31px!important;height:31px!important;min-width:31px!important;min-height:31px!important;
+ padding:5px!important;border-radius:10px!important;margin:0!important;
+}
+.palace-shell .chic-activity-overview article>.activity-metric-sigil>.palace-icon{
+ display:block!important;width:17px!important;height:17px!important;
+}
+.palace-shell.daylight .member-palace-creative-room .member-palace-creative-mark{color:#5e579c}
+@media(max-width:440px){
+ .palace-shell .member-palace-creative-room .member-palace-creative-mark{gap:5px}
+ .palace-shell .member-palace-creative-room .member-palace-creative-mark>.palace-icon{
+  width:17px;height:17px;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell :is(.member-palace-stat-sigil,.activity-metric-sigil,.creator-shelf-sigil){
+  transition:none!important;
+ }
+}
