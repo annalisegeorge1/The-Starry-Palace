@@ -47,6 +47,7 @@ export function PalaceStartingPath({memberId}){
     <p className="eyebrow">A GENTLE FIRST JOURNEY</p>
     <h2>Make yourself at home.</h2>
     <p>There's no need to learn every room at once. Open any doorway that interests you; this little map is here when you return.</p>
+    <p className="palace-first-guidebook-link">Want a little more context? <Link to="/guidebook">Browse the Palace Guidebook →</Link></p>
     <p className="palace-starting-next">{nextStep?<>A place to start: <strong>{nextStep.name}</strong></>:<>You have opened every doorway on this map. Wander wherever curiosity takes you.</>}</p>
     <div className="palace-starting-meter">
      <div className="palace-starting-track" role="progressbar" aria-label="Welcome doorways opened" aria-valuenow={count} aria-valuemin={0} aria-valuemax={4}><span style={{width:(count/4*100)+'%'}}/></div>
