@@ -64,3 +64,16 @@ describe('Palace Chat photos, edits, and replies',()=>{
   expect(chat).toContain('aria-label="Edit your message"');
  });
 });
+
+describe('Palace GIF picker privacy and graceful configuration',()=>{
+ const picker=readFileSync('src/PalaceGiphyPicker.jsx','utf8');
+ it('does not show developer setup instructions to members',()=>{
+  expect(picker).toContain('GIF search is temporarily unavailable.');
+  expect(picker).not.toContain("GIPHY Web developer key is added");
+ });
+ it('explains that search terms go to GIPHY without submitting messages',()=>{
+  expect(picker).toContain('Search terms go to GIPHY');
+  expect(picker).toContain("Your chat text isn't sent for searching");
+  expect(picker).toContain('Powered by <strong>GIPHY</strong>');
+ });
+});
