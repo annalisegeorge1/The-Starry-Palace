@@ -61,3 +61,12 @@
 .palace-shell .palace-first-room-actions :is(button,a):focus-visible{outline:2px solid #badcf5;outline-offset:3px}
 .palace-shell.daylight .palace-first-room-hint{background:linear-gradient(115deg,#f4eefb,#e5effb);border-color:#c7badf}
 @media(max-width:760px){.palace-shell .palace-first-room-hint{align-items:stretch;flex-direction:column}.palace-shell .palace-first-room-actions{justify-content:space-between;width:100%}}
+
+
+.palace-shell .palace-guide-inline-note{
+ display:flex;align-items:center;gap:9px;min-width:0;
+ grid-column:1/-1;flex:0 0 100%;
+ font-size:.78rem;font-weight:650;
+ color:var(--muted,#d6cced);line-height:1.3;
+}
+.palace-shell .palace-guide-inline-note>.palace-info-mark{margin:0!important}
