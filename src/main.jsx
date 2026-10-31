@@ -227,6 +227,7 @@ const TreasuryCatalogueLazy=React.lazy(()=>importWithRecovery(()=>import('./Trea
 const GrandPalaceHall=React.lazy(()=>importWithRecovery(()=>import('./GrandPalaceHall')));
 const PalaceGovernance=React.lazy(()=>importWithRecovery(()=>import('./PalaceGovernance')));
 const PalaceBetaGuide=React.lazy(()=>importWithRecovery(()=>import('./PalaceBetaGuide')));
+const PalaceGuidebookLazy=React.lazy(()=>importWithRecovery(()=>import('./PalaceGuidebook')));
 // Public secondary rooms are isolated from the essential reading and writing bundle.
 const PalaceCodeRoom=React.lazy(()=>importWithRecovery(()=>import('./PalaceCodeRoom')));
 const PalaceLostWorksRoom=React.lazy(()=>importWithRecovery(()=>import('./PalaceLostWorksRoom')));
@@ -722,6 +723,7 @@ function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo
  <Route path="/welcome" element={<ProtectedRoute><OnboardingLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/writers" element={<WriterWelcome/>}/>
+ <Route path="/guidebook" element={<React.Suspense fallback={<RouteLoading/>}><PalaceGuidebookLazy Frame={Frame}/></React.Suspense>}/>
  <Route path="/reading" element={<ReadingLive Frame={Frame}/>}/><Route path="/classic/:slug" element={<React.Suspense fallback={<RouteLoading/>}><DirectClassicReader Frame={Frame}/></React.Suspense>}/><Route path="/series" element={<SeriesLive Frame={Frame}/>}/>
  <Route path="/comics" element={<ComicsLive Frame={Frame}/>}/>
  <Route path="/comics/studio" element={<ProtectedRoute><ComicStudioLive Frame={Frame}/></ProtectedRoute>}/>
