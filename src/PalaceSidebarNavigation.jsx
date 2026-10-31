@@ -53,6 +53,7 @@ export default function PalaceSidebarNavigation({rooms=[],activeRoom,currentHref
  ];
  const inCouncil=Boolean(currentPath?.startsWith('/council'));
  const inCode=Boolean(currentPath?.startsWith('/code'));
+ const inGuidebook=Boolean(currentPath?.startsWith('/guidebook'));
  return <>
   <p className="nav-section-label palace-calm-label">EXPLORE THE PALACE</p>
   <nav className="full-room-nav palace-calm-primary" aria-label="Main Palace rooms">
@@ -64,8 +65,9 @@ export default function PalaceSidebarNavigation({rooms=[],activeRoom,currentHref
     {additional.map(renderRoom)}
    </nav>
   </>}
-  <p className="nav-section-label palace-calm-label palace-all-rooms-label">STEWARDSHIP & SAFETY</p>
-  <nav className="full-room-nav secondary" aria-label="Palace stewardship">
+  <p className="nav-section-label palace-calm-label palace-all-rooms-label">GUIDANCE & SAFETY</p>
+  <nav className="full-room-nav secondary" aria-label="Palace guidance and stewardship">
+   <div className="full-nav-room"><Link to="/guidebook" className={inGuidebook?'active':undefined} aria-current={inGuidebook?'page':undefined}><i className="room-sigil room-sigil-council" aria-hidden="true">?</i><span>Palace Guidebook</span></Link></div>
    <div className="full-nav-room">
     <Link to="/council/governance" className={inCouncil?'active':undefined} aria-current={inCouncil?'location':undefined}>
      <i className="room-sigil room-sigil-council">{renderIcon('council')}</i><span>Palace Council</span>
