@@ -171,3 +171,7 @@ insert into public.comics values
 insert into public.comic_tags values
  ('60000000-0000-0000-0000-000000000001','50000000-0000-0000-0000-000000000002'),
  ('60000000-0000-0000-0000-000000000002','50000000-0000-0000-0000-000000000003');
+
+-- Extra unpublished chapter on the editor-assigned private test work.
+insert into public.chapters values
+ ('20000000-0000-0000-0000-000000000005','10000000-0000-0000-0000-000000000002','draft','Editor-assigned private chapter',1);
