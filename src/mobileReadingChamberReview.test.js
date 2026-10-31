@@ -7,7 +7,7 @@ describe('mobile Palace reading screenshots regression',()=>{
  it('scopes mobile polish to a named active room without changing routes',()=>{
   expect(shell).toContain('data-palace-room={activeRoom?.id||"unknown"}');
   expect(shell).toContain("import './mobile-reading-chamber-review.css';");
-  expect(shell).toContain('className="global-search-live"');
+  expect(shell).toContain("className={'global-search-live '+");
   expect(shell).toContain('className="mobile-palace-dock"');
   expect(shell).toContain('aria-label="Open Palace Letters"');
  });
@@ -23,6 +23,6 @@ describe('mobile Palace reading screenshots regression',()=>{
   expect(css).toContain('.restored-floating-controls .notification-anchor');
   expect(css).not.toMatch(/\.restored-floating-controls\s*\{\s*display:none/);
   expect(shell).toContain('className="float-btn theme-orb"');
-  expect(shell).toContain('className="top-icon-link" to="/letters"');
+  expect(shell).toContain('className="float-btn palace-float-sigil notification-anchor" to="/letters"');
  });
 });
