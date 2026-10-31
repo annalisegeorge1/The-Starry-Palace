@@ -122,4 +122,14 @@ begin
 end $test$;
 reset role;
 select set_config('request.jwt.claim.sub','',false);
+-- Privileged database maintenance still works without a member JWT.
+do $test$
+declare n integer;
+begin
+  update public.work_collaborators set updated_at=now()
+  where work_id='10000000-0000-0000-0000-000000000001'
+    and user_id='00000000-0000-0000-0000-000000000003';
+  get diagnostics n=row_count;
+  if n<>1 then raise exception 'Trusted database maintenance unexpectedly blocked';end if;
+end $test$;
 select 'PASS: synthetic collaboration invitation escalation prevented' as result;
