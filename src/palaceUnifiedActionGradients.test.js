@@ -21,7 +21,7 @@ describe('Palace action gradients — screenshot refinement',()=>{
   expect(css).toContain('--palace-unified-action-ink:#ffffff');
  });
  it('targets precisely the four controls shown without changing site structure',()=>{
-  expect(main).toContain('className="global-search-live"');
+  expect(main).toContain("className={'global-search-live '+");
   expect(main).toContain('className="write-action"');
   expect(main).toContain('className="palace-passage-wander"');
   expect(rooms).toContain('className="reading-compass-wander"');
