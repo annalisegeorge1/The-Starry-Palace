@@ -5,8 +5,8 @@
 **Revised:** 31 October 2026  
 **Effective date:** To be confirmed after review  
 **Platform:** thestarrypalace.com  
-**Operator / legal contact:** [Insert legal operator name and contact email before publication]  
-**Minimum account age:** [Confirm before publication]
+**Operator / legal contact:** Annalise Pierre · annalise.pierre.28@gmail.com
+**Minimum account age:** The Palace has a minimum age for account registration; [state the exact age before publication].
 
 ### A word from the Palace
 The Starry Palace is being built as a community where writers, readers, poets, artists and storytellers can create, share, connect and find fellowship without surrendering ownership of their work. I want it to be a safe and warm place, with rules that are open enough for people to understand and fair enough for people to trust. Feedback is always welcome.
@@ -23,7 +23,7 @@ By accessing or using the service after the effective date, users agree to follo
 ### 2. Reading, accounts and eligibility
 People may read works marked **Public** without creating an account. Some published works may be marked **Members Only** and are intended for signed-in members. Commenting, following, messaging, posting, entering events, saving account-based reading progress and other interactive features may require an account.
 
-Members must meet the minimum age stated at registration and comply with any additional age restrictions for particular features or content. [Minimum age and any parental-consent process must be decided before these terms take effect.] Members must provide accurate information where required, protect their sign-in access, and must not impersonate someone else, evade suspensions or access another person's account without permission.
+Members must meet the Palace's minimum age for account registration. The final Terms must state the exact minimum and confirm that the registration flow enforces it. This baseline applies regardless of a creator's work-level rating or age restriction. Members must provide accurate information where required, protect their sign-in access, and must not impersonate someone else, evade suspensions or access another person's account without permission.
 
 We may apply reasonable security checks, prevent suspicious access and limit features to protect members and the service. Accounts are for genuine people and authorised community participation, not for spam, impersonation, automated manipulation or harassment.
 
@@ -69,7 +69,7 @@ Translation permission must follow the original creator's chosen option. Permiss
 If a rightsholder identifies material that may infringe their rights, they may contact [copyright-report email or form to be confirmed] with a description of the work, the disputed URL and reasonable evidence of ownership or authority. We may restrict disputed material while reviewing the request, seek clarification from the uploader, and restore content where a complaint is not substantiated or applicable law permits it.
 
 ### 8. Ratings, warnings and responsible publishing
-Creators must make reasonable efforts to select an accurate content rating, appropriate tags and relevant warnings, including when writing may contain mature or distressing themes. Ratings are content guidance, not rankings of artistic quality. Readers should review a work's details and exercise their own judgement; missing tags or warnings cannot guarantee that a work contains no sensitive material.
+Creators must make reasonable efforts to select an accurate content rating, appropriate tags and relevant warnings, including when writing may contain mature or distressing themes. Creators may restrict mature or explicit works so readers below the applicable age cannot access them, using the age controls available on the Palace. This work-level restriction is separate from the minimum age to create an account. Ratings are content guidance, not rankings of artistic quality. Readers should review a work's details and exercise their own judgement; missing tags or warnings cannot guarantee that a work contains no sensitive material.
 
 Sexualised content involving minors, child sexual exploitation material, grooming, coercive sexual exploitation, credible threats of violence and other unlawful or predatory activity are prohibited. We may remove or escalate serious safety threats without waiting for the ordinary moderation process. Other mature material may be subject to ratings, visibility restrictions and feature-specific rules; an age label is not permission to post otherwise prohibited content.
 
@@ -182,7 +182,7 @@ Questions and feedback are welcome at [contact email or form to be confirmed]. W
 
 ## ANNEX B — ITEMS TO FINALISE BEFORE PUBLICATION
 1. Identify the legal operator, contact details and jurisdiction; obtain review of enforceability and cross-border obligations.
-2. Decide the minimum account age, mature-content age gates, and any parental-consent requirements; verify that registration actually enforces these decisions.
+2. Confirm the exact minimum age for account registration and whether any parental-consent process is required; verify that registration enforces the chosen minimum. Separately, verify that creator-selected age restrictions on Mature and Explicit works reliably prevent access by readers below the applicable age.
 3. Finish and link a separate Privacy Policy and Cookie Notice, including data categories, purposes, service providers, international transfers, browser storage, cookie names and durations, retention, export, deletion, incident reporting and privacy requests.
 4. Confirm technical access control for unpublished manuscripts, published visibility states, collaborators and admin/service-provider permissions; avoid claims exceeding implementation.
 5. Confirm the exact link locations available for external support services and the mechanisms for reporting fraudulent links; avoid implying native payment processing.
