@@ -1,0 +1,300 @@
+/* A single illustrated language for Palace Life and Member Discovery.
+   The underlying room links, forms, search, permissions and member data
+   are unchanged. These are content-area icons, not main-navigation icons. */
+
+/* Room tabs preserve horizontal scrolling instead of wrapping tiny icons
+   and labels into illegible, narrow columns. */
+.palace-shell.full-palace-shell .legacy-life-page .life-tabs.restored > :is(button,a){
+ display:inline-flex!important;
+ flex-direction:row!important;
+ align-items:center!important;
+ justify-content:center!important;
+ gap:8px!important;
+ min-height:47px!important;
+ white-space:nowrap!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page .life-tabs.restored
+ .palace-life-room-tab-icon.palace-heritage-icon{
+ display:inline-grid!important;
+ place-items:center!important;
+ flex:0 0 29px!important;
+ width:29px!important;
+ height:29px!important;
+ min-width:29px!important;
+ min-height:29px!important;
+ padding:5px!important;
+ margin:0!important;
+ border-radius:10px!important;
+ font-size:inherit!important;
+ line-height:1!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page .life-tabs.restored
+ .palace-life-room-tab-icon.palace-heritage-icon>.palace-icon{
+ width:18px!important;
+ height:18px!important;
+ color:#f9f6ff!important;
+}
+
+/* Welcome into a member's community: the first two choices sit alongside
+   each other, Find a Member is the third full-width choice on a phone. */
+.palace-shell.full-palace-shell .legacy-life-page .palace-member-discovery-jumps.palace-discovery-heritage-jumps{
+ display:grid!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ column-gap:10px!important;
+ row-gap:10px!important;
+ align-items:stretch!important;
+ width:100%!important;
+ min-width:0!important;
+ margin:15px 0 24px!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page .palace-discovery-heritage-jumps>a{
+ display:flex!important;
+ align-items:center!important;
+ justify-content:center!important;
+ gap:9px!important;
+ width:100%!important;
+ max-width:100%!important;
+ min-width:0!important;
+ min-height:60px!important;
+ padding:10px 13px!important;
+ box-sizing:border-box!important;
+ text-align:center!important;
+ overflow-wrap:break-word!important;
+ word-break:normal!important;
+ white-space:normal!important;
+ line-height:1.3!important;
+ border-radius:14px!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page .palace-discovery-heritage-jumps>a:nth-child(3){
+ grid-column:1/-1!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page .palace-discovery-heritage-jumps>a
+ >.palace-discovery-jump-icon.palace-heritage-icon{
+ display:inline-grid!important;
+ place-items:center!important;
+ flex:0 0 32px!important;
+ width:32px!important;
+ height:32px!important;
+ min-width:32px!important;
+ min-height:32px!important;
+ margin:0!important;
+ padding:6px!important;
+ border-radius:10px!important;
+ line-height:1!important;
+ font-size:inherit!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page .palace-discovery-heritage-jumps>a
+ >.palace-discovery-jump-icon.palace-heritage-icon>.palace-icon{
+ width:19px!important;
+ height:19px!important;
+ color:#f9f6ff!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page .palace-discovery-heritage-jumps>a:is(:hover,:focus-visible)
+ >.palace-discovery-jump-icon{
+ border-color:rgb(var(--heritage-rgb) / .92)!important;
+ box-shadow:0 0 12px rgb(var(--heritage-rgb) / .25)!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page #palace-discovery-recognition,
+.palace-shell.full-palace-shell .legacy-life-page #palace-discovery-intros{
+ scroll-margin-top:90px!important;
+}
+
+/* Pulse statistics already have their own counts and labels: glass tiles
+   are just leading illustrations, never fake notification badges. */
+.palace-shell.full-palace-shell .legacy-life-page .community-pulse-row.restored.social-pulse
+ >button>.palace-life-pulse-icon.palace-heritage-icon{
+ display:inline-grid!important;
+ place-items:center!important;
+ width:39px!important;
+ height:39px!important;
+ min-width:39px!important;
+ min-height:39px!important;
+ padding:7px!important;
+ margin:0 0 9px!important;
+ border-radius:12px!important;
+ font-size:inherit!important;
+ line-height:1!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page .community-pulse-row.restored.social-pulse
+ >button>.palace-life-pulse-icon.palace-heritage-icon>.palace-icon{
+ width:22px!important;
+ height:22px!important;
+ color:#f9f6ff!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page .community-pulse-row.restored.social-pulse
+ >button{
+ min-width:0!important;
+ word-break:normal!important;
+ overflow-wrap:break-word!important;
+}
+
+/* Club invitations, stewarding, joined rooms and discovered circles */
+.palace-shell.full-palace-shell .legacy-life-page
+ .palace-life-club-icon.palace-heritage-icon{
+ display:inline-grid!important;
+ place-items:center!important;
+ flex:0 0 41px!important;
+ width:41px!important;
+ height:41px!important;
+ min-width:41px!important;
+ min-height:41px!important;
+ margin:0 0 12px!important;
+ padding:8px!important;
+ border-radius:13px!important;
+ font-size:inherit!important;
+ line-height:1!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page
+ .palace-life-club-icon.palace-heritage-icon>.palace-icon{
+ width:24px!important;
+ height:24px!important;
+ color:#f9f6ff!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page .club-discovery-banner
+ .palace-life-club-icon.palace-heritage-icon{
+ margin:0!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page .club-door-queue article,
+.palace-shell.full-palace-shell .legacy-life-page
+ :is(.club-card-live,.club-discovery-grid>article){
+ min-width:0!important;
+}
+
+/* Small action and Moonlight entrance icons */
+.palace-shell.full-palace-shell .legacy-life-page
+ .highlight-head-actions button:has(.palace-life-action-icon){
+ display:inline-flex!important;
+ align-items:center!important;
+ justify-content:center!important;
+ gap:8px!important;
+ white-space:normal!important;
+ min-height:44px!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page
+ .palace-life-action-icon.palace-heritage-icon{
+ display:inline-grid!important;
+ place-items:center!important;
+ width:29px!important;
+ height:29px!important;
+ min-width:29px!important;
+ min-height:29px!important;
+ flex:0 0 29px!important;
+ margin:0!important;
+ padding:5px!important;
+ border-radius:9px!important;
+ font-size:inherit!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page
+ .palace-life-action-icon.palace-heritage-icon>.palace-icon{
+ width:18px!important;
+ height:18px!important;
+ color:#f9f6ff!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page .commons-moonlight-entry
+ .palace-life-moonlight-icon.palace-heritage-icon{
+ display:inline-grid!important;
+ place-items:center!important;
+ flex:0 0 39px!important;
+ width:39px!important;
+ height:39px!important;
+ min-width:39px!important;
+ min-height:39px!important;
+ padding:7px!important;
+ margin:0!important;
+ border-radius:12px!important;
+ font-size:inherit!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page .commons-moonlight-entry
+ .palace-life-moonlight-icon.palace-heritage-icon>.palace-icon{
+ width:22px!important;
+ height:22px!important;
+ color:#f9f6ff!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page .life-empty
+ >.palace-discovery-empty-icon.palace-heritage-icon{
+ display:inline-grid!important;
+ place-items:center!important;
+ width:52px!important;
+ height:52px!important;
+ min-width:52px!important;
+ min-height:52px!important;
+ margin:0 auto 13px!important;
+ padding:10px!important;
+ border-radius:16px!important;
+ font-size:inherit!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page .life-empty
+ >.palace-discovery-empty-icon.palace-heritage-icon>.palace-icon{
+ width:28px!important;
+ height:28px!important;
+ color:#f9f6ff!important;
+}
+
+/* Clear form controls in the screenshot's introduction desk. */
+.palace-shell.full-palace-shell .legacy-life-page
+ .my-introduction-desk :is(input,textarea,select){
+ box-sizing:border-box!important;
+ display:block!important;
+ width:100%!important;
+ max-width:100%!important;
+ min-width:0!important;
+ min-height:44px!important;
+ padding:10px 12px!important;
+ color:var(--ui-text,#f7f2ff)!important;
+ background:rgba(12,16,37,.76)!important;
+ border:1px solid rgba(174,157,229,.49)!important;
+ border-radius:12px!important;
+ font:400 max(16px,1rem)/1.45 system-ui,sans-serif!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page
+ .my-introduction-desk textarea{
+ min-height:125px!important;
+ resize:vertical;
+}
+.palace-shell.full-palace-shell .legacy-life-page
+ .my-introduction-desk :is(input,textarea)::placeholder{
+ color:#b5aacd!important;
+ opacity:1!important;
+}
+.palace-shell.daylight.full-palace-shell .legacy-life-page
+ .my-introduction-desk :is(input,textarea,select){
+ color:#302846!important;
+ background:#fdfaff!important;
+ border-color:#afa4d1!important;
+}
+.palace-shell.daylight.full-palace-shell .legacy-life-page
+ .my-introduction-desk :is(input,textarea)::placeholder{
+ color:#695f86!important;
+}
+.palace-shell.full-palace-shell .legacy-life-page
+ .my-introduction-desk :is(input,textarea,select):focus-visible{
+ outline:2px solid #bedbff!important;
+ outline-offset:2px!important;
+}
+@media(min-width:761px){
+ .palace-shell.full-palace-shell .legacy-life-page .palace-discovery-heritage-jumps{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .palace-discovery-heritage-jumps>a:nth-child(3){
+  grid-column:auto!important;
+ }
+}
+@media(max-width:365px){
+ .palace-shell.full-palace-shell .legacy-life-page .palace-discovery-heritage-jumps>a{
+  padding:9px 7px!important;
+  gap:6px!important;
+  font-size:.69rem!important;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .palace-discovery-heritage-jumps>a
+ >.palace-discovery-jump-icon.palace-heritage-icon{
+  flex-basis:29px!important;
+  width:29px!important;height:29px!important;
+  min-width:29px!important;min-height:29px!important;
+  padding:5px!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell.full-palace-shell .legacy-life-page .palace-discovery-heritage-jumps>a{
+  transition:none!important;
+ }
+}
