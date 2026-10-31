@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 8132)
-Total output lines: 195
-
 # THE STARRY PALACE
 ## Terms of Service & Community Rules
 **WORKING DRAFT — NOT IN FORCE — NOT PUBLISHED**
@@ -86,7 +83,26 @@ Members may report misconduct in good faith. Do not knowingly make false allegat
 ### 10. Privacy, messages and personal boundaries
 Members can use available profile, discovery, notification, messaging, muting and blocking settings. Private participation is still valid participation. The Palace intends to honour those settings through suitable technical controls, and to keep confidential reports, private messages and individual votes out of public entertainment or popularity contests.
 
-Do not publish private messages, home addresses, financial details, real identities or other personal information about someone without appropriate permission or lawful justification. Members should not request passwords, payment credentials or sensitive information in community spaces. A separate Privacy Policy must explain what …1132 tokens truncated…e links, but cannot verify every destination or control how external services operate. A link to a creator's Ko-fi, PayPal or similar account does not imply a business partnership or official endorsement by the Palace.
+Do not publish private messages, home addresses, financial details, real identities or other personal information about someone without appropriate permission or lawful justification. Members should not request passwords, payment credentials or sensitive information in community spaces. A separate Privacy Policy must explain what personal data is collected, why, which service providers may access it, how long it is kept and how members may make privacy requests. The Privacy Policy is not replaced by these Terms. Private drafts and messages are not public moderation material or promotional content. Any exceptional support or security access to private content must be limited to the people and information needed for the reported issue, a security incident or a legal obligation, and the final policy must describe actual access controls rather than promise controls the service does not have.
+
+#### Cookies and browser storage
+The Palace may use browser storage to keep a requested sign-in session, remember settings such as theme or reading preferences, preserve reading progress, and temporarily save some composer drafts on the device. Browser storage is not the same thing as a server-backed manuscript or a cookie. Clearing it may sign a member out, reset preferences, or remove device-only drafts that have not synced to the account. Members should use a device they trust and keep their own backup of important work.
+
+A review of the application source on 31 October 2026 found Supabase configured to persist sign-in sessions in browser storage and found app features using local browser storage. It found no direct application cookie-writing code or app-level advertising or analytics tags. This source review is not a complete audit of live HTTP responses or hosting and identity-provider settings; it does not rule out cookies set by Cloudflare, Supabase or another provider. The separate Cookie Notice remains a draft until the live cookie and storage inventory is verified.
+
+The Palace does not currently plan to use advertising, behavioural profiling or optional analytics storage. If optional cookies or similar device-storage technologies are introduced, they must be explained in advance and must not be activated before any consent required by applicable law. Where a choice is required, accepting optional technologies and rejecting them should be equally clear, and members should be able to revisit or withdraw that choice. Public reading must not be conditioned on accepting optional tracking.
+
+### 11. Giving and receiving donations is welcome
+**Writers, artists and other creators may ask for, give and receive voluntary financial support. The Starry Palace supports appropriate external creator-support links, including Ko-fi, PayPal, Buy Me a Coffee, Patreon and comparable services.** Creators may share genuine support links in the profile, work or other locations the Palace designates for links, subject to safety checks and feature availability. Members are never required to donate to read works that the creator has published as freely accessible in the Palace.
+
+Support must be voluntary. No one may pressure, harass, guilt, threaten or shame a reader into donating, or falsely claim that tips are required for Palace privileges, Council votes, fair moderation, badges or standing. Fraudulent appeals, impersonation, misleading fundraising claims, money laundering, illegal collections, deceptive payment links and solicitations that exploit minors are prohibited. Members may report a suspicious link or fundraiser.
+
+External payments are handled by the payment provider and the creator, not by the Palace merely because a link appears here. The creator and supporter are responsible for checking the provider's terms, fees, country eligibility, privacy disclosures, refunds, chargebacks and any applicable tax obligations. **A tip is not automatically a tax-deductible charitable donation.** Do not share payment passwords, card numbers or banking credentials in Palace messages. The Palace does not endorse, verify or guarantee individual fundraising appeals or promise that a donor will receive a reward, commission, product or special access unless separately and clearly agreed with the creator.
+
+The Palace's virtual points, collectible gifts, Hearts, Stars, Moons and Crowns are different from real-world money and external tips. Donations do not purchase additional Council votes, moderation outcomes or ceremonial recognition. [If the Palace later introduces direct payment handling, fees, subscriptions or paid memberships, new payment terms and disclosures must be published before activation.]
+
+### 12. External websites and support links
+Links may lead to third-party websites with their own rules and privacy practices. The Palace may remove misleading, malicious, unsafe, illegal or repeatedly abusive links, but cannot verify every destination or control how external services operate. A link to a creator's Ko-fi, PayPal or similar account does not imply a business partnership or official endorsement by the Palace.
 
 Members should be careful when leaving the site, particularly when a provider discloses a real name, email address, location or other personal details during payment. The Palace is not responsible for the independent acts of third-party payment companies, except to the extent applicable law requires otherwise.
 
