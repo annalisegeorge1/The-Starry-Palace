@@ -30,14 +30,19 @@
  white-space:normal;
  color:#d0c7f1;
 }
+/* Grid tracks follow the *remaining content width*, not the tablet viewport.
+ * With the Palace sidebar open, three narrow cards made prose unreadable. */
 .palace-shell .creator-worlds-room .creator-work-grid{
+ display:grid!important;
+ width:100%;
  min-width:0;
+ grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))!important;
  gap:12px!important;
 }
 .palace-shell .creator-worlds-room .creator-work-grid>article.chamber-story-card{
  box-sizing:border-box;
  display:grid!important;
- grid-template-columns:minmax(0,92px) minmax(0,1fr);
+ grid-template-columns:92px minmax(0,1fr)!important;
  align-items:stretch;
  min-width:0!important;
  min-height:180px;
@@ -96,9 +101,14 @@
  margin:0!important;
  max-width:100%;
  color:#c9c2df;
- font-size:.75rem;
- line-height:1.55;
+ font-size:.82rem;
+ line-height:1.5;
  overflow-wrap:break-word;
+ display:-webkit-box;
+ -webkit-box-orient:vertical;
+ -webkit-line-clamp:5;
+ line-clamp:5;
+ overflow:hidden;
 }
 .palace-shell .creator-worlds-room .chamber-story-content>a:last-child{
  margin-top:auto;
@@ -216,7 +226,7 @@
 }
 @media(max-width:420px){
  .palace-shell .creator-worlds-room .creator-work-grid>article.chamber-story-card{
-  grid-template-columns:82px minmax(0,1fr);
+  grid-template-columns:82px minmax(0,1fr)!important;
  }
  .palace-shell .creator-worlds-room .chamber-story-content{
   padding:11px;
