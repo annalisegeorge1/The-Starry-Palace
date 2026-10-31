@@ -1,0 +1,6 @@
+# Static Pages responses only; custom Worker responses need separate handling.
+# Keep this conservative until chat, editor, auth, and reader have browser QA.
+/*
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
