@@ -10,6 +10,7 @@ const readSql=file=>readFileSync(resolve(process.cwd(),'database',file),'utf8')
 
 const praise=readSql('PROPOSED-restrict-praise-state-visibility-2026-10-31.sql');
 const bookmarks=readSql('PROPOSED-guard-bookmark-counts-by-reader-age-2026-10-31.sql');
+const palaceIdentity=readSql('PROPOSED-guard-grand-palace-identity-discovery-2026-10-31.sql');
 
 describe('staged creator privacy SQL contract (not a database integration test)',()=>{
  it('preserves the public praise RPC signature and pins its definer search path',()=>{
@@ -32,5 +33,13 @@ describe('staged creator privacy SQL contract (not a database integration test)'
   expect(bookmarks).toMatch(/private\.member_meets_age\(w\.minimum_reader_age\)/i);
   expect(bookmarks).toMatch(/w\.visibility = 'members' and \(select auth\.uid\(\)\) is not null/i);
   expect(bookmarks).toMatch(/private\.is_accepted_work_collaborator\(w\.id\)/i);
+ });
+ it('aligns the publicly callable Grand Palace identity RPC with profile discovery privacy',()=>{
+  expect(palaceIdentity).toMatch(/create or replace function public\.get_grand_palace_identity\(p_member uuid\)/i);
+  expect(palaceIdentity).toMatch(/stable security definer\s+set search_path to ''/i);
+  expect(palaceIdentity).toMatch(/where p\.id=p_member\s+and private\.viewer_can_discover_profile\(p\.id\)/i);
+  expect(palaceIdentity).not.toMatch(/p\.visibility\s*<>\s*'hidden'/i);
+  expect(palaceIdentity).toMatch(/'palace_id'/i);
+  expect(palaceIdentity).toMatch(/'honours'/i);
  });
 });
