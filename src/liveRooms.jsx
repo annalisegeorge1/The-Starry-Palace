@@ -71,7 +71,7 @@ import './palace-desk-clarity.css';
 import PrismWayfinder from './PrismWayfinder';
 import PalaceIcon,{palaceIconForRoute} from './PalaceIcon';
 import PalaceGlowIcon from './PalaceGlowIcon';
-import {PalaceTopicHelp,PalaceFirstRoomHint} from './PalaceGuidebook';
+import {PalaceTopicHelp,PalaceFirstRoomHint} from './PalaceGuidebookHints';
 import ClassicBookCover from './ClassicBookCover';
 import {directClassicHref} from './directClassicModel';
 import DuelCountdown from './DuelCountdown';

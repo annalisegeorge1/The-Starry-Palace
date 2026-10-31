@@ -2,7 +2,8 @@ import React from 'react';
 import {afterEach,beforeEach,describe,expect,it} from 'vitest';
 import {cleanup,fireEvent,render,screen} from '@testing-library/react';
 import {MemoryRouter} from 'react-router-dom';
-import PalaceGuidebook,{PalaceTopicHelp,PalaceFirstRoomHint} from './PalaceGuidebook';
+import PalaceGuidebook from './PalaceGuidebook';
+import {PalaceTopicHelp,PalaceFirstRoomHint} from './PalaceGuidebookHints';
 import {PALACE_HELP_TOPICS,palaceHelpTopic} from './palaceHelpTopics';
 
 beforeEach(()=>localStorage.clear());

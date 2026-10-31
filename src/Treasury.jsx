@@ -4,7 +4,7 @@ import badges from './badges.json';
 import originals from './originalBadges.json';
 import PalaceBadge from './PalaceBadge';
 import PalaceGlowIcon from './PalaceGlowIcon';
-import {PalaceTopicHelp} from './PalaceGuidebook';
+import {PalaceTopicHelp} from './PalaceGuidebookHints';
 import PalaceGift, { giftCourt, giftCourts, giftEdition, giftEditions } from './PalaceGift';
 import { ascendPalaceGift, createGiftTradeOffer, getGiftCatalogue, getGiftTrades, getTreasury, removeProfileAchievementShowcase, removeProfileGiftShowcase, respondGiftTradeOffer, searchMembers, setProfileAchievementShowcase, setProfileGiftShowcase } from './palaceData';
 import './treasury.css';

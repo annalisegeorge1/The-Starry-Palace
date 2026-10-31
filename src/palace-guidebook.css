@@ -33,40 +33,4 @@
 .palace-shell.daylight .palace-guidebook-controls{background:#f7f2fc}
 .palace-shell.daylight .palace-guidebook-controls input{color:#292442;background:#fff;border-color:#b2a6d1}
 .palace-shell.daylight .palace-guidebook-hero{background:linear-gradient(125deg,#f7f1fc,#e7eefd)}
-.palace-shell .palace-help-headline{display:flex;align-items:center;flex-wrap:wrap;gap:9px;min-width:0}
-.palace-shell .palace-help-headline> :is(h1,h2,h3){min-width:0;margin-inline:0}
-.palace-shell .palace-topic-help .palace-info-mark-trigger{width:32px;height:32px;min-width:32px;max-width:32px;font-size:.85rem;box-shadow:none}
-.palace-info-floating .palace-help-more{display:inline-block;margin-top:10px;min-height:35px;line-height:1.35}
-.palace-shell .palace-first-guidebook-link{margin-top:12px;font-size:.87rem}
-.palace-shell .palace-first-guidebook-link a{color:inherit;text-underline-offset:3px}
-.palace-shell .palace-page-help-link{display:inline-flex;align-items:center;min-height:36px;gap:7px;margin-top:8px;font-size:.76rem;color:var(--muted,inherit)}
-.palace-shell .palace-page-help-link a{color:inherit;text-underline-offset:3px}
-@media(max-width:700px){.palace-shell .palace-guidebook-topics{grid-template-columns:minmax(0,1fr)}.palace-shell .palace-guidebook-hero{padding:18px}.palace-shell .palace-guidebook-controls{padding:12px}.palace-shell .palace-guidebook-topic{padding:15px}.palace-shell .palace-help-headline{gap:7px}}
-
-
-/* A small first-visit nudge, not a modal, overlay or mandatory checklist. */
-.palace-shell .palace-first-room-hint{
- display:flex;align-items:center;justify-content:space-between;gap:12px;
- min-width:0;max-width:100%;box-sizing:border-box;
- margin:10px 0 15px;padding:11px 14px;
- border:1px solid rgba(172,171,225,.36);
- border-radius:13px;background:linear-gradient(115deg,rgba(83,68,150,.18),rgba(37,100,133,.13));
-}
-.palace-shell .palace-first-room-hint>div:first-child{flex:1 1 auto;min-width:0}
-.palace-shell .palace-first-room-hint small{font-size:.57rem;letter-spacing:.1em;font-weight:750;color:var(--muted,#d5cce9)}
-.palace-shell .palace-first-room-hint p{font-size:.8rem;line-height:1.48;margin:4px 0 0;overflow-wrap:break-word}
-.palace-shell .palace-first-room-actions{display:flex;align-items:center;flex:0 0 auto;gap:9px;flex-wrap:wrap}
-.palace-shell .palace-first-room-actions a{font-size:.78rem;color:inherit;text-underline-offset:3px;display:inline-flex;align-items:center;min-height:40px}
-.palace-shell .palace-first-room-actions button{border:1px solid rgba(186,169,236,.4);border-radius:10px;background:rgba(109,89,169,.17);color:inherit;padding:9px 12px;min-height:40px;cursor:pointer;font-size:.75rem}
-.palace-shell .palace-first-room-actions :is(button,a):focus-visible{outline:2px solid #badcf5;outline-offset:3px}
-.palace-shell.daylight .palace-first-room-hint{background:linear-gradient(115deg,#f4eefb,#e5effb);border-color:#c7badf}
-@media(max-width:760px){.palace-shell .palace-first-room-hint{align-items:stretch;flex-direction:column}.palace-shell .palace-first-room-actions{justify-content:space-between;width:100%}}
-
-
-.palace-shell .palace-guide-inline-note{
- display:flex;align-items:center;gap:9px;min-width:0;
- grid-column:1/-1;flex:0 0 100%;
- font-size:.78rem;font-weight:650;
- color:var(--muted,#d6cced);line-height:1.3;
-}
-.palace-shell .palace-guide-inline-note>.palace-info-mark{margin:0!important}
+@media(max-width:700px){.palace-shell .palace-guidebook-topics{grid-template-columns:minmax(0,1fr)}.palace-shell .palace-guidebook-hero{padding:18px}.palace-shell .palace-guidebook-controls{padding:12px}.palace-shell .palace-guidebook-topic{padding:15px}}

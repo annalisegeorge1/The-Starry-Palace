@@ -5,7 +5,7 @@ import {safeReaderHtml} from './readerHtmlSanitizer';
 import {readPalaceChoice,readPalaceNumber,writePalacePreference} from './browserPreferences';
 import {readerFlow} from './readerFlowModel';
 import PalacePagedReader from './PalacePagedReader';
-import {PalaceTopicHelp} from './PalaceGuidebook';
+import {PalaceTopicHelp} from './PalaceGuidebookHints';
 
 const layoutOptions=['book','full','journal','compact'];
 const escapeHeading=s=>String(s||'Untitled chapter').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
