@@ -6,7 +6,10 @@ create schema extensions;
 create extension if not exists pg_trgm with schema extensions;
 
 create function auth.uid() returns uuid language sql stable as $$
-  select coalesce(\n    nullif(current_setting('request.jwt.claim.sub',true),''),\n    nullif(current_setting('request.jwt.claims',true),'')::jsonb->>'sub'\n  )::uuid
+  select coalesce(
+    nullif(current_setting('request.jwt.claim.sub',true),''),
+    nullif(current_setting('request.jwt.claims',true),'')::jsonb->>'sub'
+  )::uuid
 $$;
 
 create table private.test_ages(user_id uuid primary key, years integer not null);
