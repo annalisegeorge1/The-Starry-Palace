@@ -125,3 +125,17 @@ The disposable PostgREST service now exposes `storage.objects` **only inside the
 The first expanded HTTP run detected an expected-count mismatch caused by an earlier synthetic upload, not a privacy leak. After correcting that assertion, [GitHub Actions run 41220921656](https://github.com/annalisegeorge1/The-Starry-Palace/actions/runs/41220921656) successfully completed the disposable database security job and reported **42 signed-JWT HTTP/PostgREST checks passed**, including a deliberately forbidden insert rejected by row-level security.
 
 **Critical limitation:** exposing `storage.objects` to temporary PostgREST is an intentional **test-only setup**. It does not change the real Supabase Data API's exposed schemas, nor does it test Supabase Storage HTTP download/upload/signed-URL enforcement. Never expose the actual `storage` schema through the production Data API as a shortcut for testing; use managed Storage staging endpoints instead. No actual media bytes, member IDs, hosted account tokens or production secrets were involved.
+
+## Private chat photo link exposure — staged client hardening
+
+The current production `src/palaceChatMedia.js` creates 3,600-second **signed bearer URLs** for photos in the private `palace-chat-photos` bucket, and `src/PalaceChatPhoto.jsx` places those URLs directly into image elements. A signed URL can be used by anyone possessing it until its expiry, subject to provider caching behavior; leaving a conversation or revoking an Auth token does not automatically revoke an already-issued signed Storage URL. This is a known behavior of signed URLs, **not evidence of any compromise or leak of Palace photos**.
+
+An **unmerged, staged** improvement on this development branch changes the private photo renderer to use `supabase.storage.from('palace-chat-photos').download(path)` with the current authenticated account. Its returned image Blob is displayed through a local `blob:` object URL, revoked on unmount or path change; no reusable signed Storage URL is inserted into the DOM. Each new server download requires permission at request time. `src/PalaceChatPhoto.test.jsx` tests Blob lifecycle, failure/retry behavior and switching conversations, and `src/palaceChatMedia.test.js` checks the authenticated download method, rejects invalid paths, and confirms no signed-URL fallback.
+
+The old `signedPalaceChatPhoto` helper remains in code temporarily to avoid assuming there are no other callers; inspect all imports before removing it as part of a separate safe cleanup.
+
+**Limits and follow-up:** This does not prevent an authorized recipient from copying a photo or from retaining a Blob that the browser already downloaded. Storage CDN and browser caches, media message deletion cleanup, revoked group membership, and signed URLs issued **before** deployment require independent tests. The change must be tested with two or more *actual synthetic* member accounts in a separately approved Supabase environment, including a user leaving/being removed from a conversation, before production rollout. Avoid claiming the content is uncopyable or instantaneously revoked across users/devices.
+
+References:
+- https://supabase.com/docs/guides/storage/serving/downloads
+- https://supabase.com/docs/guides/storage/cdn/smart-cdn
