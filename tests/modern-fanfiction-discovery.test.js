@@ -251,6 +251,24 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(shelf).toContain('{rating,query,animeOnly}');
   expect(shelf).toContain('setAnimeOnly(false)');
  });
+ it('keeps 81 modern recommendations visible in default Browse mode rather than Discover-only',()=>{
+  const defaults=readFileSync('src/useReadingDiscoveryState.js','utf8');
+  expect(defaults).toContain("discoveryMode:'browse'");
+  const shelf='<PalaceFanfictionShelf archiveWorks={archiveWorks}/>';
+  expect(reading.split(shelf).length-1).toBe(1);
+  const nav=reading.indexOf('aria-label="Browse by story type"');
+  const shelfAt=reading.indexOf(shelf);
+  const discoverOnly=reading.indexOf("readingChoices.discoveryMode==='discover'");
+  const browserAtlas=reading.indexOf('className="reading-scope-selector reading-scope-calm"');
+  expect(nav).toBeGreaterThan(0);
+  expect(shelfAt).toBeGreaterThan(nav);
+  expect(shelfAt).toBeLessThan(discoverOnly);
+  expect(shelfAt).toBeLessThan(browserAtlas);
+  expect(reading).toContain("onClick={()=>{setOrigin('fandom');if(advancedView)navigate('/reading')}}");
+  expect(reading).toContain('linked modern fanfics are listed above');
+  expect(shelf).toContain('MODERN_FANFICTION_LINKS.length} modern recommendations');
+  expect(MODERN_FANFICTION_LINKS.length).toBe(81);
+ });
  it('uses the existing theme and avoids new mobile dock or navigation geometry',()=>{
   expect(css).toContain('var(--ui-surface)');
   expect(css).toContain('var(--ui-text)');
