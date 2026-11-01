@@ -50,11 +50,10 @@ describe('Events and Heritage calm mobile calendar',()=>{
   expect(calendar).toContain('calendar-selection');
   expect(css).toContain('var(--holiday-wash)');
  });
- it('adds safe-area scroll clearance and solid header surface without touching header icons',()=>{
+ it('adds safe-area scroll clearance without modifying global header',()=>{
   expect(main).toContain("import './events-calendar-mobile-clarity.css';");
   expect(css).toContain('padding-bottom:max(120px,var(--palace-mobile-dock-clearance,120px))');
-  expect(css).toContain('header.topbar.full-topbar');
-  expect(css).toContain('background-color:#0d142b!important');
+  expect(css).not.toContain('header.topbar.full-topbar');
   expect(css).not.toContain('.top-icon-link');
   expect(css).not.toContain('.write-action');
   expect(css).not.toContain('.mobile-palace-dock>');
