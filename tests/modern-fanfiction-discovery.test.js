@@ -23,8 +23,8 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(shelf).toContain("PUBLIC DOMAIN · HOSTED ON THE PALACE");
  });
  it('links to actual writers and their permission evidence without mirroring modern text',()=>{
-  expect(MODERN_FANFICTION_LINKS).toHaveLength(32);
-  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.id)).size).toBe(32);
+  expect(MODERN_FANFICTION_LINKS).toHaveLength(44);
+  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.id)).size).toBe(44);
   expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.creator)).size).toBeGreaterThanOrEqual(7);
   for(const w of MODERN_FANFICTION_LINKS){
    expect(w.title).toBeTruthy();
@@ -32,7 +32,7 @@ describe('Fanfiction section contains rights-aware historical and modern discove
    expect(w.fandom).toBeTruthy();
    expect(w.sourceUrl).toMatch(/^https:\/\//);
    expect(w.permissionUrl).toMatch(/^https:\/\//);
-   expect(w.permissionLabel).toMatch(/^(?:CC BY-(?:NC-(?:SA|ND)|SA)|Creative Commons noncommercial)/);
+   expect(w.permissionLabel).toMatch(/^(?:CC BY-(?:NC-(?:SA|ND)|SA)|Creative Commons (?:noncommercial|derivative, noncommercial))/);
   }
   expect(shelf).toContain('target="_blank" rel="noopener noreferrer"');
   expect(shelf).toContain('Read original');
@@ -71,7 +71,7 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Percy Jackson'}).map(w=>w.id)).toContain('cateliot-inner-demons');
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Post-War'}).some(w=>w.id==='squibstress-sweep')).toBe(true);
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Bonnie Bennett',rating:'teen'}).map(w=>w.id)).toEqual(['simplynia-irresistible']);
-  expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{rating:'mature'}).map(w=>w.id)).toEqual(['ken1245632-naruto-dragon-chronicles']);
+  expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{rating:'mature'}).map(w=>w.id)).toContain('ken1245632-naruto-dragon-chronicles');
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{rating:'not_rated'}).some(w=>w.id==='dawn-home-alone')).toBe(true);
   expect(shelf).toContain('<FanfictionGuide guide={historicFanfictionGuide(work)}/>');
   expect(shelf).toContain('modernFanfictionGuide(work)');
@@ -102,6 +102,35 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(bioshock.contentWarnings).toContain('Sexual assault');
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Yang Xiao Long'}).some(x=>x.id==='sittscho-rwbynov-volume-one')).toBe(true);
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Stargate SG-1'}).some(x=>x.id==='lancer47-what-happened-here')).toBe(true);
+ });
+ it('adds twelve permission-checked multi-fandom stories with real original-story destinations',()=>{
+  const newIds=[
+   'hushbugger-the-long-night','hushbugger-yet-here-i-remain',
+   'hushbugger-socrates-in-the-caves','hushbugger-human-habits',
+   'robinwingster-bobbin-around','scyllaya-bend-around-the-wind',
+   'lordtrychon-a-sith-by-any-other-name','jtheclivaz-every-day-the-same-nightmare',
+   'nemebean-mom','perspicacity-riding-the-l',
+   'griffyn612-lost-boys-dresdenverse','siriuslyfun19212-alive'
+  ];
+  expect(newIds).toHaveLength(12);
+  for(const id of newIds){
+   const work=MODERN_FANFICTION_LINKS.find(w=>w.id===id);
+   expect(work).toBeTruthy();
+   expect(work.sourceUrl).toMatch(/^https:\/\/www.fanfiction.net\/s\/\d+\//);
+   expect(work.permissionUrl).toMatch(/^https:\/\/www.fanfiction.net\//);
+   expect(work.permissionLabel).toMatch(/(?:CC BY-|Creative Commons)/);
+   expect(modernFanfictionGuide(work).tags.some(t=>t.category==='fandom')).toBe(true);
+   expect(modernFanfictionGuide(work).sourceRating).toBeTruthy();
+  }
+  expect(MODERN_FANFICTION_LINKS.filter(w=>w.creator==='HushBugger')).toHaveLength(4);
+  expect(MODERN_FANFICTION_LINKS.filter(w=>w.creator==='HushBugger')
+    .every(w=>w.permissionLabel.startsWith('CC BY-SA 4.0'))).toBe(true);
+  expect(modernFanfictionGuide({id:'hushbugger-human-habits'}).rating).toBe('general');
+  expect(modernFanfictionGuide({id:'robinwingster-bobbin-around'}).rating).toBe('teen');
+  expect(modernFanfictionGuide({id:'scyllaya-bend-around-the-wind'}).rating).toBe('mature');
+  expect(modernFanfictionGuide({id:'scyllaya-bend-around-the-wind'}).contentWarnings).toContain('Adult sexual content');
+  expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Hollow Knight'}).map(w=>w.id)).toContain('hushbugger-yet-here-i-remain');
+  expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Tony Stark/Loki'}).map(w=>w.id)).toContain('scyllaya-bend-around-the-wind');
  });
  it('uses the existing theme and avoids new mobile dock or navigation geometry',()=>{
   expect(css).toContain('var(--ui-surface)');

@@ -394,4 +394,148 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
   permissionLabel:'Creative Commons noncommercial derivative fiction · author-stated, exact licence unspecified',
   contentNote:'Source Fiction K · fairy courts, supernatural obligations and family.'
  }
+ ,{
+  id:'hushbugger-the-long-night',
+  title:'The Long Night',
+  creator:'HushBugger',
+  published:'2022',
+  fandom:'Outer Wilds',
+  description:'Chert joins another explorer to investigate the dying stars and what might yet be saved.',
+  sourceUrl:'https://www.fanfiction.net/s/14031977/1/The-Long-Night',
+  permissionUrl:'https://www.fanfiction.net/u/9044889/HushBugger',
+  permissionLabel:'CC BY-SA 4.0 · author profile licenses all original works',
+  contentNote:'Source Fiction T · complete, 11 chapters · end-of-world themes and peril.'
+ },
+ {
+  id:'hushbugger-yet-here-i-remain',
+  title:'Yet here I remain',
+  creator:'HushBugger',
+  published:'2020',
+  fandom:'Hollow Knight',
+  description:'After the infection ends, Sly helps the recovering Myla find a way back to life.',
+  sourceUrl:'https://www.fanfiction.net/s/13565524/1/Yet-here-I-remain',
+  permissionUrl:'https://www.fanfiction.net/u/9044889/HushBugger',
+  permissionLabel:'CC BY-SA 4.0 · author profile licenses all original works',
+  contentNote:'Source Fiction K · complete, six chapters · illness and recovery.'
+ },
+ {
+  id:'hushbugger-socrates-in-the-caves',
+  title:'Socrates in the caves',
+  creator:'HushBugger',
+  published:'2017 · updated 2022',
+  fandom:'Undertale · Classical philosophy',
+  description:'Socrates finds himself in the Underground and attempts to reason with its residents.',
+  sourceUrl:'https://www.fanfiction.net/s/12614512/1/Socrates-in-the-caves',
+  permissionUrl:'https://www.fanfiction.net/u/9044889/HushBugger',
+  permissionLabel:'CC BY-SA 4.0 · author profile licenses all original works',
+  contentNote:'Source Fiction K · five short chapters · playful philosophical crossover.'
+ },
+ {
+  id:'hushbugger-human-habits',
+  title:'Human habits',
+  creator:'HushBugger',
+  published:'2018',
+  fandom:'Deltarune',
+  description:'Kris loses a baby tooth, baffling Asriel and the rest of the Dreemurr household.',
+  sourceUrl:'https://www.fanfiction.net/s/13113391/1/Human-habits',
+  permissionUrl:'https://www.fanfiction.net/u/9044889/HushBugger',
+  permissionLabel:'CC BY-SA 4.0 · author profile licenses all original works',
+  contentNote:'Source Fiction K · complete family-humour one-shot.'
+ },
+ {
+  id:'robinwingster-bobbin-around',
+  title:"Bobbin' Around'",
+  creator:'Robin Wingster',
+  published:'2015',
+  fandom:'Batman · DC Comics',
+  description:'A young Dick Grayson struggles to find his footing as Robin and as Bruce Wayne’s ward.',
+  sourceUrl:'https://www.fanfiction.net/s/10989919/1/Bobbin-Around',
+  permissionUrl:'https://www.fanfiction.net/s/10989919/1/Bobbin-Around',
+  permissionLabel:'CC BY-NC-ND 3.0 · explicitly stated for the story',
+  contentNote:'Source Fiction T · complete · childhood grief and emotional distress.'
+ },
+ {
+  id:'scyllaya-bend-around-the-wind',
+  title:'Bend Around the Wind',
+  creator:'Scyllaya',
+  published:'2012 · completed 2013',
+  fandom:'Marvel Avengers',
+  description:'Tony Stark and Loki are swept far from the Nine Realms and must work together to survive.',
+  sourceUrl:'https://www.fanfiction.net/s/8659078/1/Bend-Around-the-Wind',
+  permissionUrl:'https://www.fanfiction.net/s/8659078/1/Bend-Around-the-Wind',
+  permissionLabel:'CC BY-NC-SA 3.0 · author-stated for their fanfiction contribution',
+  contentNote:'Source Fiction M / author-labelled NC-17 · 100 chapters · adult relationship and sexual content; 18+ only.'
+ },
+ {
+  id:'lordtrychon-a-sith-by-any-other-name',
+  title:'A Sith by any Other Name',
+  creator:'Lord Trychon',
+  published:'2012',
+  fandom:'Star Wars',
+  description:'An amnesiac Sith becomes stranded on a backwater world while trying to find his fiancée.',
+  sourceUrl:'https://www.fanfiction.net/s/8230414/1/A-Sith-by-any-Other-Name',
+  permissionUrl:'https://www.fanfiction.net/s/8230414/1/A-Sith-by-any-Other-Name',
+  permissionLabel:'CC BY-NC-ND 3.0 US · credited to Erik George and K Rex Maxwell',
+  contentNote:'Source Fiction T · complete short adventure · danger and memory loss.'
+ },
+ {
+  id:'jtheclivaz-every-day-the-same-nightmare',
+  title:'Every day the Same nightmare',
+  creator:'JTheClivaz',
+  published:'2011',
+  fandom:'Mass Effect',
+  description:'A Mass Effect story exploring the aftermath of the Akuze incident and difficult memories.',
+  sourceUrl:'https://www.fanfiction.net/s/6924316/1/Every-day-the-Same-nightmare',
+  permissionUrl:'https://www.fanfiction.net/s/6924316/1/Every-day-the-Same-nightmare',
+  permissionLabel:'CC BY-NC-SA 3.0 · author-stated for their original text',
+  contentNote:'Source Fiction T; author cautions of strong language, psychological distress and planned romance.'
+ },
+ {
+  id:'nemebean-mom',
+  title:'Mom',
+  creator:'nemebean',
+  published:'2013',
+  fandom:'The Dresden Files',
+  description:'Mab and friends visit Disney World in a playful Dresdenverse family outing.',
+  sourceUrl:'https://www.fanfiction.net/s/9926206/1/Mom',
+  permissionUrl:'https://www.fanfiction.net/s/9926206/1/Mom',
+  permissionLabel:'CC BY-NC-SA 3.0 · author-stated for their original text',
+  contentNote:'Source Fiction K · complete humour one-shot · spoilers for Cold Days.'
+ },
+ {
+  id:'perspicacity-riding-the-l',
+  title:'Riding the L',
+  creator:'Perspicacity',
+  published:'2010',
+  fandom:'The Dresden Files',
+  description:'A short speculative scene about the aftermath of the events of Changes.',
+  sourceUrl:'https://www.fanfiction.net/s/5969274/1/Riding-the-L',
+  permissionUrl:'https://www.fanfiction.net/s/5969274/1/Riding-the-L',
+  permissionLabel:'Creative Commons derivative, noncommercial · author-stated; licence version unspecified',
+  contentNote:'Source Fiction T · supernatural humour and major spoilers for Changes.'
+ },
+ {
+  id:'griffyn612-lost-boys-dresdenverse',
+  title:'Lost Boys — A Tale of the Dresdenverse',
+  creator:'griffyn612',
+  published:'2017',
+  fandom:'Peter Pan · The Dresden Files',
+  description:'A darker retelling of the Captain and the Pan through a Dresdenverse lens.',
+  sourceUrl:'https://www.fanfiction.net/s/12490466/1/Lost-Boys-A-Tale-of-the-Dresdenverse',
+  permissionUrl:'https://www.fanfiction.net/s/12490466/1/Lost-Boys-A-Tale-of-the-Dresdenverse',
+  permissionLabel:'Creative Commons derivative, noncommercial · author-stated; licence version unspecified',
+  contentNote:'Source Fiction T · supernatural danger, vengeance and dark themes.'
+ },
+ {
+  id:'siriuslyfun19212-alive',
+  title:'Alive',
+  creator:'Siriuslyfun19212',
+  published:'2009',
+  fandom:'Harry Potter',
+  description:'A tense domestic exchange about the future of a werewolf child.',
+  sourceUrl:'https://www.fanfiction.net/s/4877872/1/Alive',
+  permissionUrl:'https://www.fanfiction.net/s/4877872/1/Alive',
+  permissionLabel:'CC BY-NC-ND 3.0 US · author-stated for original work',
+  contentNote:'Source Fiction T · complete · childhood prejudice, family conflict and anxiety.'
+ }
 ]);
