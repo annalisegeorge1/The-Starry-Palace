@@ -1,0 +1,216 @@
+/* The Starry Palace — Prism Atelier mobile editorial refinement.
+   Keep all colours, unlock paths, point transactions, frames and saved looks.
+   All adjustments are scoped to the member chamber; no account data changes. */
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-studio-heading.is-open{
+ display:flex;flex-direction:row-reverse;justify-content:flex-end;align-items:center;
+ gap:10px;flex-wrap:nowrap;min-width:0;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-studio-heading.is-open>div{
+ flex:1;min-width:0;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-studio-heading.is-open .eyebrow{
+ display:none;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-studio-heading.is-open h2{
+ margin:0;font-size:clamp(1.15rem,3.5vw,1.45rem);line-height:1.2;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-studio-heading.is-open>button.prism-studio-toggle{
+ display:inline-flex!important;align-items:center;justify-content:center;flex:0 0 auto;
+ width:auto!important;min-width:80px;min-height:40px!important;padding:6px 11px!important;
+ background:rgba(110,105,178,.14)!important;color:inherit!important;
+ border:1px solid rgba(176,170,230,.4);font-size:.78rem!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-workspace{
+ gap:12px;margin-top:10px;min-width:0;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-action-row{
+ display:grid;grid-template-columns:1fr;gap:6px;min-width:0;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-action-row>.prism-apply{
+ min-height:44px;font-weight:750;color:#fff!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-inline-balance{
+ display:block;text-align:center;font-size:.74rem;font-weight:650;
+ color:#d9d6f0;line-height:1.4;
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/member/"] .prism-inline-balance{
+ color:#4c456a;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-looks-form{
+ display:grid;grid-template-columns:minmax(0,1fr);gap:10px;min-width:0;align-items:stretch;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-looks-form>label{
+ display:grid;grid-template-columns:1fr;gap:5px;min-width:0;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-looks-form>button{
+ grid-column:1!important;min-height:44px;width:100%;font-weight:750;
+ background:linear-gradient(120deg,#6251a9,#41789a);color:#fff;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-looks-form :is(input,select){
+ min-width:0;max-width:100%;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-swatch strong{
+ color:#f3efff;font-weight:700;opacity:1;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-swatch small{
+ color:#d1cce5;opacity:1;
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/member/"] .prism-swatch strong{
+ color:#302748;
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/member/"] .prism-swatch small{
+ color:#55466d;
+}
+/* The frame action belongs with the selected frame, not detached from it. */
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .painted-frame-action{
+ display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+ gap:10px;margin:11px 0 8px;padding:10px;
+ border:1px solid rgba(176,169,231,.28);border-radius:12px;
+ background:rgba(101,91,170,.1);
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .painted-frame-action>p{
+ flex:1 1 140px;min-width:0;margin:0;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .painted-frame-action>button{
+ flex:0 1 auto;min-height:44px;
+ color:#fff;background:linear-gradient(120deg,#6251a9,#41789a);
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .painted-frame-none{
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ min-height:105px;gap:7px;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .painted-frame-none-ring{
+ width:55px;height:55px;display:grid;place-items:center;
+ font:2rem Georgia,serif;border-radius:50%;
+ color:#d3c5f3;border:2px dashed rgba(186,172,238,.72);
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/member/"] .painted-frame-none-ring{
+ color:#5c4978;border-color:#9685b7;
+}
+/* Profile action buttons and the existing six-count three-column grid should meet,
+   without a large empty stretch inside the purple header card. */
+@media(max-width:760px){
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"]{
+  padding-bottom:max(190px,calc(160px + env(safe-area-inset-bottom,0px)))!important;
+  scroll-padding-bottom:max(190px,calc(160px + env(safe-area-inset-bottom,0px)))!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"]>.prism-atelier{
+  padding-bottom:140px;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-chamber-atelier.chic-member-profile .legacy-profile-copy{
+  min-height:0!important;padding-bottom:8px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-chamber-atelier.chic-member-profile .legacy-profile-actions{
+  margin-top:8px!important;margin-bottom:6px!important;row-gap:7px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-chamber-atelier.chic-member-profile .legacy-profile-actions .primary-profile-action{
+  color:#fff!important;
+  background:linear-gradient(125deg,#614a9b,#445f9f)!important;
+  border-color:#aa9de0!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-chamber-atelier.chic-member-profile .legacy-profile-stats{
+  margin-top:0!important;margin-bottom:0!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-atelier{
+  padding:11px!important;margin-block:10px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-preview{
+  min-height:124px!important;padding:13px!important;border-radius:14px!important;gap:4px;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-preview>strong{
+  font-size:clamp(1.15rem,4.8vw,1.7rem)!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-preview-pills{
+  gap:5px;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-preview-pills span{
+  padding:3px 7px;font-size:.6rem;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-palette-column,
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-settings,
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-looks{
+  padding:11px!important;gap:9px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-families,
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-categories{
+  display:flex;flex-wrap:nowrap;overflow-x:auto;gap:5px!important;
+  padding:3px 0 8px!important;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+  -webkit-mask-image:linear-gradient(to right,#000 0%,#000 93%,transparent 100%);
+  mask-image:linear-gradient(to right,#000 0%,#000 93%,transparent 100%);
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] :is(.prism-families,.prism-categories)::-webkit-scrollbar{display:none}
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] :is(.prism-families,.prism-categories)>button{
+  flex:0 0 auto;min-height:32px!important;padding:4px 9px!important;
+  font-size:.7rem!important;line-height:1.2;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-palette-grid{
+  gap:6px!important;min-width:0;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-swatch{
+  padding:6px!important;gap:4px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-swatch-colour{
+  height:50px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-settings>label:not(.prism-motion-toggle){
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.18fr);
+  align-items:center;gap:9px;min-width:0;
+  font-size:.77rem;font-weight:650;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-settings>label:not(.prism-motion-toggle)>select{
+  display:block;box-sizing:border-box;
+  width:100%!important;min-width:0!important;
+  height:39px!important;min-height:39px!important;max-height:39px!important;
+  padding:5px 11px!important;font-size:.82rem!important;line-height:1.3!important;
+  border-radius:10px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-looks-form{
+  grid-template-columns:minmax(0,1fr)!important;gap:9px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-looks-form :is(input,select){
+  display:block;box-sizing:border-box;width:100%!important;
+  height:40px!important;min-height:40px!important;max-height:40px!important;
+  padding:6px 10px!important;font-size:.86rem!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-looks-form>button{
+  grid-column:1/-1!important;width:100%!important;min-height:44px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .painted-frame-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .painted-frame-choice{
+  min-width:0!important;max-width:100%!important;box-sizing:border-box;
+  padding:7px 4px!important;white-space:normal;overflow-wrap:break-word;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .painted-frame-choice strong{
+  font-size:.73rem;line-height:1.25;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .painted-frame-choice small{
+  font-size:.64rem;line-height:1.22;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .painted-frame-action{
+  flex-direction:column;align-items:stretch;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .painted-frame-action>p{
+  flex:0 0 auto;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .painted-frame-action>button{
+  width:100%;min-height:44px;
+ }
+}
+/* The final artwork and saved looks must clear the mobile dock even when
+   the route reuses a nested scrolling card. */
+@media(max-width:760px){
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-workspace{
+  padding-bottom:32px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-atelier{
+  scroll-margin-bottom:180px;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-studio-toggle{
+  transition:none!important;
+ }
+}
