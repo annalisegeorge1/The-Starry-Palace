@@ -23,8 +23,8 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(shelf).toContain("PUBLIC DOMAIN · HOSTED ON THE PALACE");
  });
  it('links to actual writers and their permission evidence without mirroring modern text',()=>{
-  expect(MODERN_FANFICTION_LINKS).toHaveLength(22);
-  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.id)).size).toBe(22);
+  expect(MODERN_FANFICTION_LINKS).toHaveLength(32);
+  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.id)).size).toBe(32);
   expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.creator)).size).toBeGreaterThanOrEqual(7);
   for(const w of MODERN_FANFICTION_LINKS){
    expect(w.title).toBeTruthy();
@@ -76,6 +76,32 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(shelf).toContain('<FanfictionGuide guide={historicFanfictionGuide(work)}/>');
   expect(shelf).toContain('modernFanfictionGuide(work)');
   expect(reading).toContain('...archiveFanfictionTags(r)');
+ });
+ it('documents new modern fanworks, their source ratings and authors stated licences',()=>{
+  const ids=['watchword-summer-for-saya','watchword-only-man','sittscho-rwbynov-volume-one',
+   'svensons-vikings-thing','lancer47-what-happened-here','squibstress-one-to-keep-an-eye-on',
+   'squibstress-natural-law','squibstress-bonnie-wee-thing','squibstress-de-aegypto',
+   'merlintirianius-obligations'];
+  expect(ids).toHaveLength(10);
+  for(const id of ids){
+   const item=MODERN_FANFICTION_LINKS.find(work=>work.id===id);
+   expect(item).toBeTruthy();
+   expect(item.permissionUrl).toBe(item.sourceUrl);
+   expect(item.permissionLabel).toMatch(/(?:Creative Commons|CC BY-NC-SA)/);
+   const guide=modernFanfictionGuide(item);
+   expect(guide.tags.some(tag=>tag.category==='fandom')).toBe(true);
+   expect(guide.sourceRating).toBeTruthy();
+  }
+  expect(modernFanfictionGuide({id:'squibstress-bonnie-wee-thing'}).rating).toBe('general');
+  expect(modernFanfictionGuide({id:'sittscho-rwbynov-volume-one'}).rating).toBe('teen');
+  expect(modernFanfictionGuide({id:'watchword-summer-for-saya'}).rating).toBe('mature');
+  const bioshock=modernFanfictionGuide({id:'watchword-only-man'});
+  expect(bioshock.rating).toBe('mature');
+  expect(bioshock.ratingBasis).toBe('editorial');
+  expect(bioshock.sourceRating).toContain('FanFiction.net T');
+  expect(bioshock.contentWarnings).toContain('Sexual assault');
+  expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Yang Xiao Long'}).some(x=>x.id==='sittscho-rwbynov-volume-one')).toBe(true);
+  expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Stargate SG-1'}).some(x=>x.id==='lancer47-what-happened-here')).toBe(true);
  });
  it('uses the existing theme and avoids new mobile dock or navigation geometry',()=>{
   expect(css).toContain('var(--ui-surface)');
