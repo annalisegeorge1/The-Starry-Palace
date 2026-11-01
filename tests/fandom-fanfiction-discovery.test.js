@@ -49,7 +49,7 @@ describe('Fandom Atlas includes the same rights-aware Fanfiction collection',()=
   expect(atlas).toContain('fandomNames={selectedNames}');
   expect(atlas).toContain('fandomMatch={mode}');
   expect(reading).toContain('fandomNames,fandomMatch,completion');
-  expect(reading).toContain("isHistoricalFanfiction(work)");
+  expect(reading).toContain("isHostedFanfiction(work)");
   expect(atlas).toContain('getArchive(null)');
   expect(reading).toContain("'/classic/'+encodeURIComponent(work.slug)");
   expect(reading).toContain('target="_blank" rel="noopener noreferrer"');
