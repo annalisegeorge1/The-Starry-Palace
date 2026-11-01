@@ -75,3 +75,83 @@
 .home-writer-invitation>a:hover{background:#b59ad42b}
 .home-writer-invitation>a:focus-visible{outline:3px solid #bfa4f1;outline-offset:3px}
 @media(max-width:600px){.home-writer-invitation{margin:15px 10px;padding:19px}.home-writer-invitation>span{width:50px;height:50px;font-size:1.6rem}.home-writer-invitation>a{width:100%;text-align:center}}
+
+/* Writer's Door: fluid content and balanced typography across desktop/tablet.
+   Route-scoped so unrelated Palace rooms and the approved mobile art are untouched. */
+.palace-shell.full-palace-shell #palace-content[data-palace-route="/writers"]{
+ width:100%!important;max-width:100%!important;min-width:0!important;
+ box-sizing:border-box!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route="/writers"]>.writer-welcome{
+ width:100%!important;max-width:1250px!important;min-width:0!important;
+ margin-inline:auto!important;box-sizing:border-box!important;
+}
+.palace-shell.full-palace-shell .writer-welcome-hero{
+ width:100%;min-width:0;box-sizing:border-box;
+}
+.palace-shell.full-palace-shell .writer-welcome-hero :is(.writer-welcome-copy,.writer-welcome-art){
+ min-width:0;max-width:100%;
+}
+.palace-shell.full-palace-shell .writer-welcome h1{
+ word-break:normal;overflow-wrap:normal;hyphens:none;
+}
+.palace-shell.full-palace-shell .writer-welcome .writer-paper em{
+ color:#252b49;opacity:1;font-weight:600;
+}
+.palace-shell.full-palace-shell .writer-welcome .writer-welcome-hero small{
+ color:#f2edff;opacity:1;font-size:.82rem;line-height:1.5;
+}
+.palace-shell.full-palace-shell .writer-welcome .writer-primary{
+ color:#fff!important;background:linear-gradient(120deg,#6650ab,#425ca0)!important;
+ border:1px solid #af9ee9;box-shadow:0 9px 22px #07071840;
+}
+.palace-shell.full-palace-shell .writer-welcome .writer-primary:hover{
+ background:linear-gradient(120deg,#7862c1,#4e6bb5)!important;color:#fff!important;
+}
+@media(min-width:761px) and (max-width:1260px){
+ .palace-shell.full-palace-shell #palace-content[data-palace-route="/writers"]{
+  padding-inline:clamp(16px,2.5vw,30px)!important;
+ }
+ .palace-shell.full-palace-shell .writer-welcome{
+  padding:clamp(12px,2vw,28px)!important;
+ }
+ .palace-shell.full-palace-shell .writer-welcome-hero{
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:24px!important;padding:clamp(24px,3vw,38px)!important;
+ }
+ .palace-shell.full-palace-shell .writer-welcome-hero .writer-welcome-copy{
+  width:100%;max-width:800px;margin-inline:auto;
+ }
+ .palace-shell.full-palace-shell .writer-welcome-hero h1{
+  font-size:clamp(2.8rem,5vw,4.6rem)!important;
+  max-width:800px;
+ }
+ .palace-shell.full-palace-shell .writer-welcome-hero .writer-welcome-art{
+  min-height:260px;
+ }
+}
+@media(min-width:1261px){
+ .palace-shell.full-palace-shell .writer-welcome-hero{
+  grid-template-columns:minmax(0,1.14fr) minmax(280px,.8fr)!important;
+ }
+}
+@media(max-width:760px){
+ .palace-shell.full-palace-shell #palace-content[data-palace-route="/writers"]{
+  padding-bottom:var(--palace-mobile-dock-clearance,calc(154px + env(safe-area-inset-bottom,0px)))!important;
+ }
+ .palace-shell.full-palace-shell .writer-welcome{
+  padding:12px!important;
+ }
+ .palace-shell.full-palace-shell .writer-welcome-hero{
+  grid-template-columns:minmax(0,1fr)!important;
+ }
+ .palace-shell.full-palace-shell .writer-welcome-actions{
+  display:grid;grid-template-columns:minmax(0,1fr);gap:10px;
+ }
+ .palace-shell.full-palace-shell .writer-welcome-actions a{
+  width:100%!important;min-width:0!important;box-sizing:border-box;
+ }
+ .palace-shell.full-palace-shell .writer-welcome h1{
+  overflow-wrap:normal!important;font-size:clamp(2.15rem,9vw,3.15rem);
+ }
+}
