@@ -46,6 +46,7 @@ export default function PalaceFanfictionShelf({archiveWorks=[]}){
  const modernMatches=filterModernFanfiction(MODERN_FANFICTION_LINKS,{rating,query});
  const allowedModern=modernMatches.filter(work=>includeMature||modernFanfictionGuide(work).rating!=='mature');
  const hiddenMature=modernMatches.length-allowedModern.length;
+ const matureMatches=modernMatches.filter(work=>modernFanfictionGuide(work).rating==='mature').length;
  const visibleModern=allowedModern.slice(0,visibleModernCount);
  const reset=()=>{setQuery('');setRating('all');setVisibleModernCount(6)};
  return <section className="palace-fanfiction-shelf" aria-labelledby="palace-fanfiction-shelf-title">
@@ -53,6 +54,7 @@ export default function PalaceFanfictionShelf({archiveWorks=[]}){
    <p className="eyebrow">FANFICTION · OLD WORLDS, NEW STORIES</p>
    <h2 id="palace-fanfiction-shelf-title">Follow the stories behind the stories.</h2>
    <p>Read the verified historical fanworks here, or discover modern stories at their authors' original sources. Ratings are labelled by source; tags are descriptive Palace guides.</p>
+   <p className="palace-fanfiction-catalogue-total" role="status">{MODERN_FANFICTION_LINKS.length} modern recommendations · {archiveWorks.filter(work=>work.is_archive&&isHistoricalFanfiction(work)).length} hosted historical works · Browse by title, author, fandom or rating</p>
   </header>
   <div className="palace-fanfiction-filters" role="search" aria-label="Filter Fanfiction recommendations">
    <label><span>Find by title, writer or tag</span><input type="search"
@@ -94,12 +96,12 @@ export default function PalaceFanfictionShelf({archiveWorks=[]}){
      </div>
     </article>})}
    </div>
-   {hiddenMature>0&&<div className="palace-fanfiction-age-notice">
-    <p>{hiddenMature} mature-rated recommendation{hiddenMature===1?' is':'s are'} hidden from the public shelf. These link to third-party sites outside the Palace's age checks.</p>
-    <button type="button" onClick={()=>setIncludeMature(true)}>I am 18+ · Show mature links</button>
+   {matureMatches>0&&<div className="palace-fanfiction-age-notice">
+    <p>{includeMature?'Mature-rated external recommendations are visible. Reader discretion is advised.':hiddenMature+' mature-rated external recommendation'+(hiddenMature===1?' is':'s are')+' hidden by default. These third-party sites are outside the Palace age checks.'}</p>
+    <button type="button" onClick={()=>{setIncludeMature(!includeMature);setVisibleModernCount(6)}}>{includeMature?'Hide mature links':'I am 18+ · Show mature links'}</button>
    </div>}
    {!allowedModern.length&&<p className="palace-fanfiction-no-results">No sourced recommendations match these filters. Try another rating or remove a search term.</p>}
-   {visibleModernCount<allowedModern.length&&<button type="button" className="palace-fanfiction-more" onClick={()=>setVisibleModernCount(current=>Math.min(current+6,allowedModern.length))}>Show more fanfiction ({allowedModern.length-visibleModernCount} remaining)</button>}
+   {visibleModernCount<allowedModern.length&&<button type="button" className="palace-fanfiction-more" onClick={()=>setVisibleModernCount(current=>Math.min(current+12,allowedModern.length))}>Show more fanfiction ({allowedModern.length-visibleModernCount} remaining)</button>}
   </div>
  </section>;
 }
