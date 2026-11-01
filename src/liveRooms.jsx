@@ -81,6 +81,8 @@ import {directClassicHref} from './directClassicModel';
 import DuelCountdown from './DuelCountdown';
 import './reading-partial-notice.css';
 import ClassicsLibraryHall from './ClassicsLibraryHall';
+import PalaceFanfictionShelf from './PalaceFanfictionShelf';
+import {readingArchiveWorkType} from './palaceFanfictionDiscovery';
 import StoryRatingBadge from './StoryRatingBadge';
 import PalaceFandomMiniPicker from './PalaceFandomMiniPicker';
 import {TAG_BATCH_PAGE_SIZE,toggleQueuedTag,pendingTagBatch,visibleTagSuggestions} from './tagBatchModel';
@@ -352,7 +354,7 @@ export function ReadingLive({Frame}){
    setWorks(memberOK?(stories.value||[]):[]);
    setHasMorePublished(memberOK&&(stories.value||[]).length===48);
    const archiveRows=archiveOK?(archive.value||[]):[];
-   setArchiveWorks(archiveRows.filter(r=>r.host_mode==='full'&&r.rights_status==='public_domain_verified').map(r=>({id:'archive-'+r.id,archive_record_id:r.id,is_archive:true,title:r.title,slug:r.slug,summary:r.summary,work_type:'archive',rating:'not_rated',rights_status:r.rights_status,archive_source_url:r.archive_source_url,creator_name:r.creator_name,language:r.original_language||'English',completion_status:'complete',cover_url:null,first_published_at:null,last_published_at:r.updated_at||r.verified_at,profiles:{display_name:r.creator_name,title:'Palace Classic',username:null,avatar_url:null},work_tags:[{tags:{id:'archive-classics',name:'Palace Classics',category:'collection',status:'canonical'}},{tags:{id:'archive-'+(r.category||'classic'),name:String(r.category||'classic').replaceAll('_',' '),category:'genre',status:'canonical'}}]})));
+   setArchiveWorks(archiveRows.filter(r=>r.host_mode==='full'&&r.rights_status==='public_domain_verified').map(r=>({id:'archive-'+r.id,archive_record_id:r.id,is_archive:true,title:r.title,slug:r.slug,summary:r.summary,archive_category:r.category,work_type:readingArchiveWorkType(r),rating:'not_rated',rights_status:r.rights_status,archive_source_url:r.archive_source_url,creator_name:r.creator_name,language:r.original_language||'English',completion_status:'complete',cover_url:null,first_published_at:null,last_published_at:r.updated_at||r.verified_at,profiles:{display_name:r.creator_name,title:'Palace Classic',username:null,avatar_url:null},work_tags:[{tags:{id:'archive-classics',name:'Palace Classics',category:'collection',status:'canonical'}},{tags:{id:'archive-'+(r.category||'classic'),name:String(r.category||'classic').replaceAll('_',' '),category:'genre',status:'canonical'}}]})));
    if(!memberOK||!archiveOK)setReadingNotice('One reading shelf could not be gathered. The other stories are still available.');
   });
   if(id){
@@ -474,12 +476,12 @@ export function ReadingLive({Frame}){
  // The database has already filtered and ordered the ENTIRE archive.
  const advancedFiltered=advancedResults;
  return <Frame><PrismWayfinder active="reading"/><section data-reading-layout={readingChoices.layout} className={"legacy-reading-page chic-reading-page"+(advancedView?' advanced-search-mode':'')}>
-  <section className="legacy-reading-intro chic-reading-intro reading-intro-calm"><p className="eyebrow">FIND YOUR NEXT WORLD</p><h1>{advancedView?'Search with precision. Wander with style.':'Stories first. Filters when you need them.'} <PalaceTopicHelp id="reading"/></h1><p>{advancedView?'Build a constellation with text, include and exclude tags, rating, status and origin—without leaving the Reading Rooms.':'All Stories brings the Palace together. Original Fiction includes creator-owned work and readable Palace Classics, while Fandom remains clearly separate.'}</p></section>
+  <section className="legacy-reading-intro chic-reading-intro reading-intro-calm"><p className="eyebrow">FIND YOUR NEXT WORLD</p><h1>{advancedView?'Search with precision. Wander with style.':'Stories first. Filters when you need them.'} <PalaceTopicHelp id="reading"/></h1><p>{advancedView?'Build a constellation with text, include and exclude tags, rating, status and origin—without leaving the Reading Rooms.':'All Stories brings the Palace together. Original Fiction includes creator-owned work and readable Palace Classics, while Fanfiction includes member fanworks and properly attributed historical fanfiction.'}</p></section>
   {!session&&<GuestReadingInvitation returnTo="/reading" context="discover"/>}
   <nav className="reading-unified-tabs" aria-label="Browse by story type">
     <button type="button" aria-pressed={origin==='all'} className={origin==='all'?'active':''} onClick={()=>setOrigin('all')}>All Stories</button>
     <button type="button" aria-pressed={origin==='original'} className={origin==='original'?'active':''} onClick={()=>setOrigin('original')}>Original Fiction</button>
-    <button type="button" aria-pressed={origin==='fandom'} className={origin==='fandom'?'active':''} onClick={()=>setOrigin('fandom')}>Fandom</button>
+    <button type="button" aria-pressed={origin==='fandom'} className={origin==='fandom'?'active':''} onClick={()=>setOrigin('fandom')}>Fanfiction</button>
     <Link className={advancedView?'active':''} aria-current={advancedView?'page':undefined} to="/reading?view=search">Advanced Search</Link>
     <details className="reading-extra-views"><summary>Explore ▾</summary><div><Link to="/reading" onClick={()=>setReadingChoice('discoveryMode','browse')}>Stories</Link><Link to="/reading" onClick={()=>setReadingChoice('discoveryMode','discover')}>Discover</Link><Link to="/tags">Tags room</Link></div></details>
    </nav>
@@ -523,6 +525,7 @@ export function ReadingLive({Frame}){
    <div>{moodDoors.map(door=><button type="button" key={door.id} className={vibeDoor===door.id?'active':''} aria-pressed={vibeDoor===door.id} onClick={()=>{setVibeDoor(vibeDoor===door.id?'all':door.id);document.querySelector('.chic-reading-tools')?.scrollIntoView({behavior:'smooth',block:'start'})}}><span aria-hidden="true">{door.glyph}</span><strong>{door.label}</strong><small>{door.copy}</small><b>{moodCount(door.id)} world{moodCount(door.id)===1?'':'s'}</b></button>)}</div>
    {vibeDoor!=='all'&&<footer><span>Current feeling: <strong>{moodDoors.find(x=>x.id===vibeDoor)?.label}</strong></span><button type="button" onClick={()=>setVibeDoor('all')}>Clear mood door ×</button></footer>}
   </section>
+  {origin==='fandom'&&!advancedView&&<PalaceFanfictionShelf archiveWorks={archiveWorks}/>}
   {origin!=='fandom'&&archiveWorks.length>0&&<ClassicsLibraryHall works={archiveWorks} storyHref={storyHref}/>}
   <section className="legacy-discovery-court chic-discovery-court">
    <div className="legacy-discovery-head"><div><p className="eyebrow">FAIR DISCOVERY · SEPARATE FROM RANKINGS</p><h2>The rotating constellations.</h2><p>New and recently updated work can sit beside quieter shelves. Signed-in readers also get private continuity views based only on what they chose to save, follow or read.</p></div><div className="discovery-head-actions"><button className="surprise-story" type="button" disabled={!catalogue.length} onClick={surpriseMe}>✦ Surprise me</button><details className="discovery-explainer"><summary>How rotation works</summary><p>These shelves are discovery views, not leaderboards. First Worlds uses publication recency, Quiet Shelves shows older updates, Newly Updated reflects recent publication, and personal shelves come from your own private reading state. Surprise me chooses only from stories matching your current search and filters; it does not use a popularity score.</p></details></div></div>
