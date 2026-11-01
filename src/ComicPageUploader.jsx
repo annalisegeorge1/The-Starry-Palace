@@ -1,5 +1,6 @@
 import React,{useEffect,useRef,useState} from 'react';
 import {PalaceDialog} from './PalaceLivePrimitives';
+import PalaceIcon from './PalaceIcon';
 import {uploadComicPage} from './palaceData';
 import {COMIC_IMAGE_ACCEPT,COMIC_UPLOAD_BATCH_LIMIT,comicUploadReady,selectComicPageFiles} from './comicUploadPreparation';
 import './comic-page-uploader.css';
@@ -12,7 +13,6 @@ export default function ComicPageUploader({userId,comicId,episodeId,episodeTitle
  const[entries,setEntries]=useState([]);
  const[busy,setBusy]=useState(false);
  const[message,setMessage]=useState('');
- const[uploadedThisSession,setUploadedThisSession]=useState(0);
  const[publishedAck,setPublishedAck]=useState(false);
  const activeRef=useRef(false);
  const previews=useRef(new Set());
@@ -25,7 +25,7 @@ export default function ComicPageUploader({userId,comicId,episodeId,episodeTitle
  const clearQueue=()=>{
   if(activeRef.current)return;
   entries.forEach(x=>releaseUrl(x.preview));
-  setEntries([]);setUploadedThisSession(0);setPublishedAck(false);setMessage('');
+  setEntries([]);setPublishedAck(false);setMessage('');
  };
  function receiveFiles(fileList){
   if(activeRef.current)return;
@@ -73,11 +73,10 @@ export default function ComicPageUploader({userId,comicId,episodeId,episodeTitle
     });
     completed+=1;
     setEntries(rows=>rows.map(x=>x.id===entry.id?{...x,status:'uploaded',error:''}:x));
-    setUploadedThisSession(v=>v+1);
    }catch(e){
     const reason=String(e?.message||'Upload failed. Check your connection and try again.');
     setEntries(rows=>rows.map(x=>x.id===entry.id?{...x,status:'error',error:reason}:x));
-    setMessage('Upload stopped at '+entry.file.name+': '+reason+' The successfully added pages are safe. Retry remaining pages when ready.');
+    setMessage('Upload stopped at '+entry.file.name+': '+reason+' The successfully added pages are safe. If your connection dropped, check the episode before retrying to avoid accidental duplicates.');
     break;
    }
   }
@@ -113,7 +112,7 @@ export default function ComicPageUploader({userId,comicId,episodeId,episodeTitle
    <div className="comic-upload-queue" aria-label="Pages queued for upload">
     {entries.map((entry,i)=><article className={'comic-upload-item status-'+entry.status} key={entry.id}>
      <div className="comic-upload-item-head">
-      <div className="comic-upload-thumb">{entry.preview?<img src={entry.preview} alt="" />:<span aria-hidden="true">▧</span>}</div>
+      <div className="comic-upload-thumb">{entry.preview?<img src={entry.preview} alt="" />:<span aria-hidden="true"><PalaceIcon name="comic-book" size={23}/></span>}</div>
       <div className="comic-upload-file">
        <strong>{String(i+1).padStart(2,'0')} · {entry.file.name}</strong>
        <small>{(entry.file.size/1048576).toFixed(2)} MiB · {entry.status==='uploaded'?'Uploaded':entry.status==='uploading'?'Uploading…':entry.status==='error'?'Needs retry':'Ready to prepare'}</small>
