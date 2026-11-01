@@ -23,8 +23,8 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(shelf).toContain("PUBLIC DOMAIN · HOSTED ON THE PALACE");
  });
  it('links to actual writers and their permission evidence without mirroring modern text',()=>{
-  expect(MODERN_FANFICTION_LINKS).toHaveLength(44);
-  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.id)).size).toBe(44);
+  expect(MODERN_FANFICTION_LINKS).toHaveLength(56);
+  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.id)).size).toBe(56);
   expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.creator)).size).toBeGreaterThanOrEqual(7);
   for(const w of MODERN_FANFICTION_LINKS){
    expect(w.title).toBeTruthy();
@@ -32,14 +32,14 @@ describe('Fanfiction section contains rights-aware historical and modern discove
    expect(w.fandom).toBeTruthy();
    expect(w.sourceUrl).toMatch(/^https:\/\//);
    expect(w.permissionUrl).toMatch(/^https:\/\//);
-   expect(w.permissionLabel).toMatch(/^(?:CC BY-(?:NC-(?:SA|ND)|SA)|Creative Commons (?:noncommercial|derivative, noncommercial))/);
+   expect(w.permissionLabel).toMatch(/^(?:CC BY-(?:NC-(?:SA|ND)|SA)|Creative Commons(?: (?:noncommercial|derivative, noncommercial))?)/);
   }
   expect(shelf).toContain('target="_blank" rel="noopener noreferrer"');
   expect(shelf).toContain('Read original');
   expect(shelf).toContain('not reposted stories');
   expect(shelf).not.toContain('body_text');
   expect(shelf).not.toContain('dangerouslySetInnerHTML');
-  expect(MODERN_FANFICTION_LINKS.filter(w=>w.creator==='MorganAW')).toHaveLength(4);
+  expect(MODERN_FANFICTION_LINKS.filter(w=>w.creator==='MorganAW')).toHaveLength(12);
   expect(MODERN_FANFICTION_LINKS.some(w=>w.creator==='Alixe'&&w.fandom.includes('French'))).toBe(true);
   expect(shelf).toContain('allowedModern.slice(0,visibleModernCount)');
   expect(shelf).toContain('Show more fanfiction');
@@ -131,6 +131,32 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(modernFanfictionGuide({id:'scyllaya-bend-around-the-wind'}).contentWarnings).toContain('Adult sexual content');
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Hollow Knight'}).map(w=>w.id)).toContain('hushbugger-yet-here-i-remain');
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Tony Stark/Loki'}).map(w=>w.id)).toContain('scyllaya-bend-around-the-wind');
+ });
+ it('adds 12 newly sourced modern stories with per-work ratings and provenance',()=>{
+  const ids=['morganaw-you-could-have-googled-me','morganaw-revelations-outwood',
+   'morganaw-doctor-persuasion','morganaw-defenses-down','morganaw-defamation',
+   'morganaw-no-use-playing-dumb','morganaw-tethered','morganaw-crash',
+   'blackwidower-princess-last-resort','squibstress-exotic-matter',
+   'lalunaticscribe-shadow-game','lalunaticscribe-adventure-man-of-d'];
+  expect(ids).toHaveLength(12);
+  for(const id of ids){
+   const work=MODERN_FANFICTION_LINKS.find(w=>w.id===id);
+   expect(work).toBeDefined();
+   expect(work.sourceUrl).toMatch(/^https:\/\/www.fanfiction.net\/s\/\d+\//);
+   expect(work.permissionUrl).toMatch(/^https:\/\/www.fanfiction.net\/s\/\d+\//);
+   const guide=modernFanfictionGuide(work);
+   expect(guide.sourceRating).toMatch(/^FanFiction.net [KTM]/);
+   expect(guide.tags.some(tag=>tag.category==='fandom')).toBe(true);
+  }
+  expect(modernFanfictionGuide({id:'morganaw-doctor-persuasion'}).rating).toBe('general');
+  expect(modernFanfictionGuide({id:'morganaw-no-use-playing-dumb'}).rating).toBe('teen');
+  expect(modernFanfictionGuide({id:'morganaw-tethered'}).rating).toBe('mature');
+  expect(modernFanfictionGuide({id:'squibstress-exotic-matter'}).rating).toBe('mature');
+  expect(modernFanfictionGuide({id:'blackwidower-princess-last-resort'}).contentWarnings).toContain('Death');
+  expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Daria'}).some(w=>w.id==='morganaw-no-use-playing-dumb')).toBe(true);
+  expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'One Piece'}).some(w=>w.id==='lalunaticscribe-adventure-man-of-d')).toBe(true);
+  expect(MODERN_FANFICTION_LINKS.filter(w=>w.creator==='lalunaticscribe')
+   .every(w=>w.permissionLabel.includes('exact licence and terms unspecified'))).toBe(true);
  });
  it('uses the existing theme and avoids new mobile dock or navigation geometry',()=>{
   expect(css).toContain('var(--ui-surface)');

@@ -538,4 +538,148 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
   permissionLabel:'CC BY-NC-ND 3.0 US · author-stated for original work',
   contentNote:'Source Fiction T · complete · childhood prejudice, family conflict and anxiety.'
  }
+ ,{
+  id:'morganaw-you-could-have-googled-me',
+  title:'You Could Have Googled Me',
+  creator:'MorganAW',
+  published:'2018',
+  fandom:'The Lizzie Bennet Diaries · Pride and Prejudice',
+  description:'A Lizzie Bennet Diaries what-if: William Darcy discovers Lizzie’s videos online after returning to Los Angeles.',
+  sourceUrl:'https://www.fanfiction.net/s/12866368/1/You-Could-Have-Googled-Me',
+  permissionUrl:'https://www.fanfiction.net/s/12866368/1/You-Could-Have-Googled-Me',
+  permissionLabel:'CC BY-SA 4.0 · author licenses original plot and writing; adaptation rights separate',
+  contentNote:'Source Fiction K+ · 11 chapters · complete · modern romantic alternate timeline.'
+ },
+ {
+  id:'morganaw-revelations-outwood',
+  title:'Revelations at Outwood Station',
+  creator:'MorganAW',
+  published:'2018',
+  fandom:'North and South · Elizabeth Gaskell',
+  description:'Mr Thornton witnesses Frederick Hale’s encounter with Leonards and intervenes when he notices Margaret’s distress.',
+  sourceUrl:'https://www.fanfiction.net/s/12787529/1/Revelations-at-Outwood-Station',
+  permissionUrl:'https://www.fanfiction.net/s/12787529/1/Revelations-at-Outwood-Station',
+  permissionLabel:'CC BY-SA 4.0 · author licenses original plot and writing',
+  contentNote:'Source Fiction K+ · nine chapters · complete · romance and hurt/comfort.'
+ },
+ {
+  id:'morganaw-doctor-persuasion',
+  title:'The Doctor: A Persuasion Novella',
+  creator:'MorganAW',
+  published:'2018',
+  fandom:'Persuasion · Jane Austen',
+  description:'Anne Elliot happens upon an accident involving Admiral Croft and finds herself helping the injured admiral.',
+  sourceUrl:'https://www.fanfiction.net/s/12802665/1/The-Doctor-A-Persuasion-Novella',
+  permissionUrl:'https://www.fanfiction.net/s/12802665/1/The-Doctor-A-Persuasion-Novella',
+  permissionLabel:'CC BY-SA 4.0 · author licenses original plot and writing; Austen work public domain',
+  contentNote:'Source Fiction K · six chapters · complete · non-graphic injury and healing.'
+ },
+ {
+  id:'morganaw-defenses-down',
+  title:'Defenses Down',
+  creator:'MorganAW',
+  published:'2018',
+  fandom:'The Lizzie Bennet Diaries · Pride and Prejudice',
+  description:'When Lizzie becomes ill at Pemberley Digital, an unexpected visit from Darcy challenges her assumptions about him.',
+  sourceUrl:'https://www.fanfiction.net/s/12936089/1/Defenses-Down',
+  permissionUrl:'https://www.fanfiction.net/s/12936089/1/Defenses-Down',
+  permissionLabel:'CC BY-SA 4.0 · author licenses original writing; credited adaptation dialogue not covered',
+  contentNote:'Source Fiction K · three chapters · complete · illness and caretaking.'
+ },
+ {
+  id:'morganaw-defamation',
+  title:'Defamation',
+  creator:'MorganAW',
+  published:'2018',
+  fandom:'The Lizzie Bennet Diaries · Pride and Prejudice',
+  description:'Lizzie receives a legal demand from Pemberley Digital after Darcy’s lawyers learn of her videos.',
+  sourceUrl:'https://www.fanfiction.net/s/13084585/1/Defamation',
+  permissionUrl:'https://www.fanfiction.net/s/13084585/1/Defamation',
+  permissionLabel:'CC BY-SA 4.0 · author licenses original writing; third-party quotes excluded',
+  contentNote:'Source Fiction K+ · seven chapters · complete · legal conflict and romance.'
+ },
+ {
+  id:'morganaw-no-use-playing-dumb',
+  title:'No Use Playing Dumb',
+  creator:'MorganAW',
+  published:'2019',
+  fandom:'Daria',
+  description:'Daria’s frustration breaks through her usual sarcasm when Trent Lane questions her relationship with Tom Sloane.',
+  sourceUrl:'https://www.fanfiction.net/s/13345192/1/No-Use-Playing-Dumb',
+  permissionUrl:'https://www.fanfiction.net/s/13345192/1/No-Use-Playing-Dumb',
+  permissionLabel:'CC BY-SA 4.0 · author licenses original plot and writing',
+  contentNote:'Source Fiction T · three chapters · Daria/Trent romantic tension.'
+ },
+ {
+  id:'morganaw-tethered',
+  title:'Tethered',
+  creator:'MorganAW',
+  published:'2022',
+  fandom:'The Magicians · TV',
+  description:'Quentin finds dangerous cooperative magic while trying to rescue Alice and help his father, as Eliot offers support.',
+  sourceUrl:'https://www.fanfiction.net/s/14101257/1/Tethered',
+  permissionUrl:'https://www.fanfiction.net/s/14101257/1/Tethered',
+  permissionLabel:'CC BY-SA 4.0 · author licenses original plot and writing',
+  contentNote:'Source Fiction M · six chapters · grief, illness, magical danger and mature romance.'
+ },
+ {
+  id:'morganaw-crash',
+  title:'Crash',
+  creator:'MorganAW',
+  published:'2018',
+  fandom:'Emma Approved · Jane Austen',
+  description:'Emma searches for Alex Knightley after an argument, but distraction on the road changes her plans.',
+  sourceUrl:'https://www.fanfiction.net/s/13061275/1/Crash',
+  permissionUrl:'https://www.fanfiction.net/s/13061275/1/Crash',
+  permissionLabel:'CC BY-SA 4.0 · author licenses original writing; Emma Approved adaptation rights separate',
+  contentNote:'Source Fiction T · four chapters · road accident, emotional distress and hurt/comfort.'
+ },
+ {
+  id:'blackwidower-princess-last-resort',
+  title:'Princess of Last Resort',
+  creator:'BlackWidower',
+  published:'2024',
+  fandom:'My Little Pony · Designated Survivor',
+  description:'After a catastrophic attack on Canterlot’s leadership, Apple Bloom inherits an unexpected royal responsibility.',
+  sourceUrl:'https://www.fanfiction.net/s/14323319/1/Princess-of-Last-Resort',
+  permissionUrl:'https://www.fanfiction.net/s/14323319/1/Princess-of-Last-Resort',
+  permissionLabel:'CC BY-NC-SA 4.0 · author-stated for original contributions',
+  contentNote:'Source Fiction T · two chapters · mass destruction, death, grief and political succession.'
+ },
+ {
+  id:'squibstress-exotic-matter',
+  title:'Exotic Matter',
+  creator:'Squibstress',
+  published:'2013',
+  fandom:'Harry Potter',
+  description:'Hermione researches Minerva McGonagall’s past for a wizarding biography and uncovers a complex time-travel romance.',
+  sourceUrl:'https://www.fanfiction.net/s/9814805/1/Exotic-Matter',
+  permissionUrl:'https://www.fanfiction.net/s/9814805/2/Exotic-Matter',
+  permissionLabel:'CC BY-NC-SA 4.0 · author grants use of original work; quoted materials separately owned',
+  contentNote:'Source Fiction M · two chapters · complete · death, grief, romance and adult themes.'
+ },
+ {
+  id:'lalunaticscribe-shadow-game',
+  title:'Rules of the Shadow Game',
+  creator:'lalunaticscribe',
+  published:'2011',
+  fandom:'Sherlock · Yu-Gi-Oh!',
+  description:'A stolen Millennium Ring draws Sherlock Holmes and a magically gifted John Watson into Bakura’s dangerous search.',
+  sourceUrl:'https://www.fanfiction.net/s/7084536/1/Rules-of-the-Shadow-Game',
+  permissionUrl:'https://www.fanfiction.net/s/7084536/1/Rules-of-the-Shadow-Game',
+  permissionLabel:'Creative Commons · author-stated; exact licence and terms unspecified',
+  contentNote:'Source Fiction T · one-shot · supernatural murders, threats and dark magic.'
+ },
+ {
+  id:'lalunaticscribe-adventure-man-of-d',
+  title:'The Adventure of the Man of D',
+  creator:'lalunaticscribe',
+  published:'2012',
+  fandom:'Sherlock Holmes · One Piece',
+  description:'A storm transports the Straw Hat Pirates to Victorian London, where Sherlock Holmes encounters Monkey D. Luffy.',
+  sourceUrl:'https://www.fanfiction.net/s/8192561/1/The-Adventure-of-the-Man-of-D',
+  permissionUrl:'https://www.fanfiction.net/s/8192561/1/The-Adventure-of-the-Man-of-D',
+  permissionLabel:'Creative Commons · author-stated; exact licence and terms unspecified',
+  contentNote:'Source Fiction T · seven chapters · complete · mystery, adventure and supernatural threats.'
+ }
 ]);
