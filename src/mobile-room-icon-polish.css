@@ -1,0 +1,74 @@
+/* Shared mobile room icons, scoped to the dock and More sheet.
+ * Do not change the approved top header, sidebar, routes, or chat trigger. */
+@media(max-width:980px){
+  .palace-shell .mobile-more-grid>a{
+    min-height:78px!important;
+    padding:10px!important;
+    column-gap:9px!important;
+    align-content:center;
+    transition:border-color .15s ease,background-color .15s ease;
+  }
+  .palace-shell .mobile-more-grid>a>span:first-child{
+    box-sizing:border-box;
+    width:36px;
+    height:36px;
+    flex-shrink:0;
+    border-radius:11px;
+  }
+  .palace-shell .mobile-more-grid>a>span:first-child svg{
+    display:block;
+    width:22px;
+    height:22px;
+    stroke-width:1.85;
+    color:inherit;
+    overflow:visible;
+  }
+  .palace-shell .mobile-more-grid>a>strong{
+    font-size:.83rem;
+    line-height:1.25;
+    letter-spacing:0;
+  }
+  .palace-shell .mobile-more-grid>a>small{
+    font-size:.7rem;
+    line-height:1.38;
+    color:#c9c2dc;
+  }
+  .palace-shell.daylight .mobile-more-grid>a>small{
+    color:#534e65;
+  }
+  .palace-shell .mobile-more-grid>a:focus-visible{
+    outline:2px solid #c3b1f5;
+    outline-offset:-2px;
+  }
+  .palace-shell .mobile-palace-dock>a>span:first-child svg,
+  .palace-shell .mobile-palace-dock>button>span:first-child svg{
+    display:block;
+    width:21px;
+    height:21px;
+    stroke-width:1.9;
+    overflow:visible;
+    color:inherit;
+  }
+  .palace-shell .mobile-palace-dock .mobile-dock-write>span:first-child svg{
+    width:23px;
+    height:23px;
+  }
+}
+@media(max-width:380px){
+  .palace-shell .mobile-more-grid>a{
+    grid-template-columns:32px minmax(0,1fr)!important;
+    padding:9px 8px!important;
+    column-gap:7px!important;
+  }
+  .palace-shell .mobile-more-grid>a>span:first-child{
+    width:32px;
+    height:34px;
+  }
+  .palace-shell .mobile-more-grid>a>span:first-child svg{
+    width:20px;
+    height:20px;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .palace-shell .mobile-more-grid>a{transition:none}
+}

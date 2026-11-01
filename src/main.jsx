@@ -115,6 +115,7 @@ import './palace-letters-mobile-calm.css';
 import './treasury-mobile-badge-cabinet.css';
 import './member-profile-mobile-refinement.css';
 import './prism-mobile-studio-refinement.css';
+import './mobile-room-icon-polish.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
@@ -269,6 +270,13 @@ function PalaceRoomIcon({name}) {
  if(name==='events')return <svg {...common} className="palace-drawn-neon-icon palace-events-neon-icon"><rect className="neon-stroke-cyan" x="3.5" y="5.5" width="17" height="15" rx="2"/><path className="neon-stroke-violet" d="M7 3.5v4M17 3.5v4M3.5 9.5h17"/><path className="neon-stroke-pink" d="m12 12.2.65 1.4 1.55.65-1.55.65L12 16.3l-.65-1.4-1.55-.65 1.55-.65Z"/></svg>;
  if(name==='treasury')return <svg {...common}><path d="m4 8 4.2 3 3.8-6 3.8 6L20 8l-1.5 9H5.5Z"/><path d="M6 20h12"/><path d="m12 11 1.2 1.7L12 15l-1.2-2.3Z"/></svg>;
  if(name==='settings')return <svg {...common}><path d="M12 3.5 14 5l2.5-.2.8 2.4 2.1 1.3-1 2.3 1 2.3-2.1 1.3-.8 2.4-2.5-.2-2 1.5-2-1.5-2.5.2-.8-2.4-2.1-1.3 1-2.3-1-2.3 2.1-1.3.8-2.4L10 5Z"/><circle cx="12" cy="10.8" r="2.5"/></svg>;
+
+ if(name==='chat')return <svg {...common}><path d="M20 11.3a8.2 8.2 0 0 1-8.2 8.2c-1.4 0-2.7-.3-3.8-.9L3.8 20l1.3-4.5a8.2 8.2 0 1 1 14.9-4.2Z"/><path d="M8 11.5h8M8 14.5h5"/></svg>;
+ if(name==='letters')return <svg {...common}><rect x="3.2" y="5.3" width="17.6" height="13.4" rx="2.4"/><path d="m4 7 8 6 8-6"/></svg>;
+ if(name==='activity')return <svg {...common}><path d="m12 2.8 2.3 6.8 6.9 2.4-6.9 2.4-2.3 6.8-2.3-6.8L2.8 12l6.9-2.4Z"/><path d="M19.5 3.5v4M17.5 5.5h4"/></svg>;
+ if(name==='search')return <svg {...common}><circle cx="10.7" cy="10.7" r="6.3"/><path d="m15.5 15.5 4.8 4.8"/></svg>;
+ if(name==='profile')return <svg {...common}><circle cx="12" cy="8" r="3.4"/><path d="M4.7 20c.4-4 2.9-6.2 7.3-6.2s6.9 2.2 7.3 6.2"/></svg>;
+ if(name==='more')return <svg {...common}><circle cx="5" cy="12" r="1.25" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.25" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.25" fill="currentColor" stroke="none"/></svg>;
  if(name==='council')return <svg {...common}><path d="M12 3.5v16M7 6h10M5 20h14"/><path d="m7 6-3 5h6Zm10 0-3 5h6Z"/></svg>;
  return <svg {...common}>{spark}<circle cx="12" cy="12" r="7"/></svg>
 }
@@ -532,7 +540,7 @@ function FrameShell({children}){
     </section>
    </div>}
   <nav className="mobile-palace-dock" aria-label="Quick Palace navigation">
-    {session?<><Link className={activeRoom?.id==='palace'?'active':''} aria-current={activeRoom?.id==='palace'?'page':undefined} to="/chamber"><span>☾</span><small>Palace</small></Link><Link className={activeRoom?.id==='reading'?'active':''} aria-current={activeRoom?.id==='reading'?'page':undefined} to="/reading"><span>◈</span><small>Read</small></Link><Link className={"mobile-dock-write "+(activeRoom?.id==='writing'?'active':'')} aria-current={activeRoom?.id==='writing'?'page':undefined} to="/writing"><span>✎</span><small>Write</small></Link><Link className={activeRoom?.id==='life'?'active':''} aria-current={activeRoom?.id==='life'?'page':undefined} to="/palace-life"><span>♢</span><small>Life</small></Link><button type="button" className={"mobile-palace-more "+(['library','events','treasury','settings'].includes(activeRoom?.id)||mobileMoreOpen?'active':'')} aria-expanded={mobileMoreOpen} aria-controls="mobile-palace-more-sheet" onClick={()=>setMobileMoreOpen(v=>!v)}><span>•••</span><small>More</small>{activityBadge+letterBadge>0&&<b className="mobile-dock-badge">{activityBadge+letterBadge>99?'99+':activityBadge+letterBadge}</b>}</button></>:<><Link className={location.pathname==='/'?'active':''} aria-current={location.pathname==='/'?'page':undefined} to="/"><span>☾</span><small>Home</small></Link><Link className={activeRoom?.id==='reading'?'active':''} aria-current={activeRoom?.id==='reading'?'page':undefined} to="/reading"><span>◈</span><small>Read</small></Link><Link className="mobile-dock-write" to="/search"><span>⌕</span><small>Search</small></Link><Link className={location.pathname==='/code'?'active':''} aria-current={location.pathname==='/code'?'page':undefined} to="/code"><span>§</span><small>Code</small></Link><Link to="/login"><span>✦</span><small>Enter</small></Link></>}
+    {session?<><Link className={activeRoom?.id==='palace'?'active':''} aria-current={activeRoom?.id==='palace'?'page':undefined} to="/chamber"><span><PalaceRoomIcon name="palace"/></span><small>Palace</small></Link><Link className={activeRoom?.id==='reading'?'active':''} aria-current={activeRoom?.id==='reading'?'page':undefined} to="/reading"><span><PalaceRoomIcon name="reading"/></span><small>Read</small></Link><Link className={"mobile-dock-write "+(activeRoom?.id==='writing'?'active':'')} aria-current={activeRoom?.id==='writing'?'page':undefined} to="/writing"><span><PalaceRoomIcon name="writing"/></span><small>Write</small></Link><Link className={activeRoom?.id==='life'?'active':''} aria-current={activeRoom?.id==='life'?'page':undefined} to="/palace-life"><span><PalaceRoomIcon name="life"/></span><small>Life</small></Link><button type="button" className={"mobile-palace-more "+(['library','events','treasury','settings'].includes(activeRoom?.id)||mobileMoreOpen?'active':'')} aria-expanded={mobileMoreOpen} aria-controls="mobile-palace-more-sheet" onClick={()=>setMobileMoreOpen(v=>!v)}><span><PalaceRoomIcon name="more"/></span><small>More</small>{activityBadge+letterBadge>0&&<b className="mobile-dock-badge">{activityBadge+letterBadge>99?'99+':activityBadge+letterBadge}</b>}</button></>:<><Link className={location.pathname==='/'?'active':''} aria-current={location.pathname==='/'?'page':undefined} to="/"><span><PalaceRoomIcon name="palace"/></span><small>Home</small></Link><Link className={activeRoom?.id==='reading'?'active':''} aria-current={activeRoom?.id==='reading'?'page':undefined} to="/reading"><span><PalaceRoomIcon name="reading"/></span><small>Read</small></Link><Link className="mobile-dock-write" to="/search"><span><PalaceRoomIcon name="search"/></span><small>Search</small></Link><Link className={location.pathname==='/code'?'active':''} aria-current={location.pathname==='/code'?'page':undefined} to="/code"><span>§</span><small>Code</small></Link><Link to="/login"><span>✦</span><small>Enter</small></Link></>}
   </nav>
   {session&&mobileMoreOpen&&<div className="mobile-more-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setMobileMoreOpen(false)}}>
     <section id="mobile-palace-more-sheet" className="mobile-more-sheet" role="dialog" aria-modal="true" aria-label="More Palace rooms">
@@ -542,15 +550,15 @@ function FrameShell({children}){
         <button type="button" onClick={()=>setMobileMoreOpen(false)} aria-label="Close more Palace rooms">×</button>
       </header>
       <div className="mobile-more-grid">
-        <Link to="/library"><span>▧</span><strong>My Library</strong><small>Saved worlds & history</small></Link>
-        <Link to="/events?tab=calendar"><span>✧</span><strong>Events</strong><small>Calendars & invitations</small></Link>
-        <Link to="/treasury"><span>♛</span><strong>Treasury</strong><small>Badges, gifts & draw</small></Link>
-        <Link to="/chat"><span>✉</span><strong>Messenger</strong><small>Direct and group conversations</small></Link>
-        <Link to="/letters" className={letterBadge?'has-attention':''}><span>✉</span><strong>Messages</strong><small>{letterBadge?letterBadge+' request'+(letterBadge===1?'':'s')+' waiting':'Palace Letters'}</small>{letterBadge>0&&<b>{letterBadge>99?'99+':letterBadge}</b>}</Link>
-        <Link to="/activity" className={activityBadge?'has-attention':''}><span>✦</span><strong>Activity</strong><small>{activityBadge?activityBadge+' unread':'Notifications & updates'}</small>{activityBadge>0&&<b>{activityBadge>99?'99+':activityBadge}</b>}</Link>
-        <Link to="/search"><span>⌕</span><strong>Search</strong><small>Works, writers & tags</small></Link>
-        <Link to={shellProfile?.username?"/member/"+shellProfile.username:"/chamber"}><span>☾</span><strong>My Chamber</strong><small>Profile & public identity</small></Link>
-        <Link to="/settings"><span>⚙</span><strong>Settings</strong><small>Privacy, comfort & account</small></Link>
+        <Link to="/library"><span><PalaceRoomIcon name="library"/></span><strong>My Library</strong><small>Saved worlds & history</small></Link>
+        <Link to="/events?tab=calendar"><span><PalaceRoomIcon name="events"/></span><strong>Events</strong><small>Calendars & invitations</small></Link>
+        <Link to="/treasury"><span><PalaceRoomIcon name="treasury"/></span><strong>Treasury</strong><small>Badges, gifts & draw</small></Link>
+        <Link to="/chat"><span><PalaceRoomIcon name="chat"/></span><strong>Messenger</strong><small>Direct and group conversations</small></Link>
+        <Link to="/letters" className={letterBadge?'has-attention':''}><span><PalaceRoomIcon name="letters"/></span><strong>Messages</strong><small>{letterBadge?letterBadge+' request'+(letterBadge===1?'':'s')+' waiting':'Palace Letters'}</small>{letterBadge>0&&<b>{letterBadge>99?'99+':letterBadge}</b>}</Link>
+        <Link to="/activity" className={activityBadge?'has-attention':''}><span><PalaceRoomIcon name="activity"/></span><strong>Activity</strong><small>{activityBadge?activityBadge+' unread':'Notifications & updates'}</small>{activityBadge>0&&<b>{activityBadge>99?'99+':activityBadge}</b>}</Link>
+        <Link to="/search"><span><PalaceRoomIcon name="search"/></span><strong>Search</strong><small>Works, writers & tags</small></Link>
+        <Link to={shellProfile?.username?"/member/"+shellProfile.username:"/chamber"}><span><PalaceRoomIcon name="profile"/></span><strong>My Chamber</strong><small>Profile & public identity</small></Link>
+        <Link to="/settings"><span><PalaceRoomIcon name="settings"/></span><strong>Settings</strong><small>Privacy, comfort & account</small></Link>
       </div>
       <footer><button type="button" onClick={()=>setDaylight(v=>!v)}><span>{daylight?'☾':'☼'}</span>{daylight?'Switch to Nightfall':'Switch to Daylight'}</button><button type="button" onClick={()=>{setMobileMoreOpen(false);setNavOpen(true)}}><span>☰</span>Full Palace map</button></footer>
     </section>
