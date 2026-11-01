@@ -8,7 +8,7 @@ vi.mock('./palaceData',()=>({uploadComicPage:vi.fn()}));
 const props={userId:'writer-1',comicId:'comic-1',episodeId:'episode-1',episodeTitle:'The First Gate'};
 const image=(name)=>new File(['painted panels'],name,{type:'image/png',lastModified:1});
 function selectFiles(files){
- const input=document.querySelector('.comic-upload-launch input[type="file"]');
+ const input=document.querySelector('.comic-upload-launch-file');
  fireEvent.change(input,{target:{files}});
 }
 beforeEach(()=>{vi.clearAllMocks();uploadComicPage.mockResolvedValue({id:'page'})});
