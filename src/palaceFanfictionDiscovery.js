@@ -991,7 +991,7 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
    "description": "Zero and Yuuki confront a painful reunion at a vampire ball after a year apart.",
    "sourceUrl": "https://www.fanfiction.net/s/5409404/1/Masquerade",
    "permissionUrl": "https://www.fanfiction.net/u/235252/Miara-Rigawa",
-   "permissionLabel": "Author profile declares CC BY-ND 2.5 for original contributions; no Palace-hosting clearance established",
+   "permissionLabel": "Creative Commons BY-ND 2.5 · author-profile statement; original contributions only, no Palace-hosting clearance established",
    "contentNote": "Source Fiction T · two chapters · ongoing · angst and romantic drama."
  },
  {
@@ -1003,7 +1003,7 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
    "description": "In a protective-escort alternate universe, Inuyasha is hired to guard Kagome while trying to keep the relationship professional.",
    "sourceUrl": "https://www.fanfiction.net/s/2221515/1/The-Shadow",
    "permissionUrl": "https://www.fanfiction.net/u/235252/Miara-Rigawa",
-   "permissionLabel": "Author profile declares CC BY-ND 2.5 for original contributions; no Palace-hosting clearance established",
+   "permissionLabel": "Creative Commons BY-ND 2.5 · author-profile statement; original contributions only, no Palace-hosting clearance established",
    "contentNote": "Source Fiction T · thirteen chapters · unfinished AU romance."
  },
  {
@@ -1015,7 +1015,7 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
    "description": "A sequence of short character moments about Kagome, Inuyasha and their companions.",
    "sourceUrl": "https://www.fanfiction.net/s/2828274/1/A-Hundred-Priceless-Moments",
    "permissionUrl": "https://www.fanfiction.net/u/235252/Miara-Rigawa",
-   "permissionLabel": "Author profile declares CC BY-ND 2.5 for original contributions; no Palace-hosting clearance established",
+   "permissionLabel": "Creative Commons BY-ND 2.5 · author-profile statement; original contributions only, no Palace-hosting clearance established",
    "contentNote": "Source Fiction T · thirty chapters · drabble collection."
  },
  {
@@ -1027,7 +1027,7 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
    "description": "When Inuyasha misplaces a keepsake from Kagome, he faces an uncomfortable conversation about what it meant.",
    "sourceUrl": "https://www.fanfiction.net/s/2720967/1/Lost-Pendant",
    "permissionUrl": "https://www.fanfiction.net/u/235252/Miara-Rigawa",
-   "permissionLabel": "Author profile declares CC BY-ND 2.5 for original contributions; no Palace-hosting clearance established",
+   "permissionLabel": "Creative Commons BY-ND 2.5 · author-profile statement; original contributions only, no Palace-hosting clearance established",
    "contentNote": "Source Fiction T · complete one-shot · romantic misunderstanding."
  },
  {
@@ -1039,7 +1039,7 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
    "description": "Kagome vanishes, forcing Inuyasha to confront his honesty and her trust.",
    "sourceUrl": "https://www.fanfiction.net/s/2425630/1/Missing-Kagome",
    "permissionUrl": "https://www.fanfiction.net/u/235252/Miara-Rigawa",
-   "permissionLabel": "Author profile declares CC BY-ND 2.5 for original contributions; no Palace-hosting clearance established",
+   "permissionLabel": "Creative Commons BY-ND 2.5 · author-profile statement; original contributions only, no Palace-hosting clearance established",
    "contentNote": "Source Fiction T · complete one-shot · romance and suspense."
  },
  {
@@ -1051,7 +1051,7 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
    "description": "Kagome is abducted by Naraku and her altered memories turn her against Inuyasha.",
    "sourceUrl": "https://www.fanfiction.net/s/1225817/1/Stay",
    "permissionUrl": "https://www.fanfiction.net/u/235252/Miara-Rigawa",
-   "permissionLabel": "Author profile declares CC BY-ND 2.5 for original contributions; no Palace-hosting clearance established",
+   "permissionLabel": "Creative Commons BY-ND 2.5 · author-profile statement; original contributions only, no Palace-hosting clearance established",
    "contentNote": "Source Fiction T · complete, twenty-three chapters · abduction, memory alteration and violence."
  },
  {
@@ -1063,7 +1063,7 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
    "description": "A dispute forces Inuyasha to make a choice between competing promises and his feelings for Kagome.",
    "sourceUrl": "https://www.fanfiction.net/s/1622093/1/Destined-To-Be-Together",
    "permissionUrl": "https://www.fanfiction.net/u/235252/Miara-Rigawa",
-   "permissionLabel": "Author profile declares CC BY-ND 2.5 for original contributions; no Palace-hosting clearance established",
+   "permissionLabel": "Creative Commons BY-ND 2.5 · author-profile statement; original contributions only, no Palace-hosting clearance established",
    "contentNote": "Source Fiction T · complete, two chapters · romance and emotional conflict."
  },
  {
@@ -1075,7 +1075,7 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
    "description": "A quiet nighttime conversation leads Inuyasha and Kagome to consider what happiness and loyalty mean.",
    "sourceUrl": "https://www.fanfiction.net/s/1528550/1/To-be-Happy",
    "permissionUrl": "https://www.fanfiction.net/u/235252/Miara-Rigawa",
-   "permissionLabel": "Author profile declares CC BY-ND 2.5 for original contributions; no Palace-hosting clearance established",
+   "permissionLabel": "Creative Commons BY-ND 2.5 · author-profile statement; original contributions only, no Palace-hosting clearance established",
    "contentNote": "Source Fiction K+ · complete one-shot · gentle romance."
  },
  {
@@ -1099,7 +1099,7 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
    "description": "Naruto's journey continues through a Star Wars crossover involving the Nightsisters and the growing galactic conflict.",
    "sourceUrl": "https://m.fanfiction.net/s/13944304/1/Nindo-of-the-Force-3-Jinchuriki",
    "permissionUrl": "https://m.fanfiction.net/s/13944304/1/Nindo-of-the-Force-3-Jinchuriki",
-   "permissionLabel": "Author declares CC BY-NC-SA 3.0 on story; original contributions only, linked not mirrored",
+   "permissionLabel": "CC BY-NC-SA 3.0 · author-declared on story; original contributions only, linked not mirrored",
    "contentNote": "Source Fiction M · multi-chapter crossover · science-fiction combat and peril."
  },
  {
@@ -1111,7 +1111,7 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
    "description": "A seven-year-old Izuku intervenes in Aizawa's confrontation with Stain, changing the course of a dangerous encounter.",
    "sourceUrl": "https://archive.transformativeworks.org/works/49398820",
    "permissionUrl": "https://archive.transformativeworks.org/series/3674068",
-   "permissionLabel": "CC BY-NC 2.0 explicitly covers chapter one only; remaining chapters are link-only",
+   "permissionLabel": "Creative Commons BY-NC 2.0 · author allows first-chapter reuse only; remaining chapters link-only",
    "contentNote": "AO3 Teen · ongoing · danger, angst and suicidal-thought tags. Only chapter one has the declared reuse licence."
  },
  {
