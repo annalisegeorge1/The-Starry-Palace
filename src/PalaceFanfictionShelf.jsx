@@ -66,14 +66,14 @@ export default function PalaceFanfictionShelf({archiveWorks=[]}){
   {historic.length>0&&<div className="palace-fanfiction-group">
    <h3>Read here · historical fanfiction</h3>
    <div className="palace-fanfiction-grid">
-    {historic.map(work=><Link key={work.id} className="palace-fanfiction-entry" to={directClassicHref(work)}>
+    {historic.map(work=><article key={work.id} className="palace-fanfiction-entry">
      <small>PUBLIC DOMAIN · HOSTED ON THE PALACE</small>
      <strong>{work.title}</strong>
      <span>by {work.creator_name||work.profiles?.display_name||'Historical author'}</span>
      <FanfictionGuide guide={historicFanfictionGuide(work)}/>
      <p>{work.summary}</p>
-     <b>Open the complete work →</b>
-    </Link>)}
+     <Link className="palace-fanfiction-historic-link" to={directClassicHref(work)}>Open the complete work →</Link>
+    </article>)}
    </div>
   </div>}
   <div className="palace-fanfiction-group">
