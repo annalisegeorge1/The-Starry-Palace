@@ -123,8 +123,21 @@ export function fanfictionSearchText(work){
  return [work?.title,work?.creator,work?.fandom,work?.description,
   ...info.tags.map(t=>t.name),...info.contentWarnings].filter(Boolean).join(' ').toLowerCase();
 }
-export function filterModernFanfiction(works=[],{rating='all',query=''}={}){
+const ANIME_FANDOM_NAMES=[
+ 'naruto','one piece','yu-gi-oh','bleach','cardcaptor sakura','card captor sakura',
+ 'ouran high school host club','neon genesis evangelion','evangelion',
+ 'my hero academia','vocaloid','tsubasa chronicle','fullmetal alchemist',
+ 'inuyasha','death note','demon slayer','attack on titan','dragon ball'
+];
+export function isAnimeFanfiction(work){
+ const guide=modernFanfictionGuide(work);
+ if(guide.tags.some(tag=>tag.category==='format'&&['Anime & Manga','Anime-Inspired'].includes(tag.name)))return true;
+ const names=guide.tags.filter(tag=>tag.category==='fandom').map(tag=>tag.name.toLowerCase());
+ return names.some(name=>ANIME_FANDOM_NAMES.some(term=>name.includes(term)));
+}
+export function filterModernFanfiction(works=[],{rating='all',query='',animeOnly=false}={}){
  const needle=String(query||'').trim().toLowerCase();
  return works.filter(work=>(rating==='all'||modernFanfictionGuide(work).rating===rating)
+   &&(!animeOnly||isAnimeFanfiction(work))
    &&(!needle||fanfictionSearchText(work).includes(needle)));
 }
