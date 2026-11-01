@@ -1,10 +1,12 @@
 import React,{useEffect,useMemo,useState} from 'react';
 import {Link,useLocation,useNavigate} from 'react-router-dom';
-import {getPalaceFandomDirectory,getStoriesForFandoms} from './palaceData';
+import {getPalaceFandomDirectory,getStoriesForFandoms,getPublishedWorks,getArchive} from './palaceData';
 import {FANDOM_MEDIA_SHELVES} from './palaceFandomCatalogue';
 import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection,fandomFacetOptions} from './fandomDirectoryModel';
 import StoryRatingBadge from './StoryRatingBadge';
-import PalaceFanfictionShelf from './PalaceFanfictionShelf';
+import UnifiedFanworkCatalogue from './UnifiedFanworkCatalogue';
+import {isHistoricalFanfiction} from './palaceFanfictionDiscovery';
+import {historicFanfictionGuide,archiveFanfictionTags} from './fanfictionMetadata';
 import {MODERN_FANFICTION_LINKS} from './palaceFanfictionDiscovery';
 import PalaceInfoMark from './PalaceInfoMark';
 import {tagWorldPath} from './tagWorldRoutes';
@@ -22,6 +24,8 @@ export default function PalaceFandomAtlas(){
  const [loading,setLoading]=useState(true),[error,setError]=useState('');
  const [page,setPage]=useState(0),[sort,setSort]=useState('alpha');
  const [stories,setStories]=useState([]),[storyBusy,setStoryBusy]=useState(false),[storyError,setStoryError]=useState('');
+ const [fanworkRows,setFanworkRows]=useState([]),[historicFanworks,setHistoricFanworks]=useState([]);
+ const [fanworksBusy,setFanworksBusy]=useState(false),[fanworksError,setFanworksError]=useState('');
  const validMedia=FANDOM_MEDIA_SHELVES.some(x=>x.id===selectedMedia)?selectedMedia:'all';
  const selected=safeFandomSelection(urlIds,rows);
  const selectedNames=selected.map(id=>rows.find(row=>row.id===id)?.name).filter(Boolean);
@@ -53,6 +57,21 @@ export default function PalaceFandomAtlas(){
    .finally(()=>{if(active)setStoryBusy(false)});
   return()=>{active=false};
  },[selectionKey]);
+ useEffect(()=>{
+  if(atlasSection!=='fanfiction')return;
+  let active=true;setFanworksBusy(true);setFanworksError('');
+  Promise.allSettled([getPublishedWorks({limit:48}),getArchive(null)]).then(([published,archive])=>{
+   if(!active)return;
+   if(published.status==='fulfilled')setFanworkRows((published.value||[]).filter(w=>w.work_type==='fanwork'));
+   if(archive.status==='fulfilled')setHistoricFanworks((archive.value||[]).filter(r=>isHistoricalFanfiction(r)&&r.host_mode==='full'&&r.rights_status==='public_domain_verified').map(r=>({
+    id:'archive-'+r.id,slug:r.slug,title:r.title,summary:r.summary,creator_name:r.creator_name,
+    work_type:'fanwork',is_archive:true,rating:historicFanfictionGuide(r).rating,completion_status:'complete',
+    work_tags:archiveFanfictionTags(r)
+   })));
+   if(published.status==='rejected'||archive.status==='rejected')setFanworksError('Part of the Palace-hosted collection is temporarily unavailable.');
+  }).finally(()=>{if(active)setFanworksBusy(false)});
+  return()=>{active=false};
+ },[atlasSection]);
  function toggle(tag){
   const next=selected.includes(tag.id)?selected.filter(id=>id!==tag.id):[...selected,tag.id].slice(0,5);
   changeParams({ids:next.join(',')},{replace:false});
@@ -148,7 +167,8 @@ export default function PalaceFandomAtlas(){
   </>}
   {atlasSection==='fanfiction'&&<section className="palace-fandom-linked-section" aria-label="Fanfiction by fandom">
    {selectedNames.length>0&&<div className="palace-fandom-selection-note"><span>Fandoms selected: <strong>{selectedNames.join(' · ')}</strong></span><button type="button" onClick={()=>changeParams({ids:null,match:null})}>Browse all linked fanfiction</button><button type="button" onClick={()=>changeParams({section:null})}>Choose different fandoms</button></div>}
-   <PalaceFanfictionShelf key={selected.join(',')+'|'+mode+'|'+keyword} archiveWorks={[]} showHistorical={false} inFandomAtlas={true} fandomNames={selectedNames} fandomMatch={mode} atlasQuery={selectedNames.length? '':keyword}/>
+   <UnifiedFanworkCatalogue key={selected.join(',')+'|'+mode} publishedWorks={[...(selectedNames.length?stories:fanworkRows),...historicFanworks]} globalQuery={selectedNames.length?'':keyword} fandomNames={selectedNames} fandomMatch={mode} loading={fanworksBusy||selectedNames.length>0&&storyBusy} loadError={fanworksError||selectedNames.length>0&&storyError} inFandomAtlas={true}/>
+   <p className="palace-fandom-complete-archive"><Link to="/reading?section=fanfiction">Browse the full Palace-hosted and linked Fanwork catalogue →</Link></p>
   </section>}
  </section>;
 }

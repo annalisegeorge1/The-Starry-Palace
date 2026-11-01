@@ -405,7 +405,7 @@ export async function getStoriesForFandoms(tagIds=[],mode='any'){
   .map(([id])=>id).slice(0,100);
  if(!workIds.length)return[];
  const result=await client.from('works')
-  .select('id,title,slug,summary,rating,completion_status,cover_url,last_published_at,profiles!works_author_id_fkey(username,display_name)')
+  .select('id,title,slug,summary,work_type,rating,completion_status,cover_url,last_published_at,profiles!works_author_id_fkey(username,display_name),work_tags(tags(id,name,category,status))')
   .in('id',workIds).eq('publication_status','published').eq('visibility','public')
   .order('last_published_at',{ascending:false}).limit(100);
  if(result.error)throw result.error;

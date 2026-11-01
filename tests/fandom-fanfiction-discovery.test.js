@@ -4,7 +4,7 @@ import {MODERN_FANFICTION_LINKS} from '../src/palaceFanfictionDiscovery.js';
 import {filterModernFanfiction,matchesFanfictionFandom,modernFanfictionGuide} from '../src/fanfictionMetadata.js';
 
 const atlas=readFileSync('src/PalaceFandomAtlas.jsx','utf8');
-const reading=readFileSync('src/PalaceFanfictionShelf.jsx','utf8');
+const reading=readFileSync('src/UnifiedFanworkCatalogue.jsx','utf8');
 const nav=readFileSync('src/main.jsx','utf8');
 
 describe('Fandom Atlas includes the same rights-aware Fanfiction collection',()=>{
@@ -41,15 +41,15 @@ describe('Fandom Atlas includes the same rights-aware Fanfiction collection',()=
   expect(atlas).toContain("aria-label=\"Fandom Atlas sections\"");
   expect(atlas).toContain('Fanfiction · {MODERN_FANFICTION_LINKS.length} linked works');
   expect(atlas).toContain("'/fandoms?section=fanfiction&ids='");
-  expect(atlas).toContain('<PalaceFanfictionShelf');
-  expect(atlas).toContain('showHistorical={false}');
+  expect(atlas).toContain('<UnifiedFanworkCatalogue');
+  expect(atlas).toContain('publishedWorks={[...(selectedNames.length?stories:fanworkRows),...historicFanworks]}');
   expect(atlas).toContain('inFandomAtlas={true}');
   expect(atlas).toContain('fandomNames={selectedNames}');
   expect(atlas).toContain('fandomMatch={mode}');
-  expect(reading).toContain('fandomNames,fandomMatch');
-  expect(reading).toContain('showHistorical&&historic.length>0');
-  expect(reading).toContain('/classic/old-friends-and-new-fancies-sybil-g-brinton');
-  expect(reading).toContain('/classic/the-adventure-of-the-two-collaborators-j-m-barrie');
+  expect(reading).toContain('fandomNames,fandomMatch,completion');
+  expect(reading).toContain("isHistoricalFanfiction(work)");
+  expect(atlas).toContain('getArchive(null)');
+  expect(reading).toContain("'/classic/'+encodeURIComponent(work.slug)");
   expect(reading).toContain('target="_blank" rel="noopener noreferrer"');
   expect(reading).not.toMatch(/chat\s?gpt|openai|created by ai|written by ai/i);
  });
