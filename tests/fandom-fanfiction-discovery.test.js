@@ -40,7 +40,7 @@ describe('Fandom Atlas includes the same rights-aware Fanfiction collection',()=
   expect(atlas).toContain("params.get('section')==='fanfiction'");
   expect(atlas).toContain("aria-label=\"Fandom Atlas sections\"");
   expect(atlas).toContain('Fanfiction · {MODERN_FANFICTION_LINKS.length} linked works');
-  expect(atlas).toContain("'?section=fanfiction&ids='");
+  expect(atlas).toContain("'/fandoms?section=fanfiction&ids='");
   expect(atlas).toContain('<PalaceFanfictionShelf');
   expect(atlas).toContain('showHistorical={false}');
   expect(atlas).toContain('inFandomAtlas={true}');
