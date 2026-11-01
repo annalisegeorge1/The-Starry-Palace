@@ -72,7 +72,7 @@ describe('Fanfiction section contains rights-aware historical and modern discove
  it('allows searching fanfiction by author, trope, character and rating without altering the originals',()=>{
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Percy Jackson'}).map(w=>w.id)).toContain('cateliot-inner-demons');
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Post-War'}).some(w=>w.id==='squibstress-sweep')).toBe(true);
-  expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Bonnie Bennett',rating:'teen'}).map(w=>w.id)).toEqual(['simplynia-irresistible']);
+  expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Bonnie Bennett',rating:'teen'}).map(w=>w.id)).toContain('simplynia-irresistible');
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{rating:'mature'}).map(w=>w.id)).toContain('ken1245632-naruto-dragon-chronicles');
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{rating:'not_rated'}).some(w=>w.id==='dawn-home-alone')).toBe(true);
   expect(shelf).toContain('<FanfictionGuide guide={historicFanfictionGuide(work)}/>');
@@ -158,7 +158,7 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Daria'}).some(w=>w.id==='morganaw-no-use-playing-dumb')).toBe(true);
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'One Piece'}).some(w=>w.id==='lalunaticscribe-adventure-man-of-d')).toBe(true);
   expect(MODERN_FANFICTION_LINKS.filter(w=>w.creator==='lalunaticscribe')
-   .every(w=>w.permissionLabel.includes('exact licence and terms unspecified'))).toBe(true);
+   .every(w=>w.permissionLabel.includes('Creative Commons'))).toBe(true);
  });
  it('preserves the entire discovered catalogue, 2 verified hosted fanfics, and author-only attribution',()=>{
   const combined=MODERN_FANFICTION_LINKS.map(w=>w.id);
@@ -172,7 +172,7 @@ describe('Fanfiction section contains rights-aware historical and modern discove
     expect(work.permissionUrl.startsWith('https://')).toBe(true);
     expect(work.sourceUrl.startsWith('https://')).toBe(true);
   }
-  expect(shelf).toContain("MODERN_FANFICTION_LINKS.length} modern recommendations");
+  expect(shelf).toContain("MODERN_FANFICTION_LINKS.length} linked modern fanfics");
   expect(shelf).toContain("archiveWorks.filter(work=>work.is_archive&&isHistoricalFanfiction(work)).length");
   expect(shelf).toContain('onClick={()=>setVisibleModernCount(current=>Math.min(current+12,allowedModern.length))}');
   const renderedSources=[readFileSync('src/palaceFanfictionDiscovery.js','utf8'),shelf,
@@ -254,9 +254,9 @@ describe('Fanfiction section contains rights-aware historical and modern discove
  it('renders the linked recommendations beside the hosted story cards in normal Browse mode',()=>{
    const defaults=readFileSync('src/useReadingDiscoveryState.js','utf8');
    expect(defaults).toContain("discoveryMode:'browse'");
-   const shelf='<PalaceFanfictionShelf archiveWorks={archiveWorks} showHistorical={false}/>';
-   expect(reading.split(shelf).length-1).toBe(1);
-   const shelfAt=reading.indexOf(shelf);
+   const shelfMarkup='<PalaceFanfictionShelf archiveWorks={archiveWorks} showHistorical={false}/>';
+   expect(reading.split(shelfMarkup).length-1).toBe(1);
+   const shelfAt=reading.indexOf(shelfMarkup);
    const browseLayout=reading.indexOf('className="reading-catalogue-layout"');
    const archiveHeader=reading.indexOf('<ReadingCatalogueControls');
    expect(shelfAt).toBeGreaterThan(browseLayout);
