@@ -29,6 +29,19 @@ describe('Independent Throne of Honour room',()=>{
   expect(screen.getByText('Octavia E. Butler')).toBeTruthy();
   expect(screen.getByText('James Baldwin')).toBeTruthy();
  });
+ it('renders a compact curated list with one shared heading and a small empty state',async()=>{
+  useAuth.mockReturnValue({session:null});
+  const {container}=mount();
+  await waitFor(()=>expect(getHonour).toHaveBeenCalledWith(undefined));
+  expect(container.querySelectorAll('.honour-list-item')).toHaveLength(3);
+  expect(screen.getAllByText('HONOURED BEYOND THE PALACE')).toHaveLength(1);
+  expect(screen.getByText('Beloved')).toBeTruthy();
+  expect(screen.getByText('Parable of the Sower')).toBeTruthy();
+  expect(screen.getByText('Giovanni’s Room')).toBeTruthy();
+  expect(container.querySelectorAll('.honour-list-item .legacy-throne-medallion .palace-icon')).toHaveLength(3);
+  expect(container.querySelector('.honour-courts-empty')).toBeTruthy();
+  expect(screen.getByText('No monthly courts are published yet.')).toBeTruthy();
+ });
  it('keeps the signed-in recommendation door intact after extraction',async()=>{
   useAuth.mockReturnValue({session:{user:{id:'member-1'}}});
   mount();
