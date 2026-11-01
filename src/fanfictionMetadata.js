@@ -5,7 +5,7 @@
  * Absence of a documented rating stays "not_rated", never inferred.
  * Tags and warnings are descriptive editorial metadata, not author claims.
  */
-const entry=(rating,sourceRating,tags,warnings=[],basis='source')=>Object.freeze({
+const entry=(rating,sourceRating,tags,warnings=[],basis=rating==='not_rated'?'unrated':'source')=>Object.freeze({
  rating,sourceRating,ratingBasis:basis,contentWarnings:warnings,
  tags:Object.entries(tags).flatMap(([category,names])=>names.map(name=>({category,name})))
 });
