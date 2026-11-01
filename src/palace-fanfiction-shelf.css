@@ -227,3 +227,19 @@
 .palace-reading-linked-fanfiction:focus-visible{
  outline:2px solid var(--ui-accent,currentColor);outline-offset:3px;
 }
+
+.palace-shell.full-palace-shell .palace-fanfiction-atlas-links{
+ display:flex;flex-wrap:wrap;align-items:center;gap:7px 13px;
+ margin:12px 0 0;font-size:.73rem;line-height:1.45;
+ color:var(--ui-muted);
+}
+.palace-shell.full-palace-shell .palace-fanfiction-atlas-links a,
+.palace-shell.full-palace-shell .palace-fanfiction-atlas-jump a{
+ color:var(--ui-accent);text-decoration:underline;text-underline-offset:3px;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-atlas-jump{
+ margin:9px 0 0;font-size:.76rem;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-selected-worlds{
+ margin:9px 0 0;font-size:.75rem;line-height:1.45;color:var(--ui-text);
+}

@@ -4,6 +4,8 @@ import {getPalaceFandomDirectory,getStoriesForFandoms} from './palaceData';
 import {FANDOM_MEDIA_SHELVES} from './palaceFandomCatalogue';
 import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection,fandomFacetOptions} from './fandomDirectoryModel';
 import StoryRatingBadge from './StoryRatingBadge';
+import PalaceFanfictionShelf from './PalaceFanfictionShelf';
+import {MODERN_FANFICTION_LINKS} from './palaceFanfictionDiscovery';
 import PalaceInfoMark from './PalaceInfoMark';
 import {tagWorldPath} from './tagWorldRoutes';
 import './palace-fandom-atlas.css';
@@ -13,6 +15,7 @@ export default function PalaceFandomAtlas(){
  const params=new URLSearchParams(location.search);
  const selectedMedia=params.get('media')||'all',keyword=params.get('q')||'';
  const subcategory=params.get('kind')||'all',franchise=params.get('world')||'all';
+ const atlasSection=params.get('section')==='fanfiction'?'fanfiction':'directory';
  const urlIds=(params.get('ids')||'').split(',').filter(Boolean);
  const mode=params.get('match')==='all'?'all':'any';
  const [rows,setRows]=useState([]);
@@ -21,6 +24,7 @@ export default function PalaceFandomAtlas(){
  const [stories,setStories]=useState([]),[storyBusy,setStoryBusy]=useState(false),[storyError,setStoryError]=useState('');
  const validMedia=FANDOM_MEDIA_SHELVES.some(x=>x.id===selectedMedia)?selectedMedia:'all';
  const selected=safeFandomSelection(urlIds,rows);
+ const selectedNames=selected.map(id=>rows.find(row=>row.id===id)?.name).filter(Boolean);
  const facets=useMemo(()=>fandomFacetOptions(rows,validMedia),[rows,validMedia]);
  const validSubcategory=facets.categories.includes(subcategory)?subcategory:'all';
  const validFranchise=facets.franchises.includes(franchise)?franchise:'all';
@@ -65,6 +69,11 @@ export default function PalaceFandomAtlas(){
     <p>Use the subcategory and franchise filters to distinguish an adaptation, a spin-off, or a game from its parent universe. Alternate names help find the correct fandom but do not automatically merge different canons.</p>
    </PalaceInfoMark>
   </header>
+  <nav className="palace-fandom-mode-switch" aria-label="Fandom Atlas sections">
+   <button type="button" aria-pressed={atlasSection==='directory'} onClick={()=>changeParams({section:null})}>Fandom directory</button>
+   <button type="button" aria-pressed={atlasSection==='fanfiction'} onClick={()=>changeParams({section:'fanfiction'})}>Fanfiction · {MODERN_FANFICTION_LINKS.length} linked works</button>
+  </nav>
+  {atlasSection==='directory'&&<>
   <nav className="palace-fandom-media" aria-label="Fandom media shelves">
    {FANDOM_MEDIA_SHELVES.map(item=><button type="button" key={item.id} aria-pressed={validMedia===item.id}
     className={validMedia===item.id?'active':''}
@@ -103,7 +112,8 @@ export default function PalaceFandomAtlas(){
       disabled={!selected.includes(f.id)&&selected.length>=5}>
       {selected.includes(f.id)?'✓ In my constellation':'+ Select fandom'}
      </button>
-     {tagWorldPath(f)&&<Link className="palace-fandom-browse-door" to={tagWorldPath(f)}>Browse published stories →</Link>}
+     {tagWorldPath(f)&&<Link className="palace-fandom-browse-door" to={tagWorldPath(f)}>Browse Palace-published stories →</Link>}
+     <Link className="palace-fandom-fanfic-door" to={'/fandoms?section=fanfiction&ids='+encodeURIComponent(f.id)}>Find linked fanfiction →</Link>
     </article>)}
    </div>
    <footer className="palace-fandom-pages">
@@ -135,5 +145,10 @@ export default function PalaceFandomAtlas(){
    </>}
    <footer><Link to="/tags?category=relationship">Explore relationship tags →</Link><Link to="/tags">Open Tag Constellation for characters, relationships, tropes and exclusions →</Link><Link to="/writing">Create a fanwork →</Link></footer>
   </section>
+  </>}
+  {atlasSection==='fanfiction'&&<section className="palace-fandom-linked-section" aria-label="Fanfiction by fandom">
+   {selectedNames.length>0&&<div className="palace-fandom-selection-note"><span>Fandoms selected: <strong>{selectedNames.join(' · ')}</strong></span><button type="button" onClick={()=>changeParams({ids:null,match:null})}>Browse all linked fanfiction</button><button type="button" onClick={()=>changeParams({section:null})}>Choose different fandoms</button></div>}
+   <PalaceFanfictionShelf key={selected.join(',')+'|'+mode+'|'+keyword} archiveWorks={[]} showHistorical={false} inFandomAtlas={true} fandomNames={selectedNames} fandomMatch={mode} atlasQuery={selectedNames.length? '':keyword}/>
+  </section>}
  </section>;
 }

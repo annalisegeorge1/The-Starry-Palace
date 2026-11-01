@@ -135,9 +135,24 @@ export function isAnimeFanfiction(work){
  const names=guide.tags.filter(tag=>tag.category==='fandom').map(tag=>tag.name.toLowerCase());
  return names.some(name=>ANIME_FANDOM_NAMES.some(term=>name.includes(term)));
 }
-export function filterModernFanfiction(works=[],{rating='all',query='',animeOnly=false}={}){
+/** Match by credited fandom tag, not any incidental word in a summary.
+ * Fandom Atlas uses real selected tag names; these links are never converted
+ * into member-published stories or assigned database tag IDs.
+ */
+const normalizedFandom=name=>String(name||'').normalize('NFKD').toLowerCase()
+ .replace(/[’']/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+export function matchesFanfictionFandom(work,fandomName){
+ const target=normalizedFandom(fandomName);
+ if(!target)return false;
+ const names=modernFanfictionGuide(work).tags.filter(t=>t.category==='fandom')
+  .map(t=>normalizedFandom(t.name));
+ return names.some(name=>name===target||name.startsWith(target+' ')||target.startsWith(name+' '));
+}
+export function filterModernFanfiction(works=[],{rating='all',query='',animeOnly=false,fandomNames=[],fandomMatch='any'}={}){
  const needle=String(query||'').trim().toLowerCase();
+ const selected=Array.isArray(fandomNames)?fandomNames.filter(Boolean):[];
  return works.filter(work=>(rating==='all'||modernFanfictionGuide(work).rating===rating)
    &&(!animeOnly||isAnimeFanfiction(work))
+   &&(!selected.length||(fandomMatch==='all'?selected.every(name=>matchesFanfictionFandom(work,name)):selected.some(name=>matchesFanfictionFandom(work,name))))
    &&(!needle||fanfictionSearchText(work).includes(needle)));
 }

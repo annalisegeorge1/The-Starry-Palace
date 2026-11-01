@@ -29,7 +29,7 @@ function FanfictionGuide({guide}){
 }
 
 /* Author-source recommendations are not hosted copies or member publications. */
-export default function PalaceFanfictionShelf({archiveWorks=[],showHistorical=true}){
+export default function PalaceFanfictionShelf({archiveWorks=[],showHistorical=true,fandomNames=[],fandomMatch='any',atlasQuery='',inFandomAtlas=false}){
  const [visibleModernCount,setVisibleModernCount]=useState(6);
  const [rating,setRating]=useState('all');
  const [query,setQuery]=useState('');
@@ -45,7 +45,7 @@ export default function PalaceFanfictionShelf({archiveWorks=[],showHistorical=tr
   });
  // The Palace's verified-age gate does not cover third-party destinations.
  // Keep 18+ external story links out of default public discovery.
- const modernMatches=filterModernFanfiction(MODERN_FANFICTION_LINKS,{rating,query,animeOnly});
+ const modernMatches=filterModernFanfiction(MODERN_FANFICTION_LINKS,{rating,query:query||(!fandomNames.length?atlasQuery:''),animeOnly,fandomNames,fandomMatch});
  const allowedModern=modernMatches.filter(work=>includeMature||modernFanfictionGuide(work).rating!=='mature');
  const hiddenMature=modernMatches.length-allowedModern.length;
  const matureMatches=modernMatches.filter(work=>modernFanfictionGuide(work).rating==='mature').length;
@@ -54,9 +54,11 @@ export default function PalaceFanfictionShelf({archiveWorks=[],showHistorical=tr
  return <section className="palace-fanfiction-shelf" aria-labelledby="palace-fanfiction-shelf-title">
   <header className="palace-fanfiction-shelf-head">
    <p className="eyebrow">FANFICTION · OLD WORLDS, NEW STORIES</p>
-   <h2 id="palace-fanfiction-shelf-title">Modern fanfiction · {MODERN_FANFICTION_LINKS.length} stories to explore</h2>
-   <p>Discover modern fanfictions at their authors' original websites, with ratings, fandom tags and content notes. Palace-hosted and member fanfiction appears in the next section below.</p>
-   <p className="palace-fanfiction-catalogue-total" role="status"><strong>{MODERN_FANFICTION_LINKS.length} linked modern fanfics</strong> · {archiveWorks.filter(work=>work.is_archive&&isHistoricalFanfiction(work)).length} hosted historical fanfics · Select a story below to read at its original source</p>
+   <h2 id="palace-fanfiction-shelf-title">{inFandomAtlas?'Fanfiction across the fandoms':'Modern fanfiction'} · {MODERN_FANFICTION_LINKS.length} stories to explore</h2>
+   <p>{inFandomAtlas?'Explore original-author fanfiction links by fandom, genre and rating. Choose fandoms in the Atlas to narrow these recommendations; member-published stories are listed separately in the crossover search.':'Discover modern fanfictions at their authors\' original websites, with ratings, fandom tags and content notes. Palace-hosted and member fanfiction appears in the next section below.'}</p>
+   <p className="palace-fanfiction-catalogue-total" role="status"><strong>{MODERN_FANFICTION_LINKS.length} linked modern fanfics</strong> · {inFandomAtlas?'2 historical fanfics hosted in Reading Rooms':archiveWorks.filter(work=>work.is_archive&&isHistoricalFanfiction(work)).length+' hosted historical fanfics'} · Select a story below to read at its original source</p>
+   {!inFandomAtlas&&<p className="palace-fanfiction-atlas-jump"><Link to="/fandoms?section=fanfiction">Explore these fanfics by fandom →</Link></p>}
+   {inFandomAtlas&&fandomNames.length>0&&<p className="palace-fanfiction-selected-worlds">Matching {fandomMatch==='all'?'all':'any'} selected fandoms: {fandomNames.join(' · ')}</p>}
   </header>
   <div className="palace-fanfiction-filters" role="search" aria-label="Filter Fanfiction recommendations">
    <label><span>Find by title, writer or tag</span><input type="search"
@@ -68,6 +70,7 @@ export default function PalaceFanfictionShelf({archiveWorks=[],showHistorical=tr
    <button type="button" className={'palace-fanfiction-anime-filter'+(animeOnly?' active':'')} aria-pressed={animeOnly} onClick={()=>{setAnimeOnly(current=>!current);setVisibleModernCount(6)}}>Anime &amp; manga</button>
    {(query||rating!=='all'||animeOnly)&&<button type="button" className="palace-fanfiction-filter-reset" onClick={reset}>Clear</button>}
   </div>
+  {inFandomAtlas&&<div className="palace-fanfiction-atlas-links"><Link to="/reading?section=fanfiction">View fanfiction alongside Palace-hosted member stories</Link><span>Historical fanfiction:</span><Link to="/classic/old-friends-and-new-fancies-sybil-g-brinton">Old Friends and New Fancies</Link><Link to="/classic/the-adventure-of-the-two-collaborators-j-m-barrie">The Adventure of the Two Collaborators</Link></div>}
   {showHistorical&&historic.length>0&&<div className="palace-fanfiction-group">
    <h3>Read here · historical fanfiction</h3>
    <div className="palace-fanfiction-grid">
