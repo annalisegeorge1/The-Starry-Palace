@@ -322,7 +322,7 @@ export function ReadingLive({Frame}){
  useEffect(()=>{if(fanfictionSectionRequested&&origin!=='fandom')setOrigin('fandom')},[fanfictionSectionRequested,origin]);
  useEffect(()=>{
   if(fanfictionSectionRequested&&origin==='fandom'&&!inAdvancedSearch){
-   document.getElementById('palace-fanfiction-shelf-title')?.scrollIntoView({block:'start'});
+   document.getElementById('palace-unified-fanworks-title')?.scrollIntoView({block:'start'});
   }
  },[fanfictionSectionRequested,origin,inAdvancedSearch]);
  // Public archive results are server-filtered; private lenses and mood shelves
@@ -548,10 +548,10 @@ export function ReadingLive({Frame}){
     <button type="button" aria-pressed={!archiveBrowseEnabled} className={!archiveBrowseEnabled?'selected':''} onClick={browseLoadedShelves}><span aria-hidden="true">☾</span> Shelves &amp; classics</button>
    </div>
   </section>
-  <section className="legacy-reading-tools chic-reading-tools reading-search-calm">
+  {origin!=='fandom'&&<section className="legacy-reading-tools chic-reading-tools reading-search-calm">
    <div className="reading-search" role="search"><span aria-hidden="true">⌕</span><input aria-label={archiveBrowseEnabled?'Search all published Reading Room stories':'Search the currently loaded Reading Room stories'} value={query} onChange={e=>setQuery(e.target.value)} placeholder="Title, writer, fandom or tag…"/></div>
    <div className="reading-result-count" aria-live="polite"><strong>{archiveBrowseEnabled?(archiveBrowse.snapshot?visibleTotal.toLocaleString():'…'):catalogue.length.toLocaleString()}</strong><span>{origin==='fandom'?('Palace-hosted results · '+MODERN_FANFICTION_LINKS.length+' author-source fanfics in the unified catalogue below'):(archiveBrowseEnabled?'matching published stories · archive-wide':('matching among '+allReadingWorks.length+' loaded '+(allReadingWorks.length===1?'work':'works')))}</span></div>
-  </section>
+  </section>}
   {!archiveBrowseEnabled&&readerLens!=='all'&&<p className="reading-scope-note">Personal lenses search your currently loaded reading shelf. Choose “Entire published archive” to return to public browsing.</p>}
   {!archiveBrowseEnabled&&vibeDoor!=='all'&&<p className="reading-scope-note">Mood suggestions come from loaded stories, not archive-wide rankings.</p>}
   {!archiveBrowseEnabled&&!isArchiveReadingSort(catalogueSort)&&<p className="reading-scope-note">This sort orders loaded stories and Classics only. Choose an archive-wide sort to rank all published stories.</p>}
