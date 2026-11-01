@@ -24,6 +24,8 @@ export default function PalaceGovernance({Frame}){
  async function load(){setData(await getPalaceGovernance())}
  useEffect(()=>{load().catch(e=>setError(e.message));checkCouncilDeadlines().catch(()=>{})},[]);
  async function action(fn,success){if(busy)return;setBusy(true);setError('');setNotice('');try{await fn();await load();setNotice(success)}catch(e){setError(e.message)}finally{setBusy(false)}}
+ const councilRoomLabels={overview:'Council overview',ballots:'Cast your vote',petitions:'Make a proposal',elections:'Meet your elections',results:'Council of Ten',service:'Palace representatives','notices-private':'My notices',appeals:'Fairness & appeals',notices:'Council tidings',checklists:'Case review',accountability:'Restoration',manage:'Steward tools'};
+ const secondaryCouncilViews=['service','results','notices-private',...(data?.is_council?['checklists','accountability','manage']:[])];
  const allBallots=data?.ballots||[];
  const ballotIsOpen=b=>b.status==='open'&&new Date(b.opens_at)<=new Date()&&new Date(b.closes_at)>new Date();
  const openCount=allBallots.filter(ballotIsOpen).length;
@@ -33,43 +35,36 @@ export default function PalaceGovernance({Frame}){
   (ballotScope==='all'||b.ballot_scope===ballotScope)&&
   (!ballotQuery.trim()||[b.title,b.description,b.ballot_scope,...(b.options||[]).flatMap(o=>[o.label,o.description])].filter(Boolean).join(' ').toLowerCase().includes(ballotQuery.trim().toLowerCase()))
  );
- return <Frame privateArea><main className="palace-governance"><header className="governance-hero"><span>♛ THE PALACE COUNCIL · VOICES OF THE COURT</span><h1>The Council & Voting Hall</h1><p>Every member has a voice. Each ballot has clear rules, a closing time, and a documented outcome. Crowns and points never buy additional votes.</p><Link to="/council">Visit the Council review desk →</Link></header>
- <div className="governance-pills"><span>✧ One member, one ballot</span><span>☾ Private individual choices</span><span>✦ Results follow ballot rules</span></div>
- <section className="governance-streak"><div><strong>☾ Your Starwatch Streak</strong><p>{streak?.today_logged?`Day ${streak.streak_days||7} logged · Next reward: 175 points after 7 days`:"Visit the Palace daily to light your seven stars."}</p><small>{streak?.completed_weeks??0} seven-day milestones · {streak?.weeks_until_prize??4} more until your next Golden Treasury gift · {streak?.prizes_earned??0} gifts earned</small></div><div className="governance-streak-dots">{Array.from({length:7},(_,i)=><span key={i} className={i<(streak?.streak_days||0)?"lit":""}>✦</span>)}</div></section>
- <nav className="governance-tab-groups" aria-label="Council and voting areas">
- <div className="governance-tab-group"><small>MEMBER VOICE</small><div className="governance-tabs">
- {[
- ['overview','✧ Welcome'],['ballots','🗳 Voting'],['petitions','✍ Petitions'],['notices','📜 Tidings']
- ].map(([key,label])=><button type="button" key={key} className={view===key?'active':''} aria-pressed={view===key} onClick={()=>goView(key)}>{label}</button>)}
- </div></div>
- <div className="governance-tab-group"><small>REPRESENTATION</small><div className="governance-tabs">
- {[
- ['service','✦ Representatives'],['elections','♜ Elections'],['results','♛ Council of Ten']
- ].map(([key,label])=><button type="button" key={key} className={view===key?'active':''} aria-pressed={view===key} onClick={()=>goView(key)}>{label}</button>)}
- </div></div>
- <div className="governance-tab-group"><small>FAIRNESS & CARE</small><div className="governance-tabs">
- {[
- ['appeals','⚖ My Appeals'],['notices-private','☾ My Notices'],
- ...(data?.is_council?[['checklists','⚖ Case Review'],['accountability','✧ Restoration'],['manage','♛ Steward Tools']]:[])
- ].map(([key,label])=><button type="button" key={key} className={view===key?'active':''} aria-pressed={view===key} onClick={()=>goView(key)}>{label}</button>)}
- </div></div>
- </nav>
- {error&&<p className="governance-error" role="alert">{error}</p>}{notice&&<p className="governance-notice" role="status">{notice}</p>}
- {!data&&!error&&<p>Gathering the Council records…</p>}
- {view==='overview'&&<section className="governance-overview" aria-label="Your Palace Council at a glance">
- <div className="governance-heading"><div><span>GOVERNANCE, MADE HUMAN</span><h2>Welcome to your Council</h2>
+ return <Frame privateArea><main className="palace-governance">
+ {view==='overview'&&<>
+ <header className="governance-hero"><span>♛ THE PALACE COUNCIL · VOICES OF THE COURT</span><h1>The Council & Voting Hall</h1><p>Every member has a voice. Each ballot has clear rules, a closing time, and a documented outcome. Crowns and points never buy additional votes.</p><Link to="/council">Visit the Council review desk →</Link></header>
+ <div className="governance-intro"><div><span>GOVERNANCE, MADE HUMAN</span><h2>Welcome to your Council</h2>
  <p>Choose where you want to participate. The Council protects the community; Grand Palace representatives listen to its people.</p></div></div>
  <div className="governance-pulse">
  <div><strong>{openCount}</strong><span>member votes open</span></div>
  <div><strong>{votedCount}</strong><span>ballots you joined</span></div>
  <div><strong>{data?.notices?.length||0}</strong><span>published Council tidings</span></div>
  </div>
+ <section className="governance-streak"><div><strong>☾ Your Starwatch Streak</strong><p>{streak?.today_logged?`Day ${streak.streak_days||7} logged · Next reward: 175 points after 7 days`:"Visit the Palace daily to light your seven stars."}</p><small>{streak?.completed_weeks??0} seven-day milestones · {streak?.weeks_until_prize??4} more until your next Golden Treasury gift · {streak?.prizes_earned??0} gifts earned</small></div><div className="governance-streak-dots">{Array.from({length:7},(_,i)=><span key={i} className={i<(streak?.streak_days||0)?"lit":""}>✦</span>)}</div></section>
+ </>}
+ {view!=='overview'&&<nav className="governance-subnav" aria-label="Council room navigation">
+  <button type="button" onClick={()=>goView('overview')}>← Council overview</button>
+  <label>Go to Council area <select value={view} onChange={e=>goView(e.target.value)}>
+   {viewNames.filter(key=>!['checklists','accountability','manage'].includes(key)||data?.is_council).map(key=><option key={key} value={key}>{councilRoomLabels[key]}</option>)}
+  </select></label>
+ </nav>}
+ {error&&<p className="governance-error" role="alert">{error}</p>}{notice&&<p className="governance-notice" role="status">{notice}</p>}
+ {!data&&!error&&<p>Gathering the Council records…</p>}
+ {view==='overview'&&<section className="governance-overview" aria-label="Your Palace Council at a glance">
  <div className="governance-entry-grid">
  <button type="button" onClick={()=>goView('ballots')}><span aria-hidden="true">🗳</span><strong>Cast your vote</strong><small>Open ballots, results, and deadlines</small><b>Enter →</b></button>
  <button type="button" onClick={()=>goView('petitions')}><span aria-hidden="true">✍</span><strong>Make a proposal</strong><small>Put a community idea before the Council</small><b>Enter →</b></button>
  <button type="button" onClick={()=>goView('elections')}><span aria-hidden="true">♜</span><strong>Meet your elections</strong><small>Representatives chosen by the ten Palaces</small><b>Enter →</b></button>
  <button type="button" onClick={()=>goView('appeals')}><span aria-hidden="true">⚖</span><strong>Fairness & appeals</strong><small>Understand reviews and your available remedies</small><b>Enter →</b></button>
  </div>
+ <details className="governance-secondary-rooms"><summary>Explore more Council areas</summary><div className="governance-secondary-links">
+ {secondaryCouncilViews.map(key=><button type="button" key={key} onClick={()=>goView(key)}>{councilRoomLabels[key]} →</button>)}
+ </div></details>
  <div className="governance-recent"><div><h3>From the Council Noticeboard</h3>
  <p>Public notices stay separate from confidential moderation files.</p></div>
  {(data?.notices||[]).slice(0,2).map(n=><article key={n.id}><small>{n.category} · {formatDate(n.published_at)}</small><strong>{n.title}</strong><p>{n.body}</p></article>)}

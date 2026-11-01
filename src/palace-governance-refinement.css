@@ -181,3 +181,139 @@
   white-space:normal;
  }
 }
+
+
+/* Council entrance: one primary action grid, not three stacked navigation menus.
+   Secondary steward/member routes remain reachable from the small disclosure.
+   Mobile shell clearance is set on #palace-content so the fixed dock cannot cover content. */
+.palace-governance .governance-hero{
+ padding:clamp(17px,3vw,27px);
+ border:0;
+ border-radius:18px;
+ box-shadow:0 8px 26px rgba(9,9,28,.17);
+}
+.palace-governance .governance-hero>span{font-size:.66rem;letter-spacing:.11em}
+.palace-governance .governance-hero h1{
+ font-size:clamp(1.75rem,3.4vw,2.5rem);
+ line-height:1.12;
+ margin:.4rem 0 .55rem;
+ text-wrap:balance;
+}
+.palace-governance .governance-hero p{
+ max-width:65ch;
+ font-size:.91rem;
+ line-height:1.52;
+ margin:0 0 .65rem;
+}
+.palace-governance .governance-hero a{font-size:.82rem}
+.palace-governance .governance-intro{margin:15px 0 8px;padding:0 3px}
+.palace-governance .governance-intro span{
+ color:var(--muted,#cfbbf4);font-size:.67rem;font-weight:750;letter-spacing:.1em;
+}
+.palace-governance .governance-intro h2{
+ font:700 clamp(1.25rem,2.6vw,1.7rem)/1.2 Georgia,serif;
+ margin:5px 0 6px;
+}
+.palace-governance .governance-intro p{
+ max-width:70ch;font-size:.86rem;line-height:1.5;margin:0;
+}
+.palace-governance .governance-pulse{gap:8px}
+.palace-governance .governance-pulse>div{
+ display:flex;align-items:center;justify-content:center;flex-direction:column;
+ min-width:0;min-height:0;gap:4px;padding:11px 7px;border-radius:13px;text-align:center;
+}
+.palace-governance .governance-pulse strong{
+ font:750 clamp(1.25rem,3vw,1.7rem)/1 Georgia,serif;
+ font-variant-numeric:tabular-nums;
+}
+.palace-governance .governance-pulse span{font-size:.72rem;line-height:1.25;opacity:1}
+.palace-governance .governance-streak{margin:0;padding:15px 17px;gap:10px}
+.palace-governance .governance-streak strong{font-size:1.14rem;color:#fff}
+.palace-governance .governance-streak p{
+ color:#fff!important;opacity:1!important;font-weight:650;font-size:.86rem;
+ line-height:1.4;margin:7px 0;
+}
+.palace-governance .governance-streak small{
+ color:#f4eaff!important;opacity:1!important;font-size:.75rem;line-height:1.4;
+}
+.palace-governance .governance-overview{gap:15px;margin-top:15px}
+.palace-governance .governance-entry-grid{gap:10px}
+.palace-governance .governance-entry-grid button{
+ padding:16px;border-radius:16px;gap:7px;
+}
+.palace-governance .governance-entry-grid button>span{
+ width:38px;height:38px;border-radius:10px;font-size:1.2rem;
+}
+.palace-governance .governance-entry-grid button strong{
+ font-size:clamp(1rem,2vw,1.16rem);line-height:1.21;
+}
+.palace-governance .governance-entry-grid button small{font-size:.77rem;line-height:1.4}
+.palace-governance .governance-entry-grid button b{font-size:.77rem}
+.palace-governance .governance-secondary-rooms{border-top:1px solid #9e8bb64a;padding:10px 2px 0}
+.palace-governance .governance-secondary-rooms summary{
+ cursor:pointer;list-style-position:inside;
+ font-size:.84rem;font-weight:700;color:inherit;padding:8px 4px;
+}
+.palace-governance .governance-secondary-links{display:flex;gap:7px;flex-wrap:wrap;padding:8px 0}
+.palace-governance .governance-secondary-links button,
+.palace-governance .governance-subnav>button{
+ border:1px solid #9c89bd85;border-radius:10px;color:inherit;
+ background:var(--card,#26233c);min-height:40px;
+ padding:8px 12px;font:650 .81rem/1.3 system-ui,sans-serif;cursor:pointer;
+}
+.palace-governance .governance-subnav{
+ display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;
+ gap:10px;margin:0 0 14px;padding:10px 0;border-bottom:1px solid #9e8bb64a;
+}
+.palace-governance .governance-subnav label{
+ display:flex;align-items:center;flex-wrap:wrap;gap:7px;
+ font-size:.76rem;font-weight:650;min-width:0;
+}
+.palace-governance .governance-subnav select{
+ max-width:100%;min-width:0;min-height:42px;border:1px solid #a28dc5;
+ border-radius:9px;padding:8px;background:var(--card,#26233c);color:inherit;
+ font:inherit;
+}
+.palace-governance :is(.governance-secondary-rooms summary,.governance-secondary-links button,.governance-subnav button,.governance-subnav select):focus-visible{
+ outline:3px solid #b9a5f0;outline-offset:2px;
+}
+.palace-governance .governance-recent>button{
+ color:#fff!important;
+ background:linear-gradient(125deg,#7353b4,#57428e);
+ border-color:#c2ace6;
+}
+@media(max-width:600px){
+ .palace-governance .governance-hero{padding:16px;border-radius:16px}
+ .palace-governance .governance-hero h1{font-size:1.75rem}
+ .palace-governance .governance-intro{margin-top:12px}
+ .palace-governance .governance-pulse{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+ .palace-governance .governance-pulse>div{padding:9px 4px;border-radius:11px}
+ .palace-governance .governance-pulse span{font-size:.66rem;overflow-wrap:break-word}
+ .palace-governance .governance-streak{padding:13px}
+ .palace-governance .governance-streak-dots{gap:6px}
+ .palace-governance .governance-entry-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .palace-governance .governance-entry-grid button{padding:12px 10px;gap:6px}
+ .palace-governance .governance-entry-grid button>span{width:33px;height:33px;font-size:1.05rem}
+ .palace-governance .governance-entry-grid button strong{font-size:.97rem}
+ .palace-governance .governance-entry-grid button small{font-size:.71rem}
+ .palace-governance .governance-entry-grid button b{font-size:.72rem}
+ .palace-governance .governance-subnav label{width:100%}
+ .palace-governance .governance-subnav select{flex:1 1 150px}
+}
+@media(max-width:760px){
+ /* The actual fixed dock is outside this route's nested page. Do not rely
+    solely on padding within .palace-governance. */
+ .palace-shell.full-palace-shell .full-stage>main#palace-content[data-palace-route^="/council/governance"]{
+   padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))!important;
+   scroll-padding-bottom:calc(140px + env(safe-area-inset-bottom,0px))!important;
+ }
+ .palace-shell.full-palace-shell .full-stage>header.topbar.full-topbar{
+   isolation:isolate!important;
+   background-color:#0d142c!important;
+   -webkit-backdrop-filter:blur(12px)!important;
+   backdrop-filter:blur(12px)!important;
+ }
+ .palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar{
+   background-color:#f0ecfa!important;
+ }
+}
