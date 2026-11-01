@@ -54,7 +54,7 @@ export default function PalaceFanfictionShelf({archiveWorks=[],showHistorical=tr
  return <section className="palace-fanfiction-shelf" aria-labelledby="palace-fanfiction-shelf-title">
   <header className="palace-fanfiction-shelf-head">
    <p className="eyebrow">FANFICTION · OLD WORLDS, NEW STORIES</p>
-   <h2 id="palace-fanfiction-shelf-title">Follow the stories behind the stories.</h2>
+   <h2 id="palace-fanfiction-shelf-title">Modern fanfiction · {MODERN_FANFICTION_LINKS.length} stories to explore</h2>
    <p>Discover modern fanfictions at their authors' original websites, with ratings, fandom tags and content notes. Palace-hosted and member fanfiction appears in the next section below.</p>
    <p className="palace-fanfiction-catalogue-total" role="status"><strong>{MODERN_FANFICTION_LINKS.length} linked modern fanfics</strong> · {archiveWorks.filter(work=>work.is_archive&&isHistoricalFanfiction(work)).length} hosted historical fanfics · Select a story below to read at its original source</p>
   </header>
