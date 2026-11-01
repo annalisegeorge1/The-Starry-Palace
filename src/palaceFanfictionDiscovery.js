@@ -64,11 +64,11 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
   creator:'MorganAW',
   published:'2017',
   fandom:'Pride and Prejudice · Jane Austen',
-  description:'A variation in which Darcy revisits his first impressions after the Netherfield ball. Complete, ten chapters.',
+  description:'At the Netherfield ball, Darcy discovers he has misread Wickham, Caroline Bingley and Elizabeth. A complete ten-chapter Austen variation.',
   sourceUrl:'https://archiveofourown.org/works/12395550',
   permissionUrl:'https://www.fanfiction.net/s/12655017/1/Cunning-and-Compromise',
   permissionLabel:'CC BY-SA 4.0 · author-declared; Austen original is public domain',
-  contentNote:'Teen rating · complete · no archive warnings on its AO3 edition.'
+  contentNote:'Teen on linked AO3 edition; K+ on FanFiction.net · complete, ten chapters.'
  },
  {
   id:'morganaw-more-justified-in-acting',
@@ -177,5 +177,101 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
   permissionUrl:'https://www.fanfiction.net/u/999304/Star-Holder-Commander',
   permissionLabel:'CC BY-NC-ND 3.0 · specifically stated for this poem',
   contentNote:'General-rated fan poem · no derivatives under the writer’s licence.'
+ }
+ ,{
+  id:'morganaw-depravity-comparison',
+  title:'A Depravity That Can Bear No Comparison',
+  creator:'MorganAW',
+  published:'2019 · updated 2021',
+  fandom:'Pride and Prejudice · Sense and Sensibility',
+  description:'Elizabeth Darcy investigates the wrong done to Margaret Dashwood’s family in a crossover of two Austen novels.',
+  sourceUrl:'https://www.fanfiction.net/s/13386635/1/A-Depravity-That-Can-Bear-no-Comparison',
+  permissionUrl:'https://www.fanfiction.net/s/13386635/1/A-Depravity-That-Can-Bear-no-Comparison',
+  permissionLabel:'CC BY-SA 4.0 · author-declared original contribution',
+  contentNote:'T-rated historical drama · unfinished series.'
+ },
+ {
+  id:'morganaw-paws-and-prejudice',
+  title:'Paws and Prejudice',
+  creator:'MorganAW',
+  published:'2019',
+  fandom:'Pride and Prejudice · modern AU',
+  description:'Elizabeth and Darcy clash at a dog park, although their pets have other ideas.',
+  sourceUrl:'https://www.fanfiction.net/s/13229369/1/Paws-and-Prejudice',
+  permissionUrl:'https://www.fanfiction.net/s/13229369/1/Paws-and-Prejudice',
+  permissionLabel:'CC BY-SA 4.0 · author-declared original contribution',
+  contentNote:'K+ rated · romance and humour. Contains quotations from Austen and film adaptations; author licence covers original writing only.'
+ },
+ {
+  id:'cateliot-inner-demons',
+  title:'inner demons',
+  creator:'cateliot',
+  published:'2015',
+  fandom:'Percy Jackson and the Olympians',
+  description:'Annabeth asks about a scar from Thalia’s time on the run with Luke.',
+  sourceUrl:'https://www.fanfiction.net/s/11268811/1/inner-demons',
+  permissionUrl:'https://www.fanfiction.net/s/11268811/1/inner-demons',
+  permissionLabel:'CC BY-NC-SA 3.0 · author-declared original contribution',
+  contentNote:'Teen-rated one-shot · scars, past trauma, and an implied Thalia/Luke relationship.'
+ },
+ {
+  id:'what-contented-men-desire-last-adventure',
+  title:'The Last Adventure',
+  creator:'What contented men desire',
+  published:'2007 · updated 2012',
+  fandom:'Harry Potter',
+  description:'Harry, Ron and Hermione return to Hogwarts to finish destroying the last remnants of Voldemort’s soul.',
+  sourceUrl:'https://www.fanfiction.net/s/3811214/1/The-Last-Adventure',
+  permissionUrl:'https://www.fanfiction.net/s/3811214/1/The-Last-Adventure',
+  permissionLabel:'CC BY-NC-SA 3.0 · author-declared original contribution',
+  contentNote:'Teen-rated · adventure, war aftermath, danger and romance.'
+ },
+ {
+  id:'mjware-american-muggle',
+  title:'An American Muggle in Slytherin House',
+  creator:'MJWare',
+  published:'2015',
+  fandom:'Harry Potter',
+  description:'A newcomer from America discovers magic and finds himself sorted into Slytherin.',
+  sourceUrl:'https://www.fanfiction.net/s/11083706/1/An-American-Muggle-in-Slytherin-House',
+  permissionUrl:'https://www.fanfiction.net/s/11083706/1/An-American-Muggle-in-Slytherin-House',
+  permissionLabel:'CC BY-NC-SA 4.0 · author-declared original contribution',
+  contentNote:'K-rated at source · school adventure and romance.'
+ },
+ {
+  id:'greame-nevernever-story',
+  title:'A Nevernever Story',
+  creator:'Greame',
+  published:'2013',
+  fandom:'The Dresden Files',
+  description:'An original wizard is drawn into an increasingly dangerous mission through the Nevernever.',
+  sourceUrl:'https://www.fanfiction.net/s/9102776/1/A-Nevernever-Story',
+  permissionUrl:'https://www.fanfiction.net/s/9102776/1/A-Nevernever-Story',
+  permissionLabel:'Creative Commons noncommercial · author-stated; exact version unspecified',
+  contentNote:'Teen-rated · supernatural danger, violence and adventure.'
+ },
+ {
+  id:'jrush-v-for-vengeance',
+  title:'V for Vengeance',
+  creator:'JRush',
+  published:'2011 · updated 2012',
+  fandom:'The Dresden Files',
+  description:'Harry and Lash help a young woman in trouble with vampires.',
+  sourceUrl:'https://www.fanfiction.net/s/6928484/1/V-for-Vengeance',
+  permissionUrl:'https://www.fanfiction.net/s/6928484/1/V-for-Vengeance',
+  permissionLabel:'Creative Commons noncommercial · author-stated; exact version unspecified',
+  contentNote:'Teen-rated · vampires, danger and horror.'
+ },
+ {
+  id:'ken1245632-naruto-dragon-chronicles',
+  title:'Naruto: Dragon Chronicles Part 1',
+  creator:'Ken1245632',
+  published:'2021 · updated 2022',
+  fandom:'Naruto · Dark Souls crossover',
+  description:'Naruto’s world collides with a darker fantasy setting on a quest involving Priscilla.',
+  sourceUrl:'https://www.fanfiction.net/s/14013574/1/Naruto-Dragon-Chronicles-Part-1',
+  permissionUrl:'https://www.fanfiction.net/s/14013574/1/Naruto-Dragon-Chronicles-Part-1',
+  permissionLabel:'CC BY-NC-SA 4.0 · author-declared original contribution',
+  contentNote:'M-rated at source · violence, dark fantasy and adventure.'
  }
 ]);

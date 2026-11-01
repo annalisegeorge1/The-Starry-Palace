@@ -97,3 +97,96 @@
 .palace-shell.full-palace-shell .palace-fanfiction-more:focus-visible{
  outline:2px solid var(--ui-accent);outline-offset:3px;
 }
+
+/* Quiet metadata typography and source-provenance rating labels. */
+.palace-shell.full-palace-shell .palace-fanfiction-filters{
+ display:flex;align-items:end;flex-wrap:wrap;gap:9px;
+ margin:14px 0 5px;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-filters label{
+ display:flex;flex-direction:column;gap:4px;min-width:min(100%,180px);
+ flex:1;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-filters label:first-child{
+ flex:2;min-width:min(100%,225px);
+}
+.palace-shell.full-palace-shell .palace-fanfiction-filters label>span{
+ color:var(--ui-muted);font-size:.7rem;font-weight:550;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-filters input,
+.palace-shell.full-palace-shell .palace-fanfiction-filters select{
+ width:100%;min-height:35px;padding:7px 10px;
+ background:var(--ui-surface);border:1px solid var(--ui-line);
+ color:var(--ui-text);border-radius:9px;font-size:.8rem;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-filters button,
+.palace-shell.full-palace-shell .palace-fanfiction-age-notice button{
+ min-height:35px;border:1px solid var(--ui-line);border-radius:9px;
+ padding:6px 11px;font:600 .76rem/1.35 system-ui,sans-serif;
+ color:var(--ui-text);background:var(--ui-surface);cursor:pointer;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-meta{
+ display:flex;flex-direction:column;gap:7px;width:100%;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-rating{
+ display:inline-flex;flex-wrap:wrap;align-items:baseline;
+ align-self:flex-start;color:var(--ui-text);
+ background:var(--ui-surface);border:1px solid var(--ui-line);
+ border-radius:6px;padding:3px 8px;font-size:.73rem;font-weight:650;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-rating small{
+ color:var(--ui-muted);font-size:.67rem;font-weight:450;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-tags,
+.palace-shell.full-palace-shell .palace-fanfiction-all-tags>div{
+ display:flex;align-items:center;flex-wrap:wrap;gap:4px;
+}
+.palace-shell.full-palace-shell .palace-ff-tag{
+ display:inline-flex;max-width:100%;
+ border:1px solid var(--ui-line);border-radius:999px;
+ padding:3px 7px;color:var(--ui-muted);
+ background:var(--palace-glass-quiet,var(--ui-surface));
+ font-size:.66rem;line-height:1.4;overflow-wrap:anywhere;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-all-tags>summary{
+ color:var(--ui-accent);font-size:.67rem;cursor:pointer;
+ padding:3px;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-all-tags[open]{
+ width:100%;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-all-tags>div{
+ padding:5px 0 0;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-warnings{
+ margin:0!important;color:var(--ui-muted);line-height:1.4;
+ font-size:.7rem;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-warnings strong{
+ font-weight:650;color:var(--ui-text);
+}
+.palace-shell.full-palace-shell .palace-fanfiction-age-notice{
+ margin-top:11px;border:1px solid var(--ui-line);border-radius:10px;
+ padding:12px;font-size:.75rem;color:var(--ui-muted);
+}
+.palace-shell.full-palace-shell .palace-fanfiction-age-notice p{
+ margin:0 0 9px;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-no-results{
+ font-size:.82rem;color:var(--ui-muted);padding:10px 0;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-filters :focus-visible,
+.palace-shell.full-palace-shell .palace-fanfiction-all-tags :focus-visible,
+.palace-shell.full-palace-shell .palace-fanfiction-age-notice button:focus-visible{
+ outline:2px solid var(--ui-accent);outline-offset:2px;
+}
+@media(max-width:620px){
+ .palace-shell.full-palace-shell .palace-fanfiction-filters{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,130px);
+ }
+ .palace-shell.full-palace-shell .palace-fanfiction-filters label,
+ .palace-shell.full-palace-shell .palace-fanfiction-filters label:first-child{
+  min-width:0;
+ }
+ .palace-shell.full-palace-shell .palace-fanfiction-entry{padding:12px 13px}
+}
