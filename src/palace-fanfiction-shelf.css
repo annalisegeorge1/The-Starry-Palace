@@ -190,3 +190,8 @@
  }
  .palace-shell.full-palace-shell .palace-fanfiction-entry{padding:12px 13px}
 }
+
+.palace-shell.full-palace-shell .palace-fanfiction-catalogue-total{
+ color:var(--ui-muted);font:550 .76rem/1.48 system-ui,sans-serif;
+ margin:8px 0 0;
+}

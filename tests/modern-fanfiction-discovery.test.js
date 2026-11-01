@@ -23,8 +23,8 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(shelf).toContain("PUBLIC DOMAIN · HOSTED ON THE PALACE");
  });
  it('links to actual writers and their permission evidence without mirroring modern text',()=>{
-  expect(MODERN_FANFICTION_LINKS).toHaveLength(56);
-  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.id)).size).toBe(56);
+  expect(MODERN_FANFICTION_LINKS).toHaveLength(68);
+  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.id)).size).toBe(68);
   expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.creator)).size).toBeGreaterThanOrEqual(7);
   for(const w of MODERN_FANFICTION_LINKS){
    expect(w.title).toBeTruthy();
@@ -44,6 +44,8 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(shelf).toContain('allowedModern.slice(0,visibleModernCount)');
   expect(shelf).toContain('Show more fanfiction');
   expect(shelf).toContain('I am 18+ · Show mature links');
+  expect(shelf).toContain('Hide mature links');
+  expect(shelf).toContain('MODERN_FANFICTION_LINKS.length');
   expect(shelf).toContain('fanfiction-filters');
  });
  it('assigns explicit ratings or not-rated status, readable tag families and warnings to every linked fanfic',()=>{
@@ -157,6 +159,51 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'One Piece'}).some(w=>w.id==='lalunaticscribe-adventure-man-of-d')).toBe(true);
   expect(MODERN_FANFICTION_LINKS.filter(w=>w.creator==='lalunaticscribe')
    .every(w=>w.permissionLabel.includes('exact licence and terms unspecified'))).toBe(true);
+ });
+ it('preserves the entire discovered catalogue, 2 verified hosted fanfics, and author-only attribution',()=>{
+  const combined=MODERN_FANFICTION_LINKS.map(w=>w.id);
+  expect(combined.length).toBe(68);
+  expect(new Set(combined).size).toBe(68);
+  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.sourceUrl)).size).toBe(68);
+  expect(Object.keys(MODERN_FANFICTION_GUIDES).length).toBe(68);
+  expect(Object.keys(HISTORICAL_FANFICTION_GUIDES).length).toBe(2);
+  for(const work of MODERN_FANFICTION_LINKS){
+    expect(work.creator.trim().length).toBeGreaterThan(0);
+    expect(work.permissionUrl.startsWith('https://')).toBe(true);
+    expect(work.sourceUrl.startsWith('https://')).toBe(true);
+  }
+  expect(shelf).toContain("MODERN_FANFICTION_LINKS.length} modern recommendations");
+  expect(shelf).toContain("archiveWorks.filter(work=>work.is_archive&&isHistoricalFanfiction(work)).length");
+  expect(shelf).toContain('onClick={()=>setVisibleModernCount(current=>Math.min(current+12,allowedModern.length))}');
+  const renderedSources=[readFileSync('src/palaceFanfictionDiscovery.js','utf8'),shelf,
+    readFileSync('src/DirectClassicReader.jsx','utf8')].join('\n');
+  expect(renderedSources).not.toMatch(/chat\s?gpt|openai|written\s+by\s+ai|generated\s+by\s+ai/i);
+ });
+ it('includes twelve new author-permitted works with correct ratings and searchable tags',()=>{
+  const newIds=[
+   'lastgoodname-a-storybook-story','lastgoodname-stonewalling',
+   'lastgoodname-failure-communicate','lastgoodname-72-days-counting',
+   'lastgoodname-what-little-girls-made-of','lastgoodname-four-conversations',
+   'lastgoodname-kristy-horrible-breakup','lastgoodname-it-could-work',
+   'simplynia-to-catch-a-duke','simplynia-reckless-abandon',
+   'simplynia-the-forgery','simplynia-ides-of-march'
+  ];
+  expect(newIds).toHaveLength(12);
+  for(const id of newIds){
+    const work=MODERN_FANFICTION_LINKS.find(w=>w.id===id);
+    expect(work).toBeDefined();
+    expect(work.sourceUrl).toMatch(/^https:\/\/www.fanfiction.net\/s\/\d+\//);
+    const guide=modernFanfictionGuide(work);
+    expect(guide.tags.some(t=>t.category==='fandom')).toBe(true);
+    expect(guide.rating).not.toBe('not_rated');
+    expect(work.permissionLabel).toMatch(/^CC BY-NC-SA/);
+  }
+  expect(MODERN_FANFICTION_LINKS.filter(w=>w.creator==='The Last Good Name Left')).toHaveLength(8);
+  expect(MODERN_FANFICTION_LINKS.filter(w=>w.creator==='simplynia')).toHaveLength(5);
+  expect(modernFanfictionGuide({id:'lastgoodname-four-conversations'}).rating).toBe('teen');
+  expect(modernFanfictionGuide({id:'simplynia-to-catch-a-duke'}).rating).toBe('general');
+  expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'The Princess Bride'}).some(w=>w.id==='lastgoodname-a-storybook-story')).toBe(true);
+  expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Klaus Mikaelson'}).some(w=>w.id==='simplynia-to-catch-a-duke')).toBe(true);
  });
  it('uses the existing theme and avoids new mobile dock or navigation geometry',()=>{
   expect(css).toContain('var(--ui-surface)');
