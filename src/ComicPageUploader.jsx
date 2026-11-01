@@ -15,6 +15,7 @@ export default function ComicPageUploader({userId,comicId,episodeId,episodeTitle
  const[message,setMessage]=useState('');
  const[publishedAck,setPublishedAck]=useState(false);
  const activeRef=useRef(false);
+ const nextQueueId=useRef(0);
  const previews=useRef(new Set());
  useEffect(()=>()=>{for(const url of previews.current)URL.revokeObjectURL(url);previews.current.clear()},[]);
  const createdUrl=file=>{
@@ -31,7 +32,7 @@ export default function ComicPageUploader({userId,comicId,episodeId,episodeTitle
   if(activeRef.current)return;
   const {accepted,rejected}=selectComicPageFiles(fileList,entries);
   if(accepted.length)setEntries(current=>[...current,...accepted.map(file=>({
-   id:crypto.randomUUID(),file,preview:createdUrl(file),caption:'',altText:'',decorative:false,status:'pending',error:''
+   id:'queued-'+(++nextQueueId.current),file,preview:createdUrl(file),caption:'',altText:'',decorative:false,status:'pending',error:''
   }))]);
   setOpen(true);
   if(rejected.length){
@@ -109,6 +110,7 @@ export default function ComicPageUploader({userId,comicId,episodeId,episodeTitle
    <label className="comic-upload-addmore">Add more images to this batch
     <input type="file" accept={COMIC_IMAGE_ACCEPT} multiple disabled={busy||entries.length>=COMIC_UPLOAD_BATCH_LIMIT} onChange={e=>{receiveFiles(e.target.files);e.target.value=''}}/>
    </label>
+   {!ready.ready&&waiting.length>0&&!busy&&<p className="comic-upload-readiness">{ready.reason}</p>}
    <div className="comic-upload-queue" aria-label="Pages queued for upload">
     {entries.map((entry,i)=><article className={'comic-upload-item status-'+entry.status} key={entry.id}>
      <div className="comic-upload-item-head">
