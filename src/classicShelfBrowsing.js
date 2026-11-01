@@ -72,6 +72,12 @@ export const CLASSIC_LIBRARY_COLLECTIONS=[
   "terms": []
  },
  {
+  "id": "historical-fanfiction",
+  "glyph": "✧",
+  "label": "Historical Fanfiction",
+  "terms": ["historical fanfiction"]
+ },
+ {
   "id": "gothic",
   "glyph": "◐",
   "label": "Gothic & Strange",
