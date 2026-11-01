@@ -682,4 +682,148 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
   permissionLabel:'Creative Commons · author-stated; exact licence and terms unspecified',
   contentNote:'Source Fiction T · seven chapters · complete · mystery, adventure and supernatural threats.'
  }
+ ,{
+  id:'lastgoodname-a-storybook-story',
+  title:'A Storybook Story',
+  creator:'The Last Good Name Left',
+  published:'2009',
+  fandom:'The Princess Bride',
+  description:'Westley, Buttercup, Inigo and Fezzik discover their happy ending may take more work than expected.',
+  sourceUrl:'https://www.fanfiction.net/s/4782138/1/A-Storybook-Story',
+  permissionUrl:'https://www.fanfiction.net/u/1245678/The-Last-Good-Name-Left',
+  permissionLabel:'CC BY-NC-SA 3.0 · author profile licenses all their original works',
+  contentNote:'Source Fiction K · complete one-shot · action, comic danger and injury.'
+ },
+ {
+  id:'lastgoodname-stonewalling',
+  title:'Stonewalling',
+  creator:'The Last Good Name Left',
+  published:'2009',
+  fandom:'The Devil Wears Prada',
+  description:'Andy tells Nigel about her relationship with Miranda, revealing different ideas about privacy and coming out.',
+  sourceUrl:'https://www.fanfiction.net/s/4782122/1/Stonewalling',
+  permissionUrl:'https://www.fanfiction.net/u/1245678/The-Last-Good-Name-Left',
+  permissionLabel:'CC BY-NC-SA 3.0 · author profile licenses all their original works',
+  contentNote:'Source Fiction K · complete one-shot · relationship privacy and LGBTQ+ themes.'
+ },
+ {
+  id:'lastgoodname-failure-communicate',
+  title:'A Failure to Communicate',
+  creator:'The Last Good Name Left',
+  published:'2009',
+  fandom:'The Devil Wears Prada',
+  description:'A short Miranda-centered story about the things people do not ask—and the misunderstandings that follow.',
+  sourceUrl:'https://www.fanfiction.net/s/4782108/1/A-Failure-to-Communicate',
+  permissionUrl:'https://www.fanfiction.net/u/1245678/The-Last-Good-Name-Left',
+  permissionLabel:'CC BY-NC-SA 3.0 · author profile licenses all their original works',
+  contentNote:'Source Fiction K · complete short one-shot · humour and romance.'
+ },
+ {
+  id:'lastgoodname-72-days-counting',
+  title:'72 Days and Counting',
+  creator:'The Last Good Name Left',
+  published:'2009',
+  fandom:'The Devil Wears Prada',
+  description:'A woman relives the worst day of her life, over and over, in a romantic time-loop story.',
+  sourceUrl:'https://www.fanfiction.net/s/4782087/1/72-Days-and-Counting',
+  permissionUrl:'https://www.fanfiction.net/u/1245678/The-Last-Good-Name-Left',
+  permissionLabel:'CC BY-NC-SA 3.0 · author profile licenses all their original works',
+  contentNote:'Source Fiction T · complete one-shot · repeated distress and romance.'
+ },
+ {
+  id:'lastgoodname-what-little-girls-made-of',
+  title:'What Little Girls Are Made Of',
+  creator:'The Last Good Name Left',
+  published:'2007',
+  fandom:'Buffy the Vampire Slayer',
+  description:'Buffy chooses a birthday present for Faith in a short humorous and affectionate story.',
+  sourceUrl:'https://www.fanfiction.net/s/3925824/1/What-Little-Girls-Are-Made-Of',
+  permissionUrl:'https://www.fanfiction.net/u/1245678/The-Last-Good-Name-Left',
+  permissionLabel:'CC BY-NC-SA 3.0 · author profile licenses all their original works',
+  contentNote:'Source Fiction K+ · complete · Buffy/Faith humour and romance.'
+ },
+ {
+  id:'lastgoodname-four-conversations',
+  title:'Four Conversations',
+  creator:'The Last Good Name Left',
+  published:'2007',
+  fandom:'Buffy the Vampire Slayer',
+  description:'Faith and Willow talk through questions of love and belonging across four conversations.',
+  sourceUrl:'https://www.fanfiction.net/s/3537118/1/Four-Conversations',
+  permissionUrl:'https://www.fanfiction.net/u/1245678/The-Last-Good-Name-Left',
+  permissionLabel:'CC BY-NC-SA 3.0 · author profile licenses all their original works',
+  contentNote:'Source Fiction T · complete one-shot · romantic and emotional themes.'
+ },
+ {
+  id:'lastgoodname-kristy-horrible-breakup',
+  title:'Kristy and the Horrible BreakUp',
+  creator:'The Last Good Name Left',
+  published:'2007',
+  fandom:'The Baby-Sitters Club',
+  description:'Kristy is distraught over Sam and Stacey’s breakup and tries to bring them together again.',
+  sourceUrl:'https://www.fanfiction.net/s/3535653/1/Kristy-and-the-Horrible-BreakUp',
+  permissionUrl:'https://www.fanfiction.net/u/1245678/The-Last-Good-Name-Left',
+  permissionLabel:'CC BY-NC-SA 3.0 · author profile licenses all their original works',
+  contentNote:'Source Fiction T · complete one-shot · relationships and humour.'
+ },
+ {
+  id:'lastgoodname-it-could-work',
+  title:'It Could Work',
+  creator:'The Last Good Name Left',
+  published:'2007',
+  fandom:'Stargate Atlantis',
+  description:'Rodney and Radek argue about how to solve a problem in a very short science-fiction vignette.',
+  sourceUrl:'https://www.fanfiction.net/s/3535619/1/It-Could-Work',
+  permissionUrl:'https://www.fanfiction.net/u/1245678/The-Last-Good-Name-Left',
+  permissionLabel:'CC BY-NC-SA 3.0 · author profile licenses all their original works',
+  contentNote:'Source Fiction K+ · complete microfiction · humorous disagreement.'
+ },
+ {
+  id:'simplynia-to-catch-a-duke',
+  title:'To Catch A Duke (& Duchess): A Courtship of Convenience',
+  creator:'simplynia',
+  published:'2025',
+  fandom:'The Vampire Diaries · Bridgerton-inspired AU',
+  description:'Lady Bonnie Bennett and Niklaus Mikaelson face magical courtship rituals and scandal in a Regency-style Mystic Falls.',
+  sourceUrl:'https://www.fanfiction.net/s/14504364/1/To-Catch-A-Duke-Duchess-A-Courtship-of-Convenience',
+  permissionUrl:'https://www.fanfiction.net/u/4367617/simplynia',
+  permissionLabel:'CC BY-NC-SA 4.0 · author profile licenses all their original works',
+  contentNote:'Source Fiction K+ · four chapters · complete · romantic courtship and social pressure.'
+ },
+ {
+  id:'simplynia-reckless-abandon',
+  title:'Reckless Abandon',
+  creator:'simplynia',
+  published:'2020 · updated 2024',
+  fandom:'The Vampire Diaries',
+  description:'Bonnie Bennett navigates high society and an uneasy relationship with Niklaus Mikaelson.',
+  sourceUrl:'https://www.fanfiction.net/s/13666393/1/Reckless-Abandon',
+  permissionUrl:'https://www.fanfiction.net/u/4367617/simplynia',
+  permissionLabel:'CC BY-NC-SA 4.0 · author profile licenses all their original works',
+  contentNote:'Source Fiction T · six chapters · drama and hurt/comfort.'
+ },
+ {
+  id:'simplynia-the-forgery',
+  title:'The Forgery',
+  creator:'simplynia',
+  published:'2021 · updated 2023',
+  fandom:'The Vampire Diaries · modern AU',
+  description:'A Secret Service agent crosses paths with a talented forgery artist in a Bonnie/Klaus alternate universe.',
+  sourceUrl:'https://www.fanfiction.net/s/13855330/1/The-Forgery',
+  permissionUrl:'https://www.fanfiction.net/u/4367617/simplynia',
+  permissionLabel:'CC BY-NC-SA 4.0 · author profile licenses all their original works',
+  contentNote:'Source Fiction K · three chapters · crime-adjacent drama.'
+ },
+ {
+  id:'simplynia-ides-of-march',
+  title:'Ides of March',
+  creator:'simplynia',
+  published:'2020 · updated 2021',
+  fandom:'The Vampire Diaries',
+  description:'A Bonnie/Klaus story about ominous events, loyalty and emotional fallout.',
+  sourceUrl:'https://www.fanfiction.net/s/13523249/1/Ides-of-March',
+  permissionUrl:'https://www.fanfiction.net/u/4367617/simplynia',
+  permissionLabel:'CC BY-NC-SA 4.0 · author profile licenses all their original works',
+  contentNote:'Source Fiction K+ · two chapters · complete · tragedy and hurt/comfort.'
+ }
 ]);
