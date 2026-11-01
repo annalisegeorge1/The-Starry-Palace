@@ -167,7 +167,7 @@ export default function PalaceFandomAtlas(){
   </>}
   {atlasSection==='fanfiction'&&<section className="palace-fandom-linked-section" aria-label="Fanfiction by fandom">
    {selectedNames.length>0&&<div className="palace-fandom-selection-note"><span>Fandoms selected: <strong>{selectedNames.join(' · ')}</strong></span><button type="button" onClick={()=>changeParams({ids:null,match:null})}>Browse all linked fanfiction</button><button type="button" onClick={()=>changeParams({section:null})}>Choose different fandoms</button></div>}
-   <UnifiedFanworkCatalogue key={selected.join(',')+'|'+mode} publishedWorks={[...(selectedNames.length?stories:fanworkRows),...historicFanworks]} globalQuery={selectedNames.length?'':keyword} fandomNames={selectedNames} fandomMatch={mode} loading={fanworksBusy||selectedNames.length>0&&storyBusy} loadError={fanworksError||selectedNames.length>0&&storyError} inFandomAtlas={true}/>
+   <UnifiedFanworkCatalogue key={selected.join(',')+'|'+mode} publishedWorks={[...(selectedNames.length?stories:fanworkRows),...historicFanworks]} globalQuery={selectedNames.length?'':keyword} fandomNames={selectedNames} fandomMatch={mode} loading={fanworksBusy||selectedNames.length>0&&storyBusy} loadError={fanworksError||selectedNames.length>0&&storyError} inFandomAtlas={true} defaultSource="hosted"/>
    <p className="palace-fandom-complete-archive"><Link to="/reading?section=fanfiction">Browse the full Palace-hosted and linked Fanwork catalogue →</Link></p>
   </section>}
  </section>;
