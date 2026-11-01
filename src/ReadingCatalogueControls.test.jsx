@@ -20,3 +20,11 @@ it('shows the real remaining batch and removes the control when complete',()=>{
  rerender(<ReadingCatalogueMore shown={29} total={29} onMore={more}/>);
  expect(screen.queryByRole('button')).toBeNull();
 });
+
+it('distinguishes 81 external author-source fanfics from the hosted story count',()=>{
+ render(<ReadingCatalogueControls layout="compact" onLayout={()=>{}} shown={6} total={6} linkedCount={81}/>);
+ expect(screen.getByText(/PALACE-HOSTED FANFICTION/)).toBeTruthy();
+ expect(screen.getByRole('status').textContent).toContain('6');
+ const jump=screen.getByRole('link',{name:/See all 81 modern fanfic recommendations/});
+ expect(jump.getAttribute('href')).toBe('#palace-fanfiction-shelf-title');
+});

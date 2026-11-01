@@ -215,3 +215,15 @@
   min-width:0;justify-self:start;
  }
 }
+
+/* The hosted archive immediately follows this linked recommendation collection. */
+#palace-fanfiction-shelf-title{scroll-margin-top:105px}
+.palace-reading-linked-fanfiction{
+ display:inline-flex;align-items:center;
+ margin-top:7px;padding:6px 0;
+ color:var(--ui-accent,var(--ui-text));font-weight:650;font-size:.85rem;
+ text-decoration:underline;text-underline-offset:3px;
+}
+.palace-reading-linked-fanfiction:focus-visible{
+ outline:2px solid var(--ui-accent,currentColor);outline-offset:3px;
+}

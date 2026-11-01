@@ -318,6 +318,13 @@ export function ReadingLive({Frame}){
  const catalogueSort=readingChoices.catalogueSort;const setCatalogueSort=value=>setReadingChoice('catalogueSort',value);
  const includedTags=readingChoices.includeTags;const excludedTags=readingChoices.excludeTags;
  const inAdvancedSearch=new URLSearchParams(location.search).get('view')==='search';
+ const fanfictionSectionRequested=new URLSearchParams(location.search).get('section')==='fanfiction';
+ useEffect(()=>{if(fanfictionSectionRequested&&origin!=='fandom')setOrigin('fandom')},[fanfictionSectionRequested,origin]);
+ useEffect(()=>{
+  if(fanfictionSectionRequested&&origin==='fandom'&&!inAdvancedSearch){
+   document.getElementById('palace-fanfiction-shelf-title')?.scrollIntoView({block:'start'});
+  }
+ },[fanfictionSectionRequested,origin,inAdvancedSearch]);
  // Public archive results are server-filtered; private lenses and mood shelves
  // intentionally stay on the member's local reading shelf.
  const archiveBrowseEnabled=!inAdvancedSearch&&readingChoices.discoveryMode==='browse'
@@ -480,13 +487,12 @@ export function ReadingLive({Frame}){
   <section className="legacy-reading-intro chic-reading-intro reading-intro-calm"><p className="eyebrow">FIND YOUR NEXT WORLD</p><h1>{advancedView?'Search with precision. Wander with style.':'Stories first. Filters when you need them.'} <PalaceTopicHelp id="reading"/></h1><p>{advancedView?'Build a constellation with text, include and exclude tags, rating, status and origin—without leaving the Reading Rooms.':'All Stories brings the Palace together. Original Fiction includes creator-owned work and readable Palace Classics, while Fanfiction includes member fanworks and properly attributed historical fanfiction.'}</p></section>
   {!session&&<GuestReadingInvitation returnTo="/reading" context="discover"/>}
   <nav className="reading-unified-tabs" aria-label="Browse by story type">
-    <button type="button" aria-pressed={origin==='all'} className={origin==='all'?'active':''} onClick={()=>setOrigin('all')}>All Stories</button>
-    <button type="button" aria-pressed={origin==='original'} className={origin==='original'?'active':''} onClick={()=>setOrigin('original')}>Original Fiction</button>
-    <button type="button" aria-pressed={origin==='fandom'} className={origin==='fandom'?'active':''} onClick={()=>{setOrigin('fandom');if(advancedView)navigate('/reading')}}>Fanfiction</button>
+    <button type="button" aria-pressed={origin==='all'} className={origin==='all'?'active':''} onClick={()=>{setOrigin('all');if(fanfictionSectionRequested)navigate('/reading')}}>All Stories</button>
+    <button type="button" aria-pressed={origin==='original'} className={origin==='original'?'active':''} onClick={()=>{setOrigin('original');if(fanfictionSectionRequested)navigate('/reading')}}>Original Fiction</button>
+    <button type="button" aria-pressed={origin==='fandom'} className={origin==='fandom'?'active':''} onClick={()=>{setOrigin('fandom');navigate('/reading?section=fanfiction')}}>Fanfiction</button>
     <Link className={advancedView?'active':''} aria-current={advancedView?'page':undefined} to="/reading?view=search">Advanced Search</Link>
     <details className="reading-extra-views"><summary>Explore ▾</summary><div><Link to="/reading" onClick={()=>setReadingChoice('discoveryMode','browse')}>Stories</Link><Link to="/reading" onClick={()=>setReadingChoice('discoveryMode','discover')}>Discover</Link><Link to="/tags">Tags room</Link></div></details>
    </nav>
-  {origin==='fandom'&&!advancedView&&<PalaceFanfictionShelf archiveWorks={archiveWorks}/>}
   {advancedView&&<section className="reading-advanced-search">
    <div className="advanced-search-command"><div><p className="eyebrow">DEEP SEARCH · READER CONTROLLED</p><h2>Build your constellation.</h2><p>Choose what must be present, what must stay out, then refine the shelf. Tags remain a full Palace room too.</p></div><Link to="/tags">Open the Tags room →</Link></div>
    <form className="advanced-search-bar" onSubmit={runAdvancedSearch}><span aria-hidden="true"><PalaceIcon name="search"/></span><input value={advancedText} onChange={e=>setAdvancedText(e.target.value)} placeholder="Title, summary, phrase, author cue…"/><button disabled={advancedBusy}>{advancedBusy?'Gathering…':'Search worlds'}</button></form>
@@ -553,7 +559,8 @@ export function ReadingLive({Frame}){
   {session&&<section className="reading-reader-lenses" aria-label="Your private reading lenses"><div><small>MY READING LENSES</small><span>Private to you · never changes public discovery ranking</span></div><nav>{[['all','All'],['unread','Unread'],['reading','In progress'],['new','New chapters'],['saved','Saved'],['following','Following'],['finished','Finished']].map(([key,label])=><button type="button" key={key} className={readerLens===key?'active':''} aria-pressed={readerLens===key} onClick={()=>setReaderLens(key)}>{label}</button>)}</nav>{(readerLens!=='all'||query||rating!=='all'||status!=='all'||vibeDoor!=='all')&&<button type="button" className="quiet-button" onClick={clearReadingFilters}>Clear reading filters</button>}</section>}
   {readingNotice&&<p className="reading-partial-notice" role="status">✧ {readingNotice}</p>}
   <div className="reading-catalogue-layout"><div className="reading-catalogue-main">
-  {showBrowseCards&&<ReadingCatalogueControls layout={readingChoices.layout} onLayout={value=>setReadingChoice('layout',value)} shown={archiveBrowseEnabled?visibleCatalogue.length:Math.min(readingChoices.visibleCount,catalogue.length)} total={visibleTotal}/>}
+  {origin==='fandom'&&<PalaceFanfictionShelf archiveWorks={archiveWorks} showHistorical={false}/>}
+  {showBrowseCards&&<ReadingCatalogueControls layout={readingChoices.layout} onLayout={value=>setReadingChoice('layout',value)} shown={archiveBrowseEnabled?visibleCatalogue.length:Math.min(readingChoices.visibleCount,catalogue.length)} total={visibleTotal} linkedCount={origin==='fandom'?MODERN_FANFICTION_LINKS.length:0}/>}
   <State loading={browseLoading} error={browseError}>{showBrowseCards&&<section className="story-shelf refined chic-story-catalogue">{visibleCatalogue.length===0&&<div className="reading-catalogue-empty" role="status"><span className="reading-empty-star" aria-hidden="true">☾ ✦</span><div><p className="eyebrow">{activeReadingFilters.length?'A QUIETER CORNER':'AN OPEN SHELF'}</p><h2>{activeReadingFilters.length?'No worlds match these choices yet.':'This shelf is waiting for its first story.'}</h2><p>{activeReadingFilters.length?'Nothing is wrong with your search. Remove a filter or open the full Reading Rooms to browse again.':'Newly published stories will appear here when their writers open the doors.'}</p><div className="reading-empty-actions">{activeReadingFilters.length?<button type="button" onClick={clearReadingFilters}>Show every story →</button>:<Link to="/writers">Explore the Writer’s Door →</Link>}<Link to="/reading?view=search">Try advanced search →</Link></div></div></div>}{visibleCatalogue.map(w=>{
  const badges=flags(w);
  const prismStory=isLgbtqContent(w.title,w.summary,workTags(w));

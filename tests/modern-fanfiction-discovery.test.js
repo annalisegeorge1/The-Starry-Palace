@@ -17,7 +17,7 @@ describe('Fanfiction section contains rights-aware historical and modern discove
  });
  it('places archived historical fanfic in the existing Fanfiction origin and uses the correct hosted reader',()=>{
   expect(reading).toContain("summary:r.summary,archive_category:r.category,work_type:readingArchiveWorkType(r)");
-  expect(reading).toContain("origin==='fandom'&&!advancedView&&<PalaceFanfictionShelf archiveWorks={archiveWorks}/>");
+  expect(reading).toContain("origin==='fandom'&&<PalaceFanfictionShelf archiveWorks={archiveWorks} showHistorical={false}/>");
   expect(reading).toContain('>Fanfiction</button>');
   expect(shelf).toContain("directClassicHref(work)");
   expect(shelf).toContain("PUBLIC DOMAIN · HOSTED ON THE PALACE");
@@ -251,24 +251,27 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(shelf).toContain('{rating,query,animeOnly}');
   expect(shelf).toContain('setAnimeOnly(false)');
  });
- it('keeps 81 modern recommendations visible in default Browse mode rather than Discover-only',()=>{
-  const defaults=readFileSync('src/useReadingDiscoveryState.js','utf8');
-  expect(defaults).toContain("discoveryMode:'browse'");
-  const shelf='<PalaceFanfictionShelf archiveWorks={archiveWorks}/>';
-  expect(reading.split(shelf).length-1).toBe(1);
-  const nav=reading.indexOf('aria-label="Browse by story type"');
-  const shelfAt=reading.indexOf(shelf);
-  const discoverOnly=reading.indexOf("readingChoices.discoveryMode==='discover'");
-  const browserAtlas=reading.indexOf('className="reading-scope-selector reading-scope-calm"');
-  expect(nav).toBeGreaterThan(0);
-  expect(shelfAt).toBeGreaterThan(nav);
-  expect(shelfAt).toBeLessThan(discoverOnly);
-  expect(shelfAt).toBeLessThan(browserAtlas);
-  expect(reading).toContain("onClick={()=>{setOrigin('fandom');if(advancedView)navigate('/reading')}}");
-  expect(reading).toContain('linked modern fanfics are listed above');
-  expect(shelf).toContain('MODERN_FANFICTION_LINKS.length} modern recommendations');
-  expect(MODERN_FANFICTION_LINKS.length).toBe(81);
- });
+ it('renders the linked recommendations beside the hosted story cards in normal Browse mode',()=>{
+   const defaults=readFileSync('src/useReadingDiscoveryState.js','utf8');
+   expect(defaults).toContain("discoveryMode:'browse'");
+   const shelf='<PalaceFanfictionShelf archiveWorks={archiveWorks} showHistorical={false}/>';
+   expect(reading.split(shelf).length-1).toBe(1);
+   const shelfAt=reading.indexOf(shelf);
+   const browseLayout=reading.indexOf('className="reading-catalogue-layout"');
+   const archiveHeader=reading.indexOf('<ReadingCatalogueControls');
+   expect(shelfAt).toBeGreaterThan(browseLayout);
+   expect(shelfAt).toBeLessThan(archiveHeader);
+   expect(reading).toContain("onClick={()=>{setOrigin('fandom');navigate('/reading?section=fanfiction')}}");
+   expect(reading).toContain("get('section')==='fanfiction'");
+   expect(reading).toContain("document.getElementById('palace-fanfiction-shelf-title')?.scrollIntoView");
+   expect(reading).toContain("linkedCount={origin==='fandom'?MODERN_FANFICTION_LINKS.length:0}");
+   expect(shelf).toContain('MODERN_FANFICTION_LINKS.length} stories to explore');
+   expect(shelf).toContain('showHistorical&&historic.length>0');
+   const controls=readFileSync('src/ReadingCatalogueControls.jsx','utf8');
+   expect(controls).toContain('See all {linkedCount} modern fanfic recommendations');
+   expect(controls).toContain('href="#palace-fanfiction-shelf-title"');
+   expect(MODERN_FANFICTION_LINKS.length).toBe(81);
+  });
  it('uses the existing theme and avoids new mobile dock or navigation geometry',()=>{
   expect(css).toContain('var(--ui-surface)');
   expect(css).toContain('var(--ui-text)');
