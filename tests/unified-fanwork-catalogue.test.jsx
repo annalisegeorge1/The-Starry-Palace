@@ -17,11 +17,11 @@ const hosted=[
  {id:'novel-1',title:'An Original Novel',slug:'original',work_type:'original',rating:'general'}
 ];
 describe('Unified Fanwork catalogue',()=>{
- it('combines actual member works, public-domain historical works and 81 independent links without duplicating',()=>{
+ it('combines actual member works, public-domain historical works and 98 independent links without duplicating',()=>{
   const entries=createUnifiedFanworks(hosted);
-  expect(entries).toHaveLength(83);
-  expect(new Set(entries.map(e=>e.key)).size).toBe(83);
-  expect(entries.filter(e=>e.kind==='link')).toHaveLength(81);
+  expect(entries).toHaveLength(100);
+  expect(new Set(entries.map(e=>e.key)).size).toBe(100);
+  expect(entries.filter(e=>e.kind==='link')).toHaveLength(98);
   expect(entries.filter(e=>e.kind==='member')).toHaveLength(1);
   expect(entries.filter(e=>e.kind==='historical')).toHaveLength(1);
   expect(entries.find(e=>e.kind==='member').href).toBe('/work/palace-story');
