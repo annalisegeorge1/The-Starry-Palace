@@ -117,6 +117,7 @@ import './member-profile-mobile-refinement.css';
 import './prism-mobile-studio-refinement.css';
 import './mobile-room-icon-polish.css';
 import './mobile-toolbar-palace-jewels.css';
+import './palace-home-content-jewels.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
