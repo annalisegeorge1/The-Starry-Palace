@@ -103,7 +103,7 @@
  }
  .treasury-gallery .catalogue-celestial-doorway .eyebrow{display:none!important}
  .treasury-gallery .catalogue-celestial-doorway h2{
-  font:600 .77rem/1.25 inherit!important;margin:0!important;
+  font-size:.77rem!important;line-height:1.25!important;font-weight:600!important;margin:0!important;
   overflow-wrap:anywhere;
  }
  .treasury-gallery .catalogue-celestial-doorway a{
@@ -122,7 +122,7 @@
   min-height:46px;padding:0 .8rem;border-radius:13px;
   border:1px solid var(--line,rgba(192,185,229,.25));
   background:color-mix(in srgb,var(--surface,#171b34) 93%,transparent);
-  color:inherit;font:600 .8rem/1 inherit;cursor:pointer;
+  color:inherit;font-size:.8rem;font-weight:600;line-height:1;cursor:pointer;
  }
  .treasury-gallery .treasury-filter-trigger svg{flex:none}
  .treasury-gallery .treasury-filter-trigger:focus-visible,
@@ -243,4 +243,20 @@
 }
 @media(prefers-reduced-motion:reduce){
  .treasury-gallery .treasury-filter-overlay,.treasury-gallery .treasury-filter-panel{transition:none!important}
+}
+
+@media(max-width:760px){
+ .palace-shell.full-palace-shell.daylight .treasury-gallery .treasury-filter-panel{
+  background:linear-gradient(155deg,#f5f0fa,#e8eaf6 85%);color:#302b4d;
+  border-color:#7465a66b;
+ }
+ .palace-shell.full-palace-shell.daylight .treasury-gallery .treasury-filter-sheet-heading button{
+  color:#302b4d;border-color:#8f7bbb66;background:#fff9;
+ }
+ .palace-shell.full-palace-shell.daylight .treasury-gallery .treasury-filter-panel :is(.badge-controls,.treasury-badge-filters) label{color:#453c65!important}
+ .palace-shell.full-palace-shell.daylight .treasury-gallery .treasury-filter-panel :is(.badge-controls,.treasury-badge-filters) select{
+  background:#fff!important;color:#302b4d!important;border-color:#9083ba88!important;
+ }
+ .palace-shell.full-palace-shell.daylight .treasury-gallery .treasury-filter-sheet-footer{background:#e9eaf6}
+ .palace-shell.full-palace-shell.daylight .treasury-gallery .treasury-filter-sheet-footer .treasury-reset-filters{color:#453c65}
 }
