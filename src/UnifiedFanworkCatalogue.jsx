@@ -67,10 +67,10 @@ export function filterUnifiedFanworks(rows,{query='',rating='all',source='all',a
 
 export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks=MODERN_FANFICTION_LINKS,
  globalQuery='',globalRating='all',completion='all',fandomNames=[],fandomMatch='any',
- loading=false,loadError='',inFandomAtlas=false,hasMoreHosted=false,onMoreHosted}){
+ loading=false,loadError='',inFandomAtlas=false,hasMoreHosted=false,onMoreHosted,defaultSource='all'}){
  const [search,setSearch]=useState('');
  const [rating,setRating]=useState('all');
- const [source,setSource]=useState('all');
+ const [source,setSource]=useState(defaultSource);
  const [animeOnly,setAnimeOnly]=useState(false);
  const [includeMature,setIncludeMature]=useState(false);
  const [visibleCount,setVisibleCount]=useState(12);
@@ -87,7 +87,7 @@ export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks
  const externalCount=all.filter(x=>x.kind==='link').length;
  const hostedCount=all.length-externalCount;
  const restricted=all.filter(x=>(x.rating==='mature'||x.rating==='explicit')).length;
- const reset=()=>{setSearch('');setRating('all');setSource('all');setAnimeOnly(false);setVisibleCount(12);setSort('title')};
+ const reset=()=>{setSearch('');setRating('all');setSource(defaultSource);setAnimeOnly(false);setVisibleCount(12);setSort('title')};
  return <section className="palace-unified-fanworks" aria-labelledby="palace-unified-fanworks-title">
   <header className="palace-unified-fanworks-head">
    <p className="eyebrow">FANFICTION · ONE SHARED DISCOVERY SHELF</p>
