@@ -1,0 +1,128 @@
+/*
+ * Mobile blue/indigo colour balance — visual refinement, 1 November 2026.
+ *
+ * Phones should feel like the existing desktop/tablet Palace: midnight/navy
+ * and cool paper-blue surfaces, with lilac retained for selected highlights.
+ * Only responsive shell tokens and general editorial glass are adjusted.
+ * Do not style member-chosen Chambers, artwork, story covers, badges,
+ * cultural/rainbow content, actual reading pages, writing paper or icons.
+ */
+@media (max-width:720px), (max-width:950px) and (max-height:600px) and (pointer:coarse) {
+  /* NIGHTFALL: replace widespread violet washes with midnight blue. */
+  .palace-shell.full-palace-shell.nightfall {
+    --palace-bg:#080f23;
+    --palace-bg-deep:#060c1e;
+    --ui-surface:#18243b;
+    --ui-raised:#202f49;
+    --ui-line:#435371;
+    --ui-selected:linear-gradient(110deg,#34446c,#253f57);
+    --palace-chrome-header:#101b32;
+    --palace-chrome-panel:rgba(15,27,48,.98);
+    --palace-chrome-search:rgba(21,37,61,.91);
+    --palace-chrome-raised:rgba(36,56,84,.93);
+    --palace-chrome-icon:rgba(130,166,205,.16);
+    --palace-chrome-active:rgba(111,143,201,.28);
+    --palace-chrome-border:rgba(147,171,216,.38);
+    --palace-glass-panel:
+      radial-gradient(ellipse at 8% 0%,rgba(137,171,223,.13),transparent 52%),
+      linear-gradient(125deg,rgba(37,53,90,.97),rgba(26,46,76,.96) 60%,rgba(23,63,78,.94));
+    --palace-glass-quiet:
+      linear-gradient(128deg,rgba(28,41,72,.96),rgba(22,40,70,.96) 60%,rgba(22,54,71,.94));
+    --palace-glass-active:
+      linear-gradient(120deg,rgba(66,76,127,.79),rgba(43,86,125,.72) 68%,rgba(38,106,117,.54));
+    --lustre-hero:
+      radial-gradient(ellipse at 5% -12%,rgba(167,190,243,.17),transparent 52%),
+      linear-gradient(118deg,#293b6b 0%,#284b73 57%,#235e6b 100%);
+    --lustre-card:
+      radial-gradient(ellipse at 4% 0%,rgba(174,201,246,.13),transparent 56%),
+      linear-gradient(132deg,rgba(38,53,88,.97),rgba(28,48,82,.97) 58%,rgba(24,69,83,.96));
+    --lustre-soft:
+      linear-gradient(130deg,rgba(31,45,78,.96),rgba(27,45,73,.97) 56%,rgba(23,58,75,.95));
+    --palace-unified-action-gradient:linear-gradient(118deg,#455b8c,#356b92 57%,#2d7180);
+    --palace-unified-action-hover:linear-gradient(118deg,#536c9b,#40799f 57%,#357f8b);
+    --palace-unified-action-border:rgba(171,195,232,.76);
+  }
+  .palace-shell.full-palace-shell.nightfall :is(.full-stage,.palace-stage) {
+    background:
+      radial-gradient(ellipse at 52% 14%,rgba(37,76,132,.22),transparent 60%),
+      linear-gradient(160deg,#0b1630 0%,#081429 52%,#060e21 100%)!important;
+  }
+  /* The mobile header must be opaque: never show scrolled text through it. */
+  .palace-shell.full-palace-shell.nightfall .full-stage>header.topbar.full-topbar {
+    background:#101b32!important;
+    background-image:linear-gradient(112deg,#152543,#101b32 65%,#122b40)!important;
+  }
+  .palace-shell.full-palace-shell.nightfall .full-stage>header.topbar.full-topbar::before {
+    background:linear-gradient(112deg,#152543,#101b32 65%,#122b40)!important;
+  }
+
+  /* DAYLIGHT: cool blue-white paper, not a blanket of lavender. */
+  .palace-shell.full-palace-shell.daylight {
+    --palace-bg:#eef3fa;
+    --palace-bg-deep:#e5edf8;
+    --palace-panel:#ffffff;
+    --palace-panel-raised:#ffffff;
+    --ui-surface:#ffffff;
+    --ui-raised:#e9f0fb;
+    --ui-selected:linear-gradient(110deg,#e2eafa,#dcecf3);
+    --palace-chrome-header:#f4f7fd;
+    --palace-chrome-panel:rgba(247,250,254,.99);
+    --palace-chrome-raised:rgba(229,239,251,.95);
+    --palace-chrome-icon:rgba(214,230,249,.72);
+    --palace-chrome-active:rgba(205,220,244,.83);
+    --palace-chrome-border:rgba(89,117,157,.34);
+    --palace-glass-panel:
+      radial-gradient(ellipse at 8% 0%,rgba(255,255,255,.96),transparent 53%),
+      linear-gradient(127deg,#e7eefc,#dceafb 60%,#dcf0f1);
+    --palace-glass-quiet:
+      linear-gradient(130deg,#f7f9fe,#e7eefb 62%,#e6f4f5);
+    --palace-glass-active:
+      linear-gradient(125deg,#d9e3f7,#cbdff4 65%,#c7e8e8);
+    --lustre-hero:
+      radial-gradient(ellipse at 3% 0%,rgba(255,255,255,.93),transparent 49%),
+      linear-gradient(120deg,#dbe7fa 0%,#cde2f5 58%,#c6ebe9 100%);
+    --lustre-card:
+      radial-gradient(ellipse at 4% 0%,rgba(255,255,255,.95),transparent 57%),
+      linear-gradient(130deg,#edf3fd 0%,#dfebf9 57%,#def2f0 100%);
+    --lustre-soft:linear-gradient(132deg,#f8faff,#eaf1fa 58%,#e7f5f5);
+    --palace-unified-action-gradient:linear-gradient(115deg,#dce6f9,#d5e8f7 61%,#d4f0ed);
+    --palace-unified-action-hover:linear-gradient(115deg,#cedcf4,#c5ddf1 61%,#c6e7e4);
+    --palace-unified-action-border:#7190be;
+    background-color:#eef3fa;
+  }
+  .palace-shell.full-palace-shell.daylight :is(.full-stage,.palace-stage) {
+    background:
+      radial-gradient(ellipse at 92% 5%,rgba(192,224,249,.26),transparent 60%),
+      linear-gradient(160deg,#f1f5fb 0%,#e8f0fa 56%,#e4f2f8 100%)!important;
+  }
+  .palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar {
+    background:#f4f7fd!important;
+    background-image:none!important;
+    border-bottom-color:rgba(89,117,157,.29)!important;
+  }
+  .palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar::before {
+    background:#f4f7fd!important;
+    opacity:1!important;
+  }
+
+  /* A few mobile-only tiles have hard-coded violet paint rather than tokens.
+     Tone them down in Nightfall without affecting Daylight's white cards. */
+  .palace-shell.full-palace-shell.nightfall #palace-content .palace-resume-section .palace-resume-card,
+  .palace-shell.full-palace-shell.nightfall #palace-content .palace-resume-section .palace-resume-card.feature {
+    background:linear-gradient(120deg,rgba(39,56,88,.86),rgba(27,52,79,.86))!important;
+  }
+  .palace-shell.full-palace-shell.nightfall #palace-content .chic-home-stats.palace-home-stats>a {
+    background:rgba(37,56,85,.80)!important;
+  }
+  .palace-shell.full-palace-shell.nightfall #palace-content .palace-home-shortcuts-calm>a:nth-child(-n+2) {
+    background:linear-gradient(115deg,rgba(47,69,111,.86),rgba(35,87,111,.73))!important;
+  }
+  .palace-shell.full-palace-shell.nightfall #palace-content .palace-home-shortcuts-calm>a:nth-child(n+3) {
+    background:rgba(41,62,88,.45)!important;
+  }
+}
+@media (forced-colors:active) {
+  .palace-shell.full-palace-shell:is(.nightfall,.daylight) :is(.full-stage,.palace-stage) {
+    background:Canvas!important;
+  }
+}
