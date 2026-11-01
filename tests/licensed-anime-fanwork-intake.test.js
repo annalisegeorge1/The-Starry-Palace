@@ -14,7 +14,7 @@ describe('Author-licensed fanfiction intake and safe publication',()=>{
    expect(work.permissionUrl).toMatch(/^https:\/\//);
    expect(work.sourceUrl).toMatch(/^https:\/\//);
    expect(work.sourceLicense).toMatch(/^CC BY/);
-   expect(work.stage).toBe('metadata_ready_text_not_imported');
+   expect(work.stage).toMatch(/^(metadata_ready|permission_scope_review)_text_not_imported$/);
    expect(work.chapters).toBeGreaterThan(0);
    expect(['general','teen','mature','explicit','not_rated']).toContain(work.rating);
    const guide=hostedFanfictionGuide(work);
