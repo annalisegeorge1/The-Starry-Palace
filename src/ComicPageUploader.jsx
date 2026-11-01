@@ -16,6 +16,7 @@ export default function ComicPageUploader({userId,comicId,episodeId,episodeTitle
  const[publishedAck,setPublishedAck]=useState(false);
  const activeRef=useRef(false);
  const nextQueueId=useRef(0);
+ const launchInputRef=useRef(null);
  const previews=useRef(new Set());
  useEffect(()=>()=>{for(const url of previews.current)URL.revokeObjectURL(url);previews.current.clear()},[]);
  const createdUrl=file=>{
@@ -95,9 +96,8 @@ export default function ComicPageUploader({userId,comicId,episodeId,episodeTitle
  const orderLocked=busy||done>0;
  const hasFailures=entries.some(x=>x.status==='error');
  return <>
-  <label className="outline-button comic-upload-launch">Add comic pages
-   <input type="file" accept={COMIC_IMAGE_ACCEPT} multiple hidden disabled={busy} onChange={e=>{receiveFiles(e.target.files);e.target.value=''}}/>
-  </label>
+  <button type="button" className="outline-button comic-upload-launch" disabled={busy} onClick={()=>launchInputRef.current?.click()}>Add comic pages</button>
+  <input ref={launchInputRef} className="comic-upload-launch-file" type="file" accept={COMIC_IMAGE_ACCEPT} multiple hidden disabled={busy} onChange={e=>{receiveFiles(e.target.files);e.target.value=''}}/>
   <PalaceDialog open={open} className="comic-upload-dialog" title="Add pages to this episode" eyebrow="COMICS STUDIO · IMAGE UPLOADS" onClose={close}
    actions={<>
     <button type="button" className="quiet-button" disabled={busy} onClick={close}>{done&&waiting.length===0?'Done':'Keep queue for later'}</button>
