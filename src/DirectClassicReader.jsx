@@ -2,8 +2,8 @@ import React,{useEffect,useState} from 'react';
 import {Link,useParams} from 'react-router-dom';
 import ArchiveClassicReader from './ArchiveClassicReader';
 import {openHostedClassic} from './directClassicApi';
-import {isHistoricalFanfiction} from './palaceFanfictionDiscovery';
-import {historicFanfictionGuide,fanfictionRatingLabel} from './fanfictionMetadata';
+import {isHostedFanfiction} from './palaceFanfictionDiscovery';
+import {hostedFanfictionGuide,fanfictionRatingLabel} from './fanfictionMetadata';
 import './direct-classic-reader.css';
 
 /** Standalone reading doorway: no archive catalogue, modal, or extra title pages. */
@@ -27,11 +27,11 @@ export default function DirectClassicReader({Frame}){
   {current.status==='missing'&&<div className="palace-direct-classic-status" role="status"><h1>This classic isn't available to read here.</h1><p>It may be citation-only, unavailable, or awaiting publication review.</p><Link to="/lost-works">Explore the classic archive →</Link></div>}
   {current.status==='error'&&<div className="palace-direct-classic-status" role="alert"><h1>We couldn't open this edition.</h1><p>{current.error}</p><Link to="/reading">Return to Reading Rooms →</Link></div>}
   {current.status==='ready'&&current.book&&<><h1 className="palace-direct-classic-screenreader-title">{current.book.record.title}</h1>
-   {isHistoricalFanfiction(current.book.record)&&<details className="palace-historic-fanfiction-notes">
-    <summary>Historical fanfiction · {fanfictionRatingLabel(historicFanfictionGuide(current.book.record))} · Tags &amp; notes</summary>
+   {isHostedFanfiction(current.book.record)&&<details className="palace-historic-fanfiction-notes">
+    <summary>{current.book.record.category==='licensed_fanfiction'?'Licensed fan-made work':'Historical fanfiction'} · {fanfictionRatingLabel(hostedFanfictionGuide(current.book.record))} · Tags &amp; notes</summary>
     <div>
-     <p>Public-domain historical text. Ratings are editorial when indicated; a work marked Not rated has not received a full age review.</p>
-     <div aria-label="Fanfiction tags">{historicFanfictionGuide(current.book.record).tags.map(tag=><span key={tag.category+tag.name}>{tag.name}</span>)}</div>
+     <p>{current.book.record.category==='licensed_fanfiction'?'Hosted with the original fan writer’s recorded reuse terms. The underlying franchise remains the property of its respective rightsholders.':'Public-domain historical text.'} Ratings follow the recorded source or editorial classification.</p>
+     <div aria-label="Fanfiction tags">{hostedFanfictionGuide(current.book.record).tags.map(tag=><span key={tag.category+tag.name}>{tag.name}</span>)}</div>
     </div>
    </details>}
    <ArchiveClassicReader key={current.book.record.id} record={current.book.record} text={current.book.text}/></>}
