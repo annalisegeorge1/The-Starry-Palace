@@ -9,7 +9,7 @@ describe('Palace passage respects creative focus',()=>{
   }
  });
  it('avoids a second route rail on rooms that already offer tabs',()=>{
-  for(const path of ['/writing','/palace-life','/library','/settings','/treasury'])expect(shouldShowPalacePassage(path),path).toBe(false);
+  for(const path of ['/writing','/palace-life','/library','/settings','/treasury','/honour'])expect(shouldShowPalacePassage(path),path).toBe(false);
  });
  it('leaves long-form reading, chapter editing and comic pages undistracted',()=>{
   for(const path of ['/writing/moonlight','/writing/moonlight?chapter=one','/work/moonlight/chapter/one','/classic/frankenstein','/comic/moon/episode/1','/comics/studio']){
