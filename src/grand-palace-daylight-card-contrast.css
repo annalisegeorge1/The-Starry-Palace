@@ -97,8 +97,7 @@
   padding-bottom:calc(200px + env(safe-area-inset-bottom,0px))!important;
   scroll-padding-bottom:calc(160px + env(safe-area-inset-bottom,0px))!important;
  }
- .palace-shell.full-palace-shell.daylight .full-stage > main#palace-content[data-palace-route^="/grand-palaces"] .grand-palace-hall{
-  padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))!important;
+ .palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-today-dash{
   scroll-margin-bottom:120px;
  }
  .palace-shell.full-palace-shell.daylight .full-stage:has(>main#palace-content[data-palace-route^="/grand-palaces"]) > .palace-mobile-end-spacer{
