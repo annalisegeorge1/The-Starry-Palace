@@ -29,7 +29,7 @@ function FanfictionGuide({guide}){
 }
 
 /* Author-source recommendations are not hosted copies or member publications. */
-export default function PalaceFanfictionShelf({archiveWorks=[]}){
+export default function PalaceFanfictionShelf({archiveWorks=[],showHistorical=true}){
  const [visibleModernCount,setVisibleModernCount]=useState(6);
  const [rating,setRating]=useState('all');
  const [query,setQuery]=useState('');
@@ -55,8 +55,8 @@ export default function PalaceFanfictionShelf({archiveWorks=[]}){
   <header className="palace-fanfiction-shelf-head">
    <p className="eyebrow">FANFICTION · OLD WORLDS, NEW STORIES</p>
    <h2 id="palace-fanfiction-shelf-title">Follow the stories behind the stories.</h2>
-   <p>Read the verified historical fanworks here, or discover modern stories at their authors' original sources. Ratings are labelled by source; tags are descriptive Palace guides.</p>
-   <p className="palace-fanfiction-catalogue-total" role="status">{MODERN_FANFICTION_LINKS.length} modern recommendations · {archiveWorks.filter(work=>work.is_archive&&isHistoricalFanfiction(work)).length} hosted historical works · Browse by title, author, fandom or rating</p>
+   <p>Discover modern fanfictions at their authors' original websites, with ratings, fandom tags and content notes. Palace-hosted and member fanfiction appears in the next section below.</p>
+   <p className="palace-fanfiction-catalogue-total" role="status"><strong>{MODERN_FANFICTION_LINKS.length} linked modern fanfics</strong> · {archiveWorks.filter(work=>work.is_archive&&isHistoricalFanfiction(work)).length} hosted historical fanfics · Select a story below to read at its original source</p>
   </header>
   <div className="palace-fanfiction-filters" role="search" aria-label="Filter Fanfiction recommendations">
    <label><span>Find by title, writer or tag</span><input type="search"
@@ -68,7 +68,7 @@ export default function PalaceFanfictionShelf({archiveWorks=[]}){
    <button type="button" className={'palace-fanfiction-anime-filter'+(animeOnly?' active':'')} aria-pressed={animeOnly} onClick={()=>{setAnimeOnly(current=>!current);setVisibleModernCount(6)}}>Anime &amp; manga</button>
    {(query||rating!=='all'||animeOnly)&&<button type="button" className="palace-fanfiction-filter-reset" onClick={reset}>Clear</button>}
   </div>
-  {historic.length>0&&<div className="palace-fanfiction-group">
+  {showHistorical&&historic.length>0&&<div className="palace-fanfiction-group">
    <h3>Read here · historical fanfiction</h3>
    <div className="palace-fanfiction-grid">
     {historic.map(work=><article key={work.id} className="palace-fanfiction-entry">
