@@ -112,6 +112,7 @@ import './palace-life-discovery-heritage.css';
 import './tag-constellation-mobile-calm.css';
 import './events-calendar-mobile-clarity.css';
 import './palace-letters-mobile-calm.css';
+import './treasury-mobile-badge-cabinet.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
