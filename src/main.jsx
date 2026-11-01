@@ -123,6 +123,7 @@ import './palace-daylight-life-commons-clarity.css';
 import './grand-palace-daylight-card-contrast.css';
 import './palace-daylight-treasury-tags-grand-finish.css';
 import './palace-daylight-library-council-fix.css';
+import './palace-mobile-blue-indigo-balance.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
