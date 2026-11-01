@@ -59,7 +59,7 @@ describe('Fanfiction section contains rights-aware historical and modern discove
    if(guide.ratingBasis==='source')expect(guide.sourceRating).toBeTruthy();
    if(guide.rating==='not_rated')expect(guide.sourceRating).toBeNull();
   }
-  expect(modernFanfictionGuide({id:'morganaw-cunning-and-compromise'}).rating).toBe('general');
+  expect(modernFanfictionGuide({id:'morganaw-cunning-and-compromise'}).rating).toBe('teen');
   expect(modernFanfictionGuide({id:'squibstress-sweep'}).rating).toBe('teen');
   expect(modernFanfictionGuide({id:'ken1245632-naruto-dragon-chronicles'}).rating).toBe('mature');
   expect(modernFanfictionGuide({id:'dawn-yule-lights'}).rating).toBe('not_rated');
