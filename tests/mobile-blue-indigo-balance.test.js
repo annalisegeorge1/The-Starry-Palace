@@ -47,7 +47,7 @@ describe('phone uses actual tablet theme',()=>{
    '.top-icon-link','.palace-chat-open',
    '.chamber-atelier-art-stage','.chamber-atelier-art-stage img'
   ])expect(mobile).not.toContain(selector);
-  expect(mobile).not.toMatch(/(?:^|\\n)\\s*(?:object-fit|width|height|padding-bottom|stroke|font-size|z-index)\\s*:/m);
+  expect(mobile).not.toMatch(/(?:^|\n)\s*(?:object-fit|width|height|padding-bottom|stroke|font-size|z-index)\s*:/m);
   expect(mobile).not.toContain('filter:');
   expect(mobile).not.toContain('animation:');
  });
