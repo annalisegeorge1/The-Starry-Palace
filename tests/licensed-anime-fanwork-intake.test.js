@@ -6,9 +6,9 @@ import {hostedFanfictionGuide,hostedFanfictionCompletion,archiveFanfictionTags} 
 
 describe('Author-licensed fanfiction intake and safe publication',()=>{
  it('documents source, author, license, age rating and fandom tags for every new candidate',()=>{
-  expect(LICENSED_ANIME_FANWORK_INTAKE).toHaveLength(15);
-  expect(new Set(LICENSED_ANIME_FANWORK_INTAKE.map(w=>w.slug)).size).toBe(15);
-  expect(new Set(LICENSED_ANIME_FANWORK_INTAKE.map(w=>w.sourceUrl)).size).toBe(15);
+  expect(LICENSED_ANIME_FANWORK_INTAKE).toHaveLength(29);
+  expect(new Set(LICENSED_ANIME_FANWORK_INTAKE.map(w=>w.slug)).size).toBe(29);
+  expect(new Set(LICENSED_ANIME_FANWORK_INTAKE.map(w=>w.sourceUrl)).size).toBe(29);
   for(const work of LICENSED_ANIME_FANWORK_INTAKE){
    expect(work.creator.length).toBeGreaterThan(0);
    expect(work.permissionUrl).toMatch(/^https:\/\//);
