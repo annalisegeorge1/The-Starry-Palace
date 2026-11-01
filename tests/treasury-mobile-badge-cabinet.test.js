@@ -32,7 +32,7 @@ describe('Treasury mobile badge showcase without artwork regression',()=>{
  });
  it('retains earned showcases while rendering Remove as a smaller secondary action',()=>{
   expect(treasury).toContain('onClick={()=>toggleAchievement(a,current)}');
-  expect(treasury).toContain("removeProfileAchievementShowcase");
+  expect(treasury).toContain('setAchievementShowcase(session.user.id,a.achievement_families.id,current,!shown)');
   expect(treasury).toContain('is-showcased');
   expect(treasury).toContain("'Remove from chamber'");
   expect(treasury).toContain("'Display on chamber'");
