@@ -248,7 +248,7 @@ describe('Fanfiction section contains rights-aware historical and modern discove
    .map(w=>w.id)).toEqual(['anime-animeisperfection-synchronicity']);
   expect(shelf).toContain('aria-pressed={animeOnly}');
   expect(shelf).toContain('Anime &amp; manga');
-  expect(shelf).toContain('{rating,query,animeOnly}');
+  expect(shelf).toContain('animeOnly,fandomNames,fandomMatch');
   expect(shelf).toContain('setAnimeOnly(false)');
  });
  it('renders the linked recommendations beside the hosted story cards in normal Browse mode',()=>{
