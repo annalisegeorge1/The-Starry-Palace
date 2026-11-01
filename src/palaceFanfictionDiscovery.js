@@ -68,7 +68,7 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
   sourceUrl:'https://archiveofourown.org/works/12395550',
   permissionUrl:'https://www.fanfiction.net/s/12655017/1/Cunning-and-Compromise',
   permissionLabel:'CC BY-SA 4.0 · author-declared; Austen original is public domain',
-  contentNote:'K+ rated on FanFiction.net · complete, ten chapters.'
+  contentNote:'Teen on linked AO3 edition; K+ on FanFiction.net · complete, ten chapters.'
  },
  {
   id:'morganaw-more-justified-in-acting',
