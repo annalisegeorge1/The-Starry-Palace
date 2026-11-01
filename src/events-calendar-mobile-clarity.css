@@ -1,0 +1,287 @@
+/* Events & Heritage — calm calendar and mobile planner, 31 Oct 2026.
+ * Only the events room, event tabs/stats and calendar day cells are restyled.
+ * Preserve the top header's approved icons and the cultural event artwork. */
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .events-pulse{
+ display:grid!important;
+ grid-template-columns:repeat(4,minmax(0,1fr))!important;
+ gap:10px!important;
+ overflow:visible!important;
+ scrollbar-width:auto!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .events-pulse>span{
+ min-width:0!important;
+ width:100%!important;
+ flex:none!important;
+ box-sizing:border-box!important;
+ min-height:72px!important;
+ display:flex!important;
+ align-items:center!important;
+ justify-content:center!important;
+ flex-direction:column!important;
+ gap:4px!important;
+ padding:10px!important;
+ text-align:center!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .events-pulse>span strong{
+ line-height:1.05!important;font-size:1.35rem!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .events-pulse>span small{
+ line-height:1.35!important;
+ font-size:.7rem!important;
+ white-space:normal!important;
+ overflow-wrap:normal!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .events-tabs-rail{
+ position:relative!important;
+ min-width:0!important;
+ max-width:1180px;
+ margin:0 auto 12px;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .events-tabs-rail::after{
+ content:"";
+ pointer-events:none;
+ position:absolute;
+ inset-block:0;
+ inset-inline-end:0;
+ z-index:3;
+ width:40px;
+ border-radius:0 13px 13px 0;
+ background:linear-gradient(90deg,transparent,rgba(17,25,53,.96));
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"] .events-tabs-rail::after{
+ background:linear-gradient(90deg,transparent,rgba(243,239,250,.98));
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .chic-events-tabs{
+ margin:0!important;
+ max-width:none!important;
+ width:100%!important;
+ box-sizing:border-box!important;
+ padding:5px 40px 5px 5px!important;
+ scroll-padding-inline:10px;
+ scroll-snap-type:x proximity;
+ overscroll-behavior-x:contain;
+ scrollbar-width:none;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .chic-events-tabs>button{
+ flex:0 0 auto!important;
+ min-height:44px!important;
+ white-space:nowrap!important;
+ scroll-snap-align:start;
+ padding:9px 12px!important;
+ color:#c0b8d5!important;
+ font-size:.77rem!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .chic-events-tabs>button.active{
+ background:rgba(96,93,166,.3)!important;
+ background-image:none!important;
+ box-shadow:inset 0 -3px 0 #b6c8f4!important;
+ border:0!important;
+ color:#f8f5ff!important;
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"] .chic-events-tabs>button{
+ color:#625a78!important;
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"] .chic-events-tabs>button.active{
+ background:rgba(120,101,189,.12)!important;
+ color:#392c68!important;
+ box-shadow:inset 0 -3px 0 #7266ae!important;
+}
+
+/* Calendar numbers get breathing space: only the selected date and today's
+ * date have a circle; a single small dot means one or more entries. */
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-month-calendar .palace-calendar-days{
+ display:grid!important;
+ grid-template-columns:repeat(7,minmax(0,1fr))!important;
+ column-gap:2px!important;
+ row-gap:6px!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-month-calendar .palace-calendar-days>button,
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-month-calendar.heritage .palace-calendar-days>button[class*="has-theme-"]{
+ display:flex!important;
+ flex-direction:column!important;
+ align-items:center!important;
+ justify-content:flex-start!important;
+ gap:2px!important;
+ box-sizing:border-box!important;
+ min-width:0!important;
+ min-height:52px!important;
+ padding:6px 0 4px!important;
+ border:0!important;
+ border-radius:9px!important;
+ background:transparent!important;
+ background-image:none!important;
+ box-shadow:none!important;
+ transform:none!important;
+ color:#ddd9f0!important;
+ transition:background-color .13s ease;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-month-calendar .palace-calendar-days>button:hover{
+ background:rgba(122,118,186,.12)!important;
+ transform:none!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-calendar-days>button>.calendar-date-number{
+ display:grid!important;
+ place-items:center!important;
+ width:35px!important;
+ height:35px!important;
+ flex:0 0 35px!important;
+ border-radius:50%!important;
+ background:transparent!important;
+ border:1px solid transparent!important;
+ box-shadow:none!important;
+ font-size:clamp(.85rem,1.6vw,1rem)!important;
+ font-weight:650!important;
+ line-height:1!important;
+ color:inherit!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-calendar-days>button[aria-current="date"]{
+ background:transparent!important;
+ box-shadow:none!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-calendar-days>button[aria-current="date"]>.calendar-date-number{
+ border-color:rgba(189,177,237,.82)!important;
+ background:rgba(126,109,183,.12)!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-calendar-days>button[aria-pressed="true"]{
+ background:transparent!important;
+ box-shadow:none!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-calendar-days>button[aria-pressed="true"]>.calendar-date-number{
+ border-color:rgba(182,188,250,.72)!important;
+ background:#6556a3!important;
+ color:#fff!important;
+ box-shadow:0 2px 10px rgba(36,28,87,.22)!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-calendar-days>button:focus-visible{
+ outline:2px solid #a9d9f8!important;
+ outline-offset:0!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-calendar-days .calendar-kind-dots{
+ display:flex!important;
+ align-items:center!important;
+ justify-content:center!important;
+ min-height:5px!important;
+ height:5px!important;
+ margin:1px 0 0!important;
+ gap:0!important;
+ font-style:normal;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-calendar-days .calendar-kind-dots>i{
+ display:block!important;
+ width:5px!important;
+ height:5px!important;
+ min-width:5px!important;
+ min-height:5px!important;
+ margin:0!important;
+ border:0!important;
+ border-radius:50%!important;
+ background:#c6b6fa!important;
+ box-shadow:none!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .calendar-kind-dots>i.dot-festival{
+ background:#f2bf72!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .calendar-kind-dots>i.dot-heritage{
+ background:#7dd6ca!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .calendar-kind-dots>i.dot-history{
+ background:#beaaff!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .calendar-kind-dots>i.dot-writing{
+ background:#a7c3f9!important;
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"] .palace-month-calendar .palace-calendar-days>button,
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"] .palace-month-calendar.heritage .palace-calendar-days>button[class*="has-theme-"]{
+ color:#554c6d!important;
+ background:transparent!important;
+ border:0!important;
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"] .palace-calendar-days>button[aria-pressed="true"]>.calendar-date-number{
+ color:#fff!important;background:#7163b3!important;
+}
+
+/* Keep the rich event/heritage art but use a darker text landing area. */
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-month-calendar.heritage .calendar-selection li[class*="heritage-theme-"]{
+ background:linear-gradient(180deg,rgba(10,12,33,.18),rgba(8,12,29,.67)),var(--holiday-wash)!important;
+ border-color:rgba(187,175,234,.28)!important;
+ color:#fff!important;
+ text-shadow:0 1px 5px rgba(2,4,15,.5)!important;
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"] .palace-month-calendar.heritage .calendar-selection li[class*="heritage-theme-"]{
+ background:linear-gradient(135deg,#eee8f8,#e1f0f5)!important;
+ color:#322b4a!important;
+ text-shadow:none!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .calendar-selection ul{
+ display:grid!important;
+ gap:13px!important;
+ padding:0!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .calendar-selection li{
+ margin:0!important;
+ line-height:1.5!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .calendar-selection li p{
+ font-size:clamp(.78rem,1.6vw,.9rem)!important;
+ line-height:1.55!important;
+}
+@media(max-width:1100px){
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .events-pulse{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .chic-events-tabs{
+  position:relative!important;top:auto!important;z-index:1!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-month-calendar{
+  max-width:calc(100% - 24px)!important;
+  margin-left:auto!important;margin-right:auto!important;
+ }
+ .palace-shell.full-palace-shell .full-stage>header.topbar.full-topbar{
+  background-color:#0d142b!important;
+  background-image:linear-gradient(110deg,#121931,#0d142b 62%,#141b38)!important;
+  isolation:isolate!important;
+ }
+ .palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar{
+  background-color:#f0ecfa!important;
+  background-image:linear-gradient(110deg,#f4effb,#e9e6f8)!important;
+ }
+}
+@media(max-width:760px){
+ /* The global shell already provides generous end-of-document spacer. Match
+  * its bottom clearance rather than stacking another 120px of blank space. */
+ .palace-shell.full-palace-shell .full-stage>main#palace-content[data-palace-route^="/events"]{
+  padding-bottom:max(120px,var(--palace-mobile-dock-clearance,120px))!important;
+  scroll-padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] :is(.palace-month-calendar,.calendar-selection,.event-list,.heritage-grid){
+  scroll-margin-bottom:calc(120px + env(safe-area-inset-bottom,0px))!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .events-pulse{
+  padding-inline:0!important;
+  margin-inline:auto!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .events-pulse>span{
+  min-height:73px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .events-tabs-rail{
+  width:calc(100% - 24px)!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-calendar-days>button>.calendar-date-number{
+  width:32px!important;height:32px!important;flex-basis:32px!important;
+  font-size:.88rem!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-month-calendar .palace-calendar-days>button{
+  min-height:47px!important;
+ }
+}
+@media(max-width:380px){
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-month-calendar .palace-calendar-days>button{
+  min-height:44px!important;padding:4px 0!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-calendar-days>button>.calendar-date-number{
+  width:29px!important;height:29px!important;flex-basis:29px!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .palace-calendar-days>button{transition:none!important}
+}
