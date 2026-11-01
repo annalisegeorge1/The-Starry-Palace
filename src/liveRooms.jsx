@@ -82,7 +82,7 @@ import DuelCountdown from './DuelCountdown';
 import './reading-partial-notice.css';
 import ClassicsLibraryHall from './ClassicsLibraryHall';
 import PalaceFanfictionShelf from './PalaceFanfictionShelf';
-import {readingArchiveWorkType} from './palaceFanfictionDiscovery';
+import {readingArchiveWorkType,MODERN_FANFICTION_LINKS} from './palaceFanfictionDiscovery';
 import {historicFanfictionGuide,archiveFanfictionTags} from './fanfictionMetadata';
 import StoryRatingBadge from './StoryRatingBadge';
 import PalaceFandomMiniPicker from './PalaceFandomMiniPicker';
@@ -482,10 +482,11 @@ export function ReadingLive({Frame}){
   <nav className="reading-unified-tabs" aria-label="Browse by story type">
     <button type="button" aria-pressed={origin==='all'} className={origin==='all'?'active':''} onClick={()=>setOrigin('all')}>All Stories</button>
     <button type="button" aria-pressed={origin==='original'} className={origin==='original'?'active':''} onClick={()=>setOrigin('original')}>Original Fiction</button>
-    <button type="button" aria-pressed={origin==='fandom'} className={origin==='fandom'?'active':''} onClick={()=>setOrigin('fandom')}>Fanfiction</button>
+    <button type="button" aria-pressed={origin==='fandom'} className={origin==='fandom'?'active':''} onClick={()=>{setOrigin('fandom');if(advancedView)navigate('/reading')}}>Fanfiction</button>
     <Link className={advancedView?'active':''} aria-current={advancedView?'page':undefined} to="/reading?view=search">Advanced Search</Link>
     <details className="reading-extra-views"><summary>Explore ▾</summary><div><Link to="/reading" onClick={()=>setReadingChoice('discoveryMode','browse')}>Stories</Link><Link to="/reading" onClick={()=>setReadingChoice('discoveryMode','discover')}>Discover</Link><Link to="/tags">Tags room</Link></div></details>
    </nav>
+  {origin==='fandom'&&!advancedView&&<PalaceFanfictionShelf archiveWorks={archiveWorks}/>}
   {advancedView&&<section className="reading-advanced-search">
    <div className="advanced-search-command"><div><p className="eyebrow">DEEP SEARCH · READER CONTROLLED</p><h2>Build your constellation.</h2><p>Choose what must be present, what must stay out, then refine the shelf. Tags remain a full Palace room too.</p></div><Link to="/tags">Open the Tags room →</Link></div>
    <form className="advanced-search-bar" onSubmit={runAdvancedSearch}><span aria-hidden="true"><PalaceIcon name="search"/></span><input value={advancedText} onChange={e=>setAdvancedText(e.target.value)} placeholder="Title, summary, phrase, author cue…"/><button disabled={advancedBusy}>{advancedBusy?'Gathering…':'Search worlds'}</button></form>
@@ -526,7 +527,6 @@ export function ReadingLive({Frame}){
    <div>{moodDoors.map(door=><button type="button" key={door.id} className={vibeDoor===door.id?'active':''} aria-pressed={vibeDoor===door.id} onClick={()=>{setVibeDoor(vibeDoor===door.id?'all':door.id);document.querySelector('.chic-reading-tools')?.scrollIntoView({behavior:'smooth',block:'start'})}}><span aria-hidden="true">{door.glyph}</span><strong>{door.label}</strong><small>{door.copy}</small><b>{moodCount(door.id)} world{moodCount(door.id)===1?'':'s'}</b></button>)}</div>
    {vibeDoor!=='all'&&<footer><span>Current feeling: <strong>{moodDoors.find(x=>x.id===vibeDoor)?.label}</strong></span><button type="button" onClick={()=>setVibeDoor('all')}>Clear mood door ×</button></footer>}
   </section>
-  {origin==='fandom'&&!advancedView&&<PalaceFanfictionShelf archiveWorks={archiveWorks}/>}
   {origin!=='fandom'&&archiveWorks.length>0&&<ClassicsLibraryHall works={archiveWorks} storyHref={storyHref}/>}
   <section className="legacy-discovery-court chic-discovery-court">
    <div className="legacy-discovery-head"><div><p className="eyebrow">FAIR DISCOVERY · SEPARATE FROM RANKINGS</p><h2>The rotating constellations.</h2><p>New and recently updated work can sit beside quieter shelves. Signed-in readers also get private continuity views based only on what they chose to save, follow or read.</p></div><div className="discovery-head-actions"><button className="surprise-story" type="button" disabled={!catalogue.length} onClick={surpriseMe}>✦ Surprise me</button><details className="discovery-explainer"><summary>How rotation works</summary><p>These shelves are discovery views, not leaderboards. First Worlds uses publication recency, Quiet Shelves shows older updates, Newly Updated reflects recent publication, and personal shelves come from your own private reading state. Surprise me chooses only from stories matching your current search and filters; it does not use a popularity score.</p></details></div></div>
@@ -544,7 +544,7 @@ export function ReadingLive({Frame}){
   </section>
   <section className="legacy-reading-tools chic-reading-tools reading-search-calm">
    <div className="reading-search" role="search"><span aria-hidden="true">⌕</span><input aria-label={archiveBrowseEnabled?'Search all published Reading Room stories':'Search the currently loaded Reading Room stories'} value={query} onChange={e=>setQuery(e.target.value)} placeholder="Title, writer, fandom or tag…"/></div>
-   <div className="reading-result-count" aria-live="polite"><strong>{archiveBrowseEnabled?(archiveBrowse.snapshot?visibleTotal.toLocaleString():'…'):catalogue.length.toLocaleString()}</strong><span>{archiveBrowseEnabled?'matching published stories · archive-wide':('matching among '+allReadingWorks.length+' loaded '+(allReadingWorks.length===1?'work':'works'))}</span></div>
+   <div className="reading-result-count" aria-live="polite"><strong>{archiveBrowseEnabled?(archiveBrowse.snapshot?visibleTotal.toLocaleString():'…'):catalogue.length.toLocaleString()}</strong><span>{archiveBrowseEnabled?'matching published stories · archive-wide':(origin==='fandom'?('hosted/member stories in this index · '+MODERN_FANFICTION_LINKS.length+' external fanfiction recommendations are listed above'):('matching among '+allReadingWorks.length+' loaded '+(allReadingWorks.length===1?'work':'works')))}</span></div>
   </section>
   {!archiveBrowseEnabled&&readerLens!=='all'&&<p className="reading-scope-note">Personal lenses search your currently loaded reading shelf. Choose “Entire published archive” to return to public browsing.</p>}
   {!archiveBrowseEnabled&&vibeDoor!=='all'&&<p className="reading-scope-note">Mood suggestions come from loaded stories, not archive-wide rankings.</p>}
