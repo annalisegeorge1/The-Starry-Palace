@@ -13,7 +13,10 @@ describe('Tag Constellation mobile discovery flow',()=>{
  });
  it('keeps family, view and order behind an accessible toggle',()=>{
   expect(tag).toContain('aria-expanded={tagFiltersOpen}');
-  expect(tag).toContain('hidden={!tagFiltersOpen}');
+  expect(tag).toContain('tagFiltersOpen&&createPortal(');
+  expect(tag).toContain('document.body');
+  expect(tag).toContain('className="tag-filters-portal-sheet"');
+  expect(tag).toContain('role="dialog" aria-modal="true"');
   expect(tag).toContain('aria-controls="tag-library-extra-controls"');
   expect(tag).toContain('className="tag-family-atlas-rail"');
  });
@@ -46,9 +49,13 @@ describe('Tag Constellation mobile discovery flow',()=>{
   expect(css).toContain('.legacy-tags-page');
   expect(css).toContain('padding-bottom:calc(68px');
   expect(tag).toContain('className="tag-quick-paths"');
-  expect(tag).toContain('className="tag-filter-backdrop"');
+  expect(tag).toContain('className="tag-filters-portal-backdrop"');
   expect(tag).toContain('className="tag-filter-sheet-heading"');
-  expect(css).toContain('position:fixed!important;');
+  expect(css).toContain('.tag-filters-portal{');
+  expect(css).toContain('z-index:2147483000!important;');
+  expect(css).toContain('pointer-events:auto;');
+  expect(tag).toContain("document.body.style.overflow='hidden'");
+  expect(tag).toContain('tagFilterCloseRef.current?.focus()');
   expect(css).toContain('header.topbar.full-topbar');
   expect(css).not.toContain('.top-icon-link');
   expect(css).not.toContain('.write-action');
