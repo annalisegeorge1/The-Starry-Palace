@@ -52,10 +52,10 @@ describe('Unified Fanwork catalogue',()=>{
   render(<MemoryRouter><UnifiedFanworkCatalogue publishedWorks={hosted}
    externalWorks={MODERN_FANFICTION_LINKS.slice(0,1)}/></MemoryRouter>);
   expect(screen.getByRole('heading',{name:/Fanworks across the Palace and beyond/})).toBeTruthy();
-  expect(screen.getByRole('link',{name:/Read on the Palace/})).toBeTruthy();
+  expect(screen.getAllByRole('link',{name:/Read on the Palace/})).toHaveLength(2);
   expect(screen.getByRole('link',{name:/Read at original source/})).toBeTruthy();
   expect(screen.getAllByText(/Palace-hosted classic|Palace member work|Author-source link/).length).toBe(3);
-  expect(screen.getByText('Palace Writer')).toBeTruthy();
+  expect(screen.getByText(/by Palace Writer/)).toBeTruthy();
   const external=screen.getByRole('link',{name:/Read at original source/});
   expect(external.getAttribute('target')).toBe('_blank');
   expect(external.getAttribute('rel')).toContain('noopener');
