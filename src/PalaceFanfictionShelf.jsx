@@ -57,6 +57,7 @@ export default function PalaceFanfictionShelf({archiveWorks=[],showHistorical=tr
    <h2 id="palace-fanfiction-shelf-title">{inFandomAtlas?'Fanfiction across the fandoms':'Modern fanfiction'} · {MODERN_FANFICTION_LINKS.length} stories to explore</h2>
    <p>{inFandomAtlas?'Explore original-author fanfiction links by fandom, genre and rating. Choose fandoms in the Atlas to narrow these recommendations; member-published stories are listed separately in the crossover search.':'Discover modern fanfictions at their authors\' original websites, with ratings, fandom tags and content notes. Palace-hosted and member fanfiction appears in the next section below.'}</p>
    <p className="palace-fanfiction-catalogue-total" role="status"><strong>{MODERN_FANFICTION_LINKS.length} linked modern fanfics</strong> · {inFandomAtlas?'2 historical fanfics hosted in Reading Rooms':archiveWorks.filter(work=>work.is_archive&&isHistoricalFanfiction(work)).length+' hosted historical fanfics'} · Select a story below to read at its original source</p>
+   {!inFandomAtlas&&<p className="palace-fanfiction-atlas-jump"><Link to="/fandoms?section=fanfiction">Explore these fanfics by fandom →</Link></p>}
    {inFandomAtlas&&fandomNames.length>0&&<p className="palace-fanfiction-selected-worlds">Matching {fandomMatch==='all'?'all':'any'} selected fandoms: {fandomNames.join(' · ')}</p>}
   </header>
   <div className="palace-fanfiction-filters" role="search" aria-label="Filter Fanfiction recommendations">
