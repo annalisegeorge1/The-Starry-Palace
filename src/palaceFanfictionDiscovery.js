@@ -58,4 +58,124 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
   permissionLabel:'CC BY-NC-SA · author-stated, version not specified',
   contentNote:'Teen-rated at its source; contains violence, death and tragedy.'
  }
+ ,{
+  id:'morganaw-cunning-and-compromise',
+  title:'Cunning and Compromise',
+  creator:'MorganAW',
+  published:'2017',
+  fandom:'Pride and Prejudice · Jane Austen',
+  description:'A variation in which Darcy revisits his first impressions after the Netherfield ball. Complete, ten chapters.',
+  sourceUrl:'https://archiveofourown.org/works/12395550',
+  permissionUrl:'https://www.fanfiction.net/s/12655017/1/Cunning-and-Compromise',
+  permissionLabel:'CC BY-SA 4.0 · author-declared; Austen original is public domain',
+  contentNote:'Teen rating · complete · no archive warnings on its AO3 edition.'
+ },
+ {
+  id:'morganaw-more-justified-in-acting',
+  title:'More Justified in Acting',
+  creator:'MorganAW',
+  published:'2017',
+  fandom:'Persuasion · Jane Austen',
+  description:'Captain Wentworth discovers something in the Kellynch library that changes how he understands Anne Elliot.',
+  sourceUrl:'https://archiveofourown.org/works/12480524',
+  permissionUrl:'https://archiveofourown.org/works/12480524',
+  permissionLabel:'CC BY-SA · licence tagged by the author on AO3',
+  contentNote:'Teen-rated on AO3 · complete, nine chapters.'
+ },
+ {
+  id:'squibstress-sweep',
+  title:'Sweep',
+  creator:'Squibstress',
+  published:'2011',
+  fandom:'Harry Potter',
+  description:'After the Battle of Hogwarts, Argus Filch tries to put things back in order with his broom.',
+  sourceUrl:'https://www.fanfiction.net/s/7384091/1/Sweep',
+  permissionUrl:'https://www.fanfiction.net/s/7384091/1/Sweep',
+  permissionLabel:'CC BY-NC-SA 4.0 · author-stated in story',
+  contentNote:'Teen-rated · complete short story · references the aftermath of violence.'
+ },
+ {
+  id:'squibstress-perils-of-eavesdropping',
+  title:'The Perils of Eavesdropping',
+  creator:'Squibstress',
+  published:'2020',
+  fandom:'Harry Potter',
+  description:'Fred and George test their Extendable Ears and discover things they were never meant to overhear.',
+  sourceUrl:'https://www.fanfiction.net/s/13576664/1/The-Perils-of-Eavesdropping',
+  permissionUrl:'https://www.fanfiction.net/s/13576664/1/The-Perils-of-Eavesdropping',
+  permissionLabel:'CC BY-NC-SA 4.0 · author-stated in story',
+  contentNote:'Teen-rated · complete · humorous one-shot.'
+ },
+ {
+  id:'squibstress-not-so-rough-wooing',
+  title:'A Not-So-Rough Wooing',
+  creator:'Squibstress',
+  published:'2026',
+  fandom:'Harry Potter',
+  description:'A Valentine’s Day romantic comedy featuring Albus Dumbledore and Minerva McGonagall.',
+  sourceUrl:'https://www.fanfiction.net/s/14547333/1/A-Not-So-Rough-Wooing',
+  permissionUrl:'https://www.fanfiction.net/s/14547333/1/A-Not-So-Rough-Wooing',
+  permissionLabel:'CC BY-NC-SA 4.0 · author-stated in story',
+  contentNote:'Teen-rated · complete short story.'
+ },
+ {
+  id:'simplynia-irresistible',
+  title:'Irresistible',
+  creator:'simplynia',
+  published:'2024 · ongoing',
+  fandom:'The Vampire Diaries',
+  description:'In a human-world alternate universe, Bonnie Bennett encounters Elijah Mikaelson at her hotel.',
+  sourceUrl:'https://www.fanfiction.net/s/14397141/1/Irresistible',
+  permissionUrl:'https://www.fanfiction.net/u/4367617/simplynia',
+  permissionLabel:'CC BY-NC-SA 4.0 · author-stated for all their stories',
+  contentNote:'Teen-rated · ongoing · romantic power dynamics and angst.'
+ },
+ {
+  id:'blackwidower-my-little-destiny',
+  title:'My Little Destiny',
+  creator:'BlackWidower',
+  published:'2012 · updated 2024',
+  fandom:'My Little Pony · Stargate Universe',
+  description:'Destiny reaches a new galaxy where the ponies of Equestria face a growing threat.',
+  sourceUrl:'https://www.fanfiction.net/s/8039888/1/My-Little-Destiny',
+  permissionUrl:'https://www.fanfiction.net/s/8039888/1/My-Little-Destiny',
+  permissionLabel:'CC BY-NC-SA · author-stated in story summary',
+  contentNote:'Teen-rated · seventeen chapters · science fiction adventure.'
+ },
+ {
+  id:'blackwidower-a-waking-dragon',
+  title:'A Waking Dragon',
+  creator:'BlackWidower',
+  published:'2012 · updated 2019',
+  fandom:'My Little Pony · Awake',
+  description:'Spike finds himself between two different realities and cannot tell which is his own.',
+  sourceUrl:'https://www.fanfiction.net/s/8102275/1/A-Waking-Dragon',
+  permissionUrl:'https://www.fanfiction.net/s/8102275/1/A-Waking-Dragon',
+  permissionLabel:'CC BY-NC-SA · author-stated in story summary',
+  contentNote:'Teen-rated · nine chapters · grief and alternate realities.'
+ },
+ {
+  id:'alixe-les-survivants',
+  title:'Les Survivants — Harry Potter 7¾',
+  creator:'Alixe',
+  published:'2007–2017 series',
+  fandom:'Harry Potter · French language',
+  description:'The first volume of a four-part French fanfiction exploring the nineteen years after the final battle.',
+  sourceUrl:'https://creationsdefans.org/hp734/telechargement',
+  permissionUrl:'https://creationsdefans.org/hp734/download/HP734_1.pdf',
+  permissionLabel:'CC BY-NC-SA · stated in the original edition; French',
+  contentNote:'French-language series · downloadable in multiple formats at the author’s archive.'
+ },
+ {
+  id:'starholder-song-of-lost-heart',
+  title:'Song of the Lost Heart',
+  creator:'Star Holder Commander',
+  published:'2009',
+  fandom:'Anime / Yu-Gi-Oh! · fan poem',
+  description:'A short fan poem about finding hope and drawing someone back from the darkness.',
+  sourceUrl:'https://www.fanfiction.net/s/5524585/1/Song_of_the_Lost_Heart',
+  permissionUrl:'https://www.fanfiction.net/u/999304/Star-Holder-Commander',
+  permissionLabel:'CC BY-NC-ND 3.0 · specifically stated for this poem',
+  contentNote:'General-rated fan poem · no derivatives under the writer’s licence.'
+ }
 ]);
