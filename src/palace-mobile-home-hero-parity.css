@@ -1,0 +1,122 @@
+/*
+ * Home hero parity (tablet reference vs phone screenshot, 2026-11-01).
+ *
+ * The tablet's strong point is a balanced pair of welcome copy and Palace
+ * artwork. On narrow phones, preserve BOTH at a deliberate proportion:
+ * scenic art first, compact editorial copy second, not a towering purple slab.
+ * Tablet/desktop remain untouched. No changes to icons, theme tokens,
+ * routes, copy, reader/writer surfaces, or member artwork.
+ */
+@media (max-width:600px) {
+  .palace-shell.full-palace-shell .palace-home-layout .palace-hub-hero.is-member {
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    grid-template-rows:clamp(134px,39vw,172px) auto!important;
+    gap:0!important;
+    align-items:stretch!important;
+    min-height:0!important;
+    height:auto!important;
+    border-radius:19px!important;
+    overflow:hidden!important;
+  }
+
+  /* Art was a low strip at the very bottom; now it balances the hero,
+     while the original picture and caption stay fully intact. */
+  .palace-shell.full-palace-shell .palace-home-layout .palace-hub-hero.is-member .palace-hub-art {
+    grid-column:1!important;
+    grid-row:1!important;
+    position:relative!important;
+    min-height:0!important;
+    height:100%!important;
+    max-height:none!important;
+    border-radius:0!important;
+    overflow:hidden!important;
+  }
+  .palace-shell.full-palace-shell .palace-home-layout .palace-hub-hero.is-member .palace-hub-art img {
+    object-fit:cover!important;
+    object-position:center 42%!important;
+  }
+  .palace-shell.full-palace-shell .palace-home-layout .palace-hub-hero.is-member .palace-hub-art>span {
+    left:18px!important;
+    right:14px!important;
+    bottom:11px!important;
+    font-size:.59rem!important;
+    line-height:1.35!important;
+    letter-spacing:.08em!important;
+  }
+
+  .palace-shell.full-palace-shell .palace-home-layout .palace-hub-hero.is-member .palace-hub-copy {
+    grid-column:1!important;
+    grid-row:2!important;
+    align-self:stretch!important;
+    padding:18px 20px 19px!important;
+    min-width:0!important;
+    min-height:0!important;
+    display:block!important;
+  }
+  .palace-shell.full-palace-shell .palace-home-layout .palace-hub-hero.is-member .palace-hub-eyebrow {
+    margin:0 0 6px!important;
+    font-size:.65rem!important;
+    line-height:1.4!important;
+  }
+  .palace-shell.full-palace-shell .palace-home-layout .palace-hub-hero.is-member .palace-hub-copy h1 {
+    font-size:clamp(1.85rem,8.6vw,2.27rem)!important;
+    line-height:1.06!important;
+    margin:0 0 9px!important;
+    max-width:100%!important;
+    letter-spacing:-.035em!important;
+    text-wrap:balance;
+  }
+  .palace-shell.full-palace-shell .palace-home-layout .palace-hub-hero.is-member .palace-hub-motto {
+    font-size:.86rem!important;
+    line-height:1.48!important;
+    margin:0!important;
+    max-width:36ch!important;
+  }
+  .palace-shell.full-palace-shell .palace-home-layout .palace-hub-hero.is-member .palace-hub-actions {
+    display:flex!important;
+    flex-wrap:wrap!important;
+    align-items:center!important;
+    gap:5px 13px!important;
+    margin-top:15px!important;
+    min-height:0!important;
+  }
+  .palace-shell.full-palace-shell .palace-home-layout .palace-hub-hero.is-member .palace-hub-actions>a {
+    min-height:38px!important;
+    font-size:.76rem!important;
+    line-height:1.3!important;
+    gap:9px!important;
+    max-width:100%!important;
+  }
+  .palace-shell.full-palace-shell .palace-home-layout .palace-hub-hero.is-member .palace-hub-actions>.hub-primary {
+    padding:8px 12px!important;
+    min-height:40px!important;
+    box-sizing:border-box!important;
+  }
+
+  /* The next section should follow the hero rather than disappearing
+     beneath the fixed dock at the initial scroll position. */
+  .palace-shell.full-palace-shell .palace-home-layout .palace-hub-recent {
+    padding-top:14px!important;
+    margin-top:0!important;
+  }
+  .palace-shell.full-palace-shell .palace-home-layout .palace-hub-recent-heading {
+    margin-bottom:0!important;
+  }
+}
+@media (max-width:360px) {
+  .palace-shell.full-palace-shell .palace-home-layout .palace-hub-hero.is-member {
+    grid-template-rows:130px auto!important;
+  }
+  .palace-shell.full-palace-shell .palace-home-layout .palace-hub-hero.is-member .palace-hub-copy {
+    padding:16px 17px 17px!important;
+  }
+  .palace-shell.full-palace-shell .palace-home-layout .palace-hub-hero.is-member .palace-hub-actions {
+    gap:4px 9px!important;
+  }
+}
+@media (prefers-reduced-motion:reduce) {
+  .palace-shell.full-palace-shell .palace-home-layout .palace-hub-hero.is-member .palace-hub-art img {
+    animation:none!important;
+  }
+}
