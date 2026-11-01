@@ -340,3 +340,33 @@
  .comic-upload-file strong{font-size:.77rem}
  .comic-upload-fields{grid-template-columns:1fr}
 }
+
+.comic-upload-readiness{
+ margin:8px 0 10px!important;
+ padding:8px 11px;
+ border-radius:9px;
+ background:rgba(139,108,49,.13);
+ color:#f2d8a3;
+ font-size:.76rem;
+ line-height:1.46;
+}
+body:has(.palace-shell.daylight) .comic-upload-dialog{
+ color:#382e50;
+ background:linear-gradient(145deg,#fff,#f2effb)!important;
+}
+body:has(.palace-shell.daylight) .comic-upload-dialog>footer{
+ background:#faf7ff!important;
+}
+body:has(.palace-shell.daylight) .comic-upload-dialog :is(
+ .comic-upload-intro p,.comic-upload-file small,.comic-upload-fields label small,
+ .comic-upload-complete,.comic-upload-readiness
+){color:#5b506e!important}
+body:has(.palace-shell.daylight) .comic-upload-dialog :is(
+ .comic-upload-item,.comic-upload-addmore,.comic-upload-fields input,.comic-upload-fields textarea
+){background:#faf8ff!important;color:#382e50!important;border-color:rgba(91,76,137,.34)!important}
+body:has(.palace-shell.daylight) .comic-upload-dialog .comic-upload-summary{
+ background:#ebe5fa!important;color:#382e50!important;
+}
+body:has(.palace-shell.daylight) .comic-upload-dialog .comic-upload-feedback{
+ background:#e6f1fa!important;color:#3e426a!important;
+}
