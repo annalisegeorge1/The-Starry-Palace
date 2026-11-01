@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import {validateComicImage} from './comicUploadPreparation';
 import {PALACE_CHAT_V3_ENABLED} from './palaceChatV3';
 import {INITIAL_FANDOM_DIRECTORY} from './palaceFandomCatalogue';
 
@@ -1567,15 +1568,19 @@ export async function publishComicEpisode(userId,comicId,episodeId){
 }
 function safeAssetName(name){return(name||'image').replace(/[^a-zA-Z0-9._-]+/g,'-').slice(-120)}
 export async function uploadComicPage(userId,comicId,episodeId,file,meta={}){
+ const issue=validateComicImage(file,'page');if(issue)throw new Error(issue);
+ if(!meta.decorative&&!String(meta.alt_text||'').trim())throw new Error('Add an image description or mark the page decorative.');
  const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
  const pos=await needClient().from('comic_pages').select('position').eq('episode_id',episodeId).order('position',{ascending:false}).limit(1);if(pos.error)throw pos.error;
  const path=`${userId}/${comicId}/${episodeId}/${crypto.randomUUID()}-${safeAssetName(file.name)}`;
  const up=await needClient().storage.from('comic-pages').upload(path,file,{cacheControl:'3600',upsert:false,contentType:file.type||undefined});if(up.error)throw up.error;
- const{data,error}=await needClient().from('comic_pages').insert({episode_id:episodeId,position:(pos.data?.[0]?.position||0)+1,caption:meta.caption?.trim()||'',alt_text:meta.alt_text?.trim()||'',decorative:!!meta.decorative,reader_path:path}).select().single();if(error){await needClient().storage.from('comic-pages').remove([path]).catch(()=>{});throw error}return data
+ const{data,error}=await needClient().from('comic_pages').insert({episode_id:episodeId,position:(pos.data?.[0]?.position||0)+1,caption:String(meta.caption||'').trim().slice(0,500),alt_text:meta.decorative?'':String(meta.alt_text||'').trim().slice(0,1200),decorative:!!meta.decorative,reader_path:path}).select().single();if(error){await needClient().storage.from('comic-pages').remove([path]).catch(()=>{});throw error}return data
 }
 export async function uploadComicCover(userId,comicId,file){
+ const issue=validateComicImage(file,'cover');if(issue)throw new Error(issue);
+ const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
  const path=`${userId}/${comicId}/cover-${crypto.randomUUID()}-${safeAssetName(file.name)}`;const up=await needClient().storage.from('comic-covers').upload(path,file,{cacheControl:'3600',upsert:false,contentType:file.type||undefined});if(up.error)throw up.error;
- const{data,error}=await needClient().from('comics').update({cover_path:path,updated_at:new Date().toISOString()}).eq('id',comicId).eq('creator_id',userId).select().single();if(error)throw error;return data
+ const{data,error}=await needClient().from('comics').update({cover_path:path,updated_at:new Date().toISOString()}).eq('id',comicId).eq('creator_id',userId).select().single();if(error){await needClient().storage.from('comic-covers').remove([path]).catch(()=>{});throw error}return data
 }
 export async function deleteComicPage(userId,comicId,page){
  const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('This comic does not belong to your chamber.');
