@@ -318,6 +318,13 @@ export function ReadingLive({Frame}){
  const catalogueSort=readingChoices.catalogueSort;const setCatalogueSort=value=>setReadingChoice('catalogueSort',value);
  const includedTags=readingChoices.includeTags;const excludedTags=readingChoices.excludeTags;
  const inAdvancedSearch=new URLSearchParams(location.search).get('view')==='search';
+ const fanfictionSectionRequested=new URLSearchParams(location.search).get('section')==='fanfiction';
+ useEffect(()=>{if(fanfictionSectionRequested&&origin!=='fandom')setOrigin('fandom')},[fanfictionSectionRequested,origin]);
+ useEffect(()=>{
+  if(fanfictionSectionRequested&&origin==='fandom'&&!inAdvancedSearch){
+   document.getElementById('palace-fanfiction-shelf-title')?.scrollIntoView({block:'start'});
+  }
+ },[fanfictionSectionRequested,origin,inAdvancedSearch]);
  // Public archive results are server-filtered; private lenses and mood shelves
  // intentionally stay on the member's local reading shelf.
  const archiveBrowseEnabled=!inAdvancedSearch&&readingChoices.discoveryMode==='browse'
@@ -480,9 +487,9 @@ export function ReadingLive({Frame}){
   <section className="legacy-reading-intro chic-reading-intro reading-intro-calm"><p className="eyebrow">FIND YOUR NEXT WORLD</p><h1>{advancedView?'Search with precision. Wander with style.':'Stories first. Filters when you need them.'} <PalaceTopicHelp id="reading"/></h1><p>{advancedView?'Build a constellation with text, include and exclude tags, rating, status and origin—without leaving the Reading Rooms.':'All Stories brings the Palace together. Original Fiction includes creator-owned work and readable Palace Classics, while Fanfiction includes member fanworks and properly attributed historical fanfiction.'}</p></section>
   {!session&&<GuestReadingInvitation returnTo="/reading" context="discover"/>}
   <nav className="reading-unified-tabs" aria-label="Browse by story type">
-    <button type="button" aria-pressed={origin==='all'} className={origin==='all'?'active':''} onClick={()=>setOrigin('all')}>All Stories</button>
-    <button type="button" aria-pressed={origin==='original'} className={origin==='original'?'active':''} onClick={()=>setOrigin('original')}>Original Fiction</button>
-    <button type="button" aria-pressed={origin==='fandom'} className={origin==='fandom'?'active':''} onClick={()=>{setOrigin('fandom');if(advancedView)navigate('/reading')}}>Fanfiction</button>
+    <button type="button" aria-pressed={origin==='all'} className={origin==='all'?'active':''} onClick={()=>{setOrigin('all');if(fanfictionSectionRequested)navigate('/reading')}}>All Stories</button>
+    <button type="button" aria-pressed={origin==='original'} className={origin==='original'?'active':''} onClick={()=>{setOrigin('original');if(fanfictionSectionRequested)navigate('/reading')}}>Original Fiction</button>
+    <button type="button" aria-pressed={origin==='fandom'} className={origin==='fandom'?'active':''} onClick={()=>{setOrigin('fandom');navigate('/reading?section=fanfiction')}}>Fanfiction</button>
     <Link className={advancedView?'active':''} aria-current={advancedView?'page':undefined} to="/reading?view=search">Advanced Search</Link>
     <details className="reading-extra-views"><summary>Explore ▾</summary><div><Link to="/reading" onClick={()=>setReadingChoice('discoveryMode','browse')}>Stories</Link><Link to="/reading" onClick={()=>setReadingChoice('discoveryMode','discover')}>Discover</Link><Link to="/tags">Tags room</Link></div></details>
    </nav>
