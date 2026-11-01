@@ -83,6 +83,7 @@ import './reading-partial-notice.css';
 import ClassicsLibraryHall from './ClassicsLibraryHall';
 import PalaceFanfictionShelf from './PalaceFanfictionShelf';
 import {readingArchiveWorkType} from './palaceFanfictionDiscovery';
+import {historicFanfictionGuide,archiveFanfictionTags} from './fanfictionMetadata';
 import StoryRatingBadge from './StoryRatingBadge';
 import PalaceFandomMiniPicker from './PalaceFandomMiniPicker';
 import {TAG_BATCH_PAGE_SIZE,toggleQueuedTag,pendingTagBatch,visibleTagSuggestions} from './tagBatchModel';
@@ -354,7 +355,7 @@ export function ReadingLive({Frame}){
    setWorks(memberOK?(stories.value||[]):[]);
    setHasMorePublished(memberOK&&(stories.value||[]).length===48);
    const archiveRows=archiveOK?(archive.value||[]):[];
-   setArchiveWorks(archiveRows.filter(r=>r.host_mode==='full'&&r.rights_status==='public_domain_verified').map(r=>({id:'archive-'+r.id,archive_record_id:r.id,is_archive:true,title:r.title,slug:r.slug,summary:r.summary,archive_category:r.category,work_type:readingArchiveWorkType(r),rating:'not_rated',rights_status:r.rights_status,archive_source_url:r.archive_source_url,creator_name:r.creator_name,language:r.original_language||'English',completion_status:'complete',cover_url:null,first_published_at:null,last_published_at:r.updated_at||r.verified_at,profiles:{display_name:r.creator_name,title:'Palace Classic',username:null,avatar_url:null},work_tags:[{tags:{id:'archive-classics',name:'Palace Classics',category:'collection',status:'canonical'}},{tags:{id:'archive-'+(r.category||'classic'),name:String(r.category||'classic').replaceAll('_',' '),category:'genre',status:'canonical'}}]})));
+   setArchiveWorks(archiveRows.filter(r=>r.host_mode==='full'&&r.rights_status==='public_domain_verified').map(r=>({id:'archive-'+r.id,archive_record_id:r.id,is_archive:true,title:r.title,slug:r.slug,summary:r.summary,archive_category:r.category,work_type:readingArchiveWorkType(r),rating:historicFanfictionGuide(r).rating,rights_status:r.rights_status,archive_source_url:r.archive_source_url,creator_name:r.creator_name,language:r.original_language||'English',completion_status:'complete',cover_url:null,first_published_at:null,last_published_at:r.updated_at||r.verified_at,profiles:{display_name:r.creator_name,title:'Palace Classic',username:null,avatar_url:null},work_tags:[{tags:{id:'archive-classics',name:'Palace Classics',category:'collection',status:'canonical'}},{tags:{id:'archive-'+(r.category||'classic'),name:String(r.category||'classic').replaceAll('_',' '),category:'genre',status:'canonical'}},...archiveFanfictionTags(r)]})));
    if(!memberOK||!archiveOK)setReadingNotice('One reading shelf could not be gathered. The other stories are still available.');
   });
   if(id){
