@@ -1,6 +1,6 @@
 import React,{useMemo,useState} from 'react';
 import {Link} from 'react-router-dom';
-import {MODERN_FANFICTION_LINKS,isHistoricalFanfiction} from './palaceFanfictionDiscovery';
+import {MODERN_FANFICTION_LINKS,isHostedFanfiction} from './palaceFanfictionDiscovery';
 import {modernFanfictionGuide,historicFanfictionGuide,isAnimeFanfiction,FANFICTION_RATINGS,
  filterModernFanfiction} from './fanfictionMetadata';
 import './unified-fanwork-catalogue.css';
@@ -17,16 +17,16 @@ const normalized=s=>String(s||'').toLocaleLowerCase();
 const ratedTag=rating=>(FANFICTION_RATINGS.find(x=>x.id===rating)?.label||'Not rated').replace(' (13+)','').replace(' (18+)','');
 const memberUrl=work=>work.is_archive?'/classic/'+encodeURIComponent(work.slug):'/work/'+encodeURIComponent(work.slug);
 const searchable=work=>[work.title,work.summary,authorOf(work),...palaceTags(work).map(t=>t.name)].filter(Boolean).join(' ').toLocaleLowerCase();
-const sourceTag=(type)=>type==='link'?'Author-source link':type==='historical'?'Palace-hosted classic':'Palace member work';
+const sourceTag=(type)=>type==='link'?'Author-source link':type==='licensed'?'Palace-hosted fanwork':type==='historical'?'Palace-hosted classic':'Palace member work';
 export function createUnifiedFanworks(works=[],external=MODERN_FANFICTION_LINKS){
  const seen=new Set();
  const all=[];
  for(const work of works){
-  if(!work||!(work.work_type==='fanwork'||work.is_archive&&isHistoricalFanfiction(work)))continue;
-  const key=work.is_archive?'historic:'+work.slug:'member:'+work.id;
+  if(!work||!(work.work_type==='fanwork'||work.is_archive&&isHostedFanfiction(work)))continue;
+  const key=work.is_archive?'archive:'+work.slug:'member:'+work.id;
   if(!key||seen.has(key))continue;
   seen.add(key);
-  all.push({key,kind:work.is_archive?'historical':'member',title:work.title||'Untitled fanwork',author:authorOf(work),rating:work.rating||'not_rated',
+  all.push({key,kind:work.is_archive?(work.archive_category==='licensed_fanfiction'?'licensed':'historical'):'member',title:work.title||'Untitled fanwork',author:authorOf(work),rating:work.rating||'not_rated',
    summary:work.summary||'',tags:palaceTags(work).map(t=>t.name),href:memberUrl(work),work});
  }
  for(const work of external){
@@ -54,7 +54,7 @@ export function filterUnifiedFanworks(rows,{query='',rating='all',source='all',a
    return linkedIds.has(x.work.id);
   }
   if(rating!=='all'&&x.rating!==rating)return false;
-  if(animeOnly&&!palaceTags(x.work).some(t=>/naruto|one piece|bleach|anime|manga|yu.gi.oh|evangelion|cardcaptor/i.test(t.name)))return false;
+  if(animeOnly&&!palaceTags(x.work).some(t=>/naruto|one piece|bleach|anime|manga|yu.gi.oh|evangelion|cardcaptor|dur ar ara|dur arara|dur ar a ra|dur ar|durara|inuyasha|dragon ball|vampire knight/i.test(t.name)))return false;
   const fandoms=palaceTags(x.work).filter(t=>t.category==='fandom').map(t=>normalized(t.name));
   if(selectedFandoms.length){
    const matches=name=>fandoms.some(f=>f===name||f.startsWith(name+' ')||name.startsWith(f+' '));
@@ -92,7 +92,7 @@ export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks
   <header className="palace-unified-fanworks-head">
    <p className="eyebrow">FANFICTION · ONE SHARED DISCOVERY SHELF</p>
    <h2 id="palace-unified-fanworks-title">Fanworks across the Palace and beyond</h2>
-   <p>Find member-published stories, historical fanfiction and modern author-source recommendations together. Every card shows where its story can be read.</p>
+   <p>Find Palace-hosted licensed fanfiction, member fanworks, historical fanfiction and independently published author-source recommendations together. Every card shows where its story can be read.</p>
    <p className="palace-unified-totals" role="status"><strong>{hostedCount} Palace-hosted works loaded</strong> · <strong>{externalCount} author-source links</strong>{hasMoreHosted?' · More Palace works available':''}</p>
   </header>
   <div className="palace-unified-filterbar" role="search" aria-label="Search all fanworks">
