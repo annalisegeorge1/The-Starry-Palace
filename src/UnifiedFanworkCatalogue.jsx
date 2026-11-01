@@ -54,7 +54,7 @@ export function filterUnifiedFanworks(rows,{query='',rating='all',source='all',a
    return linkedIds.has(x.work.id);
   }
   if(rating!=='all'&&x.rating!==rating)return false;
-  if(animeOnly&&!palaceTags(x.work).some(t=>/naruto|one piece|bleach|anime|manga|yu.gi.oh|evangelion|cardcaptor|dur ar ara|dur arara|dur ar a ra|dur ar|durara|inuyasha|dragon ball|vampire knight/i.test(t.name)))return false;
+  if(animeOnly&&!palaceTags(x.work).some(t=>t.category==='format'&&t.name==='Anime & Manga'||/naruto|one piece|bleach|anime|manga|yu.gi.oh|evangelion|cardcaptor|durara|inuyasha|dragon ball|vampire knight/i.test(t.name)))return false;
   const fandoms=palaceTags(x.work).filter(t=>t.category==='fandom').map(t=>normalized(t.name));
   if(selectedFandoms.length){
    const matches=name=>fandoms.some(f=>f===name||f.startsWith(name+' ')||name.startsWith(f+' '));
