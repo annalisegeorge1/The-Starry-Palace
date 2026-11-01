@@ -7,12 +7,13 @@ import './comic-page-uploader.css';
 /** The browser keeps files locally until an artist explicitly begins uploading.
  * Uploads run in display order, stop at the first error, and never retry a completed page.
  */
-export default function ComicPageUploader({userId,comicId,episodeId,episodeTitle,onUploaded}){
+export default function ComicPageUploader({userId,comicId,episodeId,episodeTitle,episodePublished=false,onUploaded}){
  const[open,setOpen]=useState(false);
  const[entries,setEntries]=useState([]);
  const[busy,setBusy]=useState(false);
  const[message,setMessage]=useState('');
  const[uploadedThisSession,setUploadedThisSession]=useState(0);
+ const[publishedAck,setPublishedAck]=useState(false);
  const activeRef=useRef(false);
  const previews=useRef(new Set());
  useEffect(()=>()=>{for(const url of previews.current)URL.revokeObjectURL(url);previews.current.clear()},[]);
@@ -24,7 +25,7 @@ export default function ComicPageUploader({userId,comicId,episodeId,episodeTitle
  const clearQueue=()=>{
   if(activeRef.current)return;
   entries.forEach(x=>releaseUrl(x.preview));
-  setEntries([]);setUploadedThisSession(0);setMessage('');
+  setEntries([]);setUploadedThisSession(0);setPublishedAck(false);setMessage('');
  };
  function receiveFiles(fileList){
   if(activeRef.current)return;
@@ -61,6 +62,7 @@ export default function ComicPageUploader({userId,comicId,episodeId,episodeTitle
   if(activeRef.current)return;
   const ready=comicUploadReady(entries);
   if(!ready.ready){setMessage(ready.reason);return}
+  if(episodePublished&&!publishedAck){setMessage('Confirm that you understand these pages will be visible immediately in this published episode.');return}
   activeRef.current=true;setBusy(true);setMessage('');
   let completed=0;
   for(const entry of entries.filter(x=>x.status!=='uploaded')){
@@ -96,12 +98,13 @@ export default function ComicPageUploader({userId,comicId,episodeId,episodeTitle
   <label className="outline-button comic-upload-launch">Add comic pages
    <input type="file" accept={COMIC_IMAGE_ACCEPT} multiple hidden disabled={busy} onChange={e=>{receiveFiles(e.target.files);e.target.value=''}}/>
   </label>
-  <PalaceDialog open={open} title="Add pages to this episode" eyebrow="COMICS STUDIO · IMAGE UPLOADS" onClose={close}
+  <PalaceDialog open={open} className="comic-upload-dialog" title="Add pages to this episode" eyebrow="COMICS STUDIO · IMAGE UPLOADS" onClose={close}
    actions={<>
     <button type="button" className="quiet-button" disabled={busy} onClick={close}>{done&&waiting.length===0?'Done':'Keep queue for later'}</button>
-    <button type="button" disabled={busy||!ready.ready} onClick={start}>{busy?'Uploading…':hasFailures?'Retry remaining':waiting.length===1?'Upload 1 page':'Upload '+waiting.length+' pages'}</button>
+    <button type="button" disabled={busy||!ready.ready||(episodePublished&&!publishedAck)} onClick={start}>{busy?'Uploading…':hasFailures?'Retry remaining':waiting.length===1?'Upload 1 page':'Upload '+waiting.length+' pages'}</button>
    </>}>
-   <div className="comic-upload-intro"><strong>{episodeTitle}</strong><p>JPEG, PNG, WebP or AVIF. Up to 15 MiB per image and {COMIC_UPLOAD_BATCH_LIMIT} pages per batch. Files are ordered by filename first; adjust the order below before uploading. Your pages stay private until you publish the episode.</p></div>
+   <div className="comic-upload-intro"><strong>{episodeTitle}</strong><p>JPEG, PNG, WebP or AVIF. Up to 15 MiB per image and {COMIC_UPLOAD_BATCH_LIMIT} pages per batch. Files are ordered by filename first; adjust the order below before uploading. If this episode is a draft, the pages stay private until publication.</p></div>
+   {episodePublished&&<label className="comic-upload-published-warning"><input type="checkbox" disabled={busy} checked={publishedAck} onChange={e=>setPublishedAck(e.target.checked)}/><span><strong>This episode is already published.</strong> New pages will become visible to its permitted readers as soon as each upload finishes. I understand.</span></label>}
    <div className="comic-upload-summary" aria-live="polite"><span>{done} of {entries.length} added</span>{busy&&<span>Uploading in sequence; keep this dialog open</span>}</div>
    {message&&<p className={'comic-upload-feedback'+(hasFailures?' is-error':'')} role="status">{message}</p>}
    <label className="comic-upload-addmore">Add more images to this batch
