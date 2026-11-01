@@ -1,8 +1,8 @@
 import {readFileSync} from 'node:fs';
 import {describe,it,expect} from 'vitest';
 
-const css=readFileSync(new URL('./palace-daylight-contrast-depth.css',import.meta.url),'utf8');
-const main=readFileSync(new URL('./main.jsx',import.meta.url),'utf8');
+const css=readFileSync('src/palace-daylight-contrast-depth.css','utf8');
+const main=readFileSync('src/main.jsx','utf8');
 function luminance(hex){
  let color=hex.replace('#','');
  if(color.length===3)color=[...color].map(c=>c+c).join('');
