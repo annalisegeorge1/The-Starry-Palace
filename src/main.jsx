@@ -119,6 +119,7 @@ import './mobile-room-icon-polish.css';
 import './mobile-toolbar-palace-jewels.css';
 import './palace-home-content-jewels.css';
 import './palace-daylight-contrast-depth.css';
+import './palace-daylight-life-commons-clarity.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
