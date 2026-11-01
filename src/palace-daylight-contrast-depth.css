@@ -1,0 +1,308 @@
+/* Daylight readability & depth refinement — 2026-11-01.
+ * Editorial paper, not flat white-on-white. Theme-only: leave Nightfall,
+ * uploaded cover artwork, heritage gradients, reader papers and icon drawings intact. */
+
+.palace-shell.full-palace-shell.daylight{
+  --palace-bg:#edf0f7;
+  --palace-bg-deep:#e8ebf3;
+  --palace-panel:#fff;
+  --palace-panel-raised:#fff;
+  --palace-text:#20283b;
+  --palace-muted:#475569;
+  --palace-dim:#536076;
+  --palace-border:rgba(63,73,108,.23);
+  --palace-border-strong:rgba(78,67,129,.38);
+  --palace-shadow-soft:0 5px 15px rgba(34,41,75,.08);
+  --ui-surface:#fff;
+  --ui-raised:#f1edf8;
+  --ui-text:#20283b;
+  --ui-muted:#475569;
+  --ui-line:#bdc4d5;
+  --ui-accent:#574485;
+  --palace-chrome-header:#faf9ff;
+  --palace-chrome-panel:#fafaff;
+  --palace-chrome-ink:#30283f;
+  --palace-chrome-muted:#4a5067;
+  --palace-chrome-border:rgba(85,78,122,.32);
+  color:#20283b;
+  background-color:#edf0f7;
+}
+
+/* Give genuine page surfaces a cool lavender-grey stage to sit against. */
+.palace-shell.full-palace-shell.daylight .full-stage{
+  background-color:#edf0f7;
+}
+.palace-shell.full-palace-shell.daylight .full-stage>main#palace-content{
+  color:#20283b;
+}
+
+/* My Palace surfaces: soft elevation and a visible cool-grey edge. */
+.palace-shell.full-palace-shell.daylight .palace-command-centre .palace-dashboard-section{
+  background:linear-gradient(145deg,#fcfcff,#f7f8fc)!important;
+  border:1px solid rgba(89,96,134,.25)!important;
+  box-shadow:0 5px 17px rgba(34,41,75,.08),0 1px 2px rgba(34,41,75,.035)!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-command-centre :is(
+  .palace-resume-card,.palace-attention-grid>a,.palace-next-event,
+  .palace-release-desk,.palace-clear-state,.palace-nightstand-grid>a,
+  .palace-home-shortcuts>a,.release-desk-list>a,.home-post-strip>article
+){
+  background:#fff!important;
+  border-color:rgba(97,105,144,.27)!important;
+  box-shadow:0 3px 11px rgba(40,44,82,.07),0 1px 2px rgba(40,44,82,.03)!important;
+  color:#20283b!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-command-centre :is(
+  .palace-next-event,.palace-release-desk
+){
+  min-height:0!important;
+  padding:14px!important;
+  border-radius:15px!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-command-centre :is(
+  .palace-next-event h3,.palace-release-desk h3,.palace-dashboard-section .section-heading h2,
+  .palace-clear-state strong,.palace-resume-card h3,.palace-attention-grid strong
+){
+  color:#20283b!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-command-centre :is(
+  .palace-dashboard-section>.section-heading p:not(.eyebrow),
+  .palace-next-event p,.palace-release-desk>p,
+  .palace-resume-card p,.palace-attention-grid p,
+  .palace-clear-state p,.release-desk-list small,
+  .palace-nightstand-grid p,.home-post-strip p
+){
+  color:#475569!important;
+  opacity:1!important;
+  line-height:1.52!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-command-centre :is(
+  .palace-next-event small,.palace-release-desk small,.release-desk-list>a>span,
+  .palace-resume-card small,.palace-attention-grid small,
+  .palace-nightstand-grid small,.palace-dashboard-section .eyebrow
+){
+  color:#594775!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-command-centre .palace-clear-state{
+  border-style:dashed!important;
+}
+
+/* Calm, rich-indigo calls to action. No neon halo. */
+.palace-shell.full-palace-shell.daylight .palace-coming-up :is(
+  .palace-next-event>a,.release-desk-links .release-desk-link
+){
+  box-sizing:border-box!important;
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  min-height:39px;
+  width:max-content;
+  max-width:100%;
+  padding:9px 13px!important;
+  border:1px solid #564275!important;
+  border-radius:10px!important;
+  background:#614b8c!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  color:#fff!important;
+  text-shadow:none!important;
+  font-size:.78rem!important;
+  font-weight:700!important;
+  line-height:1.3!important;
+  text-decoration:none!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-coming-up :is(
+  .palace-next-event>a,.release-desk-links .release-desk-link
+):hover{
+  background:#4d386f!important;
+  border-color:#463164!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-coming-up .release-desk-links{
+  gap:8px!important;
+  margin-top:12px!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-command-centre :is(
+  .palace-next-event>a,.release-desk-link,.palace-dashboard-section .section-heading>a
+):focus-visible{
+  outline:3px solid #7554ac!important;
+  outline-offset:3px!important;
+}
+
+/* Compact stats; number and description share one coherent two-line row. */
+.palace-shell.full-palace-shell.daylight .chic-home-stats>a{
+  box-sizing:border-box!important;
+  min-height:68px!important;
+  padding:10px 11px!important;
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr)!important;
+  grid-template-rows:auto auto!important;
+  align-content:center!important;
+  align-items:center!important;
+  column-gap:9px!important;
+  row-gap:2px!important;
+  border:1px solid rgba(99,103,143,.28)!important;
+  border-radius:13px!important;
+  background:#fff!important;
+  background-image:none!important;
+  box-shadow:0 3px 10px rgba(42,48,85,.07)!important;
+  color:#20283b!important;
+  text-decoration:none!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-home-stats>a>strong{
+  grid-column:1!important;
+  grid-row:1/3!important;
+  margin:0!important;
+  font-size:clamp(1.23rem,2.6vw,1.5rem)!important;
+  line-height:1.08!important;
+  color:#28253f!important;
+  opacity:1!important;
+  font-variant-numeric:tabular-nums;
+}
+.palace-shell.full-palace-shell.daylight .chic-home-stats>a>span{
+  grid-column:2!important;
+  grid-row:1!important;
+  margin:0!important;
+  color:#283247!important;
+  font-size:clamp(.7rem,1.4vw,.78rem)!important;
+  line-height:1.25!important;
+  font-weight:700!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-home-stats>a>small{
+  grid-column:2!important;
+  grid-row:2!important;
+  margin:0!important;
+  color:#566175!important;
+  font-size:clamp(.65rem,1.3vw,.72rem)!important;
+  line-height:1.3!important;
+  letter-spacing:0!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-home-stats>a:hover{
+  border-color:#947dbd!important;
+  box-shadow:0 4px 14px rgba(42,48,85,.11)!important;
+}
+
+/* General shared dashboard cards, without touching literary artwork. */
+.palace-shell.full-palace-shell.daylight :is(
+  .chic-home-footer-panels>article,.palace-hub-paths>a,
+  .palace-hub-recent>a,.comic-gallery .comic-card,
+  .palace-home-layout .palace-choice-card
+){
+  border-color:rgba(95,104,140,.26)!important;
+  box-shadow:0 4px 13px rgba(38,43,79,.075)!important;
+}
+.palace-shell.full-palace-shell.daylight :is(
+  .chic-home-footer-panels>article p,.palace-hub-paths small,
+  .palace-hub-recent-heading>small
+){
+  color:#475569!important;
+  opacity:1!important;
+}
+
+/* Sticky header: an actual opaque surface above the scrolling content. */
+.palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar{
+  isolation:isolate!important;
+  opacity:1!important;
+  background:#faf9ff!important;
+  background-color:#faf9ff!important;
+  background-image:none!important;
+  border-bottom:1px solid rgba(76,75,120,.25)!important;
+  box-shadow:0 4px 14px rgba(34,36,75,.10)!important;
+  -webkit-backdrop-filter:blur(12px)!important;
+  backdrop-filter:blur(12px)!important;
+}
+.palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar::before{
+  background:#faf9ff!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar>.full-topbar-row{
+  position:relative!important;
+  z-index:1!important;
+}
+
+@media(max-width:760px){
+  /* Fixed dock no longer fades into a white background. */
+  .palace-shell.full-palace-shell.daylight .mobile-palace-dock{
+    background:#fbfaff!important;
+    background-image:none!important;
+    opacity:1!important;
+    border:1px solid rgba(84,78,122,.39)!important;
+    box-shadow:0 7px 24px rgba(35,38,74,.19),inset 0 1px 0 #fff!important;
+    color:#332947!important;
+    -webkit-backdrop-filter:blur(14px)!important;
+    backdrop-filter:blur(14px)!important;
+  }
+  .palace-shell.full-palace-shell.daylight .mobile-palace-dock :is(a,button){
+    color:#352b50!important;
+    text-shadow:none!important;
+    opacity:1!important;
+  }
+  .palace-shell.full-palace-shell.daylight .mobile-palace-dock :is(a,button)>small{
+    color:#372e51!important;
+    font-weight:750!important;
+    opacity:1!important;
+    text-shadow:none!important;
+  }
+  .palace-shell.full-palace-shell.daylight .mobile-palace-dock :is(a,button)>span:first-child{
+    color:var(--dock-paper,#514078)!important;
+  }
+  .palace-shell.full-palace-shell.daylight .mobile-palace-dock :is(a,button)>span:first-child svg{
+    color:var(--dock-paper,#514078)!important;
+    stroke:var(--dock-paper,#514078)!important;
+    opacity:1!important;
+    filter:none!important;
+  }
+  .palace-shell.full-palace-shell.daylight .mobile-palace-dock :is(a,button).active:not(.mobile-dock-write){
+    background:#ebe5f6!important;
+    border-color:rgba(104,83,150,.27)!important;
+  }
+  /* Preserve Write as the distinct prominent fifth-door action. */
+  .palace-shell.full-palace-shell.daylight .mobile-palace-dock .mobile-dock-write{
+    background:#69548f!important;
+    background-image:none!important;
+    border-color:#584579!important;
+    color:#fff!important;
+    box-shadow:none!important;
+  }
+  .palace-shell.full-palace-shell.daylight .mobile-palace-dock .mobile-dock-write>small{
+    color:#fff!important;
+  }
+  .palace-shell.full-palace-shell.daylight .mobile-palace-dock .mobile-dock-write>span:first-child{
+    background:#f6f0ff!important;
+    border-color:rgba(255,255,255,.8)!important;
+  }
+  .palace-shell.full-palace-shell.daylight .mobile-palace-dock .mobile-dock-write>span:first-child svg{
+    stroke:#503675!important;
+    color:#503675!important;
+  }
+  /* Even a fixed dock must leave a reachable end-of-document landing area.
+     The real content scrolls in main; this doesn't create a second scroller. */
+  .palace-shell.full-palace-shell.daylight .full-stage>main#palace-content{
+    padding-bottom:calc(188px + env(safe-area-inset-bottom,0px))!important;
+    scroll-padding-bottom:calc(160px + env(safe-area-inset-bottom,0px))!important;
+  }
+  .palace-shell.full-palace-shell.daylight .full-stage>.palace-mobile-end-spacer{
+    height:calc(150px + env(safe-area-inset-bottom,0px))!important;
+    min-height:150px!important;
+  }
+  .palace-shell.full-palace-shell.daylight .palace-command-centre .palace-coming-grid{
+    gap:9px!important;
+  }
+  .palace-shell.full-palace-shell.daylight .palace-coming-up .release-desk-links .release-desk-link{
+    flex:1 1 auto;
+    min-width:0!important;
+  }
+  .palace-shell.full-palace-shell.daylight .chic-home-stats>a{
+    min-height:62px!important;
+    padding:9px!important;
+    column-gap:8px!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .palace-shell.full-palace-shell.daylight .chic-home-stats>a{
+    transition:none!important;
+  }
+}
