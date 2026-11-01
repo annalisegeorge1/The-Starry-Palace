@@ -1,0 +1,327 @@
+/* Daylight follow-through: mobile dashboard, Writing, Palace Life and Commons.
+ * Builds on palace-daylight-contrast-depth.css without changing Nightfall
+ * or the illustrated Palace jewel icons. CSS only — no content/route changes. */
+.palace-shell.full-palace-shell.daylight{
+ --daylight-strong:#20283b;
+ --daylight-secondary:#475569;
+ --daylight-tertiary:#536076;
+ --daylight-border:rgba(89,97,131,.29);
+ --daylight-elevation:0 4px 12px rgba(34,42,78,.075),0 1px 2px rgba(34,42,78,.035);
+}
+/* Writing Chamber counters: old inherited #938ca3 was too light on lilac. */
+.palace-shell.full-palace-shell.daylight .chic-writing-summary>span{
+ color:var(--daylight-strong)!important;
+ background:linear-gradient(140deg,#fff,#f7f7fd)!important;
+ border:1px solid var(--daylight-border)!important;
+ box-shadow:var(--daylight-elevation)!important;
+ min-height:58px!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-writing-summary>span strong{
+ color:#27223c!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-writing-summary>span small{
+ color:#465369!important;
+ opacity:1!important;
+ font-size:clamp(.68rem,1.3vw,.74rem)!important;
+ line-height:1.35!important;
+ letter-spacing:0!important;
+ font-weight:650!important;
+}
+.palace-shell.full-palace-shell.daylight :is(
+ .chic-writing-head .lede,.writing-focus-strip p,.writing-pad-launch p,
+ .chic-writing-library-tools .writing-library-result-bar
+){
+ color:var(--daylight-secondary)!important;
+ opacity:1!important;
+}
+/* Palace Life: readable numbers/labels and a quiet raised panel. */
+.palace-shell.full-palace-shell.daylight .legacy-life-page .community-pulse-row.restored.social-pulse>button{
+ box-sizing:border-box!important;
+ min-width:0;
+ min-height:88px!important;
+ padding:11px 10px!important;
+ background:linear-gradient(150deg,#fff,#f8f9ff)!important;
+ border:1px solid var(--daylight-border)!important;
+ box-shadow:var(--daylight-elevation)!important;
+ color:var(--daylight-strong)!important;
+ border-radius:15px!important;
+ text-shadow:none!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-life-page .community-pulse-row.restored.social-pulse>button>strong{
+ color:#22263a!important;
+ opacity:1!important;
+ font-weight:750!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-life-page .community-pulse-row.restored.social-pulse>button>span:not(.palace-life-pulse-icon){
+ color:#2f374b!important;
+ opacity:1!important;
+ font-weight:700!important;
+ line-height:1.3!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-life-page .community-pulse-row.restored.social-pulse>button>small{
+ color:#4c586b!important;
+ opacity:1!important;
+ font-size:clamp(.69rem,1.2vw,.76rem)!important;
+ line-height:1.35!important;
+ letter-spacing:0!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-life-page :is(
+ .life-head .lede,.life-room-intro p:not(.eyebrow),
+ .commons-moonlight-entry small,.palace-ritual-strip p,
+ .palace-ritual-strip small,.chic-life-intro>span
+){
+ color:var(--daylight-secondary)!important;
+ opacity:1!important;
+}
+/* Paper-like Commons: remove washed-out dark-mode leftovers without
+ * flattening member-selected avatars and other identity artwork. */
+.palace-shell.full-palace-shell.daylight .legacy-life-page :is(
+ .palace-social-column,.chic-rail-card,.commons-moonlight-entry,
+ .palace-ritual-strip,.commons-conversation-path,.commons-compose-fold
+){
+ border-color:var(--daylight-border)!important;
+ box-shadow:var(--daylight-elevation)!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-life-page :is(
+ .palace-social-column,.chic-rail-card,.commons-moonlight-entry,.palace-ritual-strip
+){
+ background:linear-gradient(145deg,#fff,#f7f8fc)!important;
+ color:var(--daylight-strong)!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-life-page .chic-commons :is(
+ .commons-conversation-path,.commons-compose-fold
+){
+ background:#fff!important;
+ color:var(--daylight-strong)!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-commons :is(
+ .commons-path-heading strong,.commons-compose-fold>summary strong,
+ .commons-moonlight-entry strong
+){
+ color:var(--daylight-strong)!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-commons :is(
+ .commons-path-heading small,.commons-compose-fold>summary small,
+ .commons-moment-count,.commons-discovery-status small,
+ .commons-moonlight-entry small
+){
+ color:var(--daylight-secondary)!important;
+ opacity:1!important;
+}
+/* Search icon and input share ONE surface; no grey symbol tile. */
+.palace-shell.full-palace-shell.daylight .legacy-life-page .commons-search{
+ box-sizing:border-box!important;
+ display:flex!important;
+ align-items:center!important;
+ gap:9px!important;
+ min-width:0!important;
+ min-height:45px!important;
+ width:100%!important;
+ padding:0 12px!important;
+ background:#fff!important;
+ background-image:none!important;
+ color:var(--daylight-strong)!important;
+ border:1px solid rgba(95,104,143,.41)!important;
+ border-radius:12px!important;
+ box-shadow:0 2px 7px rgba(43,47,83,.045)!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-life-page .commons-search .commons-search-icon{
+ flex:0 0 20px!important;
+ width:20px!important;
+ height:20px!important;
+ padding:0!important;
+ margin:0!important;
+ display:grid!important;
+ place-items:center!important;
+ border:0!important;
+ border-radius:0!important;
+ background:transparent!important;
+ background-image:none!important;
+ box-shadow:none!important;
+ color:#51437e!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-life-page .commons-search .commons-search-icon svg{
+ display:block!important;
+ width:19px!important;height:19px!important;
+ stroke:currentColor!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-life-page .commons-search input{
+ flex:1 1 auto!important;
+ display:block!important;
+ box-sizing:border-box!important;
+ width:100%!important;
+ min-width:0!important;
+ min-height:42px!important;
+ margin:0!important;
+ padding:9px 0!important;
+ border:0!important;
+ outline:none!important;
+ border-radius:0!important;
+ background:transparent!important;
+ background-image:none!important;
+ box-shadow:none!important;
+ color:#20283b!important;
+ font-size:16px!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-life-page .commons-search input::placeholder{
+ color:#59677d!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-life-page .commons-search:focus-within{
+ outline:2px solid #7157a0!important;
+ outline-offset:2px!important;
+}
+/* Horizontal swipeable Commons view pills; preserve selected state and order.
+   Scoped to Commons only so the separate Forum toolbar is unaffected. */
+.palace-shell.full-palace-shell.daylight .chic-commons .commons-lens.chic-feed-tabs{
+ display:grid!important;
+ grid-template-columns:minmax(0,1fr)!important;
+ gap:10px!important;
+ padding:12px!important;
+ margin:0!important;
+ width:100%!important;
+ min-width:0!important;
+ box-sizing:border-box!important;
+ background:#f9f8fd!important;
+ background-image:none!important;
+ border-bottom:1px solid var(--daylight-border)!important;
+ box-shadow:none!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-commons .commons-lens .commons-view-buttons{
+ display:flex!important;
+ flex-wrap:nowrap!important;
+ align-items:center!important;
+ justify-content:flex-start!important;
+ gap:7px!important;
+ overflow-x:auto!important;
+ overflow-y:hidden!important;
+ min-width:0!important;
+ width:100%!important;
+ padding:2px 2px 5px!important;
+ border:0!important;
+ border-radius:0!important;
+ background:transparent!important;
+ scroll-snap-type:x proximity;
+ scrollbar-width:none;
+ -webkit-overflow-scrolling:touch;
+}
+.palace-shell.full-palace-shell.daylight .chic-commons .commons-lens .commons-view-buttons::-webkit-scrollbar{display:none}
+.palace-shell.full-palace-shell.daylight .chic-commons .commons-lens .commons-view-buttons>button{
+ flex:0 0 auto!important;
+ width:auto!important;
+ min-width:72px!important;
+ min-height:39px!important;
+ box-sizing:border-box!important;
+ padding:8px 13px!important;
+ border:1px solid #b3a8cb!important;
+ border-radius:999px!important;
+ background:#fff!important;
+ color:#3f3955!important;
+ box-shadow:none!important;
+ font-size:.78rem!important;
+ font-weight:650!important;
+ line-height:1.2!important;
+ scroll-snap-align:start;
+ white-space:nowrap!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-commons .commons-lens .commons-view-buttons>button[aria-pressed="true"]{
+ background:#635084!important;
+ border-color:#635084!important;
+ color:#fff!important;
+ box-shadow:none!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-commons .commons-lens .commons-view-buttons>button::after{
+ display:none!important;
+ content:none!important;
+}
+/* The primary Commons invitation must be visible outdoors. */
+.palace-shell.full-palace-shell.daylight .chic-commons .commons-conversation-path .commons-path-heading>button,
+.palace-shell.full-palace-shell.daylight .chic-commons .commons-compose-fold .chic-composer-fields button[type="submit"]{
+ background:#604a88!important;
+ background-image:none!important;
+ border:1px solid #503b75!important;
+ border-radius:11px!important;
+ box-shadow:none!important;
+ color:#fff!important;
+ text-shadow:none!important;
+ opacity:1!important;
+ font-weight:750!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-commons .commons-conversation-path .commons-path-heading>button:hover{
+ background:#4e3a72!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-life-page :is(
+ .commons-conversation-path button,.commons-view-buttons button,.commons-moonlight-entry button
+):focus-visible{
+ outline:3px solid #765ba8!important;
+ outline-offset:2px!important;
+}
+/* Daylight stage should end above the fixed nav, not beneath it. The existing
+ * spacer already exists; reinforce it across ALL mobile routes, not only home. */
+@media(max-width:760px){
+ .palace-shell.full-palace-shell.daylight{
+  --palace-mobile-dock-clearance:calc(190px + env(safe-area-inset-bottom,0px));
+ }
+ .palace-shell.full-palace-shell.daylight .full-stage>main#palace-content{
+  height:auto!important;
+  min-height:0!important;
+  overflow:visible!important;
+  padding-bottom:var(--palace-mobile-dock-clearance)!important;
+  scroll-padding-bottom:var(--palace-mobile-dock-clearance)!important;
+ }
+ .palace-shell.full-palace-shell.daylight .full-stage>.palace-mobile-end-spacer{
+  display:block!important;
+  height:calc(150px + env(safe-area-inset-bottom,0px))!important;
+  min-height:150px!important;
+  pointer-events:none!important;
+ }
+ .palace-shell.full-palace-shell.daylight .mobile-palace-dock{
+  background:#fbfaff!important;
+  background-image:none!important;
+  border-color:rgba(75,69,116,.45)!important;
+  color:#332947!important;
+  box-shadow:0 7px 24px rgba(35,38,74,.20),inset 0 1px 0 #fff!important;
+ }
+ .palace-shell.full-palace-shell.daylight .mobile-palace-dock :is(a,button)>small{
+  color:#302747!important;
+  opacity:1!important;
+ }
+ .palace-shell.full-palace-shell.daylight .mobile-palace-dock :is(a,button):not(.mobile-dock-write)>span:first-child svg{
+  color:#4a3978!important;
+  stroke:#4a3978!important;
+  opacity:1!important;
+ }
+ /* Keep the brand hero artwork; adjust ONLY faded type and status copy. */
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/chamber"] :is(
+  .palace-mobile-identity small,.palace-mobile-welcome-copy p,
+  .palace-mobile-stats small,.palace-home-pulse small
+ ){
+  color:#46526a!important;
+  opacity:1!important;
+ }
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/chamber"] .palace-moon-prompt p{
+  color:#46526a!important;
+  opacity:1!important;
+ }
+ .palace-shell.full-palace-shell.daylight .legacy-life-page .community-pulse-row.restored.social-pulse>button{
+  min-height:82px!important;
+  padding:10px 9px!important;
+ }
+ .palace-shell.full-palace-shell.daylight .chic-commons .commons-conversation-path .commons-path-heading>button{
+  min-height:43px!important;
+  padding:10px 15px!important;
+ }
+ .palace-shell.full-palace-shell.daylight .chic-commons .commons-lens.chic-feed-tabs{
+  position:relative!important;
+  top:auto!important;
+  z-index:1!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell.full-palace-shell.daylight .chic-commons .commons-view-buttons{
+  scroll-behavior:auto!important;
+ }
+}
