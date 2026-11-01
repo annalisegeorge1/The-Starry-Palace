@@ -33,8 +33,8 @@ describe('Events and Heritage calm mobile calendar',()=>{
  it('keeps date selection, month navigation, accessibility and one dot per event day',()=>{
   expect(calendar).toContain('aria-pressed={selected===day}');
   expect(calendar).toContain("aria-current={day===today?'date':undefined}");
-  expect(calendar).toContain("aria-label="Previous month"");
-  expect(calendar).toContain("aria-label="Next month"");
+  expect(calendar).toContain('aria-label="Previous month"');
+  expect(calendar).toContain('aria-label="Next month"');
   expect(calendar).toContain('onClick={reset}');
   expect(calendar).toContain("count+' '");
   expect(calendar).toContain('className="calendar-date-number"');
