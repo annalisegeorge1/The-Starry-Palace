@@ -94,6 +94,7 @@ import {restoreFlatClassicChapterHtml} from './classicTextStructure';
 import {selectStoryHistory} from './storyHistoryModel';
 import LibraryHistoryChronicle from './LibraryHistoryChronicle';
 import LibraryOverview from './LibraryOverview';
+import './library-artwork-first.css';
 import {buildLibraryOverview} from './libraryOverviewModel';
 import {libraryTabScrollLeft} from './libraryTabScroll';
 import {visibleLibrarySnapshot,isCurrentLibraryRequest} from './libraryMemberGate';
