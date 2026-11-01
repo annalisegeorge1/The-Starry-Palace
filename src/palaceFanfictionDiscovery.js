@@ -6,8 +6,20 @@
 export function isHistoricalFanfiction(record){
  return record?.category==='historical_fanfiction'||record?.archive_category==='historical_fanfiction';
 }
+/** Licensed modern fanfiction belongs in the same Fan-made Works shelf as
+ * historical fanfiction, but MUST NOT be labeled public domain. */
+export function isHostedFanfiction(record){
+ return isHistoricalFanfiction(record)||record?.category==='licensed_fanfiction'||record?.archive_category==='licensed_fanfiction';
+}
+/** A source link or permission note alone never makes a readable hosted edition. */
+export function canDisplayHostedArchive(record){
+ return Boolean(record?.host_mode==='full'&&(
+  record.rights_status==='public_domain_verified'||
+  (['licensed','creator_authorised'].includes(record.rights_status)&&Boolean(record.verified_at))
+ ));
+}
 export function readingArchiveWorkType(record){
- return isHistoricalFanfiction(record)?'fanwork':'archive';
+ return isHostedFanfiction(record)?'fanwork':'archive';
 }
 export const MODERN_FANFICTION_LINKS=Object.freeze([
  {
