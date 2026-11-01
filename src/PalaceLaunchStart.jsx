@@ -1,9 +1,11 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import PalaceIcon from './PalaceIcon';
 import {choosePalaceStartingStory,PALACE_FIRST_READING_DOORS,palaceStoryPath} from './palaceLaunchDiscovery';
 import './palace-launch-discovery.css';
 
 /** First reader path; makes no fabricated story, completion or length claims. */
+const landingDoorIcons={original:'sparkles',fanworks:'book-open',comics:'comic-book'};
 export default function PalaceLaunchStart({works=[],status='ready'}){
  if(status==='loading')return null;
  const start=status==='ready'?choosePalaceStartingStory(works):null;
@@ -27,7 +29,7 @@ export default function PalaceLaunchStart({works=[],status='ready'}){
   </div>:<p className="palace-launch-fallback">Pick a doorway that interests you. No need to decide on a genre before you explore.</p>}
   <nav className="palace-launch-doors" aria-label="Choose your first reading path">
    {PALACE_FIRST_READING_DOORS.map(door=><Link to={door.href} key={door.id}>
-    <span className="palace-launch-door-sigil" aria-hidden="true">{door.symbol}</span>
+    <span className="palace-launch-door-sigil" aria-hidden="true"><PalaceIcon name={landingDoorIcons[door.id]||'book-open'} size={23} strokeWidth={1.85}/></span>
     <span><strong>{door.title}</strong><small>{door.description}</small></span>
     <span className="palace-launch-door-arrow" aria-hidden="true">↗</span>
    </Link>)}
