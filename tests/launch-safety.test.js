@@ -1979,7 +1979,9 @@ describe('Starry Palace launch safety',()=>{
     const polish=read('src/polish.css');
     expect(live).toContain('palace-comic-reader-mode');
     expect(live).toContain('comic-episode-jump');
-    expect(live).toContain('Arrow keys turn pages');
+    expect(live).toContain('comicPageTurn(e.key,direction,index,pages.length');
+    expect(live).toContain('shouldTurnComicPageWithKey(e');
+    expect(read('src/comicReaderControls.js')).toContain('export function comicPageTurn');
     expect(live).toContain('Next episode →');
     expect(live).toContain('comic-episode-nav');
     expect(polish).toContain('.comic-episode-jump');
@@ -2087,8 +2089,8 @@ describe('Starry Palace launch safety',()=>{
   });
 
   it('only completes a comic on the final page of the final readable episode',()=>{
-    expect(live).toContain('const comicCompleted=ix===pages.length-1&&episodeIndex===readableEpisodes.length-1');
-    expect(live).toContain('i===pages.length-1&&episodeIndex===readableEpisodes.length-1');
+    expect(live).toContain('const completed=index===pages.length-1&&episodeIndex===readableEpisodes.length-1');
+    expect(live).toContain('const completed=pageIndex===pages.length-1&&episodeIndex===readableEpisodes.length-1');
     expect(live).toContain("comicHistory.filter(comicFinished)");
     expect(live).toContain('Finished comic · your reading history is kept');
     expect(live).toContain('Completed stories and comics will gather here.');
@@ -2144,8 +2146,10 @@ describe('Starry Palace launch safety',()=>{
   });
 
   it('records comic progress when the visible page opens',()=>{
-    expect(live).toContain('if(!session||!data||!page)return');
-    expect(live).toContain('recordComicProgress(session.user.id,data.comic.id,data.episode.id,page.id,comicCompleted)');
+    expect(live).toContain("if(mode!=='pages'||!session||!data||!page)return");
+    expect(live).toContain('recordComicProgress(session.user.id,data.comic.id,data.episode.id,page.id,completed)');
+    expect(live).toContain("rootMargin:'-35% 0px -35% 0px'");
+    expect(live).toContain('recordComicProgress(session.user.id,data.comic.id,data.episode.id,pages[pageIndex].id,completed)');
     expect(live).toContain('index===pages.length-1&&episodeIndex===readableEpisodes.length-1');
   });
 
