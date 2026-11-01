@@ -1,0 +1,81 @@
+/* Modest, responsive Fanfiction discovery that respects the Palace theme. */
+.palace-shell.full-palace-shell .palace-fanfiction-shelf{
+ margin:20px 0 25px;
+ border:1px solid var(--ui-line);
+ border-radius:19px;
+ padding:clamp(15px,2.6vw,25px);
+ background:var(--palace-glass-quiet,var(--ui-surface));
+ color:var(--ui-text);
+}
+.palace-shell.full-palace-shell .palace-fanfiction-shelf-head h2{
+ font:500 clamp(1.42rem,2.6vw,1.95rem)/1.2 Georgia,serif;
+ margin:3px 0 7px;
+ color:var(--ui-text);
+}
+.palace-shell.full-palace-shell .palace-fanfiction-shelf-head>p:last-child{
+ color:var(--ui-muted);
+ max-width:80ch;
+ line-height:1.55;
+ font-size:.88rem;
+ margin:0;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-group{margin-top:19px}
+.palace-shell.full-palace-shell .palace-fanfiction-group h3{
+ font:650 1rem/1.35 system-ui,sans-serif;
+ margin:0 0 10px;color:var(--ui-text);
+}
+.palace-shell.full-palace-shell .palace-fanfiction-grid{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-entry{
+ display:flex;flex-direction:column;align-items:flex-start;gap:6px;
+ min-width:0;border:1px solid var(--ui-line);border-radius:13px;
+ background:var(--ui-surface);color:var(--ui-text);
+ padding:14px 15px;text-decoration:none;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-entry>small{
+ color:var(--ui-accent);letter-spacing:.03em;
+ font-size:.68rem;font-weight:700;line-height:1.45;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-entry>strong{
+ font:550 1.17rem/1.28 Georgia,serif;color:var(--ui-text);
+}
+.palace-shell.full-palace-shell .palace-fanfiction-entry>span{
+ font-size:.77rem;color:var(--ui-muted);
+}
+.palace-shell.full-palace-shell .palace-fanfiction-entry>p{
+ margin:2px 0 3px;font-size:.78rem;line-height:1.48;color:var(--ui-muted);
+}
+.palace-shell.full-palace-shell .palace-fanfiction-entry>b{
+ margin-top:auto;padding-top:5px;font:.74rem/1.4 system-ui,sans-serif;
+ color:var(--ui-accent);
+}
+.palace-shell.full-palace-shell .palace-fanfiction-license-note{
+ font-size:.78rem;line-height:1.55;color:var(--ui-muted);
+ max-width:84ch;margin:0 0 12px;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-entry>.palace-fanfiction-content-note{
+ font-size:.7rem;margin-top:auto;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-links{
+ display:flex;flex-wrap:wrap;gap:7px 12px;align-items:center;
+ padding-top:5px;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-links a{
+ color:var(--ui-accent);font:.73rem/1.4 system-ui,sans-serif;
+ text-decoration:underline;text-underline-offset:3px;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-links .palace-fanfiction-terms{
+ color:var(--ui-muted);
+}
+.palace-shell.full-palace-shell .palace-fanfiction-shelf a:focus-visible{
+ outline:2px solid var(--ui-accent);outline-offset:3px;
+}
+@media(max-width:620px){
+ .palace-shell.full-palace-shell .palace-fanfiction-grid{
+  grid-template-columns:minmax(0,1fr);
+ }
+ .palace-shell.full-palace-shell .palace-fanfiction-shelf{
+  margin:13px 0 20px;padding:14px;border-radius:15px;
+ }
+}
