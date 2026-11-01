@@ -1113,5 +1113,77 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
    "permissionUrl": "https://archive.transformativeworks.org/series/3674068",
    "permissionLabel": "CC BY-NC 2.0 explicitly covers chapter one only; remaining chapters are link-only",
    "contentNote": "AO3 Teen · ongoing · danger, angst and suicidal-thought tags. Only chapter one has the declared reuse licence."
+ },
+ {
+   "id": "anime-primulad-razon-sinrazon",
+   "title": "La razón de la sinrazón",
+   "creator": "PrimulaD",
+   "published": "2009",
+   "fandom": "Dragon Ball Z",
+   "description": "Chi-Chi reflects, with humor and frustration, on married life with Goku and her family.",
+   "sourceUrl": "https://www.fanfiction.net/s/5334584/1/La-raz%C3%B3n-de-la-sinraz%C3%B3n",
+   "permissionUrl": "https://www.fanfiction.net/u/1924792/PrimulaD",
+   "permissionLabel": "CC BY-NC-SA 3.0 US · author-profile statement for original contributions; author-source link only",
+   "contentNote": "Source Fiction K+ · Spanish · complete one-shot · humour and family."
+ },
+ {
+   "id": "anime-primulad-renuncia",
+   "title": "Renuncia",
+   "creator": "PrimulaD",
+   "published": "2009",
+   "fandom": "Tsubasa Chronicle",
+   "description": "Syaoran's feelings surface after he recovers one of Sakura's feathers.",
+   "sourceUrl": "https://www.fanfiction.net/s/5053211/1/Renuncia",
+   "permissionUrl": "https://www.fanfiction.net/u/1924792/PrimulaD",
+   "permissionLabel": "CC BY-NC-SA 3.0 US · author-profile statement for original contributions; author-source link only",
+   "contentNote": "Source Fiction K · Spanish · complete hurt/comfort one-shot."
+ },
+ {
+   "id": "anime-primulad-palabras",
+   "title": "Palabras",
+   "creator": "PrimulaD",
+   "published": "2009",
+   "fandom": "Cardcaptor Sakura",
+   "description": "A light romantic one-shot about two difficult words for Touya and Yukito.",
+   "sourceUrl": "https://www.fanfiction.net/s/5053171/1/Palabras",
+   "permissionUrl": "https://www.fanfiction.net/u/1924792/PrimulaD",
+   "permissionLabel": "CC BY-NC-SA 3.0 US · author-profile statement for original contributions; author-source link only",
+   "contentNote": "Source Fiction M · Spanish · complete romance one-shot."
+ },
+ {
+   "id": "anime-primulad-mision-rango-s",
+   "title": "Misión rango ‘S’: Patologías extremas",
+   "creator": "PrimulaD",
+   "published": "2009",
+   "fandom": "Naruto · House, M.D.",
+   "description": "Team Seven and Sai land in a New Jersey teaching hospital in a comedic medical crossover.",
+   "sourceUrl": "https://www.fanfiction.net/s/5271209/1/Misi%C3%B3n-rango-S-Patolog%C3%ADas-extremas",
+   "permissionUrl": "https://www.fanfiction.net/u/1924792/PrimulaD",
+   "permissionLabel": "CC BY-NC-SA 3.0 US · author-profile statement for original contributions; author-source link only",
+   "contentNote": "Source Fiction K+ · Spanish · complete comedy crossover one-shot."
+ },
+ {
+   "id": "anime-primulad-dias-hokage",
+   "title": "Días de Hokage",
+   "creator": "PrimulaD",
+   "published": "2009",
+   "fandom": "Naruto",
+   "description": "Short humorous glimpses of what life might look like with Naruto as Hokage.",
+   "sourceUrl": "https://www.fanfiction.net/s/5339153/1/D%C3%ADas-de-Hokage",
+   "permissionUrl": "https://www.fanfiction.net/u/1924792/PrimulaD",
+   "permissionLabel": "CC BY-NC-SA 3.0 US · author-profile statement for original contributions; author-source link only",
+   "contentNote": "Source Fiction K+ · Spanish · complete humour one-shot."
+ },
+ {
+   "id": "anime-primulad-remansos-paz",
+   "title": "Remansos de paz",
+   "creator": "PrimulaD",
+   "published": "2009",
+   "fandom": "Naruto",
+   "description": "After a difficult mission, Kakashi examines his feelings and questions the mission's hidden motives.",
+   "sourceUrl": "https://www.fanfiction.net/s/5373945/1/Remansos-de-paz",
+   "permissionUrl": "https://www.fanfiction.net/u/1924792/PrimulaD",
+   "permissionLabel": "CC BY-NC-SA 3.0 US · author-profile statement for original contributions; author-source link only",
+   "contentNote": "Source Fiction K+ · Spanish · complete seven-chapter adventure · manga spoilers."
  }
 ]);
