@@ -47,11 +47,10 @@ describe('Treasury mobile badge showcase without artwork regression',()=>{
   expect(css).toContain('height:116px!important');
   expect(css).not.toContain('display:none!important;\n  .palace-watercolour-badge');
  });
- it('has mobile dock clearance and an opaque header without changing the original header icons',()=>{
+ it('has mobile dock clearance without overriding the approved original header',()=>{
   expect(main).toContain("import './treasury-mobile-badge-cabinet.css';");
   expect(css).toContain('padding-bottom:max(120px,var(--palace-mobile-dock-clearance,120px))');
-  expect(css).toContain('header.topbar.full-topbar');
-  expect(css).toContain('background-color:#0d142b!important');
+  expect(css).not.toContain('header.topbar.full-topbar');
   expect(css).not.toContain('.top-icon-link');
   expect(css).not.toContain('.write-action');
  });

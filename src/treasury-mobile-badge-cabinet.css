@@ -248,16 +248,6 @@
   min-height:48px!important;min-width:0!important;
   padding:7px 9px!important;
  }
- .palace-shell.full-palace-shell .full-stage>header.topbar.full-topbar{
-  isolation:isolate!important;
-  opacity:1!important;
-  background-color:#0d142b!important;
-  background-image:linear-gradient(110deg,#11182f,#0d142b 61%,#141b36)!important;
- }
- .palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar{
-  background-color:#f0ecfa!important;
-  background-image:linear-gradient(110deg,#f4effb,#e9e6f8)!important;
- }
 }
 @media(max-width:400px){
  .palace-shell.full-palace-shell #palace-content[data-palace-route="/treasury"]

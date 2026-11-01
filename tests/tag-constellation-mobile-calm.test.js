@@ -44,7 +44,7 @@ describe('Tag Constellation mobile discovery flow',()=>{
   expect(tag).toContain('<ReadingArchivePager page={resultsPage}');
   expect(tag).toContain('className="tag-story-grid"');
  });
- it('styles only tags plus header surface rather than modifying header icons',()=>{
+ it('styles only tags and does not modify global header',()=>{
   expect(shell).toContain("import './tag-constellation-mobile-calm.css';");
   expect(css).toContain('.legacy-tags-page');
   expect(css).toContain('padding-bottom:calc(68px');
@@ -56,7 +56,7 @@ describe('Tag Constellation mobile discovery flow',()=>{
   expect(css).toContain('pointer-events:auto;');
   expect(tag).toContain("document.body.style.overflow='hidden'");
   expect(tag).toContain('tagFilterCloseRef.current?.focus()');
-  expect(css).toContain('header.topbar.full-topbar');
+  expect(css).not.toContain('header.topbar.full-topbar');
   expect(css).not.toContain('.top-icon-link');
   expect(css).not.toContain('.write-action');
   expect(css).not.toContain('.mobile-palace-dock>');
