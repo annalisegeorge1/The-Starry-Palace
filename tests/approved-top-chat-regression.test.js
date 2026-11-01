@@ -6,16 +6,20 @@ const base=read('src/mobile-global-shell-palace-polish.css');
 const chat=read('src/chat-topbar-calm.css');
 const pageStyles=['src/tag-constellation-mobile-calm.css','src/events-calendar-mobile-clarity.css','src/treasury-mobile-badge-cabinet.css','src/palace-letters-mobile-calm.css'];
 describe('Preserve the approved top chat bubble and header across page refinements',()=>{
- it('keeps the approved chat bubble, trigger selector and chat-opening action',()=>{
+ it('keeps the outlined, shared-frame chat bubble and opening action',()=>{
   const marker='className="top-icon-link palace-top-chat-trigger"';
   const start=shell.indexOf(marker);
   expect(start).toBeGreaterThan(-1);
-  const button=shell.slice(start,start+300);
-  expect(button).toContain('>💬</button>');
-  expect(button).not.toContain('>✉</button>');
+  const button=shell.slice(start,shell.indexOf('</button>',start)+9);
+  expect(button).toContain('<svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"');
+  expect(button).toContain('fill="none" stroke="currentColor" strokeWidth="1.8"');
+  expect(button).toContain('<path d="M20.5 11.5');
+  expect(button).not.toContain('💬');
+  expect(button).not.toContain('✉');
   expect(button).toContain('aria-label="Open Palace Chat"');
   expect(button).toContain('window.dispatchEvent(new Event("palace-chat-open"))');
-  expect(chat).toContain('.palace-top-chat-trigger{cursor:pointer;display:inline-flex;align-items:center;justify-content:center;min-width:36px;border:0;background:transparent;color:inherit;font-size:1.15rem}');
+  expect(chat).toContain('.palace-top-chat-trigger{cursor:pointer;padding:0;font:inherit}');
+  expect(chat).not.toMatch(/\.palace-top-chat-trigger\{[^}]*\b(?:background|border)\s*:/);
  });
  it('retains the canonical opaque mobile header including Daylight',()=>{
   expect(base).toContain('.full-stage>header.topbar.full-topbar');
