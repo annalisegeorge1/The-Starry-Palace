@@ -261,7 +261,9 @@ describe('Fanfiction section contains rights-aware historical and modern discove
    const archiveHeader=reading.indexOf('<ReadingCatalogueControls');
    expect(shelfAt).toBeGreaterThan(browseLayout);
    expect(shelfAt).toBeLessThan(archiveHeader);
-   expect(reading).toContain("onClick={()=>{setOrigin('fandom');if(advancedView)navigate('/reading')}}");
+   expect(reading).toContain("onClick={()=>{setOrigin('fandom');navigate('/reading?section=fanfiction')}}");
+   expect(reading).toContain("get('section')==='fanfiction'");
+   expect(reading).toContain("document.getElementById('palace-fanfiction-shelf-title')?.scrollIntoView");
    expect(reading).toContain("linkedCount={origin==='fandom'?MODERN_FANFICTION_LINKS.length:0}");
    expect(shelf).toContain('MODERN_FANFICTION_LINKS.length} stories to explore');
    expect(shelf).toContain('showHistorical&&historic.length>0');
