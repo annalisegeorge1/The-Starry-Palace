@@ -19,8 +19,8 @@ const hosted=[
 describe('Unified Fanwork catalogue',()=>{
  it('combines actual member works, public-domain historical works and 92 independent links without duplicating',()=>{
   const entries=createUnifiedFanworks(hosted);
-  expect(entries).toHaveLength(83);
-  expect(new Set(entries.map(e=>e.key)).size).toBe(83);
+  expect(entries).toHaveLength(94);
+  expect(new Set(entries.map(e=>e.key)).size).toBe(94);
   expect(entries.filter(e=>e.kind==='link')).toHaveLength(92);
   expect(entries.filter(e=>e.kind==='member')).toHaveLength(1);
   expect(entries.filter(e=>e.kind==='historical')).toHaveLength(1);
