@@ -112,7 +112,7 @@ function ArchiveClassicReaderEdition({record,text,prepared}){
 
  return <article ref={readerRef} className={'archive-reader-sheet archive-classic-experience tone-'+tone+' width-'+width+' leading-'+leading+' layout-'+layout} style={{'--classic-font-size':fontSize+'px'}}>
   <header className="archive-classic-frontmatter archive-classic-compact-heading">
-   <p className="archive-classic-kicker">PALACE CLASSICS · {record?.host_mode==='excerpt'?'HOSTED EXCERPT':'HOSTED EDITION'}</p>
+   <p className="archive-classic-kicker">{record?.category==='licensed_fanfiction'?'PALACE FAN-MADE WORKS':'PALACE CLASSICS'} · {record?.host_mode==='excerpt'?'HOSTED EXCERPT':'HOSTED EDITION'}</p>
    <ClassicBookCover record={record} className="archive-classic-frontmatter-cover"/>
    <h3>{record?.title||'Untitled archive work'}</h3>
    <p>By <strong>{record?.creator_name||'Author not recorded'}</strong>{translators.length>0&&<> · Recorded translators: <strong>{translators.join(', ')}</strong></>}</p>
