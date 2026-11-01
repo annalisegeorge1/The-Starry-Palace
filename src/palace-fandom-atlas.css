@@ -171,3 +171,44 @@
 .palace-fandom-atlas .palace-fandom-card :is(a,button):focus-visible{
  outline:3px solid #a7e0ff;outline-offset:2px;
 }
+
+/* Compact, keyboard-accessible mode switch for fandom tags versus author-source fanfiction. */
+.palace-fandom-mode-switch{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.palace-fandom-mode-switch button{
+ min-height:39px;min-width:0;border-radius:999px;padding:8px 14px;
+ border:1px solid var(--ui-line,rgba(185,166,226,.5));
+ background:var(--ui-surface,rgba(95,80,145,.19));
+ color:var(--ui-text,inherit);font:650 .8rem/1.35 system-ui,sans-serif;
+ cursor:pointer;
+}
+.palace-fandom-mode-switch button[aria-pressed="true"]{
+ border-color:var(--ui-accent,#a995ed);background:var(--ui-selected,rgba(117,91,174,.24));
+ color:var(--ui-text,inherit);
+}
+.palace-fandom-mode-switch button:focus-visible,
+.palace-fandom-fanfic-door:focus-visible,
+.palace-fandom-selection-note button:focus-visible{
+ outline:2px solid var(--ui-accent,currentColor);outline-offset:3px;
+}
+.palace-fandom-fanfic-door{
+ display:inline-flex;padding:6px 0;color:var(--ui-accent,#caecfa);
+ text-decoration:underline;text-underline-offset:3px;font-size:.77rem;
+ font-weight:650;line-height:1.35;
+}
+.palace-fandom-linked-section{min-width:0}
+.palace-fandom-selection-note{
+ display:flex;gap:9px;flex-wrap:wrap;align-items:center;
+ border:1px solid var(--ui-line);padding:11px 13px;border-radius:12px;
+ background:var(--ui-surface);font-size:.77rem;color:var(--ui-text);
+}
+.palace-fandom-selection-note span{flex:1 1 185px}
+.palace-fandom-selection-note button{
+ background:transparent;border:1px solid var(--ui-line);border-radius:9px;
+ color:var(--ui-text);font:650 .76rem/1.4 system-ui,sans-serif;
+ padding:7px 10px;cursor:pointer;
+}
+.palace-fandom-linked-section .palace-fanfiction-shelf{margin:0!important}
+@media(max-width:620px){
+ .palace-fandom-mode-switch button{flex:1 1 auto;text-align:center}
+ .palace-fandom-linked-section{padding-bottom:120px}
+}
