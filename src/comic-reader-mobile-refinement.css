@@ -370,3 +370,33 @@
  .palace-shell.full-palace-shell .comic-reader-refined *,
  .palace-shell.full-palace-shell .comic-gallery-toolbar *{scroll-behavior:auto!important}
 }
+
+/* Missing-cover icon stays ornamental, never a broken-image illustration. */
+.palace-shell.full-palace-shell .comic-cover>span:has(.palace-icon){
+ box-sizing:border-box;
+ width:62px;
+ height:62px;
+ display:grid;
+ place-items:center;
+ border-radius:17px;
+ border:1px solid rgba(180,157,232,.48);
+ background:linear-gradient(145deg,rgba(106,85,163,.38),rgba(41,82,116,.32));
+ color:#f0eaff;
+ opacity:1!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 0 13px rgba(158,135,221,.11);
+}
+.palace-shell.full-palace-shell .comic-cover>span .palace-icon{
+ width:32px;height:32px;stroke:#f0eaff;
+}
+.palace-shell.full-palace-shell.daylight .comic-cover>span:has(.palace-icon){
+ background:linear-gradient(145deg,#f5efff,#dfeaf8);
+ border-color:#a99ac6;
+}
+.palace-shell.full-palace-shell.daylight .comic-cover>span .palace-icon{
+ stroke:#594783;
+}
+.palace-shell.full-palace-shell .comic-gallery .life-empty.large,
+.palace-shell.full-palace-shell .comic-studio-home .life-empty.large{
+ min-height:0!important;
+ padding:24px 18px!important;
+}
