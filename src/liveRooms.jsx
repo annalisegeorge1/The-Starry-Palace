@@ -82,8 +82,8 @@ import DuelCountdown from './DuelCountdown';
 import './reading-partial-notice.css';
 import ClassicsLibraryHall from './ClassicsLibraryHall';
 import UnifiedFanworkCatalogue from './UnifiedFanworkCatalogue';
-import {readingArchiveWorkType,MODERN_FANFICTION_LINKS} from './palaceFanfictionDiscovery';
-import {historicFanfictionGuide,archiveFanfictionTags} from './fanfictionMetadata';
+import {readingArchiveWorkType,canDisplayHostedArchive,MODERN_FANFICTION_LINKS} from './palaceFanfictionDiscovery';
+import {hostedFanfictionGuide,hostedFanfictionCompletion,archiveFanfictionTags} from './fanfictionMetadata';
 import StoryRatingBadge from './StoryRatingBadge';
 import PalaceFandomMiniPicker from './PalaceFandomMiniPicker';
 import {TAG_BATCH_PAGE_SIZE,toggleQueuedTag,pendingTagBatch,visibleTagSuggestions} from './tagBatchModel';
@@ -362,7 +362,7 @@ export function ReadingLive({Frame}){
    setWorks(memberOK?(stories.value||[]):[]);
    setHasMorePublished(memberOK&&(stories.value||[]).length===48);
    const archiveRows=archiveOK?(archive.value||[]):[];
-   setArchiveWorks(archiveRows.filter(r=>r.host_mode==='full'&&r.rights_status==='public_domain_verified').map(r=>({id:'archive-'+r.id,archive_record_id:r.id,is_archive:true,title:r.title,slug:r.slug,summary:r.summary,archive_category:r.category,work_type:readingArchiveWorkType(r),rating:historicFanfictionGuide(r).rating,rights_status:r.rights_status,archive_source_url:r.archive_source_url,creator_name:r.creator_name,language:r.original_language||'English',completion_status:'complete',cover_url:null,first_published_at:null,last_published_at:r.updated_at||r.verified_at,profiles:{display_name:r.creator_name,title:'Palace Classic',username:null,avatar_url:null},work_tags:[{tags:{id:'archive-classics',name:'Palace Classics',category:'collection',status:'canonical'}},{tags:{id:'archive-'+(r.category||'classic'),name:String(r.category||'classic').replaceAll('_',' '),category:'genre',status:'canonical'}},...archiveFanfictionTags(r)]})));
+   setArchiveWorks(archiveRows.filter(canDisplayHostedArchive).map(r=>({id:'archive-'+r.id,archive_record_id:r.id,is_archive:true,title:r.title,slug:r.slug,summary:r.summary,archive_category:r.category,work_type:readingArchiveWorkType(r),rating:hostedFanfictionGuide(r).rating,rights_status:r.rights_status,archive_source_url:r.archive_source_url,creator_name:r.creator_name,language:r.original_language||'English',completion_status:hostedFanfictionCompletion(r),cover_url:null,first_published_at:null,last_published_at:r.updated_at||r.verified_at,profiles:{display_name:r.creator_name,title:r.category==='licensed_fanfiction'?'Palace Guest Author':'Palace Classic',username:null,avatar_url:null},work_tags:[{tags:{id:r.category==='licensed_fanfiction'?'archive-fan-made':'archive-classics',name:r.category==='licensed_fanfiction'?'Fan-made Works':'Palace Classics',category:'collection',status:'canonical'}},{tags:{id:'archive-'+(r.category||'classic'),name:String(r.category||'classic').replaceAll('_',' '),category:'genre',status:'canonical'}},...archiveFanfictionTags(r)]})));
    if(!memberOK||!archiveOK)setReadingNotice('One reading shelf could not be gathered. The other stories are still available.');
   });
   if(id){
@@ -421,6 +421,12 @@ export function ReadingLive({Frame}){
  const readerLensMatches=w=>readerLens==='all'||readerLens==='unread'&&!stateFor(w).progress||readerLens==='reading'&&needsReading(w)||readerLens==='new'&&hasNew(w)||readerLens==='saved'&&!!stateFor(w).saved||readerLens==='following'&&!!stateFor(w).following||readerLens==='finished'&&finished(w);
  const filtered=roomWorks.filter(w=>matchesReadingFacets(w,includedTags,excludedTags)&&moodMatches(w,vibeDoor)&&readerLensMatches(w)&&(rating==='all'||w.rating===rating)&&(status==='all'||w.completion_status===status)&&(!query.trim()||[w.title,w.summary,w.profiles?.display_name,w.profiles?.username,w.profiles?.title,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase().includes(query.trim().toLowerCase())));
  const catalogue=sortReadingWorks(filtered,catalogueSort);
+ // Published archive-wide member search and the separately hosted archive use
+ // different backends. Surface verified, readable fanworks in the same Reading
+ // Room without pretending metadata-only intake records are published works.
+ const hostedFanworksInArchive=filtered.filter(w=>w.is_archive&&w.work_type==='fanwork'
+  &&w.rating!=='mature'&&w.rating!=='explicit');
+
  const visibleCatalogue=archiveBrowseEnabled?(archiveBrowse.snapshot?.results||[]):catalogue.slice(0,readingChoices.visibleCount);
  const visibleTotal=archiveBrowseEnabled?(archiveBrowse.snapshot?.total||0):catalogue.length;
  const showBrowseCards=archiveBrowseEnabled?Boolean(archiveBrowse.snapshot):Boolean(works);
@@ -550,7 +556,7 @@ export function ReadingLive({Frame}){
   </section>
   {origin!=='fandom'&&<section className="legacy-reading-tools chic-reading-tools reading-search-calm">
    <div className="reading-search" role="search"><span aria-hidden="true">⌕</span><input aria-label={archiveBrowseEnabled?'Search all published Reading Room stories':'Search the currently loaded Reading Room stories'} value={query} onChange={e=>setQuery(e.target.value)} placeholder="Title, writer, fandom or tag…"/></div>
-   <div className="reading-result-count" aria-live="polite"><strong>{archiveBrowseEnabled?(archiveBrowse.snapshot?visibleTotal.toLocaleString():'…'):catalogue.length.toLocaleString()}</strong><span>{origin==='fandom'?('Palace-hosted results · '+MODERN_FANFICTION_LINKS.length+' author-source fanfics in the unified catalogue below'):(archiveBrowseEnabled?'matching published stories · archive-wide':('matching among '+allReadingWorks.length+' loaded '+(allReadingWorks.length===1?'work':'works')))}</span></div>
+   <div className="reading-result-count" aria-live="polite"><strong>{archiveBrowseEnabled?(archiveBrowse.snapshot?visibleTotal.toLocaleString():'…'):catalogue.length.toLocaleString()}</strong><span>{origin==='fandom'?('Palace-hosted results · '+MODERN_FANFICTION_LINKS.length+' author-source fanfics in the unified catalogue below'):(archiveBrowseEnabled?'matching member-published stories · hosted fanfiction displayed separately below':('matching among '+allReadingWorks.length+' loaded '+(allReadingWorks.length===1?'work':'works')))}</span></div>
   </section>}
   {!archiveBrowseEnabled&&readerLens!=='all'&&<p className="reading-scope-note">Personal lenses search your currently loaded reading shelf. Choose “Entire published archive” to return to public browsing.</p>}
   {!archiveBrowseEnabled&&vibeDoor!=='all'&&<p className="reading-scope-note">Mood suggestions come from loaded stories, not archive-wide rankings.</p>}
@@ -559,7 +565,32 @@ export function ReadingLive({Frame}){
   {session&&<section className="reading-reader-lenses" aria-label="Your private reading lenses"><div><small>MY READING LENSES</small><span>Private to you · never changes public discovery ranking</span></div><nav>{[['all','All'],['unread','Unread'],['reading','In progress'],['new','New chapters'],['saved','Saved'],['following','Following'],['finished','Finished']].map(([key,label])=><button type="button" key={key} className={readerLens===key?'active':''} aria-pressed={readerLens===key} onClick={()=>setReaderLens(key)}>{label}</button>)}</nav>{(readerLens!=='all'||query||rating!=='all'||status!=='all'||vibeDoor!=='all')&&<button type="button" className="quiet-button" onClick={clearReadingFilters}>Clear reading filters</button>}</section>}
   {readingNotice&&<p className="reading-partial-notice" role="status">✧ {readingNotice}</p>}
   <div className="reading-catalogue-layout"><div className="reading-catalogue-main">
-  {origin==='fandom'&&<UnifiedFanworkCatalogue publishedWorks={[...visibleCatalogue,...archiveWorks]} globalQuery={query} globalRating={rating} completion={status} loading={browseLoading} loadError={browseError} hasMoreHosted={!archiveBrowseEnabled&&hasMorePublished} onMoreHosted={loadNextPublishedPage}/>}
+  {origin==='fandom'&&<UnifiedFanworkCatalogue publishedWorks={[...visibleCatalogue,...archiveWorks]} globalQuery={query} globalRating={rating} completion={status} loading={browseLoading} loadError={browseError} hasMoreHosted={!archiveBrowseEnabled&&hasMorePublished} onMoreHosted={loadNextPublishedPage} defaultSource="hosted"/>}
+  {archiveBrowseEnabled&&origin==='all'&&hostedFanworksInArchive.length>0&&
+   <section className="reading-hosted-fanworks" aria-labelledby="reading-hosted-fanworks-heading">
+    <header className="reading-hosted-fanworks-heading">
+     <div><p className="eyebrow">FAN-MADE WORKS · READ ON THE PALACE</p>
+      <h2 id="reading-hosted-fanworks-heading">Hosted fanfiction</h2>
+      <p>Readable, published fanworks with verified hosting status. Unpublished intake records are not displayed as stories.</p>
+     </div>
+     <span>{hostedFanworksInArchive.length} matching {hostedFanworksInArchive.length===1?'work':'works'}</span>
+    </header>
+    <div className="reading-hosted-fanworks-list">
+     {hostedFanworksInArchive.slice(0,8).map(work=>
+      <article key={work.id} className="reading-hosted-fanwork-card">
+       <Link to={directClassicHref(work)} className="reading-hosted-fanwork-title">{work.title}</Link>
+       <p>by <strong>{work.creator_name||work.profiles?.display_name||'Original fan writer'}</strong></p>
+       <p className="reading-hosted-fanwork-summary">{work.summary}</p>
+       <div className="reading-hosted-fanwork-meta">
+        <span>{work.rating==='not_rated'?'Not rated':String(work.rating||'Not rated').replace(/^./,letter=>letter.toUpperCase())}</span>
+        <span>{work.archive_category==='licensed_fanfiction'?'Author-licensed fanfiction':'Historical fanfiction'}</span>
+        {(work.work_tags||[]).map(item=>item.tags).filter(tag=>tag?.category==='fandom').slice(0,2).map(tag=><span key={tag.id}>{tag.name}</span>)}
+       </div>
+       <Link className="reading-hosted-fanwork-read" to={directClassicHref(work)}>Read on the Palace →</Link>
+      </article>)}
+    </div>
+    {hostedFanworksInArchive.length>8&&<Link className="reading-hosted-fanwork-more" to="/reading?section=fanfiction">Browse all hosted fanfiction →</Link>}
+   </section>}
   {origin!=='fandom'&&showBrowseCards&&<ReadingCatalogueControls layout={readingChoices.layout} onLayout={value=>setReadingChoice('layout',value)} shown={archiveBrowseEnabled?visibleCatalogue.length:Math.min(readingChoices.visibleCount,catalogue.length)} total={visibleTotal} linkedCount={origin==='fandom'?MODERN_FANFICTION_LINKS.length:0}/>}
   {origin!=='fandom'&&<State loading={browseLoading} error={browseError}>{showBrowseCards&&<section className="story-shelf refined chic-story-catalogue">{visibleCatalogue.length===0&&<div className="reading-catalogue-empty" role="status"><span className="reading-empty-star" aria-hidden="true">☾ ✦</span><div><p className="eyebrow">{activeReadingFilters.length?'A QUIETER CORNER':'AN OPEN SHELF'}</p><h2>{activeReadingFilters.length?'No worlds match these choices yet.':'This shelf is waiting for its first story.'}</h2><p>{activeReadingFilters.length?'Nothing is wrong with your search. Remove a filter or open the full Reading Rooms to browse again.':'Newly published stories will appear here when their writers open the doors.'}</p><div className="reading-empty-actions">{activeReadingFilters.length?<button type="button" onClick={clearReadingFilters}>Show every story →</button>:<Link to="/writers">Explore the Writer’s Door →</Link>}<Link to="/reading?view=search">Try advanced search →</Link></div></div></div>}{visibleCatalogue.map(w=>{
  const badges=flags(w);

@@ -1,3 +1,4 @@
+import {LICENSED_ANIME_FANWORK_BY_SLUG,LICENSED_ANIME_FANWORK_INTAKE} from './licensedAnimeFanworkIntake';
 /**
  * Curated discovery metadata, separate from the works themselves.
  * Source ratings are translated into the Palace's age classes:
@@ -113,6 +114,16 @@ export const HISTORICAL_FANFICTION_GUIDES=Object.freeze({
  'the-adventure-of-the-two-collaborators-j-m-barrie':entry('general','Palace editorial guide',{fandom:['Sherlock Holmes'],genre:['Parody','Humour'],trope:['Literary Satire','One-Shot'],character:['Sherlock Holmes','John Watson']},[],'editorial'),
  'old-friends-and-new-fancies-sybil-g-brinton':entry('not_rated',null,{fandom:['Jane Austen','Pride and Prejudice','Emma','Mansfield Park'],genre:['Romance','Historical'],trope:['Sequel','Shared Universe','Ensemble Cast'],character:['Elizabeth Darcy','Georgiana Darcy']},[],'unrated')
 });
+/** Licence-supported full-text intake: metadata remains non-public until the
+ * author's entire edition has been acquired and the archive is approved. */
+export const LICENSED_FANFICTION_GUIDES=Object.freeze(Object.fromEntries(
+ LICENSED_ANIME_FANWORK_INTAKE.map(work=>[work.slug,entry(work.rating,work.sourceRating,{
+  fandom:[work.fandom],format:['Anime & Manga'],
+  ...(work.language==='Spanish'?{language:['Spanish']}:{language:['English']}),
+  genre:work.genres,trope:work.tropes,character:work.characters,
+  relationship:work.relationships,warning:work.warnings
+ },work.warnings)])
+));
 export const FANFICTION_RATINGS=Object.freeze([
  {id:'all',label:'All ratings'},
  {id:'general',label:'General'},
@@ -124,12 +135,18 @@ export const FANFICTION_RATINGS=Object.freeze([
 const fallback=entry('not_rated',null,{},[],'unrated');
 export function modernFanfictionGuide(work){return MODERN_FANFICTION_GUIDES[work?.id]||fallback}
 export function historicFanfictionGuide(work){return HISTORICAL_FANFICTION_GUIDES[work?.slug]||fallback}
+export function hostedFanfictionGuide(work){
+ return LICENSED_FANFICTION_GUIDES[work?.slug]||historicFanfictionGuide(work);
+}
+export function hostedFanfictionCompletion(work){
+ return LICENSED_ANIME_FANWORK_BY_SLUG[work?.slug]?.completion_status||'complete';
+}
 export function fanfictionRatingLabel(guide){
  const title={general:'General',teen:'Teen',mature:'Mature',explicit:'Explicit',not_rated:'Not rated'}[guide?.rating]||'Not rated';
  return guide?.ratingBasis==='editorial'?title+' · Palace guide':title;
 }
 export function archiveFanfictionTags(work){
- const info=historicFanfictionGuide(work);
+ const info=hostedFanfictionGuide(work);
  return info.tags.map((tag,index)=>({tags:{
   id:'archive-ff-'+String(work.slug||'unknown')+'-'+index,
   name:tag.name,category:tag.category,status:'canonical'
