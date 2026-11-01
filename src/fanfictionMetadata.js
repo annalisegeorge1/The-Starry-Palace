@@ -10,6 +10,17 @@ const entry=(rating,sourceRating,tags,warnings=[],basis=rating==='not_rated'?'un
  tags:Object.entries(tags).flatMap(([category,names])=>names.map(name=>({category,name})))
 });
 export const MODERN_FANFICTION_GUIDES=Object.freeze({
+ 'anime-miara-masquerade':entry("teen","FanFiction.net T",{"fandom":["Vampire Knight"],"format":["Anime & Manga"],"genre":["Romance","Drama"],"trope":["Reunion","Angst","Canon Divergence"],"character":["Zero Kiryu","Yuki Cross"],"relationship":["Zero/Yuki"]},[]),
+ 'anime-miara-the-shadow':entry("teen","FanFiction.net T",{"fandom":["Inuyasha"],"format":["Anime & Manga"],"genre":["Romance","Humour"],"trope":["Alternate Universe","Bodyguard"],"character":["Inuyasha","Kagome Higurashi","Kikyo"],"relationship":["Inuyasha/Kagome"]},[]),
+ 'anime-miara-hundred-moments':entry("teen","FanFiction.net T",{"fandom":["Inuyasha"],"format":["Anime & Manga"],"genre":["Romance","Slice of Life"],"trope":["Drabbles","Character Moments","Collection"],"character":["Inuyasha","Kagome Higurashi"],"relationship":["Inuyasha/Kagome"]},[]),
+ 'anime-miara-lost-pendant':entry("teen","FanFiction.net T",{"fandom":["Inuyasha"],"format":["Anime & Manga"],"genre":["Romance"],"trope":["One-Shot","Misunderstanding"],"character":["Inuyasha","Kagome Higurashi"],"relationship":["Inuyasha/Kagome"]},[]),
+ 'anime-miara-missing-kagome':entry("teen","FanFiction.net T",{"fandom":["Inuyasha"],"format":["Anime & Manga"],"genre":["Romance","Suspense"],"trope":["One-Shot","Disappearance","Trust"],"character":["Inuyasha","Kagome Higurashi","Kikyo"],"relationship":["Inuyasha/Kagome"]},[]),
+ 'anime-miara-stay':entry("teen","FanFiction.net T",{"fandom":["Inuyasha"],"format":["Anime & Manga"],"genre":["Romance","Drama"],"trope":["Memory Alteration","Kidnapping","Hurt/Comfort"],"character":["Inuyasha","Kagome Higurashi","Naraku"],"relationship":["Inuyasha/Kagome"],"warning":["Abduction","Violence"]},["Abduction","Violence"]),
+ 'anime-miara-destined-together':entry("teen","FanFiction.net T",{"fandom":["Inuyasha"],"format":["Anime & Manga"],"genre":["Romance","Drama"],"trope":["Promises","Relationship Conflict"],"character":["Inuyasha","Kagome Higurashi"],"relationship":["Inuyasha/Kagome"]},[]),
+ 'anime-miara-to-be-happy':entry("general","FanFiction.net K+",{"fandom":["Inuyasha"],"format":["Anime & Manga"],"genre":["Romance"],"trope":["One-Shot","Conversation","Comfort"],"character":["Inuyasha","Kagome Higurashi"],"relationship":["Inuyasha/Kagome"]},[]),
+ 'anime-dmasters-sesshomaru-well':entry("teen","FanFiction.net T",{"fandom":["Inuyasha"],"format":["Anime & Manga"],"genre":["Fantasy"],"trope":["One-Shot","What If","Time Travel"],"character":["Sesshomaru"]},[]),
+ 'anime-michaelzorch-nindo-force3':entry("mature","FanFiction.net M",{"fandom":["Naruto","Star Wars"],"format":["Anime & Manga"],"genre":["Adventure","Science Fiction"],"trope":["Crossover","Series","Space Adventure"],"character":["Naruto Uzumaki","Mother Talzin","Jiraiya"],"warning":["Violence"]},["Violence"]),
+ 'anime-sharade-and-not-to-yield':entry("teen","AO3 Teen",{"fandom":["My Hero Academia"],"format":["Anime & Manga"],"genre":["Drama","Angst"],"trope":["Canon Divergence","Found Family","Work in Progress"],"character":["Izuku Midoriya","Shouta Aizawa","Stain"],"warning":["Suicidal Thoughts","Violence"]},["Suicidal thoughts","Violence"]),
  'anime-animeisperfection-frozen-heart':entry('general','FanFiction.net K',{fandom:['Ouran High School Host Club'],format:['Anime & Manga'],genre:['Romance','Friendship'],trope:['One-Shot','Original Character','Childhood Friends','Identity'],character:['Kaoru Hitachiin','Hikaru Hitachiin','Haruhi Fujioka']}),
  'anime-animeisperfection-synchronicity':entry('teen','FanFiction.net T',{fandom:['Vocaloid','Synchronicity'],format:['Anime-Inspired'],genre:['Fantasy','Romance'],trope:['Dragons','Rescue','Royal Courts'],character:['Len Kagamine','Rin Kagamine','Miku Hatsune','Akane Kiyomizu'],warning:['Child Separation','Death']},['Child separation','Death references','Dragon violence']),
  'anime-animeisperfection-together-tomorrow':entry('teen','FanFiction.net T',{fandom:['Naruto'],format:['Anime & Manga'],genre:['Romance','Family'],trope:['Alternate Ending','One-Shot','War Aftermath'],character:['Sasuke Uchiha','Tenten','Naruto Uzumaki'],relationship:['Sasuke/Tenten'],warning:['Major Character Death']},['Major character death','War aftermath']),
@@ -127,7 +138,7 @@ const ANIME_FANDOM_NAMES=[
  'naruto','one piece','yu-gi-oh','bleach','cardcaptor sakura','card captor sakura',
  'ouran high school host club','neon genesis evangelion','evangelion',
  'my hero academia','vocaloid','tsubasa chronicle','fullmetal alchemist',
- 'inuyasha','death note','demon slayer','attack on titan','dragon ball'
+ 'inuyasha','vampire knight','death note','demon slayer','attack on titan','dragon ball'
 ];
 export function isAnimeFanfiction(work){
  const guide=modernFanfictionGuide(work);
