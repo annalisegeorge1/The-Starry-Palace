@@ -64,11 +64,11 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
   creator:'MorganAW',
   published:'2017',
   fandom:'Pride and Prejudice · Jane Austen',
-  description:'A variation in which Darcy revisits his first impressions after the Netherfield ball. Complete, ten chapters.',
+  description:'At the Netherfield ball, Darcy discovers he has misread Wickham, Caroline Bingley and Elizabeth. A complete ten-chapter Austen variation.',
   sourceUrl:'https://archiveofourown.org/works/12395550',
   permissionUrl:'https://www.fanfiction.net/s/12655017/1/Cunning-and-Compromise',
   permissionLabel:'CC BY-SA 4.0 · author-declared; Austen original is public domain',
-  contentNote:'Teen rating · complete · no archive warnings on its AO3 edition.'
+  contentNote:'K+ rated on FanFiction.net · complete, ten chapters.'
  },
  {
   id:'morganaw-more-justified-in-acting',
@@ -200,7 +200,7 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
   sourceUrl:'https://www.fanfiction.net/s/13229369/1/Paws-and-Prejudice',
   permissionUrl:'https://www.fanfiction.net/s/13229369/1/Paws-and-Prejudice',
   permissionLabel:'CC BY-SA 4.0 · author-declared original contribution',
-  contentNote:'K+ rated · romance and humour; quoted movie material remains separately owned.'
+  contentNote:'K+ rated · romance and humour. Contains quotations from Austen and film adaptations; author licence covers original writing only.'
  },
  {
   id:'cateliot-inner-demons',
