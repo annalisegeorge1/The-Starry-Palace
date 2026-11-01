@@ -19,6 +19,9 @@ export default function Treasury({Frame}) {
  const {session}=useAuth();
  const [collection,setCollection]=useState(()=>{const requested=new URLSearchParams(window.location.search).get('collection');if(requested==='original-treasures')return 'gifts';if(requested==='moonlit-tea'||requested==='courts-of-moonlight')return 'expanded';return ['expanded','gifts','originals'].includes(requested)?requested:'originals'});
  const [query,setQuery]=useState('');
+ const [filtersOpen,setFiltersOpen]=useState(false);
+ const filterTriggerRef=useRef(null);
+ const filterPanelRef=useRef(null);
  const [badgePage,setBadgePage]=useState(1);
  const [artPreview,setArtPreview]=useState(null);
 
@@ -98,9 +101,30 @@ export default function Treasury({Frame}) {
  },[giftData.items,selectedCourt,giftEditionFilter,giftOwnership,inventory,query,sort]);
  const giftPages=Math.max(1,Math.ceil(visibleGifts.length/PAGE_SIZE));
  const pagedGifts=visibleGifts.slice((giftPage-1)*PAGE_SIZE,giftPage*PAGE_SIZE);
+ const activeFilterCount=(collection==='gifts'
+  ?[selectedCourt!=='all',giftEditionFilter!=='all',giftOwnership!=='all',giftPreviewTier!=='owned',sort!=='catalogue']
+  :[category!=='all',tier!=='owned',sort!=='catalogue',collection==='expanded'&&badgeOwnership!=='all']).filter(Boolean).length;
+ function resetCatalogueFilters(){setCategory('all');setTier('owned');setBadgeOwnership('all');setSort('catalogue');setGiftCourt('all');setGiftEditionFilter('all');setGiftOwnership('all');setGiftPreviewTier('owned')}
+ useEffect(()=>{
+  if(!filtersOpen)return;
+  const before=document.body.style.overflow;
+  document.body.style.overflow='hidden';
+  const frame=window.requestAnimationFrame(()=>filterPanelRef.current?.querySelector('select,button')?.focus());
+  const onKeyDown=e=>{
+   if(e.key==='Escape'){e.preventDefault();setFiltersOpen(false);return}
+   if(e.key!=='Tab')return;
+   const focusables=Array.from(filterPanelRef.current?.querySelectorAll('button:not([disabled]),select:not([disabled]),input:not([disabled])')||[]).filter(el=>el.getClientRects().length);
+   const first=focusables[0],last=focusables.at(-1);
+   if(!first)return;
+   if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+   else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+  };
+  window.addEventListener('keydown',onKeyDown);
+  return ()=>{window.cancelAnimationFrame(frame);window.removeEventListener('keydown',onKeyDown);document.body.style.overflow=before;filterTriggerRef.current?.focus()};
+ },[filtersOpen]);
 
  function choose(next){
-  setCollection(next);const url=new URL(window.location.href);url.searchParams.set('collection',next);window.history.replaceState(null,'',url);setCategory('all');setGiftCourt('all');setGiftEditionFilter('all');setGiftOwnership('all');setBadgeOwnership('all');setSort('catalogue');setGiftDetail(null);
+  setCollection(next);setFiltersOpen(false);setQuery('');const url=new URL(window.location.href);url.searchParams.set('collection',next);window.history.replaceState(null,'',url);resetCatalogueFilters();setGiftDetail(null);
  }
  async function reloadTreasury(){
   const owned=await getTreasury(session.user.id);setOwnedData(owned);
@@ -152,26 +176,45 @@ export default function Treasury({Frame}) {
   <section className="room-title treasury-catalogue-head">
    <p className="eyebrow">COLLECT · ACHIEVE · CELEBRATE</p>
    <h1>Your Royal Treasury <PalaceTopicHelp id="treasury"/></h1>
-   <p className="lede">The original 175 Palace badges, the expanded achievement paths, and 600 painted treasures in the live gift collection live together here.</p>
-   <p>Catalogue views are previews only. Earned badges, owned gifts, duplicate counts and showcase choices remain tied to verified Palace activity.</p>
+   <p className="lede">Explore 175 original badges, achievement paths and 600 painted treasures.</p>
+   <p className="catalogue-preview-note">Catalogue artwork is a preview. Earned badges, gifts and showcase choices reflect verified Palace activity.</p>
   </section>
 
-  <section className="catalogue-celestial-doorway"><div><p className="eyebrow">CELESTIAL HONOURS</p><h2>Special titles now live in the Royal Treasury. <PalaceTopicHelp id="titles"/></h2><p>Your Celestial Points, earned title constellations and point history have their own chamber so the Full Catalogue can stay focused on badges and treasures.</p></div><a href="/treasury?tab=titles" className="button-moonstone">Open Celestial Titles →</a></section>
+  <section className="catalogue-celestial-doorway"><div><p className="eyebrow">CELESTIAL HONOURS</p><h2>Special titles are in the Royal Treasury <PalaceTopicHelp id="titles"/></h2></div><a href="/treasury?tab=titles" className="button-moonstone">View titles →</a></section>
 
   <div className="badge-collection-switch treasury-collection-switch" role="group" aria-label="Treasury collection">
    <button aria-pressed={collection!=='gifts'} onClick={()=>choose('expanded')}><PalaceGlowIcon name="milestone-path" tone="silver" size="mini" className="treasury-catalogue-tab-icon"/>Badges</button>
    <button aria-label="Gift collection" aria-pressed={collection==='gifts'} onClick={()=>choose('gifts')}><PalaceGlowIcon name="gift" tone="treasury" size="mini" className="treasury-catalogue-tab-icon"/>Gifts</button>
   </div>
   {collection!=='gifts'&&<div className="treasury-family-tabs" role="group" aria-label="Badge collections"><button aria-pressed={collection==='expanded'} onClick={()=>choose('expanded')}><PalaceGlowIcon name="milestone-path" tone="silver" size="mini" className="treasury-catalogue-tab-icon"/>Achievement paths · {badges.length}</button><button aria-pressed={collection==='originals'} onClick={()=>choose('originals')}><PalaceGlowIcon name="archive" tone="courts" size="mini" className="treasury-catalogue-tab-icon"/>Palace originals</button></div>}
-  {collection==='gifts'?<>
+  <div className="treasury-catalogue-toolbar">
+   <label className="treasury-catalogue-search"><span className="treasury-visually-hidden">Search catalogue</span><svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><circle cx="10.7" cy="10.7" r="6.2"/><path d="m15.5 15.5 4.8 4.8"/></svg><input aria-label={collection==='gifts'?'Search gifts':'Search badges'} value={query} onChange={e=>setQuery(e.target.value)} type="search" placeholder={collection==='gifts'?'Search gifts…':'Search badges…'}/></label>
+   <button type="button" className="treasury-filter-trigger" ref={filterTriggerRef} aria-expanded={filtersOpen} aria-controls="treasury-catalogue-filters" onClick={()=>setFiltersOpen(true)}><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="2.4"/><circle cx="15" cy="17" r="2.4"/></svg>Filters{activeFilterCount>0&&<span className="treasury-filter-count">{activeFilterCount}</span>}</button>
+  </div>
+  <div className={'treasury-filter-overlay'+(filtersOpen?' is-open':'')}>
+   <button type="button" className="treasury-filter-backdrop" tabIndex={filtersOpen?0:-1} aria-label="Close filters" onClick={()=>setFiltersOpen(false)}/>
+   <section id="treasury-catalogue-filters" ref={filterPanelRef} className="treasury-filter-panel" role={filtersOpen?'dialog':undefined} aria-modal={filtersOpen?true:undefined} aria-label={filtersOpen?'Catalogue filters':undefined}>
+    <header className="treasury-filter-sheet-heading"><h2>Refine collection</h2><button type="button" aria-label="Close filters" onClick={()=>setFiltersOpen(false)}>×</button></header>
+    {collection==='gifts'?<>
    <div className="badge-controls gift-catalogue-controls">
-    <label>Search gifts<input value={query} onChange={e=>setQuery(e.target.value)} type="search" placeholder="Name, court or catalogue number"/></label>
     <label>Court<select value={selectedCourt} onChange={e=>setGiftCourt(e.target.value)}><option value="all">All Palace courts</option>{courts.map(c=><option key={c} value={c}>{c}</option>)}</select></label>
     <label>Collection<select value={giftEditionFilter} onChange={e=>setGiftEditionFilter(e.target.value)}><option value="all">Both collections</option>{giftEditions.map(e=><option key={e} value={e}>{e.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</option>)}</select></label>
     <label>My collection<select value={giftOwnership} onChange={e=>setGiftOwnership(e.target.value)}><option value="all">All prizes</option><option value="owned">Owned</option><option value="missing">Not yet owned</option><option value="duplicates">Duplicates</option><option value="ascendable">Ready to ascend</option></select></label>
     <label>Sort gifts<select value={sort} onChange={e=>setSort(e.target.value)}><option value="catalogue">Catalogue order</option><option value="name">Name A–Z</option><option value="copies">Most copies</option></select></label>
     <label>Collection rank<select value={giftPreviewTier} onChange={e=>setGiftPreviewTier(e.target.value)}><option value="owned">Highest owned tier · Bronze for previews</option>{tiers.map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label>
    </div>
+    </>:<>
+   <div className="badge-controls">
+    <label>Category<select value={category} onChange={e=>setCategory(e.target.value)}><option value="all">All categories</option>{[...new Set(source.map(b=>b.category))].map(c=><option key={c}>{c}</option>)}</select></label>
+    <label>Preview tier<select value={tier} onChange={e=>setTier(e.target.value)}><option value="owned">Highest earned · Bronze preview</option>{tiers.map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label>
+   </div>
+   <div className="treasury-badge-filters">{collection==='expanded'&&<label>My badges<select value={badgeOwnership} onChange={e=>setBadgeOwnership(e.target.value)}><option value="all">All badges</option><option value="owned">Earned</option><option value="locked">Locked</option></select></label>}<label>Sort badges<select value={sort} onChange={e=>setSort(e.target.value)}><option value="catalogue">Catalogue order</option><option value="name">Name A–Z</option>{collection==='expanded'&&<option value="progress">Closest to earning</option>}</select></label></div>
+    </>}
+    <footer className="treasury-filter-sheet-footer"><button type="button" className="treasury-reset-filters" onClick={resetCatalogueFilters}>Reset filters</button><button type="button" onClick={()=>setFiltersOpen(false)}>Show {collection==='gifts'?visibleGifts.length:visibleBadges.length} results</button></footer>
+   </section>
+  </div>
+  {collection==='gifts'?<>
+
    <p className="treasure-rank-note">Your earlier gifts remain in your cabinet and history. New rewards come from these 600 treasures. A collection rank records upgrades; it does not repaint an artwork’s original edition.</p>
    <div className="gift-edition-ribbon" aria-label="Painted gift editions">{giftEditions.map(e=><button key={e} aria-pressed={giftEditionFilter===e} className={giftEditionFilter===e?'active':''} onClick={()=>setGiftEditionFilter(giftEditionFilter===e?'all':e)}>{e.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}</button>)}</div>
    <section className="gift-collection-summary" aria-label="My gift collection progress">
@@ -213,18 +256,13 @@ export default function Treasury({Frame}) {
     </nav>}
    </>}
   </>:<>
-   <div className="badge-controls">
-    <label>Search badges<input value={query} onChange={e=>setQuery(e.target.value)} type="search" placeholder="Name, category or goal"/></label>
-    <label>Category<select value={category} onChange={e=>setCategory(e.target.value)}><option value="all">All categories</option>{[...new Set(source.map(b=>b.category))].map(c=><option key={c}>{c}</option>)}</select></label>
-    <label>Preview tier<select value={tier} onChange={e=>setTier(e.target.value)}><option value="owned">Highest earned · Bronze preview</option>{tiers.map(t=><option key={t} value={t}>{t[0].toUpperCase()+t.slice(1)}</option>)}</select></label>
-   </div>
-   <div className="treasury-badge-filters">{collection==='expanded'&&<label>My badges<select value={badgeOwnership} onChange={e=>setBadgeOwnership(e.target.value)}><option value="all">All badges</option><option value="owned">Earned</option><option value="locked">Locked</option></select></label>}<label>Sort badges<select value={sort} onChange={e=>setSort(e.target.value)}><option value="catalogue">Catalogue order</option><option value="name">Name A–Z</option>{collection==='expanded'&&<option value="progress">Closest to earning</option>}</select></label></div>
+
    <p role="status">{visibleBadges.length} badge families · tap an artwork for details and all five tiers.</p>
-   <div className="badge-grid">{visibleBadges.slice((badgePage-1)*24,badgePage*24).map(b=>{const progress=collection==='expanded'?achievementProgress.get(b.number):null;const unlocked=unlockedTiers(progress);const achievementId=progress?.achievement_families?.id;const showcased=achievementId?achievementShowcaseMap.get(achievementId):null;return <article className={"badge-card"+(unlocked.length?' is-earned':'')+(showcased?' is-showcased':'')} key={b.id}>
+   <div className="badge-grid">{visibleBadges.slice((badgePage-1)*24,badgePage*24).map(b=>{const progress=collection==='expanded'?achievementProgress.get(b.number):null;const unlocked=unlockedTiers(progress);const achievementId=progress?.achievement_families?.id;const showcased=achievementId?achievementShowcaseMap.get(achievementId):null;return <article className={"badge-card"+(collection==='originals'?' is-original-collection':'')+(unlocked.length?' is-earned':'')+(showcased?' is-showcased':'')} key={b.id}>
     <button className="badge-art-preview-button" aria-label={"Enlarge "+b.name+" artwork"} onClick={()=>setArtPreview(b)}><PalaceBadge family={b} tier={badgeRank(b)}/></button>
     <small>{b.category}</small><h2><button className="treasury-name-open" onClick={()=>setArtPreview(b)}>{b.name}</button></h2>
-    <div className="treasury-tier-dots" aria-label={unlocked.length?unlocked.join(', ')+' earned':'Five tiers · catalogue preview'}>{tiers.map(t=><span key={t} data-tier={t} className={unlocked.includes(t)?'earned':''} title={t+(unlocked.includes(t)?' earned':'')}/>)}</div>
-    {collection==='expanded'?<><progress aria-label={b.name+' progress toward next tier'} max="1" value={completion(b)}/><small>{unlocked.length?'Earned · '+unlocked.at(-1):'Not unlocked yet'} · {Number(progress?.current_value||0).toLocaleString()} progress</small></>:<small>Five collectible tiers · Preview</small>}
+    <div className="treasury-tier-dots" aria-label={unlocked.length?unlocked.join(', ')+' earned':collection==='originals'?'Bronze artwork preview · no tiers earned here':'Five tiers · not earned yet'}>{tiers.map(t=><span key={t} data-tier={t} className={unlocked.includes(t)?'earned':collection==='originals'&&t==='bronze'?'preview':''} title={t+(unlocked.includes(t)?' earned':collection==='originals'&&t==='bronze'?' artwork preview':'')}/>)}</div>
+    {collection==='expanded'&&<><progress aria-label={b.name+' progress toward next tier'} max="1" value={completion(b)}/><small>{unlocked.length?'Earned · '+unlocked.at(-1):'Not unlocked yet'} · {Number(progress?.current_value||0).toLocaleString()} progress</small></>}
    </article>})}</div>
    {visibleBadges.length>24&&<nav className="catalogue-pagination" aria-label="Badge catalogue pages"><button disabled={badgePage===1} onClick={()=>setBadgePage(p=>p-1)}>← Previous</button><span>Page {badgePage} of {Math.ceil(visibleBadges.length/24)}</span><button disabled={badgePage*24>=visibleBadges.length} onClick={()=>setBadgePage(p=>p+1)}>Next →</button></nav>}
    {!visibleBadges.length&&<p>No badges match these filters. Try another name or category.</p>}
