@@ -195,3 +195,23 @@
  color:var(--ui-muted);font:550 .76rem/1.48 system-ui,sans-serif;
  margin:8px 0 0;
 }
+
+.palace-shell.full-palace-shell .palace-fanfiction-anime-filter{
+ display:inline-flex;align-items:center;justify-content:center;
+ min-height:35px;min-width:105px;border:1px solid var(--ui-line);
+ border-radius:999px;padding:7px 12px;
+ background:var(--ui-surface);color:var(--ui-muted);
+ font:600 .75rem/1.35 system-ui,sans-serif;cursor:pointer;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-anime-filter.active,
+.palace-shell.full-palace-shell .palace-fanfiction-anime-filter[aria-pressed="true"]{
+ border-color:var(--ui-accent);color:var(--ui-accent);
+}
+.palace-shell.full-palace-shell .palace-fanfiction-anime-filter:focus-visible{
+ outline:2px solid var(--ui-accent);outline-offset:3px;
+}
+@media(max-width:620px){
+ .palace-shell.full-palace-shell .palace-fanfiction-anime-filter{
+  min-width:0;justify-self:start;
+ }
+}

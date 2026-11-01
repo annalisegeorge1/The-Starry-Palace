@@ -1,7 +1,7 @@
 import {readFileSync} from 'node:fs';
 import {describe,it,expect} from 'vitest';
 import {isHistoricalFanfiction,readingArchiveWorkType,MODERN_FANFICTION_LINKS} from '../src/palaceFanfictionDiscovery.js';
-import {MODERN_FANFICTION_GUIDES,HISTORICAL_FANFICTION_GUIDES,modernFanfictionGuide,historicFanfictionGuide,fanfictionRatingLabel,filterModernFanfiction,archiveFanfictionTags} from '../src/fanfictionMetadata.js';
+import {MODERN_FANFICTION_GUIDES,HISTORICAL_FANFICTION_GUIDES,modernFanfictionGuide,historicFanfictionGuide,fanfictionRatingLabel,filterModernFanfiction,isAnimeFanfiction,archiveFanfictionTags} from '../src/fanfictionMetadata.js';
 
 const reading=readFileSync('src/liveRooms.jsx','utf8');
 const shelf=readFileSync('src/PalaceFanfictionShelf.jsx','utf8');
@@ -23,8 +23,8 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(shelf).toContain("PUBLIC DOMAIN · HOSTED ON THE PALACE");
  });
  it('links to actual writers and their permission evidence without mirroring modern text',()=>{
-  expect(MODERN_FANFICTION_LINKS).toHaveLength(68);
-  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.id)).size).toBe(68);
+  expect(MODERN_FANFICTION_LINKS).toHaveLength(81);
+  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.id)).size).toBe(81);
   expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.creator)).size).toBeGreaterThanOrEqual(7);
   for(const w of MODERN_FANFICTION_LINKS){
    expect(w.title).toBeTruthy();
@@ -32,7 +32,7 @@ describe('Fanfiction section contains rights-aware historical and modern discove
    expect(w.fandom).toBeTruthy();
    expect(w.sourceUrl).toMatch(/^https:\/\//);
    expect(w.permissionUrl).toMatch(/^https:\/\//);
-   expect(w.permissionLabel).toMatch(/^(?:CC BY-(?:NC-(?:SA|ND)|SA)|Creative Commons(?: (?:noncommercial|derivative, noncommercial))?)/);
+   expect(w.permissionLabel).toMatch(/^(?:CC BY-(?:NC-(?:SA|ND)|SA)|Creative Commons(?: (?:noncommercial|derivative, noncommercial))?|Author explicitly permits)/);
   }
   expect(shelf).toContain('target="_blank" rel="noopener noreferrer"');
   expect(shelf).toContain('Read original');
@@ -162,10 +162,10 @@ describe('Fanfiction section contains rights-aware historical and modern discove
  });
  it('preserves the entire discovered catalogue, 2 verified hosted fanfics, and author-only attribution',()=>{
   const combined=MODERN_FANFICTION_LINKS.map(w=>w.id);
-  expect(combined.length).toBe(68);
-  expect(new Set(combined).size).toBe(68);
-  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.sourceUrl)).size).toBe(68);
-  expect(Object.keys(MODERN_FANFICTION_GUIDES).length).toBe(68);
+  expect(combined.length).toBe(81);
+  expect(new Set(combined).size).toBe(81);
+  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.sourceUrl)).size).toBe(81);
+  expect(Object.keys(MODERN_FANFICTION_GUIDES).length).toBe(81);
   expect(Object.keys(HISTORICAL_FANFICTION_GUIDES).length).toBe(2);
   for(const work of MODERN_FANFICTION_LINKS){
     expect(work.creator.trim().length).toBeGreaterThan(0);
@@ -204,6 +204,52 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(modernFanfictionGuide({id:'simplynia-to-catch-a-duke'}).rating).toBe('general');
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'The Princess Bride'}).some(w=>w.id==='lastgoodname-a-storybook-story')).toBe(true);
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Klaus Mikaelson'}).some(w=>w.id==='simplynia-to-catch-a-duke')).toBe(true);
+ });
+ it('includes thirteen new source-attributed anime and manga fanfiction recommendations',()=>{
+  const ids=[
+   'anime-animeisperfection-frozen-heart','anime-animeisperfection-synchronicity',
+   'anime-animeisperfection-together-tomorrow','anime-primulad-platos-rotos',
+   'anime-lalunaticscribe-restructer-revolution','anime-lalunaticscribe-huge-revolution',
+   'anime-lalunaticscribe-stardust-shimmer','anime-primulad-sin-milagro',
+   'anime-primulad-el-secreto-touya','anime-primulad-persiguiendo-sueno',
+   'anime-michaelzorch-wtf','anime-anloyalfriend-idiots-walk',
+   'anime-lalunaticscribe-exchange-spirit'
+  ];
+  expect(ids).toHaveLength(13);
+  for(const id of ids){
+   const work=MODERN_FANFICTION_LINKS.find(w=>w.id===id);
+   expect(work).toBeDefined();
+   expect(work.sourceUrl).toMatch(/^https:\/\/www.fanfiction.net\/s\/\d+\//);
+   expect(work.permissionUrl).toMatch(/^https:\/\//);
+   expect(work.creator).toBeTruthy();
+   expect(work.permissionLabel.length).toBeGreaterThan(24);
+   expect(isAnimeFanfiction(work)).toBe(true);
+   const guide=modernFanfictionGuide(work);
+   expect(guide.sourceRating).toBeTruthy();
+   expect(guide.tags.some(t=>t.category==='fandom')).toBe(true);
+  }
+  expect(modernFanfictionGuide({id:'anime-animeisperfection-frozen-heart'}).rating).toBe('general');
+  expect(modernFanfictionGuide({id:'anime-primulad-platos-rotos'}).rating).toBe('general');
+  expect(modernFanfictionGuide({id:'anime-lalunaticscribe-restructer-revolution'}).rating).toBe('teen');
+  expect(modernFanfictionGuide({id:'anime-primulad-sin-milagro'}).rating).toBe('mature');
+  expect(modernFanfictionGuide({id:'anime-anloyalfriend-idiots-walk'}).rating).toBe('mature');
+  expect(modernFanfictionGuide({id:'anime-animeisperfection-together-tomorrow'}).contentWarnings).toContain('Major character death');
+ });
+ it('filters earlier and new anime stories without altering other recommendations',()=>{
+  const anime=filterModernFanfiction(MODERN_FANFICTION_LINKS,{animeOnly:true});
+  expect(anime.length).toBeGreaterThanOrEqual(15);
+  expect(anime.some(w=>w.id==='anime-animeisperfection-frozen-heart')).toBe(true);
+  expect(anime.some(w=>w.id==='ken1245632-naruto-dragon-chronicles')).toBe(true);
+  expect(anime.some(w=>w.id==='lalunaticscribe-adventure-man-of-d')).toBe(true);
+  expect(anime.some(w=>w.id==='lastgoodname-stonewalling')).toBe(false);
+  expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{animeOnly:true,rating:'mature'})
+   .map(w=>w.id)).toContain('anime-primulad-sin-milagro');
+  expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{animeOnly:true,query:'Vocaloid'})
+   .map(w=>w.id)).toEqual(['anime-animeisperfection-synchronicity']);
+  expect(shelf).toContain('aria-pressed={animeOnly}');
+  expect(shelf).toContain('Anime &amp; manga');
+  expect(shelf).toContain('{rating,query,animeOnly}');
+  expect(shelf).toContain('setAnimeOnly(false)');
  });
  it('uses the existing theme and avoids new mobile dock or navigation geometry',()=>{
   expect(css).toContain('var(--ui-surface)');

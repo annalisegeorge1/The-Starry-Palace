@@ -34,21 +34,23 @@ export default function PalaceFanfictionShelf({archiveWorks=[]}){
  const [rating,setRating]=useState('all');
  const [query,setQuery]=useState('');
  const [includeMature,setIncludeMature]=useState(false);
+ const [animeOnly,setAnimeOnly]=useState(false);
  const needle=query.trim().toLowerCase();
  const historic=archiveWorks.filter(work=>work.is_archive&&isHistoricalFanfiction(work))
   .filter(work=>{
+   if(animeOnly)return false;
    const guide=historicFanfictionGuide(work);
    return (rating==='all'||guide.rating===rating)&&(!needle||
     [work.title,work.creator_name,work.summary,...guide.tags.map(t=>t.name)].filter(Boolean).join(' ').toLowerCase().includes(needle));
   });
  // The Palace's verified-age gate does not cover third-party destinations.
  // Keep 18+ external story links out of default public discovery.
- const modernMatches=filterModernFanfiction(MODERN_FANFICTION_LINKS,{rating,query});
+ const modernMatches=filterModernFanfiction(MODERN_FANFICTION_LINKS,{rating,query,animeOnly});
  const allowedModern=modernMatches.filter(work=>includeMature||modernFanfictionGuide(work).rating!=='mature');
  const hiddenMature=modernMatches.length-allowedModern.length;
  const matureMatches=modernMatches.filter(work=>modernFanfictionGuide(work).rating==='mature').length;
  const visibleModern=allowedModern.slice(0,visibleModernCount);
- const reset=()=>{setQuery('');setRating('all');setVisibleModernCount(6)};
+ const reset=()=>{setQuery('');setRating('all');setAnimeOnly(false);setVisibleModernCount(6)};
  return <section className="palace-fanfiction-shelf" aria-labelledby="palace-fanfiction-shelf-title">
   <header className="palace-fanfiction-shelf-head">
    <p className="eyebrow">FANFICTION · OLD WORLDS, NEW STORIES</p>
@@ -63,7 +65,8 @@ export default function PalaceFanfictionShelf({archiveWorks=[]}){
    <label><span>Rating</span><select value={rating} onChange={event=>{setRating(event.target.value);setVisibleModernCount(6)}}>
     {FANFICTION_RATINGS.map(item=><option value={item.id} key={item.id}>{item.label}</option>)}
    </select></label>
-   {(query||rating!=='all')&&<button type="button" className="palace-fanfiction-filter-reset" onClick={reset}>Clear</button>}
+   <button type="button" className={'palace-fanfiction-anime-filter'+(animeOnly?' active':'')} aria-pressed={animeOnly} onClick={()=>{setAnimeOnly(current=>!current);setVisibleModernCount(6)}}>Anime &amp; manga</button>
+   {(query||rating!=='all'||animeOnly)&&<button type="button" className="palace-fanfiction-filter-reset" onClick={reset}>Clear</button>}
   </div>
   {historic.length>0&&<div className="palace-fanfiction-group">
    <h3>Read here · historical fanfiction</h3>
