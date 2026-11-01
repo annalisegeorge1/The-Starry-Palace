@@ -79,3 +79,21 @@
   margin:13px 0 20px;padding:14px;border-radius:15px;
  }
 }
+
+.palace-shell.full-palace-shell .palace-fanfiction-result-count{
+ color:var(--ui-muted);font-size:.75rem;line-height:1.4;
+ margin:0 0 11px;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-more{
+ display:block;margin:13px auto 0;min-height:36px;
+ padding:7px 16px;border:1px solid var(--ui-line);
+ border-radius:999px;background:var(--ui-surface);
+ color:var(--ui-text);font:600 .78rem/1.35 system-ui,sans-serif;
+ cursor:pointer;
+}
+.palace-shell.full-palace-shell .palace-fanfiction-more:hover{
+ border-color:var(--ui-accent);color:var(--ui-accent);
+}
+.palace-shell.full-palace-shell .palace-fanfiction-more:focus-visible{
+ outline:2px solid var(--ui-accent);outline-offset:3px;
+}
