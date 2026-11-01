@@ -17,7 +17,7 @@ describe('Daylight Library and Council contrast',()=>{
   expect(css).toContain('.governance-entry-grid>button');
   expect(css).toContain('color:#e2e8f0!important');
   expect(contrast('#e2e8f0','#292445')).toBeGreaterThanOrEqual(4.5);
-  expect(contrast('#fff','#25243d')).toBeGreaterThanOrEqual(4.5);
+  expect(contrast('#ffffff','#25243d')).toBeGreaterThanOrEqual(4.5);
  });
  it('shows live Council and petition statistics instead of blank dark blocks',()=>{
   expect(governance).toContain('className="governance-pulse"');
@@ -33,7 +33,7 @@ describe('Daylight Library and Council contrast',()=>{
   expect(petitions).toContain('disabled={busy||!data?.my_palace_id}');
   expect(css).toContain('.petition-panel button:disabled');
   expect(css).toContain('cursor:not-allowed!important');
-  expect(contrast('#fff','#604780')).toBeGreaterThanOrEqual(4.5);
+  expect(contrast('#ffffff','#604780')).toBeGreaterThanOrEqual(4.5);
  });
  it('improves Council queue count padding and keeps mobile dock clearance',()=>{
   expect(rooms).toContain('className="council-queue-count"');
