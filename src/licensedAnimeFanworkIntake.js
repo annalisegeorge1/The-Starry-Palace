@@ -663,6 +663,311 @@ export const LICENSED_ANIME_FANWORK_INTAKE=Object.freeze([
     "summary": "A short Yu-Gi-Oh-inspired poem intended to help a lost game master find hope again.",
     "language": "English",
     "stage": "metadata_ready_text_not_imported"
+  },
+  {
+    "slug": "nindo-of-the-force-1-michaelzorch",
+    "title": "Nindo of the Force 1 - A New Destiny",
+    "creator": "Michael The-Zorch Haney",
+    "fandom": "Naruto · Star Wars",
+    "sourceUrl": "https://www.fanfiction.net/s/10997500/1/Nindo-of-the-Force-1-A-New-Destiny",
+    "permissionUrl": "https://www.fanfiction.net/s/10997500/1/Nindo-of-the-Force-1-A-New-Destiny",
+    "sourceLicense": "CC BY-NC-SA 3.0 (author declares noncommercial share-alike in chapter one)",
+    "rating": "mature",
+    "sourceRating": "FanFiction.net M",
+    "completion_status": "complete",
+    "chapters": 10,
+    "genres": [
+      "Drama",
+      "Science Fiction"
+    ],
+    "characters": [
+      "Naruto Uzumaki",
+      "Jiraiya",
+      "Bail Organa",
+      "Obi-Wan Kenobi"
+    ],
+    "relationships": [],
+    "tropes": [
+      "Crossover",
+      "Space Opera",
+      "Alternate Universe",
+      "Stranded in Another World",
+      "Series"
+    ],
+    "warnings": [
+      "Violence",
+      "War"
+    ],
+    "summary": "Naruto and Jiraiya are stranded in the Star Wars galaxy in the first part of a seven-part crossover saga.",
+    "language": "English",
+    "stage": "metadata_ready_text_not_imported"
+  },
+  {
+    "slug": "nindo-of-the-force-2-michaelzorch",
+    "title": "Nindo of the Force 2 - A New Power Rising",
+    "creator": "Michael The-Zorch Haney",
+    "fandom": "Naruto · Star Wars",
+    "sourceUrl": "https://www.fanfiction.net/s/11816879/1/Nindo-of-the-Force-2-A-New-Power-Rising",
+    "permissionUrl": "https://www.fanfiction.net/s/11816879/1/Nindo-of-the-Force-2-A-New-Power-Rising",
+    "sourceLicense": "CC BY-NC-SA 3.0 (author declares noncommercial share-alike in chapter one)",
+    "rating": "mature",
+    "sourceRating": "FanFiction.net M",
+    "completion_status": "complete",
+    "chapters": 8,
+    "genres": [
+      "Adventure",
+      "Science Fiction"
+    ],
+    "characters": [
+      "Naruto Uzumaki",
+      "Anakin Skywalker",
+      "Qui-Gon Jinn",
+      "Padmé Amidala"
+    ],
+    "relationships": [],
+    "tropes": [
+      "Crossover",
+      "Space Opera",
+      "Alternate Timeline",
+      "Series"
+    ],
+    "warnings": [
+      "Violence",
+      "War"
+    ],
+    "summary": "The second Naruto and Star Wars crossover follows events on Tatooine and consequences for the Galactic Republic.",
+    "language": "English",
+    "stage": "metadata_ready_text_not_imported"
+  },
+  {
+    "slug": "nindo-of-the-force-3-michaelzorch",
+    "title": "Nindo of the Force 3: Jinchuriki",
+    "creator": "Michael The-Zorch Haney",
+    "fandom": "Naruto · Star Wars",
+    "sourceUrl": "https://www.fanfiction.net/s/13944304/1/Nindo-of-the-Force-3-Jinchuriki",
+    "permissionUrl": "https://www.fanfiction.net/s/13944304/1/Nindo-of-the-Force-3-Jinchuriki",
+    "sourceLicense": "CC BY-NC-SA 3.0 (author declares noncommercial share-alike in chapter one)",
+    "rating": "mature",
+    "sourceRating": "FanFiction.net M",
+    "completion_status": "in_progress",
+    "chapters": 1,
+    "genres": [
+      "Adventure",
+      "Science Fiction"
+    ],
+    "characters": [
+      "Naruto Uzumaki",
+      "Jiraiya",
+      "Obi-Wan Kenobi",
+      "Asajj Ventress"
+    ],
+    "relationships": [],
+    "tropes": [
+      "Crossover",
+      "Space Opera",
+      "Jinchuriki",
+      "Series"
+    ],
+    "warnings": [
+      "Violence",
+      "War"
+    ],
+    "summary": "A third Naruto and Star Wars crossover, following Naruto's life in the Outer Rim as galactic war approaches.",
+    "language": "English",
+    "stage": "metadata_ready_text_not_imported"
+  },
+  {
+    "slug": "wtf-michaelzorch",
+    "title": "WTF",
+    "creator": "Michael The-Zorch Haney",
+    "fandom": "Naruto",
+    "sourceUrl": "https://www.fanfiction.net/s/4451904/1/WTF",
+    "permissionUrl": "https://www.fanfiction.net/s/4451904/1/WTF",
+    "sourceLicense": "CC BY-NC-SA 2.5 (author states licence in first chapter)",
+    "rating": "mature",
+    "sourceRating": "FanFiction.net M",
+    "completion_status": "in_progress",
+    "chapters": 1,
+    "genres": [
+      "Humour",
+      "Adventure"
+    ],
+    "characters": [
+      "Naruto Uzumaki",
+      "Hinata Hyuga",
+      "Jiraiya"
+    ],
+    "relationships": [],
+    "tropes": [
+      "Crack Fic",
+      "Comedy",
+      "Canon Divergence"
+    ],
+    "warnings": [
+      "Adult humour"
+    ],
+    "summary": "An offbeat Naruto comedy-adventure centred on Naruto and Jiraiya.",
+    "language": "English",
+    "stage": "metadata_ready_text_not_imported"
+  },
+  {
+    "slug": "naruto-dragon-chronicles-part1-ken1245632",
+    "title": "Naruto: Dragon Chronicles Part 1",
+    "creator": "Ken1245632",
+    "fandom": "Naruto · Dark Souls",
+    "sourceUrl": "https://www.fanfiction.net/s/14013574/1/Naruto-Dragon-Chronicles-Part-1",
+    "permissionUrl": "https://www.fanfiction.net/s/14013574/1/Naruto-Dragon-Chronicles-Part-1",
+    "sourceLicense": "CC BY-NC-SA 4.0 (author explicitly licenses this story in first chapter)",
+    "rating": "mature",
+    "sourceRating": "FanFiction.net M",
+    "completion_status": "in_progress",
+    "chapters": 4,
+    "genres": [
+      "Science Fiction",
+      "Adventure"
+    ],
+    "characters": [
+      "Naruto Uzumaki",
+      "Crossbreed Priscilla"
+    ],
+    "relationships": [],
+    "tropes": [
+      "Crossover",
+      "Dragon Blood",
+      "Alternate Universe",
+      "Original Elements"
+    ],
+    "warnings": [
+      "Fantasy violence"
+    ],
+    "summary": "Naruto is given dragon blood linked to a Dark Souls crossbreed and confronts unfamiliar threats.",
+    "language": "English",
+    "stage": "metadata_ready_text_not_imported"
+  },
+  {
+    "slug": "sesshomaru-through-the-well-dmasters",
+    "title": "Sesshomaru Through The Well",
+    "creator": "D. Masters",
+    "fandom": "Inuyasha",
+    "sourceUrl": "https://www.fanfiction.net/s/2688397/1/Sesshomaru-Through-The-Well",
+    "permissionUrl": "https://www.fanfiction.net/u/898034/D-Masters",
+    "sourceLicense": "CC BY-NC-ND 3.0 US (author profile licenses their works)",
+    "rating": "teen",
+    "sourceRating": "FanFiction.net T",
+    "completion_status": "complete",
+    "chapters": 1,
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "characters": [
+      "Sesshomaru"
+    ],
+    "relationships": [],
+    "tropes": [
+      "One-Shot",
+      "What If",
+      "Time Travel",
+      "Bone-Eater's Well"
+    ],
+    "warnings": [],
+    "summary": "What if Sesshomaru and his companions had travelled through the Bone-Eater's Well?",
+    "language": "English",
+    "stage": "metadata_ready_text_not_imported"
+  },
+  {
+    "slug": "platos-rotos-primulad",
+    "title": "Platos Rotos",
+    "creator": "PrimulaD",
+    "fandom": "Naruto",
+    "sourceUrl": "https://www.fanfiction.net/s/5377832/1/Platos-Rotos",
+    "permissionUrl": "https://www.fanfiction.net/u/1924792/PrimulaD",
+    "sourceLicense": "CC BY-NC-SA 3.0 US (author profile licenses all works)",
+    "rating": "general",
+    "sourceRating": "FanFiction.net K+",
+    "completion_status": "complete",
+    "chapters": 1,
+    "genres": [
+      "Friendship",
+      "Drama"
+    ],
+    "characters": [
+      "Sakura Haruno",
+      "Ino Yamanaka",
+      "Sasuke Uchiha"
+    ],
+    "relationships": [],
+    "tropes": [
+      "One-Shot",
+      "Conversation",
+      "Character Study"
+    ],
+    "warnings": [],
+    "summary": "Sakura speaks with her friend and rival Ino about her feelings for Sasuke.",
+    "language": "Spanish",
+    "stage": "metadata_ready_text_not_imported"
+  },
+  {
+    "slug": "renuncia-primulad",
+    "title": "Renuncia",
+    "creator": "PrimulaD",
+    "fandom": "Tsubasa Chronicle",
+    "sourceUrl": "https://www.fanfiction.net/s/5053211/1/Renuncia",
+    "permissionUrl": "https://www.fanfiction.net/u/1924792/PrimulaD",
+    "sourceLicense": "CC BY-NC-SA 3.0 US (author profile licenses all works)",
+    "rating": "general",
+    "sourceRating": "FanFiction.net K",
+    "completion_status": "complete",
+    "chapters": 1,
+    "genres": [
+      "Hurt/Comfort",
+      "Friendship"
+    ],
+    "characters": [
+      "Syaoran",
+      "Fai"
+    ],
+    "relationships": [],
+    "tropes": [
+      "One-Shot",
+      "Inner Monologue",
+      "Magical Feathers"
+    ],
+    "warnings": [],
+    "summary": "Syaoran reflects on his emotions after recovering one of Sakura's feathers.",
+    "language": "Spanish",
+    "stage": "metadata_ready_text_not_imported"
+  },
+  {
+    "slug": "la-razon-de-la-sinrazon-primulad",
+    "title": "La razón de la sinrazón",
+    "creator": "PrimulaD",
+    "fandom": "Dragon Ball Z",
+    "sourceUrl": "https://www.fanfiction.net/s/5334584/1/La-raz%C3%B3n-de-la-sinraz%C3%B3n",
+    "permissionUrl": "https://www.fanfiction.net/u/1924792/PrimulaD",
+    "sourceLicense": "CC BY-NC-SA 3.0 US (author profile licenses all works)",
+    "rating": "general",
+    "sourceRating": "FanFiction.net K+",
+    "completion_status": "complete",
+    "chapters": 1,
+    "genres": [
+      "Humour",
+      "Family"
+    ],
+    "characters": [
+      "Chi-Chi",
+      "Goku"
+    ],
+    "relationships": [],
+    "tropes": [
+      "One-Shot",
+      "Domestic Life",
+      "Character Monologue"
+    ],
+    "warnings": [],
+    "summary": "Chi-Chi vents her frustration about family life in a short domestic comedy.",
+    "language": "Spanish",
+    "stage": "metadata_ready_text_not_imported"
   }
 ]);
 export const LICENSED_ANIME_FANWORK_BY_SLUG=Object.freeze(Object.fromEntries(LICENSED_ANIME_FANWORK_INTAKE.map(work=>[work.slug,work])));
