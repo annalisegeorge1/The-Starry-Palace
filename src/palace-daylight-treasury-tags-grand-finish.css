@@ -1,0 +1,375 @@
+/* Daylight contrast and responsive cleanup for Treasury, Tags and Grand Palaces.
+ * Keep Nightfall, original art, book covers, banners and award sigils intact.
+ * Scoped overrides sit after existing mobile and Daylight styles. */
+
+/* Dark celestial ranking hero is intentionally a Nightfall accent in Daylight. */
+.palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-cosmos{
+  color:#ffffff!important;
+  border-color:rgba(174,166,226,.50)!important;
+  box-shadow:0 8px 24px rgba(34,40,79,.16)!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-cosmos :is(h2,.eyebrow){
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-cosmos p:not(.eyebrow){
+  color:#ede9fa!important;
+  -webkit-text-fill-color:#ede9fa!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-cosmos .ranking-orbit{
+  color:#f1eaff!important;
+  border-color:rgba(220,214,255,.30)!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-header-card{
+  color:#fff!important;
+  border-color:rgba(185,181,225,.30)!important;
+  box-shadow:0 5px 13px rgba(32,38,77,.12)!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-header-card :is(h3,.eyebrow){
+  color:#fff!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-header-card p,
+.palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-optout span{
+  color:#ece7fa!important;
+  opacity:1!important;
+}
+/* Ranking court filters: visible affordance, horizontal swipe on phones. */
+.palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-controls .segmented button{
+  color:#423756!important;
+  background:#fff!important;
+  border:1px solid rgba(99,82,147,.45)!important;
+  box-shadow:0 2px 5px rgba(38,42,77,.05)!important;
+  font-weight:700;
+}
+.palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-controls .segmented button.active{
+  color:#fff!important;
+  background:#604782!important;
+  border-color:#604782!important;
+  box-shadow:none!important;
+}
+/* Lift white result cards without altering symbolic art. */
+.palace-shell.full-palace-shell.daylight :is(
+  .legacy-ranking-room .ranking-podium.live article,
+  .legacy-ranking-room .ranking-table.twenty,
+  .legacy-ranking-room .ranking-reward-note,
+  .legacy-tags-page .tag-category-grid>article,
+  .palace-tag-world .tag-world-filters,
+  .palace-tag-world .tag-world-story,
+  .grand-palace-hall .grand-box,
+  .grand-palace-hall .grand-token,
+  .grand-palace-hall .grand-shop,
+  .grand-palace-hall .grand-leaderboard,
+  .grand-palace-hall .grand-ranked-courts article,
+  .grand-palace-hall .grand-atlas-choice
+){
+  border-color:rgba(96,100,138,.26)!important;
+  box-shadow:0 4px 12px rgba(35,39,80,.065)!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-podium.live article{
+  background:linear-gradient(140deg,#fff,#f5f7fc)!important;
+  color:#242c40!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-podium.live :is(h3,strong,span),
+.palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-table.twenty :is(strong,span,b){
+  color:#2c3047!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-table.twenty{
+  background:#fff!important;
+}
+
+/* Tag filters: distinguish enabled Include/Exclude choices from true
+   disabled states and make tap targets legible on white. */
+.palace-shell.full-palace-shell.daylight .legacy-tags-page .tag-picker.restored>.tag-pick-row{
+  background:#fff!important;
+  border:1px solid rgba(93,94,139,.24)!important;
+  box-shadow:0 2px 7px rgba(34,42,80,.045)!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-tags-page .tag-pick-select,
+.palace-shell.full-palace-shell.daylight .legacy-tags-page .tag-pick-name strong{
+  color:#273247!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-tags-page .tag-pick-name small{
+  color:#4c586f!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-tags-page .tag-pick-plus{
+  color:#57427f!important;
+  font-weight:800!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-tags-page .tag-pick-select[aria-pressed="true"] .tag-pick-plus{
+  color:#176a62!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-tags-page .tag-pick-tools :is(.tag-pick-exclude,.tag-pick-archive){
+  background:#f6f4fb!important;
+  border:1px solid rgba(98,79,144,.46)!important;
+  border-radius:9px!important;
+  color:#4b386d!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-tags-page .tag-pick-tools .tag-pick-exclude[aria-pressed="true"]{
+  background:#604782!important;
+  border-color:#604782!important;
+  color:#fff!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-tags-page .tag-picker.restored>.tag-pick-row.included{
+  border-color:rgba(88,120,138,.47)!important;
+  background:linear-gradient(110deg,#eae4f8,#edf8f7)!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-tags-page .tag-picker.restored>.tag-pick-row.excluded{
+  border-color:rgba(155,91,127,.40)!important;
+  background:#faf0f7!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-tags-page :is(.tag-find-matches,.tag-filter-toggle){
+  background:#604782!important;
+  background-image:none!important;
+  border:1px solid #604782!important;
+  color:#fff!important;
+  box-shadow:none!important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-tags-page .tag-find-matches:disabled{
+  background:#ececf3!important;
+  border-color:#bac0cd!important;
+  color:#495363!important;
+  opacity:1!important;
+  cursor:not-allowed;
+}
+/* Tag detail pages: Include / Exclude are real buttons, not pale glyphs. */
+.palace-shell.full-palace-shell.daylight .palace-tag-world .tag-world-suggestion button{
+  color:#4c386f!important;
+  background:#fff!important;
+  border:1px solid #9382b1!important;
+  box-shadow:none!important;
+  opacity:1!important;
+  font-size:1rem!important;
+  font-weight:800!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-tag-world .tag-world-suggestion button[aria-pressed="true"]{
+  background:#604782!important;
+  border-color:#604782!important;
+  color:#fff!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-tag-world .tag-world-selected-tags button{
+  background:#f3f0f9!important;
+  color:#49395f!important;
+  border-color:#a697c5!important;
+}
+
+/* Honour Exchange: light backgrounds must never have white-on-white actions.
+   Only genuinely unavailable purchases should look unavailable. */
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-token button:not(:disabled),
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-send>button:not(:disabled),
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-send label+button:not(:disabled){
+  background:#5b437f!important;
+  background-image:none!important;
+  border:1px solid #513875!important;
+  border-radius:11px!important;
+  color:#fff!important;
+  box-shadow:none!important;
+  text-shadow:none!important;
+  opacity:1!important;
+  font-weight:700!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-token button:disabled,
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-send button:disabled{
+  background:#e7e8ee!important;
+  background-image:none!important;
+  border:1px solid #abb3c2!important;
+  color:#435065!important;
+  opacity:1!important;
+  box-shadow:none!important;
+  cursor:not-allowed!important;
+  text-shadow:none!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-token{
+  background:linear-gradient(140deg,#fff,#f7f7fc)!important;
+  color:#272b43!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-token :is(h3,small,p){
+  color:#374356!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-send{
+  background:#fafafe!important;
+  border:1px solid rgba(102,99,145,.26)!important;
+  box-shadow:0 3px 10px rgba(35,39,80,.045)!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-send :is(h3,p,label){
+  color:#374356!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-recipients button{
+  background:#f4f0fa!important;
+  border-color:#a99ac5!important;
+  color:#47375f!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-recipients small{
+  color:#4b5367!important;
+}
+
+/* Grand Palace leaderboard: reserve actual space for 01/02/03.
+   No more digits spilling over the card's border on narrow phones. */
+.palace-shell.full-palace-shell .grand-palace-hall .grand-ranked-courts article{
+  grid-template-columns:minmax(42px,2.7rem) minmax(38px,2.7rem) minmax(0,1fr) minmax(52px,auto)!important;
+  gap:clamp(.32rem,1.3vw,.75rem)!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+.palace-shell.full-palace-shell .grand-palace-hall .grand-ranked-courts article>.grand-place{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  padding:0!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  text-align:center!important;
+  font-size:clamp(.79rem,2.5vw,1rem)!important;
+  line-height:1.2!important;
+  font-variant-numeric:tabular-nums!important;
+  font-feature-settings:"tnum" 1;
+  white-space:nowrap!important;
+  letter-spacing:0!important;
+  overflow:visible!important;
+  justify-self:center!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-ranked-courts article>.grand-place{
+  color:#4d3977!important;
+  font-weight:800!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-ranked-courts article{
+  background:#fff!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-ranked-courts article .grand-rank-copy :is(strong,small),
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-ranked-courts article>span:last-child :is(b,small){
+  color:#354158!important;
+  opacity:1!important;
+}
+/* Banner ownership label is text on a light card, not painted artwork. */
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-atlas-choice em{
+  color:#493761!important;
+  opacity:1!important;
+  font-weight:800!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-atlas-choice small{
+  color:#4c5870!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-atlas-choice{
+  background:#fff!important;
+  border-color:rgba(96,100,138,.29)!important;
+}
+
+/* Pure-white search fields with a quiet edge, not muddy grey blocks. */
+.palace-shell.full-palace-shell.daylight :is(
+ .legacy-tags-page input[type="search"],
+ .palace-tag-world input[type="search"],
+ .palace-tag-world .tag-world-filters select,
+ .grand-palace-hall .grand-send input,
+ .grand-palace-hall .grand-exhibit-search input,
+ .treasury-gallery input[type="search"]
+){
+  background:#fff!important;
+  background-image:none!important;
+  color:#263145!important;
+  border:1px solid #aeb7c7!important;
+  box-shadow:0 2px 8px rgba(30,40,74,.07)!important;
+  color-scheme:light!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight :is(
+ .legacy-tags-page input[type="search"],
+ .palace-tag-world input[type="search"],
+ .grand-palace-hall .grand-send input,
+ .grand-palace-hall .grand-exhibit-search input,
+ .treasury-gallery input[type="search"]
+)::placeholder{
+  color:#546176!important;
+  opacity:1!important;
+}
+/* More rooms is a white sheet; preserve jewel tile backgrounds but give
+   its icon shapes a legible deep-violet stroke. */
+.palace-shell.full-palace-shell.daylight .mobile-more-sheet .mobile-more-grid a>span svg{
+  color:#4c3975!important;
+  stroke:#4c3975!important;
+  opacity:1!important;
+}
+
+@media(max-width:760px){
+ /* Fixed bottom dock: provide clearance on the actual scroll content. */
+ .palace-shell.full-palace-shell.daylight .full-stage>main#palace-content{
+  padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))!important;
+  scroll-padding-bottom:calc(160px + env(safe-area-inset-bottom,0px))!important;
+ }
+ .palace-shell.full-palace-shell.daylight .full-stage>.palace-mobile-end-spacer{
+  display:block!important;
+  min-height:150px!important;
+  height:calc(150px + env(safe-area-inset-bottom,0px))!important;
+ }
+ .palace-shell.full-palace-shell.daylight :is(.legacy-tags-page,.palace-tag-world,.grand-palace-hall,.legacy-treasury-page){
+  scroll-margin-block-end:calc(130px + env(safe-area-inset-bottom,0px))!important;
+ }
+ /* Ledger compact enough for all three category pills on small phones. */
+ .palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-controls{
+  position:relative!important;
+  min-width:0;
+ }
+ .palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-controls .segmented{
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  gap:7px!important;
+  width:100%!important;
+  min-width:0!important;
+  padding:3px 24px 8px 2px!important;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+  scroll-snap-type:x proximity;
+ }
+ .palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-controls .segmented::-webkit-scrollbar{display:none}
+ .palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-controls .segmented button{
+  flex:0 0 auto!important;
+  white-space:nowrap!important;
+  min-height:42px;
+  scroll-snap-align:start;
+ }
+ .palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-controls::after{
+  content:"";
+  position:absolute;
+  pointer-events:none;
+  top:0;right:0;bottom:0;
+  width:23px;
+  background:linear-gradient(90deg,rgba(237,240,247,0),rgba(237,240,247,.93));
+ }
+ .palace-shell.full-palace-shell .grand-palace-hall .grand-ranked-courts article{
+  grid-template-columns:40px 36px minmax(0,1fr) minmax(50px,auto)!important;
+  gap:6px!important;
+  padding:9px 8px!important;
+ }
+ .palace-shell.full-palace-shell .grand-palace-hall .grand-ranked-courts .grand-rank-crest{
+  width:36px!important;height:36px!important;
+ }
+ .palace-shell.full-palace-shell .grand-palace-hall .grand-ranked-courts article>.grand-place{
+  font-size:.84rem!important;
+ }
+}
+@media(max-width:380px){
+ .palace-shell.full-palace-shell .grand-palace-hall .grand-ranked-courts article{
+  grid-template-columns:36px 32px minmax(0,1fr) minmax(43px,auto)!important;
+  column-gap:4px!important;
+  padding:8px 6px!important;
+ }
+ .palace-shell.full-palace-shell .grand-palace-hall .grand-ranked-courts .grand-rank-crest{
+  width:32px!important;height:32px!important;
+ }
+ .palace-shell.full-palace-shell .grand-palace-hall .grand-ranked-courts article>.grand-place{
+  font-size:.78rem!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell.full-palace-shell.daylight .legacy-ranking-room .ranking-controls .segmented{
+  scroll-behavior:auto!important;
+ }
+}
