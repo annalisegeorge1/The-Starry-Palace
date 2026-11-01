@@ -1,12 +1,14 @@
 /* One discreet top-bar chat entry; keep drawer and safety actions intact. */
 .palace-chat-dock:not(.is-workspace):not(.is-open) .palace-chat-launch{display:none!important}
-.palace-top-chat-trigger{cursor:pointer;display:inline-flex;align-items:center;justify-content:center;min-width:36px;border:0;background:transparent;color:inherit;font-size:1.15rem}
+/* Inherit the same framed .top-icon-link surface as the neighboring header buttons. */
+.palace-top-chat-trigger{cursor:pointer;padding:0;font:inherit}
+.palace-top-chat-trigger svg{display:block;flex-shrink:0}
 .palace-chat-dock .palace-chat-advanced-controls{padding:3px 9px}
 .palace-chat-dock .palace-chat-advanced-controls>summary{cursor:pointer;list-style:none;font-size:.77rem;color:var(--ui-muted,#bdb9d5);padding:5px 9px}
 .palace-chat-dock .palace-chat-advanced-controls>summary::-webkit-details-marker{display:none}
 .palace-chat-dock .palace-chat-advanced-controls:not([open]) .palace-chat-tools,.palace-chat-dock .palace-chat-advanced-controls:not([open]) .palace-chat-inbox-refine{display:none!important}
 .palace-chat-dock.is-open:not(.is-workspace) .palace-chat-panel{box-shadow:-18px 0 48px rgba(5,5,17,.44)!important}
-@media(max-width:760px){.palace-top-chat-trigger{min-width:38px;min-height:40px}}
+
 
 
 /* Palace Letters on phones: a correspondence room, not another oversized
