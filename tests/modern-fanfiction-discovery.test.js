@@ -22,22 +22,26 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(shelf).toContain("PUBLIC DOMAIN · HOSTED ON THE PALACE");
  });
  it('links to actual writers and their permission evidence without mirroring modern text',()=>{
-  expect(MODERN_FANFICTION_LINKS).toHaveLength(4);
-  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.id)).size).toBe(4);
-  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.creator)).size).toBeGreaterThan(1);
+  expect(MODERN_FANFICTION_LINKS).toHaveLength(14);
+  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.id)).size).toBe(14);
+  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.creator)).size).toBeGreaterThanOrEqual(7);
   for(const w of MODERN_FANFICTION_LINKS){
    expect(w.title).toBeTruthy();
    expect(w.creator).toBeTruthy();
    expect(w.fandom).toBeTruthy();
    expect(w.sourceUrl).toMatch(/^https:\/\//);
    expect(w.permissionUrl).toMatch(/^https:\/\//);
-   expect(w.permissionLabel).toMatch(/^CC BY-NC-SA/);
+   expect(w.permissionLabel).toMatch(/^CC BY-(?:NC-(?:SA|ND)|SA)/);
   }
   expect(shelf).toContain('target="_blank" rel="noopener noreferrer"');
-  expect(shelf).toContain("Read on author's site");
+  expect(shelf).toContain('Read original');
   expect(shelf).toContain('not reposted stories');
   expect(shelf).not.toContain('body_text');
   expect(shelf).not.toContain('dangerouslySetInnerHTML');
+  expect(MODERN_FANFICTION_LINKS.filter(w=>w.creator==='MorganAW')).toHaveLength(2);
+  expect(MODERN_FANFICTION_LINKS.some(w=>w.creator==='Alixe'&&w.fandom.includes('French'))).toBe(true);
+  expect(shelf).toContain('MODERN_FANFICTION_LINKS.slice(0,visibleModernCount)');
+  expect(shelf).toContain('Show more fanfiction');
  });
  it('uses the existing theme and avoids new mobile dock or navigation geometry',()=>{
   expect(css).toContain('var(--ui-surface)');
