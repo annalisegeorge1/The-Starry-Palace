@@ -1,13 +1,14 @@
 import React,{useEffect,useState} from 'react';
 import {Link} from 'react-router-dom';
+import PalaceIcon from './PalaceIcon';
 import {supabase} from './supabase';
 import './palace-first-visit.css';
 
 const WELCOME_STEPS=[
- {id:'read',symbol:'◈',name:'Find a story',detail:'Explore published stories and save one for later.',url:'/reading'},
- {id:'write',symbol:'✎',name:'Open your writing pad',detail:'Create a private draft. You decide when it becomes public.',url:'/writing'},
- {id:'palace',symbol:'♛',name:'Meet your Grand Palace',detail:'Discover your court, its banner and shared activities.',url:'/grand-palaces'},
- {id:'gather',symbol:'☾',name:'Explore Palace Life',detail:'Find conversations, writers and creative rooms.',url:'/palace-life'}
+ {id:'read',icon:'book-open',name:'Find a story',detail:'Explore published stories and save one for later.',url:'/reading'},
+ {id:'write',icon:'pen-line',name:'Open your writing pad',detail:'Create a private draft. You decide when it becomes public.',url:'/writing'},
+ {id:'palace',icon:'regal-crown',name:'Meet your Grand Palace',detail:'Discover your court, its banner and shared activities.',url:'/grand-palaces'},
+ {id:'gather',icon:'moon-court',name:'Explore Palace Life',detail:'Find conversations, writers and creative rooms.',url:'/palace-life'}
 ];
 function loadGuide(key){
  try{const parsed=JSON.parse(localStorage.getItem(key)||'{}');return{
@@ -60,7 +61,7 @@ export function PalaceStartingPath({memberId}){
      return <Link key={step.id} to={step.url}
       className={'palace-starting-door palace-starting-door-'+step.id+(nextStep?.id===step.id?' is-next':'')+(opened?' is-opened':'')}
       onClick={()=>change({...state,visited:opened?state.visited:[...state.visited,step.id]})}>
-      <span className="palace-starting-icon" aria-hidden="true">{step.symbol}</span>
+      <span className="palace-starting-icon" aria-hidden="true"><PalaceIcon name={step.icon} size={24} strokeWidth={1.85}/></span>
       <span><strong>{step.name}</strong><small>{step.detail}</small></span>
       <b>{opened?'✓ Opened':nextStep?.id===step.id?'Start here →':'Explore →'}</b>
      </Link>;
