@@ -232,23 +232,6 @@
 @media(prefers-reduced-motion:reduce){
  .palace-shell.full-palace-shell .legacy-tags-page :is(.tag-pick-row,.tag-pick-select,.tag-create-open){transition:none!important}
 }
-/* The header already has a solid fallback; reinforce it at mobile+tablet breakpoints.
- * Keep all approved header icon artwork untouched. */
-@media(max-width:1100px){
- .palace-shell.full-palace-shell .full-stage>header.topbar.full-topbar{
-  isolation:isolate!important;
-  opacity:1!important;
-  background-color:#0d142b!important;
-  background-image:linear-gradient(112deg,#121931 0%,#0d142b 64%,#141b38 100%)!important;
- }
- .palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar{
-  background-color:#f0ecfa!important;
-  background-image:linear-gradient(112deg,#f4effb,#e9e6f8)!important;
- }
- .palace-shell.full-palace-shell .full-stage>header.topbar.full-topbar>.full-topbar-row{
-  position:relative;z-index:1;
- }
-}
 
 /* Discovery suggestions are optional rather than another permanent row of pills. */
 .palace-shell.full-palace-shell .legacy-tags-page .tag-quick-paths{
