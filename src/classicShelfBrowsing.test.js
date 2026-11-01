@@ -29,6 +29,16 @@ describe('Complete Classics shelf selection',()=>{
   const caribbean=CLASSIC_LIBRARY_COLLECTIONS.find(c=>c.id==='black-caribbean');
   expect(filterClassicShelf(works,caribbean).map(w=>w.id)).toEqual(['folklore']);
  });
+ it('keeps historic fanfiction discoverable without mislabelling ordinary Classics',()=>{
+  const shelf=CLASSIC_LIBRARY_COLLECTIONS.find(c=>c.id==='historical-fanfiction');
+  expect(shelf?.label).toBe('Historical Fanfiction');
+  const historical=[
+   {id:'barrie',title:'The Adventure of the Two Collaborators',creator_name:'J. M. Barrie',work_tags:[{tags:{name:'historical fanfiction',category:'genre',status:'canonical'}}]},
+   {id:'brinton',title:'Old Friends and New Fancies',creator_name:'Sybil G. Brinton',work_tags:[{tags:{name:'historical fanfiction',category:'genre',status:'canonical'}}]},
+   {id:'austen',title:'Pride and Prejudice',creator_name:'Jane Austen',work_tags:[{tags:{name:'classic novel',category:'genre',status:'canonical'}}]}
+  ];
+  expect(filterClassicShelf(historical,shelf).map(w=>w.id)).toEqual(['barrie','brinton']);
+ });
  it('supports title and author sorting without changing the original input',()=>{
   const snapshot=works.map(w=>w.id);
   const all=CLASSIC_LIBRARY_COLLECTIONS.find(c=>c.id==='all');
