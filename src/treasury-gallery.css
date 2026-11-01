@@ -80,9 +80,6 @@
  .palace-shell.full-palace-shell .treasury-gallery{
   padding-bottom:max(152px,calc(120px + env(safe-area-inset-bottom,0px)))!important;
  }
- .palace-shell.full-palace-shell #palace-content[data-palace-route="/treasury/catalogue"]{
-  padding-bottom:max(152px,calc(120px + env(safe-area-inset-bottom,0px)))!important;
- }
  /* The global opaque header is retained above any scrolling catalogue artwork. */
  .palace-shell.full-palace-shell .full-stage>header.topbar.full-topbar{
   isolation:isolate!important;background-color:#0d142b!important;
