@@ -489,6 +489,180 @@ export const LICENSED_ANIME_FANWORK_INTAKE=Object.freeze([
     "summary": "An original character investigates ancient ruins with help from an ANBU team.",
     "language": "Spanish",
     "stage": "metadata_ready_text_not_imported"
+  },
+  {
+    "slug": "mirrors-of-vengeance-animeisperfection",
+    "title": "Mirrors Of Vengeance: Sasuke Love Story",
+    "creator": "AnimeIsPerfection",
+    "fandom": "Naruto",
+    "sourceUrl": "https://www.fanfiction.net/s/8193949/1/Mirrors-Of-Vengeance-Sasuke-Love-Story",
+    "permissionUrl": "https://www.fanfiction.net/u/4036832/AnimeIsPerfection",
+    "sourceLicense": "CC BY-NC-ND 3.0 (author profile; application to all stories not yet confirmed)",
+    "rating": "teen",
+    "sourceRating": "FanFiction.net T",
+    "completion_status": "in_progress",
+    "chapters": 14,
+    "genres": [
+      "Tragedy",
+      "Romance"
+    ],
+    "characters": [
+      "Sasuke Uchiha",
+      "Hotaru Hyuga",
+      "Team Seven",
+      "Orochimaru"
+    ],
+    "relationships": [],
+    "tropes": [
+      "Original Character",
+      "Revenge",
+      "Telepathy",
+      "Clan Conflict"
+    ],
+    "warnings": [
+      "Child abduction",
+      "Trauma",
+      "Revenge themes"
+    ],
+    "summary": "Hotaru Hyuga and Sasuke Uchiha discover how their different experiences of loss and revenge intersect.",
+    "language": "English",
+    "stage": "permission_scope_review_text_not_imported"
+  },
+  {
+    "slug": "persiguiendo-un-sueno-primulad",
+    "title": "Persiguiendo un Sueño",
+    "creator": "PrimulaD",
+    "fandom": "Naruto",
+    "sourceUrl": "https://www.fanfiction.net/s/6173744/1/Persiguiendo-un-Sue%C3%B1o",
+    "permissionUrl": "https://www.fanfiction.net/u/1924792/PrimulaD",
+    "sourceLicense": "CC BY-NC-SA 3.0 US (author-declared for all their works)",
+    "rating": "mature",
+    "sourceRating": "FanFiction.net M",
+    "completion_status": "in_progress",
+    "chapters": 17,
+    "genres": [
+      "Adventure",
+      "Friendship"
+    ],
+    "characters": [
+      "Yugao Uzuki",
+      "Kakashi Hatake"
+    ],
+    "relationships": [],
+    "tropes": [
+      "ANBU",
+      "Prequel",
+      "Kunoichi Protagonist",
+      "Character Study"
+    ],
+    "warnings": [],
+    "summary": "A Spanish-language story exploring Yugao Uzuki's life as a woman and ANBU kunoichi, preceding Bajo las Cicatrices.",
+    "language": "Spanish",
+    "stage": "metadata_ready_text_not_imported"
+  },
+  {
+    "slug": "one-more-try-miara",
+    "title": "One More Try",
+    "creator": "Miara Rigawa",
+    "fandom": "Vampire Knight",
+    "sourceUrl": "https://www.fanfiction.net/s/5015678/1/One-More-Try",
+    "permissionUrl": "https://www.fanfiction.net/u/235252/Miara-Rigawa",
+    "sourceLicense": "CC BY-ND 2.5 (author-declared for works under this pen name)",
+    "rating": "mature",
+    "sourceRating": "FanFiction.net M",
+    "completion_status": "in_progress",
+    "chapters": 2,
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "characters": [
+      "Zero Kiryu",
+      "Yuki Cross",
+      "Kaname Kuran"
+    ],
+    "relationships": [
+      "Zero Kiryu/Yuki Cross"
+    ],
+    "tropes": [
+      "Second Chance",
+      "Canon Divergence",
+      "Romantic Conflict",
+      "Vampires"
+    ],
+    "warnings": [],
+    "summary": "Zero and Yuki struggle with love, loss and destiny after their circumstances change.",
+    "language": "English",
+    "stage": "metadata_ready_text_not_imported"
+  },
+  {
+    "slug": "reflexiones-de-un-nino-eva-cion",
+    "title": "Reflexiones de un niño",
+    "creator": "eva-cion (Eva Mª Hidalgo)",
+    "fandom": "Saint Seiya",
+    "sourceUrl": "https://www.fanfiction.net/s/3300787/1/Reflexiones-de-un-ni%C3%B1o",
+    "permissionUrl": "https://www.fanfiction.net/u/1073903/eva-cion",
+    "sourceLicense": "CC BY-NC-ND 3.0 Unported (explicitly stated for this title)",
+    "rating": "teen",
+    "sourceRating": "FanFiction.net T",
+    "completion_status": "in_progress",
+    "chapters": 27,
+    "genres": [
+      "Adventure",
+      "Fantasy"
+    ],
+    "characters": [
+      "Kiki",
+      "Mu of Aries"
+    ],
+    "relationships": [],
+    "tropes": [
+      "Sanctuary",
+      "Golems",
+      "Werewolves",
+      "Under Siege",
+      "Child's Perspective"
+    ],
+    "warnings": [
+      "Fantasy violence",
+      "Grief"
+    ],
+    "summary": "Kiki and the Gold Saints face new dangers when the Sanctuary is besieged by supernatural enemies.",
+    "language": "Spanish",
+    "stage": "metadata_ready_text_not_imported"
+  },
+  {
+    "slug": "song-of-the-lost-heart-starholder",
+    "title": "Song of the Lost Heart",
+    "creator": "Star Holder Commander",
+    "fandom": "Yu-Gi-Oh! · Misc. Anime/Manga",
+    "sourceUrl": "https://www.fanfiction.net/s/5524585/1/Song_of_the_Lost_Heart",
+    "permissionUrl": "https://www.fanfiction.net/u/999304/Star-Holder-Commander",
+    "sourceLicense": "CC BY-NC-ND 3.0 US (author-declared specifically for this poem)",
+    "rating": "general",
+    "sourceRating": "FanFiction.net K",
+    "completion_status": "complete",
+    "chapters": 1,
+    "genres": [
+      "Poetry",
+      "Fantasy"
+    ],
+    "characters": [
+      "Yugi Muto",
+      "Atem",
+      "Game Master Blake"
+    ],
+    "relationships": [],
+    "tropes": [
+      "Poem",
+      "Friendship",
+      "Hope",
+      "Darkness and Light"
+    ],
+    "warnings": [],
+    "summary": "A short Yu-Gi-Oh-inspired poem intended to help a lost game master find hope again.",
+    "language": "English",
+    "stage": "metadata_ready_text_not_imported"
   }
 ]);
 export const LICENSED_ANIME_FANWORK_BY_SLUG=Object.freeze(Object.fromEntries(LICENSED_ANIME_FANWORK_INTAKE.map(work=>[work.slug,work])));
