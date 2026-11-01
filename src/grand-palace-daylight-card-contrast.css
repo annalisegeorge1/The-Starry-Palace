@@ -1,0 +1,113 @@
+/* Grand Palace welcome hall — Daylight contrast correction, Nov 2026.
+   Keep the four immersive dark gradient destinations and their original
+   illustrated sigils. Never recolour those cards to pale Daylight surfaces. */
+
+/* The dark destination tiles must carry their own accessible foreground
+   rather than inherit Daylight's navy text from a parent. */
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-welcome .grand-paths > button.grand-path{
+  color:#fff!important;
+  -webkit-text-fill-color:#fff;
+  text-shadow:none!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-welcome .grand-paths > button.grand-path > small{
+  color:#e7e5ff!important;
+  -webkit-text-fill-color:#e7e5ff!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-welcome .grand-paths > button.grand-path > strong{
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-welcome .grand-paths > button.grand-path .grand-path-description{
+  color:#f1edfa!important;
+  -webkit-text-fill-color:#f1edfa!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-welcome .grand-paths > button.grand-path .grand-path-foot,
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-welcome .grand-paths > button.grand-path .grand-path-foot > b{
+  color:#e7f0ff!important;
+  -webkit-text-fill-color:#e7f0ff!important;
+  opacity:1!important;
+  border-top-color:rgba(224,227,255,.35)!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-welcome .grand-paths > button.grand-path .grand-path-orbit{
+  color:#f6f2ff!important;
+  opacity:1!important;
+}
+/* Keep the existing gradients and icon silhouettes; lift only their edge
+   and focus ring to make their dark accents intentional on a light canvas. */
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-paths > button.grand-path{
+  border-color:rgba(198,201,249,.58)!important;
+  box-shadow:0 7px 20px rgba(33,38,87,.17),inset 0 1px 0 rgba(245,244,255,.13)!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-paths > button.grand-path:focus-visible{
+  outline:3px solid #74519f!important;
+  outline-offset:3px!important;
+}
+
+/* Three white court-stat banners, crisp on lavender with restrained depth. */
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-welcome .grand-today-dash > article{
+  background:linear-gradient(145deg,#fff,#f8f9fd)!important;
+  border:1px solid rgba(94,92,139,.27)!important;
+  box-shadow:0 4px 12px rgba(35,41,75,.07)!important;
+  color:#25283e!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-welcome .grand-today-dash > article > div > small{
+  color:#594e70!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-welcome .grand-today-dash > article > div > strong{
+  color:#292640!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .grand-palace-hall .grand-welcome .grand-today-dash > article > div > strong > small{
+  color:#504860!important;
+  opacity:1!important;
+}
+
+/* Route-scoped header: no welcome text leaking behind the controls while
+   scrolling. Its pseudo-layer must be equally opaque. */
+@media(max-width:760px){
+ .palace-shell.full-palace-shell.daylight .full-stage:has(>main#palace-content[data-palace-route^="/grand-palaces"]) > header.topbar.full-topbar{
+  position:sticky!important;
+  isolation:isolate!important;
+  z-index:80!important;
+  background:#faf9ff!important;
+  background-color:#faf9ff!important;
+  background-image:none!important;
+  border-bottom:1px solid rgba(78,74,124,.26)!important;
+  box-shadow:0 4px 15px rgba(36,39,75,.12)!important;
+  -webkit-backdrop-filter:blur(12px)!important;
+  backdrop-filter:blur(12px)!important;
+ }
+ .palace-shell.full-palace-shell.daylight .full-stage:has(>main#palace-content[data-palace-route^="/grand-palaces"]) > header.topbar.full-topbar::before{
+  background:#faf9ff!important;
+  background-image:none!important;
+  opacity:1!important;
+ }
+ .palace-shell.full-palace-shell.daylight .full-stage:has(>main#palace-content[data-palace-route^="/grand-palaces"]) > header.topbar.full-topbar > .full-topbar-row{
+  position:relative!important;
+  z-index:1!important;
+ }
+ /* A fixed dock needs a real scrollable landing area below the last banner.
+    Keep padding on the actual main, rather than just on the card grid. */
+ .palace-shell.full-palace-shell.daylight .full-stage > main#palace-content[data-palace-route^="/grand-palaces"]{
+  padding-bottom:calc(200px + env(safe-area-inset-bottom,0px))!important;
+  scroll-padding-bottom:calc(160px + env(safe-area-inset-bottom,0px))!important;
+ }
+ .palace-shell.full-palace-shell.daylight .full-stage > main#palace-content[data-palace-route^="/grand-palaces"] .grand-palace-hall{
+  padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))!important;
+  scroll-margin-bottom:120px;
+ }
+ .palace-shell.full-palace-shell.daylight .full-stage:has(>main#palace-content[data-palace-route^="/grand-palaces"]) > .palace-mobile-end-spacer{
+  min-height:150px!important;
+  height:calc(150px + env(safe-area-inset-bottom,0px))!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell.full-palace-shell.daylight .grand-paths > .grand-path{
+  transition:none!important;
+ }
+}
