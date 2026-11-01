@@ -7,6 +7,8 @@ import GuestReadingInvitation from './GuestReadingInvitation';
 import {palaceSignInDoor} from './palaceDoorway';
 import {tagWorldPath} from './tagWorldRoutes';
 import {ReadingCatalogueControls,ReadingCatalogueMore} from './ReadingCatalogueControls';
+import {comicReaderMode,comicPageTurn,shouldTurnComicPageWithKey} from './comicReaderControls';
+import './comic-reader-mobile-refinement.css';
 import ReadingFacetSidebar from './ReadingFacetSidebar';
 import ReadingArchivePager from './ReadingArchivePager';
 import usePublishedBrowse from './usePublishedBrowse';
@@ -2591,16 +2593,123 @@ export function ComicLive({Frame}){
 }
 
 export function ComicEpisodeLive({Frame}){
- const{slug,episodeId}=useParams();const{session}=useAuth();const navigate=useNavigate();const[data,setData]=useState(undefined);const[error,setError]=useState('');const[mode,setMode]=useState(()=>localStorage.getItem('palace-comic-reader-mode')||'pages');const[index,setIndex]=useState(0);const[direction,setDirection]=useState('ltr');
- useEffect(()=>{getComicBySlug(slug).then(async c=>{if(!c){setData(null);return}const ep=c.episodes.find(e=>e.id===episodeId);if(!ep){setData(null);return}setData({comic:c,episode:ep});setIndex(0);setDirection(c.reading_direction==='rtl'?'rtl':'ltr');if(session){const p=await getComicProgress(session.user.id,c.id);const ix=ep.pages.findIndex(x=>x.id===p?.page_id);if(p?.episode_id===ep.id&&ix>=0)setIndex(ix)}}).catch(e=>setError(e.message))},[slug,episodeId,session?.user?.id]);
+ const{slug,episodeId}=useParams();
+ const{session}=useAuth();
+ const navigate=useNavigate();
+ const[data,setData]=useState(undefined);
+ const[error,setError]=useState('');
+ const[mode,setMode]=useState(()=>{try{return comicReaderMode(localStorage.getItem('palace-comic-reader-mode'))}catch{return 'pages'}});
+ const[index,setIndex]=useState(0);
+ const[visiblePageIndex,setVisiblePageIndex]=useState(0);
+ const[direction,setDirection]=useState('ltr');
+ const verticalRef=useRef(null);
+ const verticalTrackedRef=useRef(null);
+ useEffect(()=>{
+  let alive=true;
+  setData(undefined);setError('');setIndex(0);setVisiblePageIndex(0);verticalTrackedRef.current=null;
+  (async()=>{
+   try{
+    const comic=await getComicBySlug(slug);
+    if(!alive)return;
+    if(!comic){setData(null);return}
+    const episode=comic.episodes.find(e=>e.id===episodeId);
+    if(!episode){setData(null);return}
+    let savedIndex=0;
+    // Restore before displaying pages so vertical mode doesn't overwrite progress at page 1.
+    if(session){
+     try{
+      const progress=await getComicProgress(session.user.id,comic.id);
+      if(progress?.episode_id===episode.id){
+       const n=episode.pages.findIndex(p=>p.id===progress.page_id);
+       if(n>=0)savedIndex=n;
+      }
+     }catch(e){if(alive)setError(e.message)}
+    }
+    if(!alive)return;
+    setIndex(savedIndex);setVisiblePageIndex(savedIndex);
+    setDirection(comic.reading_direction==='rtl'?'rtl':'ltr');
+    setData({comic,episode});
+   }catch(e){if(alive)setError(e.message)}
+  })();
+  return()=>{alive=false};
+ },[slug,episodeId,session?.user?.id]);
  useEffect(()=>{try{localStorage.setItem('palace-comic-reader-mode',mode)}catch{}},[mode]);
- const pages=data?.episode.pages||[];const page=pages[index];const readableEpisodes=(data?.comic.episodes||[]).filter(ep=>ep.status==='published'||session?.user?.id===data?.comic.creator_id);const episodeIndex=readableEpisodes.findIndex(ep=>ep.id===episodeId);const previousEpisode=episodeIndex>0?readableEpisodes[episodeIndex-1]:null;const nextEpisode=episodeIndex>=0&&episodeIndex<readableEpisodes.length-1?readableEpisodes[episodeIndex+1]:null;
- useEffect(()=>{if(!session||!data||!page)return;const comicCompleted=index===pages.length-1&&episodeIndex===readableEpisodes.length-1;recordComicProgress(session.user.id,data.comic.id,data.episode.id,page.id,comicCompleted).catch(e=>setError(e.message))},[session?.user?.id,data?.comic?.id,data?.episode?.id,page?.id,index,pages.length,episodeIndex,readableEpisodes.length]);
- async function move(next){const ix=Math.max(0,Math.min(pages.length-1,next));setIndex(ix);const comicCompleted=ix===pages.length-1&&episodeIndex===readableEpisodes.length-1;if(session&&pages[ix])try{await recordComicProgress(session.user.id,data.comic.id,data.episode.id,pages[ix].id,comicCompleted)}catch(e){setError(e.message)}}
+ const pages=data?.episode?.pages||[];
+ const page=pages[index];
+ const readableEpisodes=(data?.comic?.episodes||[]).filter(ep=>ep.status==='published'||session?.user?.id===data?.comic?.creator_id);
+ const episodeIndex=readableEpisodes.findIndex(ep=>ep.id===episodeId);
+ const previousEpisode=episodeIndex>0?readableEpisodes[episodeIndex-1]:null;
+ const nextEpisode=episodeIndex>=0&&episodeIndex<readableEpisodes.length-1?readableEpisodes[episodeIndex+1]:null;
+ // Page mode records the page the reader actually opened. Vertical mode uses visibility instead.
+ useEffect(()=>{
+  if(mode!=='pages'||!session||!data||!page)return;
+  const completed=index===pages.length-1&&episodeIndex===readableEpisodes.length-1;
+  recordComicProgress(session.user.id,data.comic.id,data.episode.id,page.id,completed).catch(e=>setError(e.message));
+ },[mode,session?.user?.id,data?.comic?.id,data?.episode?.id,page?.id,index,pages.length,episodeIndex,readableEpisodes.length]);
+ function move(next){if(pages.length)setIndex(Math.max(0,Math.min(pages.length-1,next)))}
  function jumpEpisode(id){if(id&&id!==episodeId)navigate('/comic/'+slug+'/episode/'+id)}
- useEffect(()=>{const onKey=e=>{if(mode!=='pages'||e.altKey||e.ctrlKey||e.metaKey)return;if(e.key==='ArrowRight'){e.preventDefault();if(direction==='rtl')move(index-1);else if(index<pages.length-1)move(index+1);else if(nextEpisode)jumpEpisode(nextEpisode.id)}else if(e.key==='ArrowLeft'){e.preventDefault();if(direction==='rtl'){if(index<pages.length-1)move(index+1);else if(nextEpisode)jumpEpisode(nextEpisode.id)}else if(index>0)move(index-1);else if(previousEpisode)jumpEpisode(previousEpisode.id)}};window.addEventListener('keydown',onKey);return()=>window.removeEventListener('keydown',onKey)},[mode,index,direction,episodeId,pages.length,nextEpisode?.id,previousEpisode?.id]);
+ useEffect(()=>{
+  const onKey=e=>{
+   if(mode!=='pages'||!data||!shouldTurnComicPageWithKey(e,!!document.querySelector('[role="dialog"][aria-modal="true"]')))return;
+   const step=comicPageTurn(e.key,direction,index,pages.length,previousEpisode?.id,nextEpisode?.id);
+   if(!step)return;
+   e.preventDefault();
+   if(step.episodeId)jumpEpisode(step.episodeId);
+   else move(step.pageIndex);
+  };
+  window.addEventListener('keydown',onKey);
+  return()=>window.removeEventListener('keydown',onKey);
+ },[mode,!!data,direction,index,pages.length,episodeId,slug,previousEpisode?.id,nextEpisode?.id]);
+ useEffect(()=>{
+  if(mode!=='vertical'||!data||index<=0)return;
+  const node=verticalRef.current?.querySelector('[data-comic-page-index="'+index+'"]');
+  if(node)node.scrollIntoView({block:'start',behavior:'instant'});
+ },[mode,data?.episode?.id]);
+ useEffect(()=>{
+  if(mode!=='vertical'||!data||!pages.length||!verticalRef.current||typeof IntersectionObserver==='undefined')return;
+  const nodes=Array.from(verticalRef.current.querySelectorAll('[data-comic-page-index]'));
+  const observer=new IntersectionObserver(entries=>{
+   const inView=entries.filter(e=>e.isIntersecting);
+   if(!inView.length)return;
+   // The centre reading band is more reliable than mouse hover on touch devices.
+   const target=inView.sort((a,b)=>{
+    const center=window.innerHeight/2;
+    const da=Math.abs((a.boundingClientRect.top+a.boundingClientRect.bottom)/2-center);
+    const db=Math.abs((b.boundingClientRect.top+b.boundingClientRect.bottom)/2-center);
+    return da-db;
+   })[0]?.target;
+   const pageIndex=Number(target?.dataset?.comicPageIndex);
+   if(!Number.isInteger(pageIndex)||pageIndex<0||pageIndex>=pages.length)return;
+   setVisiblePageIndex(pageIndex);
+   if(!session||verticalTrackedRef.current===pageIndex)return;
+   verticalTrackedRef.current=pageIndex;
+   const completed=pageIndex===pages.length-1&&episodeIndex===readableEpisodes.length-1;
+   recordComicProgress(session.user.id,data.comic.id,data.episode.id,pages[pageIndex].id,completed).catch(e=>setError(e.message));
+  },{root:null,rootMargin:'-35% 0px -35% 0px',threshold:0});
+  nodes.forEach(node=>observer.observe(node));
+  return()=>observer.disconnect();
+ },[mode,data?.comic?.id,data?.episode?.id,session?.user?.id,pages.length,episodeIndex,readableEpisodes.length]);
  if(data===null)return <Frame><div className="live-state">This comic episode is not available.</div></Frame>;
- return <Frame><State loading={data===undefined&&!error} error={error}>{data&&<article className="comic-reader"><header><div><Link to={"/comic/"+data.comic.slug}>← {data.comic.title}</Link><p>Episode {data.episode.position}</p><h1>{data.episode.title}</h1></div><div className="comic-reader-controls"><label className="comic-episode-jump"><span>Episode</span><select value={episodeId} onChange={e=>jumpEpisode(e.target.value)}>{readableEpisodes.map(ep=><option key={ep.id} value={ep.id}>{String(ep.position).padStart(2,'0')} · {ep.title}</option>)}</select></label><button className={mode==='pages'?'active':''} onClick={()=>setMode('pages')}>Page view</button><button className={mode==='vertical'?'active':''} onClick={()=>setMode('vertical')}>Vertical</button><button onClick={()=>setDirection(v=>v==='rtl'?'ltr':'rtl')}>{direction.toUpperCase()}</button></div></header>{mode==='pages'?<><section className={"comic-single-page "+direction}>{page?<figure><div className="comic-image-frame">{page.reader_url?<img decoding="async" fetchPriority="high" src={page.reader_url} alt={page.decorative?'':page.alt_text||page.caption||'Comic page'}/>:<div className="comic-missing-page">Image unavailable</div>}</div>{page.caption&&<figcaption>{page.caption}</figcaption>}</figure>:<div className="life-empty large">No pages are published in this episode.</div>}</section>{pages.length>0&&<footer className="comic-pager"><button disabled={index===0&&!previousEpisode} onClick={()=>index>0?move(index-1):previousEpisode&&jumpEpisode(previousEpisode.id)}>← {index>0?'Previous page':previousEpisode?'Previous episode':'Previous'}</button><span>Page {index+1} of {pages.length}<small>Arrow keys turn pages</small></span>{index<pages.length-1?<button onClick={()=>move(index+1)}>Next page →</button>:nextEpisode?<button className="next-episode-action" onClick={()=>jumpEpisode(nextEpisode.id)}>Next episode →</button>:<button disabled>End of comic ✓</button>}</footer>}</>:<section className={"comic-vertical "+direction}>{pages.map((p,i)=><figure key={p.id} onMouseEnter={()=>session&&recordComicProgress(session.user.id,data.comic.id,data.episode.id,p.id,i===pages.length-1&&episodeIndex===readableEpisodes.length-1).catch(()=>{})}><div className="comic-image-frame">{p.reader_url?<img loading="lazy" decoding="async" src={p.reader_url} alt={p.decorative?'':p.alt_text||p.caption||'Comic page'}/>:<div className="comic-missing-page">Image unavailable</div>}</div>{p.caption&&<figcaption>{p.caption}</figcaption>}</figure>)}</section>}{mode==='vertical'&&pages.length>0&&<nav className="comic-episode-nav">{previousEpisode?<button onClick={()=>jumpEpisode(previousEpisode.id)}>← Previous episode</button>:<span/>}<Link to={"/comic/"+data.comic.slug}>{data.comic.title}</Link>{nextEpisode?<button onClick={()=>jumpEpisode(nextEpisode.id)}>Next episode →</button>:<span>End of comic ✓</span>}</nav>}</article>}</State></Frame>
+ return <Frame><State loading={data===undefined&&!error} error={error}>{data&&<article className="comic-reader comic-reader-refined">
+  <header className="comic-reader-header">
+   <div className="comic-reader-heading"><Link to={'/comic/'+data.comic.slug}>← {data.comic.title}</Link><p>Episode {data.episode.position}</p><h1>{data.episode.title}</h1></div>
+   <div className="comic-reader-controls">
+    <label className="comic-episode-jump"><span>Episode</span><select aria-label="Jump to comic episode" value={episodeId} onChange={e=>jumpEpisode(e.target.value)}>{readableEpisodes.map(ep=><option key={ep.id} value={ep.id}>{String(ep.position).padStart(2,'0')} · {ep.title}</option>)}</select></label>
+    <div className="comic-display-choices" role="group" aria-label="Reading layout">
+     <button type="button" aria-pressed={mode==='pages'} className={mode==='pages'?'active':''} onClick={()=>{setIndex(visiblePageIndex);setMode('pages')}}>Page</button>
+     <button type="button" aria-pressed={mode==='vertical'} className={mode==='vertical'?'active':''} onClick={()=>setMode('vertical')}>Vertical</button>
+    </div>
+    <button type="button" className="comic-direction-toggle" onClick={()=>setDirection(v=>v==='rtl'?'ltr':'rtl')} aria-label={'Change reading order, currently '+(direction==='rtl'?'right to left':'left to right')}>Order: {direction.toUpperCase()}</button>
+   </div>
+  </header>
+  {pages.length>0&&<div className="comic-reading-place" role="status"><span>{mode==='vertical'?'Scrolling':'Page'} · {Math.min(pages.length,(mode==='vertical'?visiblePageIndex:index)+1)} / {pages.length}</span><span>{direction==='rtl'?'Right to left':'Left to right'} · {mode==='pages'?'Use the arrows or buttons':'Scroll to continue'}</span></div>}
+  {mode==='pages'?<>
+   <section id="comic-panels" className={'comic-single-page '+direction}>{page?<figure><div className="comic-image-frame">{page.reader_url?<img decoding="async" fetchPriority="high" src={page.reader_url} alt={page.decorative?'':page.alt_text||page.caption||'Comic page'}/>:<div className="comic-missing-page">Image unavailable</div>}</div>{page.caption&&<figcaption>{page.caption}</figcaption>}</figure>:<div className="life-empty">No pages are published in this episode.</div>}</section>
+   {pages.length>0&&<footer className="comic-pager"><button type="button" disabled={index===0&&!previousEpisode} onClick={()=>index>0?move(index-1):previousEpisode&&jumpEpisode(previousEpisode.id)}>← {index>0?'Previous page':previousEpisode?'Previous episode':'Previous'}</button><span>Page {index+1} of {pages.length}<small>Use arrow keys outside controls</small></span>{index<pages.length-1?<button type="button" onClick={()=>move(index+1)}>Next page →</button>:nextEpisode?<button type="button" className="next-episode-action" onClick={()=>jumpEpisode(nextEpisode.id)}>Next episode →</button>:<button type="button" disabled>End of comic ✓</button>}</footer>}
+  </>:<>
+   <section id="comic-panels" ref={verticalRef} className={'comic-vertical '+direction} aria-label="Continuous comic episode">{pages.map((p,i)=><figure key={p.id} data-comic-page-index={i}><div className="comic-image-frame">{p.reader_url?<img loading={i===0?'eager':'lazy'} decoding="async" src={p.reader_url} alt={p.decorative?'':p.alt_text||p.caption||'Comic page'}/>:<div className="comic-missing-page">Image unavailable</div>}</div>{p.caption&&<figcaption>{p.caption}</figcaption>}</figure>)}{!pages.length&&<p className="comic-missing-page">No pages are published in this episode.</p>}</section>
+   {pages.length>0&&<nav className="comic-episode-nav" aria-label="Episode navigation">{previousEpisode?<button type="button" onClick={()=>jumpEpisode(previousEpisode.id)}>← Previous episode</button>:<span/>}<Link to={'/comic/'+data.comic.slug}>{data.comic.title}</Link>{nextEpisode?<button type="button" onClick={()=>jumpEpisode(nextEpisode.id)}>Next episode →</button>:<span>End of comic ✓</span>}</nav>}
+  </>}
+ </article>}</State></Frame>;
 }
-
 
