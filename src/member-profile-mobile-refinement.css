@@ -1,0 +1,255 @@
+/* Member chamber: compact mobile rhythm, all real artwork and controls retained.
+   Only the member profile page is changed; no profile data or achievements are altered. */
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"]{
+ min-width:0!important;box-sizing:border-box!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .legacy-profile-tags{
+ display:flex!important;flex-wrap:wrap!important;gap:6px!important;min-width:0;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .legacy-profile-tags>span{
+ max-width:100%;overflow-wrap:break-word;white-space:normal;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-story-content{
+ min-width:0;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-story-topline{
+ display:flex;align-items:flex-start;justify-content:space-between;gap:8px;min-width:0;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-story-topline>small{
+ flex:1;min-width:0;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-story-rating{
+ position:relative;display:inline-flex;align-items:center;justify-content:flex-end;
+ flex:0 0 auto;min-height:25px;min-width:26px;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-story-rating .story-rating-badge{
+ position:static!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-story-moon{
+ display:inline-block;margin-right:.45rem;color:#c7baee;font-size:1.08em;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-work-grid>.chamber-story-card.no-cover{
+ grid-template-columns:minmax(0,1fr)!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .chamber-story-content>a.chamber-story-enter{
+ display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;
+ min-height:40px;margin-top:auto;padding:8px 13px!important;
+ font-size:.88rem!important;line-height:1.25!important;font-weight:750!important;
+ color:#f4f0ff!important;background:linear-gradient(120deg,#5e538e,#3c658c);
+ border:1px solid rgba(189,183,247,.55);border-radius:10px;text-decoration:none;
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/member/"] .creator-worlds-room .chamber-story-content>a.chamber-story-enter{
+ color:#fff!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-creative-grid p,
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-reading-privacy :is(strong,p){
+ color:#e5e0f4!important;opacity:1!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-privacy-switch{
+ border-color:rgba(182,195,249,.65);background:rgba(103,115,200,.18);color:#faf7ff;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-privacy-switch input{
+ accent-color:#a9bafa;width:22px;height:22px;min-width:22px;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-privacy-switch:has(input:checked){
+ border-color:#a2ccee;background:rgba(97,148,198,.3);
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/member/"] .member-palace-creative-grid p,
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/member/"] .member-palace-reading-privacy :is(strong,p){
+ color:#443758!important;
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/member/"] .member-palace-privacy-switch{
+ background:#eee9fc;color:#41345b;border-color:#9b8cc6;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-atelier-gallery-filters{
+ padding:5px!important;gap:7px!important;border-radius:14px!important;
+ border:1px solid rgba(185,177,233,.35)!important;
+ background:linear-gradient(125deg,rgba(80,71,146,.34),rgba(52,87,137,.23))!important;
+ -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-atelier-gallery-filters button{
+ border:1px solid rgba(190,184,243,.4)!important;
+ background:rgba(104,100,178,.18)!important;color:#f0ecff!important;
+ border-radius:11px!important;min-height:44px!important;
+}
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-atelier-gallery-filters button[aria-pressed="true"]{
+ background:linear-gradient(120deg,#6657ad,#396d99)!important;
+ color:#fff!important;border-color:#c1b6fa!important;
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/member/"] .chamber-atelier-gallery-filters{
+ background:linear-gradient(120deg,#eee8fb,#e8effa)!important;
+ border-color:#b7a8d6!important;
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/member/"] .chamber-atelier-gallery-filters button:not([aria-pressed="true"]){
+ color:#413457!important;background:rgba(255,255,255,.72)!important;
+}
+@media(max-width:760px){
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"]{
+  padding-bottom:max(172px,calc(152px + env(safe-area-inset-bottom,0px)))!important;
+  scroll-padding-bottom:max(172px,calc(152px + env(safe-area-inset-bottom,0px)))!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-chamber-atelier.chic-member-profile .legacy-profile-stats{
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:6px!important;padding:8px!important;align-items:stretch!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-chamber-atelier.chic-member-profile .legacy-profile-stats>div{
+  display:flex!important;flex-direction:column!important;justify-content:center!important;
+  align-items:center!important;flex:initial!important;width:100%!important;max-width:none!important;
+  min-height:57px!important;gap:4px!important;box-sizing:border-box!important;
+  padding:7px 3px!important;text-align:center!important;
+  border:1px solid rgba(186,174,237,.24)!important;
+  border-radius:11px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-chamber-atelier.chic-member-profile .legacy-profile-stats>div:after{
+  content:none!important;display:none!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-chamber-atelier.chic-member-profile .legacy-profile-stats strong{
+  font-size:1.14rem!important;line-height:1.08!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-chamber-atelier.chic-member-profile .legacy-profile-stats span{
+  font-size:clamp(.54rem,2.25vw,.7rem)!important;line-height:1.2!important;
+  letter-spacing:.02em!important;overflow-wrap:normal;
+ }
+ /* One compact rail of the four earned honour denominations. */
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-showcase{
+  gap:.65rem!important;margin:.55rem 0 .8rem!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-honour-room{
+  padding:.65rem!important;border-radius:14px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-honour-room header p:last-child{
+  display:none!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-honour-room h3{
+  font-size:1.12rem!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-honour-grid{
+  display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:5px!important;margin-top:.55rem!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-honour-grid>.member-palace-honour{
+  display:grid!important;grid-template-columns:20px minmax(0,1fr)!important;
+  grid-template-rows:auto auto;place-items:initial!important;align-items:center!important;
+  align-content:center!important;gap:1px 3px!important;min-width:0!important;
+  min-height:55px!important;padding:6px 4px!important;border-radius:10px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-honour>span{
+  grid-column:1!important;grid-row:1/3!important;min-width:0!important;
+  display:grid;place-items:center;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-honour>span :is(svg,img){
+  width:20px!important;height:20px!important;max-width:100%;object-fit:contain;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-honour strong{
+  grid-column:2!important;grid-row:1!important;font-size:1rem!important;
+  line-height:1.1!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-honour small{
+  grid-column:2!important;grid-row:2!important;font-size:.55rem!important;
+  line-height:1.15!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-honour em{
+  display:none!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-creative-room{
+  padding:.8rem!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-creative-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-creative-grid article{
+  padding:9px!important;gap:4px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-section-nav.chamber-atelier-tabs{
+  display:flex!important;grid-template-columns:none!important;flex-wrap:nowrap!important;
+  gap:4px!important;overflow-x:auto!important;overflow-y:hidden!important;
+  padding:5px 9px!important;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+  mask-image:linear-gradient(to right,#000 0%,#000 91%,transparent 100%);
+  -webkit-mask-image:linear-gradient(to right,#000 0%,#000 91%,transparent 100%);
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-section-nav.chamber-atelier-tabs::-webkit-scrollbar{display:none}
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-section-nav.chamber-atelier-tabs>a{
+  flex:0 0 auto!important;min-width:76px!important;min-height:44px!important;
+  padding:7px 10px!important;white-space:nowrap!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-atelier>header{
+  display:flex;flex-wrap:wrap;gap:9px;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .prism-atelier>header>button{
+  display:block;width:100%!important;min-height:44px!important;margin-left:auto;
+  text-align:center;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .creator-work-grid>.chamber-story-card{
+  min-height:0!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .creator-work-grid>.chamber-story-card.no-cover{
+  display:block!important;padding:0!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .creator-work-grid>.chamber-story-card.has-cover{
+  grid-template-columns:67px minmax(0,1fr)!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-story-cover{
+  padding:5px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .chamber-story-content{
+  padding:12px!important;gap:8px;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .chamber-story-content h2{
+  display:flex;align-items:baseline;gap:0;overflow-wrap:break-word!important;
+  font-size:1.03rem!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .chamber-story-content p{
+  -webkit-line-clamp:4;line-clamp:4;font-size:.82rem!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .chamber-story-content>a.chamber-story-enter{
+  min-height:44px!important;font-size:.88rem!important;
+ }
+ /* Shorter framed artwork cards without changing original painting sizing or crops. */
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-atelier-gallery.legacy-showcase-wall{
+  padding:.7rem!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-atelier-gallery .legacy-showcase-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  align-items:start!important;gap:8px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-atelier-gallery .legacy-showcase-grid>.chamber-atelier-art-card{
+  min-height:0!important;height:auto!important;align-items:stretch!important;
+  padding:25px 8px 8px!important;gap:4px!important;border-radius:13px!important;
+  overflow:visible!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-atelier-gallery .legacy-showcase-grid .chamber-atelier-art-card .chamber-atelier-art-stage{
+  width:100%;height:132px!important;min-height:0!important;max-height:132px!important;
+  padding:3px!important;overflow:visible!important;place-items:center!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-atelier-gallery .chamber-atelier-art-card :is(.palace-watercolour-badge,.palace-gift-art){
+  max-width:100%!important;max-height:100%!important;object-fit:contain!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-atelier-gallery .legacy-showcase-grid .chamber-atelier-art-card>small,
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-atelier-gallery .legacy-showcase-grid .chamber-atelier-art-card>h3,
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-atelier-gallery .legacy-showcase-grid .chamber-atelier-art-card>p{
+  margin:0!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-atelier-gallery .chamber-art-arrange{
+  display:flex!important;flex-wrap:nowrap!important;justify-content:flex-end!important;
+  gap:2px!important;width:100%!important;min-height:44px!important;
+  margin:3px 0 0!important;padding:0!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .chamber-atelier-gallery .chamber-art-arrange>button{
+  width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;
+  max-height:44px!important;padding:7px!important;border-radius:11px!important;
+  background:rgba(111,105,181,.23)!important;color:#f3eaff!important;
+ }
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/member/"] .chamber-atelier-gallery .chamber-art-arrange>button{
+  background:rgba(131,111,188,.18)!important;color:#382b52!important;
+ }
+}
+@media(max-width:365px){
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-honour-grid{
+  gap:3px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-honour-grid>.member-palace-honour{
+  grid-template-columns:18px minmax(0,1fr)!important;padding:5px 2px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .member-palace-honour small{font-size:.48rem!important}
+}
