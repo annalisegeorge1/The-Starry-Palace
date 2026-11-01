@@ -81,7 +81,7 @@ import {directClassicHref} from './directClassicModel';
 import DuelCountdown from './DuelCountdown';
 import './reading-partial-notice.css';
 import ClassicsLibraryHall from './ClassicsLibraryHall';
-import PalaceFanfictionShelf from './PalaceFanfictionShelf';
+import UnifiedFanworkCatalogue from './UnifiedFanworkCatalogue';
 import {readingArchiveWorkType,MODERN_FANFICTION_LINKS} from './palaceFanfictionDiscovery';
 import {historicFanfictionGuide,archiveFanfictionTags} from './fanfictionMetadata';
 import StoryRatingBadge from './StoryRatingBadge';
@@ -550,7 +550,7 @@ export function ReadingLive({Frame}){
   </section>
   <section className="legacy-reading-tools chic-reading-tools reading-search-calm">
    <div className="reading-search" role="search"><span aria-hidden="true">⌕</span><input aria-label={archiveBrowseEnabled?'Search all published Reading Room stories':'Search the currently loaded Reading Room stories'} value={query} onChange={e=>setQuery(e.target.value)} placeholder="Title, writer, fandom or tag…"/></div>
-   <div className="reading-result-count" aria-live="polite"><strong>{archiveBrowseEnabled?(archiveBrowse.snapshot?visibleTotal.toLocaleString():'…'):catalogue.length.toLocaleString()}</strong><span>{origin==='fandom'?('hosted/member story results · '+MODERN_FANFICTION_LINKS.length+' linked modern fanfics are listed above'):(archiveBrowseEnabled?'matching published stories · archive-wide':('matching among '+allReadingWorks.length+' loaded '+(allReadingWorks.length===1?'work':'works')))}</span></div>
+   <div className="reading-result-count" aria-live="polite"><strong>{archiveBrowseEnabled?(archiveBrowse.snapshot?visibleTotal.toLocaleString():'…'):catalogue.length.toLocaleString()}</strong><span>{origin==='fandom'?('Palace-hosted results · '+MODERN_FANFICTION_LINKS.length+' author-source fanfics in the unified catalogue below'):(archiveBrowseEnabled?'matching published stories · archive-wide':('matching among '+allReadingWorks.length+' loaded '+(allReadingWorks.length===1?'work':'works')))}</span></div>
   </section>
   {!archiveBrowseEnabled&&readerLens!=='all'&&<p className="reading-scope-note">Personal lenses search your currently loaded reading shelf. Choose “Entire published archive” to return to public browsing.</p>}
   {!archiveBrowseEnabled&&vibeDoor!=='all'&&<p className="reading-scope-note">Mood suggestions come from loaded stories, not archive-wide rankings.</p>}
@@ -559,9 +559,9 @@ export function ReadingLive({Frame}){
   {session&&<section className="reading-reader-lenses" aria-label="Your private reading lenses"><div><small>MY READING LENSES</small><span>Private to you · never changes public discovery ranking</span></div><nav>{[['all','All'],['unread','Unread'],['reading','In progress'],['new','New chapters'],['saved','Saved'],['following','Following'],['finished','Finished']].map(([key,label])=><button type="button" key={key} className={readerLens===key?'active':''} aria-pressed={readerLens===key} onClick={()=>setReaderLens(key)}>{label}</button>)}</nav>{(readerLens!=='all'||query||rating!=='all'||status!=='all'||vibeDoor!=='all')&&<button type="button" className="quiet-button" onClick={clearReadingFilters}>Clear reading filters</button>}</section>}
   {readingNotice&&<p className="reading-partial-notice" role="status">✧ {readingNotice}</p>}
   <div className="reading-catalogue-layout"><div className="reading-catalogue-main">
-  {origin==='fandom'&&<PalaceFanfictionShelf archiveWorks={archiveWorks} showHistorical={false}/>}
-  {showBrowseCards&&<ReadingCatalogueControls layout={readingChoices.layout} onLayout={value=>setReadingChoice('layout',value)} shown={archiveBrowseEnabled?visibleCatalogue.length:Math.min(readingChoices.visibleCount,catalogue.length)} total={visibleTotal} linkedCount={origin==='fandom'?MODERN_FANFICTION_LINKS.length:0}/>}
-  <State loading={browseLoading} error={browseError}>{showBrowseCards&&<section className="story-shelf refined chic-story-catalogue">{visibleCatalogue.length===0&&<div className="reading-catalogue-empty" role="status"><span className="reading-empty-star" aria-hidden="true">☾ ✦</span><div><p className="eyebrow">{activeReadingFilters.length?'A QUIETER CORNER':'AN OPEN SHELF'}</p><h2>{activeReadingFilters.length?'No worlds match these choices yet.':'This shelf is waiting for its first story.'}</h2><p>{activeReadingFilters.length?'Nothing is wrong with your search. Remove a filter or open the full Reading Rooms to browse again.':'Newly published stories will appear here when their writers open the doors.'}</p><div className="reading-empty-actions">{activeReadingFilters.length?<button type="button" onClick={clearReadingFilters}>Show every story →</button>:<Link to="/writers">Explore the Writer’s Door →</Link>}<Link to="/reading?view=search">Try advanced search →</Link></div></div></div>}{visibleCatalogue.map(w=>{
+  {origin==='fandom'&&<UnifiedFanworkCatalogue publishedWorks={[...visibleCatalogue,...archiveWorks]} globalQuery={query} globalRating={rating} completion={status} loading={browseLoading} loadError={browseError} hasMoreHosted={!archiveBrowseEnabled&&hasMorePublished} onMoreHosted={loadNextPublishedPage}/>}
+  {origin!=='fandom'&&showBrowseCards&&<ReadingCatalogueControls layout={readingChoices.layout} onLayout={value=>setReadingChoice('layout',value)} shown={archiveBrowseEnabled?visibleCatalogue.length:Math.min(readingChoices.visibleCount,catalogue.length)} total={visibleTotal} linkedCount={origin==='fandom'?MODERN_FANFICTION_LINKS.length:0}/>}
+  {origin!=='fandom'&&<State loading={browseLoading} error={browseError}>{showBrowseCards&&<section className="story-shelf refined chic-story-catalogue">{visibleCatalogue.length===0&&<div className="reading-catalogue-empty" role="status"><span className="reading-empty-star" aria-hidden="true">☾ ✦</span><div><p className="eyebrow">{activeReadingFilters.length?'A QUIETER CORNER':'AN OPEN SHELF'}</p><h2>{activeReadingFilters.length?'No worlds match these choices yet.':'This shelf is waiting for its first story.'}</h2><p>{activeReadingFilters.length?'Nothing is wrong with your search. Remove a filter or open the full Reading Rooms to browse again.':'Newly published stories will appear here when their writers open the doors.'}</p><div className="reading-empty-actions">{activeReadingFilters.length?<button type="button" onClick={clearReadingFilters}>Show every story →</button>:<Link to="/writers">Explore the Writer’s Door →</Link>}<Link to="/reading?view=search">Try advanced search →</Link></div></div></div>}{visibleCatalogue.map(w=>{
  const badges=flags(w);
  const prismStory=isLgbtqContent(w.title,w.summary,workTags(w));
  const isCompact=readingChoices.layout==='compact';
@@ -589,17 +589,17 @@ export function ReadingLive({Frame}){
    <div className="archive-compact-data">{stats}{tagList}</div>
   </div>:<div>{flagLine}<h2><Link to={storyHref(w)}>{w.title}</Link></h2>{time}{context}{stats}{tagList}<footer>{richAuthor}{action}</footer></div>}
  </article>
-})}</section>}</State>
+})}</section>}</State>}
   {archiveBrowseEnabled&&archiveBrowse.error&&<div className="reading-fetch-more" role="alert"><strong>We could not reach the full archive.</strong><p>Your stories are safe. Retry the search or switch to your loaded shelves.</p><div className="reading-retry-actions"><button type="button" onClick={archiveBrowse.retry}>Retry archive search</button><button type="button" onClick={browseLoadedShelves}>View loaded shelves</button></div></div>}
   {archiveBrowseEnabled&&archiveBrowse.snapshot&&<ReadingArchivePager page={archiveBrowse.page} total={visibleTotal} pending={archiveBrowse.pending} onPage={archiveBrowse.goPage}/>}
-  {!archiveBrowseEnabled&&works&&<ReadingCatalogueMore shown={Math.min(readingChoices.visibleCount,catalogue.length)} total={catalogue.length} onMore={()=>setReadingChoice('visibleCount',count=>count+24)}/>}
-  {!archiveBrowseEnabled&&works&&hasMorePublished&&<div className="reading-fetch-more">
+  {origin!=='fandom'&&!archiveBrowseEnabled&&works&&<ReadingCatalogueMore shown={Math.min(readingChoices.visibleCount,catalogue.length)} total={catalogue.length} onMore={()=>setReadingChoice('visibleCount',count=>count+24)}/>}
+  {origin!=='fandom'&&!archiveBrowseEnabled&&works&&hasMorePublished&&<div className="reading-fetch-more">
    <strong>More published worlds await</strong><p>Load the next 48 stories to expand the searchable catalogue and available tags.</p>
    <button type="button" disabled={morePublishedBusy} onClick={loadNextPublishedPage}>{morePublishedBusy?'Gathering more stories…':'Load more from the Palace ↓'}</button>
    {morePublishedError&&<p role="alert">{morePublishedError}</p>}
   </div>}
   </div>
-  <ReadingFacetSidebar facets={tagFacets} sort={catalogueSort} onSort={updateCatalogueSort} rating={rating} onRating={setRating} status={status} onStatus={setStatus} included={includedTags} excluded={excludedTags} onToggle={toggleReadingFacet} onClear={clearReadingFilters} loadedCount={roomWorks.length} hasMore={!archiveBrowseEnabled&&hasMorePublished} archiveWide={archiveBrowseEnabled} onSearchTags={searchPalaceTags} onTagIdentified={identifyReadingTag}/>
+  {origin!=='fandom'&&<ReadingFacetSidebar facets={tagFacets} sort={catalogueSort} onSort={updateCatalogueSort} rating={rating} onRating={setRating} status={status} onStatus={setStatus} included={includedTags} excluded={excludedTags} onToggle={toggleReadingFacet} onClear={clearReadingFilters} loadedCount={roomWorks.length} hasMore={!archiveBrowseEnabled&&hasMorePublished} archiveWide={archiveBrowseEnabled} onSearchTags={searchPalaceTags} onTagIdentified={identifyReadingTag}/>}
   </div>
   </>}
  </section></Frame>
