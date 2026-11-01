@@ -1,0 +1,328 @@
+/* Daylight Council + Library contrast pass. Only target known dark cards,
+ * preserve all Nightfall appearance, genuine eligibility states and governance data. */
+
+/* Library: featured shelf is an intentionally dark story card, so give the
+   complete card its own light foreground, not inherited Daylight slate. */
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/library"] .library-overview-feature-grid .library-overview-section{
+ background:linear-gradient(145deg,#252845,#292445 62%,#193549)!important;
+ border:1px solid rgba(188,174,237,.48)!important;
+ color:#fff!important;
+ box-shadow:0 6px 16px rgba(32,36,72,.16)!important;
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/library"] .library-overview-feature-grid .library-overview-section :is(h3,.library-overview-section-head>a,.library-overview-book-copy strong,.library-overview-book-copy b,.library-overview-empty>a){
+ color:#fff!important;
+ opacity:1!important;
+ -webkit-text-fill-color:#fff!important;
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/library"] .library-overview-feature-grid .library-overview-section :is(
+ .library-overview-section-head p,.library-overview-book-copy small,.library-overview-empty p
+){
+ color:#e2e8f0!important;
+ opacity:1!important;
+ -webkit-text-fill-color:#e2e8f0!important;
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/library"] .library-overview-feature-grid .library-overview-book,
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/library"] .library-overview-feature-grid .library-overview-empty{
+ background:rgba(250,248,255,.09)!important;
+ border-color:rgba(214,205,247,.32)!important;
+}
+/* The empty-library welcome and regular white shelves are not dark accents. */
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/library"] :is(
+ .library-overview-start,.library-overview-updates,.library-overview-organizers
+){
+ background:linear-gradient(145deg,#fff,#f6f8fc)!important;
+ border-color:rgba(92,99,137,.27)!important;
+ color:#243047!important;
+ box-shadow:0 4px 12px rgba(31,40,77,.065)!important;
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/library"] :is(
+ .library-overview-start,.library-overview-updates,.library-overview-organizers
+) :is(h3,strong,.eyebrow){color:#263045!important;opacity:1!important}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/library"] :is(
+ .library-overview-start,.library-overview-updates,.library-overview-organizers
+) p:not(.eyebrow){color:#475569!important;opacity:1!important}
+/* Shelf tabs should be usable in bright light, not grey on frosted grey. */
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/library"] .chic-library-tabs{
+ background:#fcfaff!important;
+ border:1px solid rgba(94,85,135,.33)!important;
+ box-shadow:0 4px 12px rgba(35,38,76,.065)!important;
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/library"] .chic-library-tabs button{
+ background:transparent!important;
+ color:#455268!important;
+ opacity:1!important;
+ font-weight:700!important;
+}
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/library"] .chic-library-tabs button.active,
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/library"] .chic-library-tabs button[aria-selected="true"]{
+ background:#604780!important;
+ color:#fff!important;
+ border-color:#604780!important;
+ box-shadow:none!important;
+}
+
+/* Council hero and entrance cards are deep violet accents. */
+.palace-shell.full-palace-shell.daylight .palace-governance .governance-hero,
+.palace-shell.full-palace-shell.daylight .palace-governance .governance-entry-grid>button{
+ background:linear-gradient(135deg,#25243d,#34284f 66%,#193c52)!important;
+ background-color:#25243d!important;
+ border:1px solid rgba(189,171,233,.48)!important;
+ box-shadow:0 6px 17px rgba(35,39,73,.15)!important;
+ color:#fff!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-governance .governance-hero :is(h1,span,a),
+.palace-shell.full-palace-shell.daylight .palace-governance .governance-entry-grid>button :is(strong,b){
+ color:#fff!important;
+ opacity:1!important;
+ -webkit-text-fill-color:#fff!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-governance .governance-hero p,
+.palace-shell.full-palace-shell.daylight .palace-governance .governance-entry-grid>button small{
+ color:#e2e8f0!important;
+ opacity:1!important;
+ -webkit-text-fill-color:#e2e8f0!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-governance .governance-entry-grid>button>span{
+ background:rgba(233,224,255,.14)!important;
+ color:#fff!important;
+}
+/* Previously "blank" dark statistic tiles are instead a white, readable
+   dashboard: keep all numbers as live data with no placeholders. */
+.palace-shell.full-palace-shell.daylight .palace-governance .governance-pulse>div{
+ background:#fff!important;
+ border:1px solid rgba(103,103,145,.29)!important;
+ color:#243047!important;
+ box-shadow:0 4px 12px rgba(37,42,80,.07)!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-governance .governance-pulse strong{
+ color:#252b40!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-governance .governance-pulse span{
+ color:#475569!important;
+ opacity:1!important;
+ font-weight:650!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-governance .governance-intro :is(h2,p){
+ color:#2a3349!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-governance .governance-intro span,
+.palace-shell.full-palace-shell.daylight .palace-governance .governance-heading>div>span{
+ color:#554277!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-governance .governance-streak{
+ background:linear-gradient(125deg,#282546,#33365b)!important;
+ border-color:rgba(182,164,224,.41)!important;
+ color:#fff!important;
+ box-shadow:0 5px 15px rgba(33,38,76,.13)!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-governance .governance-streak :is(strong,p,small,.governance-streak-dots){
+ color:#f3efff!important;
+ opacity:1!important;
+}
+/* Council records, election cards, and non-hero panels are intentionally
+   paper-coloured, avoiding white-on-white voting controls. */
+.palace-shell.full-palace-shell.daylight .palace-governance :is(
+ .governance-ballot,.governance-notices article,.governance-manage form,
+ .governance-recent,.governance-ballot-controls,.governance-tab-group
+){
+ background:linear-gradient(145deg,#fff,#f7f8fc)!important;
+ border-color:rgba(96,99,143,.27)!important;
+ color:#273046!important;
+ box-shadow:0 4px 12px rgba(34,39,80,.065)!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-governance :is(
+ .governance-ballot,.governance-notices article,.governance-recent,.governance-tab-group
+) :is(h2,h3,strong){
+ color:#252d44!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-governance :is(
+ .governance-ballot,.governance-notices article,.governance-recent,.governance-tab-group
+) :is(p,small,footer){
+ color:#48566b!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-governance :is(.governance-ballot-controls input,.governance-ballot-controls select,.governance-nomination textarea){
+ background:#fff!important;
+ border-color:#a7adbe!important;
+ color:#29334a!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-governance :is(.governance-filter button,.governance-tabs button){
+ background:#fff!important;
+ border:1px solid rgba(94,84,136,.45)!important;
+ color:#423b5b!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-governance :is(.governance-filter button.active,.governance-tabs button.active){
+ background:#604780!important;
+ border-color:#604780!important;
+ color:#fff!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-governance :is(.governance-choice,.governance-choice:not(:disabled)){
+ color:#2e3550!important;
+ background:#f9f8fe!important;
+ border-color:#a7a0bc!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-governance .governance-choice.selected{
+ background:#e9e2f7!important;
+ border-color:#7962a2!important;
+ color:#392955!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-governance .governance-choice:disabled{
+ opacity:.7!important;
+ cursor:not-allowed!important;
+}
+/* Proposal hero remains dark and readable; statistics become white cards. */
+.palace-shell.full-palace-shell.daylight .palace-petitions .petition-hero{
+ background:linear-gradient(135deg,#22243d,#3b2a50 67%,#234458)!important;
+ border:1px solid rgba(187,166,230,.50)!important;
+ box-shadow:0 6px 18px rgba(35,39,75,.15)!important;
+ color:#fff!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-petitions .petition-hero :is(h2,span){
+ color:#fff!important;
+ -webkit-text-fill-color:#fff!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-petitions .petition-hero p{
+ color:#e2e8f0!important;
+ -webkit-text-fill-color:#e2e8f0!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-petitions .petition-stat{
+ background:#fff!important;
+ border:1px solid rgba(100,103,142,.28)!important;
+ color:#253047!important;
+ box-shadow:0 4px 12px rgba(35,41,77,.07)!important;
+ min-height:73px!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-petitions .petition-stat strong{
+ color:#272c44!important;
+ opacity:1!important;
+ font-variant-numeric:tabular-nums;
+}
+.palace-shell.full-palace-shell.daylight .palace-petitions .petition-stat span{
+ color:#475569!important;
+ opacity:1!important;
+ font-weight:650!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-petitions :is(.petition-panel,.petition-board){
+ background:linear-gradient(145deg,#fff,#f8f9fd)!important;
+ border-color:rgba(93,103,145,.27)!important;
+ color:#293349!important;
+ box-shadow:0 4px 12px rgba(34,39,79,.06)!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-petitions .petition-panel :is(h3,legend,strong){
+ color:#283047!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-petitions .petition-panel :is(p,small,label){
+ color:#475569!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-petitions :is(
+ .petition-panel input,.petition-panel textarea,.petition-panel select,.petition-topline select
+){
+ background:#fff!important;
+ border:1px solid #aab4c5!important;
+ color:#283348!important;
+ box-shadow:0 2px 6px rgba(40,44,79,.045)!important;
+}
+/* Submit is active only for eligible Palace members; make actual disabled
+   state explicit instead of suggesting the submit is broken. */
+.palace-shell.full-palace-shell.daylight .palace-petitions .petition-panel button:not(:disabled),
+.palace-shell.full-palace-shell.daylight .palace-petitions .petition-pagination button:not(:disabled){
+ background:#604780!important;
+ border:1px solid #604780!important;
+ color:#fff!important;
+ opacity:1!important;
+ box-shadow:none!important;
+ font-weight:700!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-petitions .petition-panel button:disabled,
+.palace-shell.full-palace-shell.daylight .palace-petitions .petition-pagination button:disabled{
+ background:#e6e8ef!important;
+ border:1px solid #aab2c2!important;
+ color:#435067!important;
+ opacity:1!important;
+ cursor:not-allowed!important;
+ box-shadow:none!important;
+}
+/* Keep the published review queue white and legible. */
+.palace-shell.full-palace-shell.daylight .council-queue-tools{
+ background:#fff!important;
+ border-color:rgba(99,103,146,.28)!important;
+ box-shadow:0 3px 10px rgba(32,42,82,.05)!important;
+}
+.palace-shell.full-palace-shell.daylight .council-queue-count{
+ min-width:0!important;
+ gap:4px 7px!important;
+ padding:9px 12px!important;
+ background:#f5f3fb!important;
+ border:1px solid rgba(113,103,152,.23)!important;
+ border-radius:11px!important;
+ color:#283249!important;
+}
+.palace-shell.full-palace-shell.daylight .council-queue-count :is(strong,b){
+ color:#272e46!important;
+ font-variant-numeric:tabular-nums;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .council-queue-count span{
+ color:#4a566b!important;
+ font-size:.73rem!important;
+ line-height:1.4!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .council-queue-tools :is(input,select){
+ background:#fff!important;
+ color:#293249!important;
+ border:1px solid #aab4c4!important;
+ box-shadow:0 2px 7px rgba(38,42,81,.06)!important;
+}
+.palace-shell.full-palace-shell.daylight .council-queue-tools input::placeholder{
+ color:#536076!important;
+ opacity:1!important;
+}
+
+/* Layering and dock clearance: Daylight only, safe-area aware. */
+.palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar{
+ isolation:isolate!important;
+ background:#faf9ff!important;
+ background-image:none!important;
+ border-bottom:1px solid rgba(80,77,124,.28)!important;
+ box-shadow:0 4px 14px rgba(32,39,77,.10)!important;
+ -webkit-backdrop-filter:blur(12px)!important;
+ backdrop-filter:blur(12px)!important;
+}
+.palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar::before{
+ background:#faf9ff!important;
+ opacity:1!important;
+}
+@media(max-width:760px){
+ .palace-shell.full-palace-shell.daylight .full-stage>main#palace-content{
+  padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))!important;
+  scroll-padding-bottom:calc(160px + env(safe-area-inset-bottom,0px))!important;
+ }
+ .palace-shell.full-palace-shell.daylight .full-stage>.palace-mobile-end-spacer{
+  height:calc(150px + env(safe-area-inset-bottom,0px))!important;
+  min-height:150px!important;
+ }
+ .palace-shell.full-palace-shell.daylight :is(.palace-governance,.palace-petitions,.library-overview,.council-desk){
+  scroll-margin-bottom:130px;
+ }
+ .palace-shell.full-palace-shell.daylight .palace-governance .governance-pulse{
+  gap:7px!important;
+ }
+ .palace-shell.full-palace-shell.daylight .palace-petitions .petition-stats{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:9px!important;
+ }
+ .palace-shell.full-palace-shell.daylight .palace-petitions .petition-stat{
+  padding:12px 10px!important;
+  min-height:70px!important;
+ }
+}
