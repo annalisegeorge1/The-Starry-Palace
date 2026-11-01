@@ -236,15 +236,6 @@
   max-width:calc(100% - 24px)!important;
   margin-left:auto!important;margin-right:auto!important;
  }
- .palace-shell.full-palace-shell .full-stage>header.topbar.full-topbar{
-  background-color:#0d142b!important;
-  background-image:linear-gradient(110deg,#121931,#0d142b 62%,#141b38)!important;
-  isolation:isolate!important;
- }
- .palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar{
-  background-color:#f0ecfa!important;
-  background-image:linear-gradient(110deg,#f4effb,#e9e6f8)!important;
- }
 }
 @media(max-width:760px){
  /* The global shell already provides generous end-of-document spacer. Match
