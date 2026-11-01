@@ -10,3 +10,24 @@
 .palace-direct-classic-status p{font-size:14px;line-height:1.6;opacity:.86}
 .palace-direct-classic-status a{display:inline-block;margin-top:10px;color:inherit;text-decoration:underline;text-underline-offset:3px}
 @media(max-width:640px){.palace-direct-classic{padding:7px 5px}.palace-direct-classic-nav{padding:2px 8px}}
+
+/* Fanfiction context is tucked into a single optional disclosure, not above-the-fold cards. */
+.palace-historic-fanfiction-notes{
+ margin:0 0 11px;border:1px solid var(--ui-line,rgba(155,139,225,.25));
+ border-radius:9px;background:var(--ui-surface,transparent);
+ color:var(--ui-text,inherit);font-size:.75rem;
+}
+.palace-historic-fanfiction-notes summary{
+ padding:9px 11px;cursor:pointer;line-height:1.4;
+ color:var(--ui-muted,inherit);
+}
+.palace-historic-fanfiction-notes summary:focus-visible{
+ outline:2px solid var(--ui-accent,currentColor);outline-offset:2px;
+}
+.palace-historic-fanfiction-notes>div{padding:0 11px 11px}
+.palace-historic-fanfiction-notes p{margin:4px 0 9px;line-height:1.5;opacity:.9}
+.palace-historic-fanfiction-notes div div{display:flex;flex-wrap:wrap;gap:5px}
+.palace-historic-fanfiction-notes div div span{
+ border:1px solid var(--ui-line,rgba(155,139,225,.25));
+ border-radius:999px;padding:3px 7px;font-size:.7rem;
+}
