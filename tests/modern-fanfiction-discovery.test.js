@@ -17,7 +17,7 @@ describe('Fanfiction section contains rights-aware historical and modern discove
  });
  it('places archived historical fanfic in the existing Fanfiction origin and uses the correct hosted reader',()=>{
   expect(reading).toContain("summary:r.summary,archive_category:r.category,work_type:readingArchiveWorkType(r)");
-  expect(reading).toContain("origin==='fandom'&&<PalaceFanfictionShelf archiveWorks={archiveWorks} showHistorical={false}/>");
+  expect(reading).toContain("origin==='fandom'&&<UnifiedFanworkCatalogue publishedWorks=");
   expect(reading).toContain('>Fanfiction</button>');
   expect(shelf).toContain("directClassicHref(work)");
   expect(shelf).toContain("PUBLIC DOMAIN · HOSTED ON THE PALACE");
@@ -254,17 +254,17 @@ describe('Fanfiction section contains rights-aware historical and modern discove
  it('renders the linked recommendations beside the hosted story cards in normal Browse mode',()=>{
    const defaults=readFileSync('src/useReadingDiscoveryState.js','utf8');
    expect(defaults).toContain("discoveryMode:'browse'");
-   const shelfMarkup='<PalaceFanfictionShelf archiveWorks={archiveWorks} showHistorical={false}/>';
+   const shelfMarkup='<UnifiedFanworkCatalogue publishedWorks=';
    expect(reading.split(shelfMarkup).length-1).toBe(1);
    const shelfAt=reading.indexOf(shelfMarkup);
    const browseLayout=reading.indexOf('className="reading-catalogue-layout"');
    const archiveHeader=reading.indexOf('<ReadingCatalogueControls');
    expect(shelfAt).toBeGreaterThan(browseLayout);
-   expect(shelfAt).toBeLessThan(archiveHeader);
+   expect(reading).toContain("origin!=='fandom'&&<State loading={browseLoading}");
    expect(reading).toContain("onClick={()=>{setOrigin('fandom');navigate('/reading?section=fanfiction')}}");
    expect(reading).toContain("get('section')==='fanfiction'");
-   expect(reading).toContain("document.getElementById('palace-fanfiction-shelf-title')?.scrollIntoView");
-   expect(reading).toContain("linkedCount={origin==='fandom'?MODERN_FANFICTION_LINKS.length:0}");
+   expect(reading).toContain("document.getElementById('palace-unified-fanworks-title')?.scrollIntoView");
+   expect(reading).toContain("origin!=='fandom'&&showBrowseCards&&<ReadingCatalogueControls");
    expect(shelf).toContain('MODERN_FANFICTION_LINKS.length} stories to explore');
    expect(shelf).toContain('showHistorical&&historic.length>0');
    const controls=readFileSync('src/ReadingCatalogueControls.jsx','utf8');
