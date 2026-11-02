@@ -1,0 +1,22 @@
+/* Small curator panel: manuscript text is not added to the public page. */
+.curator-fanwork-intake{margin:18px 0 24px;color:var(--ui-text);min-width:0}
+.curator-fanwork-intake>details{border:1px solid var(--ui-line);border-radius:15px;background:var(--ui-surface,rgba(55,56,104,.18));overflow:hidden}
+.curator-fanwork-intake>details>summary{padding:13px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-weight:700}
+.curator-fanwork-intake>details>summary small{color:var(--ui-muted);font-weight:400}
+.curator-fanwork-intake-body{padding:0 16px 18px;display:grid;gap:14px;font-size:.83rem}
+.curator-fanwork-intake-body>p{margin:0;line-height:1.5;color:var(--ui-muted)}
+.curator-fanwork-intake form{display:grid;gap:12px;max-width:760px}
+.curator-fanwork-intake form>label:not(.curator-fanwork-confirm){display:grid;gap:5px;font-weight:600}
+.curator-fanwork-intake select,.curator-fanwork-intake input:not([type=checkbox]),.curator-fanwork-intake textarea{width:100%;min-width:0;padding:9px 10px;border-radius:9px;border:1px solid var(--ui-line);background:var(--ui-bg,transparent);color:var(--ui-text);font:inherit}
+.curator-fanwork-intake textarea{resize:vertical;line-height:1.45}
+.curator-fanwork-intake .curator-fanwork-manuscript{font-family:ui-monospace,monospace;font-size:.83rem}
+.curator-fanwork-confirm{display:flex;gap:10px;align-items:start;font-size:.8rem;line-height:1.5}
+.curator-fanwork-confirm input{margin-top:4px}
+.curator-fanwork-source{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:10px;border-radius:10px;border:1px solid var(--ui-line);font-size:.75rem}
+.curator-fanwork-source>span{color:var(--ui-muted)}
+.curator-fanwork-source a{color:var(--ui-accent)}
+.curator-fanwork-intake form>button{justify-self:start;min-height:38px;padding:9px 14px;border-radius:10px}
+.curator-fanwork-intake :is(button,a,input,select,textarea,summary):focus-visible{outline:2px solid var(--ui-accent);outline-offset:2px}
+.curator-fanwork-error{color:var(--ui-danger,#fa9f9f);margin:0}
+.curator-fanwork-notice{color:var(--ui-text);margin:0}
+@media(max-width:700px){.curator-fanwork-intake{margin:12px 0 20px}.curator-fanwork-intake>details>summary{padding:11px 12px}.curator-fanwork-intake-body{padding:0 12px 16px}.curator-fanwork-intake form>button{width:100%}}
