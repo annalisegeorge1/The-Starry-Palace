@@ -12,7 +12,7 @@ const nav=read('src/palace-calm-layout.css');
 describe('Palace responsiveness and personality recovery',()=>{
  it('restores rich rooms instead of repeatedly folding the writing, reading and Palace Life tools',()=>{
   expect(life).toContain('className="reading-mood-doors"');
-  expect(life).toContain('<ClassicsLibraryHall works={archiveWorks} storyHref={storyHref}/>');
+  expect(life).toContain('<ClassicsLibraryHall works={archiveWorks.filter(w=>w.work_type!==\'fanwork\')} storyHref={storyHref}/>');
   expect(classics).toContain('reading-classics-hall palace-classics-library');
   expect(classics).toContain('classic-hall-rail palace-classics-bookcase');
   expect(life).toContain('className="prompt-orrery"');
