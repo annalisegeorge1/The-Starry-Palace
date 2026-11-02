@@ -1,0 +1,43 @@
+/* Final mobile dashboard polish: single shell clearance, compact hierarchy.
+ * Preserves the existing Nightfall/Daylight palette, artwork and navigation. */
+@media (max-width:760px){
+  /* A fixed dock sits outside the scroll stage. Keep the real scrolling area
+     clear across all Palace rooms, including the iOS/Android safe area. */
+  .palace-shell.full-palace-shell{
+    --palace-mobile-dock-clearance:calc(164px + env(safe-area-inset-bottom,0px));
+  }
+  .palace-shell.full-palace-shell .full-stage > main#palace-content{
+    padding-bottom:var(--palace-mobile-dock-clearance)!important;
+    scroll-padding-bottom:var(--palace-mobile-dock-clearance)!important;
+    box-sizing:border-box!important;
+  }
+  html,body,#root{
+    scroll-padding-bottom:calc(164px + env(safe-area-inset-bottom,0px));
+  }
+  /* The welcome card now sits closer to Writing / Library without changing
+     the height of those accessible touch targets. */
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"] .palace-home-mobile-hero{
+    margin-bottom:-9px!important;
+  }
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"] .palace-mobile-stats span{
+    font-size:.72rem!important;
+    color:#f2eefc!important;
+    letter-spacing:-.01em!important;
+    gap:4px!important;
+  }
+  .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/chamber"] .palace-mobile-stats span{
+    color:#514467!important;
+  }
+  /* A more compact prompt keeps both actions closer to the creative spark.
+     The actions retain their 44px minimum finger-sized tap targets. */
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"] .palace-moon-prompt h2{
+    font:700 clamp(.91rem,3.8vw,.97rem)/1.32 Georgia,'Times New Roman',serif!important;
+  }
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"] .palace-moon-prompt,
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"] .moon-prompt-actions{
+    scroll-margin-block-end:var(--palace-mobile-dock-clearance)!important;
+  }
+  .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"] .moon-prompt-actions :is(button,a){
+    min-height:44px!important;
+  }
+}
