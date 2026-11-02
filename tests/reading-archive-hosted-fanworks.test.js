@@ -4,6 +4,7 @@ import {isHostedFanfiction,canDisplayHostedArchive} from '../src/palaceFanfictio
 import {canReadHostedClassic} from '../src/directClassicModel.js';
 import {mergeReadingArchivePage,readingArchiveTotal} from '../src/readingHostedIntegration.js';
 import {toHostedReadingWork} from '../src/hostedReadingWork.js';
+import {matchesReadingFacets} from '../src/readingFacetModel.js';
 
 const source=readFileSync('src/liveRooms.jsx','utf8');
 
@@ -40,6 +41,14 @@ describe('Main Reading Room includes genuinely readable archive fanfiction',()=>
   expect(hosted.work_type).toBe('fanwork');
   expect(hosted.profiles.display_name).toBe('Original Writer');
   expect(hosted.work_tags.some(tag=>tag.tags.name==='Fan-made Works')).toBe(true);
+  const tagged=toHostedReadingWork({id:'archive-tagged',title:'Naruto Story',slug:'naruto-story',
+   category:'licensed_fanfiction',creator_name:'Writer',archive_resolved_tags:[
+    {id:'canonical-naruto',category:'fandom',name:'Naruto',status:'canonical'},
+    {id:'canonical-sasuke',category:'character',name:'Sasuke Uchiha',status:'canonical'}
+   ]});
+  expect(matchesReadingFacets(tagged,['canonical-naruto'],[])).toBe(true);
+  expect(matchesReadingFacets(tagged,['canonical-naruto'],['canonical-sasuke'])).toBe(false);
+
   expect(mergeReadingArchivePage({members:[member],hostedFanworks:[hosted],includeHosted:true,page:0})).toHaveLength(2);
   expect(mergeReadingArchivePage({members:[member],hostedFanworks:[hosted],includeHosted:true,page:1})).toHaveLength(1);
   expect(mergeReadingArchivePage({members:[member],hostedFanworks:[hosted],includeHosted:false,page:0})).toHaveLength(1);
