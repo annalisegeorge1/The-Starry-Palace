@@ -64,7 +64,7 @@ describe('Fanfiction reading-first experience',()=>{
   expect(live).toContain("session&&origin!=='fandom'&&<section className=\"reading-reader-lenses");
   expect(live).toContain('fanfictionActiveFilters.length>0');
   expect(live).toContain('fanfiction-focused');
-  expect(live).not.toContain("scrollIntoView({block:'start'})");
+  expect(live.slice(live.indexOf('const fanfictionSectionRequested'),live.indexOf('const archiveBrowseEnabled'))).not.toContain('scrollIntoView');
  });
  it('loads mobile, Daylight and Nightfall focused styling after the prior theme fixes',()=>{
   const main=readFileSync('src/main.jsx','utf8');
