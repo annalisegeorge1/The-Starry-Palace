@@ -126,7 +126,7 @@ describe('Fanfiction section contains rights-aware historical and modern discove
    expect(modernFanfictionGuide(work).tags.some(t=>t.category==='fandom')).toBe(true);
    expect(modernFanfictionGuide(work).sourceRating).toBeTruthy();
   }
-  expect(MODERN_FANFICTION_LINKS.filter(w=>w.creator==='HushBugger')).toHaveLength(4);
+  expect(MODERN_FANFICTION_LINKS.filter(w=>w.creator==='HushBugger')).toHaveLength(15);
   expect(MODERN_FANFICTION_LINKS.filter(w=>w.creator==='HushBugger')
     .every(w=>w.permissionLabel.startsWith('CC BY-SA 4.0'))).toBe(true);
   expect(modernFanfictionGuide({id:'hushbugger-human-habits'}).rating).toBe('general');
