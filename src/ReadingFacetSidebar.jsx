@@ -1,5 +1,6 @@
 import React,{useEffect,useMemo,useState} from 'react';
 import {Link} from 'react-router-dom';
+import {createPortal} from 'react-dom';
 import {READING_SORT_OPTIONS,READING_FACET_ORDER,READING_FACET_NAMES} from './readingFacetModel';
 import PalaceRelationshipFilters from './PalaceRelationshipFilters';
 import './reading-faceted-browse.css';
@@ -56,11 +57,12 @@ export default function ReadingFacetSidebar({
  }
 
  return <aside className="reading-facet-sidebar" aria-label="Sort and filter stories">
-  <button type="button" className="reading-facet-mobile-toggle" aria-controls="reading-facet-controls" aria-expanded={open} onClick={()=>setOpen(x=>!x)}>
-   <span>☷ Sort &amp; Filter</span><span>{active?active+' active · ':''}{open?'Hide':'Show'} {open?'▴':'▾'}</span>
+  <button type="button" className={'reading-facet-mobile-toggle'+(open?' is-open':'')} aria-label={open?'Close Sort & Filter':'Open Sort & Filter'} aria-controls="reading-facet-controls" aria-expanded={open} onClick={()=>{setOpen(x=>!x);setMoreTag(null)}}>
+   <span className="reading-facet-top-title">☷ Sort &amp; Filter</span>
+   <span className="reading-facet-top-action">{open?<><span aria-hidden="true">✕</span> Close</>:<>{active?active+' active · ':''} Show <span aria-hidden="true">▾</span></>}</span>
   </button>
   <div id="reading-facet-controls" className={'reading-facet-controls'+(open?' is-open':'')}>
-   <header className="reading-facet-heading"><div><p className="eyebrow">FIND YOUR NEXT WORLD</p><h2>Sort &amp; Filter</h2></div><button type="button" className="reading-facet-close" onClick={()=>setOpen(false)} aria-label="Close Sort and Filter">✕ <span>Close</span></button></header>
+   <h2 className="reading-facet-desktop-title">Sort &amp; Filter</h2>
    <p className="reading-facet-scope">{archiveWide?'Searching all published stories':'Exploring loaded stories and classics'}</p>
    <h3 className="reading-facet-order-head">1. Sort &amp; order</h3>
    <label className="reading-facet-label" htmlFor="palace-story-sort">Sort by</label>
@@ -103,7 +105,7 @@ export default function ReadingFacetSidebar({
          <button type="button" className="reading-facet-option-pick" aria-label={'Include '+tag.name} aria-pressed={selectedIn}
           onClick={()=>pick(tag,'include')}>
           <span className="reading-facet-option-name" title={tag.name}>{tag.name}{!tag.global&&tag.count!=null&&<small>{tag.count}</small>}</span>
-          <span className="reading-tag-selection-icon" aria-hidden="true">{selectedIn?'✓':selectedOut?'−':'＋'}</span>
+          {(selectedIn||selectedOut)&&<span className="reading-tag-selection-icon" aria-hidden="true">{selectedIn?'✓':'−'}</span>}
          </button>
          <button type="button" className="reading-facet-option-more" aria-label={'More options for '+tag.name}
           aria-expanded={menuOpen} aria-controls={actionId}
@@ -129,8 +131,10 @@ export default function ReadingFacetSidebar({
     <p>For word-count ranges and language, use <Link to="/reading?view=search">Advanced search</Link>.</p>
    </div>
   </div>
-  {open&&<div className="reading-filter-mobile-result-action">
-   <button type="button" onClick={showResults}>{typeof resultsCount==='number'?'Show '+resultsCount.toLocaleString()+' matching '+(resultsCount===1?'story':'stories'):'Show Results'} <span aria-hidden="true">→</span></button>
-  </div>}
+  {open&&typeof document!=='undefined'&&createPortal(
+   <div className="reading-filter-mobile-result-action" role="region" aria-label="Reading filter results action">
+    <button type="button" onClick={showResults}>{typeof resultsCount==='number'?'Show '+resultsCount.toLocaleString()+' '+(resultsCount===1?'Result':'Results'):'Show Results'} <span aria-hidden="true">→</span></button>
+   </div>,document.body
+  )}
  </aside>;
 }

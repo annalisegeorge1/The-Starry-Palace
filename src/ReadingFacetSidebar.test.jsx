@@ -65,8 +65,32 @@ it('closes filter panel using the floating results action',()=>{
  render(<MemoryRouter><ReadingFacetSidebar {...props} onShowResults={onShowResults} resultsCount={14}/></MemoryRouter>);
  const open=screen.getByRole('button',{name:/Sort & Filter/});
  fireEvent.click(open);
- expect(screen.getByRole('button',{name:/Show 14 matching stories/})).toBeTruthy();
- fireEvent.click(screen.getByRole('button',{name:/Show 14 matching stories/}));
+ expect(screen.getByRole('button',{name:/Show 14 Results/})).toBeTruthy();
+ fireEvent.click(screen.getByRole('button',{name:/Show 14 Results/}));
  expect(onShowResults).toHaveBeenCalledOnce();
  expect(open.getAttribute('aria-expanded')).toBe('false');
+});
+
+it('shows one mobile Sort & Filter heading and one close action, not a nested header',()=>{
+ render(<MemoryRouter><ReadingFacetSidebar {...props}/></MemoryRouter>);
+ const toggle=screen.getByRole('button',{name:'Open Sort & Filter'});
+ fireEvent.click(toggle);
+ expect(screen.getByRole('button',{name:'Close Sort & Filter'})).toBeTruthy();
+ expect(screen.getAllByText('Sort & Filter')).toHaveLength(2);
+ expect(screen.queryByRole('button',{name:'Hide'})).toBeNull();
+ expect(screen.queryByRole('button',{name:'Close'})).toBeNull();
+ fireEvent.click(screen.getByRole('button',{name:'Close Sort & Filter'}));
+ expect(screen.getByRole('button',{name:'Open Sort & Filter'}).getAttribute('aria-expanded')).toBe('false');
+});
+it('tag row has no redundant plus icon but retains visible include state',()=>{
+ const {rerender}=render(<MemoryRouter><ReadingFacetSidebar {...props}/></MemoryRouter>);
+ fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
+ fireEvent.click(screen.getByText('Fandoms'));
+ const tagButton=screen.getByRole('button',{name:'Include Dragon Age'});
+ expect(tagButton.querySelector('.reading-tag-selection-icon')).toBeNull();
+ expect(tagButton.getAttribute('aria-pressed')).toBe('false');
+ rerender(<MemoryRouter><ReadingFacetSidebar {...props} included={['f1']}/></MemoryRouter>);
+ const activeTag=screen.getByRole('button',{name:'Include Dragon Age'});
+ expect(activeTag.getAttribute('aria-pressed')).toBe('true');
+ expect(activeTag.querySelector('.reading-tag-selection-icon').textContent).toBe('✓');
 });
