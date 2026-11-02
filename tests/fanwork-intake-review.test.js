@@ -75,7 +75,7 @@ describe('Private licensed fanfiction review readiness',()=>{
   expect(source).toContain(".select('record_id,basis,status,permits_hosting,valid_from,valid_until,verified_at')");
   expect(ui).toContain('onClick={reviewManuscript}');
   expect(ui).toContain('onClick={prepareAuthorRequest}');
-  expect(ui).toContain('Ready for');
+  expect(ui).toContain('Publication readiness checklist');
   expect(source).not.toContain("publication_status:'published'");
   expect(ui).not.toMatch(/chat\s?gpt|openai/i);
  });
