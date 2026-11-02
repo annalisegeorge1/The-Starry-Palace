@@ -45,7 +45,7 @@ describe('Curator fanfiction intake validates authorized manuscripts safely',()=
   expect(data).toContain("permits_hosting:false");
   expect(data).toContain("status:'review'");
   expect(data).not.toContain("status:'verified'");
-  expect(component).toContain('No rewriting or AI transformation');
+  expect(component).toContain("Preserve the author's original text.");
   expect(component).toContain('Stage manuscript privately');
   expect(room).toContain('<CuratorFanworkIntake/>');
  });
