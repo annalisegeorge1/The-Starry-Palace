@@ -438,7 +438,7 @@ export function ReadingLive({Frame}){
  const browseLoading=archiveBrowseEnabled?archiveBrowse.loading:!works&&!error;
  const browseError=archiveBrowseEnabled?archiveBrowse.error:error;
  const activeReadingFilters=[...readingFilterChips({origin,query,rating,status,vibeDoor,readerLens},Object.fromEntries(moodDoors.map(door=>[door.id,door.label]))),...includedTags.map(id=>({key:'include:'+id,label:'Include: '+(facetNames[id]||'selected tag')})),...excludedTags.map(id=>({key:'exclude:'+id,label:'Exclude: '+(facetNames[id]||'selected tag')}))];
- const fanfictionActiveFilters=activeReadingFilters.filter(item=>item.key!=='origin'&&item.key!=='readerLens');
+ const fanfictionActiveFilters=activeReadingFilters.filter(item=>item.key!=='origin');
  function clearReadingFilters(){setOrigin('all');setVibeDoor('all');setReaderLens('all');setQuery('');setRating('all');setStatus('all');setReadingChoice('includeTags',[]);setReadingChoice('excludeTags',[])}
  function removeReadingFilter(key){
   if(key.startsWith('include:')){setReadingChoice('includeTags',current=>current.filter(id=>id!==key.slice(8)));return}
