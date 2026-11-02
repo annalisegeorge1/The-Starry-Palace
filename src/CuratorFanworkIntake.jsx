@@ -6,7 +6,7 @@ import './curator-fanwork-intake.css';
 
 /** Visible only when the signed-in account can query private archive drafts.
  * Supabase RLS is the real access control; this is only the curator interface.
- * No story text is sent to any coding assistant or AI model.
+ * Manuscripts are staged directly from the signed-in browser to the private archive.
  */
 export default function CuratorFanworkIntake(){
  const {session}=useAuth();
@@ -107,7 +107,7 @@ export default function CuratorFanworkIntake(){
      </label>
      <label>Paste complete plain-text manuscript
       <textarea className="curator-fanwork-manuscript" rows={7} value={body}
-       onChange={e=>setBody(e.target.value)} placeholder="Paste text with original chapter headings and line breaks. No rewriting or AI transformation."/>
+       onChange={e=>setBody(e.target.value)} placeholder="Paste text with original chapter headings and line breaks. Preserve the author's original text."/>
      </label>
      <label>Or select author-provided .txt file
       <input type="file" accept=".txt,text/plain" onChange={e=>uploadFile(e.target.files?.[0])}/>
