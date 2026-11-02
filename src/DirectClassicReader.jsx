@@ -21,10 +21,11 @@ export default function DirectClassicReader({Frame}){
   return()=>{active=false};
  },[slug]);
  const current=state.slug===slug?state:{status:'loading',book:null,error:''};
- return <Frame><section className="palace-direct-classic" aria-label="Classic reading room">
-  <nav className="palace-direct-classic-nav" aria-label="Classic reading navigation"><Link to="/reading">← Reading Rooms</Link><span aria-hidden="true">✦</span><Link to="/lost-works">Classic archive</Link></nav>
+ const fanwork=isHostedFanfiction(current.book?.record);
+ return <Frame><section className="palace-direct-classic" aria-label={fanwork?'Fanfiction reading room':'Classic reading room'}>
+  <nav className="palace-direct-classic-nav" aria-label="Reading navigation"><Link to="/reading">← Reading Rooms</Link><span aria-hidden="true">✦</span><Link to={fanwork?'/reading?section=fanfiction':'/lost-works'}>{fanwork?'Fanfiction':'Classic archive'}</Link></nav>
   {current.status==='loading'&&<div className="palace-direct-classic-status" role="status"><span aria-hidden="true">☾</span><h1>Opening your book…</h1><p>Preparing the hosted edition and its original chapters.</p></div>}
-  {current.status==='missing'&&<div className="palace-direct-classic-status" role="status"><h1>This classic isn't available to read here.</h1><p>It may be citation-only, unavailable, or awaiting publication review.</p><Link to="/lost-works">Explore the classic archive →</Link></div>}
+  {current.status==='missing'&&<div className="palace-direct-classic-status" role="status"><h1>This hosted edition isn't available to read here.</h1><p>It may be unavailable or awaiting publication and rights review.</p><Link to="/reading?section=fanfiction">Explore available fanfiction →</Link></div>}
   {current.status==='error'&&<div className="palace-direct-classic-status" role="alert"><h1>We couldn't open this edition.</h1><p>{current.error}</p><Link to="/reading">Return to Reading Rooms →</Link></div>}
   {current.status==='ready'&&current.book&&<><h1 className="palace-direct-classic-screenreader-title">{current.book.record.title}</h1>
    {isHostedFanfiction(current.book.record)&&<details className="palace-historic-fanfiction-notes">
