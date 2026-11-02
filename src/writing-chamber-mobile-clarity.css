@@ -1,0 +1,128 @@
+/* Writing Chamber mobile finishing pass. Scoped to writing routes and
+ * manuscript cards; preserve editor, draft storage and publication behavior. */
+.palace-shell.full-palace-shell .chic-writing-head .writing-summary{
+ --chamber-stat-ink:#f7f8ff;
+ --chamber-stat-muted:rgba(244,246,255,.79);
+}
+.palace-shell.full-palace-shell:not(.daylight) .chic-writing-head .writing-summary :is(strong,b){
+ color:var(--chamber-stat-ink)!important;opacity:1!important;
+}
+.palace-shell.full-palace-shell:not(.daylight) .chic-writing-head .writing-summary :is(small,span>small){
+ color:var(--chamber-stat-muted)!important;opacity:1!important;
+ text-shadow:none!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-writing-head .writing-summary strong{
+ color:#24334e!important;opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-writing-head .writing-summary small{
+ color:#4a576d!important;opacity:1!important;
+}
+.palace-shell.full-palace-shell .writer-work-card{
+ --manuscript-ink:#f4f6ff;
+ --manuscript-muted:#c6cddd;
+}
+.palace-shell.full-palace-shell:not(.daylight) .writer-work-card .writer-work-card-stats :is(dt,dd){
+ color:var(--manuscript-ink)!important;opacity:1!important;
+}
+.palace-shell.full-palace-shell:not(.daylight) .writer-work-card .writer-work-card-stats dt{
+ color:var(--manuscript-muted)!important;
+ font-weight:650!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-work-card .writer-work-card-stats dt{
+ color:#515c74!important;opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-work-card .writer-work-card-stats dd{
+ color:#24334e!important;opacity:1!important;
+}
+.palace-shell.full-palace-shell .writer-work-card .writer-work-menu>summary{
+ display:grid!important;place-items:center!important;
+ min-width:44px!important;min-height:44px!important;
+ padding:5px 9px!important;line-height:1!important;
+ border-radius:10px!important;
+ font-size:1.25rem!important;font-weight:850!important;
+ letter-spacing:.09em!important;cursor:pointer;
+}
+.palace-shell.full-palace-shell .writer-work-card :is(.writer-work-resume,.writer-work-menu>summary):focus-visible{
+ outline:3px solid #aad6ff!important;outline-offset:3px!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-work-card :is(.writer-work-resume,.writer-work-menu>summary):focus-visible{
+ outline-color:#4c5c91!important;
+}
+/* Hero has one clear CTA; the new-work disclosure below owns creation. */
+.palace-shell.full-palace-shell .writing-pad-launch .writing-pad-actions{
+ display:flex!important;justify-content:flex-start!important;flex-wrap:wrap!important;
+}
+.palace-shell.full-palace-shell .writing-pad-launch .writing-pad-primary{
+ min-height:44px!important;
+}
+@media(max-width:760px){
+ /* The fixed dock is outside the Writing Chamber stage. Clearance belongs
+  * on the real main route container, not solely on a nested card. */
+ .palace-shell.full-palace-shell .full-stage>main#palace-content[data-palace-route^="/writing"]{
+  padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))!important;
+  scroll-padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))!important;
+ }
+ .palace-shell.full-palace-shell :is(.chic-writing-head,.writing-pad-launch,.writer-work-card){
+  scroll-margin-block-end:calc(120px + env(safe-area-inset-bottom,0px))!important;
+ }
+ .palace-shell.full-palace-shell .chic-writing-head{
+  padding-bottom:14px!important;
+ }
+ .palace-shell.full-palace-shell .chic-writing-head .writing-summary{
+  gap:8px!important;
+ }
+ .palace-shell.full-palace-shell .writing-pad-launch{
+  padding-block:13px!important;
+ }
+ .palace-shell.full-palace-shell .writing-tabs.chic-writing-tabs{
+  overflow-x:auto!important;overflow-y:hidden!important;
+  flex-wrap:nowrap!important;
+  scroll-snap-type:x proximity;
+  -webkit-overflow-scrolling:touch;
+  padding-right:38px!important;
+  -webkit-mask-image:linear-gradient(to right,#000 0%,#000 calc(100% - 33px),transparent 100%);
+  mask-image:linear-gradient(to right,#000 0%,#000 calc(100% - 33px),transparent 100%);
+ }
+ .palace-shell.full-palace-shell .writing-tabs.chic-writing-tabs>button{
+  flex:0 0 auto!important;scroll-snap-align:start;
+  min-height:44px!important;
+ }
+ .palace-shell.full-palace-shell .writer-work-card{
+  padding:12px 13px!important;
+  gap:9px!important;
+ }
+ .palace-shell.full-palace-shell .writer-work-card :is(.writer-work-card-copy,.writer-work-card-stats,.writer-work-card-footer){
+  margin-block:0!important;
+ }
+ .palace-shell.full-palace-shell .writer-work-card .writer-work-card-copy{
+  gap:6px!important;
+ }
+ .palace-shell.full-palace-shell .writer-work-card .writer-work-card-stats{
+  gap:6px!important;padding:7px 0!important;
+ }
+ .palace-shell.full-palace-shell .writer-work-card .writer-work-card-stats div{
+  min-width:0!important;
+ }
+ .palace-shell.full-palace-shell .writer-work-card .writer-work-card-stats dt{
+  font-size:.7rem!important;line-height:1.25!important;
+ }
+ .palace-shell.full-palace-shell .writer-work-card .writer-work-card-footer{
+  gap:8px!important;
+ }
+ .palace-shell.full-palace-shell .writer-work-card .writer-work-card-footer>div{
+  display:flex!important;align-items:center!important;gap:6px!important;
+  flex-wrap:wrap!important;
+ }
+ .palace-shell.full-palace-shell .writer-work-card .writer-work-resume{
+  min-height:44px!important;
+ }
+}
+@media(forced-colors:active){
+ .palace-shell.full-palace-shell .writer-work-card .writer-work-card-stats :is(dt,dd),
+ .palace-shell.full-palace-shell .chic-writing-head .writing-summary :is(strong,small){
+  color:CanvasText!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell.full-palace-shell .writing-tabs.chic-writing-tabs{scroll-behavior:auto!important}
+}
