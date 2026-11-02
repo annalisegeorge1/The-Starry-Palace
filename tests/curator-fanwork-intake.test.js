@@ -18,6 +18,7 @@ describe('Curator fanfiction intake validates authorized manuscripts safely',()=
   const note=curatorImportEditionNote(input);
   expect(note).toContain('Author-supplied manuscript');
   expect(note).toContain('DRAFT ONLY');
+  expect(note).not.toContain(input.evidenceNote);
  });
  it('rejects empty, tiny, too-long, untrusted URLs and undocumented sources',()=>{
   const seed=valid();
@@ -40,6 +41,10 @@ describe('Curator fanfiction intake validates authorized manuscripts safely',()=
   expect(data).toContain(".from('archive_texts').upsert");
   expect(data).not.toContain("publication_status:'published'");
   expect(data).not.toContain("rights_status:'licensed'");
+  expect(data).toContain(".from('archive_rights_records')");
+  expect(data).toContain("permits_hosting:false");
+  expect(data).toContain("status:'review'");
+  expect(data).not.toContain("status:'verified'");
   expect(component).toContain('No rewriting or AI transformation');
   expect(component).toContain('Stage manuscript privately');
   expect(room).toContain('<CuratorFanworkIntake/>');
