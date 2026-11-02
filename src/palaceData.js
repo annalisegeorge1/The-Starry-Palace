@@ -956,12 +956,27 @@ export async function getArchive(userId=null){
  if(error)throw error;const rows=data||[];if(!rows.length)return rows;
  // Read only citation metadata, never the potentially large hosted text.
  // A cover lookup problem must not prevent the archive from opening.
- let sources=new Map();
+ let sources=new Map(),textReady=new Map(),verifiedRights=new Set();
  try{
-  const result=await needClient().from('archive_texts').select('record_id,source_url').in('record_id',rows.map(r=>r.id));
-  if(!result.error)sources=new Map((result.data||[]).map(r=>[r.record_id,r.source_url]));
+  const licensedIds=rows.filter(r=>r.rights_status==='licensed'||r.rights_status==='creator_authorised').map(r=>r.id);
+  const [texts,rights]=await Promise.all([
+   needClient().from('archive_texts').select('record_id,source_url,word_count').in('record_id',rows.map(r=>r.id)),
+   licensedIds.length?needClient().from('archive_rights_records')
+    .select('record_id,permits_hosting,status')
+    .in('record_id',licensedIds).eq('status','verified').eq('permits_hosting',true):
+    Promise.resolve({data:[],error:null})
+  ]);
+  if(!texts.error){
+   sources=new Map((texts.data||[]).map(r=>[r.record_id,r.source_url]));
+   textReady=new Map((texts.data||[]).map(r=>[r.record_id,Number(r.word_count)>0]));
+  }
+  if(!rights.error)verifiedRights=new Set((rights.data||[]).map(r=>r.record_id));
  }catch{}
- const illustrated=rows.map(r=>({...r,archive_source_url:sources.get(r.id)||null}));
+ const illustrated=rows.map(r=>({
+  ...r,archive_source_url:sources.get(r.id)||null,
+  hosted_text_ready:textReady.has(r.id)?textReady.get(r.id):undefined,
+  hosted_rights_verified:verifiedRights.has(r.id)
+ }));
  if(!userId)return illustrated;
  const saved=await needClient().from('user_archive_records').select('record_id,saved,visited_at').eq('user_id',userId).eq('saved',true);
  if(saved.error)throw saved.error;const byId=new Map((saved.data||[]).map(x=>[x.record_id,x]));
