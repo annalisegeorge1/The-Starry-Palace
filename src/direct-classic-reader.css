@@ -160,12 +160,18 @@
     padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))!important;
     box-sizing:border-box;
   }
+  /* The shell's main and footer already have a dock spacer. Don't
+     double-count it inside the warning card and create a huge dark void. */
   .palace-direct-classic{
-    padding:12px clamp(12px,4vw,20px) calc(120px + env(safe-area-inset-bottom,0px));
+    padding:12px clamp(12px,4vw,20px) 24px;
   }
   .palace-direct-classic-age-screen{
-    min-height:clamp(415px,calc(100svh - 170px),690px);
-    padding-bottom:calc(120px + env(safe-area-inset-bottom,0px));
+    min-height:clamp(390px,calc(100svh - 210px),610px);
+    padding-bottom:22px;
+  }
+  .palace-shell.full-palace-shell .full-stage > main#palace-content:has(.palace-direct-classic-age-screen){
+    min-height:0!important;
+    padding-bottom:28px!important;
   }
   .palace-direct-classic-age-card{
     margin:20px auto!important;
