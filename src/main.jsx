@@ -129,6 +129,7 @@ import './reading-theme-contrast-repair.css';
 import './fanfiction-reading-polish.css';
 import './tag-constellation-compact-rows.css';
 import './writing-chamber-mobile-clarity.css';
+import './ink-duel-setup-mobile-clarity.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
