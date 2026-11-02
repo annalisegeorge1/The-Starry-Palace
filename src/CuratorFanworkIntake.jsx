@@ -103,7 +103,7 @@ export default function CuratorFanworkIntake(){
      </label>
      <label>Source and permission evidence
       <textarea rows={3} maxLength={1200} value={evidence} onChange={e=>setEvidence(e.target.value)}
-       required placeholder="How did you receive this text? Where can its provenance and permission be independently verified?"/>
+       required placeholder="Describe how the author or rights holder supplied this file and the scope of permission. Do not include private contact details, addresses, or correspondence."/>
      </label>
      <label>Paste complete plain-text manuscript
       <textarea className="curator-fanwork-manuscript" rows={7} value={body}
