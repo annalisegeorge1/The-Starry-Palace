@@ -26,12 +26,12 @@ function cleanHttps(value){
  }catch{return ''}
 }
 export function parseHostedFanworkMetadata(work){
- if(work?.category!=='licensed_fanfiction'&&work?.archive_category!=='licensed_fanfiction')return null;
+ if(!['licensed_fanfiction','historical_fanfiction'].includes(work?.category)&&!['licensed_fanfiction','historical_fanfiction'].includes(work?.archive_category))return null;
  const raw=work?.source_notes;
  if(typeof raw!=='string'||!raw.trim()||raw.length>30000)return null;
  let data;
  try{data=JSON.parse(raw)}catch{return null}
- if(!data||typeof data!=='object'||Array.isArray(data))return null;
+ if(!data||typeof data!=='object'||Array.isArray(data)||Object.keys(data).length===0)return null;
  const rating=RATINGS.has(data.rating)?data.rating:'not_rated';
  const completionStatus=STATUSES.has(data.completion_status)?data.completion_status:'in_progress';
  const tags=[];
@@ -47,7 +47,7 @@ export function parseHostedFanworkMetadata(work){
  if(language)add('language',[language]);
  for(const [category,key] of Object.entries(TAG_GROUPS))add(category,cleanList(data[key]));
  return {
-  rating,sourceRating:cleanText(data.source_rating,100)||null,ratingBasis:rating==='not_rated'?'unrated':'source',
+  rating,sourceRating:cleanText(data.source_rating,100)||null,ratingBasis:rating==='not_rated'?'unrated':String(data.source_rating||'').startsWith('Editorial')?'editorial':'source',
   tags,contentWarnings:cleanList(data.warnings),
   completionStatus,chapters:Number.isSafeInteger(data.chapter_count)&&data.chapter_count>0?data.chapter_count:null,
   sourceUrl:cleanHttps(data.source_url),permissionUrl:cleanHttps(data.permission_url),

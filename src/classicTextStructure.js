@@ -42,10 +42,28 @@ export function structureClassicText(source=''){
  if(!raw)return [];
  const groups=raw.split(/\n\s*\n+/);
  const result=[];
- for(const group of groups){
+ for(let gi=0;gi<groups.length;gi++){
+  const group=groups[gi];
   const rawLines=group.split('\n').filter(s=>s.trim());
   const lines=rawLines.map(s=>s.trim());
   if(!lines.length)continue;
+  // Historical Holmes/afterlife pastiches sometimes encode source chapters
+  // as a bare Roman numeral followed by an uppercase title. Only render
+  // those original words as a heading; never modify the stored manuscript.
+  const roman=/^[IVXLCDM]{1,7}$/;
+  const caption=/^[A-Z][A-Z0-9 ,!?'’".:;\-–—_]{5,105}$/;
+  if(lines.length===2&&roman.test(lines[0])&&caption.test(lines[1])){
+   result.push({kind:'heading',text:lines.join(' — ')});
+   continue;
+  }
+  if(lines.length===1&&roman.test(lines[0])&&gi+1<groups.length){
+   const next=groups[gi+1].trim();
+   if(!next.includes('\n')&&caption.test(next)){
+    result.push({kind:'heading',text:lines[0]+' — '+next});
+    gi++;
+    continue;
+   }
+  }
   // Gutenberg sometimes substitutes a bracketed transcription for a printed
   // illustration. It is a source note, not an ordinary narrative paragraph.
   if(lines.length===1&&/^\[(?:illustration|frontispiece|plate)(?:\s*:\s*[^\]]+)?\]$/i.test(lines[0])){
