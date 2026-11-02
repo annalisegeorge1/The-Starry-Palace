@@ -9,7 +9,10 @@ export function toHostedReadingWork(record){
  const fanwork=isHostedFanfiction(record);
  const collectionName=fanwork?'Fan-made Works':'Palace Classics';
  const category=String(record.category||'classic').replaceAll('_',' ');
- const tags=fanwork?archiveFanfictionTags(record):[];
+ const tags=fanwork?
+  (Array.isArray(record.archive_resolved_tags)&&record.archive_resolved_tags.length?
+   record.archive_resolved_tags.map(tag=>({tags:tag})):
+   archiveFanfictionTags(record)):[];
  return {
   id:'archive-'+record.id,archive_record_id:record.id,is_archive:true,
   title:record.title,slug:record.slug,summary:record.summary,
