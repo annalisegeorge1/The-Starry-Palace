@@ -3,7 +3,7 @@ import {getArchiveText} from './palaceData';
 import {canReadHostedClassic} from './directClassicModel';
 
 /** Fetch one published book, not the complete Lost Works catalogue. */
-export async function openHostedClassic(slug){
+export async function openHostedClassic(slug,declaredAge=null){
  if(!supabase)throw Error('The Palace Library is temporarily unavailable.');
  const value=String(slug||'').trim();
  if(!value||value.length>240)return null;
@@ -22,7 +22,16 @@ export async function openHostedClassic(slug){
   record.hosted_rights_verified=Boolean(rights.data?.some(grant=>
    (!grant.valid_from||grant.valid_from<=today)&&(!grant.valid_until||grant.valid_until>=today)));
  }
- const text=await getArchiveText(record.id);
+ const adultEdition=Number(record.minimum_reader_age)>=18;
+ let text=null;
+ if(adultEdition){
+  if(!Number.isInteger(declaredAge)||declaredAge<record.minimum_reader_age)return {record,text:null,needsAge:true};
+  const response=await supabase.rpc('open_adult_archive',{p_slug:value,p_declared_age:declaredAge});
+  if(response.error)throw response.error;
+  text=response.data?.[0]||null;
+ }else{
+  text=await getArchiveText(record.id);
+ }
  // Modern licensed editions must be fully present before being advertised
  // or opened. A metadata-only record must never look like a published book.
  if(record.rights_status==='licensed'||record.rights_status==='creator_authorised'){
