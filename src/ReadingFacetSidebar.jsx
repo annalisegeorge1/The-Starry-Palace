@@ -1,4 +1,4 @@
-import React,{useEffect,useMemo,useState} from 'react';
+import React,{useEffect,useMemo,useRef,useState} from 'react';
 import {Link} from 'react-router-dom';
 import {createPortal} from 'react-dom';
 import {READING_SORT_OPTIONS,READING_FACET_ORDER,READING_FACET_NAMES} from './readingFacetModel';
@@ -20,6 +20,43 @@ export default function ReadingFacetSidebar({
  onSearchTags,onTagIdentified,selectedTagNames={},resultsCount=null,onShowResults=()=>{}
 }){
  const [open,setOpen]=useState(false);
+ const sidebarRef=useRef(null);
+ const [footerPosition,setFooterPosition]=useState({visible:true,bottom:88});
+ // Match the real dock instead of guessing at its height. Hide this fixed
+ // action once the reader has scrolled past the filter to the story cards.
+ useEffect(()=>{
+  if(!open)return;
+  const root=sidebarRef.current;
+  if(!root)return;
+  const dock=document.querySelector('.mobile-palace-dock');
+  const update=()=>{
+   const rect=root.getBoundingClientRect();
+   const dockRect=dock?.getBoundingClientRect();
+   const hasDock=Boolean(dockRect&&dockRect.width>0&&dockRect.height>0
+    &&window.getComputedStyle(dock).display!=='none');
+   const viewportHeight=window.innerHeight||document.documentElement.clientHeight;
+   const dockTop=hasDock?dockRect.top:viewportHeight;
+   const bottom=hasDock?Math.max(16,Math.ceil(viewportHeight-dockTop+10)):16;
+   // Zero-size rectangles are returned in non-layout test environments.
+   const measurable=rect.width>0||rect.height>0;
+   const visible=!measurable||(rect.bottom>80&&rect.top<dockTop-68);
+   setFooterPosition(prev=>prev.visible===visible&&prev.bottom===bottom?prev:{visible,bottom});
+  };
+  update();
+  window.addEventListener('scroll',update,{passive:true});
+  window.addEventListener('resize',update);
+  document.addEventListener('scroll',update,true);
+  window.visualViewport?.addEventListener('resize',update);
+  const observer=typeof ResizeObserver==='function'?new ResizeObserver(update):null;
+  if(observer){observer.observe(root);if(dock)observer.observe(dock)}
+  return()=>{
+   window.removeEventListener('scroll',update);
+   window.removeEventListener('resize',update);
+   document.removeEventListener('scroll',update,true);
+   window.visualViewport?.removeEventListener('resize',update);
+   observer?.disconnect();
+  };
+ },[open]);
  const [expandedModes,setExpandedModes]=useState({include:true,exclude:false});
  const [searches,setSearches]=useState({include:'',exclude:''});
  const [directory,setDirectory]=useState({include:[],exclude:[]});
@@ -173,7 +210,7 @@ export default function ReadingFacetSidebar({
    {selected.length+selectedRelationships.length>0&&<p className="reading-facet-selection-summary" aria-live="polite">{selected.length} tags and {selectedRelationships.length} relationship categories {mode==='include'?'included':'excluded'}</p>}
   </div>;
  }
- return <aside className="reading-facet-sidebar" aria-label="Sort and filter stories">
+ return <aside ref={sidebarRef} className="reading-facet-sidebar" aria-label="Sort and filter stories">
   <button type="button" className={'reading-facet-mobile-toggle'+(open?' is-open':'')} aria-label={open?'Close Sort & Filter':'Open Sort & Filter'} aria-controls="reading-facet-controls" aria-expanded={open} onClick={()=>{setOpen(v=>!v);}}>
    <span className="reading-facet-top-title">☷ Sort &amp; Filter</span>
    <span className="reading-facet-top-action">{open?<><span aria-hidden="true">✕</span> Close</>:<>{active?active+' active · ':''} Show <span aria-hidden="true">▾</span></>}</span>
@@ -209,8 +246,8 @@ export default function ReadingFacetSidebar({
     <p>For word-count ranges and language, use <Link to="/reading?view=search">Advanced search</Link>.</p>
    </div>
   </div>
-  {open&&typeof document!=='undefined'&&createPortal(
-   <div className="reading-filter-mobile-result-action" role="region" aria-label="Reading filter results action">
+  {open&&footerPosition.visible&&typeof document!=='undefined'&&createPortal(
+   <div className="reading-filter-mobile-result-action" role="region" aria-label="Reading filter results action" style={{'--reading-filter-dock-bottom':footerPosition.bottom+'px'}}>
     <button type="button" onClick={showResults}>{typeof resultsCount==='number'?'Show '+resultsCount.toLocaleString()+' '+(resultsCount===1?'Result':'Results'):'Show Results'} <span aria-hidden="true">→</span></button>
    </div>,document.body
   )}

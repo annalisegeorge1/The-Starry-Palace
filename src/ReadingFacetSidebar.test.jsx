@@ -118,3 +118,27 @@ it('finds hidden tropes through Exclude search without displaying the category b
  fireEvent.click(screen.getByRole('checkbox',{name:'Exclude Slow Burn'}));
  expect(onToggle).toHaveBeenCalledWith('slow','exclude');
 });
+
+it('hides the results button after scrolling past the filters, then restores it above them',()=>{
+ view({resultsCount:14});
+ const aside=document.querySelector('.reading-facet-sidebar');
+ const original=aside.getBoundingClientRect;
+ let rect={top:70,bottom:510,left:0,right:340,width:340,height:440};
+ aside.getBoundingClientRect=()=>rect;
+ fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
+ expect(screen.getByRole('button',{name:/Show 14 Results/})).toBeTruthy();
+ rect={top:-800,bottom:-150,left:0,right:340,width:340,height:650};
+ fireEvent.scroll(window);
+ expect(screen.queryByRole('button',{name:/Show 14 Results/})).toBeNull();
+ rect={top:95,bottom:680,left:0,right:340,width:340,height:585};
+ fireEvent.scroll(window);
+ expect(screen.getByRole('button',{name:/Show 14 Results/})).toBeTruthy();
+ aside.getBoundingClientRect=original;
+});
+it('exposes the measured dock clearance to the results footer',()=>{
+ view({resultsCount:3});
+ fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
+ const footer=document.querySelector('body>.reading-filter-mobile-result-action');
+ expect(footer).toBeTruthy();
+ expect(footer.style.getPropertyValue('--reading-filter-dock-bottom')).toMatch(/px$/);
+});
