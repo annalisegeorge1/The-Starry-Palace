@@ -17,7 +17,7 @@ function parseIntakeNotes(value){
 export async function getCuratorFanworkQueue(){
  const api=client();
  const {data:records,error}=await api.from('archive_records')
-  .select('id,slug,title,creator_name,source_notes,publication_status,host_mode,rights_status,updated_at')
+  .select('id,slug,title,creator_name,source_notes,original_language,publication_status,host_mode,rights_status,updated_at')
   .eq('category','licensed_fanfiction')
   .in('publication_status',['draft','review'])
   .order('title',{ascending:true}).limit(150);
