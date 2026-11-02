@@ -1,0 +1,187 @@
+/* Reading Rooms theme legibility and mobile navigation clearance.
+ * Deliberately loaded after the legacy design layers so both Daylight and
+ * Nightfall keep readable foregrounds without changing manuscripts/reader art.
+ * These variables belong to this room, never to the global theme. */
+.palace-shell.full-palace-shell .chic-reading-page{
+ --reading-ink:#f4f3ff;
+ --reading-secondary:#cdd6eb;
+ --reading-border:rgba(180,202,245,.4);
+ --reading-tab:rgba(28,42,81,.68);
+ --reading-tab-active:rgba(111,134,207,.44);
+ --reading-input:#111d36;
+ --reading-stat:#14213e;
+ color:var(--reading-ink);
+ padding-bottom:max(120px,calc(120px + env(safe-area-inset-bottom,0px)))!important;
+ scroll-padding-bottom:calc(120px + env(safe-area-inset-bottom,0px));
+}
+.palace-shell.full-palace-shell.daylight .chic-reading-page{
+ --reading-ink:#27334b;
+ --reading-secondary:#4d5871;
+ --reading-border:#b7b2cf;
+ --reading-tab:#faf9fe;
+ --reading-tab-active:#e2e7fa;
+ --reading-input:#fff;
+ --reading-stat:#f3f3fa;
+}
+
+/* The compact nav used hard-coded light foregrounds in both color schemes. */
+.palace-shell.full-palace-shell .chic-reading-page .reading-unified-tabs :is(>button,>a,>details>summary){
+ background:var(--reading-tab)!important;
+ color:var(--reading-ink)!important;
+ border:1px solid var(--reading-border)!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell .chic-reading-page .reading-unified-tabs :is(>button.active,>button[aria-pressed="true"],>a.active){
+ background:var(--reading-tab-active)!important;
+ color:var(--reading-ink)!important;
+ border-color:var(--reading-border)!important;
+ font-weight:750;
+}
+.palace-shell.full-palace-shell.daylight .chic-reading-page .reading-extra-views>div{
+ background:#fff!important;border-color:#b7b2cf!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-reading-page .reading-extra-views a{
+ color:#25344f!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-reading-page .reading-extra-views a:hover{
+ background:#e9ebf9!important;
+}
+
+/* Three compact wayfinder links: dark ink on pale Daylight cards,
+ * luminous ink/icons with separately visible icon wells in Nightfall. */
+.palace-shell.full-palace-shell .palace-journey-strip{
+ --journey-ink:#f4f4ff;
+ --journey-muted:#d7def0;
+}
+.palace-shell.full-palace-shell .palace-journey-strip :is(.prism-room-wayfinder-intro strong,.prism-room-wayfinder-label strong){
+ color:var(--journey-ink)!important;opacity:1!important;
+}
+.palace-shell.full-palace-shell .palace-journey-strip :is(.prism-room-wayfinder-intro small,.prism-room-wayfinder-label small){
+ color:var(--journey-muted)!important;opacity:1!important;
+}
+.palace-shell.full-palace-shell .palace-journey-strip .prism-room-wayfinder-glyph{
+ color:#f3f1ff!important;
+ background:rgba(202,217,255,.19)!important;
+ border:1px solid rgba(203,218,255,.58)!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.17)!important;
+ text-shadow:none!important;
+}
+.palace-shell.full-palace-shell .palace-journey-strip .prism-room-wayfinder-glyph :is(svg,.palace-icon){
+ color:inherit!important;stroke:currentColor;
+}
+.palace-shell.full-palace-shell.daylight .palace-journey-strip{
+ --journey-ink:#25334b;
+ --journey-muted:#4c5871;
+}
+.palace-shell.full-palace-shell.daylight .palace-journey-strip .prism-room-wayfinder-link{
+ color:#25334b!important;
+ background:linear-gradient(125deg,#fcfaff,#f1f6fc)!important;
+ border-color:#b6b1d0!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-journey-strip .prism-room-wayfinder-glyph{
+ color:#303e6c!important;
+ background:#e3e7f7!important;
+ border-color:#abb6db!important;
+ box-shadow:none!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-journey-strip .palace-journey-arrow{
+ color:#354b80!important;
+}
+
+/* Heading and search: retain the cosmic hero with reliable dark-mode ink.
+ * No blanket text rules: published story typography remains untouched. */
+.palace-shell.full-palace-shell:not(.daylight) .chic-reading-page .reading-intro-calm{
+ background:linear-gradient(125deg,#151e42,#1c2b52 57%,#16374e)!important;
+ border-color:rgba(172,201,239,.32)!important;
+ color:#f5f5ff!important;
+}
+.palace-shell.full-palace-shell:not(.daylight) .chic-reading-page .reading-intro-calm :is(h1,p,.eyebrow){
+ color:#f3f3ff!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell:not(.daylight) .chic-reading-page .reading-intro-calm p:last-child{
+ color:#d9e2f4!important;
+}
+.palace-shell.full-palace-shell .chic-reading-page .reading-search-calm .reading-search{
+ background:var(--reading-input)!important;
+ border:1px solid var(--reading-border)!important;
+ color:var(--reading-ink)!important;
+}
+.palace-shell.full-palace-shell .chic-reading-page .reading-search-calm .reading-search input{
+ color:var(--reading-ink)!important;
+ caret-color:var(--reading-ink)!important;
+ background:transparent!important;
+}
+.palace-shell.full-palace-shell .chic-reading-page .reading-search-calm .reading-search input::placeholder{
+ color:#c5d0e4!important;opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-reading-page .reading-search-calm .reading-search input::placeholder{
+ color:#606c81!important;opacity:1!important;
+}
+.palace-shell.full-palace-shell .chic-reading-page .reading-result-count{
+ background:var(--reading-stat)!important;
+ border:1px solid var(--reading-border)!important;
+}
+.palace-shell.full-palace-shell .chic-reading-page .reading-result-count strong{
+ color:var(--reading-ink)!important;opacity:1!important;
+}
+.palace-shell.full-palace-shell .chic-reading-page .reading-result-count span{
+ color:var(--reading-secondary)!important;opacity:1!important;
+}
+.palace-shell.full-palace-shell .chic-reading-page .reading-scope-options button{
+ color:var(--reading-ink)!important;
+ border-color:var(--reading-border)!important;
+}
+.palace-shell.full-palace-shell .chic-reading-page .reading-scope-options button.selected{
+ background:var(--reading-tab-active)!important;
+}
+.palace-shell.full-palace-shell .chic-reading-page .reading-reader-lenses nav button{
+ color:var(--reading-secondary)!important;
+ border-color:var(--reading-border)!important;
+}
+.palace-shell.full-palace-shell .chic-reading-page .reading-reader-lenses nav button.active{
+ color:var(--reading-ink)!important;
+ background:var(--reading-tab-active)!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-reading-page .reading-reader-lenses{
+ background:#f6f4fc!important;
+}
+.palace-shell.full-palace-shell .chic-reading-page :is(.reading-unified-tabs button,.reading-unified-tabs a,.reading-unified-tabs summary,.reading-scope-options button,.reading-reader-lenses button):focus-visible{
+ outline:3px solid #9edbff!important;outline-offset:2px!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-reading-page :is(.reading-unified-tabs button,.reading-unified-tabs a,.reading-unified-tabs summary,.reading-scope-options button,.reading-reader-lenses button):focus-visible{
+ outline-color:#4b568b!important;
+}
+
+/* Mobile bottom dock and scrolling header. Keep the header truly opaque
+ * underneath its blur to prevent titles bleeding behind the controls. */
+@media(max-width:760px){
+ .palace-shell.full-palace-shell .chic-reading-page{
+  padding-bottom:calc(146px + env(safe-area-inset-bottom,0px))!important;
+  scroll-padding-bottom:calc(146px + env(safe-area-inset-bottom,0px));
+ }
+ .palace-shell.full-palace-shell .chic-reading-page .reading-reader-lenses{
+  scroll-margin-bottom:calc(146px + env(safe-area-inset-bottom,0px));
+ }
+ .palace-shell.full-palace-shell .full-stage:has(>main#palace-content .chic-reading-page)>header.topbar.full-topbar{
+  isolation:isolate!important;z-index:500!important;
+  background:#111a32!important;
+  -webkit-backdrop-filter:blur(12px)!important;
+  backdrop-filter:blur(12px)!important;
+ }
+ .palace-shell.full-palace-shell .full-stage:has(>main#palace-content .chic-reading-page)>header.topbar.full-topbar::before{
+  background:#111a32!important;opacity:1!important;
+ }
+ .palace-shell.full-palace-shell.daylight .full-stage:has(>main#palace-content .chic-reading-page)>header.topbar.full-topbar{
+  background:#f2eff9!important;
+ }
+ .palace-shell.full-palace-shell.daylight .full-stage:has(>main#palace-content .chic-reading-page)>header.topbar.full-topbar::before{
+  background:#f2eff9!important;opacity:1!important;
+ }
+}
+@media(forced-colors:active){
+ .palace-shell.full-palace-shell .chic-reading-page .reading-unified-tabs :is(>button,>a,>details>summary),
+ .palace-shell.full-palace-shell .palace-journey-strip .prism-room-wayfinder-glyph{
+  color:CanvasText!important;background:Canvas!important;border-color:CanvasText!important;
+ }
+}
