@@ -1606,7 +1606,10 @@ export function SearchLive({Frame}){
   {data?.query?.concepts?.length>1&&<section className="search-interpretation"><span>SEARCH READ AS</span><div>{data.query.concepts.map(concept=><button key={concept} onClick={()=>chooseSearch(concept)}>{concept}</button>)}</div><p>Results covering more of these ideas rise first; they do not need to appear as one exact phrase.</p></section>}
   <section className="search-lenses" aria-label="Search result types">{SEARCH_RESULT_KINDS.map(([k,l])=><button key={k} className={scope===k?'active':''} aria-pressed={scope===k} onClick={()=>setScope(k)}>{l}{groups&&k!=='all'&&<span>{groups[k]?.length||0}</span>}</button>)}</section>
   {busy&&<div className="search-gathering" role="status" aria-live="polite"><span className="search-gathering-orb" aria-hidden="true">✧</span><span>Searching across the Palace…</span></div>}
-  {recentSearches.length>0&&<section className="recent-searches"><span>RECENT</span>{recentSearches.map(term=><button key={term} onClick={()=>chooseSearch(term)}>{term}</button>)}<button className="clear-recent" onClick={()=>{setRecentSearches([]);try{localStorage.removeItem('palace-recent-searches')}catch{}}}>Clear</button></section>}
+  {recentSearches.length>0&&<details className="palace-search-recent-disclosure" key={data?'results':'before-results'} open={!data}>
+   <summary>Recent searches <span aria-hidden="true">⌄</span></summary>
+   <section className="recent-searches" aria-label="Recent search terms">{recentSearches.map(term=><button key={term} type="button" title={term} onClick={()=>chooseSearch(term)}>{term}</button>)}<button type="button" className="clear-recent" onClick={()=>{setRecentSearches([]);try{localStorage.removeItem('palace-recent-searches')}catch{}}}>Clear</button></section>
+  </details>}
   {error&&<div className="live-state error-state" role="alert">{error} <button type="button" onClick={()=>submitSearch(routeQ)}>Try again</button></div>}
   {facetControlsVisible&&<details className="palace-search-refinements" aria-label="Refine story and comic results">
    <summary><span>✧ Refine stories & comics</span>{activePalaceSearchFacets({rating,completion})&&<em>Filters active</em>}{sort!=='best'&&<em>Sorted: {sort==='recent'?'newest':'A–Z'}</em>}</summary>

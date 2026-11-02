@@ -132,6 +132,7 @@ import './tag-constellation-compact-rows.css';
 import './writing-chamber-mobile-clarity.css';
 import './ink-duel-setup-mobile-clarity.css';
 import './mobile-dashboard-final-polish.css';
+import './mobile-search-results-first.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
