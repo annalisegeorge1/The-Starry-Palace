@@ -84,8 +84,8 @@ export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks
  const [source,setSource]=useState(defaultSource);
  const [animeOnly,setAnimeOnly]=useState(false);
  const [includeMature,setIncludeMature]=useState(false);
- const [visibleCount,setVisibleCount]=useState(12);
- const [sort,setSort]=useState('title');
+ const [visibleCount,setVisibleCount]=useState(24);
+ const [sort,setSort]=useState('source');
  const all=useMemo(()=>createUnifiedFanworks(publishedWorks,externalWorks),[publishedWorks,externalWorks]);
  const filtered=useMemo(()=>filterUnifiedFanworks(all,{
   query:[globalQuery,search].filter(Boolean).join(' '),rating:rating==='all'?globalRating:rating,source,animeOnly,includeMature,
@@ -98,29 +98,36 @@ export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks
  const externalCount=all.filter(x=>x.kind==='link').length;
  const hostedCount=all.length-externalCount;
  const restricted=all.filter(x=>(x.rating==='mature'||x.rating==='explicit')).length;
- const reset=()=>{setSearch('');setRating('all');setSource(defaultSource);setAnimeOnly(false);setIncludeMature(false);setVisibleCount(12);setSort('title')};
+ const reset=()=>{setSearch('');setRating('all');setSource(defaultSource);setAnimeOnly(false);setIncludeMature(false);setVisibleCount(24);setSort('source')};
  return <section className="palace-unified-fanworks" aria-labelledby="palace-unified-fanworks-title">
   <header className="palace-unified-fanworks-head">
    <p className="eyebrow">FANFICTION · ONE SHARED DISCOVERY SHELF</p>
    <h2 id="palace-unified-fanworks-title">Fan-made works</h2>
-   <p>Browse all published Palace fanworks and attributed links to fanfiction on the original authors’ sites together. Use “Read from” to narrow to Palace-hosted works or original-source links. Unpublished submissions are not shown.</p>
+   <p>Read published fanfiction here, or discover complete stories on their authors’ original sites. Each card clearly shows where the story can be read.</p>
    <p className="palace-unified-totals" role="status"><strong>{hostedCount} Palace-hosted works loaded</strong>{source!=='hosted'&&<> · <strong>{externalCount} author-source links</strong></>}{hasMoreHosted?' · More Palace works available':''}</p>
   </header>
   <div className="palace-unified-filterbar" role="search" aria-label="Search all fanworks">
-   <label><span>Find a fanwork</span><input type="search" value={search} maxLength={120} placeholder="Title, author, fandom or trope…" onChange={e=>{setSearch(e.target.value);setVisibleCount(12)}}/></label>
-   <label><span>Rating</span><select value={rating} onChange={e=>{setRating(e.target.value);setVisibleCount(12)}}>{FANFICTION_RATINGS.map(x=><option key={x.id} value={x.id}>{x.label}</option>)}</select></label>
-   <label><span>Read from</span><select value={source} onChange={e=>{setSource(e.target.value);setVisibleCount(12)}}><option value="all">All sources</option><option value="hosted">On the Palace</option><option value="linked">Author’s site</option></select></label>
-   <button type="button" aria-pressed={animeOnly} className={'palace-unified-anime'+(animeOnly?' active':'')} onClick={()=>{setAnimeOnly(x=>!x);setVisibleCount(12)}}>Anime &amp; manga</button>
-   {(search||rating!=='all'||source!==defaultSource||animeOnly||includeMature||sort!=='title')&&<button type="button" className="palace-unified-clear" onClick={reset}>Clear filters</button>}
+   <label className="palace-unified-search"><span>Find a fanwork</span><input type="search" value={search} maxLength={120} placeholder="Title, author, fandom or trope…" onChange={e=>{setSearch(e.target.value);setVisibleCount(24)}}/></label>
+   <label className="palace-unified-source-choice"><span>Read from</span><select value={source} onChange={e=>{setSource(e.target.value);setVisibleCount(24)}}><option value="all">All sources</option><option value="hosted">On the Palace</option><option value="linked">Author’s site</option></select></label>
+   <details className="palace-unified-advanced-filters">
+    <summary>More filters{rating!=='all'||animeOnly?' · Active':''}</summary>
+    <div>
+     <label><span>Rating</span><select value={rating} onChange={e=>{setRating(e.target.value);setVisibleCount(24)}}>{FANFICTION_RATINGS.map(x=><option key={x.id} value={x.id}>{x.label}</option>)}</select></label>
+     <button type="button" aria-pressed={animeOnly} className={'palace-unified-anime'+(animeOnly?' active':'')} onClick={()=>{setAnimeOnly(x=>!x);setVisibleCount(24)}}>Anime &amp; manga</button>
+     {(search||rating!=='all'||source!==defaultSource||animeOnly||includeMature||sort!=='source')&&<button type="button" className="palace-unified-clear" onClick={reset}>Clear filters</button>}
+    </div>
+   </details>
   </div>
   <div className="palace-unified-toolbar">
    <span role="status" aria-live="polite">Showing {shown.length} of {ordered.length} matching works</span>
-   <label>Order <select value={sort} onChange={e=>{setSort(e.target.value);setVisibleCount(12)}}><option value="title">Title A–Z</option><option value="source">Palace works first</option></select></label>
+   <label>Order <select value={sort} onChange={e=>{setSort(e.target.value);setVisibleCount(24)}}><option value="source">Read here first</option><option value="title">Title A–Z</option></select></label>
   </div>
   {loading&&<p className="palace-unified-note" role="status">Gathering the Palace-hosted stories. Original-author recommendations are still available.</p>}
   {loadError&&<p className="palace-unified-note" role="alert">Some Palace-hosted stories could not be loaded. The original-author links remain available.</p>}
   <div className="palace-unified-results">
-   {shown.map(entry=><article className="palace-unified-card" key={entry.key}>
+   {shown.map((entry,i)=><React.Fragment key={entry.key}>
+    {sort==='source'&&(i===0||(shown[i-1].kind==='link')!==(entry.kind==='link'))&&<div className="palace-unified-group-heading" role="heading" aria-level={3}><strong>{entry.kind==='link'?'Explore original author sites':'Read here on the Palace'}</strong><span>{entry.kind==='link'?'These stories open on their creators’ websites; no copies are hosted here.':'Complete published editions you can read without leaving the Palace.'}</span></div>}
+    <article className={'palace-unified-card '+(entry.kind==='link'?'source-external':'source-hosted')}>
     <div className="palace-unified-card-top">
      <span className={'palace-unified-source '+(entry.kind==='link'?'external':'hosted')}>{sourceTag(entry.kind)}</span>
      <span className="palace-unified-rating">Rating: {ratedTag(entry.rating)}</span>
@@ -134,14 +141,14 @@ export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks
       {entry.warnings?.length>0&&<p className="palace-unified-warning"><strong>Content notes:</strong> {entry.warnings.join(' · ')}</p>}
      </div>
      <div className="palace-unified-card-actions">
-      {entry.kind==='link'?<><a className="palace-unified-read" href={entry.href} target="_blank" rel="noopener noreferrer">Read at original source ↗</a><a className="palace-unified-terms" href={entry.permissionUrl} title={entry.permissionLabel} target="_blank" rel="noopener noreferrer">Author's reuse statement ↗</a></>:<Link className="palace-unified-read" to={entry.href}>Read on the Palace →</Link>}
+      {entry.kind==='link'?<><a className="palace-unified-read" href={entry.href} target="_blank" rel="noopener noreferrer">Read at original source ↗</a><a className="palace-unified-terms" href={entry.permissionUrl} title={entry.permissionLabel} target="_blank" rel="noopener noreferrer">Author notes &amp; reuse terms ↗</a></>:<Link className="palace-unified-read" to={entry.href}>Read on the Palace →</Link>}
      </div>
     </div>
-   </article>)}
+    </article></React.Fragment>)}
   </div>
   {ordered.length===0&&<p className="palace-unified-empty">No fanworks match these choices. Try another title, rating or source.</p>}
-  {visibleCount<ordered.length&&<button className="palace-unified-more" type="button" onClick={()=>setVisibleCount(n=>n+12)}>Show more fanworks ({ordered.length-shown.length} remaining)</button>}
-  {restricted>0&&<div className="palace-unified-age"><p>{includeMature?'Mature and explicit recommendations are now shown. This acknowledgement is not age verification.':'Mature and explicit entries are hidden from this unified catalogue by default.'}</p><button type="button" onClick={()=>{setIncludeMature(v=>!v);setVisibleCount(12)}}>{includeMature?'Hide mature works':'I am 18+ · Show mature works'}</button></div>}
+  {visibleCount<ordered.length&&<button className="palace-unified-more" type="button" onClick={()=>setVisibleCount(n=>n+24)}>Show more fanworks ({ordered.length-shown.length} remaining)</button>}
+  {restricted>0&&<div className="palace-unified-age"><p>{includeMature?'Mature and explicit recommendations are now shown. This acknowledgement is not age verification.':'Mature and explicit entries are hidden from this unified catalogue by default.'}</p><button type="button" onClick={()=>{setIncludeMature(v=>!v);setVisibleCount(24)}}>{includeMature?'Hide mature works':'I am 18+ · Show mature works'}</button></div>}
   {hasMoreHosted&&onMoreHosted&&<button className="palace-unified-more-hosted" type="button" onClick={onMoreHosted}>Load additional Palace-published works</button>}
   <p className="palace-unified-rights">Works labeled “Read on the Palace” have a published hosted edition. Author-source links open the original website and are not hosted or copied here. Fanfiction authors' reuse terms do not automatically clear the underlying franchise rights.</p>
   {!inFandomAtlas&&<p className="palace-unified-fandom-link"><Link to="/fandoms?section=fanfiction">Explore fanworks by fandom →</Link></p>}
