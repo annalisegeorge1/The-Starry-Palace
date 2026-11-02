@@ -624,3 +624,33 @@
 @media(min-width:761px) and (max-width:900px){
  body>.reading-filter-mobile-result-action{bottom:18px!important}
 }
+
+/* Keep rare/advanced tags searchable, not part of the default long checklist.
+   Selected tags from those hidden groups remain editable directly. */
+.palace-shell.full-palace-shell .reading-facet-hidden-choices{
+ margin:9px 0 6px;padding:6px 0 8px;
+ border-bottom:1px solid var(--ui-line,rgba(183,165,210,.25));
+}
+.palace-shell.full-palace-shell .reading-facet-hidden-choices>small{
+ display:block;margin-bottom:5px;color:#e5daef;
+ font:720 .7rem/1.4 system-ui,sans-serif;
+}
+.palace-shell.full-palace-shell .reading-facet-hidden-choices>div{
+ display:flex;align-items:center;flex-wrap:wrap;gap:6px;
+}
+.palace-shell.full-palace-shell .reading-facet-hidden-choices button{
+ min-height:34px;max-width:100%;display:inline-flex;align-items:center;gap:8px;
+ border:1px solid rgba(174,147,222,.55);border-radius:8px;
+ padding:6px 9px;color:#f0e8fb;background:rgba(93,71,148,.2);
+ font:650 .69rem/1.35 system-ui,sans-serif;overflow-wrap:anywhere;
+ text-align:left;cursor:pointer;
+}
+.palace-shell.full-palace-shell .reading-facet-hidden-choices button>span{
+ font:800 .85rem/1 system-ui,sans-serif;flex:none;
+}
+.palace-shell.full-palace-shell.daylight .reading-facet-hidden-choices>small{
+ color:#544365;
+}
+.palace-shell.full-palace-shell.daylight .reading-facet-hidden-choices button{
+ background:#eee7f8;border-color:#aa94c7;color:#3f2e57;
+}

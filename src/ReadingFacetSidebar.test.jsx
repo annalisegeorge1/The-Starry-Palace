@@ -73,3 +73,48 @@ it('reflects checked state in controlled tag choices',()=>{
  rerender(<MemoryRouter><ReadingFacetSidebar {...props} included={['f1']}/></MemoryRouter>);
  expect(screen.getByRole('checkbox',{name:'Include Dragon Age'}).checked).toBe(true);
 });
+
+it('hides Tropes and every later category from the default Include and Exclude lists',()=>{
+ const categories=[
+  ['genre','Genres','Fantasy'],['trope','Tropes','Slow Burn'],
+  ['additional','Additional tags','Long Chapters'],['theme','Themes','Hope'],
+  ['mood','Moods','Dark'],['setting','Settings','Castle'],
+  ['format','Formats','Poetry'],['other','Other tags','Unusual']
+ ];
+ const facets=categories.map(([category,label,name],i)=>({category,label,tags:[{id:'tag-'+i,name,count:4}]}));
+ view({facets});
+ fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
+ expect(screen.getByText('Genres')).toBeTruthy();
+ for(const [,label] of categories.slice(1))expect(screen.queryByText(label)).toBeNull();
+ fireEvent.click(screen.getByRole('button',{name:/4\\. Exclude/}));
+ const genres=screen.getAllByText('Genres');
+ expect(genres).toHaveLength(2);
+ for(const [,label] of categories.slice(1))expect(screen.queryByText(label)).toBeNull();
+});
+it('finds a trope through Include search and keeps its active choice removable after clearing search',()=>{
+ const facets=[{category:'trope',label:'Tropes',tags:[{id:'slow',name:'Slow Burn',count:7}]}];
+ const onToggle=vi.fn();
+ const {rerender}=view({facets,onToggle});
+ fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
+ expect(screen.queryByText('Tropes')).toBeNull();
+ fireEvent.change(screen.getByLabelText('Other tags to include'),{target:{value:'slow'}});
+ fireEvent.click(screen.getByText('Tropes'));
+ fireEvent.click(screen.getByRole('checkbox',{name:'Include Slow Burn'}));
+ expect(onToggle).toHaveBeenCalledWith('slow','include');
+ rerender(<MemoryRouter><ReadingFacetSidebar {...props} facets={facets} onToggle={onToggle} included={['slow']} selectedTagNames={{slow:'Slow Burn'}}/></MemoryRouter>);
+ fireEvent.change(screen.getByLabelText('Other tags to include'),{target:{value:''}});
+ expect(screen.queryByText('Tropes')).toBeNull();
+ fireEvent.click(screen.getByRole('button',{name:'Remove Slow Burn from include tags'}));
+ expect(onToggle).toHaveBeenLastCalledWith('slow','include');
+});
+it('finds hidden tropes through Exclude search without displaying the category by default',()=>{
+ const facets=[{category:'trope',label:'Tropes',tags:[{id:'slow',name:'Slow Burn',count:7}]}];
+ const onToggle=vi.fn();view({facets,onToggle});
+ fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
+ fireEvent.click(screen.getByRole('button',{name:/4\\. Exclude/}));
+ expect(screen.queryByText('Tropes')).toBeNull();
+ fireEvent.change(screen.getByLabelText('Other tags to exclude'),{target:{value:'slow'}});
+ fireEvent.click(screen.getByText('Tropes'));
+ fireEvent.click(screen.getByRole('checkbox',{name:'Exclude Slow Burn'}));
+ expect(onToggle).toHaveBeenCalledWith('slow','exclude');
+});

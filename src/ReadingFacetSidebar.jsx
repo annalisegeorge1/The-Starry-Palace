@@ -3,6 +3,9 @@ import {Link} from 'react-router-dom';
 import {createPortal} from 'react-dom';
 import {READING_SORT_OPTIONS,READING_FACET_ORDER,READING_FACET_NAMES} from './readingFacetModel';
 import PalaceRelationshipFilters from './PalaceRelationshipFilters';
+
+// The quick checklist ends at Genres. All later categories remain searchable.
+const QUICK_TAG_CATEGORIES=new Set(['fandom','character','relationship','warning','genre']);
 import './reading-faceted-browse.css';
 
 /**
@@ -14,7 +17,7 @@ export default function ReadingFacetSidebar({
  facets=[],sort='updated',onSort,rating='all',onRating,status='all',onStatus,
  included=[],excluded=[],onToggle,onClear,relationshipIncluded=[],relationshipExcluded=[],
  onToggleRelationship=()=>{},loadedCount=0,hasMore=false,archiveWide=false,
- onSearchTags,onTagIdentified,resultsCount=null,onShowResults=()=>{}
+ onSearchTags,onTagIdentified,selectedTagNames={},resultsCount=null,onShowResults=()=>{}
 }){
  const [open,setOpen]=useState(false);
  const [expandedModes,setExpandedModes]=useState({include:true,exclude:false});
@@ -69,12 +72,22 @@ export default function ReadingFacetSidebar({
     result[mode]=[...READING_FACET_ORDER,'other'].filter((key,i,arr)=>arr.indexOf(key)===i&&grouped.has(key))
       .map(category=>({category,label:READING_FACET_NAMES[category]||'Other tags',tags:grouped.get(category)}));
    }else{
-    result[mode]=facets.map(group=>({...group,tags:group.tags.filter(tag=>!q||tag.name.toLocaleLowerCase().includes(q))}))
+    result[mode]=facets
+      .filter(group=>q||QUICK_TAG_CATEGORIES.has(group.category))
+      .map(group=>({...group,tags:group.tags.filter(tag=>!q||tag.name.toLocaleLowerCase().includes(q))}))
       .filter(group=>group.tags.length>0);
    }
   }
   return result;
  },[archiveWide,includeQ,excludeQ,directory,facets]);
+
+ // A hidden category must never make an active filter impossible to remove.
+ const availableTags=useMemo(()=>{
+  const tags=new Map();
+  for(const group of facets)for(const tag of group.tags)tags.set(String(tag.id),tag);
+  for(const mode of modes)for(const tag of directory[mode]||[])tags.set(String(tag.id),tag);
+  return tags;
+ },[facets,directory]);
 
  function pick(tag,mode){
   onToggle(tag.id,mode);
@@ -98,6 +111,11 @@ export default function ReadingFacetSidebar({
   const q=mode==='include'?includeQ:excludeQ;
   const selected=mode==='include'?included:excluded;
   const selectedRelationships=mode==='include'?relationshipIncluded:relationshipExcluded;
+  const savedHiddenTags=!q?selected.map(id=>{
+   const tag=availableTags.get(String(id));
+   return {id:String(id),name:selectedTagNames[String(id)]||tag?.name||'Selected tag',
+    category:tag?.category||null};
+  }).filter(tag=>!tag.category||!QUICK_TAG_CATEGORIES.has(tag.category)):[];
   return <div className="reading-facet-mode-body" id={'reading-mode-'+mode}>
    <div className="reading-facet-relationship-cluster">
     <h4>Relationship categories</h4>
@@ -110,10 +128,17 @@ export default function ReadingFacetSidebar({
      onChange={e=>{setSearches(prev=>({...prev,[mode]:e.target.value}));}}
      onKeyDown={e=>exactTagOnEnter(e,mode)}
      placeholder={mode==='include'?'Search fandoms, characters, relationships, tropes…':'Search tags to exclude…'}/>
-    <small className="reading-facet-search-caption">Choose an exact tag below{archiveWide?' or search the full Palace directory':''}. Press Enter for an exact name.</small>
+    <small className="reading-facet-search-caption">Browse the main categories below. Search for tropes, additional tags, themes and more{archiveWide?' across the Palace directory':''}.</small>
    </div>
    {busy[mode]&&<p className="reading-facet-hint" role="status">Finding matching tags…</p>}
    {errors[mode]&&<p className="reading-facet-hint" role="alert">{errors[mode]}</p>}
+   {savedHiddenTags.length>0&&<div className="reading-facet-hidden-choices" aria-label={'Selected extra tags to '+mode}>
+    <small>{mode==='include'?'Included':'Excluded'} extra tags</small>
+    <div>{savedHiddenTags.map(tag=><button type="button" key={tag.id}
+     aria-label={'Remove '+tag.name+' from '+mode+' tags'} onClick={()=>onToggle(tag.id,mode)}>
+      {tag.name}<span aria-hidden="true">×</span>
+     </button>)}</div>
+   </div>}
    <div className="reading-facet-groups">
     {groupsByMode[mode].map(group=>{
      const key=mode+':'+group.category;
