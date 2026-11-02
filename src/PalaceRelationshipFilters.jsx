@@ -1,20 +1,31 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {RELATIONSHIP_TYPES} from './readingFacetModel';
 import './palace-relationship-filters.css';
 
-/** Include is OR across selected relationship categories; exclude rejects any.
- * Unspecified means no explicit category tags, not a guessed relationship. */
+/** Explicit author/tag classification; no gender assumptions from pairing names. */
 export default function PalaceRelationshipFilters({included=[],excluded=[],onToggle,disabled=false}){
+ const [more,setMore]=useState(null);
+ function toggle(key,mode){onToggle(key,mode);setMore(null)}
  return <fieldset className="palace-relationship-types" disabled={disabled}>
-  <legend>Relationship categories</legend>
-  <p>Include any selected category; exclude categories you don't want. Based on explicit tags only.</p>
-  <div className="palace-relationship-head" aria-hidden="true"><span>Category</span><span>Include</span><span>Exclude</span></div>
+  <legend className="visually-hidden">Relationship categories</legend>
+  <details className="palace-relationship-help"><summary>ⓘ About relationship categories</summary>
+   <p>Include one or more relationship types, or exclude types you don't want. Only explicit tags count; unclassified stories appear under Not tagged.</p>
+  </details>
   <div className="palace-relationship-options">
-   {RELATIONSHIP_TYPES.map(([key,name])=><div className="palace-relationship-option" key={key}>
-    <strong>{name}</strong>
-    <button type="button" aria-label={'Include '+name+' relationships'} aria-pressed={included.includes(key)} className={included.includes(key)?'selected include':''} onClick={()=>onToggle(key,'include')}>＋ <span>Include</span></button>
-    <button type="button" aria-label={'Exclude '+name+' relationships'} aria-pressed={excluded.includes(key)} className={excluded.includes(key)?'selected exclude':''} onClick={()=>onToggle(key,'exclude')}>− <span>Exclude</span></button>
-   </div>)}
+   {RELATIONSHIP_TYPES.map(([key,name])=>{
+    const selectedIn=included.includes(key),selectedOut=excluded.includes(key),menuOpen=more===key;
+    return <div className={"palace-relationship-option"+(selectedIn?' is-included':'')+(selectedOut?' is-excluded':'')} key={key}>
+     <label className="palace-relationship-include">
+      <input type="checkbox" checked={selectedIn} onChange={()=>toggle(key,'include')} aria-label={'Include '+name+' relationships'}/>
+      <strong>{name}</strong>{selectedOut&&<small>Excluded</small>}
+     </label>
+     <button type="button" className="palace-relationship-more" aria-label={'More options for '+name+' relationships'} aria-expanded={menuOpen} aria-controls={'palace-relationship-more-'+key}
+      onClick={()=>setMore(menuOpen?null:key)}>···</button>
+     {menuOpen&&<div className="palace-relationship-actions" id={'palace-relationship-more-'+key}>
+      <button type="button" onClick={()=>toggle(key,'exclude')} aria-label={'Exclude '+name+' relationships'}>{selectedOut?'Remove exclusion':'Exclude '+name}</button>
+     </div>}
+    </div>;
+   })}
   </div>
  </fieldset>;
 }

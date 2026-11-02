@@ -18,6 +18,7 @@ it('keeps the mobile filter panel accessible and presents inclusive and exclusiv
  expect(button.getAttribute('aria-expanded')).toBe('true');
  fireEvent.click(screen.getByText('Fandoms'));
  fireEvent.click(screen.getByRole('button',{name:'Include Dragon Age'}));
+ fireEvent.click(screen.getByRole('button',{name:'More options for Dragon Age'}));
  fireEvent.click(screen.getByRole('button',{name:'Exclude Dragon Age'}));
  expect(onToggle).toHaveBeenNthCalledWith(1,'f1','include');
  expect(onToggle).toHaveBeenNthCalledWith(2,'f1','exclude');
@@ -37,8 +38,35 @@ it('offers explicit include and exclude relationship categories in a predictable
  render(<MemoryRouter><ReadingFacetSidebar {...props} onToggleRelationship={onToggleRelationship}/></MemoryRouter>);
  fireEvent.click(screen.getByRole('button',{name:/Sort & Filter/}));
  fireEvent.click(screen.getByRole('button',{name:'Include F/F relationships'}));
+ fireEvent.click(screen.getByRole('button',{name:'More options for M/M relationships'}));
  fireEvent.click(screen.getByRole('button',{name:'Exclude M/M relationships'}));
  expect(onToggleRelationship).toHaveBeenNthCalledWith(1,'ff','include');
  expect(onToggleRelationship).toHaveBeenNthCalledWith(2,'mm','exclude');
  expect(screen.getByText('Include / Exclude Tags')).toBeTruthy();
+});
+
+it('shows only six tag rows at first, and expands on demand without losing selection',()=>{
+ const tags=Array.from({length:12},(_,i)=>({id:'t'+i,name:'Character '+i,count:12-i}));
+ const toggle=vi.fn();
+ render(<MemoryRouter><ReadingFacetSidebar {...props} facets={[{category:'character',label:'Characters',tags}]} onToggle={toggle}/></MemoryRouter>);
+ fireEvent.click(screen.getByRole('button',{name:/Sort & Filter/}));
+ fireEvent.click(screen.getByText('Characters'));
+ expect(screen.getByRole('button',{name:'Include Character 0'})).toBeTruthy();
+ expect(screen.queryByRole('button',{name:'Include Character 8'})).toBeNull();
+ fireEvent.click(screen.getByRole('button',{name:/Show all 12 characters/}));
+ expect(screen.getByRole('button',{name:'Include Character 8'})).toBeTruthy();
+ fireEvent.click(screen.getByRole('button',{name:'Include Character 8'}));
+ expect(toggle).toHaveBeenCalledWith('t8','include');
+ fireEvent.click(screen.getByRole('button',{name:/Show fewer characters/}));
+ expect(screen.queryByRole('button',{name:'Include Character 8'})).toBeNull();
+});
+it('closes filter panel using the floating results action',()=>{
+ const onShowResults=vi.fn();
+ render(<MemoryRouter><ReadingFacetSidebar {...props} onShowResults={onShowResults} resultsCount={14}/></MemoryRouter>);
+ const open=screen.getByRole('button',{name:/Sort & Filter/});
+ fireEvent.click(open);
+ expect(screen.getByRole('button',{name:/Show 14 matching stories/})).toBeTruthy();
+ fireEvent.click(screen.getByRole('button',{name:/Show 14 matching stories/}));
+ expect(onShowResults).toHaveBeenCalledOnce();
+ expect(open.getAttribute('aria-expanded')).toBe('false');
 });
