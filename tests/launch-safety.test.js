@@ -1109,12 +1109,14 @@ describe('Starry Palace launch safety',()=>{
   it('puts the actual Writing Pad one action away from Writing Chamber',()=>{
     const polish=read('src/polish.css');
     expect(live).toContain('function openWritingPad()');
-    expect(live).toContain('function newBlankPage()');
+    expect(live).not.toContain('function newBlankPage()');
+    expect(live).toContain('className="writer-new-work-fold"');
     expect(live).toContain("createDraft(session.user.id,'Untitled Draft')");
     expect(live).toContain("createChapter(session.user.id,work.id,'Chapter 1')");
     expect(live).toContain("navigate('/writing/'+work.slug+'?chapter='");
     expect(live).toContain('✎ Open Writing Pad');
-    expect(live).toContain('＋ New blank page');
+    expect(live).not.toContain('＋ New blank page');
+    expect(live).toContain('＋ Begin a new work');
     expect(live).toContain('Create & open private draft');
     expect(polish).toContain('Writing Pad front door · October 6 2026');
     expect(polish).toContain('.writing-pad-launch');
