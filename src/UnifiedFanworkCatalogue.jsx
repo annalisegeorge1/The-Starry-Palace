@@ -1,5 +1,6 @@
 import React,{useMemo,useState} from 'react';
 import {Link} from 'react-router-dom';
+import {fanworkFandomHref} from './fanworkFandomNavigation';
 import {MODERN_FANFICTION_LINKS,isHostedFanfiction} from './palaceFanfictionDiscovery';
 import {modernFanfictionGuide,hostedFanfictionGuide,FANFICTION_RATINGS,
  filterModernFanfiction} from './fanfictionMetadata';
@@ -37,14 +38,14 @@ export function createUnifiedFanworks(works=[],external=MODERN_FANFICTION_LINKS)
   if(!key||seen.has(key))continue;
   seen.add(key);
   all.push({key,kind:work.is_archive?(work.archive_category==='licensed_fanfiction'?'licensed':'historical'):'member',title:work.title||'Untitled fanwork',author:authorOf(work),rating:work.rating||'not_rated',
-   summary:work.summary||'',tags:palaceTags(work).map(t=>t.name),warnings:work.is_archive?hostedFanfictionGuide(work).contentWarnings:[],href:memberUrl(work),work});
+   summary:work.summary||'',tags:palaceTags(work).map(t=>t.name),tagDetails:palaceTags(work),warnings:work.is_archive?hostedFanfictionGuide(work).contentWarnings:[],href:memberUrl(work),work});
  }
  for(const work of external){
   if(!work?.sourceUrl||!work?.id||hostedSources.has(sourceIdentity(work.sourceUrl)))continue;
   const key='external:'+work.id;if(seen.has(key))continue;seen.add(key);
   const guide=modernFanfictionGuide(work);
   all.push({key,kind:'link',title:work.title,author:work.creator,rating:guide.rating||'not_rated',
-   summary:work.description||'',tags:guide.tags.map(t=>t.name),warnings:guide.contentWarnings,
+   summary:work.description||'',tags:guide.tags.map(t=>t.name),tagDetails:guide.tags,warnings:guide.contentWarnings,
    href:work.sourceUrl,permissionUrl:work.permissionUrl,permissionLabel:work.permissionLabel,work});
  }
  return all;
@@ -103,7 +104,7 @@ export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks
    <p className="eyebrow">FANFICTION · ONE SHARED DISCOVERY SHELF</p>
    <h2 id="palace-unified-fanworks-title">Fan-made works</h2>
    <p>Read published fanfiction on the Palace. To explore stories available only on their authors’ websites, change “Read from” to “Author’s site.” Unpublished submissions are not shown.</p>
-   <p className="palace-unified-totals" role="status"><strong>{hostedCount} Palace-hosted works loaded</strong> · <strong>{externalCount} author-source links</strong>{hasMoreHosted?' · More Palace works available':''}</p>
+   <p className="palace-unified-totals" role="status"><strong>{hostedCount} Palace-hosted works loaded</strong>{source!=='hosted'&&<> · <strong>{externalCount} author-source links</strong></>}{hasMoreHosted?' · More Palace works available':''}</p>
   </header>
   <div className="palace-unified-filterbar" role="search" aria-label="Search all fanworks">
    <label><span>Find a fanwork</span><input type="search" value={search} maxLength={120} placeholder="Title, author, fandom or trope…" onChange={e=>{setSearch(e.target.value);setVisibleCount(12)}}/></label>
@@ -129,7 +130,7 @@ export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks
       <h3>{entry.kind==='link'?<a href={entry.href} target="_blank" rel="noopener noreferrer">{entry.title}</a>:<Link to={entry.href}>{entry.title}</Link>}</h3>
       <p className="palace-unified-author">by {entry.author}</p>
       {entry.summary&&<p className="palace-unified-summary">{entry.summary}</p>}
-      {entry.tags.length>0&&<div className="palace-unified-tags" aria-label="Fanwork tags">{entry.tags.slice(0,4).map((tag,i)=><span key={tag+':'+i}>{tag}</span>)}{entry.tags.length>4&&<details><summary>+{entry.tags.length-4} tags</summary><div>{entry.tags.slice(4).map((tag,i)=><span key={tag+':'+i}>{tag}</span>)}</div></details>}</div>}
+      {entry.tagDetails?.length>0&&<div className="palace-unified-tags" aria-label="Fanwork tags">{entry.tagDetails.slice(0,4).map((tag,i)=>tag.category==='fandom'?<Link key={tag.name+':'+i} to={fanworkFandomHref(tag.name)} title={'Browse '+tag.name+' fanfiction'}>{tag.name}</Link>:<span key={tag.name+':'+i}>{tag.name}</span>)}{entry.tagDetails.length>4&&<details><summary>+{entry.tagDetails.length-4} tags</summary><div>{entry.tagDetails.slice(4).map((tag,i)=>tag.category==='fandom'?<Link key={tag.name+':'+i} to={fanworkFandomHref(tag.name)} title={'Browse '+tag.name+' fanfiction'}>{tag.name}</Link>:<span key={tag.name+':'+i}>{tag.name}</span>)}</div></details>}</div>}
       {entry.warnings?.length>0&&<p className="palace-unified-warning"><strong>Content notes:</strong> {entry.warnings.join(' · ')}</p>}
      </div>
      <div className="palace-unified-card-actions">
