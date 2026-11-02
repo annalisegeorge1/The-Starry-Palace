@@ -25,13 +25,14 @@
 }
 
 /* The compact nav used hard-coded light foregrounds in both color schemes. */
-.palace-shell.full-palace-shell .chic-reading-page .reading-unified-tabs :is(>button,>a,>details>summary){
+.palace-shell.full-palace-shell .chic-reading-page .reading-unified-tabs > :is(button,a),
+.palace-shell.full-palace-shell .chic-reading-page .reading-unified-tabs > details > summary{
  background:var(--reading-tab)!important;
  color:var(--reading-ink)!important;
  border:1px solid var(--reading-border)!important;
  opacity:1!important;
 }
-.palace-shell.full-palace-shell .chic-reading-page .reading-unified-tabs :is(>button.active,>button[aria-pressed="true"],>a.active){
+.palace-shell.full-palace-shell .chic-reading-page .reading-unified-tabs > :is(button.active,button[aria-pressed="true"],a.active){
  background:var(--reading-tab-active)!important;
  color:var(--reading-ink)!important;
  border-color:var(--reading-border)!important;
@@ -180,7 +181,8 @@
  }
 }
 @media(forced-colors:active){
- .palace-shell.full-palace-shell .chic-reading-page .reading-unified-tabs :is(>button,>a,>details>summary),
+ .palace-shell.full-palace-shell .chic-reading-page .reading-unified-tabs > :is(button,a),
+.palace-shell.full-palace-shell .chic-reading-page .reading-unified-tabs > details > summary,
  .palace-shell.full-palace-shell .palace-journey-strip .prism-room-wayfinder-glyph{
   color:CanvasText!important;background:Canvas!important;border-color:CanvasText!important;
  }
