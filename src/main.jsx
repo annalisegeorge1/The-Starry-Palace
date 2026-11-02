@@ -125,6 +125,7 @@ import './palace-daylight-treasury-tags-grand-finish.css';
 import './palace-daylight-library-council-fix.css';
 import './palace-mobile-blue-indigo-balance.css';
 import './palace-mobile-home-hero-parity.css';
+import './reading-theme-contrast-repair.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
