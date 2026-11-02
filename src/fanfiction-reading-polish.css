@@ -124,8 +124,8 @@
  align-items:baseline;min-width:0;
  padding:5px 1px 1px;border-bottom:1px solid var(--fan-line);
 }
-.palace-shell.full-palace-shell .chic-reading-page.fanfiction-focused .palace-unified-group-heading strong{
- color:var(--fan-text);font:650 1.05rem/1.35 Georgia,serif;
+.palace-shell.full-palace-shell .chic-reading-page.fanfiction-focused .palace-unified-group-heading h3{
+ color:var(--fan-text);font:650 1.05rem/1.35 Georgia,serif;margin:0;
 }
 .palace-shell.full-palace-shell .chic-reading-page.fanfiction-focused .palace-unified-group-heading span{
  color:var(--fan-muted);font-size:.76rem;line-height:1.45;
