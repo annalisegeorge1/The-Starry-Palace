@@ -76,7 +76,8 @@ it('shows one mobile Sort & Filter heading and one close action, not a nested he
  const toggle=screen.getByRole('button',{name:'Open Sort & Filter'});
  fireEvent.click(toggle);
  expect(screen.getByRole('button',{name:'Close Sort & Filter'})).toBeTruthy();
- expect(screen.getAllByText('Sort & Filter')).toHaveLength(2);
+ expect(screen.getByRole('heading',{name:'Sort & Filter'})).toBeTruthy();
+ expect(document.querySelector('.reading-facet-heading')).toBeNull();
  expect(screen.queryByRole('button',{name:'Hide'})).toBeNull();
  expect(screen.queryByRole('button',{name:'Close'})).toBeNull();
  fireEvent.click(screen.getByRole('button',{name:'Close Sort & Filter'}));
