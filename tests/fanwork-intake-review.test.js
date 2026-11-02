@@ -46,7 +46,14 @@ describe('Private licensed fanfiction review readiness',()=>{
   expect(r.issues.some(x=>x.includes('18+'))).toBe(true);
   expect(r.hasVerifiedGrant).toBe(false);
  });
- it('detects original chapter boundaries only as a non-destructive advisory',()=>{
+ it('flags author licence restrictions without assuming those licences clear the underlying franchise',()=>{
+  const work={...base,sourceLicense:'CC BY-NC-ND 3.0'};
+  const status=fanworkReviewStatus(work,'2026-11-01');
+  expect(status.issues.some(issue=>issue.includes('Noncommercial'))).toBe(true);
+  expect(status.issues.some(issue=>issue.includes('NoDerivatives'))).toBe(true);
+  expect(status.hasVerifiedGrant).toBe(false);
+ });
+  it('detects original chapter boundaries only as a non-destructive advisory',()=>{
   const original='Chapter 1: Arrival\n\nA story begins here.\n\nChapter 2: Departure\n\nA story continues here.';
   const result=inspectStagedFanwork(original,2);
   expect(result.detectedChapters).toBe(2);
@@ -76,6 +83,7 @@ describe('Private licensed fanfiction review readiness',()=>{
   expect(ui).toContain('onClick={reviewManuscript}');
   expect(ui).toContain('onClick={prepareAuthorRequest}');
   expect(ui).toContain('Publication readiness checklist');
+  expect(ui).toContain('Recorded warnings:');
   expect(source).not.toContain("publication_status:'published'");
   expect(ui).not.toMatch(/chat\s?gpt|openai/i);
  });
