@@ -954,7 +954,7 @@ export async function removeProfileAchievementShowcase(achievementId){
  const{data,error}=await needClient().rpc('remove_profile_achievement_showcase',{p_achievement_id:achievementId});if(error)throw error;return data
 }
 export async function getArchive(userId=null){
- const{data,error}=await needClient().from('archive_records').select('id,accession_number,slug,title,creator_name,record_nature,category,summary,original_language,languages,surviving_extent,known_gaps,provenance_summary,rights_status,hosting_basis,host_mode,continuation_status,verified_at,updated_at').eq('publication_status','published').order('updated_at',{ascending:false}).limit(250);
+ const{data,error}=await needClient().from('archive_records').select('id,accession_number,slug,title,creator_name,record_nature,category,summary,original_language,languages,surviving_extent,known_gaps,provenance_summary,rights_status,hosting_basis,host_mode,continuation_status,source_notes,verified_at,updated_at').eq('publication_status','published').order('updated_at',{ascending:false}).limit(250);
  if(error)throw error;const rows=data||[];if(!rows.length)return rows;
  // Read only citation metadata, never the potentially large hosted text.
  // A cover lookup problem must not prevent the archive from opening.
