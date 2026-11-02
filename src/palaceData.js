@@ -998,8 +998,22 @@ export async function getArchive(userId=null){
     .map(t=>[t.category+':'+t.name.toLowerCase(),t]));
   }catch{}
  }
+ // Archive novels have the same first-class canonical tag IDs as member stories.
+ // Resolve their tag relationships separately from the full manuscript text.
+ let archiveTagRows=new Map();
+ try{
+  const result=await needClient().from('archive_record_tags')
+   .select('record_id,position,tags(id,name,category,status)')
+   .in('record_id',rows.map(r=>r.id)).order('position',{ascending:true});
+  if(!result.error)for(const relation of result.data||[]){
+   if(!relation.tags||!['canonical','community'].includes(relation.tags.status))continue;
+   const list=archiveTagRows.get(relation.record_id)||[];
+   list.push(relation.tags);
+   archiveTagRows.set(relation.record_id,list);
+  }
+ }catch{}
  const tagged=illustrated.map(r=>({...r,archive_resolved_tags:isHostedFanfiction(r)?
-  archiveFanfictionTags(r).map(row=>canonicalTags.get(row.tags.category+':'+row.tags.name.toLowerCase())||row.tags):[]}));
+  archiveFanfictionTags(r).map(row=>canonicalTags.get(row.tags.category+':'+row.tags.name.toLowerCase())||row.tags):[],archive_novel_tags:archiveTagRows.get(r.id)||[]}));
 
  if(!userId)return tagged;
  const saved=await needClient().from('user_archive_records').select('record_id,saved,visited_at').eq('user_id',userId).eq('saved',true);
