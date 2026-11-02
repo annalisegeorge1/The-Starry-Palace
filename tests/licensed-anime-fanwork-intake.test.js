@@ -1,5 +1,6 @@
 import {describe,it,expect} from 'vitest';
 import {LICENSED_ANIME_FANWORK_INTAKE} from '../src/licensedAnimeFanworkIntake.js';
+import {intakeFandomNames} from '../src/fanworkFandomNavigation.js';
 import {isHostedFanfiction,canDisplayHostedArchive,readingArchiveWorkType} from '../src/palaceFanfictionDiscovery.js';
 import {canReadHostedClassic} from '../src/directClassicModel.js';
 import {hostedFanfictionGuide,hostedFanfictionCompletion,archiveFanfictionTags} from '../src/fanfictionMetadata.js';
@@ -19,7 +20,7 @@ describe('Author-licensed fanfiction intake and safe publication',()=>{
    expect(['general','teen','mature','explicit','not_rated']).toContain(work.rating);
    const guide=hostedFanfictionGuide(work);
    expect(guide.rating).toBe(work.rating);
-   expect(guide.tags.some(t=>t.category==='fandom'&&t.name===work.fandom)).toBe(true);
+   expect(intakeFandomNames(work.fandom).every(name=>guide.tags.some(t=>t.category==='fandom'&&t.name===name))).toBe(true);
    expect(guide.tags.some(t=>t.category==='format'&&t.name==='Anime & Manga')).toBe(true);
    expect(hostedFanfictionCompletion(work)).toBe(work.completion_status);
    expect(archiveFanfictionTags(work).length).toBeGreaterThan(2);
