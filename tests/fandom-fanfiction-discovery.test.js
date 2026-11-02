@@ -46,7 +46,7 @@ describe('Fandom Atlas includes the same rights-aware Fanfiction collection',()=
   expect(atlas).toContain('<UnifiedFanworkCatalogue');
   expect(atlas).toContain('publishedWorks={[...(selectedNames.length?stories:fanworkRows),...historicFanworks]}');
   expect(atlas).toContain('inFandomAtlas={true}');
-  expect(atlas).toContain('fandomNames={selectedNames}');
+  expect(atlas).toContain('fandomNames={activeFandomNames}');
   expect(atlas).toContain('fandomMatch={mode}');
   expect(reading).toContain('fandomNames,fandomMatch,completion');
   expect(reading).toContain("isHostedFanfiction(work)");
