@@ -127,6 +127,7 @@ import './palace-mobile-blue-indigo-balance.css';
 import './palace-mobile-home-hero-parity.css';
 import './reading-theme-contrast-repair.css';
 import './fanfiction-reading-polish.css';
+import './tag-constellation-compact-rows.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 

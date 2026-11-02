@@ -27,7 +27,8 @@ describe('Tag Constellation mobile discovery flow',()=>{
   expect(tag).toContain('className="tag-pick-archive"');
   expect(tag).toContain('aria-pressed={include.includes(tag.id)}');
   expect(tag).toContain('aria-pressed={exclude.includes(tag.id)}');
-  expect(tag).toContain('New · not yet used');
+  expect(tag).toContain('Number(tag.usage_count||0).toLocaleString()+" uses"');
+  expect(tag).toContain("category.replaceAll('_',' ')");
   expect(tag).toContain("!tagQuery.trim()");
  });
  it('makes community tag creation a dismissible sheet without changing permissions',()=>{
