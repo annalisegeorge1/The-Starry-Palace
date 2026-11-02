@@ -19,8 +19,8 @@ describe('My Library overview presentation',()=>{
   expect(screen.getByRole('link',{name:/The Silver Door.*Open story/}).getAttribute('href')).toBe('/work/silver-door/chapter/one');
   expect(screen.getByRole('link',{name:/The Purple Orchard.*Open story/}).getAttribute('href')).toBe('/work/purple-orchard');
   expect(screen.getByRole('link',{name:/Favourite Folktales/}).getAttribute('href')).toBe('/library?tab=collections');
-  expect(screen.getByRole('link',{name:/Notes & Bookmarks/}).getAttribute('href')).toBe('/library?tab=notes');
-  expect(screen.getByRole('link',{name:/History/}).getAttribute('href')).toBe('/library?tab=history');
+  expect(screen.getAllByRole('link',{name:/Open shelf/}).map(link=>link.getAttribute('href')))
+    .toEqual(['/library?tab=continue','/library?tab=saved']);
  });
  it('offers one useful reading invitation instead of two empty shelf panels',()=>{
   const finished={
