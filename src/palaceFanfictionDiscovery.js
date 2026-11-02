@@ -13,10 +13,12 @@ export function isHostedFanfiction(record){
 }
 /** A source link or permission note alone never makes a readable hosted edition. */
 export function canDisplayHostedArchive(record){
- return Boolean(record?.host_mode==='full'&&(
-  record.rights_status==='public_domain_verified'||
-  (['licensed','creator_authorised'].includes(record.rights_status)&&Boolean(record.verified_at))
- ));
+ if(!record||record.host_mode!=='full'||record.publication_status&&record.publication_status!=='published')return false;
+ // A source citation or permission note is not a complete readable edition.
+ if(record.hosted_text_ready===false)return false;
+ if(record.rights_status==='public_domain_verified')return true;
+ return Boolean(['licensed','creator_authorised'].includes(record.rights_status)
+  &&record.verified_at&&record.hosted_rights_verified===true);
 }
 export function readingArchiveWorkType(record){
  return isHostedFanfiction(record)?'fanwork':'archive';
