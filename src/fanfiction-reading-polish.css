@@ -242,6 +242,9 @@
  .palace-shell.full-palace-shell .chic-reading-page.fanfiction-focused .palace-unified-advanced-filters{
   grid-column:2;
  }
+ .palace-shell.full-palace-shell .chic-reading-page.fanfiction-focused .palace-unified-advanced-filters[open]{
+  grid-column:1/-1;
+ }
  .palace-shell.full-palace-shell .chic-reading-page.fanfiction-focused .palace-unified-advanced-filters>div{
   position:relative;grid-column:1/-1;min-width:0;
   display:grid;grid-template-columns:minmax(0,1fr);
