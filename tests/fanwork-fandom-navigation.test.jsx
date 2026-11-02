@@ -34,7 +34,7 @@ describe('Fanwork-to-fandom integration',()=>{
   const entries=createUnifiedFanworks(hosted,external);
   expect(filterUnifiedFanworks(entries,{fandomNames:['Naruto']}).some(x=>x.kind==='member')).toBe(true);
   render(<MemoryRouter><UnifiedFanworkCatalogue publishedWorks={hosted} externalWorks={[]}
-   defaultSource="hosted"/></MemoryRouter>);
+   defaultSource="all"/></MemoryRouter>);
   const tag=screen.getByRole('link',{name:'Naruto'});
   expect(tag.getAttribute('href')).toBe(fanworkFandomHref('Naruto'));
   expect(screen.queryByText(/author-source links/)).toBeNull();
@@ -44,7 +44,7 @@ describe('Fanwork-to-fandom integration',()=>{
   expect(source).toContain('fanworkFandomFromSearch(location.search)');
   expect(source).toContain('const activeFandomNames=selectedNames.length?selectedNames:exactFandom?[exactFandom]:[];');
   expect(source).toContain('fandomNames={activeFandomNames}');
-  expect(source).toContain('defaultSource="hosted"');
+  expect(source).toContain('defaultSource="all"');
   expect(source).toContain("changeParams({ids:null,match:null,fandom:null})");
  });
 });
