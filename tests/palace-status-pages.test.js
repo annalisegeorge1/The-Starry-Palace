@@ -29,6 +29,8 @@ describe('Palace connection and maintenance pages',()=>{
   expect(worker).toContain("PALACE_OFFLINE_PAGE='/offline.html'");
   expect(worker).toContain("cache.addAll(PALACE_PUBLIC_ASSETS)");
   expect(worker).toContain("request.mode!=='navigate'");
+  expect(worker).toContain("destination.pathname==='/palace-status.css'");
+  expect(worker).toContain("caches.match(destination.pathname)");
   expect(worker).toContain("return await fetch(request)");
   expect(worker).toContain("caches.match(PALACE_OFFLINE_PAGE)");
   expect(worker).not.toMatch(/\bskipWaiting\s*\(/);

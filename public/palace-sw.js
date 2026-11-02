@@ -20,10 +20,18 @@ self.addEventListener('activate',event=>{
 
 self.addEventListener('fetch',event=>{
   const request=event.request;
-  // No interception of API calls, assets, POSTs, or background data saves.
-  if(request.method!=='GET'||request.mode!=='navigate')return;
+  // Never intercept API writes, private data, or unrelated asset requests.
+  if(request.method!=='GET')return;
   const destination=new URL(request.url);
   if(destination.origin!==self.location.origin)return;
+  // These two pre-cached public assets must stay available while offline;
+  // the status page needs its styling even without the browser HTTP cache.
+  if(request.mode!=='navigate'){
+    if(destination.pathname==='/palace-status.css'||destination.pathname==='/favicon.svg'){
+      event.respondWith(caches.match(destination.pathname).then(cached=>cached||fetch(request)));
+    }
+    return;
+  }
   event.respondWith((async()=>{
     try{
       // Network first: do not serve cached, possibly stale personalized pages.
