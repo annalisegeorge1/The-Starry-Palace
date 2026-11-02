@@ -17,8 +17,10 @@ export function canDisplayHostedArchive(record){
  // A source citation or permission note is not a complete readable edition.
  if(record.hosted_text_ready===false)return false;
  if(record.rights_status==='public_domain_verified')return true;
+ // A modern full-text listing requires both an actual hosted text and a
+ // separately verified rights grant, not just the author's CC label.
  return Boolean(['licensed','creator_authorised'].includes(record.rights_status)
-  &&record.verified_at&&record.hosted_rights_verified===true);
+  &&record.hosted_text_ready===true&&record.verified_at&&record.hosted_rights_verified===true);
 }
 export function readingArchiveWorkType(record){
  return isHostedFanfiction(record)?'fanwork':'archive';
