@@ -187,3 +187,78 @@
   color:CanvasText!important;background:Canvas!important;border-color:CanvasText!important;
  }
 }
+
+/* Reading Rooms mobile follow-up: the document's #palace-content is the real
+ * scroll area. Padding only the nested .chic-reading-page left the floating
+ * dock visually covering search/lenses when users reached that region. */
+.palace-shell.full-palace-shell:not(.daylight) .chic-reading-page .reading-unified-tabs > :is(button:not(.active):not([aria-pressed="true"]),a:not(.active)),
+.palace-shell.full-palace-shell:not(.daylight) .chic-reading-page .reading-unified-tabs > details > summary{
+ background:#273653!important;
+ color:#e4ebfc!important;
+ border-color:rgba(166,192,237,.43)!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-reading-page .reading-unified-tabs > :is(button:not(.active):not([aria-pressed="true"]),a:not(.active)),
+.palace-shell.full-palace-shell.daylight .chic-reading-page .reading-unified-tabs > details > summary{
+ background:#eef0f8!important;
+ color:#28354c!important;
+ border-color:#b6b6d0!important;
+}
+/* Simplify "Where next?" links: no icon tile nested within the glass link. */
+.palace-shell.full-palace-shell .palace-journey-strip .prism-room-wayfinder-glyph{
+ background:transparent!important;
+ background-image:none!important;
+ border:0!important;
+ box-shadow:none!important;
+ text-shadow:none!important;
+ color:#e0ecff!important;
+ padding:0!important;
+}
+.palace-shell.full-palace-shell.daylight .palace-journey-strip .prism-room-wayfinder-glyph{
+ color:#354776!important;
+ background:transparent!important;
+ border:0!important;
+ box-shadow:none!important;
+}
+/* Search affordance needs contrast independently of the input text. */
+.palace-shell.full-palace-shell:not(.daylight) .chic-reading-page .reading-search-calm .reading-search input::placeholder{
+ color:rgba(255,255,255,.75)!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell:not(.daylight) .chic-reading-page .reading-search-calm .reading-search>span{
+ color:#dce7fc!important;
+ opacity:1!important;
+ font-size:1.25rem!important;
+ text-shadow:none!important;
+}
+.palace-shell.full-palace-shell.daylight .chic-reading-page .reading-search-calm .reading-search>span{
+ color:#354875!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell:not(.daylight) .chic-reading-page .reading-result-count{
+ background:#14223c!important;
+ border-color:rgba(184,202,240,.43)!important;
+}
+.palace-shell.full-palace-shell:not(.daylight) .chic-reading-page .reading-result-count :is(strong,span){
+ color:#fff!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell .chic-reading-page .reading-result-count span{
+ font-size:max(.6rem,10px)!important;
+ line-height:1.35!important;
+ letter-spacing:.035em!important;
+}
+@media(max-width:760px){
+ /* The dock is fixed outside .full-stage; reserve space on the actual
+  * document content box, not just its inner Reading Rooms section. */
+ .palace-shell.full-palace-shell .full-stage > main#palace-content[data-palace-route^="/reading"]{
+  padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))!important;
+  scroll-padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))!important;
+ }
+ .palace-shell.full-palace-shell .chic-reading-page{
+  padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))!important;
+  scroll-padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))!important;
+ }
+ .palace-shell.full-palace-shell .chic-reading-page :is(.reading-search-calm,.reading-reader-lenses,.reading-result-count){
+  scroll-margin-block-end:calc(120px + env(safe-area-inset-bottom,0px))!important;
+ }
+}
