@@ -4,6 +4,7 @@ import {isHistoricalFanfiction,readingArchiveWorkType,MODERN_FANFICTION_LINKS} f
 import {MODERN_FANFICTION_GUIDES,HISTORICAL_FANFICTION_GUIDES,modernFanfictionGuide,historicFanfictionGuide,fanfictionRatingLabel,filterModernFanfiction,isAnimeFanfiction,archiveFanfictionTags} from '../src/fanfictionMetadata.js';
 
 const reading=readFileSync('src/liveRooms.jsx','utf8');
+const hostedModel=readFileSync('src/hostedReadingWork.js','utf8');
 const shelf=readFileSync('src/PalaceFanfictionShelf.jsx','utf8');
 const css=readFileSync('src/palace-fanfiction-shelf.css','utf8');
 
@@ -16,7 +17,8 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(readingArchiveWorkType({category:'classic_novel'})).toBe('archive');
  });
  it('places archived historical fanfic in the existing Fanfiction origin and uses the correct hosted reader',()=>{
-  expect(reading).toContain("summary:r.summary,archive_category:r.category,work_type:readingArchiveWorkType(r)");
+  expect(reading).toContain("archiveRows.filter(canDisplayHostedArchive).map(toHostedReadingWork)");
+  expect(hostedModel).toContain("work_type:readingArchiveWorkType(record)");
   expect(reading).toContain("origin==='fandom'&&<UnifiedFanworkCatalogue publishedWorks=");
   expect(reading).toContain('>Fanfiction</button>');
   expect(shelf).toContain("directClassicHref(work)");
@@ -77,7 +79,7 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{rating:'not_rated'}).some(w=>w.id==='dawn-home-alone')).toBe(true);
   expect(shelf).toContain('<FanfictionGuide guide={historicFanfictionGuide(work)}/>');
   expect(shelf).toContain('modernFanfictionGuide(work)');
-  expect(reading).toContain('...archiveFanfictionTags(r)');
+  expect(hostedModel).toContain('archiveFanfictionTags(record)');
  });
  it('documents new modern fanworks, their source ratings and authors stated licences',()=>{
   const ids=['watchword-summer-for-saya','watchword-only-man','sittscho-rwbynov-volume-one',
