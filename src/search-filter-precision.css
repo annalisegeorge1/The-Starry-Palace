@@ -28,7 +28,7 @@
 .palace-shell .legacy-search-page .palace-refinement-footer p{margin:0!important;color:#d5c9e5!important;font-size:.73rem!important;line-height:1.5!important}
 .palace-shell .legacy-search-page .palace-refinement-footer a{color:#b6d5ff;font-weight:700}
 .palace-shell .legacy-search-page .palace-refinement-footer>button{justify-self:start;min-height:42px;padding:9px 13px;border:1px solid rgba(192,169,238,.55);border-radius:10px;background:rgba(107,79,165,.29);color:#fff;font-weight:700}
-.palace-shell .legacy-search-page .palace-refinement-panel :is(button,select,input,summary):focus-visible{outline:2px solid #b9e7ff;outline-offset:2px}
+.palace-shell .legacy-search-page .palace-search-refinement-panel :is(button,select,input,summary):focus-visible{outline:2px solid #b9e7ff;outline-offset:2px}
 .palace-shell.daylight .legacy-search-page .palace-refinement-section h3,.palace-shell.daylight .legacy-search-page .palace-refinement-field,.palace-shell.daylight .legacy-search-page .palace-refinement-tag-row>span,.palace-shell.daylight .legacy-search-page .palace-refinement-facets>details>summary{color:#382b4c}
 .palace-shell.daylight .legacy-search-page .palace-refinement-field :is(select,input){background:#fff;color:#302442}
 .palace-shell.daylight .legacy-search-page .palace-refinement-note,.palace-shell.daylight .legacy-search-page .palace-refinement-footer p{color:#584a6b!important}

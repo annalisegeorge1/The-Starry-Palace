@@ -171,3 +171,9 @@
 @media(prefers-reduced-motion:reduce){
  .palace-shell.full-palace-shell .reading-facet-sidebar *{scroll-behavior:auto!important}
 }
+
+/* Distinct numbered filter groups keep the controls ordered on narrow screens. */
+.reading-facet-controls .reading-facet-order-head{margin:16px 0 9px;padding-top:11px;border-top:1px solid rgba(178,163,217,.23);color:#eee6f9;font:800 .8rem/1.35 system-ui,sans-serif}
+.reading-facet-controls .reading-facet-order-head:first-of-type{margin-top:8px;padding-top:0;border-top:0}
+.daylight .reading-facet-controls .reading-facet-order-head{color:#3b2e50;border-top-color:rgba(94,79,126,.25)}
+.reading-facet-sidebar .palace-relationship-types{margin-bottom:7px}

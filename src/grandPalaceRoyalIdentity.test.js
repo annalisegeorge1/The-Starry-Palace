@@ -20,8 +20,9 @@ describe('Palace Tidings editorial safety',()=>{
    expect(shouldShowPalaceTidings(path),path).toBe(false);
   }
  });
- it('remains eligible on lively public and Palace community pages',()=>{
-  for(const path of ['/','/events','/grand-palaces','/palace-life','/search'])expect(shouldShowPalaceTidings(path),path).toBe(true);
+ it('remains eligible on lively public and Palace community pages but not focused search',()=>{
+  for(const path of ['/','/events','/grand-palaces','/palace-life'])expect(shouldShowPalaceTidings(path),path).toBe(true);
+  expect(shouldShowPalaceTidings('/search')).toBe(false);
  });
  it('shows no invented winners while awards are unconfirmed',()=>{
   expect(normalizePalaceTidings([])).toEqual([]);

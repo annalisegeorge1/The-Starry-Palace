@@ -55,14 +55,18 @@ export default function ReadingFacetSidebar({
   <div id="reading-facet-controls" className={'reading-facet-controls'+(open?' is-open':'')}>
    <header className="reading-facet-heading"><div><p className="eyebrow">FIND YOUR NEXT WORLD</p><h2>Sort &amp; Filter</h2></div><span aria-hidden="true">✦</span></header>
    <p className="reading-facet-scope">{archiveWide?'Searching all published stories':'Exploring loaded stories and classics'}</p>
+   <h3 className="reading-facet-order-head">1. Sort &amp; order</h3>
    <label className="reading-facet-label" htmlFor="palace-story-sort">Sort by</label>
    <select id="palace-story-sort" value={sort} onChange={event=>onSort(event.target.value)}>{READING_SORT_OPTIONS.map(([id,label,scope])=><option key={id} value={id}>{label}{archiveWide&&scope==='loaded'?' · switches to loaded shelves':''}</option>)}</select>
    {archiveWide&&<p className="reading-facet-hint">Reverse and bookmark sorts use loaded shelves only. Choosing one switches scopes, not just the current page.</p>}
+   <h3 className="reading-facet-order-head">2. Rating &amp; progress</h3>
    <div className="reading-facet-refine">
     <label>Rating<select value={rating} onChange={event=>onRating(event.target.value)}><option value="all">All ratings</option><option value="general">General</option><option value="teen">Teen</option><option value="mature">Mature</option><option value="explicit">Explicit</option><option value="not_rated">Not rated</option></select></label>
     <label>Work status<select value={status} onChange={event=>onStatus(event.target.value)}><option value="all">All statuses</option><option value="in_progress">In progress</option><option value="complete">Complete</option><option value="hiatus">Hiatus</option><option value="abandoned">Abandoned</option></select></label>
    </div>
+   <h3 className="reading-facet-order-head">3. Relationships</h3>
    <PalaceRelationshipFilters included={relationshipIncluded} excluded={relationshipExcluded} onToggle={onToggleRelationship}/>
+   <h3 className="reading-facet-order-head">4. Tag constellation</h3>
    <div className="reading-facet-precision"><div><strong>Include / Exclude Tags</strong><small>{archiveWide?'Choose tags from the full Palace directory':'Build a constellation of tags'}</small></div>{active>0&&<button type="button" onClick={onClear}>Clear choices</button>}</div>
    {(included.length>0||excluded.length>0)&&<div className="reading-facet-selection-summary" aria-live="polite"><span>{included.length} included</span><span>{excluded.length} excluded</span></div>}
    <label className="reading-facet-label" htmlFor="palace-facet-tag-search">{archiveWide?'Search every tag in the Palace':'Find a tag within loaded stories'}</label>
