@@ -17,11 +17,11 @@ const hosted=[
  {id:'novel-1',title:'An Original Novel',slug:'original',work_type:'original',rating:'general'}
 ];
 describe('Unified Fanwork catalogue',()=>{
- it('combines actual member works, public-domain historical works and 98 independent links without duplicating',()=>{
+ it('combines actual member works, public-domain historical works and 130 independent links without duplicating',()=>{
   const entries=createUnifiedFanworks(hosted);
-  expect(entries).toHaveLength(100);
-  expect(new Set(entries.map(e=>e.key)).size).toBe(100);
-  expect(entries.filter(e=>e.kind==='link')).toHaveLength(98);
+  expect(entries).toHaveLength(132);
+  expect(new Set(entries.map(e=>e.key)).size).toBe(132);
+  expect(entries.filter(e=>e.kind==='link')).toHaveLength(130);
   expect(entries.filter(e=>e.kind==='member')).toHaveLength(1);
   expect(entries.filter(e=>e.kind==='historical')).toHaveLength(1);
   expect(entries.find(e=>e.kind==='member').href).toBe('/work/palace-story');
@@ -50,7 +50,7 @@ describe('Unified Fanwork catalogue',()=>{
  });
  it('renders a single list with distinct Palace and original-source reading actions',()=>{
   render(<MemoryRouter><UnifiedFanworkCatalogue publishedWorks={hosted}
-   externalWorks={MODERN_FANFICTION_LINKS.slice(0,1)}/></MemoryRouter>);
+   externalWorks={[MODERN_FANFICTION_LINKS.find(work=>work.id==='anime-animeisperfection-frozen-heart')]}/></MemoryRouter>);
   expect(screen.getByRole('heading',{name:/Fan-made works/})).toBeTruthy();
   expect(screen.getAllByRole('link',{name:/Read on the Palace/})).toHaveLength(2);
   expect(screen.getByRole('link',{name:/Read at original source/})).toBeTruthy();

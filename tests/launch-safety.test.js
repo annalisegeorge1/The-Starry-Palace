@@ -959,7 +959,7 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('lifetime points');
     expect(live).toContain('How my points were earned');
     expect(live).toContain('celestial_points_required');
-    expect(treasury).toContain('Special titles now live in the Royal Treasury.');
+    expect(treasury).toContain('Special titles are in the Royal Treasury');
     expect(treasury).not.toContain('celestial-balance-room');
     expect(polish).toContain('grid-template-columns:minmax(0,1fr)!important');
   });

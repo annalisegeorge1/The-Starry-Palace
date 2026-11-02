@@ -9,9 +9,9 @@ const nav=readFileSync('src/main.jsx','utf8');
 
 describe('Fandom Atlas includes the same rights-aware Fanfiction collection',()=>{
  it('keeps all previously indexed modern stories with provenance and matching tags',()=>{
-  expect(MODERN_FANFICTION_LINKS).toHaveLength(98);
-  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.id)).size).toBe(98);
-  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.sourceUrl)).size).toBe(98);
+  expect(MODERN_FANFICTION_LINKS).toHaveLength(130);
+  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.id)).size).toBe(130);
+  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.sourceUrl)).size).toBe(130);
   for(const work of MODERN_FANFICTION_LINKS){
    expect(work.creator).toBeTruthy();
    expect(work.sourceUrl).toMatch(/^https:\/\//);
