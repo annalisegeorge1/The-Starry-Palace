@@ -9,89 +9,67 @@ const props={
  sort:'updated',onSort:vi.fn(),rating:'all',onRating:vi.fn(),status:'all',onStatus:vi.fn(),
  included:[],excluded:[],onToggle:vi.fn(),onClear:vi.fn(),loadedCount:48,hasMore:true
 };
-it('keeps the mobile filter panel accessible and presents inclusive and exclusive actions',()=>{
- const onToggle=vi.fn(),onSort=vi.fn();
- render(<MemoryRouter><ReadingFacetSidebar {...props} onToggle={onToggle} onSort={onSort}/></MemoryRouter>);
- const button=screen.getByRole('button',{name:/Sort & Filter/});
- expect(button.getAttribute('aria-expanded')).toBe('false');
- fireEvent.click(button);
- expect(button.getAttribute('aria-expanded')).toBe('true');
- fireEvent.click(screen.getByText('Fandoms'));
- fireEvent.click(screen.getByRole('button',{name:'Include Dragon Age'}));
- fireEvent.click(screen.getByRole('button',{name:'More options for Dragon Age'}));
- fireEvent.click(screen.getByRole('button',{name:'Exclude Dragon Age'}));
+const view=(more={})=>render(<MemoryRouter><ReadingFacetSidebar {...props} {...more}/></MemoryRouter>);
+it('uses compact checkboxes in separate Include and Exclude sections without per-row menus',()=>{
+ const onToggle=vi.fn(),onSort=vi.fn();view({onToggle,onSort});
+ const toggle=screen.getByRole('button',{name:'Open Sort & Filter'});
+ expect(toggle.getAttribute('aria-expanded')).toBe('false');
+ fireEvent.click(toggle);fireEvent.click(screen.getByText('Fandoms'));
+ fireEvent.click(screen.getByRole('checkbox',{name:'Include Dragon Age'}));
  expect(onToggle).toHaveBeenNthCalledWith(1,'f1','include');
+ expect(screen.queryByRole('button',{name:'More options for Dragon Age'})).toBeNull();
+ fireEvent.click(screen.getByRole('button',{name:/4\. Exclude/}));
+ const fandoms=screen.getAllByText('Fandoms');
+ fireEvent.click(fandoms[fandoms.length-1]);
+ fireEvent.click(screen.getByRole('checkbox',{name:'Exclude Dragon Age'}));
  expect(onToggle).toHaveBeenNthCalledWith(2,'f1','exclude');
  fireEvent.change(screen.getByLabelText('Sort by'),{target:{value:'comments'}});
  expect(onSort).toHaveBeenCalledWith('comments');
  expect(screen.getByText(/currently loaded works/)).toBeTruthy();
 });
-it('offers a way to clear combined choices without losing the tag label',()=>{
- const onClear=vi.fn();
- render(<MemoryRouter><ReadingFacetSidebar {...props} included={['f1']} excluded={[]} rating="teen" onClear={onClear}/></MemoryRouter>);
+it('offers clear all for current choices',()=>{
+ const onClear=vi.fn();view({included:['f1'],rating:'teen',onClear});
  fireEvent.click(screen.getByRole('button',{name:'Clear choices'}));
  expect(onClear).toHaveBeenCalledOnce();
 });
-
-it('offers explicit include and exclude relationship categories in a predictable order',()=>{
- const onToggleRelationship=vi.fn();
- render(<MemoryRouter><ReadingFacetSidebar {...props} onToggleRelationship={onToggleRelationship}/></MemoryRouter>);
- fireEvent.click(screen.getByRole('button',{name:/Sort & Filter/}));
+it('include and exclude relationship checkboxes work in their respective sections',()=>{
+ const onToggleRelationship=vi.fn();view({onToggleRelationship});
+ fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
  fireEvent.click(screen.getByRole('checkbox',{name:'Include F/F relationships'}));
- fireEvent.click(screen.getByRole('button',{name:'More options for M/M relationships'}));
- fireEvent.click(screen.getByRole('button',{name:'Exclude M/M relationships'}));
+ fireEvent.click(screen.getByRole('button',{name:/4\. Exclude/}));
+ fireEvent.click(screen.getByRole('checkbox',{name:'Exclude M/M relationships'}));
  expect(onToggleRelationship).toHaveBeenNthCalledWith(1,'ff','include');
  expect(onToggleRelationship).toHaveBeenNthCalledWith(2,'mm','exclude');
- expect(screen.getByRole('button',{name:/3\. Include/})).toBeTruthy();
+ expect(screen.queryByRole('button',{name:'More options for M/M relationships'})).toBeNull();
 });
-
-it('shows only six tag rows at first, and expands on demand without losing selection',()=>{
+it('limits long tag lists until expanded',()=>{
  const tags=Array.from({length:12},(_,i)=>({id:'t'+i,name:'Character '+i,count:12-i}));
- const toggle=vi.fn();
- render(<MemoryRouter><ReadingFacetSidebar {...props} facets={[{category:'character',label:'Characters',tags}]} onToggle={toggle}/></MemoryRouter>);
- fireEvent.click(screen.getByRole('button',{name:/Sort & Filter/}));
+ const onToggle=vi.fn();view({facets:[{category:'character',label:'Characters',tags}],onToggle});
+ fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
  fireEvent.click(screen.getByText('Characters'));
- expect(screen.getByRole('button',{name:'Include Character 0'})).toBeTruthy();
- expect(screen.queryByRole('button',{name:'Include Character 8'})).toBeNull();
+ expect(screen.getByRole('checkbox',{name:'Include Character 0'})).toBeTruthy();
+ expect(screen.queryByRole('checkbox',{name:'Include Character 8'})).toBeNull();
  fireEvent.click(screen.getByRole('button',{name:/Show all 12 characters/}));
- expect(screen.getByRole('button',{name:'Include Character 8'})).toBeTruthy();
- fireEvent.click(screen.getByRole('button',{name:'Include Character 8'}));
- expect(toggle).toHaveBeenCalledWith('t8','include');
+ fireEvent.click(screen.getByRole('checkbox',{name:'Include Character 8'}));
+ expect(onToggle).toHaveBeenCalledWith('t8','include');
  fireEvent.click(screen.getByRole('button',{name:/Show fewer characters/}));
- expect(screen.queryByRole('button',{name:'Include Character 8'})).toBeNull();
+ expect(screen.queryByRole('checkbox',{name:'Include Character 8'})).toBeNull();
 });
-it('closes filter panel using the floating results action',()=>{
- const onShowResults=vi.fn();
- render(<MemoryRouter><ReadingFacetSidebar {...props} onShowResults={onShowResults} resultsCount={14}/></MemoryRouter>);
- const open=screen.getByRole('button',{name:/Sort & Filter/});
- fireEvent.click(open);
- expect(screen.getByRole('button',{name:/Show 14 Results/})).toBeTruthy();
+it('has one mobile header and an accessible results action above the dock',()=>{
+ const onShowResults=vi.fn();view({onShowResults,resultsCount:14});
+ fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
+ expect(screen.getByRole('button',{name:'Close Sort & Filter'})).toBeTruthy();
+ expect(document.querySelector('.reading-facet-desktop-title')).toBeNull();
+ expect(document.querySelector('.reading-facet-heading')).toBeNull();
  fireEvent.click(screen.getByRole('button',{name:/Show 14 Results/}));
  expect(onShowResults).toHaveBeenCalledOnce();
- expect(open.getAttribute('aria-expanded')).toBe('false');
-});
-
-it('shows one mobile Sort & Filter heading and one close action, not a nested header',()=>{
- render(<MemoryRouter><ReadingFacetSidebar {...props}/></MemoryRouter>);
- const toggle=screen.getByRole('button',{name:'Open Sort & Filter'});
- fireEvent.click(toggle);
- expect(screen.getByRole('button',{name:'Close Sort & Filter'})).toBeTruthy();
- expect(screen.getByRole('heading',{name:'Sort & Filter'})).toBeTruthy();
- expect(document.querySelector('.reading-facet-heading')).toBeNull();
- expect(screen.queryByRole('button',{name:'Hide'})).toBeNull();
- expect(screen.queryByRole('button',{name:'Close'})).toBeNull();
- fireEvent.click(screen.getByRole('button',{name:'Close Sort & Filter'}));
  expect(screen.getByRole('button',{name:'Open Sort & Filter'}).getAttribute('aria-expanded')).toBe('false');
 });
-it('tag row has no redundant plus icon but retains visible include state',()=>{
- const {rerender}=render(<MemoryRouter><ReadingFacetSidebar {...props}/></MemoryRouter>);
+it('reflects checked state in controlled tag choices',()=>{
+ const {rerender}=view();
  fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
  fireEvent.click(screen.getByText('Fandoms'));
- const tagButton=screen.getByRole('button',{name:'Include Dragon Age'});
- expect(tagButton.querySelector('.reading-tag-selection-icon')).toBeNull();
- expect(tagButton.getAttribute('aria-pressed')).toBe('false');
+ expect(screen.getByRole('checkbox',{name:'Include Dragon Age'}).checked).toBe(false);
  rerender(<MemoryRouter><ReadingFacetSidebar {...props} included={['f1']}/></MemoryRouter>);
- const activeTag=screen.getByRole('button',{name:'Include Dragon Age'});
- expect(activeTag.getAttribute('aria-pressed')).toBe('true');
- expect(activeTag.querySelector('.reading-tag-selection-icon').textContent).toBe('✓');
+ expect(screen.getByRole('checkbox',{name:'Include Dragon Age'}).checked).toBe(true);
 });

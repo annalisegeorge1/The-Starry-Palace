@@ -60,7 +60,7 @@ describe('Reading atlas archive vs classics',()=>{
   await waitFor(()=>expect(onSearchTags).toHaveBeenCalledWith('intrigue','all',60),{timeout:2200});
   await waitFor(()=>expect(screen.getByText('Palace intrigue')).toBeTruthy(),{timeout:2200});
   fireEvent.click(screen.getByText('Tropes'));
-  fireEvent.click(screen.getByRole('button',{name:'Include Palace intrigue'}));
+  fireEvent.click(screen.getByRole('checkbox',{name:'Include Palace intrigue'}));
   expect(onToggle).toHaveBeenCalledWith('tag-x','include');
   expect(onTagIdentified).toHaveBeenCalledWith(expect.objectContaining({name:'Palace intrigue'}));
  });

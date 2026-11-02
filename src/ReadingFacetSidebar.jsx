@@ -23,7 +23,6 @@ export default function ReadingFacetSidebar({
  const [busy,setBusy]=useState({include:false,exclude:false});
  const [errors,setErrors]=useState({include:'',exclude:''});
  const [expandedGroups,setExpandedGroups]=useState({});
- const [moreTag,setMoreTag]=useState(null);
  const active=included.length+excluded.length+relationshipIncluded.length+relationshipExcluded.length+(rating!=='all'?1:0)+(status!=='all'?1:0);
  const modes=['include','exclude'];
  const includeQ=searches.include.trim().toLocaleLowerCase();
@@ -80,10 +79,10 @@ export default function ReadingFacetSidebar({
  function pick(tag,mode){
   onToggle(tag.id,mode);
   onTagIdentified?.(tag);
-  setMoreTag(null);
+  
  }
  function showResults(){
-  setOpen(false);setMoreTag(null);
+  setOpen(false);
   onShowResults();
  }
  function exactTagOnEnter(event,mode){
@@ -99,7 +98,6 @@ export default function ReadingFacetSidebar({
   const q=mode==='include'?includeQ:excludeQ;
   const selected=mode==='include'?included:excluded;
   const selectedRelationships=mode==='include'?relationshipIncluded:relationshipExcluded;
-  const opposite=mode==='include'?'exclude':'include';
   return <div className="reading-facet-mode-body" id={'reading-mode-'+mode}>
    <div className="reading-facet-relationship-cluster">
     <h4>Relationship categories</h4>
@@ -109,7 +107,7 @@ export default function ReadingFacetSidebar({
     <label className="reading-facet-label" htmlFor={'palace-facet-tag-'+mode}>Other tags to {mode}</label>
     <input id={'palace-facet-tag-'+mode} type="search" className="reading-facet-search"
      aria-label={'Other tags to '+mode} value={searches[mode]}
-     onChange={e=>{setSearches(prev=>({...prev,[mode]:e.target.value}));setMoreTag(null)}}
+     onChange={e=>{setSearches(prev=>({...prev,[mode]:e.target.value}));}}
      onKeyDown={e=>exactTagOnEnter(e,mode)}
      placeholder={mode==='include'?'Search fandoms, characters, relationships, tropes…':'Search tags to exclude…'}/>
     <small className="reading-facet-search-caption">Choose an exact tag below{archiveWide?' or search the full Palace directory':''}. Press Enter for an exact name.</small>
@@ -131,28 +129,14 @@ export default function ReadingFacetSidebar({
        {visible.map(tag=>{
         const selectedHere=selected.includes(tag.id);
         const selectedOpposite=(mode==='include'?excluded:included).includes(tag.id);
-        const actionId='reading-tag-more-'+mode+'-'+String(tag.id).replace(/[^a-zA-Z0-9_-]/g,'');
-        const menuOpen=moreTag===mode+':'+String(tag.id);
-        return <div className={'reading-facet-option'+(selectedHere?(mode==='include'?' is-included':' is-excluded'):'')} key={tag.id}>
-         <button type="button" className="reading-facet-option-pick" aria-label={(mode==='include'?'Include ':'Exclude ')+tag.name}
-          aria-pressed={selectedHere} onClick={()=>pick(tag,mode)}>
-          <span className="reading-facet-option-name" title={tag.name}>{tag.name}{!tag.global&&tag.count!=null&&<small>{tag.count}</small>}</span>
-          {selectedHere&&<span className="reading-tag-selection-icon" aria-hidden="true">✓</span>}
-          {!selectedHere&&selectedOpposite&&<span className="reading-facet-opposite-selected" aria-hidden="true">{mode==='include'?'Excluded':'Included'}</span>}
-         </button>
-         <button type="button" className="reading-facet-option-more" aria-label={'More options for '+tag.name}
-          aria-expanded={menuOpen} aria-controls={actionId}
-          onClick={()=>setMoreTag(menuOpen?null:mode+':'+String(tag.id))}>···</button>
-         {menuOpen&&<div className="reading-tag-more-actions" id={actionId}>
-          <button type="button" onClick={()=>pick(tag,opposite)} aria-label={(opposite==='include'?'Include ':'Exclude ')+tag.name}>
-           {opposite==='include'?'Include this tag':'Exclude this tag'}
-          </button>
-          {selectedHere&&<button type="button" onClick={()=>pick(tag,mode)}>Clear this choice</button>}
-         </div>}
-        </div>;
+        return <label className={'reading-facet-check-row'+(selectedHere?(mode==='include'?' is-included':' is-excluded'):'')} key={tag.id}>
+         <input type="checkbox" checked={selectedHere} aria-label={(mode==='include'?'Include ':'Exclude ')+tag.name} onChange={()=>pick(tag,mode)}/>
+         <span className="reading-facet-check-label" title={tag.name}>{tag.name}{!tag.global&&tag.count!=null&&<small>({tag.count})</small>}</span>
+         {!selectedHere&&selectedOpposite&&<span className="reading-facet-opposite-selected">{mode==='include'?'Excluded':'Included'}</span>}
+        </label>;
        })}
        {canCollapse&&<button type="button" className="reading-facet-expand" aria-expanded={expanded}
-         onClick={()=>{setExpandedGroups(prev=>({...prev,[key]:!expanded}));setMoreTag(null)}}>
+         onClick={()=>{setExpandedGroups(prev=>({...prev,[key]:!expanded}));}}>
          {expanded?'Show fewer '+group.label.toLowerCase()+' ↑':'Show all '+group.tags.length+' '+group.label.toLowerCase()+' ↓'}
        </button>}
        {hasMore&&<span className="reading-facet-collapsed-hint">{group.tags.length-visible.length} more tags available</span>}
@@ -165,12 +149,11 @@ export default function ReadingFacetSidebar({
   </div>;
  }
  return <aside className="reading-facet-sidebar" aria-label="Sort and filter stories">
-  <button type="button" className={'reading-facet-mobile-toggle'+(open?' is-open':'')} aria-label={open?'Close Sort & Filter':'Open Sort & Filter'} aria-controls="reading-facet-controls" aria-expanded={open} onClick={()=>{setOpen(v=>!v);setMoreTag(null)}}>
+  <button type="button" className={'reading-facet-mobile-toggle'+(open?' is-open':'')} aria-label={open?'Close Sort & Filter':'Open Sort & Filter'} aria-controls="reading-facet-controls" aria-expanded={open} onClick={()=>{setOpen(v=>!v);}}>
    <span className="reading-facet-top-title">☷ Sort &amp; Filter</span>
    <span className="reading-facet-top-action">{open?<><span aria-hidden="true">✕</span> Close</>:<>{active?active+' active · ':''} Show <span aria-hidden="true">▾</span></>}</span>
   </button>
   <div id="reading-facet-controls" className={'reading-facet-controls'+(open?' is-open':'')}>
-   <h2 className="reading-facet-desktop-title">Sort &amp; Filter</h2>
    <p className="reading-facet-scope">{archiveWide?'Searching all published stories':'Exploring loaded stories and classics'}</p>
    <h3 className="reading-facet-order-head">1. Sort &amp; order</h3>
    <label className="reading-facet-label" htmlFor="palace-story-sort">Sort by</label>
@@ -189,7 +172,7 @@ export default function ReadingFacetSidebar({
     const count=mode==='include'?included.length+relationshipIncluded.length:excluded.length+relationshipExcluded.length;
     return <section key={mode} className={'reading-facet-mode reading-facet-mode-'+mode}>
      <button type="button" className="reading-facet-mode-trigger" aria-expanded={isExpanded} aria-controls={'reading-mode-'+mode}
-      onClick={()=>{setExpandedModes(prev=>({...prev,[mode]:!prev[mode]}));setMoreTag(null)}}>
+      onClick={()=>{setExpandedModes(prev=>({...prev,[mode]:!prev[mode]}));}}>
       <span className="reading-facet-mode-title"><b>{index+3}. {mode==='include'?'Include':'Exclude'}</b><small>{mode==='include'?'Must-have tags and categories':'Tags and categories you do not want'}</small></span>
       <span className="reading-facet-mode-status">{count>0&&<em>{count} chosen</em>}<span aria-hidden="true">{isExpanded?'▴':'▾'}</span></span>
      </button>
