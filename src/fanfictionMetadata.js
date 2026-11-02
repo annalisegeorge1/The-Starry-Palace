@@ -1,3 +1,4 @@
+import {parseHostedFanworkMetadata} from './hostedFanworkMetadata';
 import {intakeFandomNames} from './fanworkFandomNavigation';
 import {LICENSED_ANIME_FANWORK_BY_SLUG,LICENSED_ANIME_FANWORK_INTAKE} from './licensedAnimeFanworkIntake';
 /**
@@ -137,10 +138,19 @@ const fallback=entry('not_rated',null,{},[],'unrated');
 export function modernFanfictionGuide(work){return MODERN_FANFICTION_GUIDES[work?.id]||fallback}
 export function historicFanfictionGuide(work){return HISTORICAL_FANFICTION_GUIDES[work?.slug]||fallback}
 export function hostedFanfictionGuide(work){
- return LICENSED_FANFICTION_GUIDES[work?.slug]||historicFanfictionGuide(work);
+ // Published editions use their reviewed database metadata as the authority.
+ // The static intake guide remains a fallback for already catalogued works.
+ const recorded=parseHostedFanworkMetadata(work);
+ return recorded?{rating:recorded.rating,sourceRating:recorded.sourceRating,
+  ratingBasis:recorded.ratingBasis,tags:recorded.tags,
+  contentWarnings:recorded.contentWarnings}:
+  LICENSED_FANFICTION_GUIDES[work?.slug]||historicFanfictionGuide(work);
 }
 export function hostedFanfictionCompletion(work){
- return LICENSED_ANIME_FANWORK_BY_SLUG[work?.slug]?.completion_status||'complete';
+ const recorded=parseHostedFanworkMetadata(work);
+ return recorded?.completionStatus||
+  LICENSED_ANIME_FANWORK_BY_SLUG[work?.slug]?.completion_status||
+  (work?.archive_category==='licensed_fanfiction'||work?.category==='licensed_fanfiction'?'in_progress':'complete');
 }
 export function fanfictionRatingLabel(guide){
  const title={general:'General',teen:'Teen',mature:'Mature',explicit:'Explicit',not_rated:'Not rated'}[guide?.rating]||'Not rated';
