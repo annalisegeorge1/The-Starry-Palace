@@ -29,7 +29,8 @@ export function toHostedReadingWork(record){
   work_tags:[
    {tags:{id:'archive-collection-'+(fanwork?'fanwork':'classic'),name:collectionName,category:'format',status:'canonical'}},
    {tags:{id:'archive-category-'+(record.category||'classic'),name:category,category:'genre',status:'canonical'}},
-   ...tags
+   ...tags,
+   ...(!fanwork&&Array.isArray(record.archive_novel_tags)?record.archive_novel_tags.map(tag=>({tags:tag})):[])
   ]
  };
 }
