@@ -1,3 +1,4 @@
+import {intakeFandomNames} from './fanworkFandomNavigation';
 import {LICENSED_ANIME_FANWORK_BY_SLUG,LICENSED_ANIME_FANWORK_INTAKE} from './licensedAnimeFanworkIntake';
 /**
  * Curated discovery metadata, separate from the works themselves.
@@ -118,7 +119,7 @@ export const HISTORICAL_FANFICTION_GUIDES=Object.freeze({
  * author's entire edition has been acquired and the archive is approved. */
 export const LICENSED_FANFICTION_GUIDES=Object.freeze(Object.fromEntries(
  LICENSED_ANIME_FANWORK_INTAKE.map(work=>[work.slug,entry(work.rating,work.sourceRating,{
-  fandom:[work.fandom],format:['Anime & Manga'],
+  fandom:intakeFandomNames(work.fandom),format:['Anime & Manga'],
   ...(work.language==='Spanish'?{language:['Spanish']}:{language:['English']}),
   genre:work.genres,trope:work.tropes,character:work.characters,
   relationship:work.relationships,warning:work.warnings

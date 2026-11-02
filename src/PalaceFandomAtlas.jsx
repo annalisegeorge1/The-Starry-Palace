@@ -10,6 +10,7 @@ import {toHostedReadingWork} from './hostedReadingWork';
 import {MODERN_FANFICTION_LINKS} from './palaceFanfictionDiscovery';
 import PalaceInfoMark from './PalaceInfoMark';
 import {tagWorldPath} from './tagWorldRoutes';
+import {fanworkFandomFromSearch} from './fanworkFandomNavigation';
 import './palace-fandom-atlas.css';
 
 export default function PalaceFandomAtlas(){
@@ -18,6 +19,7 @@ export default function PalaceFandomAtlas(){
  const selectedMedia=params.get('media')||'all',keyword=params.get('q')||'';
  const subcategory=params.get('kind')||'all',franchise=params.get('world')||'all';
  const atlasSection=params.get('section')==='fanfiction'?'fanfiction':'directory';
+ const exactFandom=atlasSection==='fanfiction'?fanworkFandomFromSearch(location.search):'';
  const urlIds=(params.get('ids')||'').split(',').filter(Boolean);
  const mode=params.get('match')==='all'?'all':'any';
  const [rows,setRows]=useState([]);
@@ -29,6 +31,7 @@ export default function PalaceFandomAtlas(){
  const validMedia=FANDOM_MEDIA_SHELVES.some(x=>x.id===selectedMedia)?selectedMedia:'all';
  const selected=safeFandomSelection(urlIds,rows);
  const selectedNames=selected.map(id=>rows.find(row=>row.id===id)?.name).filter(Boolean);
+ const activeFandomNames=selectedNames.length?selectedNames:exactFandom?[exactFandom]:[];
  const facets=useMemo(()=>fandomFacetOptions(rows,validMedia),[rows,validMedia]);
  const validSubcategory=facets.categories.includes(subcategory)?subcategory:'all';
  const validFranchise=facets.franchises.includes(franchise)?franchise:'all';
@@ -128,7 +131,7 @@ export default function PalaceFandomAtlas(){
       {selected.includes(f.id)?'✓ In my constellation':'+ Select fandom'}
      </button>
      {tagWorldPath(f)&&<Link className="palace-fandom-browse-door" to={tagWorldPath(f)}>Browse Palace-published stories →</Link>}
-     <Link className="palace-fandom-fanfic-door" to={'/fandoms?section=fanfiction&ids='+encodeURIComponent(f.id)}>Find linked fanfiction →</Link>
+     <Link className="palace-fandom-fanfic-door" to={'/fandoms?section=fanfiction&ids='+encodeURIComponent(f.id)}>Browse fanfiction →</Link>
     </article>)}
    </div>
    <footer className="palace-fandom-pages">
@@ -162,8 +165,8 @@ export default function PalaceFandomAtlas(){
   </section>
   </>}
   {atlasSection==='fanfiction'&&<section className="palace-fandom-linked-section" aria-label="Fanfiction by fandom">
-   {selectedNames.length>0&&<div className="palace-fandom-selection-note"><span>Fandoms selected: <strong>{selectedNames.join(' · ')}</strong></span><button type="button" onClick={()=>changeParams({ids:null,match:null})}>Browse all linked fanfiction</button><button type="button" onClick={()=>changeParams({section:null})}>Choose different fandoms</button></div>}
-   <UnifiedFanworkCatalogue key={selected.join(',')+'|'+mode} publishedWorks={[...(selectedNames.length?stories:fanworkRows),...historicFanworks]} globalQuery={selectedNames.length?'':keyword} fandomNames={selectedNames} fandomMatch={mode} loading={fanworksBusy||selectedNames.length>0&&storyBusy} loadError={fanworksError||selectedNames.length>0&&storyError} inFandomAtlas={true} defaultSource="hosted"/>
+   {activeFandomNames.length>0&&<div className="palace-fandom-selection-note"><span>Fandom{activeFandomNames.length>1?'s':''}: <strong>{activeFandomNames.join(' · ')}</strong></span><button type="button" onClick={()=>changeParams({ids:null,match:null,fandom:null})}>All fanfiction</button><button type="button" onClick={()=>changeParams({section:null,fandom:null})}>Choose different fandoms</button></div>}
+   <UnifiedFanworkCatalogue key={activeFandomNames.join(',')+'|'+mode} publishedWorks={[...(selectedNames.length?stories:fanworkRows),...historicFanworks]} globalQuery={selectedNames.length?'':keyword} fandomNames={activeFandomNames} fandomMatch={mode} loading={fanworksBusy||selectedNames.length>0&&storyBusy} loadError={fanworksError||selectedNames.length>0&&storyError} inFandomAtlas={true} defaultSource="hosted"/>
    <p className="palace-fandom-complete-archive"><Link to="/reading?section=fanfiction">Browse the full Palace-hosted and linked Fanwork catalogue →</Link></p>
   </section>}
  </section>;
