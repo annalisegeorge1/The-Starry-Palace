@@ -4,3 +4,9 @@
   Referrer-Policy: strict-origin-when-cross-origin
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
+
+# Let updated service workers be discovered; keep maintenance notices fresh.
+/palace-sw.js
+  Cache-Control: no-cache
+/maintenance.html
+  Cache-Control: no-store

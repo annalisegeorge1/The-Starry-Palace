@@ -123,5 +123,14 @@
   </div>
   <div id="root"></div>
   <script id="palace-entry" type="module" src="/src/main.jsx" onerror="window.__palaceBootFailure&&window.__palaceBootFailure('module-load')"></script>
+  <script>
+    // Install an offline *public status page*, not a cache of private Palace data.
+    // Registration never forces a page reload or redirects a writer.
+    if('serviceWorker' in navigator){
+      window.addEventListener('load',function(){
+        navigator.serviceWorker.register('/palace-sw.js',{scope:'/'}).catch(function(){});
+      });
+    }
+  </script>
 </body>
 </html>
