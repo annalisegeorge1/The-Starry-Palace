@@ -31,7 +31,7 @@ export function parseHostedFanworkMetadata(work){
  if(typeof raw!=='string'||!raw.trim()||raw.length>30000)return null;
  let data;
  try{data=JSON.parse(raw)}catch{return null}
- if(!data||typeof data!=='object'||Array.isArray(data))return null;
+ if(!data||typeof data!=='object'||Array.isArray(data)||Object.keys(data).length===0)return null;
  const rating=RATINGS.has(data.rating)?data.rating:'not_rated';
  const completionStatus=STATUSES.has(data.completion_status)?data.completion_status:'in_progress';
  const tags=[];
