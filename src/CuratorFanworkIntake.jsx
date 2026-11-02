@@ -127,6 +127,9 @@ export default function CuratorFanworkIntake(){
        {chosen.sourceUrl&&<a href={chosen.sourceUrl} target="_blank" rel="noopener noreferrer">View original source</a>}
        {chosen.permissionUrl&&<a href={chosen.permissionUrl} target="_blank" rel="noopener noreferrer">View recorded author terms</a>}
        <span>Source licence statement: {chosen.sourceLicense||'Unverified'}</span>
+       <span>Original language: {chosen.originalLanguage||'Unrecorded'}</span>
+       <span>Recorded warnings: {chosen.sourceWarnings?.length?chosen.sourceWarnings.join(' · '):'None recorded — review the full text before publication'}</span>
+       {chosen.sourceTags?.length>0&&<span>Recorded tropes: {chosen.sourceTags.slice(0,8).join(' · ')}</span>}
       </div>}
      {chosen&&readiness&&<section className="curator-fanwork-review-card" aria-label="Publication readiness checklist">
        <div className="curator-fanwork-review-heading"><strong>{readiness.label}</strong>
