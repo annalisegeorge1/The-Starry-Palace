@@ -37,7 +37,7 @@ it('offers explicit include and exclude relationship categories in a predictable
  const onToggleRelationship=vi.fn();
  render(<MemoryRouter><ReadingFacetSidebar {...props} onToggleRelationship={onToggleRelationship}/></MemoryRouter>);
  fireEvent.click(screen.getByRole('button',{name:/Sort & Filter/}));
- fireEvent.click(screen.getByRole('button',{name:'Include F/F relationships'}));
+ fireEvent.click(screen.getByRole('checkbox',{name:'Include F/F relationships'}));
  fireEvent.click(screen.getByRole('button',{name:'More options for M/M relationships'}));
  fireEvent.click(screen.getByRole('button',{name:'Exclude M/M relationships'}));
  expect(onToggleRelationship).toHaveBeenNthCalledWith(1,'ff','include');

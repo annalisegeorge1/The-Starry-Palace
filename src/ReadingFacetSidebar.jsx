@@ -81,7 +81,7 @@ export default function ReadingFacetSidebar({
 
    <div className="reading-facet-tag-search-dock">
     <label className="reading-facet-label" htmlFor="palace-facet-tag-search">{archiveWide?'Search all Palace tags':'Find a tag in these stories'}</label>
-    <input id="palace-facet-tag-search" className="reading-facet-search" type="search" value={search} onChange={event=>{setSearch(event.target.value);setMoreTag(null)}} placeholder="Search fandoms, characters, tropes, warnings…"/>
+    <input id="palace-facet-tag-search" className="reading-facet-search" type="search" value={search} onChange={event=>{setSearch(event.target.value);setMoreTag(null)}} placeholder="Search fandoms, characters, relationships, tropes…"/>
    </div>
    {archiveWide&&!q&&<p className="reading-facet-hint">Browse the tags in these story suggestions or search above to find any tag in the Palace, even one not shown here.</p>}
    {tagBusy&&<p className="reading-facet-hint" role="status">Gathering tags from the directory…</p>}
