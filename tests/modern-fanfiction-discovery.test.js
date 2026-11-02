@@ -25,8 +25,8 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(shelf).toContain("PUBLIC DOMAIN · HOSTED ON THE PALACE");
  });
  it('links to actual writers and their permission evidence without mirroring modern text',()=>{
-  expect(MODERN_FANFICTION_LINKS).toHaveLength(116);
-  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.id)).size).toBe(116);
+  expect(MODERN_FANFICTION_LINKS).toHaveLength(130);
+  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.id)).size).toBe(130);
   expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.creator)).size).toBeGreaterThanOrEqual(7);
   for(const w of MODERN_FANFICTION_LINKS){
    expect(w.title).toBeTruthy();
@@ -164,10 +164,10 @@ describe('Fanfiction section contains rights-aware historical and modern discove
  });
  it('preserves the entire discovered catalogue, 2 verified hosted fanfics, and author-only attribution',()=>{
   const combined=MODERN_FANFICTION_LINKS.map(w=>w.id);
-  expect(combined.length).toBe(116);
-  expect(new Set(combined).size).toBe(116);
-  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.sourceUrl)).size).toBe(116);
-  expect(Object.keys(MODERN_FANFICTION_GUIDES).length).toBe(116);
+  expect(combined.length).toBe(130);
+  expect(new Set(combined).size).toBe(130);
+  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.sourceUrl)).size).toBe(130);
+  expect(Object.keys(MODERN_FANFICTION_GUIDES).length).toBe(130);
   expect(Object.keys(HISTORICAL_FANFICTION_GUIDES).length).toBe(2);
   for(const work of MODERN_FANFICTION_LINKS){
     expect(work.creator.trim().length).toBeGreaterThan(0);
@@ -272,7 +272,7 @@ describe('Fanfiction section contains rights-aware historical and modern discove
    const controls=readFileSync('src/ReadingCatalogueControls.jsx','utf8');
    expect(controls).toContain('See all {linkedCount} modern fanfic recommendations');
    expect(controls).toContain('href="#palace-fanfiction-shelf-title"');
-   expect(MODERN_FANFICTION_LINKS.length).toBe(116);
+   expect(MODERN_FANFICTION_LINKS.length).toBe(130);
   });
  it('uses the existing theme and avoids new mobile dock or navigation geometry',()=>{
   expect(css).toContain('var(--ui-surface)');
