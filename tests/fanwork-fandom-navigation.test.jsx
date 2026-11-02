@@ -33,18 +33,19 @@ describe('Fanwork-to-fandom integration',()=>{
    description:'A shared story',sourceUrl:'https://www.fanfiction.net/s/12345678/1/Example',permissionUrl:'https://example.org/terms',permissionLabel:'Author terms'}];
   const entries=createUnifiedFanworks(hosted,external);
   expect(filterUnifiedFanworks(entries,{fandomNames:['Naruto']}).some(x=>x.kind==='member')).toBe(true);
-  render(<MemoryRouter><UnifiedFanworkCatalogue publishedWorks={hosted} externalWorks={[]}
-   defaultSource="hosted"/></MemoryRouter>);
+  render(<MemoryRouter><UnifiedFanworkCatalogue publishedWorks={hosted} externalWorks={external}
+   defaultSource="all"/></MemoryRouter>);
   const tag=screen.getByRole('link',{name:'Naruto'});
   expect(tag.getAttribute('href')).toBe(fanworkFandomHref('Naruto'));
-  expect(screen.queryByText(/author-source links/)).toBeNull();
+  expect(screen.getByText(/1 author-source links/)).toBeTruthy();
+  expect(screen.getByRole('link',{name:/Read at original source/})).toBeTruthy();
  });
  it('reads one exact fandom parameter in the Fandom Atlas, without overriding multi-select',()=>{
   const source=readFileSync('src/PalaceFandomAtlas.jsx','utf8');
   expect(source).toContain('fanworkFandomFromSearch(location.search)');
   expect(source).toContain('const activeFandomNames=selectedNames.length?selectedNames:exactFandom?[exactFandom]:[];');
   expect(source).toContain('fandomNames={activeFandomNames}');
-  expect(source).toContain('defaultSource="hosted"');
+  expect(source).toContain('defaultSource="all"');
   expect(source).toContain("changeParams({ids:null,match:null,fandom:null})");
  });
 });

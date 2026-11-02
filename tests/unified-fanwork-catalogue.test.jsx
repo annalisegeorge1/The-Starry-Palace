@@ -52,6 +52,8 @@ describe('Unified Fanwork catalogue',()=>{
   render(<MemoryRouter><UnifiedFanworkCatalogue publishedWorks={hosted}
    externalWorks={[MODERN_FANFICTION_LINKS.find(work=>work.id==='anime-animeisperfection-frozen-heart')]}/></MemoryRouter>);
   expect(screen.getByRole('heading',{name:/Fan-made works/})).toBeTruthy();
+  expect(screen.getByRole('combobox',{name:/Read from/}).value).toBe('all');
+  expect(screen.getByText(/1 author-source links/)).toBeTruthy();
   expect(screen.getAllByRole('link',{name:/Read on the Palace/})).toHaveLength(2);
   expect(screen.getByRole('link',{name:/Read at original source/})).toBeTruthy();
   expect(screen.getAllByText(/Hosted historical fanwork|Palace member fanwork|Original author’s site/).length).toBe(3);

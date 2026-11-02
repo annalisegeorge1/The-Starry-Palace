@@ -44,6 +44,10 @@ describe('Fandom Atlas includes the same rights-aware Fanfiction collection',()=
   expect(atlas).toContain('Fanfiction · {MODERN_FANFICTION_LINKS.length} linked works');
   expect(atlas).toContain("'/fandoms?section=fanfiction&ids='");
   expect(atlas).toContain('<UnifiedFanworkCatalogue');
+  expect(atlas).toContain('defaultSource="all"');
+  expect(readFileSync('src/liveRooms.jsx','utf8')).toContain('defaultSource="all"');
+  expect(atlas).not.toContain('defaultSource="hosted"');
+  expect(readFileSync('src/liveRooms.jsx','utf8')).not.toContain('defaultSource="hosted"');
   expect(atlas).toContain('publishedWorks={[...(selectedNames.length?stories:fanworkRows),...historicFanworks]}');
   expect(atlas).toContain('inFandomAtlas={true}');
   expect(atlas).toContain('fandomNames={activeFandomNames}');

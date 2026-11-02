@@ -103,7 +103,7 @@ export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks
   <header className="palace-unified-fanworks-head">
    <p className="eyebrow">FANFICTION · ONE SHARED DISCOVERY SHELF</p>
    <h2 id="palace-unified-fanworks-title">Fan-made works</h2>
-   <p>Read published fanfiction on the Palace. To explore stories available only on their authors’ websites, change “Read from” to “Author’s site.” Unpublished submissions are not shown.</p>
+   <p>Browse all published Palace fanworks and attributed links to fanfiction on the original authors’ sites together. Use “Read from” to narrow to Palace-hosted works or original-source links. Unpublished submissions are not shown.</p>
    <p className="palace-unified-totals" role="status"><strong>{hostedCount} Palace-hosted works loaded</strong>{source!=='hosted'&&<> · <strong>{externalCount} author-source links</strong></>}{hasMoreHosted?' · More Palace works available':''}</p>
   </header>
   <div className="palace-unified-filterbar" role="search" aria-label="Search all fanworks">
