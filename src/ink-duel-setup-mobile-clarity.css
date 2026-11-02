@@ -1,0 +1,314 @@
+/* Ink Duel creator: fixes for modal scrolling, prompt actions and contrast.
+ * Dialog is a body-level portal, not a child of .palace-shell: selectors must
+ * target .ink-duel-dialog directly instead of relying on shell ancestry. */
+.palace-dialog-backdrop:has(>.ink-duel-dialog){
+ z-index:22000!important;
+ box-sizing:border-box;
+ padding:max(10px,env(safe-area-inset-top,0px)) 10px max(12px,env(safe-area-inset-bottom,0px))!important;
+}
+.palace-dialog.ink-duel-dialog{
+ display:flex!important;
+ flex-direction:column!important;
+ width:min(660px,100%)!important;
+ max-height:calc(100dvh - 32px)!important;
+ overflow:hidden!important;
+ overscroll-behavior:contain;
+ border:1px solid rgba(193,176,239,.45)!important;
+}
+.ink-duel-dialog>header{
+ flex:0 0 auto!important;
+ padding:13px 16px 10px!important;
+}
+.ink-duel-dialog>.palace-dialog-body{
+ flex:1 1 auto!important;
+ display:block!important;
+ min-height:0!important;
+ overflow-y:auto!important;
+ overscroll-behavior-y:contain;
+ -webkit-overflow-scrolling:touch;
+ scroll-padding-bottom:120px!important;
+ padding:12px 15px max(120px,calc(120px + env(safe-area-inset-bottom,0px)))!important;
+}
+.ink-duel-dialog .ink-duel-form{
+ display:grid!important;
+ grid-template-columns:minmax(0,1fr);
+ gap:12px!important;
+ padding:0!important;
+ margin:0!important;
+ min-width:0;
+}
+.ink-duel-dialog .ink-duel-form :is(label,section,div){
+ min-width:0;
+}
+.ink-duel-dialog .ink-duel-form>label,
+.ink-duel-dialog .duel-rule-grid>label,
+.ink-duel-dialog .duel-prompt-tools>label{
+ display:grid!important;gap:5px!important;
+ font-size:.79rem!important;line-height:1.35!important;
+ color:#ecedf9!important;font-weight:650!important;
+}
+.ink-duel-dialog .ink-duel-form :is(input,select,textarea){
+ box-sizing:border-box!important;
+ width:100%!important;
+ min-width:0!important;
+ padding:9px 12px!important;
+ border-radius:10px!important;
+ border:1px solid rgba(178,191,226,.35)!important;
+ background:rgba(14,21,44,.85)!important;
+ color:#f5f5ff!important;
+ font-size:.9rem!important;
+ line-height:1.4!important;
+}
+.ink-duel-dialog .ink-duel-form :is(input,select){min-height:43px!important}
+.ink-duel-dialog .ink-duel-form textarea{
+ min-height:76px!important;
+ resize:vertical;
+}
+.ink-duel-dialog .ink-duel-form input::placeholder,
+.ink-duel-dialog .ink-duel-form textarea::placeholder{
+ color:#b7c2d9!important;opacity:1;
+}
+.ink-duel-dialog .duel-builder-block{
+ display:grid!important;gap:8px!important;
+ padding:10px 0!important;margin:0!important;
+}
+.ink-duel-dialog .duel-builder-label{
+ display:block!important;
+ font-size:.69rem!important;
+ letter-spacing:.12em!important;
+ color:#cbd4e7!important;
+ font-weight:800!important;
+}
+.ink-duel-dialog .duel-content-picker,
+.ink-duel-dialog .duel-match-picker,
+.ink-duel-dialog .duel-mode-picker{
+ display:grid!important;
+ grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ gap:7px!important;
+}
+.ink-duel-dialog :is(.duel-content-picker,.duel-match-picker,.duel-mode-picker)>button{
+ min-width:0!important;min-height:70px!important;
+ padding:9px 7px!important;
+ gap:3px!important;
+ color:#eff1ff!important;
+ border:1px solid rgba(171,180,232,.35)!important;
+ border-radius:12px!important;
+ background:linear-gradient(155deg,rgba(43,54,91,.84),rgba(27,37,69,.92))!important;
+ font-size:.8rem!important;line-height:1.3!important;
+}
+.ink-duel-dialog :is(.duel-content-picker,.duel-match-picker,.duel-mode-picker)>button :is(strong,small,span){
+ color:inherit!important;opacity:1!important;
+}
+.ink-duel-dialog :is(.duel-content-picker,.duel-match-picker,.duel-mode-picker)>button small{
+ color:#c5ccdd!important;font-size:.7rem!important;
+}
+.ink-duel-dialog :is(.duel-content-picker,.duel-match-picker,.duel-mode-picker)>button.active,
+.ink-duel-dialog :is(.duel-content-picker,.duel-match-picker,.duel-mode-picker)>button[aria-pressed="true"]{
+ border:2px solid #dabdff!important;
+ background:linear-gradient(145deg,rgba(108,80,174,.63),rgba(57,101,153,.46))!important;
+ box-shadow:inset 0 0 0 1px rgba(246,220,255,.2),0 0 0 1px rgba(207,176,255,.15)!important;
+ color:#fff!important;
+}
+.ink-duel-dialog .duel-prompt-tools{
+ display:grid!important;
+ grid-template-columns:minmax(0,1fr) auto!important;
+ gap:8px!important;
+ align-items:end!important;
+}
+.ink-duel-dialog .duel-prompt-tools>button{
+ min-height:43px!important;
+ padding:8px 12px!important;
+ color:#fff!important;
+ background:rgba(80,89,148,.42)!important;
+ border:1px solid rgba(190,189,243,.55)!important;
+}
+.ink-duel-dialog .duel-prompt-tools>button:disabled{
+ color:#b9c4d9!important;opacity:.7!important;
+}
+.ink-duel-dialog .duel-basis-draw{
+ position:static!important;
+ inset:auto!important;
+ transform:none!important;
+ float:none!important;
+ z-index:auto!important;
+ box-sizing:border-box!important;
+ display:grid!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ align-items:stretch!important;
+ gap:7px!important;
+ margin:0!important;
+ padding:9px 10px!important;
+ border:1px solid rgba(168,186,220,.32)!important;
+ border-radius:12px!important;
+ background:rgba(31,44,78,.34)!important;
+ box-shadow:none!important;
+}
+.ink-duel-dialog .duel-basis-heading{
+ display:flex!important;
+ flex-wrap:nowrap!important;
+ align-items:center!important;
+ justify-content:space-between!important;
+ min-width:0!important;
+ grid-column:1/-1!important;
+ gap:8px!important;
+}
+.ink-duel-dialog .duel-basis-heading>span{
+ font-weight:800!important;
+ font-size:.69rem!important;
+ letter-spacing:.1em!important;
+ color:#d5dcf2!important;
+ overflow-wrap:anywhere;
+}
+.ink-duel-dialog .duel-basis-heading .palace-info-mark{
+ flex:0 0 auto!important;
+}
+.ink-duel-dialog .duel-basis-draw>button{
+ position:static!important;
+ min-width:0!important;
+ width:100%!important;
+ min-height:44px!important;
+ padding:8px 6px!important;
+ margin:0!important;
+ border-radius:9px!important;
+ border:1px solid rgba(171,188,225,.38)!important;
+ background:rgba(79,99,159,.2)!important;
+ color:#f0f4ff!important;
+ font-size:.78rem!important;
+ font-weight:700!important;
+ white-space:normal!important;
+ line-height:1.3!important;
+ cursor:pointer;
+}
+.ink-duel-dialog .duel-twist-label{
+ display:flex!important;flex-wrap:wrap!important;align-items:center!important;
+ justify-content:space-between!important;gap:6px!important;
+}
+.ink-duel-dialog .duel-twist-label>span{
+ color:#d9e2f4!important;
+ font-size:.69rem!important;
+ letter-spacing:.085em!important;font-weight:800!important;
+}
+.ink-duel-dialog .duel-twist-label>button{
+ min-height:40px!important;
+ padding:7px 10px!important;
+ color:#fff!important;
+}
+.ink-duel-dialog .duel-rule-grid{
+ display:grid!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ gap:10px!important;
+ align-items:start!important;
+}
+.ink-duel-dialog .duel-seal-note{
+ display:flex!important;align-items:center!important;gap:10px!important;
+ min-height:0!important;
+ margin:3px 0!important;
+ padding:11px 13px!important;
+ border-radius:11px!important;
+ background:rgba(90,77,155,.13)!important;
+ border:1px dashed rgba(177,169,229,.46)!important;
+ color:#e7ecfb!important;
+}
+.ink-duel-dialog .duel-seal-copy{
+ flex:1 1 auto;min-width:0;
+ color:#d4ddec!important;
+ font-size:.8rem;line-height:1.52;
+}
+.ink-duel-dialog .duel-seal-copy strong{
+ color:#fff!important;
+}
+.ink-duel-dialog .duel-seal-note>.palace-info-mark{
+ flex:0 0 auto!important;
+}
+.ink-duel-dialog>footer{
+ box-sizing:border-box!important;
+ flex:0 0 auto!important;
+ position:relative!important;
+ z-index:2!important;
+ display:flex!important;
+ flex-wrap:wrap!important;
+ justify-content:flex-end!important;
+ align-items:center!important;
+ gap:8px!important;
+ padding:10px 14px max(12px,env(safe-area-inset-bottom,0px))!important;
+ border-top:1px solid rgba(186,186,232,.38)!important;
+ background:#171d39!important;
+ box-shadow:0 -9px 22px rgba(6,9,27,.28)!important;
+}
+.ink-duel-dialog>footer .duel-submit-hint{
+ flex:1 1 100%!important;
+ font-size:.77rem!important;
+ color:#e3dcfa!important;
+ line-height:1.35!important;
+}
+.ink-duel-dialog>footer .button-starlight{
+ min-height:44px!important;
+ color:#fff!important;
+ -webkit-text-fill-color:#fff!important;
+ text-shadow:0 1px 0 rgba(0,0,0,.1)!important;
+ font-weight:800!important;
+ border:1px solid rgba(223,191,255,.58)!important;
+ background:linear-gradient(120deg,#7651b7,#4d69a9)!important;
+}
+.ink-duel-dialog>footer .button-starlight:disabled{
+ color:#f0e9fc!important;
+ -webkit-text-fill-color:#f0e9fc!important;
+ opacity:.68!important;
+ cursor:not-allowed!important;
+}
+.ink-duel-dialog>footer .quiet-button{
+ min-height:44px!important;
+ color:#ebedfb!important;
+}
+.ink-duel-dialog :is(button,input,textarea,select):focus-visible{
+ outline:3px solid #b5e1ff!important;
+ outline-offset:2px!important;
+}
+@media(max-width:620px){
+ .palace-dialog-backdrop:has(>.ink-duel-dialog){
+  padding:max(7px,env(safe-area-inset-top,0px)) 6px max(8px,env(safe-area-inset-bottom,0px))!important;
+  align-items:center!important;
+ }
+ .palace-dialog.ink-duel-dialog{
+  border-radius:16px!important;
+  max-height:calc(100dvh - 16px - env(safe-area-inset-bottom,0px))!important;
+ }
+ .ink-duel-dialog>header{padding:10px 13px!important}
+ .ink-duel-dialog>.palace-dialog-body{padding-inline:12px!important}
+ .ink-duel-dialog .duel-content-picker{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ }
+ .ink-duel-dialog .duel-match-picker,
+ .ink-duel-dialog .duel-mode-picker{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ }
+ .ink-duel-dialog :is(.duel-content-picker,.duel-match-picker,.duel-mode-picker)>button{
+  min-height:65px!important;padding:7px 4px!important;
+  font-size:.73rem!important;
+ }
+ .ink-duel-dialog .duel-prompt-tools{
+  grid-template-columns:minmax(0,1fr)!important;
+ }
+ .ink-duel-dialog .duel-prompt-tools>button{width:100%!important}
+ .ink-duel-dialog>footer{padding-inline:11px!important}
+}
+@media(max-width:370px){
+ .ink-duel-dialog .duel-basis-draw{grid-template-columns:minmax(0,1fr)!important}
+ .ink-duel-dialog .duel-rule-grid{grid-template-columns:minmax(0,1fr)!important}
+ .ink-duel-dialog .duel-content-picker,
+ .ink-duel-dialog .duel-match-picker,
+ .ink-duel-dialog .duel-mode-picker{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ }
+}
+@media(forced-colors:active){
+ .ink-duel-dialog :is(.duel-basis-draw,.duel-seal-note,.duel-content-picker>button,.duel-match-picker>button,.duel-mode-picker>button){
+  background:Canvas!important;border-color:CanvasText!important;color:CanvasText!important;
+ }
+ .ink-duel-dialog>footer .button-starlight{
+  color:ButtonText!important;-webkit-text-fill-color:ButtonText!important;background:ButtonFace!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .ink-duel-dialog :is(button,textarea,select){transition:none!important}
+}
