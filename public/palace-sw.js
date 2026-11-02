@@ -5,7 +5,7 @@ const PALACE_OFFLINE_PAGE='/offline.html';
 const PALACE_PUBLIC_ASSETS=[PALACE_OFFLINE_PAGE,'/palace-status.css','/favicon.svg'];
 
 self.addEventListener('install',event=>{
-  // Intentionally no skipWaiting(): never force an open writing session to reload.
+  // Leave activation to the browser; never force an open writing session to reload.
   event.waitUntil(caches.open(PALACE_OFFLINE_CACHE).then(cache=>cache.addAll(PALACE_PUBLIC_ASSETS)));
 });
 
