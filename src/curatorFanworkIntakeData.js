@@ -17,16 +17,28 @@ function parseIntakeNotes(value){
 export async function getCuratorFanworkQueue(){
  const api=client();
  const {data:records,error}=await api.from('archive_records')
-  .select('id,slug,title,creator_name,source_notes,publication_status,host_mode,rights_status,updated_at')
+  .select('id,slug,title,creator_name,source_notes,original_language,publication_status,host_mode,rights_status,updated_at')
   .eq('category','licensed_fanfiction')
   .in('publication_status',['draft','review'])
   .order('title',{ascending:true}).limit(150);
  if(error)throw error;
  if(!records?.length)return [];
- const {data:texts,error:textError}=await api.from('archive_texts')
-  .select('record_id,word_count,updated_at').in('record_id',records.map(r=>r.id));
- if(textError)throw textError;
- const existing=new Map((texts||[]).map(row=>[row.record_id,row]));
+ const ids=records.map(record=>record.id);
+ const [textResponse,rightResponse]=await Promise.all([
+  api.from('archive_texts')
+   .select('record_id,word_count,updated_at').in('record_id',ids),
+  api.from('archive_rights_records')
+   .select('record_id,basis,status,permits_hosting,valid_from,valid_until,verified_at')
+   .in('record_id',ids)
+ ]);
+ if(textResponse.error)throw textResponse.error;
+ if(rightResponse.error)throw rightResponse.error;
+ const existing=new Map((textResponse.data||[]).map(row=>[row.record_id,row]));
+ const grants=new Map();
+ for(const grant of rightResponse.data||[]){
+  if(!grants.has(grant.record_id))grants.set(grant.record_id,[]);
+  grants.get(grant.record_id).push(grant);
+ }
  return records.map(record=>{
   const source=parseIntakeNotes(record.source_notes);
   return {
@@ -37,7 +49,11 @@ export async function getCuratorFanworkQueue(){
    fandom:String(source.fandom||''),expectedChapters:Number(source.chapter_count)||null,
    permissionUrl:safeManuscriptSource(source.permission_url),
    stagedWords:existing.get(record.id)?.word_count||0,
-   lastStagedAt:existing.get(record.id)?.updated_at||null
+   lastStagedAt:existing.get(record.id)?.updated_at||null,
+   rightsGrants:grants.get(record.id)||[],
+   sourceWarnings:Array.isArray(source.warnings)?source.warnings:[],
+   sourceTags:Array.isArray(source.tropes)?source.tropes:[],
+   originalLanguage:record.original_language||source.language||'Unknown'
   };
  });
 }
@@ -84,4 +100,24 @@ export async function stageCuratorFanworkManuscript({record,body,sourceUrl,deliv
   :await api.from('archive_rights_records').insert(review);
  if(rights.error)throw Error('Manuscript saved privately, but its rights-review note could not be recorded. Please retry the review note. '+rights.error.message);
  return data;
+}
+
+/** Load an individual manuscript only after its curator explicitly requests
+ * inspection. The public visitor never receives its draft text.
+ */
+export async function getCuratorFanworkManuscriptPreview(record){
+ if(!record?.id||!/^[a-f0-9-]{36}$/i.test(String(record.id)))throw Error('Select a valid private record.');
+ const api=client();
+ const {data:work,error:recordError}=await api.from('archive_records')
+  .select('id,slug,category,publication_status')
+  .eq('id',record.id).eq('category','licensed_fanfiction').maybeSingle();
+ if(recordError)throw recordError;
+ if(!work||work.slug!==record.slug||!['draft','review'].includes(work.publication_status))
+  throw Error('This private manuscript is not available for review.');
+ const {data,error}=await api.from('archive_texts')
+  .select('record_id,body_text,word_count,updated_at')
+  .eq('record_id',record.id).maybeSingle();
+ if(error)throw error;
+ if(!data?.body_text)return null;
+ return {body:data.body_text,words:data.word_count||0,updatedAt:data.updated_at};
 }

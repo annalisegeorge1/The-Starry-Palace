@@ -20,3 +20,28 @@
 .curator-fanwork-error{color:var(--ui-danger,#fa9f9f);margin:0}
 .curator-fanwork-notice{color:var(--ui-text);margin:0}
 @media(max-width:700px){.curator-fanwork-intake{margin:12px 0 20px}.curator-fanwork-intake>details>summary{padding:11px 12px}.curator-fanwork-intake-body{padding:0 12px 16px}.curator-fanwork-intake form>button{width:100%}}
+
+/* Curator review remains compact, private, and readable in Daylight/Nightfall. */
+.curator-fanwork-overview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.curator-fanwork-overview>span{display:flex;flex-direction:column;gap:5px;padding:10px;border-radius:11px;border:1px solid var(--ui-line);min-width:0;background:var(--ui-surface,transparent)}
+.curator-fanwork-overview strong{font-size:1.15rem;line-height:1.15;font-variant-numeric:tabular-nums}
+.curator-fanwork-overview small{color:var(--ui-muted);font-size:.69rem;line-height:1.4}
+.curator-fanwork-review-card{display:grid;gap:10px;padding:12px;border:1px solid var(--ui-line);border-radius:12px;min-width:0}
+.curator-fanwork-review-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.curator-fanwork-review-heading strong{font-size:.92rem}
+.curator-fanwork-review-heading span,.curator-fanwork-review-card>p{color:var(--ui-muted);font-size:.77rem;margin:0;line-height:1.45}
+.curator-fanwork-review-card ul{padding-left:20px;margin:0;display:grid;gap:4px;font-size:.75rem;line-height:1.5}
+.curator-fanwork-review-actions{display:flex;flex-wrap:wrap;gap:8px}
+.curator-fanwork-review-actions button{border-radius:9px;border:1px solid var(--ui-line);padding:8px 11px;font-size:.75rem;min-height:36px}
+.curator-fanwork-review-card>label{font-size:.77rem;display:grid;gap:7px;font-weight:600}
+.curator-fanwork-preview{display:grid;gap:8px;border-top:1px solid var(--ui-line);padding-top:9px;font-size:.76rem;line-height:1.5}
+.curator-fanwork-preview p{margin:0}
+.curator-fanwork-preview ol{margin:0;padding-left:24px;max-height:190px;overflow:auto}
+.curator-fanwork-preview summary{cursor:pointer}
+.curator-fanwork-preview pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:220px;overflow:auto;font:400 .73rem/1.5 ui-monospace,monospace;color:var(--ui-text)}
+.curator-fanwork-warning{font-weight:650;color:var(--ui-text)}
+@media(max-width:700px){
+ .curator-fanwork-overview{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .curator-fanwork-review-card{padding:10px}
+ .curator-fanwork-review-actions button{flex:1 1 100%;min-height:39px}
+}
