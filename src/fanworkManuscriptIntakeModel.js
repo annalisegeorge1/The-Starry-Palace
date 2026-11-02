@@ -37,12 +37,13 @@ export function validateFanworkManuscript({body,sourceUrl,deliveryMethod,evidenc
  if(note.length>MAX_NOTE_LENGTH)errors.push('Shorten the permission evidence note.');
  return {valid:errors.length===0,errors,wordCount:words,text};
 }
-export function curatorImportEditionNote({deliveryMethod,evidenceNote}={}){
+export function curatorImportEditionNote({deliveryMethod}={}){
  const method={
   author_supplied:'Author-supplied manuscript',
   rights_holder_supplied:'Rights-holder-supplied manuscript',
   separately_authorized_copy:'Separately authorized copy'
  }[deliveryMethod]||'Source not verified';
- return method+'; independently reviewed evidence: '+String(evidenceNote||'').trim().slice(0,MAX_NOTE_LENGTH)+
-  '; DRAFT ONLY — rights review and independent publication approval still required.';
+ // Private communications and permission evidence are NOT included in this
+ // edition note: it may become public when a curator eventually publishes.
+ return method+'; DRAFT ONLY — rights review and independent publication approval still required.';
 }
