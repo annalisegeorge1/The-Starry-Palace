@@ -31,3 +31,168 @@
  border:1px solid var(--ui-line,rgba(155,139,225,.25));
  border-radius:999px;padding:3px 7px;font-size:.7rem;
 }
+
+/* Age declaration: keep navigation and the two decisions as distinct tap targets.
+   This is an appearance-only layer; age-protected text still uses the guarded API. */
+.palace-direct-classic-nav{
+  font-size:.92rem;
+  line-height:1.35;
+  margin:0 0 clamp(16px,3vw,24px);
+}
+.palace-direct-classic-nav a{
+  display:inline-flex;
+  gap:.48rem;
+  align-items:center;
+  min-height:44px;
+  padding:7px 10px;
+  border-radius:10px;
+  font-weight:600;
+  color:var(--ui-text,#e8e4fa);
+  text-decoration:none;
+}
+.palace-direct-classic-nav a:hover,.palace-direct-classic-nav a:focus-visible{
+  background:rgba(156,129,222,.12);
+  text-decoration:none;
+}
+.palace-direct-classic-back-icon{
+  font-size:1.8rem;
+  line-height:1;
+  font-family:system-ui,sans-serif;
+}
+.palace-direct-classic-age-screen{
+  display:flex;
+  flex-direction:column;
+  min-height:clamp(440px,calc(100svh - 170px),760px);
+  padding-bottom:clamp(26px,4vh,44px);
+}
+.palace-direct-classic-status.palace-direct-classic-age-card{
+  width:min(100%,590px);
+  max-width:590px;
+  box-sizing:border-box;
+  margin:auto;
+  padding:clamp(24px,5vw,40px);
+  background:linear-gradient(150deg,rgba(35,29,77,.98),rgba(19,27,60,.98));
+  color:#f5f2ff;
+  border:1px solid rgba(190,165,247,.32);
+  border-radius:22px;
+  box-shadow:0 16px 55px rgba(5,4,23,.38);
+}
+.palace-direct-classic-age-card h1{
+  color:#f8f5ff;
+  font-size:clamp(1.45rem,4.5vw,2rem);
+  line-height:1.22;
+  margin:0 0 16px;
+}
+.palace-direct-classic-age-card p{
+  color:#e7e2f6;
+  opacity:1;
+  font-size:clamp(.9rem,2.7vw,1rem);
+  line-height:1.65;
+  margin:0 0 14px;
+}
+.palace-direct-classic-age-actions{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  width:100%;
+  margin-top:26px;
+  align-items:stretch;
+}
+.palace-direct-classic-age-card .palace-direct-classic-confirm{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:static;
+  float:none;
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+  min-height:52px;
+  margin:0;
+  padding:13px 18px;
+  border:1px solid #b4a0f4;
+  border-radius:12px;
+  background:linear-gradient(135deg,#7955d9,#6243c3);
+  color:#fff;
+  font:700 .96rem/1.4 system-ui,sans-serif;
+  text-align:center;
+  white-space:normal;
+  cursor:pointer;
+  box-shadow:0 7px 22px rgba(67,43,133,.24);
+}
+.palace-direct-classic-age-card .palace-direct-classic-confirm:hover{
+  background:linear-gradient(135deg,#8c69ec,#704ed3);
+}
+.palace-direct-classic-age-card .palace-direct-classic-underage{
+  display:block;
+  position:static;
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+  min-height:44px;
+  margin:0;
+  padding:11px 12px;
+  color:#ded6f2;
+  font-size:.9rem;
+  font-weight:500;
+  line-height:1.4;
+  text-align:center;
+  text-decoration:none;
+  border-radius:10px;
+}
+.palace-direct-classic-age-card .palace-direct-classic-underage:hover,
+.palace-direct-classic-age-card .palace-direct-classic-underage:focus-visible{
+  color:#fff;
+  background:rgba(185,164,244,.12);
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+.palace-direct-classic-age-card :is(.palace-direct-classic-confirm,.palace-direct-classic-underage):focus-visible{
+  outline:3px solid #e3d1ff;
+  outline-offset:3px;
+}
+.palace-shell.daylight .palace-direct-classic-nav a{color:#352d60;}
+.palace-shell.daylight .palace-direct-classic-age-card{background:linear-gradient(145deg,#26214f,#1b294c);border-color:rgba(117,97,174,.45);}
+@media(max-width:760px){
+  /* Existing shell already reserves space for the mobile dock; the footer
+     itself also needs an accessible clearance beneath its last link. */
+  .full-palace-shell .palace-footer{
+    padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))!important;
+    box-sizing:border-box;
+  }
+  .palace-direct-classic{
+    padding:12px clamp(12px,4vw,20px) calc(120px + env(safe-area-inset-bottom,0px));
+  }
+  .palace-direct-classic-age-screen{
+    min-height:clamp(415px,calc(100svh - 170px),690px);
+    padding-bottom:calc(120px + env(safe-area-inset-bottom,0px));
+  }
+  .palace-direct-classic-age-card{
+    margin:20px auto!important;
+    padding:25px 20px!important;
+  }
+  .palace-direct-classic-age-actions{gap:12px;margin-top:23px;}
+  /* The sticky header should obscure scrolling breadcrumbs, not show them
+     through its icons. Keep the site's Nightfall/Daylight palette. */
+  .full-palace-shell:has(#palace-content[data-palace-route^="/classic/"]) .full-stage > header.topbar.full-topbar{
+    background:#11132e!important;
+    background-color:#11132e!important;
+    -webkit-backdrop-filter:blur(12px)!important;
+    backdrop-filter:blur(12px)!important;
+    isolation:isolate;
+  }
+  .full-palace-shell.daylight:has(#palace-content[data-palace-route^="/classic/"]) .full-stage > header.topbar.full-topbar{
+    background:#f1eefa!important;
+    background-color:#f1eefa!important;
+  }
+}
+@media(min-width:761px){
+  .full-palace-shell:has(#palace-content[data-palace-route^="/classic/"]) .full-stage > header.topbar.full-topbar{
+    background:rgba(17,18,43,.96)!important;
+    -webkit-backdrop-filter:blur(12px) saturate(110%)!important;
+    backdrop-filter:blur(12px) saturate(110%)!important;
+  }
+  .full-palace-shell.daylight:has(#palace-content[data-palace-route^="/classic/"]) .full-stage > header.topbar.full-topbar{
+    background:rgba(245,241,252,.98)!important;
+  }
+}
