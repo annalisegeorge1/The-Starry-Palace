@@ -103,7 +103,7 @@ export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks
   <header className="palace-unified-fanworks-head">
    <p className="eyebrow">FANFICTION · ONE SHARED DISCOVERY SHELF</p>
    <h2 id="palace-unified-fanworks-title">Fan-made works</h2>
-   <p>Read published fanfiction here, or discover complete stories on their authors’ original sites. Each card clearly shows where the story can be read.</p>
+   <p>Read published fanfiction here, or discover more works on their authors’ original sites. Each card clearly shows where the story can be read.</p>
    <p className="palace-unified-totals" role="status"><strong>{hostedCount} Palace-hosted works loaded</strong>{source!=='hosted'&&<> · <strong>{externalCount} author-source links</strong></>}{hasMoreHosted?' · More Palace works available':''}</p>
   </header>
   <div className="palace-unified-filterbar" role="search" aria-label="Search all fanworks">
@@ -126,7 +126,7 @@ export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks
   {loadError&&<p className="palace-unified-note" role="alert">Some Palace-hosted stories could not be loaded. The original-author links remain available.</p>}
   <div className="palace-unified-results">
    {shown.map((entry,i)=><React.Fragment key={entry.key}>
-    {sort==='source'&&(i===0||(shown[i-1].kind==='link')!==(entry.kind==='link'))&&<div className="palace-unified-group-heading"><h3>{entry.kind==='link'?'Explore original author sites':'Read here on the Palace'}</h3><span>{entry.kind==='link'?'These stories open on their creators’ websites; no copies are hosted here.':'Complete published editions you can read without leaving the Palace.'}</span></div>}
+    {sort==='source'&&(i===0||(shown[i-1].kind==='link')!==(entry.kind==='link'))&&<div className="palace-unified-group-heading"><h3>{entry.kind==='link'?'Explore original author sites':'Read here on the Palace'}</h3><span>{entry.kind==='link'?'These stories open on their creators’ websites; no copies are hosted here.':'Published fanworks you can read without leaving the Palace.'}</span></div>}
     <article className={'palace-unified-card '+(entry.kind==='link'?'source-external':'source-hosted')}>
     <div className="palace-unified-card-top">
      <span className={'palace-unified-source '+(entry.kind==='link'?'external':'hosted')}>{sourceTag(entry.kind)}</span>
