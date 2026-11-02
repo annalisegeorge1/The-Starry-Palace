@@ -20,7 +20,12 @@ export async function openHostedClassic(slug){
   if(rights.error)return null;
   record.hosted_rights_verified=Boolean(rights.data?.length);
  }
- if(!canReadHostedClassic(record))return null;
  const text=await getArchiveText(record.id);
+ // Modern licensed editions must be fully present before being advertised
+ // or opened. A metadata-only record must never look like a published book.
+ if(record.rights_status==='licensed'||record.rights_status==='creator_authorised'){
+  record.hosted_text_ready=Boolean(String(text?.body_text||'').trim());
+ }
+ if(!canReadHostedClassic(record))return null;
  return text?.body_text?{record,text}:null;
 }
