@@ -1235,6 +1235,32 @@ export async function searchPalace(term){
   return{...c,creator,matched_tags:mt,search_score:r.score,concept_coverage:r.coverage,matched_concepts:r.matched_concepts,cover_url:await signedAsset('comic-covers',c.cover_path)}
  }))).sort((a,b)=>b.search_score-a.search_score||new Date(b.last_published_at||0)-new Date(a.last_published_at||0)).slice(0,30);
 
+ // Independent, complete tag metadata for the displayed stories/comics.
+ // matched_tags above are only query matches and cannot power exclusion filters.
+ const [storyTagResult,comicTagResult]=await Promise.allSettled([
+  works.length?needClient().from('work_tags')
+   .select('work_id,tags(id,name,category,status)')
+   .in('work_id',works.map(w=>w.id)).limit(1600):Promise.resolve({data:[],error:null}),
+  comics.length?needClient().from('comic_tags')
+   .select('comic_id,tags(id,name,category,status)')
+   .in('comic_id',comics.map(c=>c.id)).limit(1600):Promise.resolve({data:[],error:null})
+ ]);
+ const validTags=result=>result.status==='fulfilled'&&!result.value.error;
+ const facetsReady=validTags(storyTagResult)&&validTags(comicTagResult);
+ if(facetsReady){
+  const storyTags={};const comicTags={};
+  for(const row of storyTagResult.value.data||[]){
+   const tag=row.tags;if(!tag||!['canonical','community'].includes(tag.status))continue;
+   (storyTags[row.work_id]??=[]).push(tag);
+  }
+  for(const row of comicTagResult.value.data||[]){
+   const tag=row.tags;if(!tag||!['canonical','community'].includes(tag.status))continue;
+   (comicTags[row.comic_id]??=[]).push(tag);
+  }
+  for(const w of works)w.facet_tags=storyTags[w.id]||[];
+  for(const c of comics)c.facet_tags=comicTags[c.id]||[];
+ }
+
  const memberRows=(members.data||[]).map(x=>withIdentity(x,x.id,marks)).sort((a,b)=>{
   const an=String(a.display_name||a.username||'').toLowerCase(),bn=String(b.display_name||b.username||'').toLowerCase();
   const score=n=>n===needle?4:n.startsWith(needle)?3:n.includes(needle)?2:searchTerms.some(c=>n.includes(c))?1:0;
@@ -1243,7 +1269,7 @@ export async function searchPalace(term){
  const clubRows=[...(clubs.data||[])].map(c=>({...c,_rank:rank(c.name,c.description).score})).sort((a,b)=>b._rank-a._rank||String(a.name).localeCompare(String(b.name))).map(({_rank,...c})=>c);
  const archiveRows=[...(archive.data||[])].map(a=>({...a,_rank:rank(a.title,a.summary,a.creator_name).score})).sort((a,b)=>b._rank-a._rank||String(a.title).localeCompare(String(b.title))).slice(0,30).map(({_rank,...a})=>a);
  return{
-  works,comics,members:memberRows,tags:tagRows,clubs:clubRows,archive:archiveRows,
+  works,comics,members:memberRows,tags:tagRows,clubs:clubRows,archive:archiveRows,facetsReady,
   query:{raw,safe,concepts:searchTerms,mode:searchTerms.length>1?'combined':'direct'}
  }
 }

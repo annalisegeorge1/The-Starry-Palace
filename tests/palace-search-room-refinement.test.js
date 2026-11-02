@@ -24,7 +24,7 @@ describe('Palace Search route, navigation and readability',()=>{
   expect(search).toContain('role="alert"');
  });
  it('keeps search filters within existing relevant results, not a new scoring backend',()=>{
-  expect(search).toContain('filterPalaceSearchGroups(data,{rating,completion,sort})');
+  expect(search).toContain('filterPalaceSearchGroups(data,{rating,completion,sort,includeTags,excludeTags,includeRelationships,excludeRelationships})');
   expect(search).toContain('const groups=data?filterPalaceSearchGroups');
   expect(search).toContain('SEARCH_RESULT_KINDS.map');
   for(const family of ['works','comics','members','tags','clubs','archive']){
@@ -42,5 +42,25 @@ describe('Palace Search route, navigation and readability',()=>{
   expect(styles).toContain('@media(max-width:600px)');
   expect(main).toContain("import './palace-search-room-refinement.css';");
   expect(styles).not.toContain('backdrop-filter');
+ });
+});
+
+describe('Search Sort & Filter precision',()=>{
+ it('includes tag selection, explicit relationship categories, and clear controls',()=>{
+  expect(search).toContain('<PalaceRelationshipFilters');
+  expect(search).toContain('3. Relationships');
+  expect(search).toContain('4. Include / Exclude Tags');
+  expect(search).toContain('toggleSearchTag(tag.id');
+  expect(search).toContain('toggleSearchRelationship');
+  expect(search).toContain('Clear all refinements');
+  expect(search).toContain('data.facetsReady');
+  expect(search).toContain('Advanced Search');
+ });
+ it('uses the complete published result tags rather than keyword matched tags',()=>{
+  const api=read('src/palaceData.js');
+  expect(api).toContain("select('work_id,tags(id,name,category,status)')");
+  expect(api).toContain("select('comic_id,tags(id,name,category,status)')");
+  expect(api).toContain('facetsReady');
+  expect(api).toContain('w.facet_tags=storyTags');
  });
 });

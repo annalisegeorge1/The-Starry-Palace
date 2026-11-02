@@ -133,6 +133,7 @@ import './writing-chamber-mobile-clarity.css';
 import './ink-duel-setup-mobile-clarity.css';
 import './mobile-dashboard-final-polish.css';
 import './mobile-search-results-first.css';
+import './search-filter-precision.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
