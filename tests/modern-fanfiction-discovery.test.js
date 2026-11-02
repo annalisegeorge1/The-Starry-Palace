@@ -26,7 +26,7 @@ describe('Fanfiction section contains rights-aware historical and modern discove
  });
  it('links to actual writers and their permission evidence without mirroring modern text',()=>{
   expect(MODERN_FANFICTION_LINKS).toHaveLength(116);
-  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.id)).size).toBe(98);
+  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.id)).size).toBe(116);
   expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.creator)).size).toBeGreaterThanOrEqual(7);
   for(const w of MODERN_FANFICTION_LINKS){
    expect(w.title).toBeTruthy();
@@ -165,8 +165,8 @@ describe('Fanfiction section contains rights-aware historical and modern discove
  it('preserves the entire discovered catalogue, 2 verified hosted fanfics, and author-only attribution',()=>{
   const combined=MODERN_FANFICTION_LINKS.map(w=>w.id);
   expect(combined.length).toBe(116);
-  expect(new Set(combined).size).toBe(98);
-  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.sourceUrl)).size).toBe(98);
+  expect(new Set(combined).size).toBe(116);
+  expect(new Set(MODERN_FANFICTION_LINKS.map(w=>w.sourceUrl)).size).toBe(116);
   expect(Object.keys(MODERN_FANFICTION_GUIDES).length).toBe(116);
   expect(Object.keys(HISTORICAL_FANFICTION_GUIDES).length).toBe(2);
   for(const work of MODERN_FANFICTION_LINKS){
