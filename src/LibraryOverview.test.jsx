@@ -15,7 +15,7 @@ describe('My Library overview presentation',()=>{
  it('links genuine reading and saved-for-later positions into the existing shelves',()=>{
   render(<MemoryRouter><LibraryOverview library={library} organizers={{collections:[{id:'one',name:'Favourite Folktales'}]}}/></MemoryRouter>);
   const overview=screen.getByLabelText('My Library overview');
-  expect(within(overview).getByText('A home for every story you keep.')).toBeTruthy();
+  expect(within(overview).getByRole('heading',{name:'Your place in the story'})).toBeTruthy();
   expect(screen.getByRole('link',{name:/The Silver Door.*Open story/}).getAttribute('href')).toBe('/work/silver-door/chapter/one');
   expect(screen.getByRole('link',{name:/The Purple Orchard.*Open story/}).getAttribute('href')).toBe('/work/purple-orchard');
   expect(screen.getByRole('link',{name:/Favourite Folktales/}).getAttribute('href')).toBe('/library?tab=collections');
@@ -32,7 +32,7 @@ describe('My Library overview presentation',()=>{
   expect(screen.getByRole('region',{name:'Find your next reading journey'})).toBeTruthy();
   expect(screen.queryByRole('region',{name:'Your place in the story'})).toBeNull();
   expect(screen.queryByRole('region',{name:'Saved for another night'})).toBeNull();
-  expect(screen.getByRole('link',{name:/Revisit finished stories/}).getAttribute('href')).toBe('/library?tab=finished');
+  expect(screen.getByRole('link',{name:/Discover stories/}).getAttribute('href')).toBe('/reading');
   expect(screen.getByRole('link',{name:/Finished works \(1\)/}).getAttribute('href')).toBe('/library?tab=finished');
   expect(screen.getByRole('link',{name:/Following \(1\)/}).getAttribute('href')).toBe('/library?tab=following');
  });
