@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a1028"><meta name="robots" content="noindex,nofollow">
+<meta name="description" content="The Starry Palace is waiting for your connection to return.">
+<title>The Palace Has Lost Its Moonlight · The Starry Palace</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/palace-status.css">
+</head><body><main class="status-page"><div class="status-wrap">
+<a class="status-brand" href="/"><span aria-hidden="true">☾ ✦</span> The Starry Palace</a>
+<section class="status-card" aria-labelledby="palace-offline-title">
+<div class="palace-scene" aria-hidden="true"><svg viewBox="0 0 180 140" focusable="false" xmlns="http://www.w3.org/2000/svg"><circle class="moon-glow" cx="92" cy="43" r="28"/><path class="moon-stroke" d="M100 20a23 23 0 1 0 22 30A22 22 0 0 1 100 20Z"/><path class="building" d="M29 114V78l12-12 12 12v36h15V57l19-18 19 18v57h18V77l12-13 12 13v37h11v7H20v-7Z"/><path class="building" d="M77 39V24h20v15M35 79h12m83-2h12M80 58h15"/><path class="window" d="M84 78h8v12h-8zm-45 17h5v10h-5zm96 0h5v10h-5z"/><path class="star" d="m31 24 2 5 5 2-5 2-2 5-2-5-5-2 5-2zm114 15 1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5Z"/></svg></div>
+<p class="status-kicker">THE STARS HAVE GONE QUIET · OFFLINE</p>
+<h1 id="palace-offline-title">The Palace has lost its moonlight.</h1>
+<p class="status-description">The path between your world and ours has gone quiet. When the stars return, the Palace doors will be waiting.</p>
+<p class="status-subtle">Your connection appears to be interrupted. If you have a draft open in another tab, keep it open until you can reconnect and confirm your work is saved.</p>
+<div class="status-actions"><button class="status-button" id="palace-retry" type="button">✧ Try Again</button><a class="status-button secondary" href="/">Return to the Palace</a></div>
+<p class="status-signal" id="palace-signal" role="status" aria-live="polite">Waiting for a connection</p>
+</section><p class="status-foot">Stories deserve a place to return to. ☾</p>
+</div></main>
+<script>
+(function(){
+ var signal=document.getElementById('palace-signal');
+ function update(){signal.textContent=navigator.onLine===false?'Waiting for a connection':'Your connection may be back. Try again to reopen the Palace.'}
+ window.addEventListener('online',update);window.addEventListener('offline',update);
+ document.getElementById('palace-retry').addEventListener('click',function(){window.location.reload()});
+ update();
+})();
+</script>
+</body></html>
