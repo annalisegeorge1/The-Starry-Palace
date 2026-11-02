@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {buildReadingFacets,matchesReadingFacets,sortReadingWorks,READING_SORT_OPTIONS,isArchiveReadingSort} from './readingFacetModel';
+import {buildReadingFacets,matchesReadingFacets,sortReadingWorks,READING_SORT_OPTIONS,isArchiveReadingSort,readingRelationshipTypes,matchesReadingRelationships} from './readingFacetModel';
 const tag=(id,name,category='trope')=>({tags:{id,name,category,status:'canonical'}});
 const works=[
  {id:'w1',title:'Sky',first_published_at:'2025-01-01',last_published_at:'2026-01-15',reading_stats:{words:1800,chapters:2,comments:1,bookmarks:0},work_tags:[tag('f1','Dragon Age','fandom'),tag('t1','Slow burn')]},
@@ -40,4 +40,24 @@ describe('faceted Palace story catalogue',()=>{
   expect(isArchiveReadingSort('invalid')).toBe(false);
  });
 
+});
+
+describe('explicit relationship category filtering',()=>{
+ const marked=(name)=>({work_tags:[{tags:{name,category:'relationship',status:'canonical'}}]});
+ it('does not guess categories from slash-separated character names',()=>{
+  expect(readingRelationshipTypes(marked('Rook/Emmrich'))).toEqual(['unspecified']);
+  expect(readingRelationshipTypes({title:'Women in Love'})).toEqual(['unspecified']);
+ });
+ it('supports F/M, F/F, M/M, Multi, Gen and Other only when explicitly tagged',()=>{
+  for(const [label,code] of [['F/M','fm'],['F/F','ff'],['M/M','mm'],['Multi','multi'],['Gen','gen'],['Other','other']])
+   expect(readingRelationshipTypes(marked(label))).toContain(code);
+ });
+ it('allows any included category and no excluded categories',()=>{
+  const w={work_tags:[tag('r1','F/M','relationship'),tag('r2','F/F','relationship')]};
+  expect(matchesReadingRelationships(w,['fm','mm'],[])).toBe(true);
+  expect(matchesReadingRelationships(w,['mm'],[])).toBe(false);
+  expect(matchesReadingRelationships(w,['fm'],['ff'])).toBe(false);
+  expect(matchesReadingRelationships(marked('Rook/Emmrich'),['unspecified'],[])).toBe(true);
+  expect(matchesReadingRelationships(marked('Rook/Emmrich'),[],['unspecified'])).toBe(false);
+ });
 });

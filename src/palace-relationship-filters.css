@@ -1,0 +1,25 @@
+/* Compact and accessible relationship classification row controls. */
+.palace-relationship-types{min-inline-size:0;margin:0;border:0;padding:0}
+.palace-relationship-types legend{font-weight:800;font-size:.84rem;padding:0;margin:0 0 5px;color:inherit}
+.palace-relationship-types>p{margin:0 0 10px!important;font-size:.72rem!important;line-height:1.5!important;color:#ccc1e2}
+.palace-relationship-head,.palace-relationship-option{display:grid;grid-template-columns:minmax(0,1fr) minmax(70px,92px) minmax(70px,92px);gap:6px;align-items:center}
+.palace-relationship-head{padding:0 6px 4px;color:#c5b7dc;font:750 .61rem/1.3 system-ui,sans-serif;text-transform:uppercase;letter-spacing:.04em;text-align:center}
+.palace-relationship-head span:first-child{text-align:left}
+.palace-relationship-options{display:grid;gap:5px}
+.palace-relationship-option{padding:5px 7px;border:1px solid rgba(180,165,226,.21);border-radius:10px;background:rgba(23,25,52,.22)}
+.palace-relationship-option strong{min-width:0;font-size:.78rem;line-height:1.3;color:#f2ebff}
+.palace-relationship-option button{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:0;min-height:38px;padding:5px 6px;border:1px solid rgba(190,178,222,.42);border-radius:9px;background:rgba(58,56,101,.22);color:#e7e0f3;font:700 .69rem/1.2 system-ui,sans-serif;cursor:pointer}
+.palace-relationship-option button.selected.include{background:#3f6489;border-color:#8fcfff;color:#fff}
+.palace-relationship-option button.selected.exclude{background:#743d60;border-color:#f0aec9;color:#fff}
+.palace-relationship-option button:focus-visible{outline:2px solid #b9e7ff;outline-offset:2px}
+.palace-shell.daylight .palace-relationship-types>p{color:#514464}
+.palace-shell.daylight .palace-relationship-head{color:#655576}
+.palace-shell.daylight .palace-relationship-option{background:rgba(255,255,255,.64);border-color:#d6cbe3}
+.palace-shell.daylight .palace-relationship-option strong{color:#392c4d}
+.palace-shell.daylight .palace-relationship-option button{color:#4c3a63;background:#eae3f3;border-color:#b5a8cc}
+.palace-shell.daylight .palace-relationship-option button.selected{color:#fff}
+@media(max-width:390px){
+ .palace-relationship-head,.palace-relationship-option{grid-template-columns:minmax(0,1fr) 68px 68px;gap:4px}
+ .palace-relationship-option button{font-size:.85rem}
+ .palace-relationship-option button span{display:none}
+}

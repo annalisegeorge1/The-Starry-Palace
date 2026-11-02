@@ -1,12 +1,13 @@
 import React,{useEffect,useMemo,useState} from 'react';
 import {Link} from 'react-router-dom';
 import {READING_SORT_OPTIONS,READING_FACET_ORDER,READING_FACET_NAMES} from './readingFacetModel';
+import PalaceRelationshipFilters from './PalaceRelationshipFilters';
 import './reading-faceted-browse.css';
 
 /** Guest-safe precision browsing, with a full tag directory in archive mode. */
 export default function ReadingFacetSidebar({
  facets=[],sort='updated',onSort,rating='all',onRating,status='all',onStatus,
- included=[],excluded=[],onToggle,onClear,loadedCount=0,hasMore=false,
+ included=[],excluded=[],onToggle,onClear,relationshipIncluded=[],relationshipExcluded=[],onToggleRelationship=()=>{},loadedCount=0,hasMore=false,
  archiveWide=false,onSearchTags,onTagIdentified
 }){
  const [open,setOpen]=useState(false);
@@ -14,7 +15,7 @@ export default function ReadingFacetSidebar({
  const [globalTags,setGlobalTags]=useState([]);
  const [tagBusy,setTagBusy]=useState(false);
  const [tagError,setTagError]=useState('');
- const active=included.length+excluded.length+(rating!=='all'?1:0)+(status!=='all'?1:0);
+ const active=included.length+excluded.length+relationshipIncluded.length+relationshipExcluded.length+(rating!=='all'?1:0)+(status!=='all'?1:0);
  const q=search.trim().toLocaleLowerCase();
  useEffect(()=>{
   if(!archiveWide||!q||typeof onSearchTags!=='function'){
@@ -61,7 +62,8 @@ export default function ReadingFacetSidebar({
     <label>Rating<select value={rating} onChange={event=>onRating(event.target.value)}><option value="all">All ratings</option><option value="general">General</option><option value="teen">Teen</option><option value="mature">Mature</option><option value="explicit">Explicit</option><option value="not_rated">Not rated</option></select></label>
     <label>Work status<select value={status} onChange={event=>onStatus(event.target.value)}><option value="all">All statuses</option><option value="in_progress">In progress</option><option value="complete">Complete</option><option value="hiatus">Hiatus</option><option value="abandoned">Abandoned</option></select></label>
    </div>
-   <div className="reading-facet-precision"><div><strong>Include / Exclude</strong><small>{archiveWide?'Choose tags from the full Palace directory':'Build a constellation of tags'}</small></div>{active>0&&<button type="button" onClick={onClear}>Clear choices</button>}</div>
+   <PalaceRelationshipFilters included={relationshipIncluded} excluded={relationshipExcluded} onToggle={onToggleRelationship}/>
+   <div className="reading-facet-precision"><div><strong>Include / Exclude Tags</strong><small>{archiveWide?'Choose tags from the full Palace directory':'Build a constellation of tags'}</small></div>{active>0&&<button type="button" onClick={onClear}>Clear choices</button>}</div>
    {(included.length>0||excluded.length>0)&&<div className="reading-facet-selection-summary" aria-live="polite"><span>{included.length} included</span><span>{excluded.length} excluded</span></div>}
    <label className="reading-facet-label" htmlFor="palace-facet-tag-search">{archiveWide?'Search every tag in the Palace':'Find a tag within loaded stories'}</label>
    <input id="palace-facet-tag-search" className="reading-facet-search" type="search" value={search} onChange={event=>setSearch(event.target.value)} placeholder="Search fandoms, characters, relationships, tropes…"/>

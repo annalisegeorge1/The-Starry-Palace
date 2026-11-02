@@ -31,3 +31,14 @@ it('offers a way to clear combined choices without losing the tag label',()=>{
  fireEvent.click(screen.getByRole('button',{name:'Clear choices'}));
  expect(onClear).toHaveBeenCalledOnce();
 });
+
+it('offers explicit include and exclude relationship categories in a predictable order',()=>{
+ const onToggleRelationship=vi.fn();
+ render(<MemoryRouter><ReadingFacetSidebar {...props} onToggleRelationship={onToggleRelationship}/></MemoryRouter>);
+ fireEvent.click(screen.getByRole('button',{name:/Sort & Filter/}));
+ fireEvent.click(screen.getByRole('button',{name:'Include F/F relationships'}));
+ fireEvent.click(screen.getByRole('button',{name:'Exclude M/M relationships'}));
+ expect(onToggleRelationship).toHaveBeenNthCalledWith(1,'ff','include');
+ expect(onToggleRelationship).toHaveBeenNthCalledWith(2,'mm','exclude');
+ expect(screen.getByText('Include / Exclude Tags')).toBeTruthy();
+});

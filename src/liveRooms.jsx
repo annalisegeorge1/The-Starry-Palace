@@ -90,6 +90,7 @@ import PalaceFandomMiniPicker from './PalaceFandomMiniPicker';
 import {TAG_BATCH_PAGE_SIZE,toggleQueuedTag,pendingTagBatch,visibleTagSuggestions} from './tagBatchModel';
 import './palace-tag-batch.css';
 import {filterPalaceSearchGroups,countPalaceSearchGroups,activePalaceSearchFacets,SEARCH_RESULT_KINDS,SEARCH_RATINGS,SEARCH_COMPLETION} from './palaceSearchResults';
+import {matchesReadingRelationships,RELATIONSHIP_TYPES} from './readingFacetModel';
 import MemberChamberDecor,{useChamberDecor} from './MemberChamberDecor';
 import {arrangeMemberChamberArt} from './memberChamberDecorData';
 import './member-chamber-atelier.css';
@@ -318,6 +319,8 @@ export function ReadingLive({Frame}){
  const readerLens=readingChoices.readerLens;const setReaderLens=value=>setReadingChoice('readerLens',value);
  const catalogueSort=readingChoices.catalogueSort;const setCatalogueSort=value=>setReadingChoice('catalogueSort',value);
  const includedTags=readingChoices.includeTags;const excludedTags=readingChoices.excludeTags;
+ const[relationshipIncluded,setRelationshipIncluded]=useState([]);
+ const[relationshipExcluded,setRelationshipExcluded]=useState([]);
  const inAdvancedSearch=new URLSearchParams(location.search).get('view')==='search';
  const fanfictionSectionRequested=new URLSearchParams(location.search).get('section')==='fanfiction';
  useEffect(()=>{if(fanfictionSectionRequested&&origin!=='fandom')setOrigin('fandom')},[fanfictionSectionRequested,origin]);
@@ -331,6 +334,7 @@ export function ReadingLive({Frame}){
   text:query,include:includedTags,exclude:excludedTags,rating,status,origin,sort:catalogueSort
  });
  function browseAllPublished(){
+  setRelationshipIncluded([]);setRelationshipExcluded([]);
   setReadingChoice('catalogueScope','archive');
   setReaderLens('all');setVibeDoor('all');
   if(!isArchiveReadingSort(catalogueSort))setCatalogueSort('updated');
@@ -381,6 +385,19 @@ export function ReadingLive({Frame}){
   }catch(e){setMorePublishedError('More stories could not be gathered just now. Please try again.')}
   finally{setMorePublishedBusy(false)}
  }
+ function toggleRelationshipFacet(id,mode){
+  const valid=RELATIONSHIP_TYPES.some(([key])=>key===id);if(!valid)return;
+  // Relationship type filtering is local unless the archive RPC supports it.
+  // Switch to loaded shelves rather than silently filtering a single archive page.
+  setReadingChoice('catalogueScope','loaded');
+  if(mode==='include'){
+   setRelationshipExcluded(x=>x.filter(k=>k!==id));
+   setRelationshipIncluded(x=>x.includes(id)?x.filter(k=>k!==id):[...x,id]);
+  }else{
+   setRelationshipIncluded(x=>x.filter(k=>k!==id));
+   setRelationshipExcluded(x=>x.includes(id)?x.filter(k=>k!==id):[...x,id]);
+  }
+ }
  function toggleReadingFacet(id,mode){
   if(mode==='include'){
    setReadingChoice('excludeTags',selected=>selected.filter(value=>value!==id));
@@ -415,7 +432,7 @@ export function ReadingLive({Frame}){
  const storyHref=w=>{if(w.is_archive)return directClassicHref(w);const p=stateFor(w).progress;if(p&&!p.completed&&p.chapter_id)return"/work/"+w.slug+"/chapter/"+p.chapter_id;return"/work/"+w.slug};
  const storyCta=w=>w.is_archive?(w.work_type==='fanwork'?'Read fanfic →':'Read classic →'):reopened(w)?'Read new chapter →':stateFor(w).progress&&!stateFor(w).progress.completed?'Continue reading →':finished(w)?'Read again →':'Enter story →';
  const readerLensMatches=w=>readerLens==='all'||readerLens==='unread'&&!stateFor(w).progress||readerLens==='reading'&&needsReading(w)||readerLens==='new'&&hasNew(w)||readerLens==='saved'&&!!stateFor(w).saved||readerLens==='following'&&!!stateFor(w).following||readerLens==='finished'&&finished(w);
- const filtered=roomWorks.filter(w=>matchesReadingFacets(w,includedTags,excludedTags)&&moodMatches(w,vibeDoor)&&readerLensMatches(w)&&(rating==='all'||w.rating===rating)&&(status==='all'||w.completion_status===status)&&(!query.trim()||[w.title,w.summary,w.profiles?.display_name,w.profiles?.username,w.profiles?.title,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase().includes(query.trim().toLowerCase())));
+ const filtered=roomWorks.filter(w=>matchesReadingFacets(w,includedTags,excludedTags)&&matchesReadingRelationships(w,relationshipIncluded,relationshipExcluded)&&moodMatches(w,vibeDoor)&&readerLensMatches(w)&&(rating==='all'||w.rating===rating)&&(status==='all'||w.completion_status===status)&&(!query.trim()||[w.title,w.summary,w.profiles?.display_name,w.profiles?.username,w.profiles?.title,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase().includes(query.trim().toLowerCase())));
  const catalogue=sortReadingWorks(filtered,catalogueSort);
  // Published archive-wide member search and the separately hosted archive use
  // different backends. Surface verified, readable fanworks in the same Reading
@@ -437,10 +454,13 @@ export function ReadingLive({Frame}){
  const showBrowseCards=archiveBrowseEnabled?Boolean(archiveBrowse.snapshot):Boolean(works);
  const browseLoading=archiveBrowseEnabled?archiveBrowse.loading:!works&&!error;
  const browseError=archiveBrowseEnabled?archiveBrowse.error:error;
- const activeReadingFilters=[...readingFilterChips({origin,query,rating,status,vibeDoor,readerLens},Object.fromEntries(moodDoors.map(door=>[door.id,door.label]))),...includedTags.map(id=>({key:'include:'+id,label:'Include: '+(facetNames[id]||'selected tag')})),...excludedTags.map(id=>({key:'exclude:'+id,label:'Exclude: '+(facetNames[id]||'selected tag')}))];
+ const activeReadingFilters=[...readingFilterChips({origin,query,rating,status,vibeDoor,readerLens},Object.fromEntries(moodDoors.map(door=>[door.id,door.label]))),...includedTags.map(id=>({key:'include:'+id,label:'Include: '+(facetNames[id]||'selected tag')})),...excludedTags.map(id=>({key:'exclude:'+id,label:'Exclude: '+(facetNames[id]||'selected tag')})),...relationshipIncluded.map(id=>({key:'relationship-include:'+id,label:'Include '+(RELATIONSHIP_TYPES.find(([k])=>k===id)?.[1]||id)})),...relationshipExcluded.map(id=>({key:'relationship-exclude:'+id,label:'Exclude '+(RELATIONSHIP_TYPES.find(([k])=>k===id)?.[1]||id)}))];
  const fanfictionActiveFilters=activeReadingFilters.filter(item=>item.key!=='origin');
- function clearReadingFilters(){setOrigin('all');setVibeDoor('all');setReaderLens('all');setQuery('');setRating('all');setStatus('all');setReadingChoice('includeTags',[]);setReadingChoice('excludeTags',[])}
+ function clearReadingFilters(){setOrigin('all');setVibeDoor('all');setReaderLens('all');setQuery('');setRating('all');setStatus('all');setReadingChoice('includeTags',[]);setReadingChoice('excludeTags',[]);setRelationshipIncluded([]);setRelationshipExcluded([])}
  function removeReadingFilter(key){
+  if(key.startsWith('relationship-include:')){setRelationshipIncluded(x=>x.filter(k=>k!==key.slice(21)));return}
+  if(key.startsWith('relationship-exclude:')){setRelationshipExcluded(x=>x.filter(k=>k!==key.slice(21)));return}
+
   if(key.startsWith('include:')){setReadingChoice('includeTags',current=>current.filter(id=>id!==key.slice(8)));return}
   if(key.startsWith('exclude:')){setReadingChoice('excludeTags',current=>current.filter(id=>id!==key.slice(8)));return}
   switch(key){
@@ -614,7 +634,7 @@ export function ReadingLive({Frame}){
    {morePublishedError&&<p role="alert">{morePublishedError}</p>}
   </div>}
   </div>
-  <ReadingFacetSidebar facets={tagFacets} sort={catalogueSort} onSort={updateCatalogueSort} rating={rating} onRating={setRating} status={status} onStatus={setStatus} included={includedTags} excluded={excludedTags} onToggle={toggleReadingFacet} onClear={clearReadingFilters} loadedCount={roomWorks.length} hasMore={!archiveBrowseEnabled&&hasMorePublished} archiveWide={archiveBrowseEnabled} onSearchTags={searchPalaceTags} onTagIdentified={identifyReadingTag}/>
+  <ReadingFacetSidebar facets={tagFacets} sort={catalogueSort} onSort={updateCatalogueSort} rating={rating} onRating={setRating} status={status} onStatus={setStatus} included={includedTags} excluded={excludedTags} onToggle={toggleReadingFacet} onClear={clearReadingFilters} relationshipIncluded={relationshipIncluded} relationshipExcluded={relationshipExcluded} onToggleRelationship={toggleRelationshipFacet} loadedCount={roomWorks.length} hasMore={!archiveBrowseEnabled&&hasMorePublished} archiveWide={archiveBrowseEnabled} onSearchTags={searchPalaceTags} onTagIdentified={identifyReadingTag}/>
   </div>}
   </>}
  </section></Frame>

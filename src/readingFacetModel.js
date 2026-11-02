@@ -75,3 +75,49 @@ export function sortReadingWorks(works=[],sort='updated'){
   return tie(a,b);
  });
 }
+
+/** Relationship type is author/tag metadata, NOT an inference about a character.
+ * Pair tags like "A/B" do not prove F/M or M/M. Unlabelled remains unlabelled. */
+export const RELATIONSHIP_TYPES=Object.freeze([
+ ['fm','F/M'],['ff','F/F'],['mm','M/M'],['multi','Multi'],
+ ['gen','Gen'],['other','Other'],['unspecified','Not tagged']
+]);
+const RELATIONSHIP_ALIASES={
+ fm:['f/m','m/f','female/male','male/female','female/male relationships','male/female relationships'],
+ ff:['f/f','female/female','female/female relationships'],
+ mm:['m/m','male/male','male/male relationships'],
+ multi:['multi','multiple','multi relationships','multiple relationships','polyamory','polyamorous relationships'],
+ gen:['gen','general (no romantic relationship)','no romantic relationships','no romantic relationship','gen relationships'],
+ other:['other','other relationships','other relationship']
+};
+export function classifyRelationshipTag(name){
+ const normal=String(name||'').toLowerCase().trim()
+  .replace(/^(relationship (?:type|category)|category)\s*:\s*/,'')
+  .replace(/\s*\/\s*/g,'/')
+  .replace(/\s+/g,' ');
+ for(const [key,labels] of Object.entries(RELATIONSHIP_ALIASES))
+  if(labels.includes(normal))return key;
+ return null;
+}
+export function readingRelationshipTypes(work){
+ const tags=[
+  ...(Array.isArray(work?.facet_tags)?work.facet_tags:[]),
+  ...(Array.isArray(work?.work_tags)?work.work_tags:[]),
+  ...(Array.isArray(work?.tags)?work.tags:[])
+ ];
+ const explicit=[...(Array.isArray(work?.relationship_categories)?work.relationship_categories:[]),
+  ...(work?.relationship_category?[work.relationship_category]:[])];
+ const selected=new Set(explicit.map(classifyRelationshipTag).filter(Boolean));
+ for(const row of tags){
+  const tag=row?.tags||row;
+  if(!['relationship','relationship_type','category'].includes(String(tag?.category||'').toLowerCase()))continue;
+  const type=classifyRelationshipTag(tag?.name);
+  if(type)selected.add(type);
+ }
+ if(!selected.size)selected.add('unspecified');
+ return [...selected];
+}
+export function matchesReadingRelationships(work,included=[],excluded=[]){
+ const types=new Set(readingRelationshipTypes(work));
+ return (!included.length||included.some(k=>types.has(k)))&&!excluded.some(k=>types.has(k));
+}
