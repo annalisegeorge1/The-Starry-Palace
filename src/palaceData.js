@@ -2,6 +2,8 @@ import { supabase } from './supabase';
 import {validateComicImage} from './comicUploadPreparation';
 import {PALACE_CHAT_V3_ENABLED} from './palaceChatV3';
 import {INITIAL_FANDOM_DIRECTORY} from './palaceFandomCatalogue';
+import {isHostedFanfiction} from './palaceFanfictionDiscovery';
+import {archiveFanfictionTags} from './fanfictionMetadata';
 
 function needClient(){if(!supabase) throw new Error('The Palace data connection is not configured.');return supabase}
 const identityMarkCache=new Map();
@@ -956,16 +958,48 @@ export async function getArchive(userId=null){
  if(error)throw error;const rows=data||[];if(!rows.length)return rows;
  // Read only citation metadata, never the potentially large hosted text.
  // A cover lookup problem must not prevent the archive from opening.
- let sources=new Map();
+ let sources=new Map(),textReady=new Map(),verifiedRights=new Set();
  try{
-  const result=await needClient().from('archive_texts').select('record_id,source_url').in('record_id',rows.map(r=>r.id));
-  if(!result.error)sources=new Map((result.data||[]).map(r=>[r.record_id,r.source_url]));
+  const licensedIds=rows.filter(r=>r.rights_status==='licensed'||r.rights_status==='creator_authorised').map(r=>r.id);
+  const [texts,rights]=await Promise.all([
+   needClient().from('archive_texts').select('record_id,source_url,word_count').in('record_id',rows.map(r=>r.id)),
+   licensedIds.length?needClient().from('archive_rights_records')
+    .select('record_id,permits_hosting,status')
+    .in('record_id',licensedIds).eq('status','verified').eq('permits_hosting',true):
+    Promise.resolve({data:[],error:null})
+  ]);
+  if(!texts.error){
+   sources=new Map((texts.data||[]).map(r=>[r.record_id,r.source_url]));
+   textReady=new Map((texts.data||[]).map(r=>[r.record_id,Number(r.word_count)>0]));
+  }
+  if(!rights.error)verifiedRights=new Set((rights.data||[]).map(r=>r.record_id));
  }catch{}
- const illustrated=rows.map(r=>({...r,archive_source_url:sources.get(r.id)||null}));
- if(!userId)return illustrated;
+ const illustrated=rows.map(r=>({
+  ...r,archive_source_url:sources.get(r.id)||null,
+  hosted_text_ready:textReady.has(r.id)?textReady.get(r.id):undefined,
+  hosted_rights_verified:verifiedRights.has(r.id)
+ }));
+ // Archive fanfiction has the same canonical tag IDs as member fanworks.
+ // Resolve existing IDs in one small query; the curator's source metadata
+ // remains the fallback when a canonical tag has not been created yet.
+ const fanworks=illustrated.filter(isHostedFanfiction);
+ const tagNames=[...new Set(fanworks.flatMap(work=>archiveFanfictionTags(work).map(row=>row.tags.name)))];
+ let canonicalTags=new Map();
+ if(tagNames.length){
+  try{
+   const result=await needClient().from('tags').select('id,name,category,status')
+    .in('name',tagNames.slice(0,500)).in('status',['canonical','community']);
+   if(!result.error)canonicalTags=new Map((result.data||[])
+    .map(t=>[t.category+':'+t.name.toLowerCase(),t]));
+  }catch{}
+ }
+ const tagged=illustrated.map(r=>({...r,archive_resolved_tags:isHostedFanfiction(r)?
+  archiveFanfictionTags(r).map(row=>canonicalTags.get(row.tags.category+':'+row.tags.name.toLowerCase())||row.tags):[]}));
+
+ if(!userId)return tagged;
  const saved=await needClient().from('user_archive_records').select('record_id,saved,visited_at').eq('user_id',userId).eq('saved',true);
  if(saved.error)throw saved.error;const byId=new Map((saved.data||[]).map(x=>[x.record_id,x]));
- return illustrated.map(r=>({...r,saved:byId.has(r.id),visited_at:byId.get(r.id)?.visited_at||null}))
+ return tagged.map(r=>({...r,saved:byId.has(r.id),visited_at:byId.get(r.id)?.visited_at||null}))
 }
 export async function getArchiveText(recordId){
  const[{data,error},{data:translations,error:translationError}]=await Promise.all([

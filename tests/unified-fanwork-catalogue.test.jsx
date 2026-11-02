@@ -51,13 +51,23 @@ describe('Unified Fanwork catalogue',()=>{
  it('renders a single list with distinct Palace and original-source reading actions',()=>{
   render(<MemoryRouter><UnifiedFanworkCatalogue publishedWorks={hosted}
    externalWorks={MODERN_FANFICTION_LINKS.slice(0,1)}/></MemoryRouter>);
-  expect(screen.getByRole('heading',{name:/Fanworks across the Palace and beyond/})).toBeTruthy();
+  expect(screen.getByRole('heading',{name:/Fan-made works/})).toBeTruthy();
   expect(screen.getAllByRole('link',{name:/Read on the Palace/})).toHaveLength(2);
   expect(screen.getByRole('link',{name:/Read at original source/})).toBeTruthy();
-  expect(screen.getAllByText(/Palace-hosted classic|Palace member work|Author-source link/).length).toBe(3);
+  expect(screen.getAllByText(/Hosted historical fanwork|Palace member fanwork|Original author’s site/).length).toBe(3);
   expect(screen.getByText(/by Palace Writer/)).toBeTruthy();
   const external=screen.getByRole('link',{name:/Read at original source/});
   expect(external.getAttribute('target')).toBe('_blank');
   expect(external.getAttribute('rel')).toContain('noopener');
+
+ });
+ it('does not repeat a Palace-hosted edition as an external author-source recommendation',()=>{
+  const linked=MODERN_FANFICTION_LINKS.find(x=>x.id==='anime-primulad-renuncia');
+  const archive={id:'archive-renuncia',slug:'renuncia',title:'Renuncia',summary:'Hosted fanfic',
+   is_archive:true,archive_category:'licensed_fanfiction',work_type:'fanwork',rating:'general',
+   archive_source_url:linked.sourceUrl,creator_name:'PrimulaD',work_tags:[{tags:{name:'Tsubasa Chronicle',category:'fandom'}}]};
+  const catalogue=createUnifiedFanworks([archive],MODERN_FANFICTION_LINKS);
+  expect(catalogue.some(x=>x.key==='archive:renuncia')).toBe(true);
+  expect(catalogue.some(x=>x.key==='external:anime-primulad-renuncia')).toBe(false);
  });
 });

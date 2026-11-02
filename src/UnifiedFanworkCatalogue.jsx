@@ -1,7 +1,7 @@
 import React,{useMemo,useState} from 'react';
 import {Link} from 'react-router-dom';
 import {MODERN_FANFICTION_LINKS,isHostedFanfiction} from './palaceFanfictionDiscovery';
-import {modernFanfictionGuide,historicFanfictionGuide,isAnimeFanfiction,FANFICTION_RATINGS,
+import {modernFanfictionGuide,hostedFanfictionGuide,FANFICTION_RATINGS,
  filterModernFanfiction} from './fanfictionMetadata';
 import './unified-fanwork-catalogue.css';
 
@@ -17,20 +17,30 @@ const normalized=s=>String(s||'').toLocaleLowerCase();
 const ratedTag=rating=>(FANFICTION_RATINGS.find(x=>x.id===rating)?.label||'Not rated').replace(' (13+)','').replace(' (18+)','');
 const memberUrl=work=>work.is_archive?'/classic/'+encodeURIComponent(work.slug):'/work/'+encodeURIComponent(work.slug);
 const searchable=work=>[work.title,work.summary,authorOf(work),...palaceTags(work).map(t=>t.name)].filter(Boolean).join(' ').toLocaleLowerCase();
-const sourceTag=(type)=>type==='link'?'Author-source link':type==='licensed'?'Palace-hosted fanwork':type==='historical'?'Palace-hosted classic':'Palace member work';
+const sourceTag=(type)=>type==='link'?'Original author’s site':type==='licensed'?'Hosted with author licence':type==='historical'?'Hosted historical fanwork':'Palace member fanwork';
 export function createUnifiedFanworks(works=[],external=MODERN_FANFICTION_LINKS){
  const seen=new Set();
  const all=[];
+ const sourceIdentity=url=>{
+  const value=String(url||'');
+  const ffn=value.match(/fanfiction\.net\/s\/(\d+)/i);
+  if(ffn)return 'ffn:'+ffn[1];
+  const ao3=value.match(/(?:archiveofourown\.org|archive\.transformativeworks\.org)\/works\/(\d+)/i);
+  if(ao3)return 'ao3:'+ao3[1];
+  return value.trim().toLowerCase().replace(/\/$/,'');
+ };
+ const hostedSources=new Set(works.filter(w=>w?.is_archive&&w?.archive_source_url)
+  .map(w=>sourceIdentity(w.archive_source_url)));
  for(const work of works){
   if(!work||!(work.work_type==='fanwork'||work.is_archive&&isHostedFanfiction(work)))continue;
   const key=work.is_archive?'archive:'+work.slug:'member:'+work.id;
   if(!key||seen.has(key))continue;
   seen.add(key);
   all.push({key,kind:work.is_archive?(work.archive_category==='licensed_fanfiction'?'licensed':'historical'):'member',title:work.title||'Untitled fanwork',author:authorOf(work),rating:work.rating||'not_rated',
-   summary:work.summary||'',tags:palaceTags(work).map(t=>t.name),href:memberUrl(work),work});
+   summary:work.summary||'',tags:palaceTags(work).map(t=>t.name),warnings:work.is_archive?hostedFanfictionGuide(work).contentWarnings:[],href:memberUrl(work),work});
  }
  for(const work of external){
-  if(!work?.sourceUrl||!work?.id)continue;
+  if(!work?.sourceUrl||!work?.id||hostedSources.has(sourceIdentity(work.sourceUrl)))continue;
   const key='external:'+work.id;if(seen.has(key))continue;seen.add(key);
   const guide=modernFanfictionGuide(work);
   all.push({key,kind:'link',title:work.title,author:work.creator,rating:guide.rating||'not_rated',
@@ -87,20 +97,20 @@ export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks
  const externalCount=all.filter(x=>x.kind==='link').length;
  const hostedCount=all.length-externalCount;
  const restricted=all.filter(x=>(x.rating==='mature'||x.rating==='explicit')).length;
- const reset=()=>{setSearch('');setRating('all');setSource(defaultSource);setAnimeOnly(false);setVisibleCount(12);setSort('title')};
+ const reset=()=>{setSearch('');setRating('all');setSource(defaultSource);setAnimeOnly(false);setIncludeMature(false);setVisibleCount(12);setSort('title')};
  return <section className="palace-unified-fanworks" aria-labelledby="palace-unified-fanworks-title">
   <header className="palace-unified-fanworks-head">
    <p className="eyebrow">FANFICTION · ONE SHARED DISCOVERY SHELF</p>
-   <h2 id="palace-unified-fanworks-title">Fanworks across the Palace and beyond</h2>
-   <p>Find Palace-hosted licensed fanfiction, member fanworks, historical fanfiction and independently published author-source recommendations together. Every card shows where its story can be read.</p>
+   <h2 id="palace-unified-fanworks-title">Fan-made works</h2>
+   <p>Read published fanfiction on the Palace. To explore stories available only on their authors’ websites, change “Read from” to “Author’s site.” Unpublished submissions are not shown.</p>
    <p className="palace-unified-totals" role="status"><strong>{hostedCount} Palace-hosted works loaded</strong> · <strong>{externalCount} author-source links</strong>{hasMoreHosted?' · More Palace works available':''}</p>
   </header>
   <div className="palace-unified-filterbar" role="search" aria-label="Search all fanworks">
    <label><span>Find a fanwork</span><input type="search" value={search} maxLength={120} placeholder="Title, author, fandom or trope…" onChange={e=>{setSearch(e.target.value);setVisibleCount(12)}}/></label>
    <label><span>Rating</span><select value={rating} onChange={e=>{setRating(e.target.value);setVisibleCount(12)}}>{FANFICTION_RATINGS.map(x=><option key={x.id} value={x.id}>{x.label}</option>)}</select></label>
-   <label><span>Read from</span><select value={source} onChange={e=>{setSource(e.target.value);setVisibleCount(12)}}><option value="all">All sources</option><option value="hosted">On the Palace</option><option value="linked">Author's site</option></select></label>
+   <label><span>Read from</span><select value={source} onChange={e=>{setSource(e.target.value);setVisibleCount(12)}}><option value="all">All sources</option><option value="hosted">On the Palace</option><option value="linked">Author’s site</option></select></label>
    <button type="button" aria-pressed={animeOnly} className={'palace-unified-anime'+(animeOnly?' active':'')} onClick={()=>{setAnimeOnly(x=>!x);setVisibleCount(12)}}>Anime &amp; manga</button>
-   {(search||rating!=='all'||source!=='all'||animeOnly||sort!=='title')&&<button type="button" className="palace-unified-clear" onClick={reset}>Clear filters</button>}
+   {(search||rating!=='all'||source!==defaultSource||animeOnly||includeMature||sort!=='title')&&<button type="button" className="palace-unified-clear" onClick={reset}>Clear filters</button>}
   </div>
   <div className="palace-unified-toolbar">
    <span role="status" aria-live="polite">Showing {shown.length} of {ordered.length} matching works</span>
@@ -132,7 +142,7 @@ export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks
   {visibleCount<ordered.length&&<button className="palace-unified-more" type="button" onClick={()=>setVisibleCount(n=>n+12)}>Show more fanworks ({ordered.length-shown.length} remaining)</button>}
   {restricted>0&&<div className="palace-unified-age"><p>{includeMature?'Mature and explicit recommendations are now shown. This acknowledgement is not age verification.':'Mature and explicit entries are hidden from this unified catalogue by default.'}</p><button type="button" onClick={()=>{setIncludeMature(v=>!v);setVisibleCount(12)}}>{includeMature?'Hide mature works':'I am 18+ · Show mature works'}</button></div>}
   {hasMoreHosted&&onMoreHosted&&<button className="palace-unified-more-hosted" type="button" onClick={onMoreHosted}>Load additional Palace-published works</button>}
-  <p className="palace-unified-rights">Externally linked works are not hosted or copied by the Palace. Their authors retain attribution; a licence for an author's original contribution does not necessarily clear rights in the underlying franchise. Site reading progress and downloads apply only to Palace-hosted works.</p>
+  <p className="palace-unified-rights">Works labeled “Read on the Palace” have a published hosted edition. Author-source links open the original website and are not hosted or copied here. Fanfiction authors' reuse terms do not automatically clear the underlying franchise rights.</p>
   {!inFandomAtlas&&<p className="palace-unified-fandom-link"><Link to="/fandoms?section=fanfiction">Explore fanworks by fandom →</Link></p>}
  </section>;
 }

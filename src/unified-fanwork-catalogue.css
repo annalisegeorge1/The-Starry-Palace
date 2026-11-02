@@ -58,23 +58,3 @@
  .palace-unified-filterbar label:first-child{flex-basis:100%}
  .palace-unified-fanworks{padding-bottom:120px}
 }
-
-/* Verified archive fanworks in the main, archive-wide Reading Room.
-   This shelf is separate from server-paged member stories, so counts stay true. */
-.reading-hosted-fanworks{display:grid;gap:12px;margin:14px 0 22px;min-width:0;color:var(--ui-text)}
-.reading-hosted-fanworks-heading{display:flex;justify-content:space-between;align-items:start;gap:14px}
-.reading-hosted-fanworks-heading h2{font:650 clamp(1.16rem,2.4vw,1.5rem)/1.2 Georgia,serif;margin:2px 0 5px;color:var(--ui-text)}
-.reading-hosted-fanworks-heading p{margin:0;color:var(--ui-muted);font-size:.8rem;line-height:1.5}
-.reading-hosted-fanworks-heading>.eyebrow,.reading-hosted-fanworks-heading .eyebrow{font-size:.66rem;letter-spacing:.11em}
-.reading-hosted-fanworks-heading>span{font-size:.72rem;color:var(--ui-muted);white-space:nowrap;padding:7px 9px;border:1px solid var(--ui-line);border-radius:14px}
-.reading-hosted-fanworks-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:10px}
-.reading-hosted-fanwork-card{display:flex;flex-direction:column;gap:7px;padding:14px;border:1px solid var(--ui-line);border-radius:15px;background:var(--ui-surface,rgba(55,56,104,.28));min-width:0}
-.reading-hosted-fanwork-card>p{font-size:.8rem;color:var(--ui-muted);margin:0}
-.reading-hosted-fanwork-card .reading-hosted-fanwork-title{font:600 1.05rem/1.3 Georgia,serif;color:var(--ui-text);overflow-wrap:anywhere}
-.reading-hosted-fanwork-summary{line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.reading-hosted-fanwork-meta{display:flex;align-items:center;flex-wrap:wrap;gap:5px}
-.reading-hosted-fanwork-meta span{font-size:.68rem;line-height:1.3;border:1px solid var(--ui-line);border-radius:12px;padding:4px 7px;color:var(--ui-muted)}
-.reading-hosted-fanwork-read{font-size:.78rem;font-weight:650;margin-top:auto;align-self:start;color:var(--ui-accent)}
-.reading-hosted-fanwork-more{font-size:.78rem;font-weight:600}
-.reading-hosted-fanworks a:focus-visible{outline:2px solid var(--ui-accent);outline-offset:3px}
-@media(max-width:700px){.reading-hosted-fanworks{gap:10px}.reading-hosted-fanworks-heading{flex-wrap:wrap}.reading-hosted-fanworks-heading>span{padding:5px 8px}.reading-hosted-fanworks-list{grid-template-columns:1fr}.reading-hosted-fanwork-card{padding:12px}}

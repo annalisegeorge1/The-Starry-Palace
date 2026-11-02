@@ -32,7 +32,8 @@ describe('Author-licensed fanfiction intake and safe publication',()=>{
   expect(canDisplayHostedArchive(base)).toBe(false);
   expect(canReadHostedClassic({...base,publication_status:'draft',verified_at:'2026-11-01'})).toBe(false);
   expect(canReadHostedClassic({...base,publication_status:'published'})).toBe(false);
-  expect(canReadHostedClassic({...base,publication_status:'published',verified_at:'2026-11-01'})).toBe(true);
+  expect(canReadHostedClassic({...base,publication_status:'published',verified_at:'2026-11-01'})).toBe(false);
+  expect(canReadHostedClassic({...base,publication_status:'published',verified_at:'2026-11-01',hosted_rights_verified:true,hosted_text_ready:true})).toBe(true);
   expect(canReadHostedClassic({...base,publication_status:'published',host_mode:'citation',verified_at:'2026-11-01'})).toBe(false);
   expect(canDisplayHostedArchive({...base,host_mode:'full',rights_status:'unresolved',verified_at:'2026-11-01'})).toBe(false);
  });
