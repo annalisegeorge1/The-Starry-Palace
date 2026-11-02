@@ -27,6 +27,9 @@ export function fanworkReviewStatus(work={},today=todayIso()){
  if(!work.permissionUrl)issues.push('Source permission statement or contact URL missing');
  if(!RATINGS.has(rating)||rating==='not_rated')issues.push('Age rating needs editorial review');
  if(!String(work.fandom||'').trim())issues.push('Fandom tags need review');
+ const licence=String(work.sourceLicense||'');
+ if(/\\bBY-NC\\b/i.test(licence))issues.push('Noncommercial licence: check site funding and permitted use before hosting');
+ if(/\\bBY-(?:NC-)?ND\\b/i.test(licence))issues.push('NoDerivatives licence: do not alter or translate the author’s text without permission');
  if(['mature','explicit'].includes(rating))
   issues.push('18+ reader access restrictions must be confirmed before publication');
  if(!verified)issues.push(expired?'Hosting grant expired or withdrawn':'Independent hosting approval not verified');
