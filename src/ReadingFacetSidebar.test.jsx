@@ -42,7 +42,7 @@ it('offers explicit include and exclude relationship categories in a predictable
  fireEvent.click(screen.getByRole('button',{name:'Exclude M/M relationships'}));
  expect(onToggleRelationship).toHaveBeenNthCalledWith(1,'ff','include');
  expect(onToggleRelationship).toHaveBeenNthCalledWith(2,'mm','exclude');
- expect(screen.getByText('Include / Exclude Tags')).toBeTruthy();
+ expect(screen.getByRole('button',{name:/3\. Include/})).toBeTruthy();
 });
 
 it('shows only six tag rows at first, and expands on demand without losing selection',()=>{
