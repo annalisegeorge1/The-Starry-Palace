@@ -64,5 +64,24 @@ export async function stageCuratorFanworkManuscript({record,body,sourceUrl,deliv
   updated_at:new Date().toISOString()
  },{onConflict:'record_id'}).select('record_id,word_count,updated_at').single();
  if(error)throw error;
+ // Evidence remains in the private, unverified rights-review queue, not in a
+ // published edition note. Verification and permission to host are NEVER set
+ // by the intake form. Rights-record SELECT remains curator-only until verified.
+ const basis=deliveryMethod==='rights_holder_supplied'?'rights_holder_permission':'creator_permission';
+ const review={
+  record_id:record.id,basis,rights_holder:record.creator||'',
+  evidence_summary:String(evidenceNote||'').trim().slice(0,1200),
+  evidence_ref:safeManuscriptSource(sourceUrl),
+  permits_hosting:false,permits_translation:false,permits_continuation:false,
+  status:'review'
+ };
+ const prior=await api.from('archive_rights_records').select('id')
+  .eq('record_id',record.id).eq('status','review')
+  .eq('basis',basis).limit(1);
+ if(prior.error)throw prior.error;
+ const rights=prior.data?.[0]?.id
+  ?await api.from('archive_rights_records').update(review).eq('id',prior.data[0].id)
+  :await api.from('archive_rights_records').insert(review);
+ if(rights.error)throw Error('Manuscript saved privately, but its rights-review note could not be recorded. Please retry the review note. '+rights.error.message);
  return data;
 }
