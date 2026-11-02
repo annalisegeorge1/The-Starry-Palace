@@ -8,7 +8,7 @@ export async function openHostedClassic(slug){
  const value=String(slug||'').trim();
  if(!value||value.length>240)return null;
  const {data:record,error}=await supabase.from('archive_records')
-  .select('id,slug,title,creator_name,record_nature,category,summary,original_language,rights_status,host_mode,provenance_summary,known_gaps,publication_status,verified_at')
+  .select('id,slug,title,creator_name,record_nature,category,summary,original_language,rights_status,host_mode,provenance_summary,known_gaps,source_notes,publication_status,verified_at')
   .eq('slug',value).eq('publication_status','published').maybeSingle();
  if(error)throw error;
  if(!record)return null;
