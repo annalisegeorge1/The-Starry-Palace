@@ -19,7 +19,8 @@ describe('Fanfiction section contains rights-aware historical and modern discove
  it('places archived historical fanfic in the existing Fanfiction origin and uses the correct hosted reader',()=>{
   expect(reading).toContain("archiveRows.filter(canDisplayHostedArchive).map(toHostedReadingWork)");
   expect(hostedModel).toContain("work_type:readingArchiveWorkType(record)");
-  expect(reading).toContain("origin==='fandom'&&<UnifiedFanworkCatalogue publishedWorks=");
+  expect(reading).toContain("origin==='fandom'&&!advancedView&&<>");
+  expect(reading).toContain('<UnifiedFanworkCatalogue publishedWorks=');
   expect(reading).toContain('>Fanfiction</button>');
   expect(shelf).toContain("directClassicHref(work)");
   expect(shelf).toContain("PUBLIC DOMAIN · HOSTED ON THE PALACE");
@@ -261,11 +262,11 @@ describe('Fanfiction section contains rights-aware historical and modern discove
    const shelfAt=reading.indexOf(shelfMarkup);
    const browseLayout=reading.indexOf('className="reading-catalogue-layout"');
    const archiveHeader=reading.indexOf('<ReadingCatalogueControls');
-   expect(shelfAt).toBeGreaterThan(browseLayout);
+   expect(shelfAt).toBeLessThan(browseLayout);
    expect(reading).toContain("origin!=='fandom'&&<State loading={browseLoading}");
    expect(reading).toContain("onClick={()=>{setOrigin('fandom');navigate('/reading?section=fanfiction')}}");
    expect(reading).toContain("get('section')==='fanfiction'");
-   expect(reading).toContain("document.getElementById('palace-unified-fanworks-title')?.scrollIntoView");
+   expect(reading).not.toContain("document.getElementById('palace-unified-fanworks-title')?.scrollIntoView");
    expect(reading).toContain("origin!=='fandom'&&showBrowseCards&&<ReadingCatalogueControls");
    expect(shelf).toContain('MODERN_FANFICTION_LINKS.length} stories to explore');
    expect(shelf).toContain('showHistorical&&historic.length>0');
