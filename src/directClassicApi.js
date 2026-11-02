@@ -15,10 +15,12 @@ export async function openHostedClassic(slug){
  // The public reader must independently verify licensed hosting rights even
  // when reached by a direct /classic URL rather than through a catalogue.
  if(record.rights_status==='licensed'||record.rights_status==='creator_authorised'){
-  const rights=await supabase.from('archive_rights_records').select('id')
-   .eq('record_id',record.id).eq('status','verified').eq('permits_hosting',true).limit(1);
+  const rights=await supabase.from('archive_rights_records').select('id,valid_from,valid_until')
+   .eq('record_id',record.id).eq('status','verified').eq('permits_hosting',true).limit(100);
   if(rights.error)return null;
-  record.hosted_rights_verified=Boolean(rights.data?.length);
+  const today=new Date().toISOString().slice(0,10);
+  record.hosted_rights_verified=Boolean(rights.data?.some(grant=>
+   (!grant.valid_from||grant.valid_from<=today)&&(!grant.valid_until||grant.valid_until>=today)));
  }
  const text=await getArchiveText(record.id);
  // Modern licensed editions must be fully present before being advertised
