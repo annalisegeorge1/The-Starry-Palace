@@ -86,7 +86,7 @@ it('hides Tropes and every later category from the default Include and Exclude l
  fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
  expect(screen.getByText('Genres')).toBeTruthy();
  for(const [,label] of categories.slice(1))expect(screen.queryByText(label)).toBeNull();
- fireEvent.click(screen.getByRole('button',{name:/4\\. Exclude/}));
+ fireEvent.click(screen.getByRole('button',{name:/4\. Exclude/}));
  const genres=screen.getAllByText('Genres');
  expect(genres).toHaveLength(2);
  for(const [,label] of categories.slice(1))expect(screen.queryByText(label)).toBeNull();
@@ -111,7 +111,7 @@ it('finds hidden tropes through Exclude search without displaying the category b
  const facets=[{category:'trope',label:'Tropes',tags:[{id:'slow',name:'Slow Burn',count:7}]}];
  const onToggle=vi.fn();view({facets,onToggle});
  fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
- fireEvent.click(screen.getByRole('button',{name:/4\\. Exclude/}));
+ fireEvent.click(screen.getByRole('button',{name:/4\. Exclude/}));
  expect(screen.queryByText('Tropes')).toBeNull();
  fireEvent.change(screen.getByLabelText('Other tags to exclude'),{target:{value:'slow'}});
  fireEvent.click(screen.getByText('Tropes'));
