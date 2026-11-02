@@ -6,7 +6,7 @@ import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection,fandomFa
 import StoryRatingBadge from './StoryRatingBadge';
 import UnifiedFanworkCatalogue from './UnifiedFanworkCatalogue';
 import {isHostedFanfiction,canDisplayHostedArchive} from './palaceFanfictionDiscovery';
-import {hostedFanfictionGuide,hostedFanfictionCompletion,archiveFanfictionTags} from './fanfictionMetadata';
+import {toHostedReadingWork} from './hostedReadingWork';
 import {MODERN_FANFICTION_LINKS} from './palaceFanfictionDiscovery';
 import PalaceInfoMark from './PalaceInfoMark';
 import {tagWorldPath} from './tagWorldRoutes';
@@ -63,11 +63,7 @@ export default function PalaceFandomAtlas(){
   Promise.allSettled([getPublishedWorks({limit:48}),getArchive(null)]).then(([published,archive])=>{
    if(!active)return;
    if(published.status==='fulfilled')setFanworkRows((published.value||[]).filter(w=>w.work_type==='fanwork'));
-   if(archive.status==='fulfilled')setHistoricFanworks((archive.value||[]).filter(r=>isHostedFanfiction(r)&&canDisplayHostedArchive(r)).map(r=>({
-    id:'archive-'+r.id,slug:r.slug,title:r.title,summary:r.summary,creator_name:r.creator_name,
-    work_type:'fanwork',is_archive:true,rating:hostedFanfictionGuide(r).rating,completion_status:hostedFanfictionCompletion(r),
-    work_tags:archiveFanfictionTags(r)
-   })));
+   if(archive.status==='fulfilled')setHistoricFanworks((archive.value||[]).filter(r=>isHostedFanfiction(r)&&canDisplayHostedArchive(r)).map(toHostedReadingWork));
    if(published.status==='rejected'||archive.status==='rejected')setFanworksError('Part of the Palace-hosted collection is temporarily unavailable.');
   }).finally(()=>{if(active)setFanworksBusy(false)});
   return()=>{active=false};
