@@ -964,7 +964,7 @@ export async function getArchive(userId=null){
   const [texts,rights]=await Promise.all([
    needClient().from('archive_texts').select('record_id,source_url,word_count').in('record_id',rows.map(r=>r.id)),
    licensedIds.length?needClient().from('archive_rights_records')
-    .select('record_id,permits_hosting,status')
+    .select('record_id,permits_hosting,status,valid_from,valid_until')
     .in('record_id',licensedIds).eq('status','verified').eq('permits_hosting',true):
     Promise.resolve({data:[],error:null})
   ]);
@@ -972,11 +972,16 @@ export async function getArchive(userId=null){
    sources=new Map((texts.data||[]).map(r=>[r.record_id,r.source_url]));
    textReady=new Map((texts.data||[]).map(r=>[r.record_id,Number(r.word_count)>0]));
   }
-  if(!rights.error)verifiedRights=new Set((rights.data||[]).map(r=>r.record_id));
+  if(!rights.error){
+   const today=new Date().toISOString().slice(0,10);
+   verifiedRights=new Set((rights.data||[])
+    .filter(r=>(!r.valid_from||r.valid_from<=today)&&(!r.valid_until||r.valid_until>=today))
+    .map(r=>r.record_id));
+  }
  }catch{}
  const illustrated=rows.map(r=>({
   ...r,archive_source_url:sources.get(r.id)||null,
-  hosted_text_ready:textReady.has(r.id)?textReady.get(r.id):undefined,
+  hosted_text_ready:textReady.get(r.id)===true,
   hosted_rights_verified:verifiedRights.has(r.id)
  }));
  // Archive fanfiction has the same canonical tag IDs as member fanworks.
