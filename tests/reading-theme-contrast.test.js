@@ -48,4 +48,27 @@ describe('Reading Rooms color and mobile contrast repairs',()=>{
   expect(css).toContain(':focus-visible');
   expect(css).toContain('@media(forced-colors:active)');
  });
+ it('reserves clearance on the true main scrolling surface, not only the nested section',()=>{
+  expect(css).toContain('main#palace-content[data-palace-route^="/reading"]');
+  expect(css).toContain('padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))!important');
+  expect(css).toContain('scroll-padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))!important');
+  expect(css).toContain('scroll-margin-block-end:calc(120px + env(safe-area-inset-bottom,0px))!important');
+ });
+ it('uses clean wayfinder icons without a second dark tile',()=>{
+  const followup=css.slice(css.indexOf('Reading Rooms mobile follow-up:'));
+  expect(followup).toContain('.palace-journey-strip .prism-room-wayfinder-glyph');
+  expect(followup).toContain('background:transparent!important');
+  expect(followup).toContain('background-image:none!important');
+  expect(followup).toContain('border:0!important');
+  expect(followup).toContain('box-shadow:none!important');
+ });
+ it('makes inactive story tabs visibly clickable and gives dark search and counts high contrast',()=>{
+  const followup=css.slice(css.indexOf('Reading Rooms mobile follow-up:'));
+  expect(followup).toContain('background:#273653!important');
+  expect(followup).toContain('background:#eef0f8!important');
+  expect(followup).toContain('color:rgba(255,255,255,.75)!important');
+  expect(followup).toContain('.reading-search>span');
+  expect(followup).toContain('color:#fff!important');
+  expect(followup).toContain('font-size:max(.6rem,10px)!important');
+ });
 });
