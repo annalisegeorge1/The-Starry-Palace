@@ -64,7 +64,7 @@ export default function PalaceObservatoryIssues({seed=null}){
   if(!seed?.id)return;
   setDraft(observatoryFindingDraft(seed));
   setEditingId(null);setOpenForm(true);setMessage('');
- },[seed?.id]);
+ },[seed?.id,seed?.requestId]);
  const selected=items.find(x=>x.id===selectedId)||null;
  useEffect(()=>{
   let active=true;setHistory({events:[],evidence:[]});setHistoryError('');setPreviewUrl('');
@@ -155,7 +155,7 @@ export default function PalaceObservatoryIssues({seed=null}){
   {openForm&&<form className="palace-observatory-editor" onSubmit={save}>
    <div className="palace-observatory-row-head"><h3>{editingId?'Edit issue details':'Create review issue'}</h3>
     <button type="button" onClick={()=>setOpenForm(false)}>Close</button></div>
-   <p>Describe a reproducible problem. Do not paste unpublished manuscript text or member private details.</p>
+   <p>Describe a reproducible problem. Audit candidates are not confirmed bugs until you record an actual observation. Do not paste unpublished manuscript text or member private details.</p>
    {field('Issue title',draft.title,v=>setField('title',v),{required:true,max:160})}
    <div className="palace-observatory-inline">
     {field('Affected section',draft.surface,v=>setField('surface',v),{required:true,max:100})}
