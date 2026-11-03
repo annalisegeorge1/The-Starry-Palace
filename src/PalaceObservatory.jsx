@@ -170,7 +170,7 @@ export default function PalaceObservatory(){
      <p>{issue.workTitle}</p><p>{issue.detail}</p>
      <p><b>Expected:</b> {issue.expected}</p>
      <small>Observed: {issue.observed} · Finding candidates are never automatically saved as issues.</small>
-     <button type="button" onClick={()=>{setIssueSeed(issue);setActive('Issues')}}>Review as issue</button>
+     <button type="button" onClick={()=>{setIssueSeed(old=>({...issue,requestId:(old?.requestId||0)+1}));setActive('Issues')}}>Review as issue</button>
     </article>)}</div></>}
    {active==='Verification'&&<div className="palace-observatory-verification">
     <p className="palace-observatory-subtitle">Compare expected public records with a separate anonymous client, the actual published-reading search RPC, and the current fanfiction filter. Results do not prove browser rendering or age-gate behaviour.</p>
@@ -187,7 +187,7 @@ export default function PalaceObservatory(){
       <div className="palace-observatory-row-head"><strong>{item.title}</strong><span>{item.status} · {item.surface}</span></div>
       <p><b>Expected:</b> {item.expect}</p><p><b>Observed:</b> {item.observed}</p>
       <p>{item.detail}</p><small>{item.evidence}</small>
-      {item.status==='Mismatch'&&<button type="button" onClick={()=>{setIssueSeed({...item,workTitle:item.title,title:item.surface+' — '+item.title,observed:item.observed,expected:item.expect,severity:'High'});setActive('Issues')}}>Review as issue</button>}
+      {item.status==='Mismatch'&&<button type="button" onClick={()=>{setIssueSeed(old=>({...item,requestId:(old?.requestId||0)+1,workTitle:item.title,title:item.surface+' — '+item.title,observed:item.observed,expected:item.expect,severity:'High'}));setActive('Issues')}}>Review as issue</button>}
      </article>)}</div>
     </>}
    </div>}
