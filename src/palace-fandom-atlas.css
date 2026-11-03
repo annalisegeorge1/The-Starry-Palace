@@ -212,3 +212,16 @@
  .palace-fandom-mode-switch button{flex:1 1 auto;text-align:center}
  .palace-fandom-linked-section{padding-bottom:120px}
 }
+
+/* Search a fandom's actual story tags without making ships new fandoms. */
+.palace-fandom-related-tags{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:9px;width:100%;margin:8px 0;}
+.palace-fandom-related-tags a{display:flex;flex-direction:column;gap:4px;min-height:48px;padding:10px 12px;border-radius:11px;border:1px solid rgba(172,161,229,.5);background:rgba(101,79,163,.17);text-decoration:none!important;}
+.palace-fandom-related-tags a span{font-weight:750;font-size:.85rem;overflow-wrap:anywhere}
+.palace-fandom-related-tags a small{font-size:.7rem;line-height:1.4;color:#dfd7ee;}
+.palace-fandom-within-search{display:grid;gap:7px;margin:10px 0 13px;color:var(--ui-text,#f2eefa);font-size:.82rem;font-weight:700;line-height:1.45;}
+.palace-fandom-within-search input{box-sizing:border-box;width:100%;min-width:0;min-height:45px;padding:10px 12px;border-radius:11px;border:1px solid rgba(173,157,222,.5);background:var(--ui-raised,rgba(15,18,43,.75));color:var(--ui-text,#f7f2ff);font:500 16px/1.45 system-ui,sans-serif;}
+.palace-fandom-access-note{display:block;margin-top:9px;opacity:.8;line-height:1.5;}
+.palace-fandom-related-tags a:focus-visible,.palace-fandom-within-search input:focus-visible{outline:2px solid var(--ui-accent,#bba4ec);outline-offset:3px;}
+.palace-shell.daylight .palace-fandom-related-tags a{background:#f0e8fa;color:#453264;border-color:#ae9aca;}
+.palace-shell.daylight .palace-fandom-related-tags a small{color:#5d4c76;}
+@media(max-width:540px){.palace-fandom-related-tags{grid-template-columns:1fr}.palace-fandom-within-search{margin-block:12px;}}
