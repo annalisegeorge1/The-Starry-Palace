@@ -39,14 +39,46 @@ describe('Unified Fanwork catalogue',()=>{
   expect(filterUnifiedFanworks(items,{fandomNames:['Naruto']}).some(e=>e.title==='A Fanwork from the Palace')).toBe(true);
   expect(filterUnifiedFanworks(items,{fandomNames:['Naruto']}).every(e=>e.title!=='Old Friends and New Fancies')).toBe(true);
  });
- it('hides mature external works by default and preserves rating/warning evidence',()=>{
+ it('shows rated public metadata by default with evidence and a protected reader boundary',()=>{
   const all=createUnifiedFanworks(hosted);
   const selected=all.find(e=>e.key==='external:anime-primulad-el-secreto-touya');
   expect(selected.rating).toBe('mature');
-  expect(filterUnifiedFanworks(all).some(e=>e.key===selected.key)).toBe(false);
-  expect(filterUnifiedFanworks(all,{includeMature:true}).some(e=>e.key===selected.key)).toBe(true);
+  expect(filterUnifiedFanworks(all).some(e=>e.key===selected.key)).toBe(true);
   expect(selected.permissionUrl).toMatch(/^https:\/\//);
   expect(selected.author).toBe('PrimulaD');
+  render(<MemoryRouter><UnifiedFanworkCatalogue publishedWorks={[]} externalWorks={[selected.work]}/></MemoryRouter>);
+  expect(screen.getByText(/Protected chapter access still follows/i)).toBeTruthy();
+  expect(screen.queryByRole('button',{name:/I am 18/i})).toBeNull();
+ });
+ it('matches selected tag IDs, excludes overriding includes, and honours source-link tag names',()=>{
+  const member={id:'rated-member',slug:'rated-member',title:'A Published Mature Naruto Fanwork',
+   work_type:'fanwork',rating:'explicit',publication_status:'published',visibility:'public',
+   work_tags:[
+    {tags:{id:'fandom-naruto',name:'Naruto',category:'fandom',status:'canonical'}},
+    {tags:{id:'relationship-ff',name:'F/F',category:'relationship',status:'canonical'}}
+   ]};
+  const rows=createUnifiedFanworks([member]);
+  const tagNames={'fandom-naruto':'Naruto','relationship-ff':'F/F'};
+  const selected=filterUnifiedFanworks(rows,{includeTags:['fandom-naruto'],tagNames});
+  expect(selected.some(row=>row.key==='member:rated-member')).toBe(true);
+  expect(selected.some(row=>row.kind==='link')).toBe(true);
+  const both=filterUnifiedFanworks(rows,{includeTags:['fandom-naruto','relationship-ff'],tagNames});
+  expect(both.some(row=>row.key==='member:rated-member')).toBe(true);
+  const excluded=filterUnifiedFanworks(rows,{
+   includeTags:['fandom-naruto'],excludeTags:['relationship-ff'],tagNames
+  });
+  expect(excluded.some(row=>row.key==='member:rated-member')).toBe(false);
+  expect(excluded.every(row=>!row.tagDetails.some(tag=>tag.name==='F/F'))).toBe(true);
+  expect(filterUnifiedFanworks(rows,{includeTags:['unknown-tag-id'],tagNames})).toHaveLength(0);
+ });
+ it('applies relationship include and exclude filters independently of story ratings',()=>{
+  const member={id:'explicit-ff',slug:'explicit-ff',title:'F/F metadata',
+   work_type:'fanwork',rating:'explicit',publication_status:'published',visibility:'public',
+   work_tags:[{tags:{id:'f-f',name:'F/F',category:'relationship',status:'canonical'}}]};
+  const rows=createUnifiedFanworks([member],[]);
+  expect(filterUnifiedFanworks(rows,{relationshipIncluded:['ff']})).toHaveLength(1);
+  expect(filterUnifiedFanworks(rows,{relationshipExcluded:['ff']})).toHaveLength(0);
+  expect(filterUnifiedFanworks(rows,{relationshipIncluded:['mm']})).toHaveLength(0);
  });
  it('renders a single list with distinct Palace and original-source reading actions',()=>{
   render(<MemoryRouter><UnifiedFanworkCatalogue publishedWorks={hosted}
