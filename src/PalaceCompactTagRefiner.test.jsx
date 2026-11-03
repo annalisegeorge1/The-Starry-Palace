@@ -44,3 +44,14 @@ it('shows five choices before expanding a long category',()=>{
  fireEvent.click(screen.getAllByRole('button',{name:'Show all 10 genres'})[0]);
  expect(screen.getByRole('checkbox',{name:'Include Genre 8'})).toBeTruthy();
 });
+
+it('lets global Search readers find several distinct tags and include them together',()=>{
+ const toggle=vi.fn();
+ render(<PalaceCompactTagRefiner facets={facets} onToggle={toggle}/>);
+ fireEvent.change(screen.getByLabelText('Search a tag to include'),{target:{value:'Romance, Slow Burn'}});
+ expect(screen.getByRole('checkbox',{name:'Include Romance'})).toBeTruthy();
+ expect(screen.getByRole('checkbox',{name:'Include Slow Burn'})).toBeTruthy();
+ fireEvent.click(screen.getByRole('button',{name:'Add 2 exact tags to include'}));
+ expect(toggle).toHaveBeenCalledWith('g1','include');
+ expect(toggle).toHaveBeenCalledWith('t1','include');
+});
