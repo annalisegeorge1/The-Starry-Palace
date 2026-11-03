@@ -2,7 +2,7 @@ import {describe,it,expect} from 'vitest';
 import {
  OBSERVATORY_ISSUE_STATUSES,observatoryCanTransition,observatoryNextStatuses,
  observatoryValidateIssue,observatoryValidateTransition,observatoryFindingDraft,
- observatoryValidateScreenshot,observatoryScreenshotSignature,observatoryInspectScreenshot
+ observatoryValidateScreenshot,observatoryScreenshotSignature,observatoryInspectScreenshot,observatoryIsUnverifiedObservation
 } from '../src/palaceObservatoryIssuesModel.js';
 
 const base={title:'Missing fandom result',surface:'Fandom',
@@ -41,6 +41,16 @@ describe('Palace Observatory Phase 3 issue lifecycle',()=>{
   expect(draft.title).toBe(candidate.title);
   expect(draft.severity).toBe('Medium');
   expect(draft.status).toBeUndefined();
+ });
+ it('requires a firsthand observation instead of automatically confirming an unverified candidate',()=>{
+  expect(observatoryIsUnverifiedObservation('Not independently tested')).toBe(true);
+  expect(observatoryIsUnverifiedObservation('Not yet checked on public routes')).toBe(true);
+  expect(observatoryIsUnverifiedObservation('Mature work was missing from the tag results')).toBe(false);
+  expect(observatoryValidateIssue({...base,observed:'Not independently tested'}).valid).toBe(false);
+  const draft=observatoryFindingDraft({id:'finding-1',title:'Audit candidate',
+   expected:'Should appear',observed:'Not independently tested'});
+  expect(draft.observed).toBe('');
+  expect(observatoryValidateIssue({...base,...draft}).valid).toBe(false);
  });
  it('only accepts private screenshot formats within six megabytes',()=>{
   const img={type:'image/png',size:1024,name:'example.png'};
