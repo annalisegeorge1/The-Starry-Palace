@@ -20,13 +20,19 @@ async function requireOwner(){
   throw Error('Only the authenticated Palace Owner can manage Observatory issues.');
  return id;
 }
-export async function listPalaceObservatoryIssues(){
+export async function listPalaceObservatoryIssues({offset=0,pageSize=100}={}){
  await requireOwner();
+ const start=Math.max(0,Math.floor(Number(offset)||0));
+ const size=Math.min(100,Math.max(1,Math.floor(Number(pageSize)||100)));
+ // Request one extra record to indicate that older issues are available.
+ // Only loads metadata and Owner-authorized QA records, never manuscripts.
  const {data,error}=await api().from('observatory_issues')
   .select('id,title,work_title,finding_key,surface,severity,status,expected,observed,steps,device,browser,source_url,fix_proposal,review_note,created_at,updated_at')
-  .order('updated_at',{ascending:false}).limit(250);
- if(error){if(schemaMissing(error))return {configured:false,issues:[]};throw error}
- return {configured:true,issues:data||[]};
+  .order('updated_at',{ascending:false}).order('id',{ascending:false})
+  .range(start,start+size);
+ if(error){if(schemaMissing(error))return {configured:false,issues:[],hasMore:false};throw error}
+ const result=data||[];
+ return {configured:true,issues:result.slice(0,size),hasMore:result.length>size};
 }
 export async function getPalaceObservatoryIssueHistory(issueId){
  await requireOwner();
