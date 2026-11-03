@@ -103,8 +103,8 @@ export default function PalaceObservatory(){
  </section>;
  return <section className="palace-observatory" aria-label="Private Palace Observatory">
   <header className="palace-observatory-header">
-   <div><p className="eyebrow">PRIVATE ADMINISTRATION · PHASE 1</p><h1>The Palace Observatory</h1>
-    <p>One catalogue. Read-only checks. Nothing here publishes, imports, merges or deploys.</p></div>
+   <div><p className="eyebrow">PRIVATE ADMINISTRATION · REVIEW BUILD</p><h1>The Palace Observatory</h1>
+    <p>Unified catalogue, on-demand verification and Owner-reviewed issues. Nothing here automatically publishes, imports, merges or deploys.</p></div>
    <span className="palace-observatory-lock">Owner only · Review mode</span>
   </header>
   <div className="palace-observatory-metrics" aria-label="Catalogue summary">
