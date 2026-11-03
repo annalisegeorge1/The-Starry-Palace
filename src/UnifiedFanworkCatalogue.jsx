@@ -31,10 +31,18 @@ export function createUnifiedFanworks(works=[],external=MODERN_FANFICTION_LINKS)
   if(ao3)return 'ao3:'+ao3[1];
   return value.trim().toLowerCase().replace(/\/$/,'');
  };
- const hostedSources=new Set(works.filter(w=>w?.is_archive&&w?.archive_source_url)
+ // A proposed/licence-pending archive copy never replaces a valid link to
+ // the writer's original edition. Treat metadata-only or unverified records
+ // as review intake, not as a readable hosted work.
+ const visibleHosted=works.filter(w=>
+  w&&(!w.publication_status||w.publication_status==='published')
+   &&(!w.visibility||w.visibility==='public')
+   &&(!w.is_archive||w.archive_display_ready===true)
+ );
+ const hostedSources=new Set(visibleHosted.filter(w=>w.is_archive&&w.archive_source_url)
   .map(w=>sourceIdentity(w.archive_source_url)));
- for(const work of works){
-  if(!work||!(work.work_type==='fanwork'||work.is_archive&&isHostedFanfiction(work)))continue;
+ for(const work of visibleHosted){
+  if(!(work.work_type==='fanwork'||work.is_archive&&isHostedFanfiction(work)))continue;
   const key=work.is_archive?'archive:'+work.slug:'member:'+work.id;
   if(!key||seen.has(key))continue;
   seen.add(key);
