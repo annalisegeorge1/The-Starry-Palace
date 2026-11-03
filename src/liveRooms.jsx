@@ -466,8 +466,9 @@ export function ReadingLive({Frame}){
  // Published archive-wide member search and the separately hosted archive use
  // different backends. Surface verified, readable fanworks in the same Reading
  // Room without pretending metadata-only intake records are published works.
- const hostedFanworksInArchive=filtered.filter(w=>w.is_archive&&w.work_type==='fanwork'
-  &&w.rating!=='mature'&&w.rating!=='explicit');
+ const hostedFanworksInArchive=filtered.filter(w=>w.is_archive&&w.work_type==='fanwork');
+ // Discovery lists published metadata at every rating; protected reader
+ // routes still independently enforce access to restricted chapter text.
 
  const visibleCatalogue=archiveBrowseEnabled?mergeReadingArchivePage({
   members:archiveBrowse.snapshot?.results||[],
@@ -569,7 +570,10 @@ export function ReadingLive({Frame}){
    </nav>
   {origin==='fandom'&&!advancedView&&<>
    {fanfictionActiveFilters.length>0&&<nav className="reading-filter-trail fanfiction-active-trail" aria-label="Other active story filters"><span className="reading-filter-title">ACTIVE FILTERS</span><div>{fanfictionActiveFilters.map(item=><button type="button" key={item.key} onClick={()=>removeReadingFilter(item.key)} aria-label={'Remove '+item.label+' filter'}><span>{item.label}</span><b aria-hidden="true">×</b></button>)}</div><button type="button" className="reading-filter-clear" onClick={()=>{setQuery('');setRating('all');setStatus('all');setVibeDoor('all');setReadingChoice('includeTags',[]);setReadingChoice('excludeTags',[])}}>Clear filters</button></nav>}
-   <UnifiedFanworkCatalogue publishedWorks={[...visibleCatalogue,...archiveWorks]} globalQuery={query} globalRating={rating} completion={status} loading={browseLoading} loadError={browseError} hasMoreHosted={!archiveBrowseEnabled&&hasMorePublished} onMoreHosted={loadNextPublishedPage} defaultSource="all"/>
+   <UnifiedFanworkCatalogue publishedWorks={[...visibleCatalogue,...archiveWorks]} globalQuery={effectiveReadingText} globalRating={rating} completion={status}
+     includeTags={effectiveReadingTags} excludeTags={excludedTags} tagNames={facetNames}
+     relationshipIncluded={relationshipIncluded} relationshipExcluded={relationshipExcluded}
+     loading={browseLoading} loadError={browseError} hasMoreHosted={!archiveBrowseEnabled&&hasMorePublished} onMoreHosted={loadNextPublishedPage} defaultSource="all"/>
   </>}
   {advancedView&&<section className="reading-advanced-search">
    <div className="advanced-search-command"><div><p className="eyebrow">DEEP SEARCH · READER CONTROLLED</p><h2>Build your constellation.</h2><p>Choose what must be present, what must stay out, then refine the shelf. Tags remain a full Palace room too.</p></div><Link to="/tags">Open the Tags room →</Link></div>
