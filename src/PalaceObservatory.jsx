@@ -111,7 +111,7 @@ export default function PalaceObservatory(){
      <small>Observed: {issue.observed} · Status changes and screenshots are planned for Phase 3.</small>
     </article>)}</div></>}
    {active==='Release review'&&<div className="palace-observatory-denied">
-    <h2>No changes pending release</h2>
+    <h2>Release actions are unavailable in Phase 1</h2>
     <p>This phase only reads source data. Metadata editing, issue persistence, approvals and release actions are not implemented or enabled. Nothing is connected to publishing or deployment.</p>
     <p>Next: independently test public search, relationship filtering, age-appropriate discovery, and section placement before proposing any fixes.</p>
    </div>}
