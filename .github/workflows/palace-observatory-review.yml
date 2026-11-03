@@ -1,0 +1,34 @@
+name: Palace Observatory review checks
+
+# This workflow is PR-only. It does not publish, deploy, upload artifacts,
+# read Supabase records or request secrets.
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/PalaceObservatory.jsx'
+      - 'src/palaceObservatory*.js'
+      - 'src/palace-observatory.css'
+      - 'src/main.jsx'
+      - 'tests/palace-observatory-*.test.js'
+      - '.github/workflows/palace-observatory-review.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  isolated-test-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Run isolated Observatory regression tests
+        run: npx vitest run tests/palace-observatory-model.test.js tests/palace-observatory-verification.test.js
+      - name: Compile the complete website without deploying
+        run: npm run build
