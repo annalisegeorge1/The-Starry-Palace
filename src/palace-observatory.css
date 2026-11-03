@@ -37,3 +37,56 @@
 .palace-observatory-check-controls label{display:flex;align-items:center;gap:8px;font-size:.82rem}
 .palace-observatory-check-controls select{padding:8px 10px;min-height:38px;max-width:100%;color:inherit;background:color-mix(in srgb,currentColor 6%,transparent);border:1px solid color-mix(in srgb,currentColor 25%,transparent);border-radius:9px}
 @media(max-width:740px){.palace-observatory-check-controls{align-items:stretch;flex-direction:column}.palace-observatory-check-controls label{justify-content:space-between}}
+
+
+/* Phase 3. Compact issue register; no full-height card stacks on mobile. */
+.palace-observatory-issues{margin-top:18px}
+.palace-observatory-issues-head{display:flex;gap:14px;justify-content:space-between;align-items:center;margin-bottom:14px}
+.palace-observatory-issues-head h2{margin:0 0 4px;font-size:1.15rem}
+.palace-observatory-issues-head p{margin:0;font-size:.85rem;opacity:.82}
+.palace-observatory-issues-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.palace-observatory-editor,.palace-observatory-issue-detail{margin:14px 0;padding:16px;border:1px solid color-mix(in srgb,currentColor 20%,transparent);border-radius:14px;background:color-mix(in srgb,currentColor 4%,transparent)}
+.palace-observatory-editor h3,.palace-observatory-issue-detail h3{font-size:1.06rem;margin:0}
+.palace-observatory-editor>p{font-size:.84rem;opacity:.83}
+.palace-observatory-field{display:flex;flex-direction:column;gap:5px;margin:10px 0;flex:1;min-width:0}
+.palace-observatory-field span{font-size:.82rem}
+.palace-observatory .palace-observatory-field input,
+.palace-observatory .palace-observatory-field textarea,
+.palace-observatory .palace-observatory-field select,
+.palace-observatory-issue-tools input,
+.palace-observatory-issue-tools select,
+.palace-observatory-transitions select,
+.palace-observatory-transitions textarea{display:block;width:100%;min-height:39px;padding:9px 11px;color:inherit;background:color-mix(in srgb,currentColor 5%,transparent);border:1px solid color-mix(in srgb,currentColor 28%,transparent);border-radius:9px}
+.palace-observatory .palace-observatory-field textarea,.palace-observatory-transitions textarea{resize:vertical;min-height:70px}
+.palace-observatory-inline{display:flex;gap:12px;flex-wrap:wrap}
+.palace-observatory-issue-tools{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
+.palace-observatory-issue-tools label{font-size:.83rem;display:flex;flex-direction:column;gap:6px;flex:1 1 165px}
+.palace-observatory-issue-tools label:first-child{flex:2 1 240px}
+.palace-observatory-issue-layout{display:grid;grid-template-columns:minmax(220px,1fr) minmax(0,1.35fr);gap:12px;align-items:start}
+.palace-observatory-issue-layout>.palace-observatory-list{max-height:680px;overflow-y:auto}
+.palace-observatory-issue-layout .palace-observatory-row{padding:6px}
+.palace-observatory .palace-observatory-issue-select{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-align:left;padding:10px;border:0;background:transparent;min-height:62px}
+.palace-observatory-issue-select[aria-pressed="true"]{outline:2px solid color-mix(in srgb,currentColor 48%,transparent);outline-offset:-2px}
+.palace-observatory-issue-select span,.palace-observatory-issue-select small{font-size:.77rem;opacity:.84}
+.palace-observatory-issue-detail{margin:0;overflow-wrap:anywhere}
+.palace-observatory-issue-detail p{font-size:.86rem}
+.palace-observatory-issue-detail h4{font-size:.9rem;margin:20px 0 10px}
+.palace-observatory-transitions label{display:flex;flex-direction:column;gap:6px;font-size:.84rem;margin:10px 0}
+.palace-observatory-transitions small{display:block;margin-top:8px;opacity:.8;font-size:.77rem}
+.palace-observatory-screenshots{margin-top:16px;border-top:1px solid color-mix(in srgb,currentColor 18%,transparent)}
+.palace-observatory-screenshots input[type=file]{display:block;width:100%;max-width:100%;margin:10px 0;font-size:.8rem}
+.palace-observatory-evidence-item{display:flex;justify-content:space-between;gap:8px;align-items:center;margin:8px 0;padding:6px 0;border-bottom:1px solid color-mix(in srgb,currentColor 14%,transparent);font-size:.79rem}
+.palace-observatory-evidence-item span{min-width:0;overflow-wrap:anywhere}
+.palace-observatory-evidence-preview img{width:min(100%,460px);height:auto;display:block;border-radius:7px}
+.palace-observatory-evidence-preview small{opacity:.8}
+.palace-observatory-history-item{padding:7px 0;border-bottom:1px solid color-mix(in srgb,currentColor 14%,transparent)}
+@media(max-width:800px){
+ .palace-observatory-issue-layout{grid-template-columns:minmax(0,1fr)}
+ .palace-observatory-issue-layout>.palace-observatory-list{max-height:300px}
+ .palace-observatory-issues-head{align-items:flex-start}
+}
+@media(max-width:480px){
+ .palace-observatory-issues-head{flex-direction:column}
+ .palace-observatory-inline{display:block}
+ .palace-observatory-issue-tools label:first-child{flex-basis:100%}
+}
