@@ -9,6 +9,8 @@ on:
       - 'src/PalaceObservatory.jsx'
       - 'src/PalaceObservatoryIssues.jsx'
       - 'src/UnifiedFanworkCatalogue.jsx'
+      - 'src/hostedReadingWork.js'
+      - 'tests/fanfiction-reading-first.test.jsx'
       - 'src/liveRooms.jsx'
       - 'src/unified-fanwork-catalogue.css'
       - 'tests/unified-fanwork-catalogue.test.jsx'
@@ -35,6 +37,6 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
       - name: Run isolated Observatory regression tests
-        run: npx vitest run tests/palace-observatory-model.test.js tests/palace-observatory-verification.test.js tests/palace-observatory-issues.test.js tests/palace-observatory-security.test.js tests/palace-observatory-acceptance.test.js tests/palace-observatory-data-safety.test.js tests/unified-fanwork-catalogue.test.jsx tests/fandom-fanfiction-discovery.test.js tests/reading-archive-hosted-fanworks.test.js
+        run: npx vitest run tests/palace-observatory-model.test.js tests/palace-observatory-verification.test.js tests/palace-observatory-issues.test.js tests/palace-observatory-security.test.js tests/palace-observatory-acceptance.test.js tests/palace-observatory-data-safety.test.js tests/unified-fanwork-catalogue.test.jsx tests/fandom-fanfiction-discovery.test.js tests/reading-archive-hosted-fanworks.test.js tests/fanfiction-reading-first.test.jsx
       - name: Compile the complete website without deploying
         run: npm run build
