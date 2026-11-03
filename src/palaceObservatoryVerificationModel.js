@@ -63,3 +63,29 @@ export function assertCompletePalacePublicResult(result,max=1500){
   throw Error('The public verification search was truncated. Mark this test unverified and review pagination.');
  return result;
 }
+
+
+/**
+ * Compare the site's actual unified catalogue filter with the intended
+ * discoverability rule, without opening chapter text. Only works with an
+ * accepted fandom tag can be verified in this test.
+ */
+export function makePalaceFanfictionCatalogueChecks(guestWorks=[],buildCatalogue,filterCatalogue){
+ const candidates=guestWorks.filter(w=>w.work_type==='fanwork'&&['mature','explicit'].includes(w.rating));
+ const entries=buildCatalogue(guestWorks,[]);
+ return candidates.flatMap(work=>{
+  const fandom=(work.work_tags||[]).map(r=>r?.tags)
+   .find(t=>t?.category==='fandom'&&['canonical','community'].includes(t.status));
+  if(!fandom)return [];
+  const chosen={fandomNames:[fandom.name]};
+  const defaultPresent=filterCatalogue(entries,chosen).some(row=>row.key==='member:'+work.id);
+  const optInPresent=filterCatalogue(entries,{...chosen,includeMature:true})
+   .some(row=>row.key==='member:'+work.id);
+  return [{id:String(work.id)+':fanfiction-tag-default',title:work.title||'Untitled',
+   surface:'Fanfiction tag discovery',expect:'Published rated metadata in matching fandom',
+   observed:defaultPresent?'Present':optInPresent?'Hidden by default rating switch':'Absent from both filter states',
+   status:defaultPresent?'Pass':'Mismatch',
+   detail:'Code-path comparison only. Reader chapter age gates are outside this test.',
+   evidence:'Existing unified fanfiction catalogue filter with matching fandom'}];
+ });
+}
