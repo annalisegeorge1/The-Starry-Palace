@@ -1,4 +1,4 @@
-import React,{useEffect,useMemo,useState} from 'react';
+import React,{useEffect,useMemo,useRef,useState} from 'react';
 import {
  listPalaceObservatoryIssues,getPalaceObservatoryIssueHistory,
  createPalaceObservatoryIssue,updatePalaceObservatoryIssue,transitionPalaceObservatoryIssue,
@@ -40,7 +40,14 @@ export default function PalaceObservatoryIssues({seed=null}){
  const [file,setFile]=useState(null);
  const [fileKey,setFileKey]=useState(0);
  const [previewUrl,setPreviewUrl]=useState('');
+ const selectedIdRef=useRef(null);
+ selectedIdRef.current=selectedId;
  const [refresh,setRefresh]=useState(0);
+ useEffect(()=>{
+  if(!previewUrl)return;
+  const timeout=setTimeout(()=>setPreviewUrl(''),110000);
+  return()=>clearTimeout(timeout);
+ },[previewUrl]);
 
  useEffect(()=>{
   let active=true;setLoading(true);setFailure('');
@@ -118,9 +125,15 @@ export default function PalaceObservatoryIssues({seed=null}){
   finally{setBusy(false)}
  }
  async function preview(item){
+  const requestedIssue=selectedId;
   setPreviewUrl('');setFailure('');
-  try{setPreviewUrl(await openPalaceObservatoryScreenshot(item))}
-  catch(e){setFailure(e?.message||'Could not generate a private screenshot preview.')}
+  try{
+   const signed=await openPalaceObservatoryScreenshot(item);
+   if(selectedIdRef.current===requestedIssue)setPreviewUrl(signed);
+  }catch(e){
+   if(selectedIdRef.current===requestedIssue)
+    setFailure(e?.message||'Could not generate a private screenshot preview.');
+  }
  }
 
  if(loading)return <p role="status">Opening the private issue tracker…</p>;
@@ -214,8 +227,11 @@ export default function PalaceObservatoryIssues({seed=null}){
       <button type="button" onClick={()=>preview(item)}>Preview</button>
      </div>)}
      {previewUrl&&<div className="palace-observatory-evidence-preview">
-      <img alt="Selected private issue screenshot" src={previewUrl}/>
-      <small>Temporary private access link; expires in two minutes.</small>
+      <img alt="Selected private issue screenshot" src={previewUrl} referrerPolicy="no-referrer"/>
+      <div className="palace-observatory-evidence-preview-actions">
+       <small>Preview auto-hides before the two-minute link expiry. Hiding it does not revoke a previously shared link.</small>
+       <button type="button" onClick={()=>setPreviewUrl('')}>Close preview</button>
+      </div>
      </div>}
     </div>
     <h4>Immutable review history</h4>
@@ -223,6 +239,7 @@ export default function PalaceObservatoryIssues({seed=null}){
     {history.events.length?history.events.map(event=><p className="palace-observatory-history-item" key={event.id}>
      <strong>{event.action}</strong> · {displayTime(event.created_at)}
      {event.status_before||event.status_after?<span> · {event.status_before||'—'} → {event.status_after}</span>:null}
+     {Array.isArray(event.changed_fields)&&event.changed_fields.length>0&&<span> · Fields: {event.changed_fields.join(', ')}</span>}
      {event.review_note&&<span> · {event.review_note}</span>}
     </p>):<p>No history returned for this issue.</p>}
    </div>}
