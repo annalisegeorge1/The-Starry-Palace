@@ -1,0 +1,85 @@
+// The Palace Observatory: pure, read-only metadata checks. Findings are audit
+// candidates, not proof that a public page or filter has failed.
+const norm=v=>String(v??'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase().replace(/\s+/g,' ');
+const usableTag=t=>t&&['canonical','community'].includes(t.status);
+const safeUrl=u=>/^https:\/\//i.test(String(u||''))?String(u):'';
+function notes(raw){try{const x=JSON.parse(raw||'{}');return x&&typeof x==='object'&&!Array.isArray(x)?x:{}}catch{return {}}}
+function validGrant(g,today){return g.status==='verified'&&g.permits_hosting===true&&!!g.verified_at&&(!g.valid_from||g.valid_from<=today)&&(!g.valid_until||g.valid_until>=today)}
+export function buildPalaceObservatorySnapshot({works=[],archive=[],rights=[],texts=[],linked=[]}={},today=new Date().toISOString().slice(0,10)){
+ const rows=[],findings=[],grants=new Map(),textMap=new Map();
+ for(const g of rights){const values=grants.get(g.record_id)||[];values.push(g);grants.set(g.record_id,values)}
+ for(const t of texts)textMap.set(t.record_id,t);
+ const flag=(row,type,severity,title,detail,expected)=>findings.push({
+  id:row.key+':'+type,rowKey:row.key,workTitle:row.title,type,severity,title,detail,expected,
+  observed:'Not independently tested',status:'New'
+ });
+ for(const w of works){
+  if(w.publication_status!=='published'||w.visibility!=='public')continue;
+  const tags=(w.work_tags||[]).map(v=>v?.tags).filter(usableTag);
+  const fandom=tags.filter(t=>t.category==='fandom').map(t=>t.name);
+  const relationships=tags.filter(t=>t.category==='relationship').map(t=>t.name);
+  const fan=w.work_type==='fanwork';
+  const row={key:'member:'+w.id,kind:fan?'Member fanfiction':'Original work',title:w.title||'Untitled',
+   author:w.profiles?.display_name||w.profiles?.username||'Palace member',rating:w.rating||'not_rated',
+   publication:'published',hosting:'Palace hosted',rights:'Creator-owned',
+   fandom,relationships,tags:tags.map(t=>t.name),sourceUrl:'',
+   expected:fan?['Reading Rooms','Fanfiction','Fandom','Search']:['Reading Rooms','Search'],
+   verification:'Not yet checked on public routes'};
+  rows.push(row);
+  if(fan&&!fandom.length)flag(row,'missing_fandom','High','Fandom tag missing','No accepted fandom tag is attached to this published fanwork.','Fandom discovery');
+  if(fan&&!relationships.length)flag(row,'relationship_review','Medium','Relationship classification review','Check whether Gen, Other, or a relationship category should apply.','Relationship filters');
+ }
+ for(const a of archive){
+  const source=notes(a.source_notes),text=textMap.get(a.id);
+  const isFan=['historical_fanfiction','licensed_fanfiction'].includes(a.category);
+  const host=['full','excerpt'].includes(a.host_mode),published=a.publication_status==='published';
+  const approved=(grants.get(a.id)||[]).some(g=>validGrant(g,today));
+  const rightsOK=a.rights_status==='public_domain_verified'||approved;
+  const row={key:'archive:'+a.id,kind:isFan?'Archive fanfiction':'Archive / classic',
+   title:a.title||'Untitled',author:a.creator_name||'Uncredited',rating:a.rating||source.rating||'not_rated',
+   publication:a.publication_status||'unknown',hosting:a.host_mode||'unknown',
+   rights:a.rights_status||'unknown',sourceUrl:safeUrl(source.source_url||text?.source_url),
+   fandom:source.fandom?[source.fandom]:[],tags:Array.isArray(source.tropes)?source.tropes.filter(x=>typeof x==='string'):[],
+   relationships:[],verification:'Not yet checked on public routes',
+   expected:!published?['Private review only']:host&&rightsOK?
+    isFan?['Reading Rooms','Fanfiction','Fandom','Search']:['Reading Rooms','Archive','Search']:
+    ['Source / metadata only — review']};
+  rows.push(row);
+  if(published&&host&&['licensed','creator_authorised'].includes(a.rights_status)&&!approved)
+   flag(row,'hosting_rights','High','Hosting grant needs review','No current verified hosting grant appears in the rights records. A licence label alone is insufficient.','Documented hosting permission');
+  if(published&&host&&!(Number(text?.word_count||a.hosted_word_count)>0))
+   flag(row,'hosted_text','High','Hosted text needs checking','No positive word count was returned for this published hosted edition.','Readable hosted text');
+  if(published&&host&&isFan&&rightsOK&&!row.fandom.length)
+   flag(row,'archive_fandom','Medium','Fandom classification review','Source notes have no fandom; confirm the generated public archive tags.','Correct fandom discovery');
+ }
+ for(const l of linked){
+  if(!l?.id||!safeUrl(l.sourceUrl))continue;
+  rows.push({key:'source:'+l.id,kind:'Original-source link',title:l.title||'Untitled',author:l.creator||'Unknown',
+   rating:l.rating||'not_rated',publication:'linked',hosting:'Original website — not hosted',
+   rights:'Source link; no hosting permission inferred',sourceUrl:safeUrl(l.sourceUrl),
+   fandom:l.fandom?[l.fandom]:[],relationships:[],tags:[],expected:['Fanfiction','Fandom'],
+   verification:'Not yet checked on public routes'});
+ }
+ const collisions=new Map();
+ for(const row of rows){
+  const key=norm(row.title)+'|'+norm(row.author);
+  if(!norm(row.title)||!norm(row.author))continue;
+  const group=collisions.get(key)||[];group.push(row);collisions.set(key,group);
+ }
+ for(const group of collisions.values()){
+  if(group.length>1&&new Set(group.map(r=>r.kind)).size>1)
+   flag(group[0],'possible_duplicate','Medium','Potential duplicate across sources',
+    'The same author and title appear in different catalogue sources. Compare editions before changing anything.','Unique source identity');
+ }
+ return {rows,findings,totals:{
+  records:rows.length,published:rows.filter(r=>r.publication==='published').length,
+  privateIntake:rows.filter(r=>['draft','review'].includes(r.publication)).length,
+  sourceLinks:rows.filter(r=>r.publication==='linked').length,
+  high:findings.filter(f=>f.severity==='High').length,reviewNeeded:findings.length
+ }};
+}
+export function filterPalaceObservatoryRows(rows,{query='',kind='all',status='all'}={}){
+ const needle=norm(query);
+ return rows.filter(r=>(kind==='all'||r.kind===kind)&&(status==='all'||r.publication===status)&&
+  (!needle||[r.title,r.author,...r.tags,...r.fandom,...r.relationships].some(v=>norm(v).includes(needle))));
+}
