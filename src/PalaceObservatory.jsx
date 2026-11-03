@@ -8,6 +8,7 @@ import {readPalaceAnonymousPlacement,runPalaceGuestTagScenarios} from './palaceO
 import {makePalacePlacementChecks,makePalaceTagScenarioChecks,makePalaceFanfictionCatalogueChecks,makePalaceFanfictionExclusionCheck} from './palaceObservatoryVerificationModel';
 import {createUnifiedFanworks,filterUnifiedFanworks} from './UnifiedFanworkCatalogue';
 import PalaceObservatoryIssues from './PalaceObservatoryIssues';
+import {PALACE_OBSERVATORY_ACCEPTANCE,palaceObservatoryAcceptanceGroups} from './palaceObservatoryAcceptance';
 import './palace-observatory.css';
 
 const sections=['Catalogue','Findings','Verification','Issues','Release review'];
@@ -191,10 +192,33 @@ export default function PalaceObservatory(){
      </article>)}</div>
     </>}
    </div>}
-   {active==='Release review'&&<div className="palace-observatory-denied">
-    <h2>Release actions are unavailable in this review build</h2>
-    <p>The Issue Register is an Owner-only proposal with database and private storage setup awaiting separate approval. Release approvals, publishing and deployment actions are not implemented. Nothing here can deploy or modify works.</p>
-    <p>Public backend and code-path verification can be run from the Verification tab. Browser navigation, age-gate and mobile parity still require separate manual acceptance tests.</p>
+   {active==='Release review'&&<div className="palace-observatory-release">
+    <div className="palace-observatory-denied">
+     <h2>Release actions are intentionally unavailable</h2>
+     <p>This is a manual acceptance worksheet, not an approval or deployment screen. The Owner role and private issue storage remain subject to separate authorization. No checklist item is marked passed automatically.</p>
+     <p>Published works, access policies, database schema, GitHub branches and production are unchanged by this worksheet.</p>
+    </div>
+    <h3>Human acceptance checks</h3>
+    <p className="palace-observatory-subtitle">Open each route in a real test browser, record what happens, and use <strong>Review as issue</strong> only after you have firsthand evidence. All {PALACE_OBSERVATORY_ACCEPTANCE.length} cases start unverified. Nothing is saved or approved here.</p>
+    {palaceObservatoryAcceptanceGroups.map(group=><details className="palace-observatory-acceptance-group" key={group}>
+     <summary>{group} · {PALACE_OBSERVATORY_ACCEPTANCE.filter(x=>x.group===group).length} checks</summary>
+     <div className="palace-observatory-acceptance-cases">{PALACE_OBSERVATORY_ACCEPTANCE.filter(x=>x.group===group).map(test=>
+      <article className="palace-observatory-acceptance-case" key={test.id}>
+       <div className="palace-observatory-row-head"><strong>{test.surface}</strong><span>Not verified</span></div>
+       <p><b>Who:</b> {test.persona} · <b>Screen:</b> {test.viewport}</p>
+       <p><b>Expected:</b> {test.expected}</p>
+       <div className="palace-observatory-issues-actions">
+        <Link to={test.route}>Open test route</Link>
+        <button type="button" onClick={()=>{setIssueSeed(old=>({
+         requestId:(old?.requestId||0)+1,
+         id:'acceptance:'+test.id,title:test.surface+' — acceptance check',
+         expected:test.expected,observed:'',surface:test.surface,
+         detail:'Manual verification of '+test.route+' for '+test.persona+' on '+test.viewport+'.',
+         severity:'Medium'
+        }));setActive('Issues')}}>Review as issue</button>
+       </div>
+      </article>)}</div>
+    </details>)}
    </div>}
   </>}
  </section>;
