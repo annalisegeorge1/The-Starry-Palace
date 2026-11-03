@@ -29,6 +29,8 @@ export default function PalaceFandomAtlas(){
  const [withinFandom,setWithinFandom]=useState('');
  const [relatedTags,setRelatedTags]=useState([]);
  const [fanworkRows,setFanworkRows]=useState([]),[historicFanworks,setHistoricFanworks]=useState([]);
+ const [fetchedPublished,setFetchedPublished]=useState(0),[fanworksHasMore,setFanworksHasMore]=useState(false);
+ const [fanworksLoadingMore,setFanworksLoadingMore]=useState(false);
  const [fanworksBusy,setFanworksBusy]=useState(false),[fanworksError,setFanworksError]=useState('');
  const validMedia=FANDOM_MEDIA_SHELVES.some(x=>x.id===selectedMedia)?selectedMedia:'all';
  const selected=safeFandomSelection(urlIds,rows);
@@ -82,12 +84,36 @@ export default function PalaceFandomAtlas(){
   let active=true;setFanworksBusy(true);setFanworksError('');
   Promise.allSettled([getPublishedWorks({limit:48}),getArchive(null)]).then(([published,archive])=>{
    if(!active)return;
-   if(published.status==='fulfilled')setFanworkRows((published.value||[]).filter(w=>w.work_type==='fanwork'));
+   if(published.status==='fulfilled'){
+    const page=published.value||[];
+    setFanworkRows(page.filter(w=>w.work_type==='fanwork'&&w.visibility==='public'));
+    setFetchedPublished(page.length);
+    setFanworksHasMore(page.length===48);
+   }
    if(archive.status==='fulfilled')setHistoricFanworks((archive.value||[]).filter(r=>isHostedFanfiction(r)&&canDisplayHostedArchive(r)).map(toHostedReadingWork));
    if(published.status==='rejected'||archive.status==='rejected')setFanworksError('Part of the Palace-hosted collection is temporarily unavailable.');
   }).finally(()=>{if(active)setFanworksBusy(false)});
   return()=>{active=false};
  },[atlasSection]);
+ async function loadMoreFanworks(){
+  if(fanworksBusy||fanworksLoadingMore||!fanworksHasMore)return;
+  setFanworksLoadingMore(true);setFanworksError('');
+  try{
+   const page=await getPublishedWorks({offset:fetchedPublished,limit:48});
+   const publicFanworks=page.filter(w=>w.work_type==='fanwork'&&w.visibility==='public');
+   setFanworkRows(old=>{
+    const seen=new Set(old.map(w=>String(w.id)));
+    return [...old,...publicFanworks.filter(w=>!seen.has(String(w.id)))];
+   });
+   // Offset counts all published works fetched, not just fanworks.
+   setFetchedPublished(old=>old+page.length);
+   setFanworksHasMore(page.length===48);
+  }catch{
+   setFanworksError('Older public works could not be loaded. You can retry.');
+  }finally{
+   setFanworksLoadingMore(false);
+  }
+ }
  function toggle(tag){
   const next=selected.includes(tag.id)?selected.filter(id=>id!==tag.id):[...selected,tag.id].slice(0,5);
   changeParams({ids:next.join(',')},{replace:false});
@@ -192,7 +218,7 @@ export default function PalaceFandomAtlas(){
   </>}
   {atlasSection==='fanfiction'&&<section className="palace-fandom-linked-section" aria-label="Fanfiction by fandom">
    {activeFandomNames.length>0&&<div className="palace-fandom-selection-note"><span>Fandom{activeFandomNames.length>1?'s':''}: <strong>{activeFandomNames.join(' · ')}</strong></span><button type="button" onClick={()=>changeParams({ids:null,match:null,fandom:null})}>All fanfiction</button><button type="button" onClick={()=>changeParams({section:null,fandom:null})}>Choose different fandoms</button></div>}
-   <UnifiedFanworkCatalogue key={activeFandomNames.join(',')+'|'+mode} publishedWorks={[...(selectedNames.length?stories:fanworkRows),...historicFanworks]} globalQuery={selectedNames.length?'':keyword} fandomNames={activeFandomNames} fandomMatch={mode} loading={fanworksBusy||selectedNames.length>0&&storyBusy} loadError={fanworksError||selectedNames.length>0&&storyError} inFandomAtlas={true} defaultSource="all"/>
+   <UnifiedFanworkCatalogue key={activeFandomNames.join(',')+'|'+mode} publishedWorks={[...stories,...fanworkRows,...historicFanworks]} globalQuery={selectedNames.length?'':keyword} fandomNames={activeFandomNames} fandomMatch={mode} loading={fanworksBusy||fanworksLoadingMore||selectedNames.length>0&&storyBusy} loadError={fanworksError||selectedNames.length>0&&storyError} inFandomAtlas={true} defaultSource="all" hasMoreHosted={fanworksHasMore} onMoreHosted={loadMoreFanworks}/>
    <p className="palace-fandom-complete-archive"><Link to="/reading?section=fanfiction">Browse the full Palace-hosted and linked Fanwork catalogue →</Link></p>
   </section>}
  </section>;
