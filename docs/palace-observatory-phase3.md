@@ -52,4 +52,11 @@ The separate PR-only verification workflow is designed to run model and issue li
 - The Owner issue register now loads 100 issues at a time, shows when older pages exist, and searches only the loaded records. Insertions during pagination may require a full refresh to avoid offset drift; it is not a complete cross-database search.
 - New mocked regression cases cover Owner authorization, invalid image signatures, indexed-versus-unindexed screenshot previews, and upload metadata failure. They do not query or mutate live Supabase data.
 - Release review remains human-operated; a passing workflow never automatically approves or deploys anything.
-
+ 
+## Phase 7 — unified fanfiction metadata discovery (draft code only)
+- The unified fanfiction shelf no longer hides public Mature/Explicit **metadata cards** behind an "I am 18+" acknowledgement. Ratings and content notes stay visible; age-restricted chapter access is still enforced independently by each reader route, which was **not** modified.
+- The same catalogue now receives Reading Rooms' include/exclude tag IDs and names. Hosted entries match canonical IDs; original-author source links have descriptive tag names and are matched by exact names. An excluded tag takes precedence over an included one.
+- The Reading Rooms fanfiction view now also passes relationship include/exclude controls to the shelf. It does not infer a relationship category from character names or sexual orientation.
+- Previously excluded Mature/Explicit hosted archive metadata is no longer filtered out of the prepared Reading Rooms collection solely for its rating. Publication status, Supabase visibility and hosted-text rights checks remain the upstream responsibility.
+- This is a **front-end/code-path fix**, not proof that all published cards render on every public browser route or that all archive pages have been fetched. The 13-case manual acceptance checklist remains mandatory.
+- Review workflow now tests the actual unified catalogue, fandom navigation and hosted-archive integration alongside the Observatory model, without deployment. If the standard project-wide suite still fails on unrelated expectations, triage those separately.
