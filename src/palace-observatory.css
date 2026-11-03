@@ -107,3 +107,19 @@
 .palace-observatory-compare :is(th,td){padding:9px 10px;overflow-wrap:anywhere;text-align:left;vertical-align:top;border-bottom:1px solid color-mix(in srgb,currentColor 14%,transparent)}
 .palace-observatory-compare th:first-child{width:30%}
 .palace-observatory-compare tr.different{background:color-mix(in srgb,currentColor 5%,transparent)}
+
+
+/* Phase 5: optional manual UAT worksheet, intentionally without approval controls. */
+.palace-observatory-release{max-width:100%}
+.palace-observatory-release h3{margin:18px 0 8px;font-size:1.05rem}
+.palace-observatory-acceptance-group{margin:10px 0;border:1px solid color-mix(in srgb,currentColor 19%,transparent);border-radius:12px;overflow:hidden}
+.palace-observatory-acceptance-group>summary{cursor:pointer;list-style-position:inside;padding:12px 14px;font-weight:600;font-size:.88rem}
+.palace-observatory-acceptance-group[open]>summary{border-bottom:1px solid color-mix(in srgb,currentColor 16%,transparent)}
+.palace-observatory-acceptance-cases{display:grid;gap:8px;padding:10px}
+.palace-observatory-acceptance-case{padding:12px;border-radius:10px;border:1px solid color-mix(in srgb,currentColor 13%,transparent);background:color-mix(in srgb,currentColor 3%,transparent)}
+.palace-observatory-acceptance-case p{font-size:.83rem;line-height:1.5;margin:8px 0;overflow-wrap:anywhere}
+.palace-observatory-acceptance-case .palace-observatory-row-head{gap:10px}
+.palace-observatory-acceptance-case .palace-observatory-row-head span{white-space:nowrap;font-size:.77rem;opacity:.8}
+.palace-observatory-acceptance-case .palace-observatory-issues-actions{margin-top:11px}
+.palace-observatory-acceptance-case a{align-self:center;font-size:.83rem}
+@media(max-width:480px){.palace-observatory-acceptance-case .palace-observatory-row-head{align-items:flex-start;flex-direction:column}}
