@@ -1,6 +1,6 @@
 import {supabase} from './supabase';
 import {getPalaceObservatoryAccess} from './palaceObservatoryData';
-import {observatoryValidateIssue,observatoryValidateTransition,observatoryValidateScreenshot} from './palaceObservatoryIssuesModel';
+import {observatoryValidateIssue,observatoryValidateTransition,observatoryInspectScreenshot} from './palaceObservatoryIssuesModel';
 
 export const OBSERVATORY_EVIDENCE_BUCKET='palace-observatory-evidence';
 export const OBSERVATORY_SETUP_MESSAGE='The private Observatory issue tables have not been approved and installed. This draft build will not create or modify your database.';
@@ -84,7 +84,7 @@ export async function transitionPalaceObservatoryIssue(current,next,note=''){
 export async function attachPalaceObservatoryScreenshot(issue,file){
  await requireOwner();
  if(!issue?.id)throw Error('Save the issue before adding a screenshot.');
- const checked=observatoryValidateScreenshot(file);
+ const checked=await observatoryInspectScreenshot(file);
  if(!checked.valid)throw Error(checked.error);
  const id=crypto.randomUUID();
  const filePath=issue.id+'/'+id+'.'+checked.extension;
