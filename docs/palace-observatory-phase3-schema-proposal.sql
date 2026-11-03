@@ -37,6 +37,7 @@ CREATE TABLE public.observatory_issue_events (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   issue_id uuid NOT NULL REFERENCES public.observatory_issues(id) ON DELETE RESTRICT,
   action text NOT NULL CHECK (action IN ('Created','Edited','Status changed','Evidence added')),
+  changed_fields text[] NOT NULL DEFAULT '{}'::text[],
   status_before text,
   status_after text,
   review_note text NOT NULL DEFAULT '',
@@ -50,6 +51,9 @@ CREATE TABLE public.observatory_evidence (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   issue_id uuid NOT NULL REFERENCES public.observatory_issues(id) ON DELETE RESTRICT,
   file_path text NOT NULL UNIQUE CHECK (length(file_path)<=240),
+  CONSTRAINT observatory_evidence_folder_matches_issue CHECK (split_part(file_path,'/',1)=issue_id::text),
+  CONSTRAINT observatory_evidence_filename_is_image CHECK
+    (file_path ~* '^[0-9a-f-]{36}/[0-9a-f-]{36}\\.(png|jpg|webp)$'),
   file_name text NOT NULL CHECK (length(file_name) BETWEEN 1 AND 160),
   file_size integer NOT NULL CHECK (file_size BETWEEN 1 AND 6291456),
   mime_type text NOT NULL CHECK (mime_type IN ('image/png','image/jpeg','image/webp')),
@@ -141,17 +145,25 @@ CREATE TRIGGER observatory_guard_issue_before
 CREATE OR REPLACE FUNCTION private.observatory_audit_issue()
 RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = ''
 AS $$
+DECLARE edited_fields text[];
 BEGIN
  IF TG_OP='INSERT' THEN
   INSERT INTO public.observatory_issue_events
-   (issue_id,action,status_before,status_after,review_note,actor_id)
-  VALUES (NEW.id,'Created',NULL,NEW.status,NEW.review_note,auth.uid());
+    (issue_id,action,status_before,status_after,review_note,actor_id,changed_fields)
+  VALUES (NEW.id,'Created',NULL,NEW.status,NEW.review_note,auth.uid(),ARRAY['created']::text[]);
  ELSE
+  -- Log which fields changed without copying old manuscript-related notes
+  -- or full issue bodies into additional tables.
+  SELECT coalesce(array_agg(n.key ORDER BY n.key),'{}'::text[])
+    INTO edited_fields
+    FROM jsonb_each(to_jsonb(NEW)-'updated_at'-'updated_by') AS n
+    JOIN jsonb_each(to_jsonb(OLD)-'updated_at'-'updated_by') AS o USING (key)
+    WHERE n.value IS DISTINCT FROM o.value;
   INSERT INTO public.observatory_issue_events
-   (issue_id,action,status_before,status_after,review_note,actor_id)
+    (issue_id,action,status_before,status_after,review_note,actor_id,changed_fields)
   VALUES (NEW.id,
     CASE WHEN NEW.status IS DISTINCT FROM OLD.status THEN 'Status changed' ELSE 'Edited' END,
-    OLD.status,NEW.status,NEW.review_note,auth.uid());
+    OLD.status,NEW.status,NEW.review_note,auth.uid(),edited_fields);
  END IF;
  RETURN NEW;
 END;
@@ -178,11 +190,11 @@ CREATE TRIGGER observatory_audit_evidence_after
 
 -- Entirely private screenshot storage. Do not place screenshots in public
 -- GitHub, public storage, error reports or AI services.
-INSERT INTO storage.buckets
- (id,name,public,file_size_limit,allowed_mime_types)
- VALUES ('palace-observatory-evidence','palace-observatory-evidence',false,6291456,
- ARRAY['image/png','image/jpeg','image/webp']::text[])
- ON CONFLICT (id) DO NOTHING;
+-- Deliberately do not create a Storage bucket through SQL.
+-- This is a separate, explicitly approved Supabase Storage API/Dashboard action.
+-- Verify public=false, a 6 MiB file-size limit,
+-- and an allowlist of PNG/JPEG/WebP before any evidence upload is enabled.
+-- See docs/palace-observatory-phase3.md for the review checklist.
 
 CREATE POLICY observatory_owner_read_screenshots ON storage.objects
  FOR SELECT TO authenticated USING (
@@ -193,6 +205,9 @@ CREATE POLICY observatory_owner_upload_screenshots ON storage.objects
  FOR INSERT TO authenticated WITH CHECK (
   bucket_id='palace-observatory-evidence'
   AND private.has_platform_role(ARRAY['owner']::text[])
+  AND name ~* '^[0-9a-f-]{36}/[0-9a-f-]{36}\\.(png|jpg|webp)$'
+  AND EXISTS (SELECT 1 FROM public.observatory_issues issue
+   WHERE issue.id::text=split_part(name,'/',1))
  );
 -- No UPDATE, DELETE, upsert or public bucket policies.
 
