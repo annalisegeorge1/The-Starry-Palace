@@ -44,13 +44,15 @@ export async function searchSeveralTags(search,value,category='all',limitPerTerm
  return [...merged.values()];
 }
 
-/** A comma/semicolon-separated query with 2+ names is intended as tags.
- * Single-word queries and ordinary phrases retain the normal text search. */
+/** A comma/semicolon-separated query is an in-progress tag list,
+ * even when only its first name has been entered (e.g. 'Michonne,').
+ * Ordinary single-tag searches without separators still use free-text search. */
 export function isMultiTagPhrase(value){
- return /[,;\n]/.test(String(value||''))&&splitTagQueries(value).length>=2;
+ return /[,;\n]/.test(String(value||''))&&splitTagQueries(value).length>=1;
 }
-/** Only switch to ID-based AND filtering when *every* term is a unique,
- * accepted exact tag. Partial/fuzzy names remain ordinary text searches. */
+/** Resolve all unique exact accepted tags in a typed list. Partial terms are
+ * returned separately so the UI can preview matches for confirmed tags while
+ * clearly showing which terms have NOT yet been applied. */
 export function resolveMultiTagPhrase(value,tags){
  if(!isMultiTagPhrase(value))return {complete:false,matches:[],unresolved:[]};
  const terms=splitTagQueries(value);
