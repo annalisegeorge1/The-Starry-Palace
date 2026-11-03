@@ -44,3 +44,41 @@
 @media(max-width:350px){
  .palace-shell .legacy-search-page .palace-search-refinement-grid{grid-template-columns:1fr!important}
 }
+
+/* One compact mobile-friendly checklist language shared with Reading Rooms.
+   Search suggestions are the individual tags in gathered story/comic results. */
+.palace-shell .legacy-search-page .palace-compact-tag-refiner{display:grid;gap:0;border-top:1px solid rgba(191,176,232,.24);min-width:0}
+.palace-shell .legacy-search-page .palace-compact-tag-lane{min-width:0;border-bottom:1px solid rgba(191,176,232,.24)}
+.palace-shell .legacy-search-page .palace-compact-tag-lane>summary{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;padding:7px 3px;cursor:pointer;color:#f4ecff;font:750 .82rem/1.4 system-ui,sans-serif}
+.palace-shell .legacy-search-page .palace-compact-tag-lane>summary>small{font-size:.7rem;color:#ded2ed}
+.palace-shell .legacy-search-page .palace-compact-tag-lane-body{padding:5px 1px 10px}
+.palace-shell .legacy-search-page .palace-compact-tag-search{display:grid;gap:5px;color:#eae1f6;font:700 .73rem/1.35 system-ui,sans-serif}
+.palace-shell .legacy-search-page .palace-compact-tag-search input{box-sizing:border-box;display:block;width:100%;min-width:0;min-height:44px;padding:9px 11px;border:1px solid #9884b9;border-radius:9px;background:#242942;color:#faf7ff;font:500 1rem/1.4 system-ui,sans-serif}
+.palace-shell .legacy-search-page .palace-compact-tag-selected{display:flex;flex-wrap:wrap;gap:6px;margin:7px 0}
+.palace-shell .legacy-search-page .palace-compact-tag-selected button{min-height:35px;max-width:100%;border:1px solid rgba(189,172,231,.48);border-radius:8px;padding:6px 9px;background:rgba(106,83,163,.22);color:#f4ecff;font:700 .69rem/1.35 system-ui,sans-serif;overflow-wrap:anywhere}
+.palace-shell .legacy-search-page .palace-compact-tag-selected button span{margin-left:7px}
+.palace-shell .legacy-search-page .palace-compact-tag-categories{display:grid;gap:0;margin:7px 0}
+.palace-shell .legacy-search-page .palace-compact-tag-category{border-top:1px solid rgba(190,176,222,.2);min-width:0}
+.palace-shell .legacy-search-page .palace-compact-tag-category>summary{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:38px;padding:6px 4px;cursor:pointer;color:#efe9fa;font:730 .75rem/1.35 system-ui,sans-serif}
+.palace-shell .legacy-search-page .palace-compact-tag-category>summary small{color:#d5c8e5;font-size:.7rem}
+.palace-shell .legacy-search-page .palace-compact-tag-choices{padding:1px 0 8px 4px}
+.palace-shell .legacy-search-page .palace-compact-tag-matches{display:grid;gap:0;margin:8px 0}
+.palace-shell .legacy-search-page .palace-compact-tag-matches>small{font-size:.69rem;font-weight:750;color:#d8ceeb;margin:0 0 5px}
+.palace-shell .legacy-search-page .palace-compact-tag-choice{display:flex;align-items:center;gap:7px;min-height:40px;padding:4px 3px;margin:0;border:0;border-radius:0;background:transparent;color:#f3ebff;cursor:pointer}
+.palace-shell .legacy-search-page .palace-compact-tag-choice input[type=checkbox]{appearance:none;-webkit-appearance:none;display:grid;place-items:center;flex:0 0 19px;width:19px;height:19px;margin:0;padding:0;border:1px solid #aa9ac7;border-radius:4px;background:#1b2440;cursor:pointer}
+.palace-shell .legacy-search-page .palace-compact-tag-choice input[type=checkbox]:checked{background:#7459b0;border-color:#d4b5ff}
+.palace-shell .legacy-search-page .palace-compact-tag-lane.exclude .palace-compact-tag-choice input[type=checkbox]:checked{background:#965275;border-color:#f2bad5}
+.palace-shell .legacy-search-page .palace-compact-tag-choice input[type=checkbox]:checked::after{content:'✓';color:#fff;font:800 .81rem/1 system-ui,sans-serif}
+.palace-shell .legacy-search-page .palace-compact-tag-name{font:550 .76rem/1.38 system-ui,sans-serif;overflow-wrap:anywhere}
+.palace-shell .legacy-search-page .palace-compact-tag-choice.is-selected .palace-compact-tag-name{font-weight:760}
+.palace-shell .legacy-search-page .palace-compact-tag-choice small{font-size:.68rem;color:#d6cbe9}
+.palace-shell .legacy-search-page .palace-compact-tag-opposite{margin-left:auto}
+.palace-shell .legacy-search-page .palace-compact-tags-more{width:100%;min-height:38px;padding:6px 4px;text-align:left;border:0;background:transparent;color:#f4ecff;font:730 .71rem/1.4 system-ui,sans-serif;cursor:pointer}
+.palace-shell .legacy-search-page .palace-compact-tag-note,.palace-shell .legacy-search-page .palace-compact-tag-matches>p{margin:7px 0!important;color:#d6cde8!important;font:500 .7rem/1.5 system-ui,sans-serif!important}
+.palace-shell .legacy-search-page .palace-compact-tag-refiner :is(input,button,summary):focus-visible{outline:2px solid #b9e7ff;outline-offset:2px}
+.palace-shell.daylight .legacy-search-page :is(.palace-compact-tag-lane>summary,.palace-compact-tag-category>summary,.palace-compact-tag-search,.palace-compact-tag-choice,.palace-compact-tags-more){color:#3c2e52}
+.palace-shell.daylight .legacy-search-page .palace-compact-tag-search input{background:#fff;color:#302442}
+.palace-shell.daylight .legacy-search-page .palace-compact-tag-choice input[type=checkbox]{background:#fff;border-color:#8c78b1}
+.palace-shell.daylight .legacy-search-page .palace-compact-tag-choice input[type=checkbox]:checked{background:#7351aa}
+.palace-shell.daylight .legacy-search-page :is(.palace-compact-tag-choice small,.palace-compact-tag-lane>summary>small,.palace-compact-tag-category>summary small,.palace-compact-tag-note,.palace-compact-tag-matches>small){color:#605073!important}
+.palace-shell.daylight .legacy-search-page .palace-compact-tag-selected button{background:#f0e8f9;color:#49325e;border-color:#baa9d5}

@@ -83,3 +83,31 @@
  .library-overview-start-mark{flex-basis:45px;height:52px;font-size:1.1rem;border-radius:12px}
  .library-overview-start nav a{width:100%}
 }
+
+/* Dense Library preview lists, while retaining the ornate outer rooms and
+   full-size book artwork wherever a reader chooses a detailed view. */
+@media(max-width:590px){
+ .library-overview{gap:12px}
+ .library-overview-feature-grid{gap:12px}
+ .library-overview-section,.library-overview-discover,.library-overview-updates,.library-overview-organizers{padding:14px;border-radius:17px}
+ .library-overview-pulse{gap:8px}
+ .library-overview-pulse a{min-height:77px;padding:9px 11px;border-radius:12px}
+ .library-overview-pulse strong{font-size:1.55rem}
+ .library-overview-pulse span{font-size:.76rem}
+ .library-overview-books{gap:0}
+ .library-overview-book{min-height:64px;gap:10px;padding:8px 2px;border:0;border-bottom:1px solid rgba(165,151,225,.24);border-radius:0;background:transparent}
+ .library-overview-book:last-child{border-bottom:0}
+ .library-overview-cover{flex-basis:44px;height:61px;border-radius:6px}
+ .library-overview-book-copy{gap:2px}
+ .library-overview-book-copy strong{font-size:.88rem}
+ .library-overview-book-copy small{font-size:.74rem}
+ .library-overview-updates ul{gap:0}
+ .library-overview-updates li a{min-height:44px;padding:7px 2px;border:0;border-bottom:1px solid rgba(165,151,225,.24);border-radius:0;background:transparent}
+ .library-overview-updates li:last-child a{border-bottom:0}
+ .library-overview-shortcuts{gap:0}
+ .library-overview-shortcuts a{min-height:52px;gap:10px;padding:7px 2px;border:0;border-bottom:1px solid rgba(165,151,225,.24);border-radius:0;background:transparent}
+ .library-overview-shortcuts a:last-child{border-bottom:0}
+ .library-overview-shortcut-icon{flex-basis:31px;height:31px;border-radius:9px}
+ .library-overview-shortcuts strong{font-size:.85rem}
+ .library-overview-shortcuts small{font-size:.71rem}
+}

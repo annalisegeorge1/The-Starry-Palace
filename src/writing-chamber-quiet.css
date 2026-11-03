@@ -82,3 +82,23 @@ body.writing-desk-open .manuscript-dashboard--compact{padding:.55rem .8rem!impor
 /* Prior mobile stylesheet hides the old full-width ribbon. The new folded
    appearance panel must reveal it when intentionally opened. */
 @media(max-width:760px){body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar .writer-appearance-accordion[open] .manuscript-type-ribbon{display:flex!important}}
+
+/* Writing Chamber: library-like row density without changing editor state,
+   drag-and-drop behavior, recovery, or publication controls. */
+@media(max-width:760px){
+ body.writing-desk-open .chapter-manager-row:not(.is-managing){
+  min-height:0!important;padding:3px 0 5px!important;margin:0!important;
+  border-radius:0!important;border-top:0!important;
+  border-bottom:1px solid rgba(181,166,224,.21)!important;
+  background:transparent!important;box-shadow:none!important;
+ }
+ body.writing-desk-open .chapter-manager-row:not(.is-managing)>button:first-child{
+  min-height:44px!important;padding:6px 7px!important;
+ }
+ body.writing-desk-open .manuscript-recent-activity ul{gap:0}
+ body.writing-desk-open .manuscript-recent-activity li{
+  margin:0;padding:5px 0;border-bottom:1px solid rgba(181,166,224,.21);
+ }
+ body.writing-desk-open .manuscript-recent-activity li:last-child{border-bottom:0}
+ body.writing-desk-open .writer-workspace-modes button{min-height:42px!important}
+}
