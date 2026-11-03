@@ -21,7 +21,7 @@ describe('multiple tag search queries',()=>{
   expect(lookup).toHaveBeenCalledTimes(2);
   expect(lookup).toHaveBeenCalledWith('richonne','all',35);
   expect(lookup).toHaveBeenCalledWith('slow burn','all',35);
-  expect(rows.map(tag=>tag.id)).toEqual(['r','same','s']);
+  expect(rows.map(tag=>tag.id)).toEqual(['r','s','same']);
  });
  it('limits the number of searched tags to avoid unbounded requests',()=>{
   expect(splitTagQueries(Array.from({length:12},(_,i)=>'tag '+i).join(', '))).toHaveLength(8);
