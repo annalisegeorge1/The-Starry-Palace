@@ -1,8 +1,9 @@
 import {describe,it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
+import {resolve} from 'node:path';
 
-const schema=readFileSync(new URL('../docs/palace-observatory-phase3-schema-proposal.sql',import.meta.url),'utf8');
-const data=readFileSync(new URL('../src/palaceObservatoryIssuesData.js',import.meta.url),'utf8');
+const schema=readFileSync(resolve(process.cwd(),'docs/palace-observatory-phase3-schema-proposal.sql'),'utf8');
+const data=readFileSync(resolve(process.cwd(),'src/palaceObservatoryIssuesData.js'),'utf8');
 
 describe('Observatory issue-tracker release and privacy boundaries',()=>{
  it('leaves the proposed database schema unapplied and avoids direct Storage bucket writes',()=>{
