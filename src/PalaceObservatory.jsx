@@ -4,9 +4,12 @@ import {useAuth} from './auth';
 import {getPalaceObservatoryAccess,readPalaceObservatoryMetadata} from './palaceObservatoryData';
 import {buildPalaceObservatorySnapshot,filterPalaceObservatoryRows} from './palaceObservatoryModel';
 import {MODERN_FANFICTION_LINKS} from './palaceFanfictionDiscovery';
+import {readPalaceAnonymousPlacement,runPalaceGuestTagScenarios} from './palaceObservatoryGuest';
+import {makePalacePlacementChecks,makePalaceTagScenarioChecks,makePalaceFanfictionCatalogueChecks} from './palaceObservatoryVerificationModel';
+import {createUnifiedFanworks,filterUnifiedFanworks} from './UnifiedFanworkCatalogue';
 import './palace-observatory.css';
 
-const sections=['Catalogue','Findings','Release review'];
+const sections=['Catalogue','Findings','Verification','Release review'];
 const roles=['all','Member fanfiction','Original work','Archive fanfiction','Archive / classic','Original-source link'];
 const statuses=['all','published','draft','review','linked'];
 function Metric({label,value}){return <div className="palace-observatory-metric"><strong>{value}</strong><span>{label}</span></div>}
@@ -24,6 +27,9 @@ export default function PalaceObservatory(){
  const [status,setStatus]=useState('all');
  const [severity,setSeverity]=useState('all');
  const [reload,setReload]=useState(0);
+ const [verification,setVerification]=useState(null);
+ const [verifying,setVerifying]=useState(false);
+ const [verificationError,setVerificationError]=useState('');
 
  useEffect(()=>{
   let valid=true;
@@ -38,7 +44,7 @@ export default function PalaceObservatory(){
 
  useEffect(()=>{
   if(access!=='allowed')return;
-  let valid=true;setBusy(true);setError('');
+  let valid=true;setBusy(true);setError('');setVerification(null);setVerificationError('');
   readPalaceObservatoryMetadata().then(data=>{
    if(valid)setSnapshot(buildPalaceObservatorySnapshot({...data,linked:MODERN_FANFICTION_LINKS}));
   }).catch(e=>{if(valid){setSnapshot(null);setError(e?.message||'Audit records could not be loaded.')}})
@@ -53,6 +59,31 @@ export default function PalaceObservatory(){
   (!query||[f.title,f.detail,f.workTitle].join(' ').toLowerCase().includes(query.toLowerCase()))),
   [snapshot,severity,query]);
 
+ async function runPlacementVerification(){
+  if(access!=='allowed'||verifying||busy)return;
+  setVerifying(true);setVerificationError('');
+  try{
+   // Re-check Owner privileges and expected public records before each audit.
+   const expectedData=await readPalaceObservatoryMetadata();
+   const expected=buildPalaceObservatorySnapshot({...expectedData,linked:MODERN_FANFICTION_LINKS});
+   const actual=await readPalaceAnonymousPlacement();
+   const base=makePalacePlacementChecks(expected,actual);
+   const catalogue=makePalaceFanfictionCatalogueChecks(actual.guestWorks,createUnifiedFanworks,filterUnifiedFanworks);
+   let checks=[...base.checks,...catalogue];
+   setVerification({checks,tagStatus:'Checking sample tag scenarios…',completedAt:new Date().toISOString()});
+   try{
+    const scenarios=await runPalaceGuestTagScenarios(actual.guestWorks,8);
+    checks=[...checks,...makePalaceTagScenarioChecks(actual.guestWorks,scenarios)];
+    setVerification({checks,tagStatus:'Completed',completedAt:new Date().toISOString()});
+   }catch(e){
+    setVerification({checks,tagStatus:'Partial — tag tests could not finish',completedAt:new Date().toISOString()});
+    setVerificationError(e?.message||'Unable to complete tag scenarios.');
+   }
+  }catch(e){
+   setVerification(null);
+   setVerificationError(e?.message||'Guest verification was not completed. No missing-work finding was inferred.');
+  }finally{setVerifying(false)}
+ }
  if(authLoading||access==='checking')return <section className="palace-observatory"><p role="status">Checking private Observatory access…</p></section>;
  if(access!=='allowed')return <section className="palace-observatory">
   <p className="eyebrow">PRIVATE ADMINISTRATION</p><h1>The Palace Observatory</h1>
@@ -83,7 +114,7 @@ export default function PalaceObservatory(){
   {busy&&<p role="status">Checking live catalogue metadata…</p>}
   {error&&<p role="alert" className="palace-observatory-warning">{error}</p>}
   {snapshot&&<><div className="palace-observatory-filters">
-    {active!=='Release review'&&<label>Find a title, author or tag
+    {(active==='Catalogue'||active==='Findings')&&<label>Find a title, author or tag
      <input type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search loaded records"/></label>}
     {active==='Catalogue'&&<><label>Source
      <select value={kind} onChange={e=>setKind(e.target.value)}>{roles.map(r=><option value={r} key={r}>{r==='all'?'All sources':r}</option>)}</select></label>
@@ -110,10 +141,23 @@ export default function PalaceObservatory(){
      <p><b>Expected:</b> {issue.expected}</p>
      <small>Observed: {issue.observed} · Status changes and screenshots are planned for Phase 3.</small>
     </article>)}</div></>}
+   {active==='Verification'&&<div className="palace-observatory-verification">
+    <p className="palace-observatory-subtitle">Compare expected public records with a separate anonymous client, the actual published-reading search RPC, and the current fanfiction filter. Results do not prove browser rendering or age-gate behaviour.</p>
+    <button type="button" onClick={runPlacementVerification} disabled={verifying||busy}>{verifying?'Running checks…':'Run anonymous visibility checks'}</button>
+    {verificationError&&<p role="alert" className="palace-observatory-warning">{verificationError}</p>}
+    {verification&&<>
+     <p className="palace-observatory-subtitle" role="status">{verification.checks.filter(x=>x.status==='Pass').length} passed · {verification.checks.filter(x=>x.status==='Mismatch').length} mismatches · {verification.tagStatus}. Candidates require independent browser rechecking.</p>
+     <div className="palace-observatory-list">{verification.checks.map(item=><article className="palace-observatory-row" key={item.id}>
+      <div className="palace-observatory-row-head"><strong>{item.title}</strong><span>{item.status} · {item.surface}</span></div>
+      <p><b>Expected:</b> {item.expect}</p><p><b>Observed:</b> {item.observed}</p>
+      <p>{item.detail}</p><small>{item.evidence}</small>
+     </article>)}</div>
+    </>}
+   </div>}
    {active==='Release review'&&<div className="palace-observatory-denied">
-    <h2>Release actions are unavailable in Phase 1</h2>
+    <h2>Release actions are unavailable in this review build</h2>
     <p>This phase only reads source data. Metadata editing, issue persistence, approvals and release actions are not implemented or enabled. Nothing is connected to publishing or deployment.</p>
-    <p>Next: independently test public search, relationship filtering, age-appropriate discovery, and section placement before proposing any fixes.</p>
+    <p>Public backend and code-path verification can be run from the Verification tab. Browser navigation, age-gate and mobile parity still require separate manual acceptance tests.</p>
    </div>}
   </>}
  </section>;
