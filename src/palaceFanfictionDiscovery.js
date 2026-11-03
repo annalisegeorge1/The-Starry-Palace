@@ -2398,4 +2398,41 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
    "permissionLabel": "CC BY-SA 4.0 International · author-profile licence for original contributions; original-author source link only",
    "contentNote": "Source Fiction K+ · English · Complete one-shot, 706 words; contains a quotation from Swamp Thing owned by a separate rights holder. Author-source link only."
  }
+,
+ {
+   "id": "dmasters-kings-day",
+   "title": "Kings Day",
+   "creator": "D. Masters",
+   "published": "2006",
+   "fandom": "The Legend of Zelda",
+   "description": "A short seasonal fanfiction originally written for a Christmas contest.",
+   "sourceUrl": "https://www.fanfiction.net/s/2766447/1/Kings-Day",
+   "permissionUrl": "https://www.fanfiction.net/u/898034/D-Masters",
+   "permissionLabel": "CC BY-NC-ND 3.0 US · author-profile statement covering author's contributions; author-source link only; no adaptation",
+   "contentNote": "Source Fiction K · English · 1,827 words · complete one-shot · holiday story."
+ },
+ {
+   "id": "dmasters-endevors",
+   "title": "Endevors",
+   "creator": "D. Masters",
+   "published": "2005–2006",
+   "fandom": "Constantine",
+   "description": "A gifted wanderer travels the world helping strangers, driven by his commitment to family.",
+   "sourceUrl": "https://www.fanfiction.net/s/2676089/1/Endevors",
+   "permissionUrl": "https://www.fanfiction.net/u/898034/D-Masters",
+   "permissionLabel": "CC BY-NC-ND 3.0 US · author-profile statement covering author's contributions; author-source link only; no adaptation",
+   "contentNote": "Source Fiction M · English · six chapters · 15,251 words · completion unconfirmed · horror and fantasy; 18+ discovery."
+ },
+ {
+   "id": "dmasters-flagg",
+   "title": "Flagg",
+   "creator": "D. Masters",
+   "published": "2005",
+   "fandom": "The Dark Tower",
+   "description": "A brief speculative origin story asking where Flagg's story began.",
+   "sourceUrl": "https://www.fanfiction.net/s/2585882/1/Flagg",
+   "permissionUrl": "https://www.fanfiction.net/u/898034/D-Masters",
+   "permissionLabel": "CC BY-NC-ND 3.0 US · author-profile statement covering author's contributions; author-source link only; no adaptation",
+   "contentNote": "Source Fiction K · English · 381 words · complete one-shot · character backstory."
+ }
 ]);

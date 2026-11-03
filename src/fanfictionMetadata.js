@@ -13,6 +13,9 @@ const entry=(rating,sourceRating,tags,warnings=[],basis=rating==='not_rated'?'un
  tags:Object.entries(tags).flatMap(([category,names])=>names.map(name=>({category,name})))
 });
 export const MODERN_FANFICTION_GUIDES=Object.freeze({
+ "dmasters-kings-day":entry("general","FanFiction.net K",{"fandom":["The Legend of Zelda"],"language":["English"],"genre":["Adventure"],"trope":["Holiday Story","One-Shot","Christmas Contest"]},[]),
+ "dmasters-endevors":entry("mature","FanFiction.net M",{"fandom":["Constantine"],"language":["English"],"genre":["Horror","Fantasy"],"trope":["Wandering Hero","Family Motivation"],"warning":["Horror Themes"]},["Horror themes"]),
+ "dmasters-flagg":entry("general","FanFiction.net K",{"fandom":["The Dark Tower"],"language":["English"],"genre":["Fantasy"],"trope":["Origin Story","One-Shot"],"character":["Randall Flagg"]},[]),
  "hushbugger-downtime":entry("general","FanFiction.net K",{"fandom":["Undertale"],"language":["English"],"genre":["Humour"],"trope":["Day Off","Character Study"],"character":["Undyne","Asgore Dreemurr","Gerson"]},[]),
  "hushbugger-borrowed-time":entry("general","FanFiction.net K",{"fandom":["Undertale"],"language":["English"],"genre":["Drama"],"trope":["Second Chances","Determination"],"character":["Frisk","Asriel Dreemurr"]},[]),
  "hushbugger-original-character":entry("general","FanFiction.net K",{"fandom":["Undertale"],"language":["English"],"genre":["Humour"],"trope":["Transformation","Character Comedy"],"character":["Flowey","Papyrus","Undyne","Asgore Dreemurr"]},[]),
