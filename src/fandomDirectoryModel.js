@@ -48,3 +48,12 @@ export function fandomFacetOptions(rows=[],media='all'){
   .sort((a,b)=>a.localeCompare(b,undefined,{sensitivity:'base'}));
  return {categories,franchises};
 }
+
+/** Search published works inside selected fandoms by title, summary or actual author-assigned tags. */
+export function matchesFandomStoryQuery(story,query=''){
+ const needle=normalizeFandomName(query);
+ if(!needle)return true;
+ const tags=(story?.work_tags||[]).flatMap(link=>link?.tags?.name?[link.tags.name]:[]);
+ const fields=[story?.title,story?.summary,...tags].map(normalizeFandomName);
+ return needle.split(' ').every(word=>fields.some(field=>field.includes(word)));
+}
