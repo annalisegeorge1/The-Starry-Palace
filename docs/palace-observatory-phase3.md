@@ -44,3 +44,12 @@ The separate PR-only verification workflow is designed to run model and issue li
 - The Catalogue tab has an optional two-entry metadata comparison for rights, hosting, fandom, tags, publication status, expected surfaces and original-source links. It cannot open member draft or chapter text.
 - PR-only tests include screenshot-signature checks, static SQL safety assertions, and the two-record comparison model.
 
+## Phase 6 integrity review (draft only)
+- The existing private.has_platform_role function requires a matching unsuspended membership; this was verified read-only. No membership was changed or Owner role granted.
+- The full repository workflow previously completed with 8 failures (1,488 passing tests). One failure came from the Observatory's screenshot-help wording, which has now been aligned with the site's launch-copy policy. Seven other failures concerned existing reading/navigation/fanfiction test expectations. Recheck the full workflow before any release.
+- An unindexed private image upload is a recognized recoverable error, not an approved attachment. The proposed Storage **SELECT** policy now requires a matching indexed evidence record. The client independently verifies the matching evidence ID, issue ID and path before requesting a short preview URL.
+- Screenshot upload still precedes metadata indexing, so a failed metadata insert may leave a storage-only orphan. The proposal intentionally provides no client DELETE privileges; a separately approved administrator reconciliation process is needed before enabling evidence uploads. No such cleanup job has been installed.
+- The Owner issue register now loads 100 issues at a time, shows when older pages exist, and searches only the loaded records. Insertions during pagination may require a full refresh to avoid offset drift; it is not a complete cross-database search.
+- New mocked regression cases cover Owner authorization, invalid image signatures, indexed-versus-unindexed screenshot previews, and upload metadata failure. They do not query or mutate live Supabase data.
+- Release review remains human-operated; a passing workflow never automatically approves or deploys anything.
+
