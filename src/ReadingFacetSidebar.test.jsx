@@ -162,3 +162,25 @@ it('shows a flat list of individual tags from different categories when searchin
  fireEvent.click(screen.getByRole('checkbox',{name:'Include Slow Romance'}));
  expect(onToggle).toHaveBeenCalledWith('slow-2','include');
 });
+
+it('supports multiple comma-separated tag names in Reading Rooms include and exclude filters',()=>{
+ const tags=[
+  {id:'rich',name:'Richonne',count:6},
+  {id:'slow',name:'Slow Burn',count:3},
+  {id:'family',name:'Found Family',count:4}
+ ];
+ const onToggle=vi.fn();
+ view({facets:[{category:'relationship',label:'Relationships',tags:tags.slice(0,1)},{category:'trope',label:'Tropes',tags:tags.slice(1)}],onToggle});
+ fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
+ fireEvent.change(screen.getByLabelText('Other tags to include'),{target:{value:'Richonne, Slow Burn'}});
+ expect(screen.getByRole('checkbox',{name:'Include Richonne'})).toBeTruthy();
+ expect(screen.getByRole('checkbox',{name:'Include Slow Burn'})).toBeTruthy();
+ fireEvent.click(screen.getByRole('button',{name:'Add 2 exact tags to include'}));
+ expect(onToggle).toHaveBeenCalledWith('rich','include');
+ expect(onToggle).toHaveBeenCalledWith('slow','include');
+ fireEvent.click(screen.getByRole('button',{name:/4\\. Exclude/}));
+ fireEvent.change(screen.getByLabelText('Other tags to exclude'),{target:{value:'Found Family; Richonne'}});
+ fireEvent.click(screen.getByRole('button',{name:'Add 2 exact tags to exclude'}));
+ expect(onToggle).toHaveBeenCalledWith('family','exclude');
+ expect(onToggle).toHaveBeenCalledWith('rich','exclude');
+});
