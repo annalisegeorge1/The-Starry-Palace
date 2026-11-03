@@ -38,6 +38,11 @@ export default function PalaceFandomAtlas(){
  const [fanworksBusy,setFanworksBusy]=useState(false),[fanworksError,setFanworksError]=useState('');
  const validMedia=FANDOM_MEDIA_SHELVES.some(x=>x.id===selectedMedia)?selectedMedia:'all';
  const selected=safeFandomSelection(urlIds,rows);
+ // Story-tag links use a fandom NAME. Resolve it to an accepted tag ID,
+ // then page the same indexed public search used by directory selections.
+ const exactFandomId=atlasSection==='fanfiction'&&exactFandom?
+  rows.find(row=>String(row.name||'').toLowerCase()===exactFandom.toLowerCase())?.id:null;
+ const queryFandomIds=selected.length?selected:exactFandomId?[exactFandomId]:[];
  const selectedNames=selected.map(id=>rows.find(row=>row.id===id)?.name).filter(Boolean);
  const activeFandomNames=selectedNames.length?selectedNames:exactFandom?[exactFandom]:[];
  const facets=useMemo(()=>fandomFacetOptions(rows,validMedia),[rows,validMedia]);
@@ -46,9 +51,9 @@ export default function PalaceFandomAtlas(){
  const filtered=useMemo(()=>visibleFandoms(rows,{media:validMedia,query:keyword,sort,subcategory:validSubcategory,franchise:validFranchise}),[rows,validMedia,keyword,sort,validSubcategory,validFranchise]);
  const list=pageFandoms(filtered,page);
  const matchingSelectedStories=useMemo(()=>
-  (storyResultKey===selected.join(',')+'|'+mode?stories:[])
+  (storyResultKey===queryFandomIds.join(',')+'|'+mode?stories:[])
    .filter(story=>matchesFandomStoryQuery(story,withinFandom)),
-  [stories,withinFandom,storyResultKey,selected.join(','),mode]);
+  [stories,withinFandom,storyResultKey,queryFandomIds.join(','),mode]);
  const mediaCounts=useMemo(()=>Object.fromEntries(FANDOM_MEDIA_SHELVES.map(item=>
   [item.id,visibleFandoms(rows,{media:item.id}).length])),[rows]);
  function changeParams(patch,{replace=true}={}){
@@ -76,7 +81,7 @@ export default function PalaceFandomAtlas(){
   return()=>{active=false;clearTimeout(timer)};
  },[atlasSection,keyword,loading,filtered.length]);
 
- const selectionKey=selected.join(',')+'|'+mode;
+ const selectionKey=queryFandomIds.join(',')+'|'+mode;
  const selectionKeyRef=useRef(selectionKey);
  selectionKeyRef.current=selectionKey;
  useEffect(()=>setWithinFandom(''),[selectionKey]);
@@ -84,9 +89,9 @@ export default function PalaceFandomAtlas(){
   let active=true;
   setStories([]);setStoryResultKey('');setStoryHasMore(false);
   setStoryOffset(FANDOM_STORY_PAGE_SIZE);setStoryLoadError('');setStoryLoadingMore(false);
-  if(!selected.length){setStoryError('');setStoryBusy(false);return()=>{active=false}};
+  if(!queryFandomIds.length){setStoryError('');setStoryBusy(false);return()=>{active=false}};
   setStoryBusy(true);setStoryError('');
-  getStoriesForFandomsPage(selected,mode,{offset:0,limit:FANDOM_STORY_PAGE_SIZE})
+  getStoriesForFandomsPage(queryFandomIds,mode,{offset:0,limit:FANDOM_STORY_PAGE_SIZE})
    .then(data=>{if(active){
     setStories(data.results);setStoryHasMore(data.hasMore);setStoryResultKey(selectionKey);
    }})
@@ -99,7 +104,7 @@ export default function PalaceFandomAtlas(){
   const requestKey=selectionKey;
   setStoryLoadingMore(true);setStoryLoadError('');
   try{
-   const page=await getStoriesForFandomsPage(selected,mode,
+   const page=await getStoriesForFandomsPage(queryFandomIds,mode,
     {offset:storyOffset,limit:FANDOM_STORY_PAGE_SIZE});
    if(selectionKeyRef.current!==requestKey)return;
    setStories(old=>{
@@ -259,8 +264,8 @@ export default function PalaceFandomAtlas(){
   </>}
   {atlasSection==='fanfiction'&&<section className="palace-fandom-linked-section" aria-label="Fanfiction by fandom">
    {activeFandomNames.length>0&&<div className="palace-fandom-selection-note"><span>Fandom{activeFandomNames.length>1?'s':''}: <strong>{activeFandomNames.join(' · ')}</strong></span><button type="button" onClick={()=>changeParams({ids:null,match:null,fandom:null})}>All fanfiction</button><button type="button" onClick={()=>changeParams({section:null,fandom:null})}>Choose different fandoms</button></div>}
-   <UnifiedFanworkCatalogue key={activeFandomNames.join(',')+'|'+mode} publishedWorks={[...(selectedNames.length&&storyResultKey===selectionKey?stories:[]),...fanworkRows,...historicFanworks]} globalQuery={selectedNames.length?'':keyword} fandomNames={activeFandomNames} fandomMatch={mode} loading={fanworksBusy||fanworksLoadingMore||selectedNames.length>0&&storyBusy} loadError={fanworksError||selectedNames.length>0&&storyError} inFandomAtlas={true} defaultSource="all" hasMoreHosted={fanworksHasMore||selectedNames.length>0&&storyHasMore}
-     onMoreHosted={selectedNames.length>0&&storyHasMore?loadMoreSelectedFandomWorks:loadMoreFanworks}/>
+   <UnifiedFanworkCatalogue key={activeFandomNames.join(',')+'|'+mode} publishedWorks={[...(queryFandomIds.length&&storyResultKey===selectionKey?stories:[]),...fanworkRows,...historicFanworks]} globalQuery={activeFandomNames.length?'':keyword} fandomNames={activeFandomNames} fandomMatch={mode} loading={fanworksBusy||fanworksLoadingMore||selectedNames.length>0&&storyBusy} loadError={fanworksError||selectedNames.length>0&&storyError} inFandomAtlas={true} defaultSource="all" hasMoreHosted={fanworksHasMore||queryFandomIds.length>0&&storyHasMore}
+     onMoreHosted={queryFandomIds.length>0&&storyHasMore?loadMoreSelectedFandomWorks:loadMoreFanworks}/>
    <p className="palace-fandom-complete-archive"><Link to="/reading?section=fanfiction">Browse the full Palace-hosted and linked Fanwork catalogue →</Link></p>
   </section>}
  </section>;
