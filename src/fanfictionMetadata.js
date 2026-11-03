@@ -13,6 +13,19 @@ const entry=(rating,sourceRating,tags,warnings=[],basis=rating==='not_rated'?'un
  tags:Object.entries(tags).flatMap(([category,names])=>names.map(name=>({category,name})))
 });
 export const MODERN_FANFICTION_GUIDES=Object.freeze({
+ "hushbugger-downtime":entry("general","FanFiction.net K",{"fandom":["Undertale"],"language":["English"],"genre":["Humour"],"trope":["Day Off","Character Study"],"character":["Undyne","Asgore Dreemurr","Gerson"]},[]),
+ "hushbugger-borrowed-time":entry("general","FanFiction.net K",{"fandom":["Undertale"],"language":["English"],"genre":["Drama"],"trope":["Second Chances","Determination"],"character":["Frisk","Asriel Dreemurr"]},[]),
+ "hushbugger-original-character":entry("general","FanFiction.net K",{"fandom":["Undertale"],"language":["English"],"genre":["Humour"],"trope":["Transformation","Character Comedy"],"character":["Flowey","Papyrus","Undyne","Asgore Dreemurr"]},[]),
+ "hushbugger-people-remember":entry("general","FanFiction.net K",{"fandom":["Undertale"],"language":["English"],"genre":["Mystery"],"trope":["Investigation","Missing Person","One-Shot"],"character":["Frisk","W. D. Gaster","Alphys","Gerson"]},[]),
+ "hushbugger-new-opportunities":entry("general","FanFiction.net K",{"fandom":["Undertale"],"language":["English"],"genre":["Drama"],"trope":["Secret Revealed","Character Study"],"character":["Alphys","Asgore Dreemurr","Mettaton"]},[]),
+ "hushbugger-for-sale-baby-shoes":entry("general","FanFiction.net K",{"fandom":["Undertale"],"language":["English"],"genre":["Drama"],"trope":["Microfiction","One-Shot"],"character":["Alphys","Undyne"]},[]),
+ "hushbugger-market-mentor":entry("general","FanFiction.net K",{"fandom":["Undertale"],"language":["English"],"genre":["Friendship"],"trope":["Overcoming Shyness","One-Shot"],"character":["Undyne","Shyren"]},[]),
+ "hushbugger-demonic-dealings":entry("general","FanFiction.net K",{"fandom":["Undertale"],"language":["English"],"genre":["Fantasy"],"trope":["Unexpected Visitor","One-Shot"],"character":["Asgore Dreemurr"]},[]),
+ "hushbugger-not-good-real":entry("general","FanFiction.net K",{"fandom":["Undertale"],"language":["English"],"genre":["Angst"],"trope":["Identity","Emotional Recovery","One-Shot"],"character":["Asriel Dreemurr","Toriel","Alphys"]},[]),
+ "hushbugger-eye-witness":entry("general","FanFiction.net K",{"fandom":["Undertale"],"language":["English"],"genre":["Humour"],"trope":["Academic Setting","One-Shot"],"character":["Frisk","Gerson"]},[]),
+ "hushbugger-down-dumps":entry("general","FanFiction.net K",{"fandom":["Undertale"],"language":["English"],"genre":["Humour"],"trope":["Science","One-Shot"],"character":["Asgore Dreemurr","W. D. Gaster"]},[]),
+ "hushbugger-instructions-past":entry("general","FanFiction.net K",{"fandom":["Undertale"],"language":["English"],"genre":["Drama"],"trope":["Time Reset","Moral Choice","One-Shot"],"character":["Frisk","Sans"]},[]),
+ "hushbugger-ghost-weeds":entry("general","FanFiction.net K+",{"fandom":["Undertale"],"language":["English"],"genre":["Angst"],"trope":["Identity","Existential Themes","One-Shot"],"character":["Flowey","Alphys"],"warning":["Identity Distress"]},["Identity Distress"]),
  "lastgoodname-alien":entry("teen","FanFiction.net T",{"fandom":["Glee"],"language":["English"],"relationship":["F/F","Quinn Fabray/Rachel Berry"],"genre":["Drama"],"trope":["Established Relationship","Couples Counselling","One-Shot"],"character":["Quinn Fabray","Rachel Berry"]},[]),
  "lastgoodname-if-we-dont":entry("general","FanFiction.net K",{"fandom":["Glee"],"language":["English"],"relationship":["Gen"],"genre":["Humour","Friendship"],"trope":["One-Shot","Ensemble Comedy"],"character":["Artie Abrams"]},[]),
  "lastgoodname-curative":entry("mature","FanFiction.net M",{"fandom":["Harry Potter"],"language":["English"],"genre":["Drama"],"trope":["One-Shot","Crime and Consequences"],"character":["Pansy Parkinson","Hermione Granger"],"warning":["Mature Themes"]},["Mature themes"]),
