@@ -31,9 +31,15 @@ export async function searchSeveralTags(search,value,category='all',limitPerTerm
  const names=splitTagQueries(value);
  if(!names.length)return [];
  const groups=await Promise.all(names.map(name=>search(name,category,limitPerTerm)));
+ // Interleave each name's suggestions so the first 24 visible options
+ // do not all come from one broad term.
  const merged=new Map();
- for(const rows of groups)for(const tag of rows||[]){
-  if(tag?.id&&!merged.has(String(tag.id)))merged.set(String(tag.id),tag);
+ const total=Math.max(0,...groups.map(rows=>rows?.length||0));
+ for(let index=0;index<total;index++){
+  for(const rows of groups){
+   const tag=rows?.[index];
+   if(tag?.id&&!merged.has(String(tag.id)))merged.set(String(tag.id),tag);
+  }
  }
  return [...merged.values()];
 }
