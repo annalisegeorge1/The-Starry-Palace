@@ -200,6 +200,9 @@ CREATE POLICY observatory_owner_read_screenshots ON storage.objects
  FOR SELECT TO authenticated USING (
   bucket_id='palace-observatory-evidence'
   AND private.has_platform_role(ARRAY['owner']::text[])
+  -- A private upload that was not indexed must never be previewed.
+  AND EXISTS (SELECT 1 FROM public.observatory_evidence e
+    WHERE e.file_path=storage.objects.name)
  );
 CREATE POLICY observatory_owner_upload_screenshots ON storage.objects
  FOR INSERT TO authenticated WITH CHECK (
