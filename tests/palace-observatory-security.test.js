@@ -32,6 +32,10 @@ describe('Observatory issue-tracker release and privacy boundaries',()=>{
   expect(schema).not.toMatch(/CREATE POLICY [^\n]* ON storage\.objects\s+FOR (UPDATE|DELETE)/i);
   expect(data).toContain('upsert:false');
   expect(data).toContain('observatoryInspectScreenshot(file)');
+  expect(schema).toContain('e.file_path=storage.objects.name');
+  expect(data).toContain("from('observatory_evidence')");
+  expect(data).toContain("if(!indexed.data)throw Error");
+  expect(data).toContain(".range(start,start+size)");
   expect(data).not.toMatch(/service.role|service_role|secret_key/i);
  });
 });
