@@ -47,12 +47,21 @@ describe('Curated Palace fandom media taxonomy',()=>{
   expect(picker).toContain('getPalaceFandomDirectory()');
   expect(picker).toContain('type="button"');
  });
- it('never loads per-work metadata or manuscript bodies into the directory',()=>{
-  const data=read('src/palaceData.js'),snippet=data.slice(data.indexOf('export async function getPalaceFandomDirectory'),data.indexOf('export async function getTagConstellation'));
-  expect(snippet).toContain("from('tags')");
-  expect(snippet).toContain("from('fandom_directory')");
-  expect(snippet).toContain("from('work_tags')");
-  expect(snippet).toContain("eq('publication_status','published')");
-  expect(snippet).not.toContain('body_html');
+ it('keeps the fandom directory metadata-only and verifies public work pages separately',()=>{
+  const data=read('src/palaceData.js');
+  const directory=data.slice(data.indexOf('export async function getPalaceFandomDirectory'),
+   data.indexOf('export async function getStoriesForFandomsPage'));
+  const storyPages=data.slice(data.indexOf('export async function getStoriesForFandomsPage'),
+   data.indexOf('export async function getTagConstellation'));
+  expect(directory).toContain("from('tags')");
+  expect(directory).toContain("from('fandom_directory')");
+  expect(directory).not.toContain("from('works')");
+  expect(directory).not.toContain("from('work_tags')");
+  expect(storyPages).toContain('paginatePublicFandomStories');
+  expect(storyPages).toContain('searchPublishedArchive(filters)');
+  expect(storyPages).toContain("from('works')");
+  expect(storyPages).toContain("eq('publication_status','published')");
+  expect(storyPages).toContain("eq('visibility','public')");
+  expect(storyPages).not.toMatch(/body_html|chapter_body|manuscript_text/);
  });
 });
