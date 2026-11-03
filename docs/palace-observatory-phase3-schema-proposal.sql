@@ -53,7 +53,7 @@ CREATE TABLE public.observatory_evidence (
   file_path text NOT NULL UNIQUE CHECK (length(file_path)<=240),
   CONSTRAINT observatory_evidence_folder_matches_issue CHECK (split_part(file_path,'/',1)=issue_id::text),
   CONSTRAINT observatory_evidence_filename_is_image CHECK
-    (file_path ~* '^[0-9a-f-]{36}/[0-9a-f-]{36}\\.(png|jpg|webp)$'),
+    (file_path ~* '^[0-9a-f-]{36}/[0-9a-f-]{36}\.(png|jpg|webp)$'),
   file_name text NOT NULL CHECK (length(file_name) BETWEEN 1 AND 160),
   file_size integer NOT NULL CHECK (file_size BETWEEN 1 AND 6291456),
   mime_type text NOT NULL CHECK (mime_type IN ('image/png','image/jpeg','image/webp')),
@@ -205,7 +205,7 @@ CREATE POLICY observatory_owner_upload_screenshots ON storage.objects
  FOR INSERT TO authenticated WITH CHECK (
   bucket_id='palace-observatory-evidence'
   AND private.has_platform_role(ARRAY['owner']::text[])
-  AND name ~* '^[0-9a-f-]{36}/[0-9a-f-]{36}\\.(png|jpg|webp)$'
+  AND name ~* '^[0-9a-f-]{36}/[0-9a-f-]{36}\.(png|jpg|webp)$'
   AND EXISTS (SELECT 1 FROM public.observatory_issues issue
    WHERE issue.id::text=split_part(name,'/',1))
  );
