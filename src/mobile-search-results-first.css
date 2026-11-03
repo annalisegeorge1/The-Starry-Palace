@@ -149,3 +149,55 @@
    padding:7px 8px!important;
  }
 }
+
+/* Tester feedback: make the all-room count auditable on a small screen. */
+.palace-search-type-breakdown{
+ display:flex;flex-wrap:wrap;gap:7px;margin:0 0 8px;
+}
+.palace-search-type-breakdown button{
+ display:inline-flex;align-items:center;gap:6px;min-height:40px;
+ padding:7px 11px;border-radius:10px;border:1px solid rgba(170,150,227,.4);
+ background:rgba(110,82,171,.18);color:var(--ui-text,#f4efff);
+ font:600 .77rem/1.35 system-ui,sans-serif;cursor:pointer;
+}
+.palace-search-type-breakdown button strong{font-variant-numeric:tabular-nums;font-weight:800;}
+.palace-search-visibility-note{margin:1px 0 12px;color:var(--ui-muted,#d5cce7);font:500 .73rem/1.5 system-ui,sans-serif;}
+.palace-shell.daylight .palace-search-type-breakdown button{background:#eee8f9;border-color:#c3b2dd;color:#43365c;}
+.palace-shell.daylight .palace-search-visibility-note{color:#5f5274;}
+.palace-search-type-breakdown button:focus-visible{outline:2px solid var(--ui-accent,#cdb2fa);outline-offset:3px;}
+@media(max-width:760px){
+ .palace-shell.full-palace-shell .legacy-search-page .palace-search-wrap{
+  min-width:0;max-width:100%;
+ }
+ /* Suggestions should appear BELOW the field rather than floating over the
+    input, result counts or iPhone virtual keyboard. */
+ .palace-shell.full-palace-shell .legacy-search-page .palace-search-suggest{
+  position:relative!important;inset:auto!important;
+  display:block!important;z-index:2!important;
+  box-sizing:border-box!important;width:100%!important;
+  max-width:100%!important;max-height:min(32dvh,260px)!important;
+  overflow-y:auto!important;overscroll-behavior:contain;
+  margin:4px 0 9px!important;padding:10px 12px!important;
+  border-radius:13px!important;
+  background:#191a37!important;border:1px solid rgba(188,168,239,.48)!important;
+  box-shadow:0 8px 22px rgba(5,7,22,.18)!important;
+ }
+ .palace-shell.full-palace-shell.daylight .legacy-search-page .palace-search-suggest{
+  background:#f7f4fc!important;border-color:#bda7d8!important;
+ }
+ .palace-shell.full-palace-shell .legacy-search-page .search-suggest-row{
+  min-width:0;max-width:100%;margin-top:8px;
+ }
+ .palace-shell.full-palace-shell .legacy-search-page .search-suggest-row>div{
+  display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:5px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-search-page .palace-search-suggest :is(button,a){
+  min-width:0;max-width:100%;min-height:40px;overflow-wrap:anywhere;
+ }
+ .palace-shell.full-palace-shell .legacy-search-page .palace-search-type-breakdown{
+  gap:6px;margin:2px 0 8px;
+ }
+ .palace-shell.full-palace-shell .legacy-search-page .palace-search-type-breakdown button{
+  min-height:42px;padding:7px 9px;
+ }
+}
