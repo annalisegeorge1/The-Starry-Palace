@@ -11,8 +11,9 @@ describe('Palace appearance preferences',()=>{
   expect(normalizePalaceTheme('daylight')).toBe('daylight');
   expect(normalizePalaceTheme('unknown')).toBe('nightfall');
   expect(PALACE_THEMES).toHaveLength(3);
+  expect(PALACE_THEMES.find(theme=>theme.id==='daylight')?.label).toBe('Daybreak');
  });
- it('lets a reader select near-black Midnight separately from Nightfall and Daylight',()=>{
+ it('lets a reader select near-black Midnight separately from Nightfall and Daybreak',()=>{
   const onChange=vi.fn();
   const {rerender}=render(<PalaceThemePicker value="nightfall" onChange={onChange}/>);
   expect(screen.getByRole('button',{name:'Nightfall theme'}).getAttribute('aria-pressed')).toBe('true');
@@ -21,7 +22,7 @@ describe('Palace appearance preferences',()=>{
   rerender(<PalaceThemePicker value="midnight" onChange={onChange}/>);
   expect(screen.getByRole('button',{name:'Midnight theme'}).getAttribute('aria-pressed')).toBe('true');
   expect(screen.getByRole('button',{name:'Nightfall theme'}).getAttribute('aria-pressed')).toBe('false');
-  fireEvent.click(screen.getByRole('button',{name:'Daylight theme'}));
+  fireEvent.click(screen.getByRole('button',{name:'Daybreak theme'}));
   expect(onChange).toHaveBeenLastCalledWith('daylight');
  });
  it('shows all three choices in compact mobile More mode',()=>{
