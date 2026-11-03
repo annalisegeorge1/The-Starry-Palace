@@ -18,6 +18,11 @@ export const OBSERVATORY_TRANSITIONS=Object.freeze({
 });
 const clean=(value,limit=1200)=>String(value??'').trim().slice(0,limit);
 const validHttps=value=>!value||/^https:\/\//i.test(value);
+// Metadata checks and unfinished probes are candidates, not firsthand reports.
+export function observatoryIsUnverifiedObservation(value){
+ const v=clean(value,1800).toLowerCase();
+ return !v||/^(not independently tested|not yet checked|not yet verified|unknown|unverified|pending manual check)(?:[\s.:—-]|$)/.test(v);
+}
 export function observatoryCanTransition(from,to){
  return Boolean(OBSERVATORY_TRANSITIONS[from]?.includes(to));
 }
@@ -31,7 +36,8 @@ export function observatoryValidateIssue(draft){
  const errors=[];
  if(title.length<3)errors.push('Give the issue a title of at least 3 characters.');
  if(!expected)errors.push('Describe what should happen.');
- if(!observed)errors.push('Describe what actually happened.');
+ if(observatoryIsUnverifiedObservation(observed))
+  errors.push('Record a real observation before saving this candidate as an issue. Do not use an unverified audit placeholder.');
  if(!surface)errors.push('Choose or name the affected page or section.');
  if(!validHttps(sourceUrl))errors.push('Source URLs must use HTTPS.');
  if(!OBSERVATORY_SEVERITIES.includes(draft?.severity))errors.push('Choose a supported severity.');
@@ -58,7 +64,7 @@ export function observatoryFindingDraft(candidate={}){
   title:issueTitle,
   work_title:clean(candidate.workTitle||candidate.title,160),
   expected:clean(candidate.expect||candidate.expected,1800),
-  observed:clean(candidate.observed,1800),
+  observed:observatoryIsUnverifiedObservation(candidate.observed)?'':clean(candidate.observed,1800),
   steps:clean(candidate.detail,2400),
   surface:clean(candidate.surface||'Fanfiction',100),
   severity:OBSERVATORY_SEVERITIES.includes(candidate.severity)?candidate.severity:'Medium',
