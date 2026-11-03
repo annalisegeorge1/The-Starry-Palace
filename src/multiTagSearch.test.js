@@ -1,5 +1,5 @@
 import {describe,it,expect,vi} from 'vitest';
-import {splitTagQueries,matchesTagQueries,exactTagQueryMatches,searchSeveralTags} from './multiTagSearch';
+import {splitTagQueries,matchesTagQueries,exactTagQueryMatches,searchSeveralTags,isMultiTagPhrase,resolveMultiTagPhrase} from './multiTagSearch';
 
 describe('multiple tag search queries',()=>{
  it('splits commas, semicolons and new lines while keeping pairing names and deduplicating',()=>{
@@ -26,4 +26,23 @@ describe('multiple tag search queries',()=>{
  it('limits the number of searched tags to avoid unbounded requests',()=>{
   expect(splitTagQueries(Array.from({length:12},(_,i)=>'tag '+i).join(', '))).toHaveLength(8);
  });
+});
+
+it('recognizes multi-tag searches but preserves ordinary single-tag text searches',()=>{
+ expect(isMultiTagPhrase('Michonne, Richonne')).toBe(true);
+ expect(isMultiTagPhrase('Richonne; children')).toBe(true);
+ expect(isMultiTagPhrase('Richonne')).toBe(false);
+ expect(isMultiTagPhrase('Richonne,')).toBe(false);
+});
+it('translates complete multi-tag lists into exact tag IDs without partial assumptions',()=>{
+ const tags=[
+  {id:'a',name:'Richonne',status:'community'},
+  {id:'b',name:'Michonne',status:'community'},
+  {id:'c',name:'Children',status:'community'},
+  {id:'x',name:'Private unverified',status:'pending'}
+ ];
+ expect(resolveMultiTagPhrase('Michonne, Richonne',tags).matches.map(x=>x.id)).toEqual(['b','a']);
+ expect(resolveMultiTagPhrase('Richonne, Children',tags).complete).toBe(true);
+ expect(resolveMultiTagPhrase('Richonne, unlisted',tags).complete).toBe(false);
+ expect(resolveMultiTagPhrase('Richonne, Private unverified',tags).unresolved).toEqual(['private unverified']);
 });
