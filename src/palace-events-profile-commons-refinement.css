@@ -1,0 +1,248 @@
+/* Palace design system: Events, member shelves and Commons.
+   One-mobile-list rhythm; decorative art, calendar dates and controls stay intact.
+   Scoped to each room so no unrelated writing or reader pages are altered. */
+
+@media (max-width:760px) {
+ /* EVENTS: find the event first, interact second. No nested event-card walls. */
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .events-pulse {
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:7px!important;margin:7px auto 12px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .events-pulse>span {
+  min-height:59px!important;padding:8px 6px!important;gap:2px!important;
+  border-radius:12px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .events-pulse>span strong {
+  font-size:1.16rem!important;line-height:1.12!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .events-pulse>span small {
+  font-size:.67rem!important;line-height:1.25!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-browser-tools {
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px!important;margin:10px 0!important;min-width:0!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-browser-tools>.event-search {
+  grid-column:1/-1!important;min-width:0!important;width:100%!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-browser-tools :is(input,select) {
+  box-sizing:border-box!important;min-width:0!important;width:100%!important;
+  min-height:44px!important;padding:9px 10px!important;
+  font-size:16px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-browser-count {
+  display:flex!important;align-items:center!important;flex-wrap:wrap!important;
+  gap:4px 7px!important;min-width:0!important;margin:4px 0 9px!important;
+  font-size:.75rem!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-filter-reset {
+  margin-left:auto!important;min-height:40px!important;padding:6px 10px!important;
+  font-size:.7rem!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-list {
+  display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+  gap:0!important;margin:0!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-list>article {
+  box-sizing:border-box!important;display:grid!important;
+  grid-template-columns:66px minmax(0,1fr)!important;
+  align-items:start!important;gap:5px 10px!important;
+  min-width:0!important;height:auto!important;min-height:0!important;
+  margin:0!important;padding:13px 2px!important;
+  border:0!important;border-bottom:1px solid rgba(184,165,223,.27)!important;
+  border-radius:0!important;box-shadow:none!important;background:transparent!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-list>article:last-child {
+  border-bottom:0!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-list>article>time {
+  box-sizing:border-box!important;display:flex!important;flex-direction:column!important;
+  justify-content:center!important;align-items:center!important;
+  min-width:0!important;min-height:59px!important;
+  padding:6px 3px!important;margin:0!important;
+  border:1px solid rgba(163,147,210,.3)!important;
+  border-radius:10px!important;
+  font-variant-numeric:tabular-nums;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-list>article>time strong {
+  font-size:.81rem!important;line-height:1.25!important;text-align:center;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-list>article>time span {
+  font-size:.67rem!important;line-height:1.3!important;text-align:center;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-list>article>div:nth-child(2) {
+  min-width:0!important;padding:0!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-list>article>div:nth-child(2)>h2 {
+  font-size:1rem!important;line-height:1.27!important;margin:3px 0!important;
+  overflow-wrap:anywhere!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-list>article>div:nth-child(2)>p {
+  margin:5px 0!important;font-size:.78rem!important;
+  line-height:1.5!important;overflow-wrap:anywhere!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-list>article>.event-actions {
+  display:flex!important;flex-wrap:wrap!important;align-items:center!important;
+  grid-column:1/-1!important;gap:7px!important;margin:5px 0 0!important;
+  padding:7px 0 0!important;border-top:1px solid rgba(176,164,220,.17)!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-rsvp-group {
+  display:flex!important;flex-wrap:wrap!important;gap:5px!important;
+  min-width:0!important;flex:1 1 215px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-rsvp-group>button {
+  min-height:42px!important;padding:7px 10px!important;
+  border-radius:9px!important;font-size:.72rem!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-actions>.quiet-button {
+  min-height:42px!important;margin:0!important;padding:7px 10px!important;
+  font-size:.72rem!important;
+ }
+ /* Heritage is artwork- and text-led: its illustrated cards remain intact. */
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .heritage-grid {
+  gap:10px!important;
+ }
+
+ /* PROFILES: compact manuscript and comic browsing without changing covers,
+    gallery frames, avatars, titles, earning status, or privacy controls. */
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .chamber-shelf-tools {
+  display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+  gap:7px!important;margin:10px 0 6px!important;min-width:0!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .chamber-shelf-search {
+  min-width:0!important;width:100%!important;box-sizing:border-box!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .chamber-shelf-search input {
+  box-sizing:border-box!important;width:100%!important;min-width:0!important;
+  min-height:44px!important;font-size:16px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .chamber-shelf-filters {
+  display:flex!important;flex-wrap:nowrap!important;
+  overflow-x:auto!important;overscroll-behavior-x:contain!important;
+  gap:6px!important;margin:0!important;padding:2px 1px 5px!important;
+  -webkit-overflow-scrolling:touch;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .chamber-shelf-filters>button {
+  flex:0 0 auto!important;min-height:42px!important;
+  padding:8px 12px!important;border-radius:9px!important;
+  font-size:.75rem!important;white-space:nowrap!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .chamber-shelf-count {
+  margin:6px 0 11px!important;font-size:.73rem!important;line-height:1.45!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .creator-work-grid {
+  display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+  gap:0!important;min-width:0!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .creator-work-grid>.chamber-story-card {
+  box-sizing:border-box!important;min-height:0!important;
+  margin:0!important;padding:9px 2px!important;
+  border:0!important;border-bottom:1px solid rgba(180,168,222,.26)!important;
+  border-radius:0!important;box-shadow:none!important;
+  background:transparent!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .creator-work-grid>.chamber-story-card:last-child {
+  border-bottom:0!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .creator-work-grid>.chamber-story-card.has-cover {
+  display:grid!important;grid-template-columns:67px minmax(0,1fr)!important;
+  align-items:start!important;gap:10px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .creator-work-grid>.chamber-story-card .chamber-story-content {
+  min-width:0!important;gap:3px!important;
+  padding:0!important;margin:0!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .creator-work-grid>.chamber-story-card .chamber-story-content>h2 {
+  margin:3px 0!important;font-size:.94rem!important;line-height:1.34!important;
+  overflow-wrap:anywhere!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .creator-work-grid>.chamber-story-card .chamber-story-content>p {
+  margin:4px 0 6px!important;display:-webkit-box!important;
+  -webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;
+  overflow:hidden!important;font-size:.78rem!important;line-height:1.46!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .chamber-story-content>a.chamber-story-enter {
+  align-self:flex-start!important;width:auto!important;max-width:max-content!important;
+  min-height:44px!important;padding:8px 3px!important;margin:0!important;
+  border:0!important;border-radius:0!important;background:transparent!important;
+  box-shadow:none!important;color:#dacbff!important;
+  font-size:.76rem!important;font-weight:750!important;text-decoration:underline!important;
+  text-underline-offset:3px;
+ }
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/member/"] .creator-worlds-room .chamber-story-content>a.chamber-story-enter {
+  color:#524076!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/member/"] .creator-worlds-room .creator-shelf-block>header {
+  margin-bottom:7px!important;padding-bottom:7px!important;
+ }
+ /* Profile art frames, achievements, exhibition and custom layouts intentionally untouched. */
+
+ /* COMMONS: conversation feed as a scannable discussion ledger, with the
+    expanded conversation and full composer visually protected. */
+ .palace-shell.full-palace-shell .legacy-life-page .chic-commons .commons-conversation-path {
+  margin:9px 0 12px!important;padding:10px!important;
+  border-radius:12px!important;box-shadow:none!important;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .chic-commons .commons-path-heading {
+  gap:8px!important;margin:0 0 7px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .chic-commons .commons-path-heading>span {
+  width:32px!important;height:32px!important;flex-basis:32px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .chic-commons .commons-path-heading>button {
+  min-height:44px!important;padding:8px 12px!important;border-radius:9px!important;
+  font-size:.74rem!important;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .chic-commons .commons-moment-options {
+  gap:5px!important;padding:3px 0 6px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .chic-commons .commons-moment-options>button {
+  min-height:42px!important;padding:7px 11px!important;
+  border-radius:9px!important;font-size:.72rem!important;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .chic-commons .commons-compose-fold {
+  margin:7px 0 10px!important;border-radius:12px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .chic-commons .commons-compose-fold:not([open])>summary {
+  min-height:55px!important;padding:9px 11px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .forum-ledger-thread:not(.open) {
+  margin:0!important;padding:12px 3px!important;
+  border:0!important;border-bottom:1px solid rgba(181,168,223,.24)!important;
+  border-radius:0!important;box-shadow:none!important;background:transparent!important;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .forum-ledger-thread:not(.open) .forum-thread-copy>h3 {
+  font-size:.92rem!important;line-height:1.35!important;
+  margin:3px 0!important;overflow-wrap:anywhere!important;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .forum-ledger-thread:not(.open) .forum-thread-copy>p {
+  font-size:.79rem!important;line-height:1.5!important;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .palace-discovery-heritage-jumps {
+  gap:7px!important;margin:10px 0 13px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .palace-discovery-heritage-jumps>a {
+  min-height:48px!important;padding:8px 10px!important;
+  border-radius:10px!important;box-shadow:none!important;
+  font-size:.75rem!important;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page .palace-discovery-heritage-jumps>a:nth-child(3) {
+  min-height:46px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-life-page :is(.commons-path-heading>button,.commons-moment-options>button,.chamber-shelf-filters>button,.palace-discovery-heritage-jumps>a):focus-visible {
+  outline:3px solid #a4dfff!important;outline-offset:2px!important;
+ }
+}
+@media(max-width:380px) {
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-browser-tools {
+  grid-template-columns:minmax(0,1fr)!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"] .event-browser-tools>.event-search {
+  grid-column:1!important;
+ }
+}
+@media(prefers-reduced-motion:reduce) {
+ .palace-shell.full-palace-shell .legacy-life-page :is(.commons-compose-fold,.forum-ledger-thread) {
+  transition:none!important;
+ }
+}
