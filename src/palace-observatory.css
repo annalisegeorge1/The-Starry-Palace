@@ -90,3 +90,7 @@
  .palace-observatory-inline{display:block}
  .palace-observatory-issue-tools label:first-child{flex-basis:100%}
 }
+
+.palace-observatory-evidence-preview-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
+.palace-observatory-evidence-preview-actions small{flex:1 1 185px;font-size:.76rem}
+@media(max-width:480px){.palace-observatory-evidence-preview-actions{align-items:flex-start;flex-direction:column}}
