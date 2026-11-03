@@ -184,7 +184,7 @@ export default function PalaceFandomAtlas(){
        <span className="palace-fandom-story-cover palace-rating-anchor">{story.cover_url?<img alt="" loading="lazy" src={story.cover_url}/>:<span aria-hidden="true">✦</span>}<StoryRatingBadge rating={story.rating}/></span>
        <span><strong>{story.title}</strong><small>{story.profiles?.display_name||story.profiles?.username||'Palace writer'}</small><em>{story.summary||'Read this world in the Palace.'}</em></span>
       </Link>)}</div></>:<p>{withinFandom.trim()?'No visible stories match this character, relationship or tag inside the selected fandoms. Try a shorter term or clear this search.':'No published stories are attached to this constellation yet. Be the first to write one.'}</p>}
-     <small className="palace-fandom-access-note">Stories restricted by age or visibility might not appear for every reader.</small>
+     <small className="palace-fandom-access-note">All published public works can appear here, including Mature and Explicit. Story text still follows reader age restrictions; private or members-only works retain their visibility settings.</small>
     </div>
    </>}
    <footer><Link to="/tags?category=relationship">Explore relationship tags →</Link><Link to="/tags">Open Tag Constellation for characters, relationships, tropes and exclusions →</Link><Link to="/writing">Create a fanwork →</Link></footer>
