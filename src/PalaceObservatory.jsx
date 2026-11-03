@@ -7,9 +7,10 @@ import {MODERN_FANFICTION_LINKS} from './palaceFanfictionDiscovery';
 import {readPalaceAnonymousPlacement,runPalaceGuestTagScenarios} from './palaceObservatoryGuest';
 import {makePalacePlacementChecks,makePalaceTagScenarioChecks,makePalaceFanfictionCatalogueChecks,makePalaceFanfictionExclusionCheck} from './palaceObservatoryVerificationModel';
 import {createUnifiedFanworks,filterUnifiedFanworks} from './UnifiedFanworkCatalogue';
+import PalaceObservatoryIssues from './PalaceObservatoryIssues';
 import './palace-observatory.css';
 
-const sections=['Catalogue','Findings','Verification','Release review'];
+const sections=['Catalogue','Findings','Verification','Issues','Release review'];
 const roles=['all','Member fanfiction','Original work','Archive fanfiction','Archive / classic','Original-source link'];
 const statuses=['all','published','draft','review','linked'];
 function Metric({label,value}){return <div className="palace-observatory-metric"><strong>{value}</strong><span>{label}</span></div>}
@@ -31,6 +32,7 @@ export default function PalaceObservatory(){
  const [verifying,setVerifying]=useState(false);
  const [verificationError,setVerificationError]=useState('');
  const [checkFilter,setCheckFilter]=useState('mismatch');
+ const [issueSeed,setIssueSeed]=useState(null);
 
  useEffect(()=>{
   let valid=true;
@@ -119,6 +121,7 @@ export default function PalaceObservatory(){
   </div>
   {busy&&<p role="status">Checking live catalogue metadata…</p>}
   {error&&<p role="alert" className="palace-observatory-warning">{error}</p>}
+  {active==='Issues'&&<PalaceObservatoryIssues seed={issueSeed}/>}
   {snapshot&&<><div className="palace-observatory-filters">
     {(active==='Catalogue'||active==='Findings')&&<label>Find a title, author or tag
      <input type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search loaded records"/></label>}
@@ -145,7 +148,8 @@ export default function PalaceObservatory(){
      <div className="palace-observatory-row-head"><strong>{issue.title}</strong><span>{issue.severity} · {issue.status}</span></div>
      <p>{issue.workTitle}</p><p>{issue.detail}</p>
      <p><b>Expected:</b> {issue.expected}</p>
-     <small>Observed: {issue.observed} · Status changes and screenshots are planned for Phase 3.</small>
+     <small>Observed: {issue.observed} · Finding candidates are never automatically saved as issues.</small>
+     <button type="button" onClick={()=>{setIssueSeed(issue);setActive('Issues')}}>Review as issue</button>
     </article>)}</div></>}
    {active==='Verification'&&<div className="palace-observatory-verification">
     <p className="palace-observatory-subtitle">Compare expected public records with a separate anonymous client, the actual published-reading search RPC, and the current fanfiction filter. Results do not prove browser rendering or age-gate behaviour.</p>
@@ -162,12 +166,13 @@ export default function PalaceObservatory(){
       <div className="palace-observatory-row-head"><strong>{item.title}</strong><span>{item.status} · {item.surface}</span></div>
       <p><b>Expected:</b> {item.expect}</p><p><b>Observed:</b> {item.observed}</p>
       <p>{item.detail}</p><small>{item.evidence}</small>
+      {item.status==='Mismatch'&&<button type="button" onClick={()=>{setIssueSeed({...item,workTitle:item.title,title:item.surface+' — '+item.title,observed:item.observed,expected:item.expect,severity:'High'});setActive('Issues')}}>Review as issue</button>}
      </article>)}</div>
     </>}
    </div>}
    {active==='Release review'&&<div className="palace-observatory-denied">
     <h2>Release actions are unavailable in this review build</h2>
-    <p>This phase only reads source data. Metadata editing, issue persistence, approvals and release actions are not implemented or enabled. Nothing is connected to publishing or deployment.</p>
+    <p>The Issue Register is an Owner-only proposal with database and private storage setup awaiting separate approval. Release approvals, publishing and deployment actions are not implemented. Nothing here can deploy or modify works.</p>
     <p>Public backend and code-path verification can be run from the Verification tab. Browser navigation, age-gate and mobile parity still require separate manual acceptance tests.</p>
    </div>}
   </>}
