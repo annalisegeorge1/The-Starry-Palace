@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection,fandomFacetOptions} from './fandomDirectoryModel';
+import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection,fandomFacetOptions,matchesFandomStoryQuery} from './fandomDirectoryModel';
 const input=[
  {id:'1',name:'Naruto',media_categories:['anime_manga'],aliases:['Naruto Shippuden'],subcategory:'Shōnen fantasy',franchise:'Naruto'},
  {id:'2',name:'Bridgerton',media_categories:['books_literature','tv_shows'],aliases:['Bridgerton Netflix'],usage_count:12},
@@ -41,5 +41,19 @@ describe('Fandom directory media and alias discovery',()=>{
   expect(pageFandoms([],0).items).toEqual([]);
   expect(safeFandomSelection(['1','1','missing','3'],input)).toEqual(['1','3']);
   expect(safeFandomSelection(['1','2','3','4'],input,2)).toEqual(['1','2']);
+ });
+});
+
+
+describe('Searching a pairing or character within a selected fandom',()=>{
+ it('finds Richonne through a relationship tag even when the title omits it',()=>{
+  const story={title:'New Beginnings',summary:'Rick and Michonne start again',work_tags:[{tags:{name:'Richonne',category:'relationship'}}]};
+  expect(matchesFandomStoryQuery(story,'Richonne')).toBe(true);
+  expect(matchesFandomStoryQuery(story,'Michonne')).toBe(true);
+  expect(matchesFandomStoryQuery(story,'Daryl')).toBe(false);
+ });
+ it('does not treat a relationship as a new fandom or include unrelated stories',()=>{
+  expect(matchesFandomStoryQuery({title:'Another World',work_tags:[]},'Richonne')).toBe(false);
+  expect(matchesFandomStoryQuery({title:'Another World',work_tags:[]},'')).toBe(true);
  });
 });
