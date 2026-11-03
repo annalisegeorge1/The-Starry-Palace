@@ -5,7 +5,7 @@ import {getPalaceObservatoryAccess,readPalaceObservatoryMetadata} from './palace
 import {buildPalaceObservatorySnapshot,filterPalaceObservatoryRows} from './palaceObservatoryModel';
 import {MODERN_FANFICTION_LINKS} from './palaceFanfictionDiscovery';
 import {readPalaceAnonymousPlacement,runPalaceGuestTagScenarios} from './palaceObservatoryGuest';
-import {makePalacePlacementChecks,makePalaceTagScenarioChecks,makePalaceFanfictionCatalogueChecks} from './palaceObservatoryVerificationModel';
+import {makePalacePlacementChecks,makePalaceTagScenarioChecks,makePalaceFanfictionCatalogueChecks,makePalaceFanfictionExclusionCheck} from './palaceObservatoryVerificationModel';
 import {createUnifiedFanworks,filterUnifiedFanworks} from './UnifiedFanworkCatalogue';
 import './palace-observatory.css';
 
@@ -74,7 +74,8 @@ export default function PalaceObservatory(){
    const actual=await readPalaceAnonymousPlacement();
    const base=makePalacePlacementChecks(expected,actual);
    const catalogue=makePalaceFanfictionCatalogueChecks(actual.guestWorks,createUnifiedFanworks,filterUnifiedFanworks);
-   let checks=[...base.checks,...catalogue];
+   const tagParity=makePalaceFanfictionExclusionCheck(actual.guestWorks,createUnifiedFanworks,filterUnifiedFanworks);
+   let checks=[...base.checks,...catalogue,...tagParity];
    setVerification({checks,tagStatus:'Checking sample tag scenarios…',completedAt:new Date().toISOString()});
    try{
     const scenarios=await runPalaceGuestTagScenarios(actual.guestWorks,8);
