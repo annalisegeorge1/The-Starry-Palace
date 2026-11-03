@@ -10,7 +10,7 @@ const facets=[
 ];
 it('keeps advanced categories out of regular lists',()=>{
  render(<PalaceCompactTagRefiner facets={facets} onToggle={vi.fn()}/>);
- expect(screen.getByText('Genres')).toBeTruthy();
+ expect(screen.getAllByText('Genres')).toHaveLength(2);
  expect(screen.queryByText('Tropes')).toBeNull();
  expect(screen.queryByText('Additional tags')).toBeNull();
 });
@@ -38,7 +38,7 @@ it('supports excludes and removable selections',()=>{
 it('shows five choices before expanding a long category',()=>{
  const tags=Array.from({length:10},(_,i)=>({id:'g'+i,name:'Genre '+i,category:'genre',count:10-i}));
  render(<PalaceCompactTagRefiner facets={[{category:'genre',label:'Genres',tags}]} onToggle={vi.fn()}/>);
- fireEvent.click(screen.getByText('Genres'));
+ fireEvent.click(screen.getAllByText('Genres')[0]);
  expect(screen.getByRole('checkbox',{name:'Include Genre 0'})).toBeTruthy();
  expect(screen.queryByRole('checkbox',{name:'Include Genre 8'})).toBeNull();
  fireEvent.click(screen.getByRole('button',{name:'Show all 10 genres'}));
