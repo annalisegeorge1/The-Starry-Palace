@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {createPortal} from 'react-dom';
 import {READING_SORT_OPTIONS,READING_FACET_ORDER,READING_FACET_NAMES} from './readingFacetModel';
 import PalaceRelationshipFilters from './PalaceRelationshipFilters';
+import {matchesTagQueries,exactTagQueryMatches,searchSeveralTags} from './multiTagSearch';
 
 // The quick checklist ends at Genres. All later categories remain searchable.
 const QUICK_TAG_CATEGORIES=new Set(['fandom','character','relationship','warning','genre']);
@@ -84,7 +85,7 @@ export default function ReadingFacetSidebar({
    setBusy(prev=>({...prev,[mode]:true}));
    setErrors(prev=>({...prev,[mode]:''}));
    timeouts.push(setTimeout(()=>{
-    Promise.resolve().then(()=>onSearchTags(q,'all',60)).then(rows=>{
+    Promise.resolve().then(()=>searchSeveralTags(onSearchTags,q,'all',35)).then(rows=>{
      if(alive)setDirectory(prev=>({...prev,[mode]:(rows||[]).filter(t=>t?.id&&t?.name&&['canonical','community'].includes(t.status))}));
     }).catch(()=>{
      if(alive){setDirectory(prev=>({...prev,[mode]:[]}));setErrors(prev=>({...prev,[mode]:'Tag suggestions are temporarily unavailable. Try again.'}));}
@@ -111,7 +112,7 @@ export default function ReadingFacetSidebar({
    }else{
     result[mode]=facets
       .filter(group=>q||QUICK_TAG_CATEGORIES.has(group.category))
-      .map(group=>({...group,tags:group.tags.filter(tag=>!q||tag.name.toLocaleLowerCase().includes(q))}))
+      .map(group=>({...group,tags:group.tags.filter(tag=>!q||matchesTagQueries(tag.name,q))}))
       .filter(group=>group.tags.length>0);
    }
   }
@@ -137,12 +138,15 @@ export default function ReadingFacetSidebar({
  }
  function exactTagOnEnter(event,mode){
   if(event.key!=='Enter')return;
-  const name=searches[mode].trim().toLocaleLowerCase();
-  const matches=groupsByMode[mode].flatMap(g=>g.tags).filter(tag=>tag.name.toLocaleLowerCase()===name);
-  if(matches.length!==1)return;
+  const {matches,unresolved}=exactTagQueryMatches(groupsByMode[mode].flatMap(g=>g.tags),searches[mode]);
+  if(!matches.length)return;
   event.preventDefault();
-  pick(matches[0],mode);
-  setSearches(prev=>({...prev,[mode]:''}));
+  addExactMatches(mode,matches);
+  if(!unresolved.length)setSearches(prev=>({...prev,[mode]:''}));
+ }
+ function addExactMatches(mode,tags){
+  const selected=mode==='include'?included:excluded;
+  for(const tag of tags)if(!selected.includes(String(tag.id)))pick(tag,mode);
  }
  function renderTagCheckbox(tag,mode){
   const selected=mode==='include'?included:excluded;
@@ -166,12 +170,14 @@ export default function ReadingFacetSidebar({
   // Search results are individual tags, never a second list of category accordions.
   // Deduplicate exact tag IDs if a directory suggestion appears in more than one group.
   const matchingTags=q?[...new Map(groupsByMode[mode].flatMap(group=>group.tags)
-   .filter(tag=>tag.name.toLocaleLowerCase().includes(q))
+   .filter(tag=>matchesTagQueries(tag.name,q))
    .map(tag=>[String(tag.id),tag])).values()]
    .sort((a,b)=>{
     const rank=tag=>tag.name.toLocaleLowerCase()===q?0:tag.name.toLocaleLowerCase().startsWith(q)?1:2;
     return rank(a)-rank(b)||a.name.localeCompare(b.name);
    }):[];
+  const exactMatches=q?exactTagQueryMatches(matchingTags,searches[mode]):{matches:[],unresolved:[]};
+  const exactToAdd=exactMatches.matches.filter(tag=>!selected.includes(String(tag.id)));
   const savedHiddenTags=!q?selected.map(id=>{
    const tag=availableTags.get(String(id));
    return {id:String(id),name:selectedTagNames[String(id)]||tag?.name||'Selected tag',
@@ -188,8 +194,8 @@ export default function ReadingFacetSidebar({
      aria-label={'Other tags to '+mode} value={searches[mode]}
      onChange={e=>{setSearches(prev=>({...prev,[mode]:e.target.value}));}}
      onKeyDown={e=>exactTagOnEnter(e,mode)}
-     placeholder={mode==='include'?'Search fandoms, characters, relationships, tropes…':'Search tags to exclude…'}/>
-    <small className="reading-facet-search-caption">{q?'Select an individual matching tag below.':'Browse common categories below, or search for any tag, including tropes and additional tags.'}</small>
+     placeholder={mode==='include'?'Richonne, Slow Burn, Found Family…':'Violence, spoilers, other tags…'}/>
+    <small className="reading-facet-search-caption">{q?'Select several tags below, or add unambiguous exact names together.':'Enter several tag names separated by commas or semicolons. Included tags must all match; any excluded tag removes a work.'}</small>
    </div>
    {busy[mode]&&<p className="reading-facet-hint" role="status">Finding matching tags…</p>}
    {errors[mode]&&<p className="reading-facet-hint" role="alert">{errors[mode]}</p>}
@@ -203,6 +209,8 @@ export default function ReadingFacetSidebar({
    <div className="reading-facet-groups">
     {q?<div className="reading-facet-direct-matches" role="group" aria-label={(mode==='include'?'Include':'Exclude')+' matching tags'}>
      <p className="reading-facet-match-count" role="status">{busy[mode]?'Searching…':matchingTags.length+' matching '+(matchingTags.length===1?'tag':'tags')}</p>
+     {exactToAdd.length>0&&<button type="button" className="reading-facet-expand" onClick={()=>addExactMatches(mode,exactToAdd)}>Add {exactToAdd.length} exact {exactToAdd.length===1?'tag':'tags'} to {mode}</button>}
+     {!busy[mode]&&exactMatches.unresolved.length>0&&<small className="reading-facet-search-caption">Choose suggestions for names without an exact match: {exactMatches.unresolved.join(', ')}</small>}
      <div className="reading-facet-direct-list">{matchingTags.map(tag=>renderTagCheckbox(tag,mode))}</div>
      {!busy[mode]&&matchingTags.length===0&&<p className="reading-facet-none">No matching tags. Try a different name.</p>}
     </div>:groupsByMode[mode].map(group=>{
