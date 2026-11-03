@@ -141,6 +141,7 @@ import './palace-events-profile-commons-refinement.css';
 import './palace-mobile-drawer-compact.css';
 import './palace-midnight-theme.css';
 import './member-page-skins.css';
+import './reader-endflow-accessibility.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
