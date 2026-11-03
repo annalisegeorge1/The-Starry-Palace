@@ -10,6 +10,7 @@ on:
       - 'src/PalaceObservatoryIssues.jsx'
       - 'src/UnifiedFanworkCatalogue.jsx'
       - 'src/PalaceFandomAtlas.jsx'
+      - 'src/fandomPublishedPages.js'
       - 'src/palaceData.js'
       - 'src/hostedReadingWork.js'
       - 'tests/fanfiction-reading-first.test.jsx'
@@ -17,6 +18,7 @@ on:
       - 'src/unified-fanwork-catalogue.css'
       - 'tests/unified-fanwork-catalogue.test.jsx'
       - 'tests/fandom-fanfiction-discovery.test.js'
+      - 'tests/fandom-published-pages.test.js'
       - 'docs/palace-observatory-phase3-schema-proposal.sql'
       - 'src/palaceObservatory*.js'
       - 'src/palace-observatory.css'
@@ -40,6 +42,6 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
       - name: Run isolated Observatory regression tests
-        run: npx vitest run tests/palace-observatory-model.test.js tests/palace-observatory-verification.test.js tests/palace-observatory-issues.test.js tests/palace-observatory-security.test.js tests/palace-observatory-acceptance.test.js tests/palace-observatory-data-safety.test.js tests/unified-fanwork-catalogue.test.jsx tests/fandom-fanfiction-discovery.test.js tests/reading-archive-hosted-fanworks.test.js tests/fanfiction-reading-first.test.jsx
+        run: npx vitest run tests/palace-observatory-model.test.js tests/palace-observatory-verification.test.js tests/palace-observatory-issues.test.js tests/palace-observatory-security.test.js tests/palace-observatory-acceptance.test.js tests/palace-observatory-data-safety.test.js tests/unified-fanwork-catalogue.test.jsx tests/fandom-fanfiction-discovery.test.js tests/reading-archive-hosted-fanworks.test.js tests/fanfiction-reading-first.test.jsx tests/fandom-published-pages.test.js
       - name: Compile the complete website without deploying
         run: npm run build
