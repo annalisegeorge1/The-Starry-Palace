@@ -218,7 +218,7 @@ export default function PalaceObservatoryIssues({seed=null}){
      <small>Changing an issue status never merges, publishes, imports, or deploys a website update.</small>
     </div>
     <div className="palace-observatory-screenshots"><h4>Private screenshots</h4>
-     <p>Attach only images you are permitted to retain. Crop or redact personal information before uploading. No AI image processing is used.</p>
+     <p>Attach only images you are permitted to retain. Crop or redact personal information before uploading. Screenshots are stored privately and are not analyzed by an image-processing service.</p>
      <input key={fileKey} type="file" aria-label="Choose a private screenshot" accept="image/png,image/jpeg,image/webp"
       onChange={e=>setFile(e.target.files?.[0]||null)}/>
      <button type="button" disabled={!file||busy} onClick={upload}>Save screenshot privately</button>
