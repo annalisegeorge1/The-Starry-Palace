@@ -25,6 +25,7 @@ import {WriterAward} from './PaintedPalaceArt';
 import ManuscriptProgressDashboard from './ManuscriptProgressDashboard';
 import WriterChapterPreview from './WriterChapterPreview';
 import WriterDocumentImporter from './WriterDocumentImporter';
+import './writer-document-import.css';
 import WriterReleaseInfo from './WriterReleaseInfo';
 import{getManuscriptFolders,editManuscriptFolder,fileManuscriptChapter}from'./manuscriptFoldersData';
 import './manuscript-organiser.css';
