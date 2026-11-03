@@ -196,7 +196,7 @@ export default function PalaceObservatoryIssues({seed=null}){
     <button type="button" onClick={()=>setOpenForm(false)}>Cancel</button></div>
   </form>}
   <div className="palace-observatory-issue-tools">
-   <label>Search issues <input type="search" value={search} onChange={e=>setSearch(e.target.value)}
+   <label>Search loaded issues <input type="search" value={search} onChange={e=>setSearch(e.target.value)}
     placeholder="Title, work, section, evidence…"/></label>
    <label>Status <select value={statusFilter} onChange={e=>setStatusFilter(e.target.value)}>
     <option value="all">All statuses</option>
