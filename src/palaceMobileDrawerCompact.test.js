@@ -16,7 +16,7 @@ describe('Mobile navigation drawer simplification',()=>{
   expect(source).toContain('to="/letters"');
   expect(source).toContain('to="/chat"');
   expect(source).toContain("label:'Events & Heritage'");
-  expect(source).toContain('className="sidebar-theme" aria-pressed={daylight}');
+  expect(source).toContain('<PalaceThemePicker value={palaceTheme} onChange={setPalaceTheme}/>');
  });
  it('uses a thin banner and compact scannable row sizing only at mobile widths',()=>{
   expect(styles).toContain('@media(max-width:980px)');

@@ -1,0 +1,253 @@
+/* The Starry Palace — Midnight
+ * A third, near-black appearance. Nightfall and Daylight retain their own
+ * palettes. Preserve covers, manuscripts, avatar decorations and artwork.
+ */
+
+/* Shared three-way appearance picker, including the mobile drawer and More. */
+.palace-shell.full-palace-shell .palace-theme-picker {
+ min-width:0;display:grid;gap:6px;
+ color:var(--ui-text,#f4f0ff);
+}
+.palace-shell.full-palace-shell #palace-sidebar .sidebar-foot.full-foot>.palace-theme-picker {
+ grid-column:1/-1!important;
+ margin:2px 0 0!important;padding:3px 0!important;
+}
+.palace-shell.full-palace-shell .palace-theme-caption {
+ display:block;color:var(--ui-muted,#c9c4db);
+ font:750 .66rem/1.3 system-ui,sans-serif;
+ letter-spacing:.09em;text-transform:uppercase;
+}
+.palace-shell.full-palace-shell .palace-theme-options {
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:6px;min-width:0;
+}
+.palace-shell.full-palace-shell .palace-theme-option {
+ box-sizing:border-box;display:flex;align-items:center;justify-content:center;
+ flex-wrap:nowrap;min-width:0;min-height:44px;gap:5px;
+ padding:6px 5px;border-radius:10px;
+ border:1px solid rgba(185,164,232,.3);
+ background:rgba(106,94,166,.12);box-shadow:none;
+ color:var(--ui-muted,#cfc9e3);
+ font:680 .69rem/1.3 system-ui,sans-serif;
+ cursor:pointer;text-align:center;
+}
+.palace-shell.full-palace-shell .palace-theme-option[aria-pressed="true"]{
+ border-color:#b6a0ee;
+ background:rgba(130,111,191,.26);
+ color:#fff;box-shadow:inset 0 -2px 0 #b49bf7;
+}
+.palace-shell.full-palace-shell .palace-theme-swatch {
+ display:grid;place-items:center;flex:0 0 19px;
+ width:19px;height:19px;border:1px solid rgba(240,224,255,.28);
+ border-radius:50%;background:#243052;
+ color:#e8e0ff;font:700 .85rem/1 Georgia,serif;
+}
+.palace-shell.full-palace-shell .theme-midnight .palace-theme-swatch{
+ background:#070709;color:#e8e8f1;border-color:#666371;
+}
+.palace-shell.full-palace-shell .theme-daylight .palace-theme-swatch{
+ background:#eae4f6;color:#68518f;border-color:#afa1ca;
+}
+.palace-shell.full-palace-shell.daylight .palace-theme-option{
+ color:#503d68;background:#efe8f8;border-color:#c6b4df;
+}
+.palace-shell.full-palace-shell.daylight .palace-theme-option[aria-pressed="true"]{
+ color:#332442;background:#ddd2ed;border-color:#8465b4;
+ box-shadow:inset 0 -2px 0 #7652ab;
+}
+.palace-shell.full-palace-shell .palace-theme-option:focus-visible{
+ outline:3px solid #a4e1ff;outline-offset:2px;
+}
+.palace-shell.full-palace-shell .mobile-more-sheet>footer{
+ display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+ gap:8px!important;align-items:stretch!important;
+}
+.palace-shell.full-palace-shell .mobile-more-sheet>footer .palace-theme-picker {
+ width:100%;min-width:0;
+}
+.palace-shell.full-palace-shell .mobile-more-sheet>footer .palace-theme-option{
+ min-height:42px;
+}
+.palace-shell.full-palace-shell .mobile-more-sheet>footer>button{
+ min-height:44px;
+}
+
+/* Override the global root as well, avoiding blue gaps around the shell. */
+html[data-palace-theme="midnight"] {
+ color-scheme:dark;
+ --night:#050506;--room:#101014;--room2:#17171d;
+ --ink:#f3f1f8;--muted:#bdb9c9;--silver:#d8d1e8;
+ --line:#35333d;--soft:#18171e;
+ background:#050506!important;
+}
+html[data-palace-theme="midnight"] :is(body,#root){
+ background:#050506!important;color:#f3f1f8;
+}
+html[data-palace-theme="midnight"] body{
+ background-image:linear-gradient(180deg,#050506,#08080b)!important;
+}
+html[data-palace-theme="midnight"] body::before {
+ opacity:.025!important;
+}
+.palace-shell.full-palace-shell.midnight{
+ --palace-midnight-core:#050506;
+ --palace-bg:#050506;--palace-bg-deep:#08080b;
+ --palace-panel:#111115;--palace-panel-raised:#1b1a21;
+ --palace-panel-soft:rgba(22,22,29,.94);
+ --palace-text:#f3f1f8;
+ --ui-surface:#111116;--ui-raised:#19191f;
+ --ui-line:#373540;--ui-text:#f3f1fa;
+ --ui-muted:#c0bacd;--ui-accent:#bea5fa;
+ --ui-selected:linear-gradient(100deg,#27212f,#1c1c24);
+ --lustre-hero:linear-gradient(120deg,#17141d,#111116 58%,#14151b);
+ --lustre-card:linear-gradient(135deg,#1b1922,#141419 75%,#17171e);
+ --lustre-soft:linear-gradient(130deg,#17161d,#121217);
+ --lustre-tab:linear-gradient(120deg,#201c29,#17171f);
+ --lustre-tab-idle:linear-gradient(132deg,#1c1b23,#17171e);
+ --lustre-border:rgba(168,157,189,.29);
+ --full-line:rgba(190,178,210,.25);
+ --room:#101014;--room2:#17171d;--ink:#f3f1f8;
+ --muted:#bdb9c9;--line:#35333d;--soft:#18171e;
+ background:#050506!important;color:#f3f1f8;
+}
+.palace-shell.full-palace-shell.midnight :is(.full-stage,.palace-stage){
+ background:linear-gradient(145deg,#060607 0%,#09090b 52%,#050506 100%)!important;
+ color:#f3f1f8!important;
+}
+.palace-shell.full-palace-shell.midnight :is(.full-stage,.palace-stage)::before,
+.palace-shell.full-palace-shell.midnight :is(.full-stage,.palace-stage)::after{
+ opacity:0!important;animation:none!important;
+}
+.palace-shell.full-palace-shell.midnight .full-sidebar{
+ background:linear-gradient(165deg,#0f0e13,#09090c 72%,#080809)!important;
+ color:#f1ecfa!important;
+ border-color:#292731!important;
+}
+.palace-shell.full-palace-shell.midnight .full-stage>header.topbar.full-topbar,
+.palace-shell.full-palace-shell.midnight .full-topbar{
+ background:#0d0d10!important;background-image:none!important;
+ border-bottom-color:#33303b!important;
+ box-shadow:0 6px 17px rgba(0,0,0,.43)!important;
+}
+.palace-shell.full-palace-shell.midnight .full-stage>header.topbar.full-topbar::before{
+ background:#0d0d10!important;background-image:none!important;
+}
+.palace-shell.full-palace-shell.midnight :is(.palace-footer,.palace-passage){
+ background:#0f0f13!important;background-image:none!important;
+ border-color:#33313c!important;
+}
+.palace-shell.full-palace-shell.midnight .mobile-palace-dock{
+ background:#0d0d10!important;background-image:none!important;
+ border-color:#37343f!important;box-shadow:0 -8px 23px rgba(0,0,0,.5)!important;
+}
+.palace-shell.full-palace-shell.midnight :is(.mobile-more-sheet,.palace-command){
+ background:#121216!important;background-image:none!important;
+ border-color:#403b4b!important;color:#f4effb!important;
+}
+.palace-shell.full-palace-shell.midnight .palace-cover-live.restored-cover{
+ border-color:#383340!important;
+}
+/* The member's original animated cover stays bright and unfiltered. */
+.palace-shell.full-palace-shell.midnight .identity-card-live{
+ background:#19171f!important;background-image:none!important;
+ border-color:#403847!important;color:#f4effb!important;
+}
+.palace-shell.full-palace-shell.midnight #palace-sidebar .full-nav-room>a.active{
+ background:#25202d!important;background-image:none!important;
+ border-color:#4b405e!important;box-shadow:inset 3px 0 #aa8cea!important;
+ color:#f4effb!important;
+}
+.palace-shell.full-palace-shell.midnight #palace-sidebar .full-subnav>a.active{
+ background:#25202e!important;border-left-color:#b09af3!important;
+ color:#f9f6ff!important;
+}
+.palace-shell.full-palace-shell.midnight #palace-sidebar .sidebar-foot.full-foot>a,
+.palace-shell.full-palace-shell.midnight #palace-sidebar .palace-theme-option{
+ background:#19171f!important;
+ border-color:#403a4b!important;
+ color:#e3daef!important;
+}
+.palace-shell.full-palace-shell.midnight #palace-sidebar .palace-theme-option[aria-pressed="true"]{
+ background:#302837!important;border-color:#a78dde!important;
+ color:#fff!important;
+}
+.palace-shell.full-palace-shell.midnight #palace-sidebar .full-subnav>small{
+ color:#c6bdd4!important;
+}
+.palace-shell.full-palace-shell.midnight #palace-sidebar .nav-section-label{
+ color:#c3bccf!important;
+}
+/* Flat glass becomes dark charcoal; decorative illustrations remain untouched. */
+.palace-shell.full-palace-shell.midnight :is(
+ .room-card,.command-card,.legacy-reading-page .story-row,
+ .legacy-reading-page .reading-facet-sidebar,
+ .palace-month-calendar,.palace-search-main,
+ .legacy-library-page .library-overview-section,
+ .legacy-life-page .forum-ledger-thread,
+ .palace-governance .governance-entry-grid>button,
+ .chic-commons .chic-timeline,.chic-events-head
+){
+ background:#141319!important;background-image:none!important;
+ border-color:#393440!important;
+ color:#f2eff8!important;
+}
+.palace-shell.full-palace-shell.midnight :is(
+ .room-card,.command-card,.story-row,.palace-month-calendar
+) :is(p,small){
+ color:#c8c2d0;
+}
+.palace-shell.full-palace-shell.midnight :is(
+ .reading-facet-check-row,.palace-compact-tag-choice,
+ .chamber-shelf-filters button,.chic-events-tabs button
+){
+ color:#ede9f5!important;
+}
+.palace-shell.full-palace-shell.midnight :is(
+ input,textarea,select
+):not([type=checkbox]):not([type=radio]){
+ background-color:#1b1a20!important;
+ color:#f4eff9!important;
+ border-color:#45404e!important;
+}
+.palace-shell.full-palace-shell.midnight :is(input,textarea)::placeholder{
+ color:#b3abbf!important;opacity:1!important;
+}
+.palace-shell.full-palace-shell.midnight :is(
+ .reading-facet-mobile-toggle,.reading-facet-mobile-toggle.is-open,
+ .reading-facet-mode-trigger
+){
+ background:#16151b!important;background-image:none!important;
+ color:#f4effb!important;
+}
+.palace-shell.full-palace-shell.midnight .reading-facet-mobile-toggle{
+ box-shadow:0 5px 14px rgba(0,0,0,.38)!important;
+}
+html[data-palace-theme="midnight"] body>.reading-filter-mobile-result-action{
+ background:#101014!important;background-image:none!important;
+ border-color:#3b3744!important;
+}
+.palace-shell.full-palace-shell.midnight .calendar-weekdays{
+ color:#d1ccda!important;
+}
+.palace-shell.full-palace-shell.midnight .calendar-quiet-day :is(strong,p,a){
+ color:#f2eefa!important;
+}
+.palace-shell.full-palace-shell.midnight a:focus-visible,
+.palace-shell.full-palace-shell.midnight button:focus-visible,
+.palace-shell.full-palace-shell.midnight summary:focus-visible{
+ outline:3px solid #a6d8ff!important;outline-offset:2px!important;
+}
+@media(max-width:760px){
+ .palace-shell.full-palace-shell.midnight .full-stage>header.topbar.full-topbar{
+  position:sticky!important;top:0!important;
+  background:#0d0d10!important;background-image:none!important;
+ }
+ .palace-shell.full-palace-shell.midnight .full-stage>header.topbar.full-topbar::before{
+  background:#0d0d10!important;background-image:none!important;
+ }
+}
+@media(forced-colors:active){
+ .palace-shell.full-palace-shell.midnight :is(.full-stage,.full-sidebar,.room-card,.story-row){
+  background:Canvas!important;color:CanvasText!important;border-color:CanvasText!important;
+ }
+}
