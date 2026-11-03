@@ -1719,4 +1719,53 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
    "permissionLabel": "CC BY-NC-SA 2.5 · story-specific original-contribution licence; author-source link only",
    "contentNote": "Source Fiction M · English · 3 chapters · incomplete · 18+."
  }
+,
+ {
+   "id": "owlmoose-in-the-kitchen",
+   "title": "In the Kitchen",
+   "creator": "owlmoose",
+   "published": "2005",
+   "fandom": "Final Fantasy X-2",
+   "description": "Gippal visits Baralai at home, where an oversized loaf of bread becomes an unexpected conversation starter.",
+   "sourceUrl": "https://www.fanfiction.net/s/2699346/1/In-the-Kitchen",
+   "permissionUrl": "https://www.fanfiction.net/u/787904/owlmoose",
+   "permissionLabel": "CC BY-NC-SA 3.0 · author-profile licence for original contributions; linked to original author edition",
+   "contentNote": "Source Fiction T · English · 1,552 words · complete · Baralai/Gippal · post-game one-shot."
+ },
+ {
+   "id": "owlmoose-research-assistant",
+   "title": "Research Assistant",
+   "creator": "owlmoose",
+   "published": "2007",
+   "fandom": "Final Fantasy X-2",
+   "description": "A visitor at the library forces Baralai to face events from his past between the games.",
+   "sourceUrl": "https://www.fanfiction.net/s/3913344/1/Research-Assistant",
+   "permissionUrl": "https://www.fanfiction.net/u/787904/owlmoose",
+   "permissionLabel": "CC BY-NC-SA 3.0 · author-profile licence for original contributions; linked to original author edition",
+   "contentNote": "Source Fiction K+ · English · 1,159 words · complete · backstory spoilers."
+ },
+ {
+   "id": "owlmoose-painkiller",
+   "title": "Painkiller",
+   "creator": "owlmoose",
+   "published": "2005",
+   "fandom": "Final Fantasy X-2",
+   "description": "Paine receives devastating news and begins to reckon with an old relationship and grief.",
+   "sourceUrl": "https://www.fanfiction.net/s/2567779/1/Painkiller",
+   "permissionUrl": "https://www.fanfiction.net/u/787904/owlmoose",
+   "permissionLabel": "CC BY-NC-SA 3.0 · author-profile licence for original contributions; linked to original author edition",
+   "contentNote": "Source Fiction T · English · 2,571 words · complete · sequel to two related one-shots."
+ },
+ {
+   "id": "owlmoose-guardian-legacy",
+   "title": "A Guardian's Legacy",
+   "creator": "owlmoose",
+   "published": "2005",
+   "fandom": "Final Fantasy X",
+   "description": "An extended account of Auron's life, his family, and the legacy he leaves behind.",
+   "sourceUrl": "https://www.fanfiction.net/s/2362704/1/A-Guardian-s-Legacy",
+   "permissionUrl": "https://www.fanfiction.net/u/787904/owlmoose",
+   "permissionLabel": "CC BY-NC-SA 3.0 · author-profile licence for original contributions; linked to original author edition",
+   "contentNote": "Source Fiction T · English · 46 chapters · 149,142 words · complete · Auron/OC."
+ }
 ]);

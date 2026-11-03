@@ -13,6 +13,10 @@ const entry=(rating,sourceRating,tags,warnings=[],basis=rating==='not_rated'?'un
  tags:Object.entries(tags).flatMap(([category,names])=>names.map(name=>({category,name})))
 });
 export const MODERN_FANFICTION_GUIDES=Object.freeze({
+ "owlmoose-in-the-kitchen":entry("teen","FanFiction.net T",{"fandom":["Final Fantasy X-2"],"relationship":["M/M","Baralai/Gippal"],"genre":["Romance","Humour"],"trope":["One-Shot","Post-Game","Fluff"],"character":["Baralai","Gippal"]},[]),
+ "owlmoose-research-assistant":entry("general","FanFiction.net K+",{"fandom":["Final Fantasy X-2"],"relationship":["Gen"],"genre":["Drama"],"trope":["One-Shot","Character Study","Backstory"],"character":["Baralai","Nooj"],"warning":["Backstory Spoilers"]},["Backstory spoilers"]),
+ "owlmoose-painkiller":entry("teen","FanFiction.net T",{"fandom":["Final Fantasy X-2"],"relationship":["F/M","Paine/Nooj"],"genre":["Drama","Tragedy"],"trope":["One-Shot","Grief","Relationship Reflection"],"character":["Paine","Nooj","Gippal"],"warning":["Major Character Death","Grief"]},["Major character death","Grief"]),
+ "owlmoose-guardian-legacy":entry("teen","FanFiction.net T",{"fandom":["Final Fantasy X","Final Fantasy X-2"],"relationship":["F/M","Auron/Original Character"],"genre":["Drama","Romance"],"trope":["Completed Longfic","Family Legacy","Original Character","Canon Backstory"],"character":["Auron","Original Character"],"warning":["Character Death","Game Spoilers"]},["Character death","Game spoilers"]),
  "cc-owlmoose-aftermath":entry("teen","FanFiction.net T",{"fandom":["Final Fantasy X-2"],"genre":["Drama"],"trope":["War Aftermath","Completed Longfic"],"character":["Beclem","Nooj"],"warning":["War","Injury"]},["War","Injuries"]),
  "cc-owlmoose-love-lost":entry("general","FanFiction.net K+",{"fandom":["Final Fantasy X"],"relationship":["Gen"],"genre":["Friendship"],"trope":["One-Shot","Character Study"],"character":["Auron","Braska","Jecht"]},[]),
  "cc-owlmoose-separated":entry("general","FanFiction.net K+",{"fandom":["Final Fantasy X-2"],"relationship":["F/M","Baralai/Yuna"],"genre":["Angst"],"trope":["One-Shot","Unrequited Love"],"character":["Baralai","Yuna"]},[]),
