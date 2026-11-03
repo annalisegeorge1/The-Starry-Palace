@@ -21,7 +21,7 @@ describe('Palace tag archive destinations',()=>{
  it('reads only accepted public tags and uses secure full-archive searching',()=>{
   expect(data).toContain('export async function getPalaceTagById(tagId)');
   expect(data).toContain(".in('status',['canonical','community']).maybeSingle()");
-  expect(page).toContain('searchPalaceTags(term,\'all\',35)');
+  expect(page).toContain("searchSeveralTags(searchPalaceTags,term,'all',35)");
   expect(page).not.toContain('ProtectedRoute');
   expect(page).not.toContain('searchWorksByTags');
  });
