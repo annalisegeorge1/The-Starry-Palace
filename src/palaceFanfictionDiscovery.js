@@ -1586,4 +1586,137 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
    "permissionLabel": "CC BY-NC-SA 3.0 US · author-profile statement for original contributions; author-source link only",
    "contentNote": "Source Fiction K+ · Spanish · complete seven-chapter adventure · manga spoilers."
  }
+,
+ {
+   "id": "cc-owlmoose-aftermath",
+   "title": "Aftermath",
+   "creator": "owlmoose",
+   "published": "2007 · completed 2011",
+   "fandom": "Final Fantasy X-2",
+   "description": "Following Operation Mi'ihen, Beclem makes a choice as the Youth League takes shape.",
+   "sourceUrl": "https://www.fanfiction.net/s/3414525/1/Aftermath",
+   "permissionUrl": "https://www.fanfiction.net/u/787904/owlmoose",
+   "permissionLabel": "CC BY-NC-SA 3.0 · author-profile original-contribution licence; author-source link only",
+   "contentNote": "Source Fiction T · English · 6 chapters · complete · war aftermath."
+ },
+ {
+   "id": "cc-owlmoose-love-lost",
+   "title": "Love Lost",
+   "creator": "owlmoose",
+   "published": "2007",
+   "fandom": "Final Fantasy X",
+   "description": "Auron, Braska, and Jecht talk around the campfire about love and friendship.",
+   "sourceUrl": "https://www.fanfiction.net/s/3927506/1/Love-Lost",
+   "permissionUrl": "https://www.fanfiction.net/u/787904/owlmoose",
+   "permissionLabel": "CC BY-NC-SA 3.0 · author-profile original-contribution licence; author-source link only",
+   "contentNote": "Source Fiction K+ · English · 1,164 words · complete · Gen."
+ },
+ {
+   "id": "cc-owlmoose-separated",
+   "title": "Separated",
+   "creator": "owlmoose",
+   "published": "2007",
+   "fandom": "Final Fantasy X-2",
+   "description": "Baralai regains his bearings during the final battle and faces his feelings for Yuna.",
+   "sourceUrl": "https://www.fanfiction.net/s/3973539/1/Separated",
+   "permissionUrl": "https://www.fanfiction.net/u/787904/owlmoose",
+   "permissionLabel": "CC BY-NC-SA 3.0 · author-profile original-contribution licence; author-source link only",
+   "contentNote": "Source Fiction K+ · English · 901 words · complete · implied Baralai/Yuna."
+ },
+ {
+   "id": "cc-tlgnl-stray-friends",
+   "title": "Stray Friends",
+   "creator": "The Last Good Name Left",
+   "published": "2007",
+   "fandom": "CSI",
+   "description": "Sara and Greg talk about Catherine in a companion story to Stray Conversations.",
+   "sourceUrl": "https://www.fanfiction.net/s/3535884/1/Stray-Friends",
+   "permissionUrl": "https://www.fanfiction.net/u/1245678/The-Last-Good-Name-Left",
+   "permissionLabel": "CC BY-NC-SA 3.0 · author-profile original-contribution licence; author-source link only",
+   "contentNote": "Source Fiction T · English · 11,231 words · complete · Catherine/Sara · difficult abuse references."
+ },
+ {
+   "id": "cc-tlgnl-stray-conversations",
+   "title": "Stray Conversations",
+   "creator": "The Last Good Name Left",
+   "published": "2007",
+   "fandom": "CSI",
+   "description": "Catherine and Grissom talk about Sara in a companion story to Stray Friends.",
+   "sourceUrl": "https://www.fanfiction.net/s/3524840/1/Stray-Conversations",
+   "permissionUrl": "https://www.fanfiction.net/u/1245678/The-Last-Good-Name-Left",
+   "permissionLabel": "CC BY-NC-SA 3.0 · author-profile original-contribution licence; author-source link only",
+   "contentNote": "Source Fiction T · English · 10,112 words · complete · Catherine/Sara."
+ },
+ {
+   "id": "cc-tlgnl-six-easy",
+   "title": "Six Easy Steps",
+   "creator": "The Last Good Name Left",
+   "published": "2007",
+   "fandom": "Buffy the Vampire Slayer",
+   "description": "Six scenes chart changing feelings between Buffy and Faith during Graduation Day.",
+   "sourceUrl": "https://www.fanfiction.net/s/3537133/1/Six-Easy-Steps",
+   "permissionUrl": "https://www.fanfiction.net/u/1245678/The-Last-Good-Name-Left",
+   "permissionLabel": "CC BY-NC-SA 3.0 · author-profile original-contribution licence; author-source link only",
+   "contentNote": "Source Fiction T · English · 6,009 words · complete · Buffy/Faith."
+ },
+ {
+   "id": "cc-tlgnl-hair-like",
+   "title": "Hair Like That",
+   "creator": "The Last Good Name Left",
+   "published": "2007",
+   "fandom": "Stargate: Atlantis",
+   "description": "John and Teyla exchange playful remarks about another man's haircut.",
+   "sourceUrl": "https://www.fanfiction.net/s/3535617/1/Hair-Like-That",
+   "permissionUrl": "https://www.fanfiction.net/u/1245678/The-Last-Good-Name-Left",
+   "permissionLabel": "CC BY-NC-SA 3.0 · author-profile original-contribution licence; author-source link only",
+   "contentNote": "Source Fiction K+ · English · 195 words · complete · John/Teyla."
+ },
+ {
+   "id": "cc-tlgnl-empty-pocket",
+   "title": "Empty as a Pocket",
+   "creator": "The Last Good Name Left",
+   "published": "2010",
+   "fandom": "Glee",
+   "description": "Rachel always rides shotgun in Quinn's car, despite their complicated relationship.",
+   "sourceUrl": "https://www.fanfiction.net/s/6388839/1/Empty-as-a-Pocket",
+   "permissionUrl": "https://www.fanfiction.net/u/1245678/The-Last-Good-Name-Left",
+   "permissionLabel": "CC BY-NC-SA 3.0 · author-profile original-contribution licence; author-source link only",
+   "contentNote": "Source Fiction K+ · English · 992 words · complete · Quinn/Rachel."
+ },
+ {
+   "id": "cc-morganaw-circumstance",
+   "title": "A Circumstance of Tolerable Similarity",
+   "creator": "MorganAW",
+   "published": "2017",
+   "fandom": "Persuasion · North and South",
+   "description": "Anne Wentworth recognizes Margaret Hale and John Thornton's romantic misunderstandings and intervenes.",
+   "sourceUrl": "https://www.fanfiction.net/s/12713046/1/A-Circumstance-of-Tolerable-Similarity",
+   "permissionUrl": "https://www.fanfiction.net/s/12713046/1/A-Circumstance-of-Tolerable-Similarity",
+   "permissionLabel": "CC BY-SA 4.0 · story-specific original-contribution licence; author-source link only",
+   "contentNote": "Source Fiction K+ · English · 16 chapters · complete · literary crossover."
+ },
+ {
+   "id": "cc-robinwingster-war-bats",
+   "title": "War of the Bats",
+   "creator": "Robin Wingster",
+   "published": "2011 · updated 2014",
+   "fandom": "Batman",
+   "description": "Six years after Leviathan's rise, the Bat-family struggles with past betrayals and a dangerous post-apocalyptic world.",
+   "sourceUrl": "https://www.fanfiction.net/s/7520997/1/War-of-the-Bats",
+   "permissionUrl": "https://www.fanfiction.net/s/7520997/1/War-of-the-Bats",
+   "permissionLabel": "CC BY-NC-ND 3.0 · story-specific licence; author-source link only, no alterations",
+   "contentNote": "Source Fiction M · English · 30 chapters · 260k+ words · adult themes, 18+."
+ },
+ {
+   "id": "cc-zorch-maho-ranma",
+   "title": "Maho Shoujo Ranma",
+   "creator": "Michael The-Zorch Haney",
+   "published": "2006 · updated 2008",
+   "fandom": "Ranma ½ · Anime Crossovers",
+   "description": "Ranma travels into a strange world where the laws of who can wield magic have unexpected exceptions.",
+   "sourceUrl": "https://www.fanfiction.net/s/3256881/1/Maho-Shoujo-Ranma",
+   "permissionUrl": "https://www.fanfiction.net/s/3256881/1/Maho-Shoujo-Ranma",
+   "permissionLabel": "CC BY-NC-SA 2.5 · story-specific original-contribution licence; author-source link only",
+   "contentNote": "Source Fiction M · English · 3 chapters · incomplete · 18+."
+ }
 ]);
