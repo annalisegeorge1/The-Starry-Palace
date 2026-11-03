@@ -20,7 +20,8 @@ describe('Mobile navigation drawer simplification',()=>{
  });
  it('uses a thin banner and compact scannable row sizing only at mobile widths',()=>{
   expect(styles).toContain('@media(max-width:980px)');
-  expect(styles).toContain('height:43px!important');
+  expect(styles).toContain('height:94px!important;min-height:94px!important;max-height:94px!important');
+  expect(styles).toContain('object-fit:cover!important;object-position:center 45%!important');
   expect(styles).toContain('min-height:50px!important');
   expect(styles).toContain('.palace-more-subdoors>summary');
   expect(styles).toContain('border-left:3px solid #a78bfa');
