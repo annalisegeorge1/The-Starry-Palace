@@ -89,3 +89,26 @@ export function makePalaceFanfictionCatalogueChecks(guestWorks=[],buildCatalogue
    evidence:'Existing unified fanfiction catalogue filter with matching fandom'}];
  });
 }
+
+
+/**
+ * A bounded *capability check* for arbitrary tag exclusions in the unified
+ * fanfiction catalogue. The public Reading Rooms RPC handles exclusions, but
+ * other surfaces may not accept those filter inputs at all.
+ */
+export function makePalaceFanfictionExclusionCheck(guestWorks=[],buildCatalogue,filterCatalogue){
+ const candidate=guestWorks.find(w=>w.work_type==='fanwork'&&
+  (w.work_tags||[]).filter(r=>r?.tags?.id&&['canonical','community'].includes(r.tags.status)).length>=2);
+ if(!candidate)return [];
+ const tags=candidate.work_tags.map(r=>r?.tags)
+  .filter(t=>t?.id&&['canonical','community'].includes(t.status));
+ const entries=buildCatalogue(guestWorks,[]);
+ const visible=filterCatalogue(entries,{includeTags:[tags[0].id],excludeTags:[tags[1].id],includeMature:true})
+  .some(row=>row.key==='member:'+candidate.id);
+ return [{id:'catalogue:tag-exclusion-capability',title:candidate.title||'Published fanwork',
+  surface:'Unified catalogue tag exclusion',expect:'Excluded-tag match must not appear',
+  observed:visible?'Still present':'Excluded from results',
+  status:visible?'Mismatch':'Pass',
+  detail:'Code-path capability check using two actual accepted tag IDs. It does not inspect page rendering.',
+  evidence:'Unified fanfiction catalogue filtering contract'}];
+}
