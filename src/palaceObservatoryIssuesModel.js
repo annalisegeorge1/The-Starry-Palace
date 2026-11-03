@@ -74,3 +74,32 @@ export function observatoryValidateScreenshot(file){
  if(file.size<=0||file.size>6*1024*1024)return {valid:false,error:'Screenshot files must be between 1 byte and 6 MB.'};
  return {valid:true,extension:extension[file.type]};
 }
+
+/** Check decoded file signatures before sending bytes to private storage.
+ * The MIME label alone is user-controlled and cannot prove the file type.
+ * This is not a malware scanner or proof the image is safe to share.
+ */
+export function observatoryScreenshotSignature(bytes,type){
+ const b=bytes instanceof Uint8Array?bytes:new Uint8Array(bytes||[]);
+ if(type==='image/png')return b.length>=8&&
+  [137,80,78,71,13,10,26,10].every((v,i)=>b[i]===v);
+ if(type==='image/jpeg')return b.length>=3&&
+  b[0]===255&&b[1]===216&&b[2]===255;
+ if(type==='image/webp')return b.length>=12&&
+  [82,73,70,70].every((v,i)=>b[i]===v)&&
+  [87,69,66,80].every((v,i)=>b[i+8]===v);
+ return false;
+}
+export async function observatoryInspectScreenshot(file){
+ const initial=observatoryValidateScreenshot(file);
+ if(!initial.valid)return initial;
+ if(typeof file?.slice!=='function')return {valid:false,error:'Unable to inspect screenshot bytes.'};
+ try{
+  const header=new Uint8Array(await file.slice(0,12).arrayBuffer());
+  if(!observatoryScreenshotSignature(header,file.type))
+   return {valid:false,error:'The screenshot file contents do not match its stated image format.'};
+  return initial;
+ }catch{
+  return {valid:false,error:'The screenshot could not be inspected. Choose another file.'};
+ }
+}
