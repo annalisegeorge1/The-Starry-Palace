@@ -23,6 +23,8 @@ const field=(label,value,setValue,{multiline=false,required=false,max=1200,place
 export default function PalaceObservatoryIssues({seed=null}){
  const [items,setItems]=useState([]);
  const [loading,setLoading]=useState(true);
+ const [loadingMore,setLoadingMore]=useState(false);
+ const [hasMore,setHasMore]=useState(false);
  const [configured,setConfigured]=useState(false);
  const [failure,setFailure]=useState('');
  const [busy,setBusy]=useState(false);
@@ -51,9 +53,9 @@ export default function PalaceObservatoryIssues({seed=null}){
 
  useEffect(()=>{
   let active=true;setLoading(true);setFailure('');
-  listPalaceObservatoryIssues().then(result=>{
+  listPalaceObservatoryIssues({offset:0}).then(result=>{
    if(!active)return;
-   setConfigured(result.configured);setItems(result.issues);
+   setConfigured(result.configured);setItems(result.issues);setHasMore(Boolean(result.hasMore));
    if(result.configured)setSelectedId(id=>result.issues.some(r=>r.id===id)?id:null);
   }).catch(e=>{if(active)setFailure(e?.message||'Unable to load private issues.')})
    .finally(()=>{if(active)setLoading(false)});
@@ -78,6 +80,20 @@ export default function PalaceObservatoryIssues({seed=null}){
   (!search.trim()||[issue.title,issue.work_title,issue.surface,issue.expected,issue.observed]
    .some(s=>String(s||'').toLowerCase().includes(search.trim().toLowerCase())))),[items,statusFilter,search]);
 
+ async function loadMore(){
+  if(loadingMore||busy||!hasMore||!configured)return;
+  setLoadingMore(true);setFailure('');
+  try{
+   const result=await listPalaceObservatoryIssues({offset:items.length});
+   if(!result.configured)throw Error('The private issue register is no longer available.');
+   setItems(previous=>{
+    const seen=new Set(previous.map(row=>row.id));
+    return [...previous,...result.issues.filter(row=>!seen.has(row.id))];
+   });
+   setHasMore(Boolean(result.hasMore));
+  }catch(e){setFailure(e?.message||'Unable to load older review issues.')}
+  finally{setLoadingMore(false)}
+ }
  function setField(name,value){setDraft(prev=>({...prev,[name]:value}))}
  function startNew(){setEditingId(null);setOpenForm(true);setDraft(blank());setMessage('')}
  function startEdit(issue){
@@ -145,7 +161,7 @@ export default function PalaceObservatoryIssues({seed=null}){
  </div>;
  return <section className="palace-observatory-issues" aria-label="Observatory issue tracker">
   <div className="palace-observatory-issues-head"><div>
-   <h2>Private issue register</h2><p>{items.length} recorded issues · Fixed means reviewed, not deployed</p>
+   <h2>Private issue register</h2><p>{items.length} issues loaded{hasMore?' · Older issues available':''} · Fixed means reviewed, not deployed</p>
   </div><div className="palace-observatory-issues-actions">
    <button type="button" onClick={startNew}>New issue</button>
    <button type="button" onClick={()=>setRefresh(n=>n+1)} disabled={busy}>Reload</button>
@@ -195,7 +211,10 @@ export default function PalaceObservatoryIssues({seed=null}){
       <strong>{issue.title}</strong><span>{issue.severity} · {issue.status}</span>
       <small>{issue.surface} · {displayTime(issue.updated_at)}</small>
      </button></div>)}
-    {!filtered.length&&<p>No saved issues match these filters.</p>}
+    {!filtered.length&&<p>No loaded issues match these filters.</p>}
+    {hasMore&&<button type="button" onClick={loadMore} disabled={loadingMore||busy}>
+     {loadingMore?'Loading older issues…':'Load older review issues'}
+    </button>}
    </div>
    {selected&&<div className="palace-observatory-issue-detail" aria-label="Selected issue detail">
     <div className="palace-observatory-row-head"><h3>{selected.title}</h3>
