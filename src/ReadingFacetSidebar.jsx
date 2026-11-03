@@ -194,7 +194,7 @@ export default function ReadingFacetSidebar({
      aria-label={'Other tags to '+mode} value={searches[mode]}
      onChange={e=>{setSearches(prev=>({...prev,[mode]:e.target.value}));}}
      onKeyDown={e=>exactTagOnEnter(e,mode)}
-     placeholder={mode==='include'?'Richonne, Slow Burn, Found Family…':'Violence, spoilers, other tags…'}/>
+     placeholder={mode==='include'?'Search fandoms, characters, relationships, tropes…':'Search tags to exclude…'}/>
     <small className="reading-facet-search-caption">{q?'Select several tags below, or add unambiguous exact names together.':'Enter several tag names separated by commas or semicolons. Included tags must all match; any excluded tag removes a work.'}</small>
    </div>
    {busy[mode]&&<p className="reading-facet-hint" role="status">Finding matching tags…</p>}
