@@ -1,0 +1,37 @@
+# The Palace Observatory — Phase 3 review notes
+
+Status: DRAFT ONLY. No production or staging database has been changed.
+
+## Prepared
+The Issues tab offers a private Owner-only register with filters, creation and editing, proposed fixes, expected versus observed behavior, reproduction steps, device/browser details, and status history.
+
+A button on Findings or Verification prefills a review issue. It never creates or saves one automatically.
+
+The statuses are New, Investigating, Fix Proposed, Awaiting Review, Fixed, Rechecked, and Reopened. Moving to Fixed or Rechecked requires a fresh evidence note; these are administrative labels and never publish, merge or deploy code.
+
+Private screenshot uploads are designed for PNG, JPEG, or WebP images of six MiB or less. The proposed storage bucket is nonpublic, allows Owner access only, and issues time-limited signed links. Screenshot images and member manuscripts are not placed into the public repository or processed by AI.
+
+## Setup is deliberately withheld
+The proposed SQL file is docs/palace-observatory-phase3-schema-proposal.sql. It creates Owner-restricted issues, immutable event history, screenshot metadata, and private storage policies. It is deliberately NOT in a deployed migration folder, and has NOT been executed.
+
+Until schema approval, the UI displays "Issue storage pending review" rather than silently writing to a missing table. The current Supabase memberships do not assign an Owner, so the main private room remains locked too. Identity and role provisioning require a separate explicit decision.
+
+## Security and technical review
+- Existing community_reports and conversation_reports are for member moderation, not quality-assurance issues; they remain untouched.
+- Owner privileges must be enforced by RLS using private.has_platform_role and authenticated identity checks, not by mutable user metadata.
+- The private security-definer triggers append audit events. Browser code cannot edit history or delete issues.
+- Private screenshots must be cropped/redacted if they reveal personal data or manuscript text. A signed link temporarily grants file access until expiry.
+- Concurrent edits must be rejected when their updated_at values no longer match.
+- An uploaded file whose metadata insert fails can become an orphan in private storage. Investigate a safe cleanup process before enabling screenshots.
+- The schema is a proposed review artifact, not an approved migration. Validate isolated staging and RLS with anon, regular member and Owner test accounts only if explicitly authorized.
+- Do not merge/deploy/publish or modify member works automatically.
+
+## Acceptance checklist
+1. Verify account ownership separately and never assume a GitHub identity matches a Supabase user.
+2. Test anonymous and ordinary accounts cannot read issues, event logs or screenshots.
+3. Test all status transitions, note requirements, immutable history and stale edit rejection.
+4. Test private screenshot mime limits, file sizes, no upsert, and short signed URL expiry.
+5. Check the form on Android, tablet and desktop with safe-area padding and keyboard focus.
+6. Review before any schema application or live release. Preserve the existing age-13 membership minimum, rights distinctions and mature-content chapter gates.
+
+The separate PR-only verification workflow is designed to run model and issue lifecycle tests and compile the entire site without deployment. The standard full-project test workflow has independently reported failures in existing areas.
