@@ -94,3 +94,16 @@
 .palace-observatory-evidence-preview-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
 .palace-observatory-evidence-preview-actions small{flex:1 1 185px;font-size:.76rem}
 @media(max-width:480px){.palace-observatory-evidence-preview-actions{align-items:flex-start;flex-direction:column}}
+
+
+/* Compact, metadata-only comparison within the existing Catalogue tab. */
+.palace-observatory-compare-controls{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:10px 0;font-size:.82rem}
+.palace-observatory-compare-toggle{display:inline-flex;align-items:center;gap:7px;margin-top:7px;font-size:.8rem;cursor:pointer}
+.palace-observatory-compare-toggle input{width:17px;height:17px;accent-color:currentColor}
+.palace-observatory-compare{padding:12px;border:1px solid color-mix(in srgb,currentColor 22%,transparent);border-radius:12px;margin-bottom:16px;max-width:100%}
+.palace-observatory-compare summary{cursor:pointer;font-size:.87rem;font-weight:650}
+.palace-observatory-compare-scroll{overflow-x:auto;max-width:100%;margin-top:10px}
+.palace-observatory-compare table{width:100%;min-width:440px;border-collapse:collapse;font-size:.81rem;table-layout:fixed}
+.palace-observatory-compare :is(th,td){padding:9px 10px;overflow-wrap:anywhere;text-align:left;vertical-align:top;border-bottom:1px solid color-mix(in srgb,currentColor 14%,transparent)}
+.palace-observatory-compare th:first-child{width:30%}
+.palace-observatory-compare tr.different{background:color-mix(in srgb,currentColor 5%,transparent)}
