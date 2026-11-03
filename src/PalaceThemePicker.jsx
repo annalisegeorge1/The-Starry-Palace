@@ -3,7 +3,7 @@ import React from 'react';
 export const PALACE_THEMES=[
  {id:'nightfall',label:'Nightfall',description:'Deep blue and indigo',symbol:'☾'},
  {id:'midnight',label:'Midnight',description:'Near-black and charcoal',symbol:'✦'},
- {id:'daylight',label:'Daylight',description:'Soft lilac and blue',symbol:'☼'}
+ {id:'daylight',label:'Daybreak',description:'Soft lilac and blue',symbol:'☼'}
 ];
 
 /** Keep compatibility with older stored "night" preferences. */
