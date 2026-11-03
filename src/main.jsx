@@ -137,6 +137,7 @@ import './search-filter-precision.css';
 import './reading-facet-mobile-quickpass.css';
 import './palace-sophistication-pass.css';
 import './palace-events-profile-commons-refinement.css';
+import './palace-mobile-drawer-compact.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
@@ -306,7 +307,7 @@ function PalaceRoomIcon({name}) {
 
 const fullPalaceRooms=[
  {id:'palace',icon:'☾',label:'My Palace',path:'/chamber',private:true,sections:[
-  ['Home','/chamber'],['My chamber','/member'],['Notifications','/activity'],['Messages','/letters'],['Invitations','/events?tab=calendar']
+  ['Home','/chamber'],['My chamber','/member']
  ]},
  {id:'reading',icon:'◈',label:'Reading Rooms',path:'/reading',sections:[
   ['All works','/reading'],['Fanfiction','/reading?section=fanfiction'],['Advanced search','/reading?view=search'],['Fandoms','/fandoms'],['Comics','/comics'],['Lost Works','/lost-works'],['Series','/series'],['Tags room','/tags']
@@ -540,7 +541,16 @@ function FrameShell({children}){
     currentHref={currentHref} currentPath={location.pathname}
     profilePath={shellProfile?.username?'/member/'+shellProfile.username:'/chamber'}
     renderIcon={name=><PalaceRoomIcon name={name}/>} />
-   <div className="sidebar-spacer"/><div className="sidebar-foot full-foot">{session&&<><Link to="/letters">✉ <span>Palace Letters</span></Link><Link to="/activity">◌ <span>Moonlight Activity</span></Link></>}<button className="sidebar-theme" onClick={()=>setDaylight(v=>!v)}>{daylight?'☾ Nightfall':'☼ Daylight'}</button></div>
+   <div className="sidebar-spacer"/><div className="sidebar-foot full-foot">{session&&<>
+    <Link to="/letters"><span className="sidebar-foot-icon" aria-hidden="true"><PalaceRoomIcon name="letters"/></span><span>Palace Letters</span></Link>
+    <Link to="/activity"><span className="sidebar-foot-icon" aria-hidden="true"><PalaceRoomIcon name="activity"/></span><span>Moonlight Activity</span></Link>
+   </>}
+    <button type="button" className="sidebar-theme" aria-pressed={daylight} aria-label={daylight?'Switch to Nightfall':'Switch to Daylight'} onClick={()=>setDaylight(v=>!v)}>
+     <span className="sidebar-theme-icon" aria-hidden="true">{daylight?'☼':'☾'}</span>
+     <span className="sidebar-theme-copy"><strong>Daylight</strong><small>{daylight?'On · tap for Nightfall':'Off · tap to switch on'}</small></span>
+     <span className="sidebar-theme-switch" aria-hidden="true"><i/></span>
+    </button>
+   </div>
   </aside>
   <button className="nav-scrim" aria-label="Close navigation" onClick={()=>setNavOpen(false)}/>
   <div className="palace-stage full-stage">

@@ -109,3 +109,15 @@ describe('calmer room overflow without lost destinations',()=>{
   expect(screen.getByRole('link',{name:'Community history'}).getAttribute('aria-current')).toBe('page');
  });
 });
+
+
+describe('room-first mobile drawer destinations',()=>{
+ it('keeps Palace subroom links concise and preserves its working profile destination',()=>{
+  const panel=[{id:'palace',label:'My Palace',path:'/chamber',sections:[['Home','/chamber'],['My chamber','/member']]}];
+  mount({activeId:'palace',href:'/chamber',roomsToShow:panel});
+  expect(screen.getByRole('link',{name:'My chamber'}).getAttribute('href')).toBe('/member/starlight');
+  expect(screen.queryByRole('link',{name:'Notifications'})).toBeNull();
+  expect(screen.queryByRole('link',{name:'Messages'})).toBeNull();
+  expect(screen.queryByRole('link',{name:'Invitations'})).toBeNull();
+ });
+});
