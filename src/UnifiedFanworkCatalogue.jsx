@@ -163,7 +163,7 @@ export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks
   </div>
   {ordered.length===0&&<p className="palace-unified-empty">No fanworks match these choices. Try another title, rating or source.</p>}
   {visibleCount<ordered.length&&<button className="palace-unified-more" type="button" onClick={()=>setVisibleCount(n=>n+24)}>Show more fanworks ({ordered.length-shown.length} remaining)</button>}
-  <p className="palace-unified-age">Published Mature and Explicit work information may appear in search results. Ratings and content notes help readers choose; protected chapter access still follows the Palace's age and visibility rules.</p>
+  <div className="palace-unified-age"><p>Published Mature and Explicit work information may appear in search results. Ratings and content notes help readers choose; protected chapter access still follows the Palace's age and visibility rules.</p></div>
   {hasMoreHosted&&onMoreHosted&&<button className="palace-unified-more-hosted" type="button" onClick={onMoreHosted}>Load additional Palace-published works</button>}
   <p className="palace-unified-rights">Works labeled “Read on the Palace” have a published hosted edition. Author-source links open the original website and are not hosted or copied here. Fanfiction authors' reuse terms do not automatically clear the underlying franchise rights.</p>
   {!inFandomAtlas&&<p className="palace-unified-fandom-link"><Link to="/fandoms?section=fanfiction">Explore fanworks by fandom →</Link></p>}
