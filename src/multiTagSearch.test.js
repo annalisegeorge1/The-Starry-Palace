@@ -32,7 +32,8 @@ it('recognizes multi-tag searches but preserves ordinary single-tag text searche
  expect(isMultiTagPhrase('Michonne, Richonne')).toBe(true);
  expect(isMultiTagPhrase('Richonne; children')).toBe(true);
  expect(isMultiTagPhrase('Richonne')).toBe(false);
- expect(isMultiTagPhrase('Richonne,')).toBe(false);
+ expect(isMultiTagPhrase('Richonne,')).toBe(true);
+ expect(isMultiTagPhrase('Michonne, ')).toBe(true);
 });
 it('translates complete multi-tag lists into exact tag IDs without partial assumptions',()=>{
  const tags=[
@@ -43,6 +44,10 @@ it('translates complete multi-tag lists into exact tag IDs without partial assum
  ];
  expect(resolveMultiTagPhrase('Michonne, Richonne',tags).matches.map(x=>x.id)).toEqual(['b','a']);
  expect(resolveMultiTagPhrase('Richonne, Children',tags).complete).toBe(true);
+ expect(resolveMultiTagPhrase('Michonne,',tags).complete).toBe(true);
+ expect(resolveMultiTagPhrase('Michonne, R',tags).matches.map(x=>x.id)).toEqual(['b']);
+ expect(resolveMultiTagPhrase('Michonne, R',tags).unresolved).toEqual(['r']);
+ expect(resolveMultiTagPhrase('Michonne, R',tags).complete).toBe(false);
  expect(resolveMultiTagPhrase('Richonne, unlisted',tags).complete).toBe(false);
  expect(resolveMultiTagPhrase('Richonne, Private unverified',tags).unresolved).toEqual(['private unverified']);
 });
