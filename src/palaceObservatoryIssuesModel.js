@@ -37,7 +37,7 @@ export function observatoryValidateIssue(draft){
  if(!OBSERVATORY_SEVERITIES.includes(draft?.severity))errors.push('Choose a supported severity.');
  return {valid:errors.length===0,errors,value:{
   title,expected,observed,steps,surface,source_url:sourceUrl||null,
-  severity:draft.severity,device:clean(draft?.device,120),
+  severity:draft?.severity,device:clean(draft?.device,120),
   browser:clean(draft?.browser,120),fix_proposal:clean(draft?.fix_proposal,2400),
   review_note:clean(draft?.review_note,2400),work_title:clean(draft?.work_title,160),
   finding_key:clean(draft?.finding_key,190)||null
