@@ -1768,4 +1768,113 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
    "permissionLabel": "CC BY-NC-SA 3.0 · author-profile licence for original contributions; linked to original author edition",
    "contentNote": "Source Fiction T · English · 46 chapters · 149,142 words · complete · Auron/OC."
  }
+,
+ {
+   "id": "camille-miko-let-it-snow",
+   "title": "Let it snow",
+   "creator": "Camille-Miko",
+   "published": "2015",
+   "fandom": "Harry Potter",
+   "description": "Draco unexpectedly becomes guardian to four children during a Christmas season while Harry is away.",
+   "sourceUrl": "https://www.fanfiction.net/s/11644465/1/Let-it-snow",
+   "permissionUrl": "https://www.fanfiction.net/u/313139/Camille-Miko",
+   "permissionLabel": "CC BY-NC-ND 3.0 Unported · author-profile licence for original contributions; external author edition only",
+   "contentNote": "Source Fiction K · French · 25 chapters · complete · Harry/Draco · family and Christmas."
+ },
+ {
+   "id": "camille-miko-calmement-neige",
+   "title": "Calmement la neige tombe",
+   "creator": "Camille-Miko",
+   "published": "2017",
+   "fandom": "Harry Potter",
+   "description": "Harry and Draco are stranded together in a mountain chalet during a snowstorm.",
+   "sourceUrl": "https://www.fanfiction.net/s/12745672/1/Calmement-la-neige-tombe",
+   "permissionUrl": "https://www.fanfiction.net/u/313139/Camille-Miko",
+   "permissionLabel": "CC BY-NC-ND 3.0 Unported · author-profile licence for original contributions; external author edition only",
+   "contentNote": "Source Fiction K+ · French · 2 chapters published, 24 planned · incomplete · Harry/Draco."
+ },
+ {
+   "id": "camille-miko-musaraigne-affolee",
+   "title": "Musaraigne affolée",
+   "creator": "Camille-Miko",
+   "published": "2014",
+   "fandom": "Arsène Lupin",
+   "description": "To recover documents from a police station, Arsène Lupin adopts an unusual disguise and improvises when his scheme goes awry.",
+   "sourceUrl": "https://www.fanfiction.net/s/10749044/1/Musaraigne-affol%C3%A9e",
+   "permissionUrl": "https://www.fanfiction.net/u/313139/Camille-Miko",
+   "permissionLabel": "CC BY-NC-ND 3.0 Unported · author-profile licence for original contributions; external author edition only",
+   "contentNote": "Source Fiction T · French · 979 words · complete · disguise and comedy; unwanted sexual advances."
+ },
+ {
+   "id": "camille-miko-pas-de-ca",
+   "title": "Pas de ça entre nous ?",
+   "creator": "Camille-Miko",
+   "published": "2014",
+   "fandom": "The Avengers (1961 TV series)",
+   "description": "John Steed and Emma Peel navigate the gap between flirtation and propriety at a society gathering.",
+   "sourceUrl": "https://www.fanfiction.net/s/10749086/1/Pas-de-%C3%A7a-entre-nous",
+   "permissionUrl": "https://www.fanfiction.net/u/313139/Camille-Miko",
+   "permissionLabel": "CC BY-NC-ND 3.0 Unported · author-profile licence for original contributions; external author edition only",
+   "contentNote": "Source Fiction K+ · French · 947 words · complete · John Steed/Emma Peel."
+ },
+ {
+   "id": "camille-miko-retenir-respiration",
+   "title": "Retenir sa respiration",
+   "creator": "Camille-Miko",
+   "published": "2014",
+   "fandom": "Spirou et Fantasio",
+   "description": "Spirou faces a difficult choice when Fantasio is unwell and dangerous in the wilderness.",
+   "sourceUrl": "https://www.fanfiction.net/s/10749055/1/Retenir-sa-respiration",
+   "permissionUrl": "https://www.fanfiction.net/u/313139/Camille-Miko",
+   "permissionLabel": "CC BY-NC-ND 3.0 Unported · author-profile licence for original contributions; external author edition only",
+   "contentNote": "Source Fiction T · French · 882 words · complete · Spirou/Fantasio."
+ },
+ {
+   "id": "camille-miko-son-bracelet",
+   "title": "Son bracelet",
+   "creator": "Camille-Miko",
+   "published": "2006",
+   "fandom": "Fruits Basket",
+   "description": "While Kyo struggles with illness, Yuki stays by his side through the night.",
+   "sourceUrl": "https://www.fanfiction.net/s/3312282/1/Son-bracelet",
+   "permissionUrl": "https://www.fanfiction.net/u/313139/Camille-Miko",
+   "permissionLabel": "CC BY-NC-ND 3.0 Unported · author-profile licence for original contributions; external author edition only",
+   "contentNote": "Source Fiction K+ · French · 303 words · complete · Kyo/Yuki."
+ },
+ {
+   "id": "wcmd-falling",
+   "title": "Falling",
+   "creator": "What contented men desire",
+   "published": "2012",
+   "fandom": "Harry Potter",
+   "description": "Harry faces nightmares and the aftermath of the war, with Hermione beside him in difficult moments.",
+   "sourceUrl": "https://www.fanfiction.net/s/8290261/1/Falling",
+   "permissionUrl": "https://www.fanfiction.net/u/1385256/What-contented-men-desire",
+   "permissionLabel": "CC BY-NC-SA · story-specific author notice covering original contributions; linked author edition",
+   "contentNote": "Source Fiction T · English · 2 chapters · complete · hurt/comfort · war, loss and existential distress."
+ },
+ {
+   "id": "wcmd-soldiers",
+   "title": "Soldiers",
+   "creator": "What contented men desire",
+   "published": "2012",
+   "fandom": "Harry Potter",
+   "description": "Minerva McGonagall, Alastor Moody and their friend Iain Menzies grow together against the backdrop of changing times.",
+   "sourceUrl": "https://www.fanfiction.net/s/7876531/1/Soldiers",
+   "permissionUrl": "https://www.fanfiction.net/u/1385256/What-contented-men-desire",
+   "permissionLabel": "CC BY-NC-SA · story-specific author notice covering original contributions; linked author edition",
+   "contentNote": "Source Fiction T · English · 4 chapters · incomplete · wartime friendship."
+ },
+ {
+   "id": "wcmd-adult-female",
+   "title": "Adult Female",
+   "creator": "What contented men desire",
+   "published": "2012",
+   "fandom": "Harry Potter",
+   "description": "Rose Weasley celebrates graduating from Hogwarts and encounters Teddy Lupin at a family gathering.",
+   "sourceUrl": "https://www.fanfiction.net/s/8475906/1/Adult-Female",
+   "permissionUrl": "https://www.fanfiction.net/u/1385256/What-contented-men-desire",
+   "permissionLabel": "CC BY-NC-SA · story-specific author notice covering original contributions; linked author edition",
+   "contentNote": "Source Fiction T · English · 2,738 words · one published chapter · Rose Weasley/Teddy Lupin."
+ }
 ]);
