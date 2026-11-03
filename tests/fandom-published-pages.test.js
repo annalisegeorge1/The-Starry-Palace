@@ -43,7 +43,7 @@ describe('Fandom Atlas paginated public works',()=>{
   });
   const seenPublic=vi.fn(async ids=>ids);
   const result=await paginatePublicFandomStories({...base,tagIds:[a,b],mode:'any',
-   limit:24,searchPublished,listPublicIds:seenPublic});
+   limit:2,searchPublished,listPublicIds:seenPublic});
   expect(searchPublished).toHaveBeenCalledTimes(2);
   expect(searchPublished.mock.calls.map(([params])=>params.include)).toEqual([[a],[b]]);
   expect(result.results.map(w=>w.id)).toEqual(['public-3','both','public-1']);
@@ -58,6 +58,10 @@ describe('Fandom Atlas paginated public works',()=>{
   await expect(paginatePublicFandomStories({...base,tagIds:[a],
    searchPublished:async()=>({results:[]})}))
    .rejects.toThrow(/incomplete/i);
+  // A nonempty but truncated intermediate page must be rejected too.
+  await expect(paginatePublicFandomStories({...base,tagIds:[a],limit:3,
+   searchPublished:async()=>({total:10,results:[work('only-one','2026-11-03')]})}))
+   .rejects.toThrow(/incomplete/i);
  });
  it('stops safely when required crossover tags are not approved',async()=>{
   const searchPublished=vi.fn();
@@ -70,7 +74,7 @@ describe('Fandom Atlas paginated public works',()=>{
   const searchPublished=vi.fn(async()=>({total:49,results:[work('hidden','2026-11-03')]}));
   const listPublicIds=vi.fn(async()=>[]);
   const result=await paginatePublicFandomStories({...base,tagIds:[a],
-   offset:24,limit:24,searchPublished,listPublicIds});
+   offset:24,limit:1,searchPublished,listPublicIds});
   expect(searchPublished.mock.calls[0][0].offset).toBe(24);
   expect(result.results).toEqual([]);
   expect(result.hasMore).toBe(true);
