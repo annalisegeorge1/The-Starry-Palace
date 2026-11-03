@@ -51,8 +51,8 @@ describe('Fandom Atlas includes the same rights-aware Fanfiction collection',()=
   expect(atlas).toContain('publishedWorks={[...(selectedNames.length&&storyResultKey===selectionKey?stories:[]),...fanworkRows,...historicFanworks]}');
   expect(atlas).toContain('getPublishedWorks({offset:fetchedPublished,limit:48})');
   expect(atlas).toContain('setFetchedPublished(old=>old+page.length)');
-  expect(atlas).toContain('hasMoreHosted={fanworksHasMore}');
-  expect(atlas).toContain('onMoreHosted={loadMoreFanworks}');
+  expect(atlas).toContain('hasMoreHosted={fanworksHasMore||selectedNames.length>0&&storyHasMore}');
+  expect(atlas).toContain('onMoreHosted={selectedNames.length>0&&storyHasMore?loadMoreSelectedFandomWorks:loadMoreFanworks}');
   expect(atlas).toContain("w.visibility==='public'");
   expect(atlas).toContain('inFandomAtlas={true}');
   expect(atlas).toContain('getStoriesForFandomsPage(selected,mode,{offset:0,limit:FANDOM_STORY_PAGE_SIZE})');
