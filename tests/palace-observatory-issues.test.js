@@ -2,7 +2,7 @@ import {describe,it,expect} from 'vitest';
 import {
  OBSERVATORY_ISSUE_STATUSES,observatoryCanTransition,observatoryNextStatuses,
  observatoryValidateIssue,observatoryValidateTransition,observatoryFindingDraft,
- observatoryValidateScreenshot
+ observatoryValidateScreenshot,observatoryScreenshotSignature,observatoryInspectScreenshot
 } from '../src/palaceObservatoryIssuesModel.js';
 
 const base={title:'Missing fandom result',surface:'Fandom',
@@ -49,4 +49,23 @@ describe('Palace Observatory Phase 3 issue lifecycle',()=>{
   expect(observatoryValidateScreenshot({...img,size:6*1024*1024+1}).valid).toBe(false);
   expect(observatoryValidateScreenshot(null).valid).toBe(false);
  });
+ it('rejects a disguised upload whose declared MIME type does not match its bytes',async()=>{
+  const fakePng=new Blob([new Uint8Array([71,73,70,56,57,97,0,0,0,0,0,0])],{type:'image/png'});
+  const checked=await observatoryInspectScreenshot(fakePng);
+  expect(checked.valid).toBe(false);
+  expect(checked.error).toMatch(/do not match/i);
+ });
+ it('recognizes real PNG, JPEG and WebP headers without reading the whole image',async()=>{
+  const cases=[
+   ['image/png',[137,80,78,71,13,10,26,10,0,0,0,0]],
+   ['image/jpeg',[255,216,255,0,0,0,0,0,0,0,0,0]],
+   ['image/webp',[82,73,70,70,0,0,0,0,87,69,66,80]]
+  ];
+  for(const [type,header] of cases){
+   expect(observatoryScreenshotSignature(new Uint8Array(header),type)).toBe(true);
+   const file=new Blob([new Uint8Array(header)],{type});
+   expect((await observatoryInspectScreenshot(file)).valid).toBe(true);
+  }
+ });
+
 });
