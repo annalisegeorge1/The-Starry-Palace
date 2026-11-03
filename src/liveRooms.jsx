@@ -343,8 +343,11 @@ export function ReadingLive({Frame}){
  },[multiTagQuery]);
  const multiTagWaiting=Boolean(multiTagQuery)&&multiTagLookup.value!==multiTagQuery;
  const multiTagResolved=Boolean(multiTagQuery)&&!multiTagWaiting&&multiTagLookup.complete;
- const effectiveReadingText=multiTagResolved?'':query;
- const effectiveReadingTags=multiTagResolved?[...new Set([...includedTags,...multiTagLookup.matches.map(tag=>tag.id)])]:includedTags;
+ const multiTagHasMatches=Boolean(multiTagQuery)&&!multiTagWaiting&&multiTagLookup.matches.length>0;
+ // While the reader is typing the next comma-separated name, show the
+ // verified tags already entered. Never send 'Michonne,' as literal text.
+ const effectiveReadingText=multiTagHasMatches?'':query;
+ const effectiveReadingTags=multiTagHasMatches?[...new Set([...includedTags,...multiTagLookup.matches.map(tag=>tag.id)])]:includedTags;
  const[relationshipIncluded,setRelationshipIncluded]=useState([]);
  const[relationshipExcluded,setRelationshipExcluded]=useState([]);
  const inAdvancedSearch=new URLSearchParams(location.search).get('view')==='search';
@@ -629,15 +632,18 @@ export function ReadingLive({Frame}){
    <div className="reading-search" role="search"><span aria-hidden="true">⌕</span><input aria-label={archiveBrowseEnabled?'Search all published Reading Room stories':'Search the currently loaded Reading Room stories'} value={query} onChange={e=>setQuery(e.target.value)} placeholder="Title, writer, fandom or tag…"/></div>
    <div className="reading-result-count" aria-live="polite"><strong>{archiveBrowseEnabled?(archiveBrowse.snapshot?visibleTotal.toLocaleString():'…'):multiTagWaiting?'…':catalogue.length.toLocaleString()}</strong><span>{origin==='fandom'?('Palace-hosted results · '+MODERN_FANFICTION_LINKS.length+' author-source fanfics in the unified catalogue below'):(archiveBrowseEnabled?'matching published member stories and hosted fanfiction':('matching among '+allReadingWorks.length+' loaded '+(allReadingWorks.length===1?'work':'works')))}</span></div>
    {multiTagQuery&&<div className="reading-multi-tag-summary" role="status">
-    <small>{multiTagWaiting?'Finding matching tags…':multiTagResolved?'Matching ALL selected tags · remove a name to widen your search':multiTagLookup.error||('Exact tag not found: '+(multiTagLookup.unresolved.join(', ')||'choose individual tags in Sort & Filter'))}</small>
-    {multiTagResolved&&<div className="reading-multi-tag-chips" aria-label="Tags required by this search">{multiTagLookup.matches.map(tag=><button type="button" key={tag.id} title={'Remove '+tag.name+' from search'} aria-label={'Remove '+tag.name+' from tag search'} onClick={()=>setQuery(query.split(/[,;\n]+/).map(name=>name.trim()).filter(name=>name&&name.toLocaleLowerCase()!==tag.name.toLocaleLowerCase()).join(', '))}>＋ {tag.name} ×</button>)}</div>}
+    <small>{multiTagWaiting?'Finding matching tags…':multiTagLookup.error||(
+     multiTagResolved?'Matching ALL '+multiTagLookup.matches.length+' selected '+(multiTagLookup.matches.length===1?'tag':'tags')+' · remove a tag to widen your search':
+     multiTagHasMatches?'Showing a preview for '+multiTagLookup.matches.length+' confirmed '+(multiTagLookup.matches.length===1?'tag':'tags')+'. Not applied yet: '+multiTagLookup.unresolved.join(', '):
+     'No exact tags recognized yet. Finish typing or choose tags in Sort & Filter.')}</small>
+    {multiTagHasMatches&&<div className="reading-multi-tag-chips" aria-label="Tags required by this search">{multiTagLookup.matches.map(tag=><button type="button" key={tag.id} title={'Remove '+tag.name+' from search'} aria-label={'Remove '+tag.name+' from tag search'} onClick={()=>setQuery(query.split(/[,;\n]+/).map(name=>name.trim()).filter(name=>name&&name.toLocaleLowerCase()!==tag.name.toLocaleLowerCase()).join(', '))}>＋ {tag.name} ×</button>)}</div>}
    </div>}
   </section>}
   {!archiveBrowseEnabled&&readerLens!=='all'&&<p className="reading-scope-note">Personal lenses search your currently loaded reading shelf. Choose “Entire published archive” to return to public browsing.</p>}
   {!archiveBrowseEnabled&&vibeDoor!=='all'&&<p className="reading-scope-note">Mood suggestions come from loaded stories, not archive-wide rankings.</p>}
   {!archiveBrowseEnabled&&!isArchiveReadingSort(catalogueSort)&&<p className="reading-scope-note">This sort orders loaded stories and Classics only. Choose an archive-wide sort to rank all published stories.</p>}
   {origin!=='fandom'&&activeReadingFilters.length>0&&<nav className="reading-filter-trail" aria-label="Active Reading Room filters"><span className="reading-filter-title">YOUR CURRENT CHOICES</span><div>{activeReadingFilters.map(item=><button type="button" key={item.key} onClick={()=>removeReadingFilter(item.key)} aria-label={'Remove '+item.label+' filter'}><span>{item.label}</span><b aria-hidden="true">×</b></button>)}</div><button type="button" className="reading-filter-clear" onClick={clearReadingFilters}>Clear all filters →</button></nav>}
-  {session&&origin!=='fandom'&&<section className="reading-reader-lenses" aria-label="Your private reading lenses"><div><small>MY READING LENSES</small><span>Private to you · never changes public discovery ranking</span></div><nav>{[['all','All'],['unread','Unread'],['reading','In progress'],['new','New chapters'],['saved','Saved'],['following','Following'],['finished','Finished']].map(([key,label])=><button type="button" key={key} className={readerLens===key?'active':''} aria-pressed={readerLens===key} onClick={()=>setReaderLens(key)}>{label}</button>)}</nav>{(readerLens!=='all'||query||rating!=='all'||status!=='all'||vibeDoor!=='all')&&<button type="button" className="quiet-button" onClick={clearReadingFilters}>Clear reading filters</button>}</section>}
+  {session&&origin!=='fandom'&&<section className="reading-reader-lenses" aria-label="Your private reading lenses"><div><small>MY READING LENSES</small><span>Private to you · never changes public discovery ranking</span></div><nav>{[['all','All'],['unread','Unread'],['reading','In progress'],['new','New chapters'],['saved','Saved'],['following','Following'],['finished','Finished']].map(([key,label])=><button type="button" key={key} className={readerLens===key?'active':''} aria-pressed={readerLens===key} onClick={()=>setReaderLens(key)}>{label}</button>)}</nav></section>
   {readingNotice&&origin!=='fandom'&&<p className="reading-partial-notice" role="status">✧ {readingNotice}</p>}
   {origin!=='fandom'&&<div className="reading-catalogue-layout"><div id="reading-results" className="reading-catalogue-main" tabIndex="-1">
   {origin!=='fandom'&&showBrowseCards&&<ReadingCatalogueControls layout={readingChoices.layout} onLayout={value=>setReadingChoice('layout',value)} shown={archiveBrowseEnabled?visibleCatalogue.length:Math.min(readingChoices.visibleCount,catalogue.length)} total={visibleTotal} linkedCount={origin==='fandom'?MODERN_FANFICTION_LINKS.length:0}/>}
