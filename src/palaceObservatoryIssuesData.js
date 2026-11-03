@@ -7,7 +7,7 @@ export const OBSERVATORY_SETUP_MESSAGE='The private Observatory issue tables hav
 function api(){if(!supabase)throw Error('Palace data connection unavailable.');return supabase}
 function schemaMissing(error){
  const str=String(error?.message||'').toLowerCase();
- return ['42P01','PGRST205','PGRST116'].includes(String(error?.code))&&error?.code!=='PGRST116'
+ return ['42P01','PGRST205'].includes(String(error?.code))
   ||str.includes("could not find the table 'public.observatory_issues'")
   ||str.includes('relation "public.observatory_issues" does not exist')
   ||str.includes("could not find the table 'public.observatory_issue_events'")
@@ -96,15 +96,27 @@ export async function attachPalaceObservatoryScreenshot(issue,file){
   issue_id:issue.id,file_path:filePath,file_name:String(file.name||'Screenshot').slice(0,160),
   file_size:file.size,mime_type:file.type
  }).select('id').single();
- if(metadata.error)throw Error('The screenshot uploaded privately but could not be indexed. No public URL was generated. '+metadata.error.message);
+ if(metadata.error)throw Error('The screenshot is in private storage, but its issue record could not be saved. It is not available for preview and needs an Owner-reviewed orphan cleanup. No public link was created.');
  return metadata.data;
 }
 /** Signed evidence links expire after two minutes; never expose storage paths publicly. */
 export async function openPalaceObservatoryScreenshot(evidence){
  await requireOwner();
- if(!evidence?.file_path)throw Error('No screenshot file is attached.');
+ if(!evidence?.id||!evidence?.issue_id||!evidence?.file_path)
+  throw Error('Select a saved Observatory screenshot.');
+ const filePath=String(evidence.file_path);
+ if(!filePath.startsWith(String(evidence.issue_id)+'/'))
+  throw Error('Screenshot does not belong to the selected review issue.');
+ // Confirm an indexed, Owner-readable evidence record. Never mint a link
+ // for a storage-only orphan or a client-supplied arbitrary object key.
+ const indexed=await api().from('observatory_evidence')
+  .select('id,issue_id,file_path')
+  .eq('id',evidence.id).eq('issue_id',evidence.issue_id)
+  .eq('file_path',filePath).maybeSingle();
+ if(indexed.error)throw indexed.error;
+ if(!indexed.data)throw Error('This private screenshot is no longer indexed. Refresh the issue.');
  const {data,error}=await api().storage.from(OBSERVATORY_EVIDENCE_BUCKET)
-  .createSignedUrl(evidence.file_path,120);
+  .createSignedUrl(filePath,120);
  if(error)throw error;
  if(!data?.signedUrl)throw Error('A private preview link could not be generated.');
  return data.signedUrl;
