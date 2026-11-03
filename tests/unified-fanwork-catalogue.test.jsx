@@ -4,6 +4,7 @@ import {render,screen,cleanup} from '@testing-library/react';
 import {MemoryRouter} from 'react-router-dom';
 import UnifiedFanworkCatalogue,{createUnifiedFanworks,filterUnifiedFanworks} from '../src/UnifiedFanworkCatalogue.jsx';
 import {MODERN_FANFICTION_LINKS} from '../src/palaceFanfictionDiscovery.js';
+import {toHostedReadingWork} from '../src/hostedReadingWork.js';
 afterEach(cleanup);
 
 const hosted=[
@@ -12,7 +13,7 @@ const hosted=[
   profiles:{display_name:'Palace Writer'},
   work_tags:[{tags:{name:'Naruto',category:'fandom'}}]},
  {id:'historic-1',title:'Old Friends and New Fancies',slug:'old-friends-and-new-fancies-sybil-g-brinton',
-  work_type:'fanwork',is_archive:true,archive_category:'historical_fanfiction',rating:'not_rated',
+  work_type:'fanwork',is_archive:true,archive_display_ready:true,archive_category:'historical_fanfiction',rating:'not_rated',
   creator_name:'Sybil G. Brinton',work_tags:[{tags:{name:'Jane Austen',category:'fandom'}}]},
  {id:'novel-1',title:'An Original Novel',slug:'original',work_type:'original',rating:'general'}
 ];
@@ -80,6 +81,33 @@ describe('Unified Fanwork catalogue',()=>{
   expect(filterUnifiedFanworks(rows,{relationshipExcluded:['ff']})).toHaveLength(0);
   expect(filterUnifiedFanworks(rows,{relationshipIncluded:['mm']})).toHaveLength(0);
  });
+ it('does not turn private member drafts or restricted member listings into public fanfiction',()=>{
+  const publicStory={id:'public-work',slug:'public-work',title:'Public fanfiction',
+   work_type:'fanwork',rating:'explicit',publication_status:'published',visibility:'public'};
+  const privateDraft={...publicStory,id:'private-draft',slug:'draft',
+   publication_status:'draft',visibility:'private'};
+  const memberOnly={...publicStory,id:'member-only',slug:'member-only',
+   publication_status:'published',visibility:'members'};
+  const rows=createUnifiedFanworks([publicStory,privateDraft,memberOnly],[]);
+  expect(rows.map(x=>x.key)).toEqual(['member:public-work']);
+ });
+ it('only removes author-source links when a verified hosted edition can be displayed',()=>{
+  const linked=MODERN_FANFICTION_LINKS.find(x=>x.id==='anime-primulad-renuncia');
+  const record={id:'rights-check',slug:'rights-check',title:'Rights check',
+   category:'licensed_fanfiction',publication_status:'draft',host_mode:'metadata_only',
+   archive_source_url:linked.sourceUrl,rights_status:'licensed',creator_name:'Original author'};
+  const pending=toHostedReadingWork(record);
+  expect(pending.archive_display_ready).toBe(false);
+  const pendingRows=createUnifiedFanworks([pending],[linked]);
+  expect(pendingRows.some(x=>x.kind==='licensed')).toBe(false);
+  expect(pendingRows.some(x=>x.key==='external:anime-primulad-renuncia')).toBe(true);
+  const cleared=toHostedReadingWork({...record,publication_status:'published',host_mode:'full',
+   hosted_text_ready:true,hosted_rights_verified:true,verified_at:'2026-11-01T00:00:00Z'});
+  expect(cleared.archive_display_ready).toBe(true);
+  const publishedRows=createUnifiedFanworks([cleared],[linked]);
+  expect(publishedRows.some(x=>x.kind==='licensed')).toBe(true);
+  expect(publishedRows.some(x=>x.key==='external:anime-primulad-renuncia')).toBe(false);
+ });
  it('renders a single list with distinct Palace and original-source reading actions',()=>{
   render(<MemoryRouter><UnifiedFanworkCatalogue publishedWorks={hosted}
    externalWorks={[MODERN_FANFICTION_LINKS.find(work=>work.id==='anime-animeisperfection-frozen-heart')]}/></MemoryRouter>);
@@ -98,7 +126,7 @@ describe('Unified Fanwork catalogue',()=>{
  it('does not repeat a Palace-hosted edition as an external author-source recommendation',()=>{
   const linked=MODERN_FANFICTION_LINKS.find(x=>x.id==='anime-primulad-renuncia');
   const archive={id:'archive-renuncia',slug:'renuncia',title:'Renuncia',summary:'Hosted fanfic',
-   is_archive:true,archive_category:'licensed_fanfiction',work_type:'fanwork',rating:'general',
+   is_archive:true,archive_display_ready:true,archive_category:'licensed_fanfiction',work_type:'fanwork',rating:'general',
    archive_source_url:linked.sourceUrl,creator_name:'PrimulaD',work_tags:[{tags:{name:'Tsubasa Chronicle',category:'fandom'}}]};
   const catalogue=createUnifiedFanworks([archive],MODERN_FANFICTION_LINKS);
   expect(catalogue.some(x=>x.key==='archive:renuncia')).toBe(true);
