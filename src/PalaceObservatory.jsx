@@ -30,6 +30,7 @@ export default function PalaceObservatory(){
  const [verification,setVerification]=useState(null);
  const [verifying,setVerifying]=useState(false);
  const [verificationError,setVerificationError]=useState('');
+ const [checkFilter,setCheckFilter]=useState('mismatch');
 
  useEffect(()=>{
   let valid=true;
@@ -58,10 +59,14 @@ export default function PalaceObservatory(){
   (severity==='all'||f.severity===severity)&&
   (!query||[f.title,f.detail,f.workTitle].join(' ').toLowerCase().includes(query.toLowerCase()))),
   [snapshot,severity,query]);
+ const visibleChecks=useMemo(()=>{
+  const checks=verification?.checks||[];
+  return checks.filter(item=>checkFilter==='all'||(checkFilter==='mismatch'?item.status==='Mismatch':item.status==='Pass'));
+ },[verification,checkFilter]);
 
  async function runPlacementVerification(){
   if(access!=='allowed'||verifying||busy)return;
-  setVerifying(true);setVerificationError('');
+  setVerifying(true);setVerificationError('');setCheckFilter('mismatch');
   try{
    // Re-check Owner privileges and expected public records before each audit.
    const expectedData=await readPalaceObservatoryMetadata();
@@ -147,7 +152,12 @@ export default function PalaceObservatory(){
     {verificationError&&<p role="alert" className="palace-observatory-warning">{verificationError}</p>}
     {verification&&<>
      <p className="palace-observatory-subtitle" role="status">{verification.checks.filter(x=>x.status==='Pass').length} passed · {verification.checks.filter(x=>x.status==='Mismatch').length} mismatches · {verification.tagStatus}. Candidates require independent browser rechecking.</p>
-     <div className="palace-observatory-list">{verification.checks.map(item=><article className="palace-observatory-row" key={item.id}>
+     <div className="palace-observatory-check-controls"><strong>Works missing from expected public results</strong>
+      <label>Show checks <select value={checkFilter} onChange={e=>setCheckFilter(e.target.value)}>
+       <option value="mismatch">Mismatches only</option><option value="all">All checks</option><option value="pass">Passed checks</option>
+      </select></label></div>
+     {visibleChecks.length===0&&<p role="status">No results in this view. Passing data checks do not establish that browser cards, mobile navigation or age gates work correctly.</p>}
+     <div className="palace-observatory-list">{visibleChecks.map(item=><article className="palace-observatory-row" key={item.id}>
       <div className="palace-observatory-row-head"><strong>{item.title}</strong><span>{item.status} · {item.surface}</span></div>
       <p><b>Expected:</b> {item.expect}</p><p><b>Observed:</b> {item.observed}</p>
       <p>{item.detail}</p><small>{item.evidence}</small>
