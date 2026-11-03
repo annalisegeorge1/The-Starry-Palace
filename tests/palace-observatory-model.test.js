@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {buildPalaceObservatorySnapshot,filterPalaceObservatoryRows} from '../src/palaceObservatoryModel.js';
+import {buildPalaceObservatorySnapshot,filterPalaceObservatoryRows,palaceObservatoryComparison} from '../src/palaceObservatoryModel.js';
 describe('The Palace Observatory — metadata-only audit',()=>{
  const tagged={id:'w1',title:'Moonlit Story',slug:'moonlit',work_type:'fanwork',publication_status:'published',
   visibility:'public',rating:'explicit',profiles:{display_name:'Writer'},work_tags:[
@@ -43,4 +43,19 @@ describe('The Palace Observatory — metadata-only audit',()=>{
   expect(s.rows[0].hosting).toContain('not hosted');
   expect(filterPalaceObservatoryRows(s.rows,{query:'Naruto'})).toHaveLength(1);
  });
+ it('compares only selected metadata and highlights rights differences',()=>{
+  const snapshot=buildPalaceObservatorySnapshot({works:[tagged],linked:[{
+   id:'original',title:'Moonlit Story',creator:'Writer',fandom:'Naruto',
+   sourceUrl:'https://example.org/story'
+  }]});
+  const keys=['member:w1','source:original'];
+  const compare=palaceObservatoryComparison(snapshot.rows,keys);
+  expect(compare.left.title).toBe('Moonlit Story');
+  expect(compare.right.title).toBe('Moonlit Story');
+  expect(compare.fields.find(f=>f.label==='Hosting method').differs).toBe(true);
+  expect(compare.fields.find(f=>f.label==='Rights / permissions').differs).toBe(true);
+  expect(JSON.stringify(compare)).not.toContain('body_text');
+  expect(palaceObservatoryComparison(snapshot.rows,['member:w1'])).toBeNull();
+ });
+
 });
