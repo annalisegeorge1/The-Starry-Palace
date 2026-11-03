@@ -178,7 +178,7 @@ it('supports multiple comma-separated tag names in Reading Rooms include and exc
  fireEvent.click(screen.getByRole('button',{name:'Add 2 exact tags to include'}));
  expect(onToggle).toHaveBeenCalledWith('rich','include');
  expect(onToggle).toHaveBeenCalledWith('slow','include');
- fireEvent.click(screen.getByRole('button',{name:/4\\. Exclude/}));
+ fireEvent.click(screen.getByRole('button',{name:/4\. Exclude/}));
  fireEvent.change(screen.getByLabelText('Other tags to exclude'),{target:{value:'Found Family; Richonne'}});
  fireEvent.click(screen.getByRole('button',{name:'Add 2 exact tags to exclude'}));
  expect(onToggle).toHaveBeenCalledWith('family','exclude');
