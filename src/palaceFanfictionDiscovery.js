@@ -2059,4 +2059,17 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
    "permissionLabel": "CC BY-NC-SA 3.0 US · author's profile-wide licence for original contributions; original source link only",
    "contentNote": "Source Fiction M · Spanish · 6 chapters · complete · friendship and original immortal character · 18+."
  }
+,
+ {
+   "id": "syarin-secrets-crypton-labs",
+   "title": "The Secrets of Crypton Labs",
+   "creator": "Syarin",
+   "published": "2013",
+   "fandom": "Vocaloid",
+   "description": "Megurine Luka awakens as an android Vocaloid under the control of her human creator, with unsettling discoveries behind the laboratory's doors.",
+   "sourceUrl": "https://www.fanfiction.net/s/9347092/1/The-Secrets-of-Crypton-Labs",
+   "permissionUrl": "https://www.fanfiction.net/s/9347092/1/The-Secrets-of-Crypton-Labs",
+   "permissionLabel": "CC BY-SA 3.0 Unported · explicit story-level licence for author's original contributions; author-source link only",
+   "contentNote": "Source Fiction M · English · 13 chapters · complete · Miku/Luka · adult themes from chapter 9 onward; creator acknowledges an original concept shared with permission."
+ }
 ]);
