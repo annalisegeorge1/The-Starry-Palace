@@ -41,6 +41,6 @@ it('shows five choices before expanding a long category',()=>{
  fireEvent.click(screen.getAllByText('Genres')[0]);
  expect(screen.getByRole('checkbox',{name:'Include Genre 0'})).toBeTruthy();
  expect(screen.queryByRole('checkbox',{name:'Include Genre 8'})).toBeNull();
- fireEvent.click(screen.getByRole('button',{name:'Show all 10 genres'}));
+ fireEvent.click(screen.getAllByRole('button',{name:'Show all 10 genres'})[0]);
  expect(screen.getByRole('checkbox',{name:'Include Genre 8'})).toBeTruthy();
 });
