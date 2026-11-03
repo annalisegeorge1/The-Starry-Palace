@@ -1877,4 +1877,53 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
    "permissionLabel": "CC BY-NC-SA · story-specific author notice covering original contributions; linked author edition",
    "contentNote": "Source Fiction T · English · 2,738 words · one published chapter · Rose Weasley/Teddy Lupin."
  }
+,
+ {
+   "id": "dongyrn-unchained",
+   "title": "Unchained",
+   "creator": "Dongyrn",
+   "published": "2015",
+   "fandom": "Avengers · Marvel Cinematic Universe",
+   "description": "A young woman with newly emerging powers enters a dangerous world of experiments, superheroes and alliances.",
+   "sourceUrl": "https://www.fanfiction.net/s/11489511/1/Unchained",
+   "permissionUrl": "https://www.fanfiction.net/u/3033885/Dongyrn",
+   "permissionLabel": "CC BY-NC-SA · author-profile licence for original-character series; linked to author edition only",
+   "contentNote": "Source Fiction T · English · 23 chapters · complete · original-character led · Black Widow/Maria Hill subplot."
+ },
+ {
+   "id": "dongyrn-unbound",
+   "title": "Unbound",
+   "creator": "Dongyrn",
+   "published": "2015",
+   "fandom": "Avengers · X-Men",
+   "description": "Caitlin and Rebecca Brown face a powerful new enemy and need help from unlikely allies across the Marvel universe.",
+   "sourceUrl": "https://www.fanfiction.net/s/11589918/1/Unbound",
+   "permissionUrl": "https://www.fanfiction.net/u/3033885/Dongyrn",
+   "permissionLabel": "CC BY-NC-SA · author-profile licence for original-character series; linked to author edition only",
+   "contentNote": "Source Fiction T · English · 9 chapters · complete · sequel to Unchained."
+ },
+ {
+   "id": "dongyrn-invincible",
+   "title": "Invincible",
+   "creator": "Dongyrn",
+   "published": "2015",
+   "fandom": "Firefly",
+   "description": "Two independent spacers fall in love while trying to make their way in the dangerous 'Verse.",
+   "sourceUrl": "https://www.fanfiction.net/s/11459651/1/Invincible",
+   "permissionUrl": "https://www.fanfiction.net/u/3033885/Dongyrn",
+   "permissionLabel": "CC BY-NC-SA · author-profile licence for original-character series; linked to author edition only",
+   "contentNote": "Source Fiction T · English · 15 chapters · complete · original-character romance."
+ },
+ {
+   "id": "dongyrn-panda-power",
+   "title": "Nothing In The 'Verse: Panda Power",
+   "creator": "Dongyrn",
+   "published": "2015",
+   "fandom": "Firefly",
+   "description": "Caliope Grant, a mechanic aboard the Fortune's Favour, spends a memorable day in space.",
+   "sourceUrl": "https://www.fanfiction.net/s/11476305/1/Nothing-In-The-Verse-Panda-Power",
+   "permissionUrl": "https://www.fanfiction.net/u/3033885/Dongyrn",
+   "permissionLabel": "CC BY-NC-SA · author-profile licence for original-character series; linked to author edition only",
+   "contentNote": "Source Fiction K+ · English · 4,644 words · complete · companion one-shot."
+ }
 ]);
