@@ -477,8 +477,8 @@ export function ReadingLive({Frame}){
   hostedCount:hostedFanworksInArchive.length,
   includeHosted:origin==='all'
  }):catalogue.length;
- const showBrowseCards=archiveBrowseEnabled?Boolean(archiveBrowse.snapshot):Boolean(works);
- const browseLoading=archiveBrowseEnabled?(multiTagWaiting||archiveBrowse.loading):!works&&!error;
+ const showBrowseCards=archiveBrowseEnabled?Boolean(archiveBrowse.snapshot):Boolean(works)&&!multiTagWaiting;
+ const browseLoading=archiveBrowseEnabled?(multiTagWaiting||archiveBrowse.loading):multiTagWaiting||(!works&&!error);
  const browseError=archiveBrowseEnabled?archiveBrowse.error:error;
  const activeReadingFilters=[...readingFilterChips({origin,query,rating,status,vibeDoor,readerLens},Object.fromEntries(moodDoors.map(door=>[door.id,door.label]))),...includedTags.map(id=>({key:'include:'+id,label:'Include: '+(facetNames[id]||'selected tag')})),...excludedTags.map(id=>({key:'exclude:'+id,label:'Exclude: '+(facetNames[id]||'selected tag')})),...relationshipIncluded.map(id=>({key:'relationship-include:'+id,label:'Include '+(RELATIONSHIP_TYPES.find(([k])=>k===id)?.[1]||id)})),...relationshipExcluded.map(id=>({key:'relationship-exclude:'+id,label:'Exclude '+(RELATIONSHIP_TYPES.find(([k])=>k===id)?.[1]||id)}))];
  const fanfictionActiveFilters=activeReadingFilters.filter(item=>item.key!=='origin');
