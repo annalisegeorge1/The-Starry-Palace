@@ -213,3 +213,68 @@
    display:none!important;
  }
 }
+
+
+/* Reading Rooms: keep archive search and result count within mobile viewport.
+   The count formerly had flex:0 0 auto, so its long description enlarged the
+   whole search panel beyond the screen. Preserve all result text and totals. */
+@media (max-width:720px){
+  .palace-shell.full-palace-shell[data-palace-room="reading"] .legacy-reading-page .chic-reading-tools.reading-search-calm{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    box-sizing:border-box!important;
+    gap:10px!important;
+    align-items:stretch!important;
+  }
+  .palace-shell.full-palace-shell[data-palace-room="reading"] .legacy-reading-page .chic-reading-tools.reading-search-calm :is(.reading-search,.reading-result-count){
+    grid-column:1/-1!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    box-sizing:border-box!important;
+    margin-inline:0!important;
+  }
+  .palace-shell.full-palace-shell[data-palace-room="reading"] .legacy-reading-page .chic-reading-tools.reading-search-calm .reading-result-count{
+    flex:1 1 100%!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:5px!important;
+    padding:12px!important;
+    text-align:center!important;
+  }
+  .palace-shell.full-palace-shell[data-palace-room="reading"] .legacy-reading-page .chic-reading-tools.reading-search-calm .reading-result-count span{
+    display:block!important;
+    max-width:100%!important;
+    min-width:0!important;
+    white-space:normal!important;
+    overflow-wrap:break-word!important;
+    text-wrap:balance;
+    font-size:clamp(.68rem,2.7vw,.78rem)!important;
+    line-height:1.4!important;
+  }
+  .palace-shell.full-palace-shell[data-palace-room="reading"] .legacy-reading-page .chic-reading-tools.reading-search-calm .reading-search{
+    display:flex!important;
+    align-items:center!important;
+    gap:8px!important;
+  }
+  .palace-shell.full-palace-shell[data-palace-room="reading"] .legacy-reading-page .chic-reading-tools.reading-search-calm .reading-search input{
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    flex:1 1 auto!important;
+    box-sizing:border-box!important;
+    border:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    outline:0!important;
+  }
+  .palace-shell.full-palace-shell[data-palace-room="reading"] .legacy-reading-page .chic-reading-tools.reading-search-calm .reading-search:focus-within{
+    outline:2px solid var(--ui-accent,#b4a0e7)!important;
+    outline-offset:2px!important;
+  }
+}
