@@ -81,3 +81,30 @@
 @media(prefers-reduced-motion:reduce){
  .palace-shell.full-palace-shell .reading-scope-options button{transition:none}
 }
+
+
+/* The everyday search can resolve several comma-separated canonical tags.
+   Keep the interpretation transparent without adding another large panel. */
+.palace-shell.full-palace-shell .legacy-reading-page .chic-reading-tools .reading-multi-tag-summary{
+ grid-column:1 / -1!important;
+ flex:1 1 100%!important;
+ width:100%;min-width:0;max-width:100%;box-sizing:border-box;
+ display:grid;gap:6px;padding:3px 2px;
+}
+.palace-shell.full-palace-shell .legacy-reading-page .reading-multi-tag-summary>small{
+ font:600 .75rem/1.5 system-ui,sans-serif;
+ color:var(--ui-muted);overflow-wrap:anywhere;
+}
+.palace-shell.full-palace-shell .legacy-reading-page .reading-multi-tag-chips{
+ display:flex;align-items:center;flex-wrap:wrap;gap:6px;min-width:0;
+}
+.palace-shell.full-palace-shell .legacy-reading-page .reading-multi-tag-chips button{
+ min-height:36px;max-width:100%;
+ padding:6px 11px;border:1px solid var(--ui-line);
+ border-radius:999px;background:var(--ui-selected);
+ color:var(--ui-text);font:700 .76rem/1.3 system-ui,sans-serif;
+ overflow-wrap:anywhere;cursor:pointer;
+}
+.palace-shell.full-palace-shell .legacy-reading-page .reading-multi-tag-chips button:focus-visible{
+ outline:2px solid var(--ui-accent);outline-offset:2px;
+}
