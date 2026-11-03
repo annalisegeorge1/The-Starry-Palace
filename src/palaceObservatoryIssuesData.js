@@ -32,7 +32,7 @@ export async function getPalaceObservatoryIssueHistory(issueId){
  await requireOwner();
  const [events,evidence]=await Promise.all([
   api().from('observatory_issue_events')
-   .select('id,action,status_before,status_after,review_note,actor_id,created_at').eq('issue_id',issueId)
+   .select('id,action,status_before,status_after,changed_fields,review_note,actor_id,created_at').eq('issue_id',issueId)
    .order('created_at',{ascending:false}).limit(100),
   api().from('observatory_evidence')
    .select('id,issue_id,file_path,file_name,mime_type,file_size,created_at')
