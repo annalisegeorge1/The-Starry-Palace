@@ -2,7 +2,7 @@ import React,{useEffect,useMemo,useState} from 'react';
 import {Link} from 'react-router-dom';
 import {useAuth} from './auth';
 import {getPalaceObservatoryAccess,readPalaceObservatoryMetadata} from './palaceObservatoryData';
-import {buildPalaceObservatorySnapshot,filterPalaceObservatoryRows} from './palaceObservatoryModel';
+import {buildPalaceObservatorySnapshot,filterPalaceObservatoryRows,palaceObservatoryComparison} from './palaceObservatoryModel';
 import {MODERN_FANFICTION_LINKS} from './palaceFanfictionDiscovery';
 import {readPalaceAnonymousPlacement,runPalaceGuestTagScenarios} from './palaceObservatoryGuest';
 import {makePalacePlacementChecks,makePalaceTagScenarioChecks,makePalaceFanfictionCatalogueChecks,makePalaceFanfictionExclusionCheck} from './palaceObservatoryVerificationModel';
@@ -24,6 +24,7 @@ export default function PalaceObservatory(){
  const [error,setError]=useState('');
  const [active,setActive]=useState('Catalogue');
  const [query,setQuery]=useState('');
+ const [compareKeys,setCompareKeys]=useState([]);
  const [kind,setKind]=useState('all');
  const [status,setStatus]=useState('all');
  const [severity,setSeverity]=useState('all');
@@ -57,6 +58,8 @@ export default function PalaceObservatory(){
 
  const rows=useMemo(()=>filterPalaceObservatoryRows(snapshot?.rows||[],{query,kind,status}),
   [snapshot,query,kind,status]);
+ const comparison=useMemo(()=>palaceObservatoryComparison(snapshot?.rows||[],compareKeys),
+  [snapshot,compareKeys]);
  const findings=useMemo(()=>(snapshot?.findings||[]).filter(f=>
   (severity==='all'||f.severity===severity)&&
   (!query||[f.title,f.detail,f.workTitle].join(' ').toLowerCase().includes(query.toLowerCase()))),
@@ -134,8 +137,26 @@ export default function PalaceObservatory(){
      <select value={severity} onChange={e=>setSeverity(e.target.value)}>{['all','High','Medium'].map(v=><option value={v} key={v}>{v==='all'?'All priorities':v}</option>)}</select></label>}
    </div>
    {active==='Catalogue'&&<><p className="palace-observatory-subtitle" role="status">{rows.length} matching entries · Expected sections are predictions, not confirmed visibility tests.</p>
+    <div className="palace-observatory-compare-controls">
+     <span>Compare two entries: {compareKeys.length}/2 selected</span>
+     {compareKeys.length>0&&<button type="button" onClick={()=>setCompareKeys([])}>Clear comparison</button>}
+    </div>
+    {comparison&&<details className="palace-observatory-compare" open>
+     <summary>Compare selected metadata — not manuscript text</summary>
+     <div className="palace-observatory-compare-scroll"><table><thead><tr>
+      <th scope="col">Field</th><th scope="col">{comparison.left.title}</th><th scope="col">{comparison.right.title}</th>
+     </tr></thead><tbody>{comparison.fields.map(field=><tr key={field.label} className={field.differs?'different':''}>
+      <th scope="row">{field.label}</th><td>{field.left}</td><td>{field.right}</td>
+     </tr>)}</tbody></table></div>
+    </details>}
     <div className="palace-observatory-list">{rows.map(row=><article className="palace-observatory-row" key={row.key}>
      <div className="palace-observatory-row-head"><strong>{row.title}</strong><span>{row.publication}</span></div>
+     <label className="palace-observatory-compare-toggle"><input type="checkbox"
+      checked={compareKeys.includes(row.key)}
+      aria-label={'Compare '+row.title}
+      onChange={event=>{const checked=event.target.checked;setCompareKeys(keys=>
+       checked?[...keys.filter(k=>k!==row.key),row.key].slice(-2):keys.filter(k=>k!==row.key))}}/>
+      Compare entry</label>
      <p>{row.author} · {row.kind} · {row.rating}</p>
      <p><b>Rights:</b> {row.rights} · <b>Hosting:</b> {row.hosting}</p>
      {row.fandom.length>0&&<p><b>Fandom:</b> {row.fandom.join(', ')}</p>}
