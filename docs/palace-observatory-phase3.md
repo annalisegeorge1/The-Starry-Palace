@@ -60,3 +60,13 @@ The separate PR-only verification workflow is designed to run model and issue li
 - Previously excluded Mature/Explicit hosted archive metadata is no longer filtered out of the prepared Reading Rooms collection solely for its rating. Publication status, Supabase visibility and hosted-text rights checks remain the upstream responsibility.
 - This is a **front-end/code-path fix**, not proof that all published cards render on every public browser route or that all archive pages have been fetched. The 13-case manual acceptance checklist remains mandatory.
 - Review workflow now tests the actual unified catalogue, fandom navigation and hosted-archive integration alongside the Observatory model, without deployment. If the standard project-wide suite still fails on unrelated expectations, triage those separately.
+
+ 
+## Phase 8 — public catalogue completeness and hosting-rights guard (draft only)
+- A permission-pending, draft or unverified archive record must **not** displace a valid original-author link. The hosted display model now carries `archive_display_ready`, calculated from the existing verified-hosting rule. The unified catalogue accepts a hosted archive entry only when this flag is true.
+- Public discovery excludes records explicitly marked private, members-only or unpublished, even if they were accidentally included among supplied results. The shared published-work query now includes publication and visibility fields so the catalogue can enforce that distinction. Existing RLS remains the primary protection.
+- The Fandom Atlas previously requested only the first 48 published records. It now explicitly offers on-demand older pages, counting *all* fetched records in its offset while displaying only the public fanworks. This avoids falsely treating the first page as the whole collection.
+- Fandom-selected results and the general paged catalogue are combined without duplicate cards. The external-author links remain independent and do not require an account.
+- The existing fandom-specific public query still has a 100-work cap and tag-link query limit. Loading more general public pages can supplement those results but this change does **not** prove exhaustive results for a large fandom. Do not label the full catalogue verified until the public search/Atlas is manually checked, including total counts and pagination.
+- Updated the reader discovery regression to reflect the approved Mature/Explicit *metadata* rule, not the obsolete 18+ acknowledgement switch. Actual restricted chapter access was not modified.
+
