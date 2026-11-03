@@ -19,6 +19,7 @@ import PalaceResumeReading from './PalaceResumeReading';
 import {WriterWelcome} from './WriterWelcome';
 import {PalaceRoomDirectory,PalaceHomeCulturePaths,PalaceHomeMore} from './PalaceHomeWelcome';
 import PalaceSidebarNavigation from './PalaceSidebarNavigation';
+import PalaceThemePicker,{normalizePalaceTheme} from './PalaceThemePicker';
 import PalaceNewStories from './PalaceNewStories';
 import PalaceEmailUnsubscribe from './PalaceEmailUnsubscribe';
 import PalaceHomeHub from './PalaceHomeHub';
@@ -138,6 +139,7 @@ import './reading-facet-mobile-quickpass.css';
 import './palace-sophistication-pass.css';
 import './palace-events-profile-commons-refinement.css';
 import './palace-mobile-drawer-compact.css';
+import './palace-midnight-theme.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
@@ -344,7 +346,8 @@ function FrameShell({children}){
  React.useEffect(()=>{window.__palaceBootReady?.()},[]);
  const [navOpen,setNavOpen]=useState(false);
  const [sidebarCollapsed,setSidebarCollapsed]=useState(()=>safeLocalGet('palace-sidebar-collapsed')==='1');
- const [daylight,setDaylight]=useState(()=>safeLocalGet('palace-theme')==='daylight');
+ const [palaceTheme,setPalaceTheme]=useState(()=>normalizePalaceTheme(safeLocalGet('palace-theme')));
+ const daylight=palaceTheme==='daylight';
  const [search,setSearch]=useState('');
  const [commandOpen,setCommandOpen]=useState(false);
  const [mobileGlobalSearchOpen,setMobileGlobalSearchOpen]=useState(false);
@@ -369,10 +372,9 @@ function FrameShell({children}){
  React.useEffect(()=>setNavOpen(false),[location.pathname,location.search]);
  React.useEffect(()=>{setCommandOpen(false);setMobileMoreOpen(false);setCommandQuery('');setCommandIndex(0)},[location.pathname,location.search]);
  React.useEffect(()=>{
-  const theme=daylight?'daylight':'nightfall';
-  document.documentElement.dataset.palaceTheme=theme;
-  safeLocalSet('palace-theme',daylight?'daylight':'night');
- },[daylight]);
+  document.documentElement.dataset.palaceTheme=palaceTheme;
+  safeLocalSet('palace-theme',palaceTheme==='nightfall'?'night':palaceTheme);
+ },[palaceTheme]);
  React.useEffect(()=>{safeLocalSet('palace-sidebar-collapsed',sidebarCollapsed?'1':'0')},[sidebarCollapsed]);
  React.useEffect(()=>{const onKey=e=>{if(shouldOpenPalaceQuickNavigation(e)){e.preventDefault();setCommandOpen(v=>!v)}else if(e.key==='Escape'){setCommandOpen(false);setMobileMoreOpen(false);setNavOpen(false)}};window.addEventListener('keydown',onKey);return()=>window.removeEventListener('keydown',onKey)},[]);
  React.useEffect(()=>{
@@ -532,7 +534,7 @@ function FrameShell({children}){
  function submitSearch(e){e.preventDefault();if(search.trim())navigate('/search?q='+encodeURIComponent(search.trim()))}
  function chooseCommand(path){setCommandOpen(false);setCommandQuery('');setCommandIndex(0);navigate(path)}
  function searchCommand(){const q=commandQuery.trim();if(!q)return;setCommandOpen(false);setCommandQuery('');setCommandIndex(0);navigate('/search?q='+encodeURIComponent(q))}
- return <div data-palace-frame="ready" data-palace-room={activeRoom?.id||"unknown"} className={"palace-shell full-palace-shell "+(navOpen?'nav-open ':'')+(sidebarCollapsed?'sidebar-collapsed ':'')+(daylight?'daylight':'nightfall')}>
+ return <div data-palace-frame="ready" data-palace-room={activeRoom?.id||"unknown"} className={"palace-shell full-palace-shell "+(navOpen?'nav-open ':'')+(sidebarCollapsed?'sidebar-collapsed ':'')+(daylight?'daylight':'nightfall')+(palaceTheme==='midnight'?' midnight':'')}>
   <a className="skip-to-content" href="#palace-content">Skip to main content</a>
   <aside id="palace-sidebar" className="sidebar full-sidebar" aria-label="Palace navigation" role={navOpen?'dialog':undefined} aria-modal={navOpen?'true':undefined} tabIndex={navOpen?-1:undefined}>
    <div className="palace-cover-live restored-cover dusk-gif-cover"><img src="/assets/palace/palace-belonging.gif" alt="" aria-hidden="true" loading="lazy" decoding="async"/><div className="dusk-cover-glass" aria-hidden="true"/><button className="sidebar-retract" type="button" onClick={()=>setSidebarCollapsed(true)} aria-label="Retract Palace sidebar" title="Retract sidebar">‹</button><button className="nav-close" onClick={()=>setNavOpen(false)} aria-label="Close Palace navigation">×</button></div>
@@ -545,11 +547,7 @@ function FrameShell({children}){
     <Link to="/letters"><span className="sidebar-foot-icon" aria-hidden="true"><PalaceRoomIcon name="letters"/></span><span>Palace Letters</span></Link>
     <Link to="/activity"><span className="sidebar-foot-icon" aria-hidden="true"><PalaceRoomIcon name="activity"/></span><span>Moonlight Activity</span></Link>
    </>}
-    <button type="button" className="sidebar-theme" aria-pressed={daylight} aria-label={daylight?'Switch to Nightfall':'Switch to Daylight'} onClick={()=>setDaylight(v=>!v)}>
-     <span className="sidebar-theme-icon" aria-hidden="true">{daylight?'☼':'☾'}</span>
-     <span className="sidebar-theme-copy"><strong>Daylight</strong><small>{daylight?'On · tap for Nightfall':'Off · tap to switch on'}</small></span>
-     <span className="sidebar-theme-switch" aria-hidden="true"><i/></span>
-    </button>
+    <PalaceThemePicker value={palaceTheme} onChange={setPalaceTheme}/>
    </div>
   </aside>
   <button className="nav-scrim" aria-label="Close navigation" onClick={()=>setNavOpen(false)}/>
@@ -594,7 +592,7 @@ function FrameShell({children}){
         <Link to={shellProfile?.username?"/member/"+shellProfile.username:"/chamber"}><span><PalaceRoomIcon name="profile"/></span><strong>My Chamber</strong><small>Profile & public identity</small></Link>
         <Link to="/settings"><span><PalaceRoomIcon name="settings"/></span><strong>Settings</strong><small>Privacy, comfort & account</small></Link>
       </div>
-      <footer><button type="button" onClick={()=>setDaylight(v=>!v)}><span>{daylight?'☾':'☼'}</span>{daylight?'Switch to Nightfall':'Switch to Daylight'}</button><button type="button" onClick={()=>{setMobileMoreOpen(false);setNavOpen(true)}}><span>☰</span>Full Palace map</button></footer>
+      <footer><PalaceThemePicker compact value={palaceTheme} onChange={setPalaceTheme}/><button type="button" onClick={()=>{setMobileMoreOpen(false);setNavOpen(true)}}><span>☰</span>Full Palace map</button></footer>
     </section>
   </div>}
  </div>
