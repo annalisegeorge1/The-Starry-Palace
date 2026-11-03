@@ -48,7 +48,12 @@ describe('Fandom Atlas includes the same rights-aware Fanfiction collection',()=
   expect(readFileSync('src/liveRooms.jsx','utf8')).toContain('defaultSource="all"');
   expect(atlas).not.toContain('defaultSource="hosted"');
   expect(readFileSync('src/liveRooms.jsx','utf8')).not.toContain('defaultSource="hosted"');
-  expect(atlas).toContain('publishedWorks={[...(selectedNames.length?stories:fanworkRows),...historicFanworks]}');
+  expect(atlas).toContain('publishedWorks={[...(selectedNames.length?stories:[]),...fanworkRows,...historicFanworks]}');
+  expect(atlas).toContain('getPublishedWorks({offset:fetchedPublished,limit:48})');
+  expect(atlas).toContain('setFetchedPublished(old=>old+page.length)');
+  expect(atlas).toContain('hasMoreHosted={fanworksHasMore}');
+  expect(atlas).toContain('onMoreHosted={loadMoreFanworks}');
+  expect(atlas).toContain("w.visibility==='public'");
   expect(atlas).toContain('inFandomAtlas={true}');
   expect(atlas).toContain('fandomNames={activeFandomNames}');
   expect(atlas).toContain('fandomMatch={mode}');
