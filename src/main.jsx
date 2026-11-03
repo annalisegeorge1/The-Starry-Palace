@@ -140,6 +140,7 @@ import './palace-sophistication-pass.css';
 import './palace-events-profile-commons-refinement.css';
 import './palace-mobile-drawer-compact.css';
 import './palace-midnight-theme.css';
+import './member-page-skins.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
