@@ -83,3 +83,32 @@ export function filterPalaceObservatoryRows(rows,{query='',kind='all',status='al
  return rows.filter(r=>(kind==='all'||r.kind===kind)&&(status==='all'||r.publication===status)&&
   (!needle||[r.title,r.author,...r.tags,...r.fandom,...r.relationships].some(v=>norm(v).includes(needle))));
 }
+
+
+/**
+ * Compare two selected catalogue entries without reading manuscript or
+ * chapter text. This is display-only: it cannot change tags or placement.
+ */
+export function palaceObservatoryComparison(rows=[],selectedKeys=[]){
+ const keys=[...new Set((selectedKeys||[]).filter(x=>typeof x==='string'))].slice(0,2);
+ const chosen=keys.map(key=>rows.find(row=>row?.key===key)).filter(Boolean);
+ if(chosen.length!==2)return null;
+ const show=value=>{
+  if(Array.isArray(value))return value.length?value.join(', '):'—';
+  return value===null||value===undefined||value===''?'—':String(value);
+ };
+ const fields=[
+  ['Catalogue source','kind'],['Author / creator','author'],['Published state','publication'],
+  ['Rating','rating'],['Hosting method','hosting'],['Rights / permissions','rights'],
+  ['Fandoms','fandom'],['Relationships','relationships'],['Tags','tags'],
+  ['Expected location','expected'],['Source link (HTTPS)','sourceUrl'],['Verification','verification']
+ ];
+ return {
+  left:{key:chosen[0].key,title:chosen[0].title||'Untitled'},
+  right:{key:chosen[1].key,title:chosen[1].title||'Untitled'},
+  fields:fields.map(([label,key])=>({
+   label,left:show(chosen[0][key]),right:show(chosen[1][key]),
+   differs:show(chosen[0][key])!==show(chosen[1][key])
+  }))
+ };
+}
