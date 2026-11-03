@@ -51,7 +51,8 @@ export default function PalaceCompactTagRefiner({facets=[],included=[],excluded=
        aria-label={'Remove '+(mode==='include'?'included ':'excluded ')+tag.name}>{tag.name} <span aria-hidden="true">×</span></button>)}
      </div>}
      {query?<div className="palace-compact-tag-matches" role="group" aria-label={label+' matching tags'}>
-       <small role="status">{matches.length} matching {matches.length===1?'tag':'tags'} · commas or semicolons separate names</small>
+       <small role="status">{matches.length} matching {matches.length===1?'tag':'tags'}</small>
+       <small>Use commas or semicolons to search several tags.</small>
        {exactToAdd.length>0&&<button type="button" onClick={()=>exactToAdd.forEach(tag=>onToggle(tag.id,mode))}>Add {exactToAdd.length} exact {exactToAdd.length===1?'tag':'tags'} to {mode}</button>}
        {unresolved.length>0&&<small>Choose a suggestion for: {unresolved.join(', ')}</small>}
        {matches.map(tag=>choice(tag,mode))}
