@@ -93,6 +93,7 @@ import {TAG_BATCH_PAGE_SIZE,toggleQueuedTag,pendingTagBatch,visibleTagSuggestion
 import './palace-tag-batch.css';
 import {filterPalaceSearchGroups,countPalaceSearchGroups,activePalaceSearchFacets,buildSearchTagFacets,SEARCH_RESULT_KINDS,SEARCH_RATINGS,SEARCH_COMPLETION} from './palaceSearchResults';
 import {matchesReadingRelationships,RELATIONSHIP_TYPES} from './readingFacetModel';
+import {exactTagQueryMatches,searchSeveralTags} from './multiTagSearch';
 import PalaceRelationshipFilters from './PalaceRelationshipFilters';
 import PalaceCompactTagRefiner from './PalaceCompactTagRefiner';
 import MemberChamberDecor,{useChamberDecor} from './MemberChamberDecor';
@@ -499,8 +500,21 @@ export function ReadingLive({Frame}){
  function surpriseMe(){const choice=chooseReadingSurprise(catalogue);if(choice)navigate(storyHref(choice))}
  useEffect(()=>{if(surpriseHandled.current||!works||new URLSearchParams(location.search).get('surprise')!=='1')return;surpriseHandled.current=true;const pool=allReadingWorks;if(!pool.length){navigate('/reading',{replace:true});return}const choice=pool[Math.floor(Math.random()*pool.length)];if(choice)navigate(storyHref(choice),{replace:true})},[works,archiveWorks,readerState,location.search]);
  function flags(w){const s=stateFor(w);const rows=[];if(hasNew(w))rows.push(['new','New chapter']);if(s.progress&&!s.progress.completed)rows.push(['reading','Reading']);else if(finished(w))rows.push(['finished','Finished']);if(s.saved)rows.push(['saved','Saved']);if(s.following)rows.push(['following','Following']);return rows}
- useEffect(()=>{if(!advancedView)return;let alive=true;setAdvancedTagBusy(true);const t=setTimeout(()=>{searchPalaceTags(advancedTagQuery,advancedTagCategory,80).then(rows=>{if(alive)setAdvancedTags(rows||[])}).catch(e=>setError(e.message)).finally(()=>{if(alive)setAdvancedTagBusy(false)})},160);return()=>{alive=false;clearTimeout(t)}},[advancedView,advancedTagQuery,advancedTagCategory]);
+ useEffect(()=>{if(!advancedView)return;let alive=true;setAdvancedTagBusy(true);const t=setTimeout(()=>{(advancedTagQuery.trim()?searchSeveralTags(searchPalaceTags,advancedTagQuery,advancedTagCategory,35):searchPalaceTags('',advancedTagCategory,80)).then(rows=>{if(alive)setAdvancedTags(rows||[])}).catch(e=>setError(e.message)).finally(()=>{if(alive)setAdvancedTagBusy(false)})},160);return()=>{alive=false;clearTimeout(t)}},[advancedView,advancedTagQuery,advancedTagCategory]);
  function advancedFlip(id,mode){const selectedTag=advancedTags.find(tag=>tag.id===id);if(selectedTag)setAdvancedTagLabels(previous=>({...previous,[id]:selectedTag}));if(mode==='include'){setAdvancedExclude(x=>x.filter(v=>v!==id));setAdvancedInclude(x=>x.includes(id)?x.filter(v=>v!==id):[...x,id])}else{setAdvancedInclude(x=>x.filter(v=>v!==id));setAdvancedExclude(x=>x.includes(id)?x.filter(v=>v!==id):[...x,id])}}
+ function advancedAddExact(mode){
+  const {matches}=exactTagQueryMatches(advancedTags,advancedTagQuery);
+  const ids=matches.map(tag=>tag.id).filter(id=>!(mode==='include'?advancedInclude:advancedExclude).includes(id));
+  if(!ids.length)return;
+  setAdvancedTagLabels(previous=>({...previous,...Object.fromEntries(matches.map(tag=>[tag.id,tag]))}));
+  if(mode==='include'){
+   setAdvancedExclude(previous=>previous.filter(id=>!ids.includes(id)));
+   setAdvancedInclude(previous=>[...new Set([...previous,...ids])].slice(0,24));
+  }else{
+   setAdvancedInclude(previous=>previous.filter(id=>!ids.includes(id)));
+   setAdvancedExclude(previous=>[...new Set([...previous,...ids])].slice(0,24));
+  }
+ }
  async function runAdvancedSearch(e,page=0){
   e?.preventDefault();const request=++advancedRequest.current;
   setAdvancedBusy(true);setAdvancedSearched(false);setError('');
@@ -550,7 +564,9 @@ export function ReadingLive({Frame}){
    </div>
    <p className="palace-archive-scope">Search the entire published story archive. Private drafts never appear. To read the verified classics collection, visit <Link to="/reading">Stories</Link>. Press Search after changing filters.</p>
    <section className="advanced-tag-builder"><div className="advanced-tag-head"><div><small>TAG CONSTELLATION</small><strong>Include what you crave. Exclude what you do not.</strong></div><span>{advancedTagBusy?'Gathering…':advancedTags.length+' suggestions'}</span></div>
-    <div className="advanced-tag-search"><input value={advancedTagQuery} onChange={e=>setAdvancedTagQuery(e.target.value)} placeholder="Find a trope, character, relationship, mood, warning…"/><select value={advancedTagCategory} onChange={e=>setAdvancedTagCategory(e.target.value)}><option value="all">All families</option>{['genre','trope','mood','setting','theme','fandom','character','relationship','warning','language','format','identity','era','accessibility','additional'].map(cat=><option key={cat} value={cat}>{cat.replaceAll('_',' ')}</option>)}</select></div>
+    <p>Search several tags together: separate names with commas or semicolons. Every included tag is required; any excluded tag removes the story. All content ratings remain discoverable unless filtered out.</p>
+    <div className="advanced-tag-search"><input value={advancedTagQuery} onChange={e=>setAdvancedTagQuery(e.target.value)} placeholder="Richonne, Slow Burn, Found Family…"/><select value={advancedTagCategory} onChange={e=>setAdvancedTagCategory(e.target.value)}><option value="all">All families</option>{['genre','trope','mood','setting','theme','fandom','character','relationship','warning','language','format','identity','era','accessibility','additional'].map(cat=><option key={cat} value={cat}>{cat.replaceAll('_',' ')}</option>)}</select></div>
+    {advancedTagQuery.trim()&&<div className="advanced-tag-batch-actions"><button type="button" disabled={!exactTagQueryMatches(advancedTags,advancedTagQuery).matches.some(tag=>!advancedInclude.includes(tag.id))} onClick={()=>advancedAddExact('include')}>＋ Include exact tags</button><button type="button" disabled={!exactTagQueryMatches(advancedTags,advancedTagQuery).matches.some(tag=>!advancedExclude.includes(tag.id))} onClick={()=>advancedAddExact('exclude')}>− Exclude exact tags</button></div>}
     {(advancedInclude.length>0||advancedExclude.length>0)&&<div className="advanced-tag-ledger">{advancedInclude.map(id=><button type="button" className="include" key={'adv-i-'+id} onClick={()=>advancedFlip(id,'include')}>＋ {advancedTagById[id]?.name||'selected tag'} ×</button>)}{advancedExclude.map(id=><button type="button" className="exclude" key={'adv-e-'+id} onClick={()=>advancedFlip(id,'exclude')}>− {advancedTagById[id]?.name||'selected tag'} ×</button>)}</div>}
     <div className="advanced-tag-suggestions">{advancedTags.slice(0,24).map(tag=><article key={tag.id} className={(advancedInclude.includes(tag.id)?'included ':'')+(advancedExclude.includes(tag.id)?'excluded ':'')}><div><strong>{tag.name}</strong><small>{tag.category} · {tag.status==='community'?'community':Number(tag.usage_count||0)+' uses'}</small></div><div><button type="button" onClick={()=>advancedFlip(tag.id,'include')}>＋ include</button><button type="button" onClick={()=>advancedFlip(tag.id,'exclude')}>− exclude</button></div></article>)}</div>
    </section>
