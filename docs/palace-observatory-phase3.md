@@ -12,7 +12,7 @@ The statuses are New, Investigating, Fix Proposed, Awaiting Review, Fixed, Reche
 Private screenshot uploads are designed for PNG, JPEG, or WebP images of six MiB or less. The proposed storage bucket is nonpublic, allows Owner access only, and issues time-limited signed links. Screenshot images and member manuscripts are not placed into the public repository or processed by AI.
 
 ## Setup is deliberately withheld
-The proposed SQL file is docs/palace-observatory-phase3-schema-proposal.sql. It creates Owner-restricted issues, immutable event history, screenshot metadata, and private storage policies. It is deliberately NOT in a deployed migration folder, and has NOT been executed.
+The proposed SQL file is docs/palace-observatory-phase3-schema-proposal.sql. It proposes Owner-restricted issues, immutable event history, screenshot metadata, and private storage object policies. The Storage bucket itself must be created separately through the approved Supabase Storage API or Dashboard, with public=false, a 6 MiB limit and only PNG/JPEG/WebP MIME types. Neither step has been executed, and the proposal is deliberately NOT in a deployed migration folder.
 
 Until schema approval, the UI displays "Issue storage pending review" rather than silently writing to a missing table. The current Supabase memberships do not assign an Owner, so the main private room remains locked too. Identity and role provisioning require a separate explicit decision.
 
@@ -35,3 +35,12 @@ Until schema approval, the UI displays "Issue storage pending review" rather tha
 6. Review before any schema application or live release. Preserve the existing age-13 membership minimum, rights distinctions and mature-content chapter gates.
 
 The separate PR-only verification workflow is designed to run model and issue lifecycle tests and compile the entire site without deployment. The standard full-project test workflow has independently reported failures in existing areas.
+
+## Phase 4 review hardening (unapplied)
+- Browser screenshot uploads now inspect image signatures as well as MIME labels and sizes. These byte checks do not prove that a file is harmless or redact its content. Authors/administrators must crop or redact screenshots before adding them.
+- Screenshot previews auto-hide after 110 seconds and offer a Close preview control, before the 120-second signed URL expiry. Closing a preview **cannot revoke** a signed URL already created.
+- Audit event proposals record changed field names, not duplicate old issue text.
+- Storage policies constrain screenshot paths to saved issue UUID folders. The proposed SQL explicitly avoids direct writes to storage.buckets.
+- The Catalogue tab has an optional two-entry metadata comparison for rights, hosting, fandom, tags, publication status, expected surfaces and original-source links. It cannot open member draft or chapter text.
+- PR-only tests include screenshot-signature checks, static SQL safety assertions, and the two-record comparison model.
+
