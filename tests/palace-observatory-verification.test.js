@@ -1,6 +1,6 @@
 import {describe,it,expect} from 'vitest';
 import {makePalacePlacementChecks,makePalaceTagScenarioChecks,
- assertCompletePalacePublicResult,makePalaceFanfictionCatalogueChecks}
+ assertCompletePalacePublicResult,makePalaceFanfictionCatalogueChecks,makePalaceFanfictionExclusionCheck}
  from '../src/palaceObservatoryVerificationModel.js';
 
 const story={id:'story1',title:'A Fandom Tale',work_type:'fanwork',rating:'explicit',
@@ -32,6 +32,15 @@ describe('Observatory guest-discovery verification',()=>{
  it('does not treat incomplete or truncated pagination as proof that a work is missing',()=>{
   expect(()=>assertCompletePalacePublicResult({results:[],total:1})).toThrow(/truncated/i);
   expect(()=>assertCompletePalacePublicResult({results:[],total:0})).not.toThrow();
+ });
+ it('detects when the unified catalogue ignores a real excluded tag',()=>{
+  const annotated={...story,work_tags:[...story.work_tags,
+   {tags:{id:'relationship1',name:'F/F',category:'relationship',status:'canonical'}}]};
+  const build=rows=>rows.map(r=>({key:'member:'+r.id}));
+  const ignoresTagFilters=rows=>rows;
+  const audit=makePalaceFanfictionExclusionCheck([annotated],build,ignoresTagFilters);
+  expect(audit).toHaveLength(1);
+  expect(audit[0].status).toBe('Mismatch');
  });
  it('flags code-level Mature/Explicit fandom suppression without testing age-gated text',()=>{
   const build=(rows)=>rows.map(r=>({key:'member:'+r.id,rating:r.rating}));
