@@ -3,6 +3,8 @@ import {makePalacePlacementChecks,makePalaceTagScenarioChecks,
  assertCompletePalacePublicResult,makePalaceFanfictionCatalogueChecks,makePalaceFanfictionExclusionCheck}
  from '../src/palaceObservatoryVerificationModel.js';
 
+import {createUnifiedFanworks,filterUnifiedFanworks} from '../src/UnifiedFanworkCatalogue.jsx';
+
 const story={id:'story1',title:'A Fandom Tale',work_type:'fanwork',rating:'explicit',
  publication_status:'published',visibility:'public',
  work_tags:[{tags:{id:'fandom1',name:'Naruto',category:'fandom',status:'canonical'}}]};
@@ -41,6 +43,16 @@ describe('Observatory guest-discovery verification',()=>{
   const audit=makePalaceFanfictionExclusionCheck([annotated],build,ignoresTagFilters);
   expect(audit).toHaveLength(1);
   expect(audit[0].status).toBe('Mismatch');
+ });
+ it('passes actual unified-card metadata filtering for Mature/Explicit fandom tags and exclusions',()=>{
+  const actual={...story,slug:'story1',work_tags:[...story.work_tags,
+   {tags:{id:'relationship1',name:'F/F',category:'relationship',status:'canonical'}}]};
+  const rated=makePalaceFanfictionCatalogueChecks([actual],createUnifiedFanworks,filterUnifiedFanworks);
+  expect(rated).toHaveLength(1);
+  expect(rated[0].status).toBe('Pass');
+  const excluded=makePalaceFanfictionExclusionCheck([actual],createUnifiedFanworks,filterUnifiedFanworks);
+  expect(excluded).toHaveLength(1);
+  expect(excluded[0].status).toBe('Pass');
  });
  it('flags code-level Mature/Explicit fandom suppression without testing age-gated text',()=>{
   const build=(rows)=>rows.map(r=>({key:'member:'+r.id,rating:r.rating}));
