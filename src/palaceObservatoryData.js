@@ -13,11 +13,12 @@ export async function getPalaceObservatoryAccess(userId){
  if(error)throw error;
  return data?.platform_role==='owner'&&data?.suspended===false;
 }
-async function selectPages(table,fields,orderColumn='id'){
+async function selectPages(table,fields,orderColumn='id',publicWorksOnly=false){
  const results=[],size=200,max=2000;
  for(let start=0;start<max;start+=size){
-  const {data,error}=await client().from(table).select(fields)
-   .order(orderColumn,{ascending:true}).range(start,start+size-1);
+  let query=client().from(table).select(fields);
+  if(publicWorksOnly)query=query.eq('publication_status','published').eq('visibility','public');
+  const {data,error}=await query.order(orderColumn,{ascending:true}).range(start,start+size-1);
   if(error)throw error;
   results.push(...(data||[]));
   if((data||[]).length<size)return results;
@@ -32,7 +33,7 @@ export async function readPalaceObservatoryMetadata(){
   throw Error('Owner access is required. No catalogue records were loaded.');
  const [works,archive,rights,texts]=await Promise.all([
   selectPages('works',
-   'id,title,slug,work_type,publication_status,visibility,rating,work_tags(tags(id,name,category,status)),profiles!works_author_id_fkey(username,display_name)'),
+   'id,title,slug,work_type,publication_status,visibility,rating,work_tags(tags(id,name,category,status)),profiles!works_author_id_fkey(username,display_name)','id',true),
   selectPages('archive_records',
    'id,title,slug,creator_name,category,publication_status,host_mode,rights_status,rating,hosted_word_count,minimum_reader_age,source_notes'),
   selectPages('archive_rights_records',
