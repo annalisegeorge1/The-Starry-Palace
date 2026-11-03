@@ -93,7 +93,7 @@ import {TAG_BATCH_PAGE_SIZE,toggleQueuedTag,pendingTagBatch,visibleTagSuggestion
 import './palace-tag-batch.css';
 import {filterPalaceSearchGroups,countPalaceSearchGroups,activePalaceSearchFacets,buildSearchTagFacets,SEARCH_RESULT_KINDS,SEARCH_RATINGS,SEARCH_COMPLETION} from './palaceSearchResults';
 import {matchesReadingRelationships,RELATIONSHIP_TYPES} from './readingFacetModel';
-import {exactTagQueryMatches,searchSeveralTags} from './multiTagSearch';
+import {exactTagQueryMatches,searchSeveralTags,isMultiTagPhrase,resolveMultiTagPhrase} from './multiTagSearch';
 import PalaceRelationshipFilters from './PalaceRelationshipFilters';
 import PalaceCompactTagRefiner from './PalaceCompactTagRefiner';
 import MemberChamberDecor,{useChamberDecor} from './MemberChamberDecor';
@@ -325,6 +325,26 @@ export function ReadingLive({Frame}){
  const readerLens=readingChoices.readerLens;const setReaderLens=value=>setReadingChoice('readerLens',value);
  const catalogueSort=readingChoices.catalogueSort;const setCatalogueSort=value=>setReadingChoice('catalogueSort',value);
  const includedTags=readingChoices.includeTags;const excludedTags=readingChoices.excludeTags;
+ // The everyday search accepts several actual tag names, not only a literal
+ // comma-joined phrase. Only full exact matches become archive-wide AND filters.
+ const multiTagQuery=isMultiTagPhrase(query)?query:'';
+ const [multiTagLookup,setMultiTagLookup]=useState({value:'',complete:false,matches:[],unresolved:[],error:null});
+ useEffect(()=>{
+  if(!multiTagQuery){setMultiTagLookup({value:'',complete:false,matches:[],unresolved:[],error:null});return}
+  let active=true;
+  const timer=setTimeout(()=>{
+   searchSeveralTags(searchPalaceTags,multiTagQuery,'all',35).then(tags=>{
+    if(active)setMultiTagLookup({value:multiTagQuery,...resolveMultiTagPhrase(multiTagQuery,tags),error:null});
+   }).catch(()=>{
+    if(active)setMultiTagLookup({value:multiTagQuery,complete:false,matches:[],unresolved:[],error:'The tag directory is unavailable. Try again.'});
+   });
+  },230);
+  return()=>{active=false;clearTimeout(timer)};
+ },[multiTagQuery]);
+ const multiTagWaiting=Boolean(multiTagQuery)&&multiTagLookup.value!==multiTagQuery;
+ const multiTagResolved=Boolean(multiTagQuery)&&!multiTagWaiting&&multiTagLookup.complete;
+ const effectiveReadingText=multiTagResolved?'':query;
+ const effectiveReadingTags=multiTagResolved?[...new Set([...includedTags,...multiTagLookup.matches.map(tag=>tag.id)])]:includedTags;
  const[relationshipIncluded,setRelationshipIncluded]=useState([]);
  const[relationshipExcluded,setRelationshipExcluded]=useState([]);
  const inAdvancedSearch=new URLSearchParams(location.search).get('view')==='search';
@@ -336,8 +356,8 @@ export function ReadingLive({Frame}){
   &&readingChoices.catalogueScope==='archive'&&readerLens==='all'
   &&vibeDoor==='all'&&isArchiveReadingSort(catalogueSort);
  const archiveBrowse=usePublishedBrowse({
-  enabled:archiveBrowseEnabled,identity:session?.user?.id||'guest',
-  text:query,include:includedTags,exclude:excludedTags,rating,status,origin,sort:catalogueSort
+  enabled:archiveBrowseEnabled&&!multiTagWaiting,identity:session?.user?.id||'guest',
+  text:effectiveReadingText,include:effectiveReadingTags,exclude:excludedTags,rating,status,origin,sort:catalogueSort
  });
  function browseAllPublished(){
   setRelationshipIncluded([]);setRelationshipExcluded([]);
@@ -438,7 +458,7 @@ export function ReadingLive({Frame}){
  const storyHref=w=>{if(w.is_archive)return directClassicHref(w);const p=stateFor(w).progress;if(p&&!p.completed&&p.chapter_id)return"/work/"+w.slug+"/chapter/"+p.chapter_id;return"/work/"+w.slug};
  const storyCta=w=>w.is_archive?(w.work_type==='fanwork'?'Read fanfic →':'Read classic →'):reopened(w)?'Read new chapter →':stateFor(w).progress&&!stateFor(w).progress.completed?'Continue reading →':finished(w)?'Read again →':'Enter story →';
  const readerLensMatches=w=>readerLens==='all'||readerLens==='unread'&&!stateFor(w).progress||readerLens==='reading'&&needsReading(w)||readerLens==='new'&&hasNew(w)||readerLens==='saved'&&!!stateFor(w).saved||readerLens==='following'&&!!stateFor(w).following||readerLens==='finished'&&finished(w);
- const filtered=roomWorks.filter(w=>matchesReadingFacets(w,includedTags,excludedTags)&&matchesReadingRelationships(w,relationshipIncluded,relationshipExcluded)&&moodMatches(w,vibeDoor)&&readerLensMatches(w)&&(rating==='all'||w.rating===rating)&&(status==='all'||w.completion_status===status)&&(!query.trim()||[w.title,w.summary,w.profiles?.display_name,w.profiles?.username,w.profiles?.title,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase().includes(query.trim().toLowerCase())));
+ const filtered=roomWorks.filter(w=>matchesReadingFacets(w,effectiveReadingTags,excludedTags)&&matchesReadingRelationships(w,relationshipIncluded,relationshipExcluded)&&moodMatches(w,vibeDoor)&&readerLensMatches(w)&&(rating==='all'||w.rating===rating)&&(status==='all'||w.completion_status===status)&&(!effectiveReadingText.trim()||[w.title,w.summary,w.profiles?.display_name,w.profiles?.username,w.profiles?.title,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase().includes(effectiveReadingText.trim().toLowerCase())));
  const catalogue=sortReadingWorks(filtered,catalogueSort);
  // Published archive-wide member search and the separately hosted archive use
  // different backends. Surface verified, readable fanworks in the same Reading
@@ -458,7 +478,7 @@ export function ReadingLive({Frame}){
   includeHosted:origin==='all'
  }):catalogue.length;
  const showBrowseCards=archiveBrowseEnabled?Boolean(archiveBrowse.snapshot):Boolean(works);
- const browseLoading=archiveBrowseEnabled?archiveBrowse.loading:!works&&!error;
+ const browseLoading=archiveBrowseEnabled?(multiTagWaiting||archiveBrowse.loading):!works&&!error;
  const browseError=archiveBrowseEnabled?archiveBrowse.error:error;
  const activeReadingFilters=[...readingFilterChips({origin,query,rating,status,vibeDoor,readerLens},Object.fromEntries(moodDoors.map(door=>[door.id,door.label]))),...includedTags.map(id=>({key:'include:'+id,label:'Include: '+(facetNames[id]||'selected tag')})),...excludedTags.map(id=>({key:'exclude:'+id,label:'Exclude: '+(facetNames[id]||'selected tag')})),...relationshipIncluded.map(id=>({key:'relationship-include:'+id,label:'Include '+(RELATIONSHIP_TYPES.find(([k])=>k===id)?.[1]||id)})),...relationshipExcluded.map(id=>({key:'relationship-exclude:'+id,label:'Exclude '+(RELATIONSHIP_TYPES.find(([k])=>k===id)?.[1]||id)}))];
  const fanfictionActiveFilters=activeReadingFilters.filter(item=>item.key!=='origin');
@@ -607,7 +627,11 @@ export function ReadingLive({Frame}){
   </section>}
   {origin!=='fandom'&&<section className="legacy-reading-tools chic-reading-tools reading-search-calm">
    <div className="reading-search" role="search"><span aria-hidden="true">⌕</span><input aria-label={archiveBrowseEnabled?'Search all published Reading Room stories':'Search the currently loaded Reading Room stories'} value={query} onChange={e=>setQuery(e.target.value)} placeholder="Title, writer, fandom or tag…"/></div>
-   <div className="reading-result-count" aria-live="polite"><strong>{archiveBrowseEnabled?(archiveBrowse.snapshot?visibleTotal.toLocaleString():'…'):catalogue.length.toLocaleString()}</strong><span>{origin==='fandom'?('Palace-hosted results · '+MODERN_FANFICTION_LINKS.length+' author-source fanfics in the unified catalogue below'):(archiveBrowseEnabled?'matching published member stories and hosted fanfiction':('matching among '+allReadingWorks.length+' loaded '+(allReadingWorks.length===1?'work':'works')))}</span></div>
+   <div className="reading-result-count" aria-live="polite"><strong>{archiveBrowseEnabled?(archiveBrowse.snapshot?visibleTotal.toLocaleString():'…'):multiTagWaiting?'…':catalogue.length.toLocaleString()}</strong><span>{origin==='fandom'?('Palace-hosted results · '+MODERN_FANFICTION_LINKS.length+' author-source fanfics in the unified catalogue below'):(archiveBrowseEnabled?'matching published member stories and hosted fanfiction':('matching among '+allReadingWorks.length+' loaded '+(allReadingWorks.length===1?'work':'works')))}</span></div>
+   {multiTagQuery&&<div className="reading-multi-tag-summary" role="status">
+    <small>{multiTagWaiting?'Finding matching tags…':multiTagResolved?'Matching ALL selected tags · remove a name to widen your search':multiTagLookup.error||('Exact tag not found: '+(multiTagLookup.unresolved.join(', ')||'choose individual tags in Sort & Filter'))}</small>
+    {multiTagResolved&&<div className="reading-multi-tag-chips" aria-label="Tags required by this search">{multiTagLookup.matches.map(tag=><button type="button" key={tag.id} title={'Remove '+tag.name+' from search'} aria-label={'Remove '+tag.name+' from tag search'} onClick={()=>setQuery(query.split(/[,;\n]+/).map(name=>name.trim()).filter(name=>name&&name.toLocaleLowerCase()!==tag.name.toLocaleLowerCase()).join(', '))}>＋ {tag.name} ×</button>)}</div>}
+   </div>}
   </section>}
   {!archiveBrowseEnabled&&readerLens!=='all'&&<p className="reading-scope-note">Personal lenses search your currently loaded reading shelf. Choose “Entire published archive” to return to public browsing.</p>}
   {!archiveBrowseEnabled&&vibeDoor!=='all'&&<p className="reading-scope-note">Mood suggestions come from loaded stories, not archive-wide rankings.</p>}
