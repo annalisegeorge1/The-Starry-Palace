@@ -31,7 +31,7 @@ describe('mobile More Palace doors',()=>{
   }
   expect(panel).toContain('palace-belonging.gif');
   expect(panel).toContain('aria-label="Close more Palace rooms"');
-  expect(panel).toContain('Switch to Daylight');
+  expect(panel).toContain('<PalaceThemePicker compact value={palaceTheme} onChange={setPalaceTheme}/>');
   expect(panel).toContain('Full Palace map');
   expect(main.indexOf("import './palace-navigation-jewels.css'")).toBeGreaterThan(main.indexOf("import './polish.css'"));
  });

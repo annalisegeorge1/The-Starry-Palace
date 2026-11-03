@@ -5,7 +5,7 @@ describe('Browser-only chapter document import',()=>{
  it('preserves safe Word headings, inline styling, breaks and list structure',()=>{
   const {html}=docxXmlToPalaceHtml(xml);
   expect(html).toContain('<h2>Chapter One</h2>');
-  expect(html).toContain('<strong><em>silver sky</em></strong>');
+  expect(html).toContain('<em><strong>silver sky</strong></em>');
   expect(html).toContain('<br>returns.');
   expect(html).toContain('<ul><li>First</li><li>Second</li></ul>');
  });

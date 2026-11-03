@@ -12,11 +12,11 @@ describe('retire legacy floating shortcuts without losing destinations',()=>{
   expect(shell).not.toContain('function wanderFromHere()');
  });
  it('keeps the useful controls and unread counts in established navigation',()=>{
-  expect(shell).toContain('className="sidebar-theme"');
+  expect(shell).toContain('<PalaceThemePicker value={palaceTheme} onChange={setPalaceTheme}/>');
   expect(shell).toContain('className="mobile-more-grid"');
   expect(shell).toContain('to="/letters" className={letterBadge?');
   expect(shell).toContain('className="mobile-dock-badge"');
-  expect(shell).toContain('Switch to Daylight');
+  expect(shell).toContain('<PalaceThemePicker compact value={palaceTheme} onChange={setPalaceTheme}/>');
   expect(shell).toContain('Switch to Nightfall');
   expect(shell).toContain('Open Palace Chat');
  });

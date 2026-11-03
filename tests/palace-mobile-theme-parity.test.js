@@ -9,8 +9,8 @@ const chatViewport=readFileSync('src/palace-chat-mobile-viewport.css','utf8');
 
 describe('Shared Palace colours on phones, tablets and desktops',()=>{
  it('has one persisted Nightfall/Daylight choice for the entire shell and lazy chat',()=>{
-  expect(shell).toContain("document.documentElement.dataset.palaceTheme=theme;");
-  expect(shell).toContain("safeLocalSet('palace-theme',daylight?'daylight':'night');");
+  expect(shell).toContain("document.documentElement.dataset.palaceTheme=palaceTheme;");
+  expect(shell).toContain("safeLocalSet('palace-theme',palaceTheme==='nightfall'?'night':palaceTheme);");
   expect(shell).toContain("import './palace-mobile-theme-parity.css';");
   expect(chat).toContain("import './palace-chat-theme-parity.css';");
   expect(chat.indexOf("import './palace-chat-theme-parity.css';"))

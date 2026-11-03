@@ -20,8 +20,8 @@ describe('mobile Palace reading screenshots regression',()=>{
   expect(css).not.toContain('.story-row{display:none');
  });
  it('retains theme and Letters through navigation menus without old floating orbs',()=>{
-  expect(shell).toContain('className="sidebar-theme"');
-  expect(shell).toContain('Switch to Daylight');
+  expect(shell).toContain('<PalaceThemePicker value={palaceTheme} onChange={setPalaceTheme}/>');
+  expect(shell).toContain('<PalaceThemePicker compact value={palaceTheme} onChange={setPalaceTheme}/>');
   expect(shell).not.toContain('className="float-btn theme-orb"');
   expect(shell).toContain('to="/letters" className={letterBadge?');
  });

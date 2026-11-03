@@ -42,6 +42,6 @@ describe('Android layout repair guardrails',()=>{
  it('leaves mobile theme available in the sidebar while hiding duplicated floaters',()=>{
   expect(css).toContain('.palace-shell.full-palace-shell .restored-floating-controls{');
   expect(css).toContain('display:none!important');
-  expect(main).toContain('className="sidebar-theme"');
+  expect(main).toContain('<PalaceThemePicker value={palaceTheme} onChange={setPalaceTheme}/>');
  });
 });
