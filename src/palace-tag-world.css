@@ -219,3 +219,18 @@
 @media(max-width:500px){
  .palace-shell.full-palace-shell .tag-results-sort{width:100%;min-width:0}
 }
+
+
+/* Keep multiple selected tags visible and removable on narrow phone screens. */
+.palace-shell.full-palace-shell .tag-world-chosen-pills,
+.palace-shell.full-palace-shell .tag-world-batch-actions{
+ display:flex;flex-wrap:wrap;align-items:center;gap:7px;
+ width:100%;min-width:0;margin:5px 0;
+}
+.palace-shell.full-palace-shell .tag-world-chosen-pills button,
+.palace-shell.full-palace-shell .tag-world-batch-actions button{
+ min-height:40px;max-width:100%;overflow-wrap:anywhere;
+ padding:7px 10px;border-radius:9px;border:1px solid var(--ui-line);
+ background:var(--ui-raised);color:var(--ui-text);
+ font:650 .74rem/1.4 system-ui,sans-serif;cursor:pointer;
+}
