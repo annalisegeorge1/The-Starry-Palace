@@ -8,6 +8,7 @@ import ReadingStoryStats from './ReadingStoryStats';
 import ReadingCardTags from './ReadingCardTags';
 import StoryRatingBadge from './StoryRatingBadge';
 import {TAG_UUID,TAG_WORLD_LABELS,tagWorldPath} from './tagWorldRoutes';
+import {exactTagQueryMatches,searchSeveralTags} from './multiTagSearch';
 import './palace-tag-world.css';
 
 const SORTS=[
@@ -36,6 +37,7 @@ export default function PalaceTagWorld(){
  const [extraInclude,setExtraInclude]=useState([]);
  const [extraExclude,setExtraExclude]=useState([]);
  const [searchTags,setSearchTags]=useState('');
+ const [selectedTagNames,setSelectedTagNames]=useState({});
  const [suggestions,setSuggestions]=useState([]);
  const [suggestBusy,setSuggestBusy]=useState(false);
  const [suggestError,setSuggestError]=useState('');
@@ -51,14 +53,14 @@ export default function PalaceTagWorld(){
  },[tagId,valid,retryTag]);
  useEffect(()=>{
   setText('');setRating('all');setStatus('all');setSort('updated');
-  setOrigin('all');setExtraInclude([]);setExtraExclude([]);setSearchTags('');
+  setOrigin('all');setExtraInclude([]);setExtraExclude([]);setSearchTags('');setSelectedTagNames({});
  },[tagId]);
  useEffect(()=>{
   const term=searchTags.trim();
   if(!term){setSuggestions([]);setSuggestBusy(false);setSuggestError('');return}
   let active=true;setSuggestBusy(true);setSuggestError('');
   const timer=setTimeout(()=>{
-   searchPalaceTags(term,'all',35).then(rows=>{
+   searchSeveralTags(searchPalaceTags,term,'all',35).then(rows=>{
     if(active)setSuggestions((rows||[]).filter(row=>tagWorldPath(row)&&row.id!==tagId&&['canonical','community'].includes(row.status)));
    }).catch(()=>{if(active){setSuggestions([]);setSuggestError('Tag suggestions are unavailable. Please try again.')}})
     .finally(()=>{if(active)setSuggestBusy(false)});
@@ -69,12 +71,29 @@ export default function PalaceTagWorld(){
  const include=useMemo(()=>enabled?[tag.id,...extraInclude.filter(id=>id!==tag.id)]:[],[enabled,tag?.id,extraInclude]);
  const archive=usePublishedBrowse({enabled,identity:'public-tag-'+tagId,text,include,exclude:extraExclude,rating,status,origin,sort});
  function choose(id,mode){
+  const found=suggestions.find(item=>item.id===id);
+  if(found)setSelectedTagNames(prev=>({...prev,[id]:found.name}));
   if(mode==='include'){
    setExtraExclude(prev=>prev.filter(item=>item!==id));
    setExtraInclude(prev=>prev.includes(id)?prev.filter(item=>item!==id):[...prev,id].slice(0,12));
   }else{
    setExtraInclude(prev=>prev.filter(item=>item!==id));
    setExtraExclude(prev=>prev.includes(id)?prev.filter(item=>item!==id):[...prev,id].slice(0,12));
+  }
+ }
+ function addExactTags(mode){
+  const {matches}=exactTagQueryMatches(suggestions,searchTags);
+  const selected=mode==='include'?extraInclude:extraExclude;
+  const additions=matches.filter(item=>item.id!==tagId&&!selected.includes(item.id));
+  if(!additions.length)return;
+  const ids=additions.map(item=>item.id);
+  setSelectedTagNames(prev=>({...prev,...Object.fromEntries(additions.map(item=>[item.id,item.name]))}));
+  if(mode==='include'){
+   setExtraExclude(prev=>prev.filter(id=>!ids.includes(id)));
+   setExtraInclude(prev=>[...new Set([...prev,...ids])].slice(0,12));
+  }else{
+   setExtraInclude(prev=>prev.filter(id=>!ids.includes(id)));
+   setExtraExclude(prev=>[...new Set([...prev,...ids])].slice(0,12));
   }
  }
  function reset(){
@@ -146,13 +165,15 @@ export default function PalaceTagWorld(){
       <Selector label="Story type" value={origin} onChange={setOrigin} options={ [['all','All types'],['fandom','Fanworks'],['original','Original and other works']]}/>
      </div>
      <div className="tag-world-more-tags"><h3>Combine more tags</h3><p>Include all the tags you want. Exclude any you don't. Your current {categoryName.toLowerCase()} stays included.</p>
-      <label><span>Search the full tag directory</span><input type="search" value={searchTags} onChange={e=>setSearchTags(e.target.value)} placeholder="Relationship, character, warning…"/></label>
+      <label><span>Search several tags at once</span><input type="search" value={searchTags} onChange={e=>setSearchTags(e.target.value)} placeholder="Richonne, Slow Burn, family…"/></label>
+      <p>Separate names with commas or semicolons. All included tags must match; any excluded tag removes a story.</p>
       {suggestBusy&&<p role="status">Finding tags…</p>}
       {suggestError&&<p role="alert">{suggestError}</p>}
       {extraInclude.length+extraExclude.length>0&&<div className="tag-world-selected-tags" aria-label="Selected extra tag filters">
        <span>{extraInclude.length} included · {extraExclude.length} excluded</span>
+       <div className="tag-world-chosen-pills">{extraInclude.map(id=><button key={'i-'+id} type="button" onClick={()=>choose(id,'include')} aria-label={'Remove included '+(selectedTagNames[id]||'tag')}>＋ {selectedTagNames[id]||'Included tag'} ×</button>)}{extraExclude.map(id=><button key={'e-'+id} type="button" onClick={()=>choose(id,'exclude')} aria-label={'Remove excluded '+(selectedTagNames[id]||'tag')}>− {selectedTagNames[id]||'Excluded tag'} ×</button>)}</div>
        <button type="button" onClick={()=>{setExtraInclude([]);setExtraExclude([])}}>Clear extra tags</button></div>}
-      {searchTags.trim()&&<div className="tag-world-suggestions">{suggestions.map(item=><div key={item.id} className="tag-world-suggestion">
+      {searchTags.trim()&&<div className="tag-world-suggestions">{exactTagQueryMatches(suggestions,searchTags).matches.length>0&&<div className="tag-world-batch-actions"><button type="button" onClick={()=>addExactTags('include')}>＋ Include exact tags</button><button type="button" onClick={()=>addExactTags('exclude')}>− Exclude exact tags</button></div>}{suggestions.map(item=><div key={item.id} className="tag-world-suggestion">
        <Link to={tagWorldPath(item)} title={'Browse '+item.name}>{item.name}</Link>
        <div><button type="button" aria-label={'Include '+item.name} aria-pressed={extraInclude.includes(item.id)} onClick={()=>choose(item.id,'include')}>＋</button>
         <button type="button" aria-label={'Exclude '+item.name} aria-pressed={extraExclude.includes(item.id)} onClick={()=>choose(item.id,'exclude')}>−</button></div>
