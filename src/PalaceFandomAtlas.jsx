@@ -1,8 +1,8 @@
 import React,{useEffect,useMemo,useState} from 'react';
 import {Link,useLocation,useNavigate} from 'react-router-dom';
-import {getPalaceFandomDirectory,getStoriesForFandoms,getPublishedWorks,getArchive} from './palaceData';
+import {getPalaceFandomDirectory,getStoriesForFandoms,getPublishedWorks,getArchive,searchPalaceTags} from './palaceData';
 import {FANDOM_MEDIA_SHELVES} from './palaceFandomCatalogue';
-import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection,fandomFacetOptions} from './fandomDirectoryModel';
+import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection,fandomFacetOptions,matchesFandomStoryQuery} from './fandomDirectoryModel';
 import StoryRatingBadge from './StoryRatingBadge';
 import UnifiedFanworkCatalogue from './UnifiedFanworkCatalogue';
 import {isHostedFanfiction,canDisplayHostedArchive} from './palaceFanfictionDiscovery';
@@ -26,6 +26,8 @@ export default function PalaceFandomAtlas(){
  const [loading,setLoading]=useState(true),[error,setError]=useState('');
  const [page,setPage]=useState(0),[sort,setSort]=useState('alpha');
  const [stories,setStories]=useState([]),[storyBusy,setStoryBusy]=useState(false),[storyError,setStoryError]=useState('');
+ const [withinFandom,setWithinFandom]=useState('');
+ const [relatedTags,setRelatedTags]=useState([]);
  const [fanworkRows,setFanworkRows]=useState([]),[historicFanworks,setHistoricFanworks]=useState([]);
  const [fanworksBusy,setFanworksBusy]=useState(false),[fanworksError,setFanworksError]=useState('');
  const validMedia=FANDOM_MEDIA_SHELVES.some(x=>x.id===selectedMedia)?selectedMedia:'all';
@@ -37,6 +39,7 @@ export default function PalaceFandomAtlas(){
  const validFranchise=facets.franchises.includes(franchise)?franchise:'all';
  const filtered=useMemo(()=>visibleFandoms(rows,{media:validMedia,query:keyword,sort,subcategory:validSubcategory,franchise:validFranchise}),[rows,validMedia,keyword,sort,validSubcategory,validFranchise]);
  const list=pageFandoms(filtered,page);
+ const matchingSelectedStories=useMemo(()=>stories.filter(story=>matchesFandomStoryQuery(story,withinFandom)),[stories,withinFandom]);
  const mediaCounts=useMemo(()=>Object.fromEntries(FANDOM_MEDIA_SHELVES.map(item=>
   [item.id,visibleFandoms(rows,{media:item.id}).length])),[rows]);
  function changeParams(patch,{replace=true}={}){
@@ -51,7 +54,21 @@ export default function PalaceFandomAtlas(){
   return()=>{active=false};
  },[]);
  useEffect(()=>{setPage(0)},[keyword,validMedia,sort,validSubcategory,validFranchise]);
+ useEffect(()=>{
+  if(atlasSection!=='directory'||keyword.trim().length<2||loading||filtered.length){
+   setRelatedTags([]);return;
+  }
+  let active=true;
+  const timer=setTimeout(()=>{
+   searchPalaceTags(keyword.trim(),'all',12)
+    .then(tags=>{if(active)setRelatedTags((tags||[]).filter(tag=>tagWorldPath(tag)&&['relationship','character','trope'].includes(tag.category)&&['canonical','community'].includes(tag.status)).slice(0,4))})
+    .catch(()=>{if(active)setRelatedTags([])});
+  },250);
+  return()=>{active=false;clearTimeout(timer)};
+ },[atlasSection,keyword,loading,filtered.length]);
+
  const selectionKey=selected.join(',')+'|'+mode;
+ useEffect(()=>setWithinFandom(''),[selectionKey]);
  useEffect(()=>{let active=true;if(!selected.length){setStories([]);setStoryError('');setStoryBusy(false);return};
   setStoryBusy(true);setStoryError('');
   getStoriesForFandoms(selected,mode)
@@ -139,8 +156,13 @@ export default function PalaceFandomAtlas(){
     <div><button type="button" disabled={list.page===0} onClick={()=>setPage(list.page-1)}>← Previous</button>
      <button type="button" disabled={list.page===list.pages-1} onClick={()=>setPage(list.page+1)}>Next →</button></div>
    </footer>
-  </>:<div className="palace-fandom-empty"><strong>No matching fandom on this shelf yet.</strong><p>Try a different name, return to All Fandoms, or create the community tag in the Tag Constellation.</p>
-   <button type="button" onClick={()=>changeParams({q:null,media:null,kind:null,world:null})}>All Fandoms →</button><Link to="/tags">Add a community tag →</Link>
+  </>:<div className="palace-fandom-empty"><strong>No fandom by that name on this shelf.</strong>
+   <p>Looking for a pairing, ship or character? Those are relationship and character tags, not separate fandoms. You can open the matching tag directly without browsing the parent fandom first.</p>
+   {relatedTags.length>0&&<div className="palace-fandom-related-tags" aria-label="Matching story tags">
+    {relatedTags.map(tag=><Link key={tag.id} to={tagWorldPath(tag)}><span>#{tag.name}</span><small>{tag.category} · Browse tagged stories</small></Link>)}
+   </div>}
+   {keyword.trim()&&<Link to={'/search?q='+encodeURIComponent(keyword.trim())}>Search all Palace stories for “{keyword.trim()}” →</Link>}
+   <button type="button" onClick={()=>changeParams({q:null,media:null,kind:null,world:null})}>All Fandoms →</button><Link to="/tags">Tag Constellation →</Link>
   </div>)}
   <section className="palace-fandom-crossovers" aria-label="Fandom crossover search">
    <div className="palace-fandom-crossovers-head"><div><small>YOUR FANDOM CONSTELLATION</small><h2>{selected.length?'Find works between worlds.':'Choose a world to begin.'}</h2>
@@ -154,11 +176,15 @@ export default function PalaceFandomAtlas(){
      <label><input type="radio" name="fandom-match" checked={mode==='all'} onChange={()=>changeParams({match:'all'})}/>All selected fandoms (crossovers)</label>
     </fieldset>}
     <div className="palace-fandom-stories">
-     {storyBusy?<p role="status">Gathering tagged stories…</p>:storyError?<p role="alert">{storyError}</p>:stories.length?<><p>{stories.length} published {stories.length===1?'work':'works'} found</p>
-      <div>{stories.map(story=><Link key={story.id} to={'/work/'+story.slug} className="palace-fandom-story">
+     <label className="palace-fandom-within-search">Find a relationship, character, trope or title inside these fandoms
+      <input type="search" value={withinFandom} onChange={event=>setWithinFandom(event.target.value)} placeholder="Try Richonne, slow burn, a character…" aria-label="Search within selected fandom stories"/>
+     </label>
+     {storyBusy?<p role="status">Gathering tagged stories…</p>:storyError?<p role="alert">{storyError}</p>:matchingSelectedStories.length?<><p>{matchingSelectedStories.length} published {matchingSelectedStories.length===1?'work':'works'} found{withinFandom.trim()?' in this search':''}</p>
+      <div>{matchingSelectedStories.map(story=><Link key={story.id} to={'/work/'+story.slug} className="palace-fandom-story">
        <span className="palace-fandom-story-cover palace-rating-anchor">{story.cover_url?<img alt="" loading="lazy" src={story.cover_url}/>:<span aria-hidden="true">✦</span>}<StoryRatingBadge rating={story.rating}/></span>
        <span><strong>{story.title}</strong><small>{story.profiles?.display_name||story.profiles?.username||'Palace writer'}</small><em>{story.summary||'Read this world in the Palace.'}</em></span>
-      </Link>)}</div></>:<p>No published stories are attached to this constellation yet. Be the first to write one.</p>}
+      </Link>)}</div></>:<p>{withinFandom.trim()?'No visible stories match this character, relationship or tag inside the selected fandoms. Try a shorter term or clear this search.':'No published stories are attached to this constellation yet. Be the first to write one.'}</p>}
+     <small className="palace-fandom-access-note">Stories restricted by age or visibility might not appear for every reader.</small>
     </div>
    </>}
    <footer><Link to="/tags?category=relationship">Explore relationship tags →</Link><Link to="/tags">Open Tag Constellation for characters, relationships, tropes and exclusions →</Link><Link to="/writing">Create a fanwork →</Link></footer>
