@@ -2,6 +2,7 @@ import { supabase } from './supabase';
 import {validateComicImage} from './comicUploadPreparation';
 import {PALACE_CHAT_V3_ENABLED} from './palaceChatV3';
 import {INITIAL_FANDOM_DIRECTORY} from './palaceFandomCatalogue';
+import {paginatePublicFandomStories} from './fandomPublishedPages';
 import {isHostedFanfiction} from './palaceFanfictionDiscovery';
 import {archiveFanfictionTags} from './fanfictionMetadata';
 
@@ -384,34 +385,33 @@ export async function getPalaceFandomDirectory(){
  });
 }
 /** Read only eligible, published stories connected to one or more real fandom IDs. */
-export async function getStoriesForFandoms(tagIds=[],mode='any'){
- const cleanIds=(tagIds||[]).filter(id=>/^[a-f0-9-]{36}$/i.test(String(id)));
- const chosen=[...new Set(cleanIds)].slice(0,5);
- if(!chosen.length)return[];
+/** Read-only, independently public-verified fandom pages. All/any tag modes
+ * are handled by the existing published archive RPC, not limited association
+ * scans or the former 100-work cutoff. No chapter text is fetched.
+ */
+export async function getStoriesForFandomsPage(tagIds=[],mode='any',options={}){
  const client=needClient();
- const valid=await client.from('tags').select('id').in('id',chosen)
-  .eq('category','fandom').in('status',['canonical','community']);
- if(valid.error)throw valid.error;
- const ids=(valid.data||[]).map(x=>x.id);
- if(!ids.length||mode==='all'&&ids.length!==chosen.length)return[];
- const links=await client.from('work_tags').select('work_id,tag_id')
-  .in('tag_id',ids).limit(3000);
- if(links.error)throw links.error;
- const matches=new Map();
- for(const row of links.data||[]){
-  if(!matches.has(row.work_id))matches.set(row.work_id,new Set());
-  matches.get(row.work_id).add(row.tag_id);
- }
- const workIds=[...matches.entries()]
-  .filter(([,set])=>mode==='all'?ids.every(id=>set.has(id)):set.size>0)
-  .map(([id])=>id).slice(0,100);
- if(!workIds.length)return[];
- const result=await client.from('works')
-  .select('id,title,slug,summary,work_type,rating,completion_status,cover_url,last_published_at,profiles!works_author_id_fkey(username,display_name),work_tags(tags(id,name,category,status))')
-  .in('id',workIds).eq('publication_status','published').eq('visibility','public')
-  .order('last_published_at',{ascending:false}).limit(100);
- if(result.error)throw result.error;
- return result.data||[];
+ return paginatePublicFandomStories({
+  tagIds,mode,offset:options.offset,limit:options.limit,
+  verifyFandoms:async chosen=>{
+   const result=await client.from('tags').select('id').in('id',chosen)
+    .eq('category','fandom').in('status',['canonical','community']);
+   if(result.error)throw result.error;
+   return (result.data||[]).map(row=>row.id);
+  },
+  searchPublished:filters=>searchPublishedArchive(filters),
+  listPublicIds:async workIds=>{
+   const response=await client.from('works').select('id').in('id',workIds)
+    .eq('publication_status','published').eq('visibility','public');
+   if(response.error)throw response.error;
+   return (response.data||[]).map(row=>row.id);
+  }
+ });
+}
+/** Backwards-compatible initial page for existing directory consumers. */
+export async function getStoriesForFandoms(tagIds=[],mode='any'){
+ const page=await getStoriesForFandomsPage(tagIds,mode);
+ return page.results;
 }
 
 export async function getTagConstellation(){return searchPalaceTags('','all',120)}
