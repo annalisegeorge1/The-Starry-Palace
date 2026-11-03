@@ -1926,4 +1926,137 @@ export const MODERN_FANFICTION_LINKS=Object.freeze([
    "permissionLabel": "CC BY-NC-SA · author-profile licence for original-character series; linked to author edition only",
    "contentNote": "Source Fiction K+ · English · 4,644 words · complete · companion one-shot."
  }
+,
+ {
+   "id": "bw-with-rainbow-hair",
+   "title": "With Rainbow Hair",
+   "creator": "BlackWidower",
+   "published": "2012 · updated 2019",
+   "fandom": "My Little Pony · Misc. Books",
+   "description": "Rainbow Dash can speak with the dead and must decide whether to reveal the family secret to help a grieving friend.",
+   "sourceUrl": "https://www.fanfiction.net/s/8817928/1/With-Rainbow-Hair",
+   "permissionUrl": "https://www.fanfiction.net/s/8817928/1/With-Rainbow-Hair",
+   "permissionLabel": "CC BY-NC-SA · author-stated in FanFiction.net story summary; original source link only",
+   "contentNote": "Source Fiction T · English · 8 chapters · incomplete · death, grief, self-harm themes · inspired by Through Violet Eyes."
+ },
+ {
+   "id": "bw-sibling-rivalry",
+   "title": "Sibling Rivalry",
+   "creator": "BlackWidower",
+   "published": "2012 · updated 2019",
+   "fandom": "My Little Pony",
+   "description": "Spike's first romance becomes complicated when another admirer, the younger sister of the pony he loves, confesses her feelings.",
+   "sourceUrl": "https://www.fanfiction.net/s/8058680/1/Sibling-Rivalry",
+   "permissionUrl": "https://www.fanfiction.net/s/8058680/1/Sibling-Rivalry",
+   "permissionLabel": "CC BY-NC-SA · author-stated in FanFiction.net story summary; original source link only",
+   "contentNote": "Source Fiction K+ · English · 15 chapters · incomplete · youthful love triangle involving Rarity, Spike and Sweetie Belle."
+ },
+ {
+   "id": "syarin-pack-your-bags",
+   "title": "Pack Your Bags",
+   "creator": "Syarin",
+   "published": "2013",
+   "fandom": "Vocaloid",
+   "description": "The Crypton Vocaloid family heads toward Tokyo for a holiday filled with mishaps and relationship banter.",
+   "sourceUrl": "https://www.fanfiction.net/s/9543516/1/Pack-Your-Bags",
+   "permissionUrl": "https://www.fanfiction.net/s/9543516/1/Pack-Your-Bags",
+   "permissionLabel": "CC BY-NC-SA 3.0 US · explicit story-level licence and attribution notice; original source link only",
+   "contentNote": "Source Fiction T · English · 6,188 words · complete one-shot · Miku/Luka, implied Kaito/Meiko and Rin/Len."
+ },
+ {
+   "id": "squibstress-sybill-unexpected-gift",
+   "title": "Sybill Trelawney and the Unexpected Gift",
+   "creator": "Squibstress",
+   "published": "2013",
+   "fandom": "Harry Potter",
+   "description": "Sybill Trelawney struggles with the isolation of her gift and finds unexpected help from Minerva McGonagall.",
+   "sourceUrl": "https://www.fanfiction.net/s/9668722/1/Sybill-Trelawney-and-the-Unexpected-Gift",
+   "permissionUrl": "https://www.fanfiction.net/s/9668722/1/Sybill-Trelawney-and-the-Unexpected-Gift",
+   "permissionLabel": "CC BY-NC-SA 4.0 · copyright and licence notice in original story; original source link only",
+   "contentNote": "Source Fiction K+ · English · 8,269 words · complete · friendship-focused; background Minerva/Elphinstone."
+ },
+ {
+   "id": "squibstress-judas-kiss",
+   "title": "Judas Kiss",
+   "creator": "Squibstress",
+   "published": "2012",
+   "fandom": "Harry Potter",
+   "description": "A double-drabble follows Severus Snape through two moments of uncomfortable allegiance.",
+   "sourceUrl": "https://www.fanfiction.net/s/7939712/1/Judas-Kiss",
+   "permissionUrl": "https://www.fanfiction.net/s/7939712/1/Judas-Kiss",
+   "permissionLabel": "CC BY-NC-SA 4.0 · copyright and licence notice in original story; original source link only",
+   "contentNote": "Source Fiction K+ · English · 312 words · complete · dark loyalty themes; non-romantic."
+ },
+ {
+   "id": "squibstress-truth-or-dare",
+   "title": "Truth or Dare",
+   "creator": "Squibstress",
+   "published": "2012",
+   "fandom": "Harry Potter",
+   "description": "A Gryffindor truth-or-dare game leads to an unexpected exchange between Minerva and Severus.",
+   "sourceUrl": "https://www.fanfiction.net/s/7939686/1/Truth-or-Dare",
+   "permissionUrl": "https://www.fanfiction.net/s/7939686/1/Truth-or-Dare",
+   "permissionLabel": "CC BY-NC-SA 4.0 · copyright and licence notice in original story; original source link only",
+   "contentNote": "Source Fiction K+ · English · 408 words · complete · humorous kissing scene; Minerva/Severus."
+ },
+ {
+   "id": "squibstress-laundry-lessons",
+   "title": "Laundry Lessons",
+   "creator": "Squibstress",
+   "published": "2012",
+   "fandom": "Harry Potter",
+   "description": "When the Hogwarts house-elves fall ill, students discover that the school's laundry hides some very peculiar secrets.",
+   "sourceUrl": "https://www.fanfiction.net/s/7939701/1/Laundry-Lessons",
+   "permissionUrl": "https://www.fanfiction.net/s/7939701/1/Laundry-Lessons",
+   "permissionLabel": "CC BY-NC-SA 4.0 · copyright and licence notice in original story; original source link only",
+   "contentNote": "Source Fiction K+ · English · 933 words · complete · humour and mild adolescent innuendo."
+ },
+ {
+   "id": "primulad-rush",
+   "title": "Rush",
+   "creator": "PrimulaD",
+   "published": "2009",
+   "fandom": "Stargate: Atlantis",
+   "description": "John Sheppard is used to life at war, but Rodney McKay experiences the cost of that life differently.",
+   "sourceUrl": "https://www.fanfiction.net/s/5093308/1/Rush",
+   "permissionUrl": "https://www.fanfiction.net/u/1924792/PrimulaD",
+   "permissionLabel": "CC BY-NC-SA 3.0 US · author's profile-wide licence for original contributions; original source link only",
+   "contentNote": "Source Fiction M · Spanish · 2,572 words · complete · John/Rodney slash · 18+."
+ },
+ {
+   "id": "primulad-crisalida",
+   "title": "Crisálida",
+   "creator": "PrimulaD",
+   "published": "2009",
+   "fandom": "Dune",
+   "description": "A glimpse into the life of a Duncan Idaho ghola during the reign of God-Emperor Leto II.",
+   "sourceUrl": "https://www.fanfiction.net/s/5053202/1/Cris%C3%A1lida",
+   "permissionUrl": "https://www.fanfiction.net/u/1924792/PrimulaD",
+   "permissionLabel": "CC BY-NC-SA 3.0 US · author's profile-wide licence for original contributions; original source link only",
+   "contentNote": "Source Fiction M · Spanish · 4,873 words · complete · science-fiction drama · 18+."
+ },
+ {
+   "id": "primulad-decir-adios",
+   "title": "Decir adiós",
+   "creator": "PrimulaD",
+   "published": "2009",
+   "fandom": "Buffy the Vampire Slayer",
+   "description": "Buffy reflects on her feelings as Angel leaves for Los Angeles.",
+   "sourceUrl": "https://www.fanfiction.net/s/5053163/1/Decir-adi%C3%B3s",
+   "permissionUrl": "https://www.fanfiction.net/u/1924792/PrimulaD",
+   "permissionLabel": "CC BY-NC-SA 3.0 US · author's profile-wide licence for original contributions; original source link only",
+   "contentNote": "Source Fiction M · Spanish · 3,095 words · complete · Buffy/Angel separation · 18+."
+ },
+ {
+   "id": "primulad-mix",
+   "title": "Mix",
+   "creator": "PrimulaD",
+   "published": "2009",
+   "fandom": "Highlander",
+   "description": "Methos turns to an old immortal friend for help in a canon-divergent story that keeps Connor alive.",
+   "sourceUrl": "https://www.fanfiction.net/s/5046302/1/Mix",
+   "permissionUrl": "https://www.fanfiction.net/u/1924792/PrimulaD",
+   "permissionLabel": "CC BY-NC-SA 3.0 US · author's profile-wide licence for original contributions; original source link only",
+   "contentNote": "Source Fiction M · Spanish · 6 chapters · complete · friendship and original immortal character · 18+."
+ }
 ]);
