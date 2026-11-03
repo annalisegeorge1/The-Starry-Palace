@@ -1,0 +1,200 @@
+/* The Starry Palace — compact interaction refinement, 2026-11-02.
+ * Scoped to three rooms. Never change tag selection, Council voting,
+ * Treasury rewards or archive rights in presentation CSS.
+ * Nightfall and Daylight contrast is explicit; content remains touch-friendly. */
+
+@media (max-width:760px) {
+ /* TAG CONSTELLATIONS — keep the full include/exclude/archive actions but
+    make scanning a list rather than a succession of nested cards. */
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-category-grid {
+   gap:9px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-category-grid>article {
+   padding:10px 12px!important;
+   border-radius:14px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-category-grid>article>header{
+   margin-bottom:2px!important;padding-bottom:6px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-picker.restored {
+   gap:0!important;
+ }
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-picker.restored>.tag-pick-row,
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-picker.restored>.tag-pick-row:nth-child(even),
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-picker.restored>.tag-pick-row.unused:not(.included):not(.excluded) {
+   display:flex!important;
+   min-height:46px!important;
+   gap:3px!important;padding:0 2px!important;margin:0!important;
+   background:transparent!important;border:0!important;
+   border-bottom:1px solid var(--tag-row-line)!important;
+   border-radius:0!important;box-shadow:none!important;
+   opacity:1!important;
+ }
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-picker.restored>.tag-pick-row:last-child {
+   border-bottom:0!important;
+ }
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-picker.restored>.tag-pick-row.included {
+   background:rgba(120,91,184,.14)!important;
+   border:0!important;border-bottom:1px solid var(--tag-row-line)!important;
+   border-radius:0!important;
+   box-shadow:inset 3px 0 #aa98e9!important;
+ }
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-picker.restored>.tag-pick-row.excluded {
+   background:rgba(154,79,116,.14)!important;
+   border:0!important;border-bottom:1px solid var(--tag-row-line)!important;
+   border-radius:0!important;
+   box-shadow:inset 3px 0 #e0a3c2!important;
+ }
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-picker.restored>.tag-pick-row>.tag-pick-select {
+   min-height:44px!important;padding:5px 3px 5px 8px!important;
+   justify-content:flex-start!important;
+   border:0!important;background:transparent!important;
+ }
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-pick-name {gap:1px!important}
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-pick-name strong {
+   font-size:.79rem!important;line-height:1.32!important;
+ }
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-pick-name small {
+   font-size:.62rem!important;line-height:1.32!important;
+   letter-spacing:0!important;
+ }
+ /* The entire tag-name button already includes a tag. The plus sign is
+    duplicated affordance; exclude and archive actions stay visible. */
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-pick-plus {
+   display:none!important;
+ }
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-pick-tools {
+   gap:1px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-pick-tools :is(.tag-pick-exclude,.tag-pick-archive) {
+   flex:0 0 42px!important;width:42px!important;min-width:42px!important;
+   height:44px!important;min-height:44px!important;
+   border-radius:7px!important;
+ }
+ .palace-shell.full-palace-shell.daylight .legacy-tags-page .tag-picker.restored>.tag-pick-row {
+   background:transparent!important;
+ }
+ .palace-shell.full-palace-shell.daylight .legacy-tags-page .tag-picker.restored>.tag-pick-row.included {
+   background:#eee7fb!important;
+ }
+ .palace-shell.full-palace-shell.daylight .legacy-tags-page .tag-picker.restored>.tag-pick-row.excluded {
+   background:#faeaf3!important;
+ }
+
+ /* COUNCIL — overview destinations become quick tap-to-enter rows; the
+    genuinely interactive ballot choices retain their original layout. */
+ .palace-shell.full-palace-shell .palace-governance .governance-entry-grid {
+   display:grid!important;
+   grid-template-columns:minmax(0,1fr)!important;gap:0!important;
+   margin:2px 0 10px!important;
+ }
+ .palace-shell.full-palace-shell .palace-governance .governance-entry-grid>button {
+   display:grid!important;
+   grid-template-columns:36px minmax(0,1fr) auto!important;
+   grid-template-rows:auto auto!important;
+   align-items:center!important;
+   gap:2px 9px!important;
+   min-height:67px!important;min-width:0!important;
+   padding:8px 3px!important;margin:0!important;
+   border:0!important;border-bottom:1px solid rgba(182,164,225,.25)!important;
+   border-radius:0!important;
+   background:transparent!important;box-shadow:none!important;
+   text-align:left!important;
+ }
+ .palace-shell.full-palace-shell .palace-governance .governance-entry-grid>button:last-child {
+   border-bottom:0!important;
+ }
+ .palace-shell.full-palace-shell .palace-governance .governance-entry-grid>button>span {
+   grid-column:1!important;grid-row:1/3!important;
+   width:34px!important;height:34px!important;
+   border-radius:9px!important;font-size:1.05rem!important;
+ }
+ .palace-shell.full-palace-shell .palace-governance .governance-entry-grid>button>strong {
+   grid-column:2!important;grid-row:1!important;
+   font-size:.88rem!important;line-height:1.25!important;
+ }
+ .palace-shell.full-palace-shell .palace-governance .governance-entry-grid>button>small {
+   grid-column:2!important;grid-row:2!important;
+   font-size:.7rem!important;line-height:1.3!important;
+   color:var(--text,#d8d1ed)!important;opacity:.88!important;
+ }
+ .palace-shell.full-palace-shell .palace-governance .governance-entry-grid>button>b {
+   grid-column:3!important;grid-row:1/3!important;
+   white-space:nowrap!important;
+   font-size:.7rem!important;line-height:1.3!important;
+ }
+ .palace-shell.full-palace-shell .palace-governance .governance-entry-grid>button:hover {
+   transform:none!important;background:rgba(118,96,169,.08)!important;
+ }
+ .palace-shell.full-palace-shell .palace-governance .governance-ballot-controls {
+   gap:8px!important;margin:0 0 12px!important;padding:10px!important;
+   border-radius:12px!important;
+ }
+ .palace-shell.full-palace-shell .palace-governance .governance-recent {
+   gap:9px!important;padding:13px!important;border-radius:14px!important;
+ }
+ .palace-shell.full-palace-shell .palace-governance .governance-recent article {
+   gap:4px!important;padding-top:10px!important;
+ }
+ .palace-shell.full-palace-shell.daylight .palace-governance .governance-entry-grid>button>small {
+   color:#56496a!important;opacity:1!important;
+ }
+ .palace-shell.full-palace-shell .palace-governance .governance-entry-grid>button:focus-visible {
+   outline:3px solid #a8e5ff!important;outline-offset:-2px!important;
+ }
+
+ /* TREASURY — concise catalogue navigation, never flatten or hide the
+    painted collectible artwork, rarity indicators or earned states. */
+ .palace-shell.full-palace-shell .treasury-gallery .treasury-catalogue-head {
+   margin-bottom:10px!important;
+ }
+ .palace-shell.full-palace-shell .treasury-gallery .treasury-family-tabs {
+   display:flex!important;flex-wrap:nowrap!important;
+   gap:5px!important;margin:6px 0 9px!important;
+   overflow-x:auto!important;overscroll-behavior-inline:contain;
+   scroll-padding-inline:8px;-webkit-overflow-scrolling:touch;
+ }
+ .palace-shell.full-palace-shell .treasury-gallery .treasury-family-tabs button {
+   flex:0 0 auto!important;min-height:42px!important;
+   padding:7px 11px!important;
+   border-radius:9px!important;
+   font-size:.72rem!important;font-weight:720!important;
+ }
+ .palace-shell.full-palace-shell .treasury-gallery .treasury-catalogue-toolbar {
+   display:flex!important;align-items:stretch!important;
+   gap:7px!important;margin:7px 0 9px!important;
+ }
+ .palace-shell.full-palace-shell .treasury-gallery .treasury-catalogue-search {
+   min-width:0!important;
+ }
+ .palace-shell.full-palace-shell .treasury-gallery .treasury-filter-trigger {
+   min-width:44px!important;min-height:44px!important;
+ }
+ .palace-shell.full-palace-shell .treasury-gallery .gift-collection-summary {
+   gap:5px!important;margin:8px 0!important;
+ }
+ .palace-shell.full-palace-shell .treasury-gallery .gift-collection-summary article {
+   padding:8px 6px!important;border-radius:10px!important;
+ }
+ .palace-shell.full-palace-shell .treasury-gallery .treasury-filter-panel {
+   overflow-y:auto!important;overscroll-behavior:contain;
+   padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))!important;
+ }
+ .palace-shell.full-palace-shell .treasury-gallery :is(.treasury-filter-trigger,.treasury-family-tabs button):focus-visible {
+   outline:3px solid #a8e5ff!important;outline-offset:2px!important;
+ }
+}
+@media (max-width:360px) {
+ .palace-shell.full-palace-shell .palace-governance .governance-entry-grid>button {
+   grid-template-columns:34px minmax(0,1fr)!important;
+ }
+ .palace-shell.full-palace-shell .palace-governance .governance-entry-grid>button>b {
+   display:none!important;
+ }
+}
+@media (prefers-reduced-motion:reduce) {
+ .palace-shell.full-palace-shell .legacy-tags-page .tag-picker.restored>.tag-pick-row,
+ .palace-shell.full-palace-shell .palace-governance .governance-entry-grid>button {
+   transition:none!important;
+ }
+}

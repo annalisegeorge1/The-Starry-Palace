@@ -135,6 +135,7 @@ import './mobile-dashboard-final-polish.css';
 import './mobile-search-results-first.css';
 import './search-filter-precision.css';
 import './reading-facet-mobile-quickpass.css';
+import './palace-sophistication-pass.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
