@@ -92,6 +92,7 @@ import './palace-tag-batch.css';
 import {filterPalaceSearchGroups,countPalaceSearchGroups,activePalaceSearchFacets,buildSearchTagFacets,SEARCH_RESULT_KINDS,SEARCH_RATINGS,SEARCH_COMPLETION} from './palaceSearchResults';
 import {matchesReadingRelationships,RELATIONSHIP_TYPES} from './readingFacetModel';
 import PalaceRelationshipFilters from './PalaceRelationshipFilters';
+import PalaceCompactTagRefiner from './PalaceCompactTagRefiner';
 import MemberChamberDecor,{useChamberDecor} from './MemberChamberDecor';
 import {arrangeMemberChamberArt} from './memberChamberDecorData';
 import './member-chamber-atelier.css';
@@ -1546,7 +1547,6 @@ export function SearchLive({Frame}){
  const[excludeTags,setExcludeTags]=useState([]);
  const[includeRelationships,setIncludeRelationships]=useState([]);
  const[excludeRelationships,setExcludeRelationships]=useState([]);
- const[tagFilterQuery,setTagFilterQuery]=useState('');
  const[suggestions,setSuggestions]=useState(null);
  const[suggestBusy,setSuggestBusy]=useState(false);
  const[searchFocused,setSearchFocused]=useState(false);
@@ -1578,7 +1578,7 @@ export function SearchLive({Frame}){
  useEffect(()=>{
   // Router owns the URL. New header searches and browser back/forward must
   // refresh this room, even when the path remains /search.
-  setQ(routeQ);setScope('all');setRating('all');setCompletion('all');setSort('best');setIncludeTags([]);setExcludeTags([]);setIncludeRelationships([]);setExcludeRelationships([]);setTagFilterQuery('');
+  setQ(routeQ);setScope('all');setRating('all');setCompletion('all');setSort('best');setIncludeTags([]);setExcludeTags([]);setIncludeRelationships([]);setExcludeRelationships([]);
   setSearchFocused(false);setSuggestions(null);
   if(routeQ)run(routeQ);
   else{requestVersion.current++;setData(null);setBusy(false);setError('');lastRun.current=''}
@@ -1610,7 +1610,6 @@ export function SearchLive({Frame}){
  const groups=data?filterPalaceSearchGroups(data,{rating,completion,sort,includeTags,excludeTags,includeRelationships,excludeRelationships}):null;
  const tagFacets=data?.facetsReady?buildSearchTagFacets(data):[];
  const facetTagMap=Object.fromEntries(tagFacets.flatMap(group=>group.tags.map(tag=>[tag.id,tag])));
- const visibleTagFacets=tagFacets.map(group=>({...group,tags:group.tags.filter(tag=>tag.name.toLowerCase().includes(tagFilterQuery.trim().toLowerCase()))})).filter(group=>group.tags.length>0);
  const total=countPalaceSearchGroups(groups,scope);
  const rawTotal=countPalaceSearchGroups(data,'all');
  const showGroup=key=>scope==='all'||scope===key;
@@ -1686,21 +1685,7 @@ export function SearchLive({Frame}){
      <h3>4. Include / Exclude Tags</h3>
      <p className="palace-refinement-note">Include requires every chosen tag; Exclude removes results with any unwanted tag.</p>
      {data.facetsReady?<>
-      <label className="palace-refinement-field" htmlFor="palace-search-tag-filter">Find a fandom, character, relationship, trope or warning<input id="palace-search-tag-filter" type="search" value={tagFilterQuery} onChange={e=>setTagFilterQuery(e.target.value)} placeholder="Find a tag in these results…"/></label>
-      {(includeTags.length>0||excludeTags.length>0)&&<div className="palace-refinement-selected" aria-label="Selected tag filters">
-       {includeTags.map(id=><button type="button" key={'include-'+id} onClick={()=>toggleSearchTag(id,'include')} aria-label={'Remove included tag '+(facetTagMap[id]?.name||'tag')}>＋ {facetTagMap[id]?.name||'Tag'} ×</button>)}
-       {excludeTags.map(id=><button type="button" className="exclude" key={'exclude-'+id} onClick={()=>toggleSearchTag(id,'exclude')} aria-label={'Remove excluded tag '+(facetTagMap[id]?.name||'tag')}>− {facetTagMap[id]?.name||'Tag'} ×</button>)}
-      </div>}
-      <div className="palace-refinement-facets">
-       {visibleTagFacets.map(group=><details key={group.category+'-'+(tagFilterQuery?'search':'all')} open={!!tagFilterQuery}>
-        <summary><strong>{group.label}</strong><small>{group.tags.length}</small></summary>
-        <div className="palace-refinement-tag-list">{group.tags.map(tag=><div className="palace-refinement-tag-row" key={tag.id}>
-         <span title={tag.name}>{tag.name} <small>{tag.count}</small></span>
-         <div role="group" aria-label={'Filter '+tag.name}><button type="button" aria-pressed={includeTags.includes(tag.id)} className={includeTags.includes(tag.id)?'selected include':''} aria-label={'Include tag '+tag.name} onClick={()=>toggleSearchTag(tag.id,'include')}>＋</button><button type="button" aria-pressed={excludeTags.includes(tag.id)} className={excludeTags.includes(tag.id)?'selected exclude':''} aria-label={'Exclude tag '+tag.name} onClick={()=>toggleSearchTag(tag.id,'exclude')}>−</button></div>
-        </div>)}</div>
-       </details>)}
-       {visibleTagFacets.length===0&&<p className="palace-refinement-note">No matching tags in these results. Try a shorter tag name.</p>}
-      </div>
+      <PalaceCompactTagRefiner facets={tagFacets} included={includeTags} excluded={excludeTags} onToggle={toggleSearchTag}/>
      </>:<p className="palace-refinement-note">Tag metadata is unavailable for these results. Text and rating filters remain usable.</p>}
     </section>
     <footer className="palace-refinement-footer">

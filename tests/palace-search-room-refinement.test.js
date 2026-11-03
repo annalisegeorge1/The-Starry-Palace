@@ -50,7 +50,8 @@ describe('Search Sort & Filter precision',()=>{
   expect(search).toContain('<PalaceRelationshipFilters');
   expect(search).toContain('3. Relationships');
   expect(search).toContain('4. Include / Exclude Tags');
-  expect(search).toContain('toggleSearchTag(tag.id');
+  expect(search).toContain('<PalaceCompactTagRefiner');
+  expect(search).toContain('onToggle={toggleSearchTag}');
   expect(search).toContain('toggleSearchRelationship');
   expect(search).toContain('Clear all refinements');
   expect(search).toContain('data.facetsReady');
