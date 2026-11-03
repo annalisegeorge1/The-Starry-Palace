@@ -98,7 +98,8 @@ it('finds a trope through Include search and keeps its active choice removable a
  fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
  expect(screen.queryByText('Tropes')).toBeNull();
  fireEvent.change(screen.getByLabelText('Other tags to include'),{target:{value:'slow'}});
- fireEvent.click(screen.getByText('Tropes'));
+ expect(screen.queryByText('Tropes')).toBeNull();
+ expect(screen.getByRole('group',{name:'Include matching tags'})).toBeTruthy();
  fireEvent.click(screen.getByRole('checkbox',{name:'Include Slow Burn'}));
  expect(onToggle).toHaveBeenCalledWith('slow','include');
  rerender(<MemoryRouter><ReadingFacetSidebar {...props} facets={facets} onToggle={onToggle} included={['slow']} selectedTagNames={{slow:'Slow Burn'}}/></MemoryRouter>);
@@ -114,7 +115,8 @@ it('finds hidden tropes through Exclude search without displaying the category b
  fireEvent.click(screen.getByRole('button',{name:/4\. Exclude/}));
  expect(screen.queryByText('Tropes')).toBeNull();
  fireEvent.change(screen.getByLabelText('Other tags to exclude'),{target:{value:'slow'}});
- fireEvent.click(screen.getByText('Tropes'));
+ expect(screen.queryByText('Tropes')).toBeNull();
+ expect(screen.getByRole('group',{name:'Exclude matching tags'})).toBeTruthy();
  fireEvent.click(screen.getByRole('checkbox',{name:'Exclude Slow Burn'}));
  expect(onToggle).toHaveBeenCalledWith('slow','exclude');
 });
@@ -141,4 +143,22 @@ it('exposes the measured dock clearance to the results footer',()=>{
  const footer=document.querySelector('body>.reading-filter-mobile-result-action');
  expect(footer).toBeTruthy();
  expect(footer.style.getPropertyValue('--reading-filter-dock-bottom')).toMatch(/px$/);
+});
+
+it('shows a flat list of individual tags from different categories when searching',()=>{
+ const facets=[
+  {category:'trope',label:'Tropes',tags:[{id:'slow-1',name:'Slow Burn',count:9}]},
+  {category:'additional',label:'Additional tags',tags:[{id:'slow-2',name:'Slow Romance',count:3}]},
+  {category:'genre',label:'Genres',tags:[{id:'other',name:'Fantasy',count:5}]}
+ ];
+ const onToggle=vi.fn();
+ view({facets,onToggle});
+ fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
+ fireEvent.change(screen.getByLabelText('Other tags to include'),{target:{value:'slow'}});
+ expect(screen.queryByText('Tropes')).toBeNull();
+ expect(screen.queryByText('Additional tags')).toBeNull();
+ expect(screen.queryByText('Genres')).toBeNull();
+ expect(screen.getByText('2 matching tags')).toBeTruthy();
+ fireEvent.click(screen.getByRole('checkbox',{name:'Include Slow Romance'}));
+ expect(onToggle).toHaveBeenCalledWith('slow-2','include');
 });

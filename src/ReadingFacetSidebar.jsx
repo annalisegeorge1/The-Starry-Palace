@@ -144,10 +144,34 @@ export default function ReadingFacetSidebar({
   pick(matches[0],mode);
   setSearches(prev=>({...prev,[mode]:''}));
  }
+ function renderTagCheckbox(tag,mode){
+  const selected=mode==='include'?included:excluded;
+  const selectedHere=selected.includes(String(tag.id));
+  const selectedOpposite=(mode==='include'?excluded:included).includes(String(tag.id));
+  return <label className={'reading-facet-check-row'+(selectedHere?(mode==='include'?' is-included':' is-excluded'):'')} key={String(tag.id)}>
+   <input type="checkbox" checked={selectedHere}
+    aria-label={(mode==='include'?'Include ':'Exclude ')+tag.name} onChange={()=>pick(tag,mode)}/>
+   <span className="reading-facet-check-label" title={tag.name}>
+    {tag.name}{!tag.global&&tag.count!=null&&<small>({tag.count})</small>}
+   </span>
+   {!selectedHere&&selectedOpposite&&<span className="reading-facet-opposite-selected">
+    {mode==='include'?'Excluded':'Included'}
+   </span>}
+  </label>;
+ }
  function tagGroups(mode){
   const q=mode==='include'?includeQ:excludeQ;
   const selected=mode==='include'?included:excluded;
   const selectedRelationships=mode==='include'?relationshipIncluded:relationshipExcluded;
+  // Search results are individual tags, never a second list of category accordions.
+  // Deduplicate exact tag IDs if a directory suggestion appears in more than one group.
+  const matchingTags=q?[...new Map(groupsByMode[mode].flatMap(group=>group.tags)
+   .filter(tag=>tag.name.toLocaleLowerCase().includes(q))
+   .map(tag=>[String(tag.id),tag])).values()]
+   .sort((a,b)=>{
+    const rank=tag=>tag.name.toLocaleLowerCase()===q?0:tag.name.toLocaleLowerCase().startsWith(q)?1:2;
+    return rank(a)-rank(b)||a.name.localeCompare(b.name);
+   }):[];
   const savedHiddenTags=!q?selected.map(id=>{
    const tag=availableTags.get(String(id));
    return {id:String(id),name:selectedTagNames[String(id)]||tag?.name||'Selected tag',
@@ -165,7 +189,7 @@ export default function ReadingFacetSidebar({
      onChange={e=>{setSearches(prev=>({...prev,[mode]:e.target.value}));}}
      onKeyDown={e=>exactTagOnEnter(e,mode)}
      placeholder={mode==='include'?'Search fandoms, characters, relationships, tropes…':'Search tags to exclude…'}/>
-    <small className="reading-facet-search-caption">Browse the main categories below. Search for tropes, additional tags, themes and more{archiveWide?' across the Palace directory':''}.</small>
+    <small className="reading-facet-search-caption">{q?'Select an individual matching tag below.':'Browse common categories below, or search for any tag, including tropes and additional tags.'}</small>
    </div>
    {busy[mode]&&<p className="reading-facet-hint" role="status">Finding matching tags…</p>}
    {errors[mode]&&<p className="reading-facet-hint" role="alert">{errors[mode]}</p>}
@@ -177,7 +201,11 @@ export default function ReadingFacetSidebar({
      </button>)}</div>
    </div>}
    <div className="reading-facet-groups">
-    {groupsByMode[mode].map(group=>{
+    {q?<div className="reading-facet-direct-matches" role="group" aria-label={(mode==='include'?'Include':'Exclude')+' matching tags'}>
+     <p className="reading-facet-match-count" role="status">{busy[mode]?'Searching…':matchingTags.length+' matching '+(matchingTags.length===1?'tag':'tags')}</p>
+     <div className="reading-facet-direct-list">{matchingTags.map(tag=>renderTagCheckbox(tag,mode))}</div>
+     {!busy[mode]&&matchingTags.length===0&&<p className="reading-facet-none">No matching tags. Try a different name.</p>}
+    </div>:groupsByMode[mode].map(group=>{
      const key=mode+':'+group.category;
      const expanded=Boolean(expandedGroups[key])||Boolean(q);
      const chosen=group.tags.filter(tag=>selected.includes(tag.id));
@@ -188,15 +216,7 @@ export default function ReadingFacetSidebar({
      return <details className="reading-facet-group" key={key+(q?':search':'')} open={q?true:undefined}>
       <summary><span>{group.label}</span><small>{group.tags.length}</small></summary>
       <div className="reading-facet-options">
-       {visible.map(tag=>{
-        const selectedHere=selected.includes(tag.id);
-        const selectedOpposite=(mode==='include'?excluded:included).includes(tag.id);
-        return <label className={'reading-facet-check-row'+(selectedHere?(mode==='include'?' is-included':' is-excluded'):'')} key={tag.id}>
-         <input type="checkbox" checked={selectedHere} aria-label={(mode==='include'?'Include ':'Exclude ')+tag.name} onChange={()=>pick(tag,mode)}/>
-         <span className="reading-facet-check-label" title={tag.name}>{tag.name}{!tag.global&&tag.count!=null&&<small>({tag.count})</small>}</span>
-         {!selectedHere&&selectedOpposite&&<span className="reading-facet-opposite-selected">{mode==='include'?'Excluded':'Included'}</span>}
-        </label>;
-       })}
+       {visible.map(tag=>renderTagCheckbox(tag,mode))}
        {canCollapse&&<button type="button" className="reading-facet-expand" aria-expanded={expanded}
          onClick={()=>{setExpandedGroups(prev=>({...prev,[key]:!expanded}));}}>
          {expanded?'Show fewer '+group.label.toLowerCase()+' ↑':'Show all '+group.tags.length+' '+group.label.toLowerCase()+' ↓'}
@@ -205,7 +225,7 @@ export default function ReadingFacetSidebar({
       </div>
      </details>;
     })}
-    {groupsByMode[mode].length===0&&!busy[mode]&&<p className="reading-facet-none">{archiveWide&&q?'No matching Palace tags. Try another phrase.':'No tags to show in this selection.'}</p>}
+    {!q&&groupsByMode[mode].length===0&&<p className="reading-facet-none">No tags to show in this selection.</p>}
    </div>
    {selected.length+selectedRelationships.length>0&&<p className="reading-facet-selection-summary" aria-live="polite">{selected.length} tags and {selectedRelationships.length} relationship categories {mode==='include'?'included':'excluded'}</p>}
   </div>;
