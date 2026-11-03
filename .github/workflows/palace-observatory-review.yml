@@ -7,6 +7,8 @@ on:
     branches: [main]
     paths:
       - 'src/PalaceObservatory.jsx'
+      - 'src/PalaceObservatoryIssues.jsx'
+      - 'docs/palace-observatory-phase3-schema-proposal.sql'
       - 'src/palaceObservatory*.js'
       - 'src/palace-observatory.css'
       - 'src/main.jsx'
@@ -29,6 +31,6 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
       - name: Run isolated Observatory regression tests
-        run: npx vitest run tests/palace-observatory-model.test.js tests/palace-observatory-verification.test.js tests/palace-observatory-issues.test.js
+        run: npx vitest run tests/palace-observatory-model.test.js tests/palace-observatory-verification.test.js tests/palace-observatory-issues.test.js tests/palace-observatory-security.test.js
       - name: Compile the complete website without deploying
         run: npm run build
