@@ -33,8 +33,12 @@ export async function paginatePublicFandomStories({
   include,offset:start,limit:size,sort:'updated',origin:'all'
  })));
  for(const page of pages){
-  if(!page||!Array.isArray(page.results)||!Number.isSafeInteger(Number(page.total))
-   ||Number(page.total)<0||start<Number(page.total)&&page.results.length===0)
+  // The published-search RPC supplies both a page and its total from the
+  // same database query. A short middle page must not silently skip works.
+  const total=Number(page?.total);
+  const expected=Math.min(size,Math.max(0,total-start));
+  if(!page||!Array.isArray(page.results)||!Number.isSafeInteger(total)
+   ||total<0||page.results.length!==expected)
    throw Error('Fandom search was incomplete. Older works have not been marked missing.');
  }
  const found=new Map();
