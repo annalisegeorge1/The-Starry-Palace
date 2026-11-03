@@ -1,4 +1,5 @@
 import React,{useMemo,useState} from 'react';
+import {splitTagQueries,matchesTagQueries,exactTagQueryMatches} from './multiTagSearch';
 
 const QUICK_CATEGORIES=new Set(['fandom','character','relationship','warning','genre']);
 const LANES=[['include','Include'],['exclude','Exclude']];
@@ -29,10 +30,13 @@ export default function PalaceCompactTagRefiner({facets=[],included=[],excluded=
    const query=queries[mode].trim().toLocaleLowerCase();
    const selected=mode==='include'?included:excluded;
    const chosen=allTags.filter(tag=>selected.includes(tag.id));
-   const matches=query?allTags.filter(tag=>tag.name.toLocaleLowerCase().includes(query)).sort((a,b)=>{
-    const rank=t=>t.name.toLocaleLowerCase()===query?0:t.name.toLocaleLowerCase().startsWith(query)?1:2;
+   const terms=splitTagQueries(queries[mode]);
+   const matches=query?allTags.filter(tag=>matchesTagQueries(tag.name,queries[mode])).sort((a,b)=>{
+    const rank=t=>terms.some(term=>t.name.toLocaleLowerCase()===term)?0:terms.some(term=>t.name.toLocaleLowerCase().startsWith(term))?1:2;
     return rank(a)-rank(b)||a.name.localeCompare(b.name);
    }):[];
+   const {matches:exactMatches,unresolved}=exactTagQueryMatches(matches,queries[mode]);
+   const exactToAdd=exactMatches.filter(tag=>!selected.includes(tag.id));
    return <details key={mode} className={'palace-compact-tag-lane '+mode} defaultOpen={mode==='include'}>
     <summary><span>{label} tags</span>{selected.length>0&&<small>{selected.length} chosen</small>}</summary>
     <div className="palace-compact-tag-lane-body">
@@ -40,14 +44,16 @@ export default function PalaceCompactTagRefiner({facets=[],included=[],excluded=
       Search a tag to {mode}
       <input id={'search-room-tag-'+mode} type="search" value={queries[mode]}
        onChange={e=>setQueries(prev=>({...prev,[mode]:e.target.value}))}
-       placeholder="Search individual tags, including tropes…"/>
+       placeholder="Try Richonne, Slow Burn, Found Family…"/>
      </label>
      {chosen.length>0&&<div className="palace-compact-tag-selected" aria-label={label+' selected tags'}>
       {chosen.map(tag=><button type="button" key={tag.id} onClick={()=>onToggle(tag.id,mode)}
        aria-label={'Remove '+(mode==='include'?'included ':'excluded ')+tag.name}>{tag.name} <span aria-hidden="true">×</span></button>)}
      </div>}
      {query?<div className="palace-compact-tag-matches" role="group" aria-label={label+' matching tags'}>
-       <small role="status">{matches.length} matching {matches.length===1?'tag':'tags'}</small>
+       <small role="status">{matches.length} matching {matches.length===1?'tag':'tags'} · commas or semicolons separate names</small>
+       {exactToAdd.length>0&&<button type="button" onClick={()=>exactToAdd.forEach(tag=>onToggle(tag.id,mode))}>Add {exactToAdd.length} exact {exactToAdd.length===1?'tag':'tags'} to {mode}</button>}
+       {unresolved.length>0&&<small>Choose a suggestion for: {unresolved.join(', ')}</small>}
        {matches.map(tag=>choice(tag,mode))}
        {matches.length===0&&<p>No matching tags in these results. Try a shorter name.</p>}
       </div>:<div className="palace-compact-tag-categories">
