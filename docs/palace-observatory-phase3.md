@@ -77,3 +77,5 @@ The separate PR-only verification workflow is designed to run model and issue li
 - The Fandom Directory and Fanfiction view can both load older selected-fandom matches; results are keyed to the active selection to prevent stale responses after changing fandom or match mode.
 - Local searches inside the selected fandom are clearly described as searching **loaded stories**. Missing results are not inferred when the search returns incomplete pages or when the owner has not finished manually browsing.
 - The original link recommendations remain source-linked, and all age restrictions on chapter text remain unchanged. Unit tests use stubs for server responses; browser acceptance and full-project testing remain separate release gates.
+
+- Fanwork-card links that specify a fandom **name** (rather than a UUID) now resolve an exact accepted directory tag name to an ID, then use the same paged query. Unrecognized names still use the general discovery shelf; they are not falsely reported as having zero matching works.
