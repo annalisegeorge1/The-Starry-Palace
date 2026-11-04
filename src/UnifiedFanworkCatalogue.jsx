@@ -102,7 +102,7 @@ export function filterUnifiedFanworks(rows,{query='',rating='all',source='all',a
 export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks=MODERN_FANFICTION_LINKS,
  globalQuery='',globalRating='all',completion='all',fandomNames=[],fandomMatch='any',
  includeTags=[],excludeTags=[],tagNames={},relationshipIncluded=[],relationshipExcluded=[],
- loading=false,loadError='',inFandomAtlas=false,hasMoreHosted=false,onMoreHosted,defaultSource='all'}){
+ loading=false,loadError='',inFandomAtlas=false,hasMoreHosted=false,loadingMoreHosted=false,onMoreHosted,defaultSource='all'}){
  const [search,setSearch]=useState('');
  const [rating,setRating]=useState('all');
  const [source,setSource]=useState(defaultSource);
@@ -169,10 +169,14 @@ export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks
     </div>
     </article></React.Fragment>)}
   </div>
-  {ordered.length===0&&<p className="palace-unified-empty">No fanworks match these choices. Try another title, rating or source.</p>}
+  {ordered.length===0&&!loading&&!loadError&&<p className="palace-unified-empty" role="status">{hasMoreHosted
+   ?'No matching works in the loaded pages. More Palace works can still be checked.'
+   :'No fanworks match these choices. Try another title, rating or source.'}</p>}
   {visibleCount<ordered.length&&<button className="palace-unified-more" type="button" onClick={()=>setVisibleCount(n=>n+24)}>Show more fanworks ({ordered.length-shown.length} remaining)</button>}
   <div className="palace-unified-age"><p>Published Mature and Explicit work information may appear in search results. Ratings and content notes help readers choose; protected chapter access still follows the Palace's age and visibility rules.</p></div>
-  {hasMoreHosted&&onMoreHosted&&<button className="palace-unified-more-hosted" type="button" onClick={onMoreHosted}>Load additional Palace-published works</button>}
+  {hasMoreHosted&&onMoreHosted&&<button className="palace-unified-more-hosted" type="button"
+   disabled={loadingMoreHosted} aria-busy={loadingMoreHosted} onClick={onMoreHosted}>
+   {loadingMoreHosted?'Loading additional Palace works…':'Load additional Palace-published works'}</button>}
   <p className="palace-unified-rights">Works labeled “Read on the Palace” have a published hosted edition. Author-source links open the original website and are not hosted or copied here. Fanfiction authors' reuse terms do not automatically clear the underlying franchise rights.</p>
   {!inFandomAtlas&&<p className="palace-unified-fandom-link"><Link to="/fandoms?section=fanfiction">Explore fanworks by fandom →</Link></p>}
  </section>;
