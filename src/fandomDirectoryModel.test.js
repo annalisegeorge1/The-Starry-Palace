@@ -52,6 +52,16 @@ describe('Fandom directory media and alias discovery',()=>{
   expect(resolveFandomDirectoryName(named,'missing')).toBeNull();
   expect(resolveFandomDirectoryName(named,'')).toBeNull();
   expect(resolveFandomDirectoryName([...named,{id:'canon-twd',name:'TWD',category:'fandom',status:'canonical'}],'TWD')?.id).toBe('canon-twd');
+  const multilingual=[
+   {id:'cn',name:'魔道祖师',category:'fandom',status:'canonical',aliases:['Mo Dao Zu Shi']},
+   {id:'jp',name:'進撃の巨人',category:'fandom',status:'canonical',aliases:['Shingeki no Kyojin']},
+   {id:'kr',name:'이상한 변호사 우영우',category:'fandom',status:'community',aliases:['Extraordinary Attorney Woo']}
+  ];
+  expect(resolveFandomDirectoryName(multilingual,'魔道祖师')?.id).toBe('cn');
+  expect(resolveFandomDirectoryName(multilingual,'進撃の巨人')?.id).toBe('jp');
+  expect(resolveFandomDirectoryName(multilingual,'이상한 변호사 우영우')?.id).toBe('kr');
+  expect(resolveFandomDirectoryName(multilingual,'mo dao zu shi')?.id).toBe('cn');
+  expect(resolveFandomDirectoryName(multilingual,'SHINGEKI NO KYOJIN')?.id).toBe('jp');
  });
  it('paginates and limits crossover selections without trusting URL IDs',()=>{
   const all=visibleFandoms(input);
