@@ -10,3 +10,14 @@
 .palace-chat-v2 .palace-chat-reaction-choices button{width:32px;min-width:32px;min-height:34px!important;padding:4px!important;font-size:19px;border:0;background:transparent;border-radius:50%;cursor:pointer}
 .palace-chat-v2 .palace-chat-reaction-choices button:hover{background:rgba(157,143,215,.16)}
 .palace-chat-v2 .palace-chat-reactions.has-reactions>button:not(.palace-chat-react-trigger){min-height:24px!important;padding:2px 7px;font-size:11px;border-radius:999px}
+
+/* Reference style: reactions sit just below the bubble, outside its gradient. */
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble:has(.palace-chat-reactions.has-reactions){margin-bottom:30px!important}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble .palace-chat-reaction-pills{position:absolute!important;top:calc(100% - 3px);left:0;right:auto;display:flex!important;flex-wrap:wrap;align-items:center;gap:4px!important;width:max-content;max-width:min(280px,calc(100vw - 80px));margin:0!important;padding:0!important;z-index:2;line-height:1}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble.mine .palace-chat-reaction-pills{left:auto;right:0;justify-content:flex-end}
+.palace-chat-dock.palace-chat-v2 .palace-chat-reaction-pills>button:not(.palace-chat-react-trigger){display:inline-flex;align-items:center;justify-content:center;gap:5px;min-width:30px;min-height:24px!important;height:24px;padding:2px 8px!important;border:1px solid var(--pc-line)!important;border-radius:999px!important;background:var(--pc-surface,#202236)!important;color:var(--pc-ink,#fff)!important;box-shadow:0 2px 5px #0002;font-size:14px;line-height:1;cursor:pointer}
+.palace-chat-dock.palace-chat-v2 .palace-chat-reaction-pills>button[aria-pressed="true"]{border-color:#b49be9!important;background:var(--pc-elevated,#34304e)!important}
+.palace-chat-v2 .palace-chat-reaction-count{font-size:11px;font-weight:650;line-height:1}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble .palace-chat-react-trigger{background:var(--pc-surface,#202236)!important;border:1px solid var(--pc-line)!important}
+
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble .palace-chat-reactions{display:contents!important;position:static!important}
