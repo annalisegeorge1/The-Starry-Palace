@@ -573,7 +573,8 @@ export function ReadingLive({Frame}){
    <UnifiedFanworkCatalogue publishedWorks={[...visibleCatalogue,...archiveWorks]} globalQuery={effectiveReadingText} globalRating={rating} completion={status}
      includeTags={effectiveReadingTags} excludeTags={excludedTags} tagNames={facetNames}
      relationshipIncluded={relationshipIncluded} relationshipExcluded={relationshipExcluded}
-     loading={browseLoading} loadError={browseError} hasMoreHosted={!archiveBrowseEnabled&&hasMorePublished} onMoreHosted={loadNextPublishedPage} defaultSource="all"/>
+     loading={browseLoading} loadError={browseError} hasMoreHosted={!archiveBrowseEnabled&&hasMorePublished}
+     loadingMoreHosted={morePublishedBusy} onMoreHosted={loadNextPublishedPage} defaultSource="all"/>
   </>}
   {advancedView&&<section className="reading-advanced-search">
    <div className="advanced-search-command"><div><p className="eyebrow">DEEP SEARCH · READER CONTROLLED</p><h2>Build your constellation.</h2><p>Choose what must be present, what must stay out, then refine the shelf. Tags remain a full Palace room too.</p></div><Link to="/tags">Open the Tags room →</Link></div>
