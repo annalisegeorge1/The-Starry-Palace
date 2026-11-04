@@ -15,7 +15,7 @@ Before each test, record date, environment (preview or live), public URL, logged
 ## Thirteen acceptance cases
 
 1. Signed-out Reading Rooms Fanfiction: public hosted and author-source-linked entries share the catalogue, with accurate link versus hosting labels.
-2. Fandom Atlas Fanfiction: real selected fandoms find their related public hosted and source-linked works; clearing filters restores the default view.
+2. Fandom Atlas Fanfiction: select a real fandom with more than one page, verify public hosted and original-source links, and use Load more until the last page. When the initial page has no public matches but additional pages remain, the screen must say only that the loaded pages contain no matches—not that the fandom contains no works. Clearing filters restores the default view.
 3. Include two accepted tags (a fandom and a relationship category); confirm the expected public work IDs.
 4. Exclude a selected tag and confirm matching works disappear while unaffected works remain.
 5. Search by title and accepted tag on Global Search as well as Reading Rooms. Check both independently.
