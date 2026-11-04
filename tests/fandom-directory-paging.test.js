@@ -50,6 +50,8 @@ describe('Complete public fandom-directory pagination',()=>{
   expect(chunk).toContain(".order('name').order('id').range(offset,offset+size-1)");
   expect(chunk).toContain(".order('tag_id').range(offset,offset+size-1)");
   expect(chunk).toContain("{keyField:'tag_id'}");
+  expect(chunk).toContain("['42P01','PGRST205']");
+  expect(chunk).toContain('if(![\'42P01\',\'PGRST205\'].includes(String(error?.code||\'\')))throw error;');
   expect(chunk).not.toContain('offset<1500');
   expect(chunk).not.toContain('.limit(1500)');
   expect(chunk).not.toContain('body_html');
