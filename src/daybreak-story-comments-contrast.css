@@ -1,0 +1,222 @@
+/* Daybreak story details, chapter comments and reader action contrast.
+   Art, tag pills, moderation, age gating and work permissions are unchanged. */
+
+/* A solid reader header prevents chapter/stats text from showing through
+   scrolling navigation. Keep Nightfall and Midnight separate. */
+.palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar {
+  position:sticky!important;
+  top:0!important;
+  z-index:970!important;
+  isolation:isolate!important;
+  opacity:1!important;
+  background:#faf9ff!important;
+  background-color:#faf9ff!important;
+  background-image:none!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+  border-bottom:1px solid #d9cfe7!important;
+  box-shadow:0 4px 14px rgba(43,36,77,.14)!important;
+}
+.palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar::before {
+  background:#faf9ff!important;
+  background-image:none!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar>.full-topbar-row {
+  position:relative!important;
+  z-index:1!important;
+}
+
+/* Calm Reading Rooms selection including its subdoor and marker. */
+.palace-shell.full-palace-shell.daylight #palace-sidebar .full-nav-room>a.active,
+.palace-shell.full-palace-shell.daylight #palace-sidebar .full-nav-room>a[aria-current="page"] {
+  color:#382e54!important;
+  background:#e7e0f3!important;
+  background-image:none!important;
+  border-color:#bbaed6!important;
+  box-shadow:inset 3px 0 #775ba7!important;
+  text-shadow:none!important;
+}
+.palace-shell.full-palace-shell.daylight #palace-sidebar .full-subnav>a.active,
+.palace-shell.full-palace-shell.daylight #palace-sidebar .full-subnav>a[aria-current="page"] {
+  color:#382e54!important;
+  background:#ebe5f6!important;
+  background-image:none!important;
+  border-left:3px solid #775ba7!important;
+  box-shadow:none!important;
+  font-weight:800!important;
+  text-shadow:none!important;
+}
+.palace-shell.full-palace-shell.daylight #palace-sidebar .full-subnav>a.active::before {
+  background:#775ba7!important;
+  box-shadow:none!important;
+}
+
+/* The actual comment form, not only its textarea, must match light mode. */
+.palace-shell.full-palace-shell.daylight .work-page .work-community .comment-compose {
+  box-sizing:border-box!important;
+  background:#f8f7fc!important;
+  background-image:none!important;
+  border:1px solid #c8bedb!important;
+  color:#312a43!important;
+  border-radius:14px!important;
+  padding:14px 16px!important;
+  box-shadow:0 2px 8px rgba(57,44,93,.05)!important;
+}
+.palace-shell.full-palace-shell.daylight .work-page .work-community .comment-compose textarea {
+  box-sizing:border-box!important;
+  display:block!important;
+  width:100%!important;
+  min-height:72px!important;
+  height:82px!important;
+  max-height:240px;
+  resize:vertical;
+  background:#fff!important;
+  color:#2f2b40!important;
+  border:1px solid #a89abd!important;
+  border-radius:10px!important;
+  padding:11px 13px!important;
+  line-height:1.5!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .work-page .work-community .comment-compose textarea::placeholder {
+  color:#5f5a70!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .work-page .work-community .comment-compose label {
+  color:#4c4860!important;
+  font-size:.78rem!important;
+  line-height:1.4!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .work-page .work-community .reader-responses-empty {
+  color:#4e5064!important;
+  background:#f5f2fa!important;
+  border-color:#cbc1dd!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .work-page .work-community>.eyebrow {
+  color:#55446e!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .work-page .work-community .reader-comment :is(p,small) {
+  color:#4e5164!important;
+  opacity:1!important;
+}
+@media (min-width:761px) {
+  .palace-shell.full-palace-shell.daylight .work-page .work-community .comment-compose {
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    align-items:end!important;
+    gap:10px 14px!important;
+  }
+  .palace-shell.full-palace-shell.daylight .work-page .work-community .comment-compose textarea {
+    grid-column:1 / -1!important;
+  }
+  .palace-shell.full-palace-shell.daylight .work-page .work-community .comment-compose label {
+    grid-column:1!important;
+    justify-self:start!important;
+  }
+  .palace-shell.full-palace-shell.daylight .work-page .work-community .comment-compose>button {
+    grid-column:2!important;
+    justify-self:end!important;
+    margin:0!important;
+    min-height:42px!important;
+  }
+}
+
+/* Keep named relationship/fandom tags' intentional dark styling untouched.
+   Action hierarchy: one purple primary read door, other real actions outlined. */
+.palace-shell.full-palace-shell.daylight .work-page .work-actions.restored>.primary-read-action {
+  background:#7047b4!important;
+  background-image:none!important;
+  border:1px solid #6942aa!important;
+  color:#fff!important;
+  box-shadow:0 2px 8px rgba(85,57,131,.17)!important;
+}
+.palace-shell.full-palace-shell.daylight .work-page .work-actions.restored>:is(
+  .reader-full-work-link,button:not(.danger-action),.work-guest-keep
+) {
+  background:#fff!important;
+  background-image:none!important;
+  border:1px solid #afa2c9!important;
+  color:#42345f!important;
+  box-shadow:none!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .work-page .work-actions.restored>:is(
+  .reader-full-work-link,button:not(.danger-action),.work-guest-keep
+):hover {
+  background:#f1ecfa!important;
+  border-color:#886cb3!important;
+}
+.palace-shell.full-palace-shell.daylight .work-page .work-actions.restored>button.active {
+  background:#e6dff3!important;
+  color:#3c2c5d!important;
+  border-color:#8c72b5!important;
+}
+.palace-shell.full-palace-shell.daylight .work-page .work-actions.restored>.primary-read-action:focus-visible,
+.palace-shell.full-palace-shell.daylight .work-page .work-actions.restored>:is(button,a):focus-visible {
+  outline:3px solid #7958b5!important;
+  outline-offset:2px!important;
+}
+
+/* A small but visible border makes praise look available, not washed out. */
+.palace-shell.full-palace-shell.daylight .work-page .work-praise-row>button {
+  background:#f2eff7!important;
+  background-image:none!important;
+  border:1px solid #b2a6c7!important;
+  color:#392f52!important;
+  opacity:1!important;
+  box-shadow:none!important;
+}
+.palace-shell.full-palace-shell.daylight .work-page .work-praise-row>button :is(span,em) {
+  color:#443753!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .work-page .work-praise-row>button.active {
+  background:#ddd3f0!important;
+  border-color:#8267b1!important;
+}
+.palace-shell.full-palace-shell.daylight .work-page .work-praise-row>button:disabled {
+  opacity:.62!important;
+}
+
+/* Permissions are *read-only status values*, not clickable controls.
+   White panels and a stronger outline communicate that distinction. */
+.palace-shell.full-palace-shell.daylight .work-page .work-rights-panel {
+  background:#f8f6fc!important;
+  background-image:none!important;
+  border:1px solid #cbc0de!important;
+  color:#352c49!important;
+}
+.palace-shell.full-palace-shell.daylight .work-page .work-rights-panel>div:first-child :is(h2,p) {
+  color:#423c55!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .work-page .work-rights-grid>article {
+  background:#fff!important;
+  background-image:none!important;
+  border:1px solid #b9acce!important;
+  box-shadow:none!important;
+  color:#362c49!important;
+  cursor:default!important;
+}
+.palace-shell.full-palace-shell.daylight .work-page .work-rights-grid>article>span {
+  color:#615274!important;
+  font-weight:800!important;
+  opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight .work-page .work-rights-grid>article>strong {
+  color:#342c4b!important;
+  font-weight:800!important;
+  opacity:1!important;
+}
+@media (forced-colors:active) {
+  .palace-shell.full-palace-shell.daylight .work-page .work-community .comment-compose,
+  .palace-shell.full-palace-shell.daylight .work-page .work-rights-grid>article {
+    background:Canvas!important;
+    color:CanvasText!important;
+    border-color:CanvasText!important;
+  }
+}
