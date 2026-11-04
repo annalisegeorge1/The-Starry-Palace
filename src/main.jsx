@@ -147,6 +147,7 @@ import './daybreak-dashboard-profile-contrast.css';
 import './daybreak-events-desktop-polish.css';
 import './daybreak-treasury-desktop-refinement.css';
 import './daybreak-treasury-settings-tablet-finish.css';
+import './daybreak-story-comments-contrast.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
