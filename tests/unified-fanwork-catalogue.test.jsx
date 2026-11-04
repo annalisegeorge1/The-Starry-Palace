@@ -1,5 +1,5 @@
 import React from 'react';
-import {describe,it,expect,afterEach} from 'vitest';
+import {describe,it,expect,afterEach,vi} from 'vitest';
 import {render,screen,cleanup} from '@testing-library/react';
 import {MemoryRouter} from 'react-router-dom';
 import UnifiedFanworkCatalogue,{createUnifiedFanworks,filterUnifiedFanworks} from '../src/UnifiedFanworkCatalogue.jsx';
@@ -122,6 +122,38 @@ describe('Unified Fanwork catalogue',()=>{
   expect(external.getAttribute('target')).toBe('_blank');
   expect(external.getAttribute('rel')).toContain('noopener');
 
+ });
+ it('does not claim no fanworks exist while an empty hosted search is still loading',()=>{
+  const {rerender}=render(<MemoryRouter><UnifiedFanworkCatalogue publishedWorks={[]}
+   externalWorks={[]} loading hasMoreHosted/></MemoryRouter>);
+  expect(screen.queryByText(/No fanworks match these choices/)).toBeNull();
+  expect(screen.queryByText(/No matching works in the loaded pages/)).toBeNull();
+  rerender(<MemoryRouter><UnifiedFanworkCatalogue publishedWorks={[]} externalWorks={[]}
+   loading={false} hasMoreHosted/></MemoryRouter>);
+  expect(screen.getByText(/No matching works in the loaded pages/)).toBeTruthy();
+  expect(screen.queryByText(/No fanworks match these choices/)).toBeNull();
+ });
+ it('keeps the load-more control accessible and prevents repeated clicks while fetching',()=>{
+  const onMoreHosted=vi.fn();
+  const {rerender}=render(<MemoryRouter><UnifiedFanworkCatalogue publishedWorks={[]}
+   externalWorks={[]} hasMoreHosted onMoreHosted={onMoreHosted}/></MemoryRouter>);
+  const more=screen.getByRole('button',{name:/Load additional Palace-published works/});
+  expect(more.disabled).toBe(false);
+  more.click();
+  expect(onMoreHosted).toHaveBeenCalledTimes(1);
+  rerender(<MemoryRouter><UnifiedFanworkCatalogue publishedWorks={[]}
+   externalWorks={[]} hasMoreHosted loadingMoreHosted onMoreHosted={onMoreHosted}/></MemoryRouter>);
+  const busy=screen.getByRole('button',{name:/Loading additional Palace works/});
+  expect(busy.disabled).toBe(true);
+  expect(busy.getAttribute('aria-busy')).toBe('true');
+  busy.click();
+  expect(onMoreHosted).toHaveBeenCalledTimes(1);
+ });
+ it('does not show a conclusive empty result when the hosted lookup has failed',()=>{
+  render(<MemoryRouter><UnifiedFanworkCatalogue publishedWorks={[]} externalWorks={[]}
+   loadError="A temporary source error."/></MemoryRouter>);
+  expect(screen.getByRole('alert')).toBeTruthy();
+  expect(screen.queryByText(/No fanworks match these choices/)).toBeNull();
  });
  it('does not repeat a Palace-hosted edition as an external author-source recommendation',()=>{
   const linked=MODERN_FANFICTION_LINKS.find(x=>x.id==='anime-primulad-renuncia');
