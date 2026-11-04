@@ -125,3 +125,15 @@ html:not([data-palace-theme="daylight"]) .palace-chat-dock.palace-chat-v2 :is(.p
 .palace-chat-dock.palace-chat-v2 .palace-chat-quoted-message>p{margin:0!important;font-size:14px!important;line-height:1.45!important}
 .palace-chat-dock.palace-chat-v2 :is(.palace-chat-inline-quote,.palace-chat-reply-quote){margin-bottom:4px!important;padding-top:4px!important;padding-bottom:4px!important;line-height:1.4!important}
 .palace-chat-dock.palace-chat-v2 .palace-chat-bubble>.palace-chat-timestamp{margin-top:2px!important;font-size:10px!important;line-height:1.3!important;text-align:right!important}
+
+/* Let short message text and its time share a line; wrap safely when needed. */
+.palace-chat-dock.palace-chat-v2 .palace-chat-messages .palace-chat-bubble{display:flex!important;flex-wrap:wrap!important;align-items:baseline!important;column-gap:8px!important;row-gap:2px!important;padding:8px 12px!important;line-height:1.4!important}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble>p,
+.palace-chat-dock.palace-chat-v2 .palace-chat-quoted-message>p{flex:1 1 auto;min-width:0;max-width:100%;margin:0!important;line-height:1.4!important;overflow-wrap:anywhere}
+.palace-chat-dock.palace-chat-v2 .palace-chat-quoted-message{display:contents!important}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble>.palace-chat-timestamp{flex:0 0 auto;align-self:flex-end!important;margin:0 0 0 auto!important;padding:0!important;white-space:nowrap;line-height:1.4!important}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble :is(.palace-chat-inline-quote,.palace-chat-reply-quote){flex:0 0 100%;width:100%;min-width:0;box-sizing:border-box;margin:0 0 4px!important;font-size:.85rem!important;line-height:1.4!important}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble>:is(.palace-chat-sender,.palace-chat-edit-form,.palace-chat-gif-preview,.palace-chat-shared-story){flex-basis:100%;min-width:0;max-width:100%}
+@media(min-width:961px){
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-advanced-controls>summary{height:28px!important;min-height:28px!important;background:transparent!important;border:1px solid var(--pc-line)!important}
+}
