@@ -75,3 +75,15 @@
  .palace-chat-dock.palace-chat-v2.is-open:not(.is-workspace){position:fixed!important;inset:0!important;width:100%!important;height:100dvh!important;max-width:none!important;z-index:15000!important}
  .palace-chat-dock.palace-chat-v2.is-open:not(.is-workspace)>.palace-chat-panel{width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;box-sizing:border-box;border-radius:0!important}
 }
+
+/* Bubble details shared by dock and Messenger. */
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble>.palace-chat-timestamp{display:block;margin-top:8px!important;color:#f0edf8!important;opacity:1!important;font-size:11px!important;line-height:1.4}
+.palace-chat-dock.palace-chat-v2 .palace-chat-inline-quote,
+.palace-chat-dock.palace-chat-v2 .palace-chat-reply-quote{border-left:3px solid rgba(255,255,255,.5)!important;padding:6px 9px!important;margin:0 0 9px!important;background:rgba(255,255,255,.055)!important;border-radius:0 7px 7px 0;color:#e0daef!important;font-size:12px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.palace-chat-dock.palace-chat-v2 .palace-chat-quoted-message>p{margin:0;white-space:pre-wrap}
+.palace-chat-dock.palace-chat-v2 .palace-chat-date-divider::before,
+.palace-chat-dock.palace-chat-v2 .palace-chat-date-divider::after{background:rgba(255,255,255,.22)!important;opacity:1!important}
+html[data-palace-theme="daylight"] .palace-chat-dock.palace-chat-v2 .palace-chat-bubble>.palace-chat-timestamp{color:#514665!important}
+html[data-palace-theme="daylight"] .palace-chat-dock.palace-chat-v2 :is(.palace-chat-inline-quote,.palace-chat-reply-quote){border-left-color:#8a72b1!important;color:#514365!important;background:rgba(83,63,119,.06)!important}
+html[data-palace-theme="daylight"] .palace-chat-dock.palace-chat-v2 .palace-chat-date-divider::before,
+html[data-palace-theme="daylight"] .palace-chat-dock.palace-chat-v2 .palace-chat-date-divider::after{background:rgba(85,67,122,.25)!important}
