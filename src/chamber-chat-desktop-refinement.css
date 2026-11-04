@@ -193,3 +193,16 @@ html[data-palace-theme="daylight"] .palace-chat-dock.palace-chat-v2 .palace-chat
  .palace-chat-dock.palace-chat-v2:not(.is-workspace):not(.is-thread-open) .palace-chat-list-meta>small{display:block!important;font-size:10px;color:var(--pc-muted)}
  .palace-chat-dock.palace-chat-v2:not(.is-workspace):not(.is-thread-open) .palace-chat-panel>footer{display:none!important}
 }
+
+@media(min-width:961px){
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace):not(.is-thread-open) .palace-chat-heading{padding-right:28px!important}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace):not(.is-thread-open) .palace-chat-header-actions{padding-right:4px!important;box-sizing:border-box}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-tabs{padding-left:12px!important;padding-right:12px!important}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace):not(.is-thread-open) .palace-chat-people>button{grid-template-columns:40px minmax(0,1fr) 58px!important;gap:14px!important;padding-top:16px!important;padding-bottom:16px!important}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace):not(.is-thread-open) .palace-chat-list-details{width:100%!important;min-width:0!important;overflow:hidden!important}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace):not(.is-thread-open) .palace-chat-list-preview{display:block!important;max-width:100%!important;min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace):not(.is-thread-open) .palace-chat-list-meta{width:58px;min-width:58px;max-width:58px;justify-self:end;box-sizing:border-box}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace):not(.is-thread-open) .palace-chat-advanced-controls>summary{color:#d1d5db!important}
+ html[data-palace-theme="daylight"] .palace-chat-dock.palace-chat-v2:not(.is-workspace):not(.is-thread-open) .palace-chat-advanced-controls>summary{color:#554c69!important}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-brand-copy>small{letter-spacing:1px!important;line-height:1.4;margin-bottom:3px}
+}
