@@ -3,7 +3,7 @@ import {Link,useLocation,useNavigate} from 'react-router-dom';
 import {getPalaceFandomDirectory,getStoriesForFandomsPage,getPublishedWorks,getArchive,searchPalaceTags} from './palaceData';
 import {FANDOM_MEDIA_SHELVES} from './palaceFandomCatalogue';
 import {FANDOM_STORY_PAGE_SIZE} from './fandomPublishedPages';
-import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection,fandomFacetOptions,matchesFandomStoryQuery} from './fandomDirectoryModel';
+import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection,fandomFacetOptions,matchesFandomStoryQuery,resolveFandomDirectoryName} from './fandomDirectoryModel';
 import StoryRatingBadge from './StoryRatingBadge';
 import UnifiedFanworkCatalogue from './UnifiedFanworkCatalogue';
 import {isHostedFanfiction,canDisplayHostedArchive} from './palaceFanfictionDiscovery';
@@ -38,15 +38,16 @@ export default function PalaceFandomAtlas(){
  const [fanworksBusy,setFanworksBusy]=useState(false),[fanworksError,setFanworksError]=useState('');
  const validMedia=FANDOM_MEDIA_SHELVES.some(x=>x.id===selectedMedia)?selectedMedia:'all';
  const selected=safeFandomSelection(urlIds,rows);
- // Story-tag links use a fandom NAME. Resolve it to an accepted tag ID,
- // then page the same indexed public search used by directory selections.
- const exactFandomId=atlasSection==='fanfiction'&&exactFandom?
-  rows.find(row=>String(row.name||'').toLowerCase()===exactFandom.toLowerCase())?.id:null;
+ // Fanwork tag links use a fandom name. Canonicalize a registered exact name
+ // or a unique alias, but never guess between unrelated fandoms.
+ const namedFandom=atlasSection==='fanfiction'&&exactFandom?
+  resolveFandomDirectoryName(rows,exactFandom):null;
+ const exactFandomId=namedFandom?.id||null;
  const queryFandomIds=selected.length?selected:exactFandomId?[exactFandomId]:[];
  const resolvingNamedFandom=Boolean(exactFandom&&!selected.length&&loading);
  const unrecognizedNamedFandom=Boolean(exactFandom&&!selected.length&&!loading&&!error&&!exactFandomId);
  const selectedNames=selected.map(id=>rows.find(row=>row.id===id)?.name).filter(Boolean);
- const activeFandomNames=selectedNames.length?selectedNames:exactFandom?[exactFandom]:[];
+ const activeFandomNames=selectedNames.length?selectedNames:namedFandom?[namedFandom.name]:exactFandom?[exactFandom]:[];
  const facets=useMemo(()=>fandomFacetOptions(rows,validMedia),[rows,validMedia]);
  const validSubcategory=facets.categories.includes(subcategory)?subcategory:'all';
  const validFranchise=facets.franchises.includes(franchise)?franchise:'all';
@@ -268,7 +269,7 @@ export default function PalaceFandomAtlas(){
   </>}
   {atlasSection==='fanfiction'&&<section className="palace-fandom-linked-section" aria-label="Fanfiction by fandom">
    {activeFandomNames.length>0&&<div className="palace-fandom-selection-note"><span>Fandom{activeFandomNames.length>1?'s':''}: <strong>{activeFandomNames.join(' · ')}</strong></span><button type="button" onClick={()=>changeParams({ids:null,match:null,fandom:null})}>All fanfiction</button><button type="button" onClick={()=>changeParams({section:null,fandom:null})}>Choose different fandoms</button></div>}
-   {unrecognizedNamedFandom&&<p className="palace-fandom-access-note" role="status">This fandom name is not currently matched to a Palace directory tag. Matching author-source links may still appear below, but the hosted results cannot be verified from this name alone.</p>}
+   {unrecognizedNamedFandom&&<p className="palace-fandom-access-note" role="status">This fandom name or alias is not currently matched to a unique Palace directory tag. Matching author-source links may still appear below, but the hosted results cannot be verified from this name alone.</p>}
    <UnifiedFanworkCatalogue key={activeFandomNames.join(',')+'|'+mode} publishedWorks={[...(queryFandomIds.length&&storyResultKey===selectionKey?stories:[]),...fanworkRows,...historicFanworks]} globalQuery={activeFandomNames.length?'':keyword} fandomNames={activeFandomNames} fandomMatch={mode} loading={fanworksBusy||fanworksLoadingMore||resolvingNamedFandom||queryFandomIds.length>0&&storyBusy} loadError={fanworksError||queryFandomIds.length>0&&storyError||exactFandom&&error} inFandomAtlas={true} defaultSource="all" hasMoreHosted={queryFandomIds.length>0?storyHasMore:fanworksHasMore}
      loadingMoreHosted={queryFandomIds.length>0?storyLoadingMore:fanworksLoadingMore}
      onMoreHosted={queryFandomIds.length>0?loadMoreSelectedFandomWorks:loadMoreFanworks}/>
