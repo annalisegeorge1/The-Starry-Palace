@@ -21,6 +21,21 @@ describe('Fandom directory media and alias discovery',()=>{
   expect(visibleFandoms(input,{query:'Bridgerton Netflix'}).map(x=>x.id)).toEqual(['2']);
   expect(visibleFandoms(input,{query:'not here'})).toEqual([]);
  });
+ it('finds Chinese, Japanese and Korean fandoms without folding distinct kana',()=>{
+  const multilingual=[
+   {id:'han',name:'魔道祖师',media_categories:['books_literature'],aliases:['Mo Dao Zu Shi']},
+   {id:'voiced',name:'ガンダム',media_categories:['anime_manga'],aliases:['Gundam']},
+   {id:'unvoiced',name:'カンダム',media_categories:['anime_manga']},
+   {id:'korean',name:'이상한 변호사 우영우',media_categories:['tv_shows']},
+   {id:'accent',name:'Pokémon',media_categories:['video_games'],aliases:['Pokemon']}
+  ];
+  expect(visibleFandoms(multilingual,{query:'魔道祖师'}).map(x=>x.id)).toEqual(['han']);
+  expect(visibleFandoms(multilingual,{query:'ガンダム'}).map(x=>x.id)).toEqual(['voiced']);
+  expect(visibleFandoms(multilingual,{query:'カンダム'}).map(x=>x.id)).toEqual(['unvoiced']);
+  expect(visibleFandoms(multilingual,{query:'이상한'}).map(x=>x.id)).toEqual(['korean']);
+  expect(visibleFandoms(multilingual,{query:'pokemon'}).map(x=>x.id)).toEqual(['accent']);
+  expect(visibleFandoms(multilingual,{query:'Mo Dao Zu Shi'}).map(x=>x.id)).toEqual(['han']);
+ });
  it('sorts predictable counts but never edits the input order',()=>{
   const ordered=visibleFandoms(input,{sort:'used'});
   expect(ordered[0].id).toBe('2');
