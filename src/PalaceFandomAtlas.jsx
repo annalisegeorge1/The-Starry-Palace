@@ -250,7 +250,9 @@ export default function PalaceFandomAtlas(){
       <div>{matchingSelectedStories.map(story=><Link key={story.id} to={'/work/'+story.slug} className="palace-fandom-story">
        <span className="palace-fandom-story-cover palace-rating-anchor">{story.cover_url?<img alt="" loading="lazy" src={story.cover_url}/>:<span aria-hidden="true">✦</span>}<StoryRatingBadge rating={story.rating}/></span>
        <span><strong>{story.title}</strong><small>{story.profiles?.display_name||story.profiles?.username||'Palace writer'}</small><em>{story.summary||'Read this world in the Palace.'}</em></span>
-      </Link>)}</div></>:<p>{withinFandom.trim()?'No visible stories match this character, relationship or tag inside the selected fandoms. Try a shorter term or clear this search.':'No published stories are attached to this constellation yet. Be the first to write one.'}</p>}
+      </Link>)}</div></>:<p role="status">{storyHasMore
+      ?withinFandom.trim()?'No matches among the stories loaded so far. More fandom pages remain; load additional works or clear this search.':'No public works in the pages checked so far. More fandom pages remain to be checked.'
+      :withinFandom.trim()?'No loaded public stories match this character, relationship or tag. Try a shorter term or clear this search.':'No public published stories were returned for this constellation.'}</p>}
      {storyLoadError&&<p role="alert">{storyLoadError}</p>}
      {storyHasMore&&storyResultKey===selectionKey&&<button type="button"
       disabled={storyLoadingMore} onClick={loadMoreSelectedFandomWorks}>
@@ -264,8 +266,9 @@ export default function PalaceFandomAtlas(){
   </>}
   {atlasSection==='fanfiction'&&<section className="palace-fandom-linked-section" aria-label="Fanfiction by fandom">
    {activeFandomNames.length>0&&<div className="palace-fandom-selection-note"><span>Fandom{activeFandomNames.length>1?'s':''}: <strong>{activeFandomNames.join(' · ')}</strong></span><button type="button" onClick={()=>changeParams({ids:null,match:null,fandom:null})}>All fanfiction</button><button type="button" onClick={()=>changeParams({section:null,fandom:null})}>Choose different fandoms</button></div>}
-   <UnifiedFanworkCatalogue key={activeFandomNames.join(',')+'|'+mode} publishedWorks={[...(queryFandomIds.length&&storyResultKey===selectionKey?stories:[]),...fanworkRows,...historicFanworks]} globalQuery={activeFandomNames.length?'':keyword} fandomNames={activeFandomNames} fandomMatch={mode} loading={fanworksBusy||fanworksLoadingMore||selectedNames.length>0&&storyBusy} loadError={fanworksError||selectedNames.length>0&&storyError} inFandomAtlas={true} defaultSource="all" hasMoreHosted={fanworksHasMore||queryFandomIds.length>0&&storyHasMore}
-     onMoreHosted={queryFandomIds.length>0&&storyHasMore?loadMoreSelectedFandomWorks:loadMoreFanworks}/>
+   <UnifiedFanworkCatalogue key={activeFandomNames.join(',')+'|'+mode} publishedWorks={[...(queryFandomIds.length&&storyResultKey===selectionKey?stories:[]),...fanworkRows,...historicFanworks]} globalQuery={activeFandomNames.length?'':keyword} fandomNames={activeFandomNames} fandomMatch={mode} loading={fanworksBusy||fanworksLoadingMore||selectedNames.length>0&&storyBusy} loadError={fanworksError||selectedNames.length>0&&storyError} inFandomAtlas={true} defaultSource="all" hasMoreHosted={queryFandomIds.length>0?storyHasMore:fanworksHasMore}
+     loadingMoreHosted={queryFandomIds.length>0?storyLoadingMore:fanworksLoadingMore}
+     onMoreHosted={queryFandomIds.length>0?loadMoreSelectedFandomWorks:loadMoreFanworks}/>
    <p className="palace-fandom-complete-archive"><Link to="/reading?section=fanfiction">Browse the full Palace-hosted and linked Fanwork catalogue →</Link></p>
   </section>}
  </section>;
