@@ -58,8 +58,11 @@ describe('Fandom Atlas includes the same rights-aware Fanfiction collection',()=
   expect(atlas).toContain('getStoriesForFandomsPage(queryFandomIds,mode,{offset:0,limit:FANDOM_STORY_PAGE_SIZE})');
   expect(atlas).toContain('getStoriesForFandomsPage(queryFandomIds,mode,');
   expect(atlas).toContain('loadMoreSelectedFandomWorks');
-  expect(atlas).toContain('exactFandomId=atlasSection');
+  expect(atlas).toContain("resolveFandomDirectoryName(rows,exactFandom)");
+  expect(atlas).toContain('const exactFandomId=namedFandom?.id||null');
+  expect(atlas).toContain('activeFandomNames=selectedNames.length?selectedNames:namedFandom?[namedFandom.name]');
   expect(atlas).toContain('queryFandomIds=selected.length?selected:exactFandomId?[exactFandomId]:[]');
+  expect(atlas).toContain('fandom name or alias is not currently matched to a unique Palace directory tag.');
   expect(atlas).toContain('resolvingNamedFandom=Boolean(exactFandom&&!selected.length&&loading)');
   expect(atlas).toContain('unrecognizedNamedFandom=Boolean(exactFandom&&!selected.length&&!loading&&!error&&!exactFandomId)');
   expect(atlas).toContain('resolvingNamedFandom||queryFandomIds.length>0&&storyBusy');
