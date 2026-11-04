@@ -12,7 +12,7 @@ export const PALACE_OBSERVATORY_ACCEPTANCE=Object.freeze([
   expected:'Selecting a fandom finds public fanfiction, supports checking further result pages without a premature no-works claim, and restores the unified hosted-versus-original-source list when cleared.'},
  {id:'fandom-tag-link',group:'Public discovery',surface:'Story tag → Fandom Atlas',
   route:'/fandoms?section=fanfiction&fandom=Naruto',persona:'Signed-out reader',viewport:'Mobile and desktop',
-  expected:'A named fandom link waits for directory resolution before declaring a result, uses the same paginated public search as selecting the tag ID, and clearly identifies unresolved or failed directory lookups without implying no works exist.'},
+  expected:'A named fandom link waits for directory resolution before declaring a result, uses the same paginated public search as selecting the tag ID, and clearly identifies unresolved or failed directory lookups without implying no works exist. Unique accepted aliases resolve to their canonical fandom; ambiguous aliases never merge separate canons.'},
  {id:'tags-inclusion',group:'Public discovery',surface:'Tag Constellation',
   route:'/tags',persona:'Signed-out reader',viewport:'Mobile and desktop',
   expected:'Including real fandom and relationship tags returns matching public works. Combining two tags does not silently ignore either.'},
