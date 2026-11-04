@@ -94,7 +94,7 @@ export default function ReadingFacetSidebar({
    },260));
   }
   return()=>{pending.forEach(stop=>stop());timeouts.forEach(clearTimeout)};
- },[archiveWide,includeQ,excludeQ,onSearchTags]);
+ },[includeQ,excludeQ,onSearchTags]);
 
  const groupsByMode=useMemo(()=>{
   const result={include:[],exclude:[]};
@@ -280,7 +280,7 @@ export default function ReadingFacetSidebar({
     </section>;
    })}
    <div className="reading-facet-footer">
-    {archiveWide?<p>Include and Exclude search the full Palace tag directory. Results cover the published archive; broad relationship categories still use loaded works.</p>:<p>Include and Exclude search the full Palace tag directory, while results cover <strong>{loadedCount}</strong> loaded works{hasMore?'. Load more stories or switch to Entire published archive for wider results.':'. Switch to Entire published archive for wider results.'}</p>}
+    {archiveWide?<p>Include and Exclude search the full Palace tag directory. Results cover the published archive; broad relationship categories still use loaded works.</p>:<p>Include and Exclude search the full Palace tag directory, while results cover <strong>{loadedCount}</strong> currently loaded works{hasMore?'. Load more stories or switch to Entire published archive for wider results.':'. Switch to Entire published archive for wider results.'}</p>}
     <p>For word-count ranges and language, use <Link to="/reading?view=search">Advanced search</Link>.</p>
    </div>
   </div>
