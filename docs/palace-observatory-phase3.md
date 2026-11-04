@@ -89,3 +89,8 @@ The separate PR-only verification workflow is designed to run model and issue li
 - Expanded UI regression coverage for loading, empty, incomplete, and error states, plus updated manual acceptance instructions to independently check an initial empty public page followed by a page with a valid public match.
 - No database writes, Storage bucket or role setup, manuscript reads, merging, publication, Cloudflare deployment, or changes to the minimum age and separate restricted-chapter gates.
 
+## Phase 12 — exact-name fandom link and directory loading states (draft only)
+- Confirmed Phase 11's full-project GitHub Actions run was green: **1,516/1,516 tests across 306 files**, plus the complete website compile. This does not replace real browser checks.
+- A fanwork's fandom tag links to `/fandoms?section=fanfiction&fandom=<name>`, rather than passing the directory tag UUID. Resolving that name requires fetching the accepted public tag directory. The unified shelf now exposes that pending state instead of appearing conclusively empty while resolution is in progress.
+- The exact-name path uses the same server-page loading and error states as manually selected fandom IDs. If a name cannot be resolved to an accepted public fandom tag, a non-judgmental notice explains that hosted placement cannot be verified from the name alone; author-source links remain accessible rather than being incorrectly marked missing.
+- A separate Owner acceptance case covers the named link from a story, public visibility of matched works, unresolved names and mobile/desktop navigation. The acceptance case is *unverified* until a real tester runs it. Nothing is saved, approved, published, or deployed by the checklist.
