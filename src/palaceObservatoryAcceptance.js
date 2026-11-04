@@ -9,7 +9,7 @@ export const PALACE_OBSERVATORY_ACCEPTANCE=Object.freeze([
   expected:'Published public hosted and author-source-linked fanworks appear in one discoverable catalogue; source links are clearly distinguished from hosted text.'},
  {id:'fandom-shelf',group:'Public discovery',surface:'Fandom Atlas → Fanfiction',
   route:'/fandoms?section=fanfiction',persona:'Signed-out reader',viewport:'Mobile and desktop',
-  expected:'Selecting a fandom finds relevant published fanfiction. Clear filters restores the unified list; author-source links remain external.'},
+  expected:'Selecting a fandom finds public fanfiction, supports checking further result pages without a premature no-works claim, and restores the unified hosted-versus-original-source list when cleared.'},
  {id:'tags-inclusion',group:'Public discovery',surface:'Tag Constellation',
   route:'/tags',persona:'Signed-out reader',viewport:'Mobile and desktop',
   expected:'Including real fandom and relationship tags returns matching public works. Combining two tags does not silently ignore either.'},
