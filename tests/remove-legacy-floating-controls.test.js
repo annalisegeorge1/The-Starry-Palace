@@ -17,7 +17,11 @@ describe('retire legacy floating shortcuts without losing destinations',()=>{
   expect(shell).toContain('to="/letters" className={letterBadge?');
   expect(shell).toContain('className="mobile-dock-badge"');
   expect(shell).toContain('<PalaceThemePicker compact value={palaceTheme} onChange={setPalaceTheme}/>');
-  expect(shell).toContain('Switch to Nightfall');
+  const themes=readFileSync('src/PalaceThemePicker.jsx','utf8');
+  expect(themes).toContain("id:'nightfall'");
+  expect(themes).toContain("id:'midnight'");
+  expect(themes).toContain("id:'daylight'");
+  expect(themes).toContain('onClick={()=>onChange(id)}');
   expect(shell).toContain('Open Palace Chat');
  });
  it('preserves the contextual doors behind the compact mobile disclosure',()=>{
