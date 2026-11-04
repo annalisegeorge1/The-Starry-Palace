@@ -43,6 +43,8 @@ export default function PalaceFandomAtlas(){
  const exactFandomId=atlasSection==='fanfiction'&&exactFandom?
   rows.find(row=>String(row.name||'').toLowerCase()===exactFandom.toLowerCase())?.id:null;
  const queryFandomIds=selected.length?selected:exactFandomId?[exactFandomId]:[];
+ const resolvingNamedFandom=Boolean(exactFandom&&!selected.length&&loading);
+ const unrecognizedNamedFandom=Boolean(exactFandom&&!selected.length&&!loading&&!error&&!exactFandomId);
  const selectedNames=selected.map(id=>rows.find(row=>row.id===id)?.name).filter(Boolean);
  const activeFandomNames=selectedNames.length?selectedNames:exactFandom?[exactFandom]:[];
  const facets=useMemo(()=>fandomFacetOptions(rows,validMedia),[rows,validMedia]);
@@ -266,7 +268,8 @@ export default function PalaceFandomAtlas(){
   </>}
   {atlasSection==='fanfiction'&&<section className="palace-fandom-linked-section" aria-label="Fanfiction by fandom">
    {activeFandomNames.length>0&&<div className="palace-fandom-selection-note"><span>Fandom{activeFandomNames.length>1?'s':''}: <strong>{activeFandomNames.join(' · ')}</strong></span><button type="button" onClick={()=>changeParams({ids:null,match:null,fandom:null})}>All fanfiction</button><button type="button" onClick={()=>changeParams({section:null,fandom:null})}>Choose different fandoms</button></div>}
-   <UnifiedFanworkCatalogue key={activeFandomNames.join(',')+'|'+mode} publishedWorks={[...(queryFandomIds.length&&storyResultKey===selectionKey?stories:[]),...fanworkRows,...historicFanworks]} globalQuery={activeFandomNames.length?'':keyword} fandomNames={activeFandomNames} fandomMatch={mode} loading={fanworksBusy||fanworksLoadingMore||selectedNames.length>0&&storyBusy} loadError={fanworksError||selectedNames.length>0&&storyError} inFandomAtlas={true} defaultSource="all" hasMoreHosted={queryFandomIds.length>0?storyHasMore:fanworksHasMore}
+   {unrecognizedNamedFandom&&<p className="palace-fandom-access-note" role="status">This fandom name is not currently matched to a Palace directory tag. Matching author-source links may still appear below, but the hosted results cannot be verified from this name alone.</p>}
+   <UnifiedFanworkCatalogue key={activeFandomNames.join(',')+'|'+mode} publishedWorks={[...(queryFandomIds.length&&storyResultKey===selectionKey?stories:[]),...fanworkRows,...historicFanworks]} globalQuery={activeFandomNames.length?'':keyword} fandomNames={activeFandomNames} fandomMatch={mode} loading={fanworksBusy||fanworksLoadingMore||resolvingNamedFandom||queryFandomIds.length>0&&storyBusy} loadError={fanworksError||queryFandomIds.length>0&&storyError||exactFandom&&error} inFandomAtlas={true} defaultSource="all" hasMoreHosted={queryFandomIds.length>0?storyHasMore:fanworksHasMore}
      loadingMoreHosted={queryFandomIds.length>0?storyLoadingMore:fanworksLoadingMore}
      onMoreHosted={queryFandomIds.length>0?loadMoreSelectedFandomWorks:loadMoreFanworks}/>
    <p className="palace-fandom-complete-archive"><Link to="/reading?section=fanfiction">Browse the full Palace-hosted and linked Fanwork catalogue →</Link></p>
