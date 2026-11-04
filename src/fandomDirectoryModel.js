@@ -9,17 +9,22 @@ export function normalizeFandomName(input=''){
  * Prefer canonical titles; never guess if two fandoms share an alias.
  * This is link navigation, not fuzzy title search or an automatic tag merge.
  */
+// Unlike the directory's older Latin-only search normalizer, route
+// resolution must preserve Chinese, Japanese, Korean and other Unicode names.
+const fandomLinkKey=value=>String(value||'').normalize('NFKD')
+ .replace(/\p{M}/gu,'').toLocaleLowerCase()
+ .replace(/[^\p{L}\p{N}]+/gu,' ').trim().replace(/\s+/g,' ');
 export function resolveFandomDirectoryName(rows=[],input=''){
- const key=normalizeFandomName(input);
+ const key=fandomLinkKey(input);
  if(!key)return null;
  const eligible=(Array.isArray(rows)?rows:[]).filter(row=>
   row?.id&&row?.name&&(!row.category||row.category==='fandom')
   &&(!row.status||['canonical','community'].includes(row.status))
   &&!NON_FANDOM_CLASSIFICATIONS.some(label=>normalizeFandomName(label)===normalizeFandomName(row.name)));
- const canonical=eligible.filter(row=>normalizeFandomName(row.name)===key);
+ const canonical=eligible.filter(row=>fandomLinkKey(row.name)===key);
  if(canonical.length)return canonical.length===1?canonical[0]:null;
  const aliases=eligible.filter(row=>Array.isArray(row.aliases)
-  &&row.aliases.some(alias=>normalizeFandomName(alias)===key));
+  &&row.aliases.some(alias=>fandomLinkKey(alias)===key));
  return aliases.length===1?aliases[0]:null;
 }
 
