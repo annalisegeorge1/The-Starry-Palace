@@ -137,3 +137,16 @@ html:not([data-palace-theme="daylight"]) .palace-chat-dock.palace-chat-v2 :is(.p
 @media(min-width:961px){
  .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-advanced-controls>summary{height:28px!important;min-height:28px!important;background:transparent!important;border:1px solid var(--pc-line)!important}
 }
+
+/* Final inline timestamp alignment and edge clearance. */
+.palace-chat-dock.palace-chat-v2 .palace-chat-messages .palace-chat-bubble{align-items:baseline!important;justify-content:space-between!important;column-gap:12px!important;padding-right:16px!important}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble>.palace-chat-timestamp{align-self:baseline!important}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble :is(.palace-chat-inline-quote,.palace-chat-reply-quote){padding-right:12px!important;max-width:100%;overflow-wrap:anywhere;white-space:pre-wrap;box-sizing:border-box}
+@media(min-width:961px){
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-heading{padding-right:16px!important;box-sizing:border-box}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-header-actions{flex-shrink:0;gap:6px}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-advanced-controls>summary{background:transparent!important;border:0!important;border-bottom:1px solid var(--pc-line)!important;border-radius:0!important;box-shadow:none!important}
+}
+@media(max-width:960px){
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-composer-shell>.palace-chat-draft-hint{position:static!important;display:block;clear:both;margin-top:6px!important;padding-top:2px!important;white-space:normal!important;line-height:1.5!important;transform:none!important}
+}
