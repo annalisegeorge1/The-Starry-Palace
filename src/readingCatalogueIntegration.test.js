@@ -19,7 +19,7 @@ describe('real browsing, not an artificial 24-story ceiling',()=>{
   expect(live).toContain("setReadingChoice('visibleCount',current=>current+48)");
   expect(live).toContain('archiveBrowse.snapshot?visibleTotal.toLocaleString()');
   expect(live).toContain('matching published member stories and hosted fanfiction');
-  expect(live).toContain('matchesReadingFacets(w,includedTags,excludedTags)');
+  expect(live).toContain('matchesReadingFacets(w,effectiveReadingTags,excludedTags)');
   expect(live).toContain('<ReadingFacetSidebar facets={tagFacets}');
  });
  it('preserves guest reading and does not touch the member-only actions',()=>{
