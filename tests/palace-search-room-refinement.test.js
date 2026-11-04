@@ -7,6 +7,11 @@ const search=live.slice(live.indexOf('export function SearchLive({Frame}){'),liv
 const main=read('src/main.jsx');
 const styles=read('src/palace-search-room-refinement.css');
 describe('Palace Search route, navigation and readability',()=>{
+ it('uses the imported result kinds for counts and selected category labels',()=>{
+  expect(search).toContain('SEARCH_RESULT_KINDS.filter');
+  expect(search).toContain('SEARCH_RESULT_KINDS.find');
+  expect(search).not.toMatch(/\bSEARCH_RESULT_KIN\b/);
+ });
  it('reacts when the header searches again while already in Search Room',()=>{
   expect(search).toContain('const navigate=useNavigate(),location=useLocation()');
   expect(search).toContain("new URLSearchParams(location.search).get('q')");

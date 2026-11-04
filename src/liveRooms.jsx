@@ -1661,7 +1661,7 @@ export function SearchLive({Frame}){
  const facetTagMap=Object.fromEntries(tagFacets.flatMap(group=>group.tags.map(tag=>[tag.id,tag])));
  const total=countPalaceSearchGroups(groups,scope);
  const rawTotal=countPalaceSearchGroups(data,'all');
- const searchGroupCounts=SEARCH_RESULT_KIN.filter(([key])=>key!=='all'&&Number(groups?.[key]?.length)>0).map(([key,label])=>({key,label,count:groups[key].length}));
+ const searchGroupCounts=SEARCH_RESULT_KINDS.filter(([key])=>key!=='all'&&Number(groups?.[key]?.length)>0).map(([key,label])=>({key,label,count:groups[key].length}));
  const showGroup=key=>scope==='all'||scope===key;
  const suggestionCount=suggestions?Object.values(suggestions).reduce((n,v)=>n+(v?.length||0),0):0;
  const chooseSearch=term=>submitSearch(term);
@@ -1744,7 +1744,7 @@ export function SearchLive({Frame}){
     </footer>
    </div>
   </details>}
-  {data&&<><div className="search-summary" role="status" aria-live="polite"><strong>{total}</strong><span>matching result{total===1?'':'s'} across {scope==='all'?'all search categories':SEARCH_RESULT_KIN.find(([key])=>key===scope)?.[1]||'this category'}{total<rawTotal?' · refined from '+rawTotal+' results':''}</span>{(scope!=='all'||activePalaceSearchFacets(activeSearchFacets))&&<button type="button" className="quiet-button search-clear-all-filters" onClick={()=>{setScope('all');clearFacets()}}>Show all results ×</button>}</div>
+  {data&&<><div className="search-summary" role="status" aria-live="polite"><strong>{total}</strong><span>matching result{total===1?'':'s'} across {scope==='all'?'all search categories':SEARCH_RESULT_KINDS.find(([key])=>key===scope)?.[1]||'this category'}{total<rawTotal?' · refined from '+rawTotal+' results':''}</span>{(scope!=='all'||activePalaceSearchFacets(activeSearchFacets))&&<button type="button" className="quiet-button search-clear-all-filters" onClick={()=>{setScope('all');clearFacets()}}>Show all results ×</button>}</div>
    {scope==='all'&&searchGroupCounts.length>0&&<div className="palace-search-type-breakdown" aria-label="Matching results by category">{searchGroupCounts.map(({key,label,count})=><button key={key} type="button" onClick={()=>setScope(key)}><strong>{count}</strong> {label}</button>)}</div>}
    {groups?.works?.length>0&&<p className="palace-search-visibility-note">All published matches are listed, including Mature and Explicit. Use rating or tag filters to exclude them; age restrictions still apply before reading chapters.</p>}
    <section className="search-groups">
