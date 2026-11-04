@@ -184,3 +184,29 @@ it('supports multiple comma-separated tag names in Reading Rooms include and exc
  expect(onToggle).toHaveBeenCalledWith('family','exclude');
  expect(onToggle).toHaveBeenCalledWith('rich','exclude');
 });
+
+it('keeps broad relationship types separate from searchable relationship tags',()=>{
+ const onToggle=vi.fn();
+ const facets=[
+  {category:'relationship',label:'Relationships',tags:[
+   {id:'rich',name:'Richonne',count:6},
+   {id:'parents',name:'Parent and Child',count:3},
+   {id:'friends',name:'Friends to Lovers',count:1}
+  ]},
+  {category:'genre',label:'Genres',tags:[{id:'fantasy',name:'Fantasy',count:2}]},
+  {category:'trope',label:'Tropes',tags:[{id:'slow',name:'Slow Burn',count:4}]},
+  {category:'other',label:'Other tags',tags:[{id:'misc',name:'A Miscellaneous Tag',count:1}]}
+ ];
+ view({facets,onToggle});
+ fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
+ expect(screen.getByText('Relationship categories')).toBeTruthy();
+ expect(screen.getByRole('checkbox',{name:'Include F/M relationships'})).toBeTruthy();
+ expect(screen.queryByText('Relationships')).toBeNull();
+ expect(screen.queryByText('Tropes')).toBeNull();
+ expect(screen.queryByText('Other tags')).toBeNull();
+ fireEvent.change(screen.getByLabelText('Other tags to include'),{target:{value:'Richonne, Slow Burn'}});
+ expect(screen.getByRole('checkbox',{name:'Include Richonne'})).toBeTruthy();
+ expect(screen.getByRole('checkbox',{name:'Include Slow Burn'})).toBeTruthy();
+ fireEvent.click(screen.getByRole('checkbox',{name:'Include Richonne'}));
+ expect(onToggle).toHaveBeenCalledWith('rich','include');
+});
