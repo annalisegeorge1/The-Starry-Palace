@@ -3,6 +3,7 @@ import {validateComicImage} from './comicUploadPreparation';
 import {PALACE_CHAT_V3_ENABLED} from './palaceChatV3';
 import {INITIAL_FANDOM_DIRECTORY} from './palaceFandomCatalogue';
 import {paginatePublicFandomStories} from './fandomPublishedPages';
+import {scanFandomDirectoryPages} from './fandomDirectoryPaging';
 import {isHostedFanfiction} from './palaceFanfictionDiscovery';
 import {archiveFanfictionTags} from './fanfictionMetadata';
 
@@ -356,25 +357,31 @@ export async function getStoryHistoryMetadata(workIds=[]){
  */
 export async function getPalaceFandomDirectory(){
  const client=needClient();
- const pages=[];
- for(let offset=0;offset<1500;offset+=250){
+ const pages=await scanFandomDirectoryPages(async(offset,size)=>{
   const result=await client.from('tags')
    .select('id,name,category,status')
    .eq('category','fandom').in('status',['canonical','community'])
-   .order('name').range(offset,offset+249);
+   .order('name').order('id').range(offset,offset+size-1);
   if(result.error)throw result.error;
-  pages.push(...(result.data||[]));
-  if((result.data||[]).length<250)break;
- }
+  return result.data||[];
+ });
  let counts=[];
  try{counts=await searchPalaceTags('','fandom',250)}catch{}
  const usage=new Map(counts.map(tag=>[tag.id,Number(tag.usage_count||0)]));
  let metadata=[];
  try{
-  const result=await client.from('fandom_directory')
-   .select('tag_id,media_categories,subcategory,aliases,franchise').limit(1500);
-  if(!result.error)metadata=result.data||[];
- }catch{}
+  metadata=await scanFandomDirectoryPages(async(offset,size)=>{
+   const result=await client.from('fandom_directory')
+    .select('tag_id,media_categories,subcategory,aliases,franchise')
+    .order('tag_id').range(offset,offset+size-1);
+   if(result.error)throw result.error;
+   return result.data||[];
+  },{keyField:'tag_id'});
+ }catch{
+  // The optional curated table can be absent in earlier installations.
+  // Never use a partially fetched metadata table as if it were complete.
+  metadata=[];
+ }
  const known=new Map(metadata.map(row=>[row.tag_id,row]));
  const catalogue=new Map(INITIAL_FANDOM_DIRECTORY.map(row=>[row.name.toLowerCase(),row]));
  return pages.map(tag=>{
