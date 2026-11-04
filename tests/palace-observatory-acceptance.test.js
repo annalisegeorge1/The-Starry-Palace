@@ -19,6 +19,13 @@ describe('Observatory manual review cases',()=>{
   expect(PALACE_OBSERVATORY_ACCEPTANCE.some(x=>x.id==='restricted-metadata')).toBe(true);
   expect(PALACE_OBSERVATORY_ACCEPTANCE.some(x=>x.id==='restricted-reader')).toBe(true);
  });
+ it('keeps large-directory completeness and non-Latin search in human verification',()=>{
+  const check=PALACE_OBSERVATORY_ACCEPTANCE.find(x=>x.id==='fandom-directory-completeness');
+  expect(check?.route).toBe('/fandoms');
+  expect(check?.expected).toContain('1,500-row limit');
+  expect(check?.expected).toContain('Chinese, Japanese and Korean');
+  expect(check?.expected).toContain('report an error');
+ });
  it('keeps partial fandom pages in manual review instead of treating them as a true empty result',()=>{
   const fandom=PALACE_OBSERVATORY_ACCEPTANCE.find(item=>item.id==='fandom-shelf');
   expect(fandom?.expected).toContain('further result pages');
