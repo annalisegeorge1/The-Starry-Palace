@@ -74,7 +74,7 @@ export default function ReadingFacetSidebar({
   const pending=[];
   for(const mode of modes){
    const q=mode==='include'?includeQ:excludeQ;
-   if(!archiveWide||!q||typeof onSearchTags!=='function'){
+   if(!q||typeof onSearchTags!=='function'){
     setDirectory(prev=>({...prev,[mode]:[]}));
     setBusy(prev=>({...prev,[mode]:false}));
     setErrors(prev=>({...prev,[mode]:''}));
@@ -83,6 +83,7 @@ export default function ReadingFacetSidebar({
    let alive=true;
    pending.push(()=>{alive=false});
    setBusy(prev=>({...prev,[mode]:true}));
+   setDirectory(prev=>({...prev,[mode]:[]}));
    setErrors(prev=>({...prev,[mode]:''}));
    timeouts.push(setTimeout(()=>{
     Promise.resolve().then(()=>searchSeveralTags(onSearchTags,q,'all',35)).then(rows=>{
@@ -99,7 +100,7 @@ export default function ReadingFacetSidebar({
   const result={include:[],exclude:[]};
   for(const mode of modes){
    const q=mode==='include'?includeQ:excludeQ;
-   if(archiveWide&&q){
+   if(q&&typeof onSearchTags==='function'){
     const grouped=new Map();
     for(const tag of directory[mode]||[]){
      const category=READING_FACET_ORDER.includes(tag.category)?tag.category:'other';
@@ -117,7 +118,7 @@ export default function ReadingFacetSidebar({
    }
   }
   return result;
- },[archiveWide,includeQ,excludeQ,directory,facets]);
+ },[includeQ,excludeQ,directory,facets,onSearchTags]);
 
  // A hidden category must never make an active filter impossible to remove.
  const availableTags=useMemo(()=>{
@@ -163,6 +164,23 @@ export default function ReadingFacetSidebar({
    </span>}
   </label>;
  }
+ function renderTagSearch(mode){
+  const q=mode==='include'?includeQ:excludeQ;
+  return <div className="reading-facet-tag-search-dock">
+   <label className="reading-facet-label" htmlFor={'palace-facet-tag-'+mode}>Search all Palace tags to {mode}</label>
+   <input id={'palace-facet-tag-'+mode} type="search" className="reading-facet-search"
+    aria-label={'Search all tags to '+mode} value={searches[mode]}
+    onChange={e=>{
+     setSearches(prev=>({...prev,[mode]:e.target.value}));
+     if(e.target.value.trim())setExpandedModes(prev=>({...prev,[mode]:true}));
+    }}
+    onKeyDown={e=>exactTagOnEnter(e,mode)}
+    placeholder="Fandom, character, pairing, trope, warning…"/>
+   <small className="reading-facet-search-caption">
+    {q?'Select matching tags below, or add exact names together.':'Search the entire tag directory, even tags not shown in these stories. Separate multiple names with commas or semicolons.'}
+   </small>
+  </div>;
+ }
  function tagGroups(mode){
   const q=mode==='include'?includeQ:excludeQ;
   const selected=mode==='include'?included:excluded;
@@ -187,15 +205,6 @@ export default function ReadingFacetSidebar({
    <div className="reading-facet-relationship-cluster">
     <h4>Relationship categories</h4>
     <PalaceRelationshipFilters mode={mode} included={relationshipIncluded} excluded={relationshipExcluded} onToggle={onToggleRelationship}/>
-   </div>
-   <div className="reading-facet-tag-search-dock">
-    <label className="reading-facet-label" htmlFor={'palace-facet-tag-'+mode}>Other tags to {mode}</label>
-    <input id={'palace-facet-tag-'+mode} type="search" className="reading-facet-search"
-     aria-label={'Other tags to '+mode} value={searches[mode]}
-     onChange={e=>{setSearches(prev=>({...prev,[mode]:e.target.value}));}}
-     onKeyDown={e=>exactTagOnEnter(e,mode)}
-     placeholder={mode==='include'?'Search fandoms, characters, relationships, tropes…':'Search tags to exclude…'}/>
-    <small className="reading-facet-search-caption">{q?'Select several tags below, or add unambiguous exact names together.':'Enter several tag names separated by commas or semicolons. Included tags must all match; any excluded tag removes a work.'}</small>
    </div>
    {busy[mode]&&<p className="reading-facet-hint" role="status">Finding matching tags…</p>}
    {errors[mode]&&<p className="reading-facet-hint" role="alert">{errors[mode]}</p>}
@@ -266,11 +275,12 @@ export default function ReadingFacetSidebar({
       <span className="reading-facet-mode-title"><b>{index+3}. {mode==='include'?'Include':'Exclude'}</b><small>{mode==='include'?'Must-have tags and categories':'Tags and categories you do not want'}</small></span>
       <span className="reading-facet-mode-status">{count>0&&<em>{count} chosen</em>}<span aria-hidden="true">{isExpanded?'▴':'▾'}</span></span>
      </button>
+     {renderTagSearch(mode)}
      {isExpanded&&tagGroups(mode)}
     </section>;
    })}
    <div className="reading-facet-footer">
-    {archiveWide?<p>Archive tag filters search all published stories. Tag suggestions without a search reflect <strong>{loadedCount}</strong> loaded works, not the entire archive. Relationship categories use the loaded shelves.</p>:<p>Filters and statistics cover <strong>{loadedCount}</strong> currently loaded works{hasMore?'. Load more stories to expand the selection.':'.'}</p>}
+    {archiveWide?<p>Include and Exclude search the full Palace tag directory. Results cover the published archive; broad relationship categories still use loaded works.</p>:<p>Include and Exclude search the full Palace tag directory, while results cover <strong>{loadedCount}</strong> loaded works{hasMore?'. Load more stories or switch to Entire published archive for wider results.':'. Switch to Entire published archive for wider results.'}</p>}
     <p>For word-count ranges and language, use <Link to="/reading?view=search">Advanced search</Link>.</p>
    </div>
   </div>
