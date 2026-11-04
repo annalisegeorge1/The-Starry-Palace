@@ -62,6 +62,17 @@ describe('Fandom directory media and alias discovery',()=>{
   expect(resolveFandomDirectoryName(multilingual,'이상한 변호사 우영우')?.id).toBe('kr');
   expect(resolveFandomDirectoryName(multilingual,'mo dao zu shi')?.id).toBe('cn');
   expect(resolveFandomDirectoryName(multilingual,'SHINGEKI NO KYOJIN')?.id).toBe('jp');
+  // Japanese dakuten distinguishes voiced kana; folding it can route the
+  // reader to an entirely different canon.
+  const voiced=[
+   {id:'ga',name:'ガンダム',category:'fandom',status:'canonical'},
+   {id:'ka',name:'カンダム',category:'fandom',status:'canonical'},
+   {id:'accent',name:'Pokémon',category:'fandom',status:'canonical'}
+  ];
+  expect(resolveFandomDirectoryName(voiced,'ガンダム')?.id).toBe('ga');
+  expect(resolveFandomDirectoryName(voiced,'カンダム')?.id).toBe('ka');
+  expect(resolveFandomDirectoryName(voiced,'ガンダム')?.id).toBe('ga');
+  expect(resolveFandomDirectoryName(voiced,'pokemon')?.id).toBe('accent');
  });
  it('paginates and limits crossover selections without trusting URL IDs',()=>{
   const all=visibleFandoms(input);
