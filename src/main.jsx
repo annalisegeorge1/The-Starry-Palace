@@ -142,6 +142,7 @@ import './palace-mobile-drawer-compact.css';
 import './palace-midnight-theme.css';
 import './member-page-skins.css';
 import './reader-endflow-accessibility.css';
+import './tablet-daybreak-reading-polish.css';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
