@@ -1,0 +1,350 @@
+/* Daybreak — Treasury / Badges / Settings contrast and responsive finish.
+   Preserve badge artwork, draw entitlements, privacy behaviour, and phone UI.
+   The shared daylight navigation corrections intentionally apply to all rooms. */
+@media (min-width:761px) {
+  /* Universal Daybreak navigation: remove the old active neon treatment once,
+     rather than fixing individual rooms one at a time. */
+  .palace-shell.full-palace-shell.daylight #palace-sidebar .full-nav-room>a.active,
+  .palace-shell.full-palace-shell.daylight #palace-sidebar .full-nav-room>a[aria-current="page"] {
+    background:#e7e0f3!important;
+    background-image:none!important;
+    color:#3b2d56!important;
+    border:1px solid #bcaed7!important;
+    box-shadow:inset 3px 0 #785ba9!important;
+    text-shadow:none!important;
+  }
+  .palace-shell.full-palace-shell.daylight #palace-sidebar .full-nav-room>a.active::before,
+  .palace-shell.full-palace-shell.daylight #palace-sidebar .full-nav-room>a[aria-current="page"]::before {
+    background:#785ba9!important;
+    background-image:none!important;
+    box-shadow:none!important;
+  }
+  .palace-shell.full-palace-shell.daylight #palace-sidebar .full-nav-room>a.active :is(span,small),
+  .palace-shell.full-palace-shell.daylight #palace-sidebar .full-nav-room>a[aria-current="page"] :is(span,small) {
+    color:#3b2d56!important;
+    opacity:1!important;
+    text-shadow:none!important;
+  }
+  .palace-shell.full-palace-shell.daylight #palace-sidebar .full-subnav>a.active,
+  .palace-shell.full-palace-shell.daylight #palace-sidebar .palace-more-subdoors>a.active {
+    color:#44315e!important;
+    background:#ece5f5!important;
+    background-image:none!important;
+    border-left:3px solid #7c64ae!important;
+    box-shadow:none!important;
+  }
+
+  /* The opaque sticky header covers scrolled cards, including Settings. */
+  .palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar {
+    position:sticky!important;
+    top:0!important;
+    z-index:965!important;
+    isolation:isolate!important;
+    opacity:1!important;
+    background:#faf9ff!important;
+    background-color:#faf9ff!important;
+    background-image:none!important;
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+    border-bottom:1px solid #d9cfe7!important;
+    box-shadow:0 4px 13px rgba(45,37,80,.13)!important;
+  }
+  .palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar::before {
+    background:#faf9ff!important;
+    background-image:none!important;
+    opacity:1!important;
+  }
+  .palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar>.full-topbar-row {
+    position:relative!important;
+    z-index:1!important;
+  }
+
+  /* Badge descriptions and action affordances remain visually separate from
+     the artwork and progress bars. Preserve the desktop badge grid geometry. */
+  .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route="/treasury"]
+  .treasury-room.refined .badge-grid.refined .achievement-copy>p {
+    color:#4b5164!important;
+    opacity:1!important;
+    line-height:1.52!important;
+    font-size:.78rem!important;
+  }
+  .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route="/treasury"]
+  .treasury-room.refined .badge-grid.refined .achievement-copy>small {
+    color:#51406b!important;
+    opacity:1!important;
+  }
+  .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route="/treasury"]
+  .treasury-room.refined .badge-grid.refined .achievement-copy>button.showcase-toggle {
+    box-sizing:border-box!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    width:auto!important;
+    max-width:100%!important;
+    min-width:0!important;
+    min-height:42px!important;
+    margin-top:8px!important;
+    padding:9px 13px!important;
+    border-radius:10px!important;
+    font-size:.77rem!important;
+    line-height:1.3!important;
+    font-weight:750!important;
+    text-align:center!important;
+    text-decoration:none!important;
+    box-shadow:none!important;
+  }
+  .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route="/treasury"]
+  .treasury-room.refined .badge-grid.refined .achievement-copy>button.showcase-toggle:not(.is-showcased) {
+    border:1px solid #6e54a9!important;
+    background:#7053a8!important;
+    background-image:none!important;
+    color:#fff!important;
+  }
+  .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route="/treasury"]
+  .treasury-room.refined .badge-grid.refined .achievement-copy>button.showcase-toggle.is-showcased {
+    border:1px solid #bcaed1!important;
+    background:#f6f2fa!important;
+    background-image:none!important;
+    color:#493563!important;
+  }
+  .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route="/treasury"]
+  .treasury-room.refined .badge-grid.refined .achievement-copy>button.showcase-toggle:focus-visible {
+    outline:3px solid #6c53a8!important;
+    outline-offset:2px!important;
+  }
+
+  /* Lucky Draw preview: title / court / catalogue each occupy their own
+     readable line; do not impose ellipsis on the underlying artwork. */
+  .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route="/treasury"]
+  .draw-preview-cabinet>div {
+    grid-template-columns:repeat(auto-fit,minmax(255px,1fr))!important;
+  }
+  .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route="/treasury"]
+  .draw-preview-cabinet article>.draw-preview-copy {
+    min-width:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:flex-start!important;
+    gap:4px!important;
+    overflow:visible!important;
+  }
+  .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route="/treasury"]
+  .draw-preview-cabinet .draw-preview-copy>strong {
+    white-space:normal!important;
+    text-overflow:clip!important;
+    overflow:visible!important;
+    overflow-wrap:break-word!important;
+    font-size:.94rem!important;
+    line-height:1.3!important;
+    color:#30283e!important;
+  }
+  .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route="/treasury"]
+  .draw-preview-cabinet .draw-preview-copy>small {
+    white-space:normal!important;
+    text-overflow:clip!important;
+    overflow:visible!important;
+    overflow-wrap:break-word!important;
+    color:#4d4e65!important;
+    font-size:.78rem!important;
+    line-height:1.35!important;
+    opacity:1!important;
+  }
+  .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route="/treasury"]
+  .draw-preview-cabinet .draw-preview-copy>em {
+    display:block!important;
+    color:#6a5c7c!important;
+    font-size:.68rem!important;
+    font-style:normal!important;
+    line-height:1.35!important;
+  }
+  .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route="/treasury"]
+  .draw-result-card {
+    background:linear-gradient(115deg,#fff6dd,#f0e6f9 74%,#e8f2fa)!important;
+    background-image:linear-gradient(115deg,#fff6dd,#f0e6f9 74%,#e8f2fa)!important;
+    border-color:#d0b87e!important;
+    color:#382e46!important;
+  }
+  .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route="/treasury"]
+  .draw-result-card>div:last-child>b {
+    display:inline-flex!important;
+    align-items:center!important;
+    border:1px solid #91c6a3!important;
+    border-radius:999px!important;
+    padding:5px 10px!important;
+    background:#e9f7e9!important;
+    color:#176d40!important;
+    font-size:.89rem!important;
+    font-weight:800!important;
+  }
+
+  /* Settings navigation remains keyboard-scrollable without a visible rail;
+     inset trailing padding keeps the final Testing room tab fully readable. */
+  .palace-shell.full-palace-shell .settings-tabs.settings-desktop-tabs {
+    box-sizing:border-box!important;
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    padding-right:40px!important;
+    scroll-padding-right:40px!important;
+    overscroll-behavior-x:contain;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none!important;
+  }
+  .palace-shell.full-palace-shell .settings-tabs.settings-desktop-tabs::-webkit-scrollbar {
+    display:none!important;
+    width:0!important;
+    height:0!important;
+  }
+  .palace-shell.full-palace-shell .settings-tabs.settings-desktop-tabs>button {
+    flex:0 0 auto!important;
+    white-space:nowrap!important;
+  }
+  .palace-shell.full-palace-shell .settings-tabs.settings-desktop-tabs>button:focus-visible {
+    outline:2px solid #7857ab!important;
+    outline-offset:2px!important;
+  }
+  .palace-shell.full-palace-shell.daylight .settings-form select,
+  .palace-shell.full-palace-shell.daylight .settings-panel select {
+    box-sizing:border-box!important;
+    height:40px!important;
+    min-height:40px!important;
+    padding:7px 10px!important;
+    border-radius:9px!important;
+    font-size:.83rem!important;
+    line-height:1.3!important;
+  }
+  .palace-shell.full-palace-shell.daylight .settings-preset-head {
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:flex-start!important;
+    gap:5px!important;
+  }
+  .palace-shell.full-palace-shell.daylight .settings-preset-head>div {
+    width:100%!important;
+    min-width:0!important;
+  }
+  .palace-shell.full-palace-shell.daylight .settings-preset-head>span {
+    display:inline-block!important;
+    flex:0 1 auto!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    color:#5b516b!important;
+    opacity:1!important;
+    font-size:.72rem!important;
+    line-height:1.4!important;
+    letter-spacing:normal!important;
+    text-align:left!important;
+  }
+}
+
+@media (min-width:761px) and (max-width:1280px) {
+  /* Right-edge hint for scrollable Settings tabs, without a native scrollbar. */
+  .palace-shell.full-palace-shell .settings-tabs.settings-desktop-tabs {
+    -webkit-mask-image:linear-gradient(to right,#000 0%,#000 calc(100% - 20px),transparent 100%);
+    mask-image:linear-gradient(to right,#000 0%,#000 calc(100% - 20px),transparent 100%);
+  }
+}
+
+/* Tablet portrait and small laptop: the 288px desktop sidebar must NOT
+   remain in the CSS grid once available content width becomes too narrow.
+   The existing accessible nav button opens an off-canvas drawer instead. */
+@media (min-width:981px) and (max-width:1120px) {
+  .palace-shell.full-palace-shell,
+  .palace-shell.full-palace-shell.sidebar-collapsed {
+    display:block!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    width:100%!important;
+    max-width:100%!important;
+  }
+  .palace-shell.full-palace-shell .full-stage {
+    box-sizing:border-box!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+  }
+  .palace-shell.full-palace-shell .full-stage>main#palace-content {
+    box-sizing:border-box!important;
+    min-width:0!important;
+    max-width:100%!important;
+  }
+  .palace-shell.full-palace-shell #palace-sidebar.full-sidebar,
+  .palace-shell.full-palace-shell.sidebar-collapsed #palace-sidebar.full-sidebar {
+    position:fixed!important;
+    top:0!important;
+    left:0!important;
+    bottom:0!important;
+    z-index:1102!important;
+    box-sizing:border-box!important;
+    display:flex!important;
+    flex-direction:column!important;
+    width:min(372px,92vw)!important;
+    min-width:0!important;
+    max-width:92vw!important;
+    height:100dvh!important;
+    padding:12px!important;
+    overflow-y:auto!important;
+    opacity:1!important;
+    pointer-events:none!important;
+    transform:translateX(-105%)!important;
+    transition:transform .24s ease!important;
+  }
+  .palace-shell.full-palace-shell.nav-open #palace-sidebar.full-sidebar,
+  .palace-shell.full-palace-shell.nav-open.sidebar-collapsed #palace-sidebar.full-sidebar {
+    width:min(372px,92vw)!important;
+    padding:12px!important;
+    border-right-color:#c7b7dc!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+    transform:translateX(0)!important;
+  }
+  .palace-shell.full-palace-shell #palace-sidebar .sidebar-retract {
+    display:none!important;
+  }
+  .palace-shell.full-palace-shell #palace-sidebar .nav-close {
+    display:grid!important;
+    place-items:center!important;
+    min-width:38px!important;
+    min-height:38px!important;
+    border-radius:10px!important;
+  }
+  .palace-shell.full-palace-shell .full-topbar .nav-toggle {
+    display:grid!important;
+    place-items:center!important;
+    min-width:42px!important;
+    min-height:42px!important;
+    cursor:pointer!important;
+  }
+  .palace-shell.full-palace-shell.nav-open>.nav-scrim {
+    display:block!important;
+    position:fixed!important;
+    inset:0!important;
+    z-index:1101!important;
+    width:100%!important;
+    height:100dvh!important;
+    border:0!important;
+    background:rgba(8,8,24,.64)!important;
+    cursor:pointer;
+  }
+}
+
+@media (forced-colors:active) and (min-width:761px) {
+  .palace-shell.full-palace-shell.daylight #palace-sidebar .full-nav-room>a.active {
+    background:Highlight!important;
+    color:HighlightText!important;
+    border-color:Highlight!important;
+  }
+  .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route="/treasury"]
+  .treasury-room.refined .achievement-copy>button.showcase-toggle:not(.is-showcased) {
+    background:ButtonFace!important;
+    color:ButtonText!important;
+    border-color:ButtonText!important;
+  }
+}
