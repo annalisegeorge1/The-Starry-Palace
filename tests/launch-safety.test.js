@@ -1361,7 +1361,9 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain("readerLens==='new'&&hasNew(w)");
     expect(live).toContain('MY READING LENSES');
     expect(live).toContain('Private to you · never changes public discovery ranking');
-    expect(live).toContain('Clear reading filters');
+    expect(live).toContain('function clearReadingFilters()');
+    expect(live).toContain('onClear={clearReadingFilters}');
+    expect(live).toContain('>Clear filters</button>');
     expect(live).toContain('matching published member stories and hosted fanfiction');
     expect(live).toContain('archiveBrowse.snapshot?visibleTotal.toLocaleString()');
     expect(live).toContain('sortReadingWorks(filtered,catalogueSort)');
