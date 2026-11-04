@@ -79,3 +79,13 @@ The separate PR-only verification workflow is designed to run model and issue li
 - The original link recommendations remain source-linked, and all age restrictions on chapter text remain unchanged. Unit tests use stubs for server responses; browser acceptance and full-project testing remain separate release gates.
 
 - Fanwork-card links that specify a fandom **name** (rather than a UUID) now resolve an exact accepted directory tag name to an ID, then use the same paged query. Unrecognized names still use the general discovery shelf; they are not falsely reported as having zero matching works.
+
+## Phase 11 — trustworthy empty states and loading controls (draft only)
+- The full-project Phase 10 check ultimately passed **1,512 tests across 306 files** and the Vite build. Automated green checks do not establish that a real browser displays every match, so manual acceptance and Owner approval remain mandatory.
+- Fandom Atlas no longer declares a selected fandom empty while its indexed query reports more pages. A local search is explicitly a search of *already loaded* stories; an initial page containing only restricted-to-members records must not produce a false missing-work claim.
+- The unified fanwork shelf no longer shows a conclusive zero-result message while hosted results are loading or the request has failed. When further pages remain, it says the currently loaded subset has no matching works.
+- General/selected-fandom pagination has separate control state. When a fandom is selected, the catalogue's load-more control continues **that fandom's** query instead of switching to unrelated general pages.
+- The load-more button reports its busy state and is disabled during the request, including on mobile; Reading Rooms and Fandom Atlas pass their existing busy-state flags through without adding new service calls.
+- Expanded UI regression coverage for loading, empty, incomplete, and error states, plus updated manual acceptance instructions to independently check an initial empty public page followed by a page with a valid public match.
+- No database writes, Storage bucket or role setup, manuscript reads, merging, publication, Cloudflare deployment, or changes to the minimum age and separate restricted-chapter gates.
+
