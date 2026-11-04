@@ -16,9 +16,9 @@ export function PaintedSigil({palace,size=64,decorative=false,className=''}){
  const slug=typeof palace==='string'?palace:palace?.slug,index=PAINTED_PALACES.indexOf(slug);if(index<0)return null;
  return <PaintedSprite sheet="sigils" sheetSize={[1983,793]} box={[22+(index%5)*396,18+Math.floor(index/5)*386,355,355]} size={size} shape="circle" className={'palace-emblem '+className} label={(palace?.name||slug.replaceAll('-',' '))+' sigil'} decorative={decorative}/>;
 }
-export function PalaceBanner({palace,className='',wide=false}){
+export function PalaceBanner({palace,className='',wide=false,rectangular=false}){
  const slug=typeof palace==='string'?palace:palace?.slug,index=PAINTED_PALACES.indexOf(slug);if(index<0)return null;
- return <PaintedSprite sheet="banners" sheetSize={[1536,1024]} box={[100+(index%2)*702,55+Math.floor(index/2)*186,643,158]} size="100%" shape="banner" stretch={wide} className={'painted-palace-banner '+(wide?'painted-palace-banner-wide ':'')+className} label={(palace?.name||slug.replaceAll('-',' '))+' banner'}/>;
+ return <PaintedSprite sheet="banners" sheetSize={[1536,1024]} box={[100+(index%2)*702,55+Math.floor(index/2)*186,643,158]} size="100%" shape={rectangular?'rectangle':'banner'} stretch={wide} className={'painted-palace-banner '+(wide?'painted-palace-banner-wide ':'')+className} label={(palace?.name||slug.replaceAll('-',' '))+' banner'}/>;
 }
 export function WriterAward({kind,size=26,decorative=true}){
  const boxes={crown:[35,115,540,450],heart:[620,145,465,420],moon:[1170,110,478,485],star:[1650,110,500,480]};if(!boxes[kind])return null;

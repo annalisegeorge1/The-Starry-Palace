@@ -2,7 +2,7 @@ import MemberAvatar from './MemberAvatar';
 import PalaceIcon from './PalaceIcon';
 import React,{useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
-import {Link} from 'react-router-dom';
+import {Link,useLocation} from 'react-router-dom';
 import {supabase} from './supabase';
 import {watchPalaceChatRoom} from './palaceChatRealtime';
 import {buildPalaceDirectPreviews} from './palaceChatDirectPreview';
@@ -47,6 +47,8 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  const[selfProfile,setSelfProfile]=useState(null);
  useEffect(()=>{let active=true;setSelfProfile(null);Promise.resolve().then(()=>getMyProfile(userId)).then(p=>{if(active)setSelfProfile(p)}).catch(()=>{});return()=>{active=false}},[userId]);
  const[open,setOpen]=useState(Boolean(workspace));
+ const chatLocation=useLocation();
+ useEffect(()=>{if(!workspace&&window.matchMedia?.('(min-width:961px)').matches){setOpen(false);setActionMenu(null)}},[chatLocation.pathname,workspace]);
  useEffect(()=>{if(workspace)return;const openFromHeader=()=>{setActionMenu(null);setThreadOpen(false);setOpen(true)};window.addEventListener("palace-chat-open",openFromHeader);return()=>window.removeEventListener("palace-chat-open",openFromHeader)},[workspace]);
  const[threadOpen,setThreadOpen]=useState(Boolean(initialRoom?.roomId));
  const[loadingDirect,setLoadingDirect]=useState(true);

@@ -36,3 +36,21 @@
  .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-brand{min-width:0;flex:1 1 auto}
  .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-brand-copy{min-width:0}
 }
+
+@media(min-width:961px){
+ .palace-chat-dock.palace-chat-v2.is-open:not(.is-workspace){width:320px!important}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-advanced-controls>summary{height:36px!important;min-height:36px!important;padding:7px 10px!important}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-people>button{min-height:56px!important;padding:8px 10px!important;gap:9px!important}
+ .palace-shell.full-palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats strong{font-size:22px!important;line-height:1.1}
+ .palace-shell.full-palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats span{font-size:9px!important}
+ .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-actions .primary-profile-action{background:#7950cf!important;background-image:none!important;color:#fff!important;border-color:#9e7be3!important}
+ .palace-shell.full-palace-shell .chamber-section-nav.chamber-atelier-tabs,
+ .palace-shell.full-palace-shell .chamber-atelier-palace-stage{display:flex!important;box-sizing:border-box!important;width:100%!important;max-width:900px!important;margin-inline:auto!important;align-self:stretch!important;justify-self:stretch!important}
+ .palace-shell.full-palace-shell .chamber-atelier-palace-stage{display:block!important}
+ .palace-shell.full-palace-shell .chamber-atelier-palace-stage .member-palace-showcase{width:100%;max-width:none;margin-inline:0;margin-top:0}
+ .palace-shell .member-palace-banner-rail,
+ .palace-shell .member-palace-banner-rail :is(svg,img,.palace-banner){clip-path:none!important;transform:none!important;border-radius:12px!important;overflow:hidden}
+ .palace-shell:not(.daylight) .member-palace-honour em{color:#d8d3e9!important}
+ .palace-shell.daylight .member-palace-honour em{color:#5e5276!important}
+ .palace-shell .member-palace-heraldry-copy>span{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid currentColor;border-radius:9px;font-size:12px;font-weight:650}
+}
