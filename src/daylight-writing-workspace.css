@@ -1,0 +1,20 @@
+/* Daylight paper and writing chrome: view-only, never alters manuscript HTML. */
+.palace-shell.full-palace-shell.daylight .chic-editor-form :is(.manuscript-sheet-frame,.writing-page-stage){background:#fff!important;background-image:none!important;color:#111827!important;border-color:#d9deea!important;box-shadow:0 4px 24px rgba(38,46,72,.07)!important}
+.palace-shell.full-palace-shell.daylight .chic-editor-form .legacy-writing-canvas{background:#fff!important;background-image:none!important;color:#111827!important;-webkit-text-fill-color:#111827!important;caret-color:#111827!important;opacity:1!important}
+.palace-shell.full-palace-shell.daylight .legacy-writing-canvas :is(p,span,div,h1,h2,h3,h4,h5,h6,li,blockquote,strong,em,b,i,u,s){color:inherit!important;-webkit-text-fill-color:inherit!important;background-color:transparent!important}
+.palace-shell.full-palace-shell.daylight .legacy-writing-canvas a{color:#4b3ea5!important;-webkit-text-fill-color:#4b3ea5!important;text-decoration:underline}
+.palace-shell.full-palace-shell.daylight .legacy-writing-canvas:empty:before{color:#6b7280!important;-webkit-text-fill-color:#6b7280!important}
+.palace-shell.full-palace-shell.daylight .chic-editor-form :is(.manuscript-sticky-toolbar,.writer-format-navigator,.writer-format-scroll,.writer-chapter-jump,.writer-more-panel,.writer-appearance-accordion,.manuscript-type-ribbon,.writer-desk-drawer,.writer-desk-drawer-body,.writer-sprint-orbit){background:#f9fafc!important;background-image:none!important;color:#26324a!important;border-color:#d8ddeb!important;box-shadow:none!important}
+.palace-shell.full-palace-shell.daylight .chic-editor-form :is(.manuscript-sticky-toolbar,.writer-desk-drawer) :is(button,select,input,summary){background:#fff!important;background-image:none!important;color:#26324a!important;border-color:#d5dbea!important;box-shadow:none!important}
+.palace-shell.full-palace-shell.daylight .chic-editor-form :is(.writer-sprint-orbit,.writer-chapter-jump,.manuscript-type-ribbon,.writer-desk-drawer-title) :is(small,span,strong,em,label){color:#4b5870!important;opacity:1}
+.palace-shell.full-palace-shell .writer-desk-drawer-body .writer-sprint-orbit{position:static!important;grid-column:1/-1!important;grid-row:auto!important;order:0!important;min-height:0!important;margin:0 0 14px!important;padding:12px!important;display:flex!important;flex-wrap:wrap;align-items:center;gap:12px!important}
+.palace-shell.full-palace-shell .writer-desk-drawer-body .writer-sprint-sigil{width:36px;min-width:36px;height:36px}
+.palace-shell.full-palace-shell .writer-desk-drawer-body .writer-sprint-copy{flex:1 1 180px;min-width:0}
+.palace-shell.full-palace-shell .writer-desk-drawer-body .writer-sprint-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:end}
+@media(min-width:961px){
+ .palace-shell.full-palace-shell .chic-editor-form .writer-chapter-jump{padding:10px 12px!important;min-height:0!important;gap:10px!important;align-items:center!important}
+ .palace-shell.full-palace-shell .chic-editor-form .writer-toolbar-wordcount{white-space:nowrap}
+ .palace-shell.full-palace-shell .chic-editor-form .manuscript-sheet-frame{padding-inline:clamp(24px,4vw,64px)!important;box-sizing:border-box}
+ .palace-shell.full-palace-shell .full-sidebar .palace-theme-options{display:flex!important;flex-direction:column!important;gap:6px!important;width:100%!important;min-width:0;box-sizing:border-box}
+ .palace-shell.full-palace-shell .full-sidebar .palace-theme-option{display:flex!important;align-items:center;justify-content:flex-start!important;gap:10px;min-height:38px!important;width:100%!important;min-width:0!important;margin:0!important;padding:7px 10px!important;box-sizing:border-box}
+}
