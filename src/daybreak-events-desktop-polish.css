@@ -1,0 +1,213 @@
+/* Events & Heritage — Daybreak desktop/tablet clarity.
+ * Theme- and route-scoped, applied after existing calendar and shell styles.
+ * Mobile phone controls, heritage illustrations, event data and navigation
+ * behaviour are unchanged. */
+@media (min-width:761px) {
+ /* Header must be an opaque plane above the calendar and overview figures. */
+ .palace-shell.full-palace-shell.daylight .full-stage:has(>main#palace-content[data-palace-route^="/events"])
+ >header.topbar.full-topbar {
+   position:sticky!important;
+   top:0!important;
+   z-index:950!important;
+   isolation:isolate!important;
+   opacity:1!important;
+   background:#faf9ff!important;
+   background-color:#faf9ff!important;
+   background-image:none!important;
+   backdrop-filter:none!important;
+   -webkit-backdrop-filter:none!important;
+   border-bottom:1px solid #d8cfe6!important;
+   box-shadow:0 4px 14px rgba(49,40,83,.13)!important;
+ }
+ .palace-shell.full-palace-shell.daylight .full-stage:has(>main#palace-content[data-palace-route^="/events"])
+ >header.topbar.full-topbar::before {
+   background:#faf9ff!important;
+   background-image:none!important;
+   opacity:1!important;
+ }
+ .palace-shell.full-palace-shell.daylight .full-stage:has(>main#palace-content[data-palace-route^="/events"])
+ >header.topbar.full-topbar>.full-topbar-row {
+   position:relative!important;
+   z-index:1!important;
+ }
+
+ /* The real four counts now read as a quiet horizontal status ribbon.
+    Leave the existing smaller phone tiles untouched. */
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"] .events-pulse {
+   display:grid!important;
+   grid-template-columns:repeat(4,minmax(0,1fr))!important;
+   gap:8px!important;
+   max-width:1040px!important;
+   margin:9px auto 12px!important;
+ }
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"] .events-pulse>span {
+   box-sizing:border-box!important;
+   display:flex!important;
+   flex-direction:row!important;
+   align-items:center!important;
+   justify-content:center!important;
+   text-align:left!important;
+   gap:8px!important;
+   min-width:0!important;
+   min-height:48px!important;
+   height:auto!important;
+   padding:8px 11px!important;
+   background:#f7f5fb!important;
+   background-image:none!important;
+   border:1px solid #d1c8de!important;
+   border-radius:11px!important;
+   box-shadow:none!important;
+ }
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"] .events-pulse>span strong {
+   flex:none!important;
+   font-size:1.18rem!important;
+   line-height:1.15!important;
+   color:#332749!important;
+   font-variant-numeric:tabular-nums;
+ }
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"] .events-pulse>span small {
+   min-width:0!important;
+   font-size:.69rem!important;
+   line-height:1.3!important;
+   font-weight:650!important;
+   color:#4d4760!important;
+   opacity:1!important;
+   overflow-wrap:anywhere!important;
+ }
+
+ /* Calendar navigation is tab-like, not a white card with a heavy stroke. */
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"]
+ .chic-events-tabs {
+   background:transparent!important;
+   border:0!important;
+   box-shadow:none!important;
+ }
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"]
+ .chic-events-tabs>button {
+   min-height:38px!important;
+   padding:7px 13px!important;
+   border:1px solid transparent!important;
+   border-radius:9px!important;
+   box-shadow:none!important;
+   color:#504663!important;
+ }
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"]
+ .chic-events-tabs>button.active {
+   border:1px solid transparent!important;
+   background:#e8dff4!important;
+   background-image:none!important;
+   color:#3c2d5d!important;
+   box-shadow:none!important;
+   font-weight:800!important;
+ }
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"]
+ .chic-events-tabs>button:focus-visible {
+   outline:2px solid #775aaf!important;
+   outline-offset:2px!important;
+ }
+
+ /* Keep the month grid within an easy-to-scan editorial column, centered. */
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"]
+ .palace-month-calendar {
+   box-sizing:border-box!important;
+   width:min(100%,940px)!important;
+   max-width:940px!important;
+   margin:13px auto 23px!important;
+   padding:clamp(15px,2vw,25px)!important;
+ }
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"]
+ .calendar-weekdays {
+   color:#474354!important;
+   opacity:1!important;
+   font-size:.72rem!important;
+   font-weight:800!important;
+   letter-spacing:.04em!important;
+ }
+
+ /* One 7px event dot per populated date. Preserve all type-specific colours. */
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"]
+ .palace-month-calendar .calendar-kind-dots {
+   min-height:8px!important;
+ }
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"]
+ .palace-month-calendar .calendar-kind-dots>i {
+   display:block!important;
+   width:7px!important;
+   height:7px!important;
+   min-width:7px!important;
+   min-height:7px!important;
+   border-radius:50%!important;
+ }
+
+ /* Visible legend, selected-date copy and illustrated event metadata. */
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"]
+ .calendar-heritage-legend>span {
+   color:#4e455e!important;
+   opacity:1!important;
+   font-weight:650!important;
+   font-size:.69rem!important;
+ }
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"]
+ .calendar-quiet-day :is(strong,p) {
+   opacity:1!important;
+ }
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"]
+ .calendar-quiet-day strong {
+   color:#342846!important;
+ }
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"]
+ .calendar-quiet-day p {
+   color:#525769!important;
+ }
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"]
+ .palace-month-calendar.heritage .calendar-selection li small {
+   display:block!important;
+   margin-top:8px!important;
+   color:#4c4260!important;
+   opacity:1!important;
+   font-size:.69rem!important;
+   font-weight:700!important;
+   letter-spacing:.015em!important;
+   text-shadow:none!important;
+ }
+
+ /* Daybreak active navigation: a soft lavender doorway, never neon. */
+ .palace-shell.full-palace-shell.daylight[data-palace-room="events"] #palace-sidebar
+ .full-nav-room>a.active {
+   color:#3b2c58!important;
+   background:#e9e2f4!important;
+   background-image:none!important;
+   border-color:#b4a6d3!important;
+   box-shadow:inset 3px 0 #785cac!important;
+   text-shadow:none!important;
+ }
+ .palace-shell.full-palace-shell.daylight[data-palace-room="events"] #palace-sidebar
+ .full-nav-room>a.active::before {
+   background:#785cac!important;
+   box-shadow:none!important;
+ }
+ .palace-shell.full-palace-shell.daylight[data-palace-room="events"] #palace-sidebar
+ .full-nav-room>a.active>span {
+   color:#3b2c58!important;
+   opacity:1!important;
+ }
+}
+
+/* A usable tablet content column needs two rows of counts rather than
+   four cramped badges beside a permanently visible sidebar. */
+@media(min-width:761px) and (max-width:1050px) {
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"]
+ .events-pulse {
+   grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ }
+}
+
+/* Preserve system forced-colour semantics rather than flattening the theme. */
+@media (forced-colors:active) and (min-width:761px) {
+ .palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"]
+ .chic-events-tabs>button.active {
+   border-color:Highlight!important;
+   background:Highlight!important;
+   color:HighlightText!important;
+ }
+}
