@@ -24,6 +24,12 @@ describe('Observatory manual review cases',()=>{
   expect(fandom?.expected).toContain('further result pages');
   expect(fandom?.expected).toContain('premature no-works claim');
  });
+ it('covers exact-name fandom tag links without mistaking loading errors for missing works',()=>{
+  const item=PALACE_OBSERVATORY_ACCEPTANCE.find(x=>x.id==='fandom-tag-link');
+  expect(item?.route).toBe('/fandoms?section=fanfiction&fandom=Naruto');
+  expect(item?.expected).toContain('directory resolution');
+  expect(item?.expected).toContain('without implying no works exist');
+ });
  it('keeps private drafts, rights, anonymous access and responsive navigation in scope',()=>{
   for(const id of ['private-work','permissions','owner-only','small-android','tablet','tags-exclusion'])
    expect(PALACE_OBSERVATORY_ACCEPTANCE.some(x=>x.id===id)).toBe(true);
