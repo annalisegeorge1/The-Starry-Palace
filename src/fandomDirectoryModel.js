@@ -1,22 +1,18 @@
 import {FANDOM_MEDIA_SHELVES,NON_FANDOM_CLASSIFICATIONS} from './palaceFandomCatalogue';
 
 export const FANDOMS_PER_PAGE=24;
-export function normalizeFandomName(input=''){
- return String(input||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'')
-  .toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
-}
+// The directory search and tag-link resolver must share one Unicode-safe
+// comparison key. Fold Latin accents, but retain script-significant marks
+// such as Japanese dakuten so separate canons never collapse together.
+const fandomLinkKey=value=>String(value||'').normalize('NFKD')
+ .replace(/(\p{Script=Latin})\p{M}+/gu,'$1').toLocaleLowerCase()
+ .replace(/[^\p{L}\p{N}\p{M}]+/gu,' ').trim().replace(/\s+/g,' ');
+export function normalizeFandomName(input=''){return fandomLinkKey(input)}
 /** Resolve an exact public fandom name or one unique registered alias.
  * Prefer canonical titles; never guess if two fandoms share an alias.
  * This is link navigation, not fuzzy title search or an automatic tag merge.
  */
-// Unlike the directory's older Latin-only search normalizer, route
-// resolution must preserve Chinese, Japanese, Korean and other Unicode names.
-// Strip accent marks attached to Latin letters only. Japanese voicing marks
-// (dakuten / handakuten) and combining marks in other scripts distinguish
-// characters and must never be folded into a different fandom's canon.
-const fandomLinkKey=value=>String(value||'').normalize('NFKD')
- .replace(/(\p{Script=Latin})\p{M}+/gu,'$1').toLocaleLowerCase()
- .replace(/[^\p{L}\p{N}\p{M}]+/gu,' ').trim().replace(/\s+/g,' ');
+// Names in links use the same Unicode-safe normalization as directory search.
 export function resolveFandomDirectoryName(rows=[],input=''){
  const key=fandomLinkKey(input);
  if(!key)return null;
