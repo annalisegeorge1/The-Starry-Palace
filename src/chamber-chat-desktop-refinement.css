@@ -150,3 +150,17 @@ html:not([data-palace-theme="daylight"]) .palace-chat-dock.palace-chat-v2 :is(.p
 @media(max-width:960px){
  .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-composer-shell>.palace-chat-draft-hint{position:static!important;display:block;clear:both;margin-top:6px!important;padding-top:2px!important;white-space:normal!important;line-height:1.5!important;transform:none!important}
 }
+
+/* Keep short replies and their times together, with comfortable edge space. */
+.palace-chat-dock.palace-chat-v2 .palace-chat-messages .palace-chat-bubble{justify-content:flex-start!important;padding-top:9px!important;padding-bottom:9px!important}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble>p,
+.palace-chat-dock.palace-chat-v2 .palace-chat-quoted-message>p{flex:0 1 auto!important}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble>.palace-chat-timestamp{margin-left:0!important}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble :is(.palace-chat-inline-quote,.palace-chat-reply-quote){background:transparent!important;border-left-width:2px!important}
+@media(min-width:961px){
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-heading{padding-right:20px!important}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-header-actions{margin-right:4px!important;max-width:100%;flex-shrink:0}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-advanced-controls>summary{padding-left:16px!important;color:#b7bfd1!important}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-draft-hint{margin-top:6px!important}
+ html[data-palace-theme="daylight"] .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-advanced-controls>summary{color:#655d77!important}
+}
