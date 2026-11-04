@@ -5,6 +5,23 @@ export function normalizeFandomName(input=''){
  return String(input||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'')
   .toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
 }
+/** Resolve an exact public fandom name or one unique registered alias.
+ * Prefer canonical titles; never guess if two fandoms share an alias.
+ * This is link navigation, not fuzzy title search or an automatic tag merge.
+ */
+export function resolveFandomDirectoryName(rows=[],input=''){
+ const key=normalizeFandomName(input);
+ if(!key)return null;
+ const eligible=(Array.isArray(rows)?rows:[]).filter(row=>
+  row?.id&&row?.name&&row.category!=='original'&&row.category!=='work_type'
+  &&!NON_FANDOM_CLASSIFICATIONS.some(label=>normalizeFandomName(label)===normalizeFandomName(row.name)));
+ const canonical=eligible.filter(row=>normalizeFandomName(row.name)===key);
+ if(canonical.length)return canonical.length===1?canonical[0]:null;
+ const aliases=eligible.filter(row=>Array.isArray(row.aliases)
+  &&row.aliases.some(alias=>normalizeFandomName(alias)===key));
+ return aliases.length===1?aliases[0]:null;
+}
+
 export function visibleFandoms(rows=[],{media='all',query='',sort='alpha',subcategory='all',franchise='all'}={}){
  const needle=normalizeFandomName(query);
  const filtered=(Array.isArray(rows)?rows:[]).filter(row=>{
