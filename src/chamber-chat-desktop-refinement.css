@@ -102,3 +102,19 @@ html[data-palace-theme="daylight"] .palace-chat-dock.palace-chat-v2 .palace-chat
 .palace-chat-dock.palace-chat-v2 .palace-chat-quoted-message>p{margin-bottom:4px}
 .palace-chat-dock.palace-chat-v2 :is(.palace-chat-inline-quote,.palace-chat-reply-quote){font-size:.9em!important;color:rgba(255,255,255,.78)!important}
 html[data-palace-theme="daylight"] .palace-chat-dock.palace-chat-v2 :is(.palace-chat-inline-quote,.palace-chat-reply-quote){color:#514365!important}
+
+/* Quiet finishing details for the desktop conversation dock. */
+@media(min-width:961px){
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-more-trigger,
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) button[aria-label="Minimize Palace chat"]{background:transparent!important;background-image:none!important;border:1px solid transparent!important;box-shadow:none!important;color:var(--pc-ink)!important;transition:background .15s ease}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-more-trigger:hover,
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) button[aria-label="Minimize Palace chat"]:hover{background:rgba(170,177,224,.12)!important}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-more-trigger:focus-visible,
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) button[aria-label="Minimize Palace chat"]:focus-visible{outline:2px solid var(--pc-accent);outline-offset:2px}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-advanced-controls>summary{height:28px!important;min-height:28px!important;padding:4px 9px!important;border:1px solid transparent!important;background:rgba(106,126,177,.08)!important;border-radius:8px!important;font-size:11px!important}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-composer-shell,
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-draft-hint{background:var(--pc-surface)!important}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-draft-hint{border:0!important;box-shadow:none!important}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-bubble>.palace-chat-timestamp{padding-right:4px!important;box-sizing:border-box}
+}
+html:not([data-palace-theme="daylight"]) .palace-chat-dock.palace-chat-v2 :is(.palace-chat-inline-quote,.palace-chat-reply-quote){color:rgba(255,255,255,.82)!important}
