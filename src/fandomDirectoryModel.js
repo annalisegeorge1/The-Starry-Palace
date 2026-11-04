@@ -13,7 +13,8 @@ export function resolveFandomDirectoryName(rows=[],input=''){
  const key=normalizeFandomName(input);
  if(!key)return null;
  const eligible=(Array.isArray(rows)?rows:[]).filter(row=>
-  row?.id&&row?.name&&row.category!=='original'&&row.category!=='work_type'
+  row?.id&&row?.name&&(!row.category||row.category==='fandom')
+  &&(!row.status||['canonical','community'].includes(row.status))
   &&!NON_FANDOM_CLASSIFICATIONS.some(label=>normalizeFandomName(label)===normalizeFandomName(row.name)));
  const canonical=eligible.filter(row=>normalizeFandomName(row.name)===key);
  if(canonical.length)return canonical.length===1?canonical[0]:null;
