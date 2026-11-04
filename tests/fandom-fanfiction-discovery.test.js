@@ -60,6 +60,11 @@ describe('Fandom Atlas includes the same rights-aware Fanfiction collection',()=
   expect(atlas).toContain('loadMoreSelectedFandomWorks');
   expect(atlas).toContain('exactFandomId=atlasSection');
   expect(atlas).toContain('queryFandomIds=selected.length?selected:exactFandomId?[exactFandomId]:[]');
+  expect(atlas).toContain('resolvingNamedFandom=Boolean(exactFandom&&!selected.length&&loading)');
+  expect(atlas).toContain('unrecognizedNamedFandom=Boolean(exactFandom&&!selected.length&&!loading&&!error&&!exactFandomId)');
+  expect(atlas).toContain('resolvingNamedFandom||queryFandomIds.length>0&&storyBusy');
+  expect(atlas).toContain('queryFandomIds.length>0&&storyError||exactFandom&&error');
+  expect(atlas).toContain('hosted results cannot be verified from this name alone.');
   expect(atlas).toContain('storyResultKey===selectionKey');
   expect(atlas).toContain('Load more matching published works');
   expect(atlas).toContain('loadingMoreHosted={queryFandomIds.length>0?storyLoadingMore:fanworksLoadingMore}');
