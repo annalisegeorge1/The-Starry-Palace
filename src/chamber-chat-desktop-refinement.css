@@ -28,3 +28,11 @@
  .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats strong{font-size:16px!important}
  .palace-shell .member-chamber-atelier.chic-member-profile .legacy-profile-stats span{font-size:10px!important;letter-spacing:.04em!important}
 }
+
+@media(min-width:961px){
+ /* The inner panel previously retained 450px inside the narrower dock. */
+ .palace-chat-dock.palace-chat-v2.is-open:not(.is-workspace){right:16px!important;left:auto!important;box-sizing:border-box!important}
+ .palace-chat-dock.palace-chat-v2.is-open:not(.is-workspace)>.palace-chat-panel{width:100%!important;min-width:0!important;max-width:100%!important;box-sizing:border-box!important}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-brand{min-width:0;flex:1 1 auto}
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-brand-copy{min-width:0}
+}
