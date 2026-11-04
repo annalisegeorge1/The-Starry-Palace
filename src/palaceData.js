@@ -377,9 +377,11 @@ export async function getPalaceFandomDirectory(){
    if(result.error)throw result.error;
    return result.data||[];
   },{keyField:'tag_id'});
- }catch{
-  // The optional curated table can be absent in earlier installations.
-  // Never use a partially fetched metadata table as if it were complete.
+ }catch(error){
+  // Older installations may not have the optional curated table yet.
+  // Other errors or incomplete pages must be reported rather than silently
+  // dropping registered aliases and falsely implying missing fandoms.
+  if(!['42P01','PGRST205'].includes(String(error?.code||'')))throw error;
   metadata=[];
  }
  const known=new Map(metadata.map(row=>[row.tag_id,row]));
