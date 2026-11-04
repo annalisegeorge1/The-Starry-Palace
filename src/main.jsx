@@ -534,7 +534,7 @@ function FrameShell({children}){
  React.useEffect(()=>{if(!activeRoom||!recentDoorsKey)return;const label=activeSection?.[0]||activeRoom.label;const item={label,path:currentHref,icon:activeRoom.icon,detail:activeSection?activeRoom.label+' · recently visited':'Recently visited',kind:'recent'};setRecentPalaceRoutes(prev=>({key:recentDoorsKey,items:addPalaceRecentDoor(prev.key===recentDoorsKey?prev.items:readPalaceRecentDoors(safeLocalGet,recentDoorsKey),item)}))},[currentHref,activeRoom?.id,activeSection?.[0],recentDoorsKey]);
  React.useEffect(()=>setCommandIndex(0),[commandQuery,commandOpen]);
  function togglePalaceNavigation(){
-  if(typeof window!=='undefined'&&window.matchMedia('(min-width:981px)').matches){setSidebarCollapsed(v=>!v);setNavOpen(false);return}
+  if(typeof window!=='undefined'&&window.matchMedia('(min-width:1121px)').matches){setSidebarCollapsed(v=>!v);setNavOpen(false);return}
   setNavOpen(v=>!v)
  }
  function submitSearch(e){e.preventDefault();if(search.trim())navigate('/search?q='+encodeURIComponent(search.trim()))}
