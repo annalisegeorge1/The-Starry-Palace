@@ -36,6 +36,7 @@ import './palace-chat-conversation-first.css';
 import './palace-chat-compact-menu.css';
 import './palace-chat-mobile-compact.css';
 import './palace-chat-final-details.css';
+import './chamber-chat-desktop-refinement.css';
 
 const draftKey=(user,kind,id)=>'palace-chat-draft:'+user+':'+kind+':'+id;
 const nameOf=p=>p?.display_name||p?.username||'Palace member';
@@ -741,7 +742,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
     <button type="button" aria-pressed={tab==='direct'} onClick={()=>{setActionMenu(null);setThreadOpen(false);setTab('direct');setSearch('');setUnreadOnly(false);setStarredOnly(false);setShowArchived(false);setCreating(false);setManaging(false);setError('')}}>✉ Direct {directUnread>0&&<span>{directUnread}</span>}</button>
     <button type="button" aria-pressed={tab==='groups'} onClick={()=>{setActionMenu(null);setThreadOpen(false);setTab('groups');setSearch('');setUnreadOnly(false);setStarredOnly(false);setShowArchived(false);setCreating(false);setManaging(false);setError('')}}>♧ Groups {(groupUnread+groupData.invitations.length)>0&&<span>{groupUnread+groupData.invitations.length}</span>}</button>
    </nav>
-   <details className={"palace-chat-advanced-controls"+((tab==='groups'&&groupData.groups.length===0||tab==='direct'&&directRows.length===1&&archivedCount===0)&&!search&&!unreadOnly&&!starredOnly&&!showArchived?' is-quiet-single':'')}><summary aria-label="Search and filter conversations">⋯ Search & filters</summary><div className="palace-chat-tools"><input aria-label="Find a conversation" placeholder={tab==='groups'?'Find a circle or member…':'Search direct conversations…'} value={search} onChange={e=>setSearch(e.target.value)}/>
+   <details className={"palace-chat-advanced-controls"+((tab==='groups'&&groupData.groups.length===0||tab==='direct'&&directRows.length===1&&archivedCount===0)&&!search&&!unreadOnly&&!starredOnly&&!showArchived?' is-quiet-single':'')}><summary aria-label="Search and filter conversations"><PalaceIcon name="search" size={16}/> Search & filters</summary><div className="palace-chat-tools"><input aria-label="Find a conversation" placeholder={tab==='groups'?'Find a circle or member…':'Search direct conversations…'} value={search} onChange={e=>setSearch(e.target.value)}/>
     {tab==='direct'?<Link to="/letters" onClick={()=>setOpen(false)}>All letters ↗</Link>:<button type="button" onClick={()=>{setCreating(v=>!v);setManaging(false);setMemberResults([]);setMemberSearch('');setError('')}}>{creating?'Cancel':'＋ Group'}</button>}
    </div>
    {!creating&&<div className="palace-chat-inbox-refine" aria-label="Conversation filters">
