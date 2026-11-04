@@ -6,7 +6,7 @@ import PalaceRelationshipFilters from './PalaceRelationshipFilters';
 import {matchesTagQueries,exactTagQueryMatches,searchSeveralTags} from './multiTagSearch';
 
 // The quick checklist ends at Genres. All later categories remain searchable.
-const QUICK_TAG_CATEGORIES=new Set(['fandom','character','relationship','warning','genre']);
+const QUICK_TAG_CATEGORIES=new Set(['fandom','character','warning','genre']);
 import './reading-faceted-browse.css';
 
 /**
