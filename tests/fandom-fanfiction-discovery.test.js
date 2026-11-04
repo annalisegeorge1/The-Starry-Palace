@@ -51,8 +51,8 @@ describe('Fandom Atlas includes the same rights-aware Fanfiction collection',()=
   expect(atlas).toContain('publishedWorks={[...(queryFandomIds.length&&storyResultKey===selectionKey?stories:[]),...fanworkRows,...historicFanworks]}');
   expect(atlas).toContain('getPublishedWorks({offset:fetchedPublished,limit:48})');
   expect(atlas).toContain('setFetchedPublished(old=>old+page.length)');
-  expect(atlas).toContain('hasMoreHosted={fanworksHasMore||queryFandomIds.length>0&&storyHasMore}');
-  expect(atlas).toContain('onMoreHosted={queryFandomIds.length>0&&storyHasMore?loadMoreSelectedFandomWorks:loadMoreFanworks}');
+  expect(atlas).toContain('hasMoreHosted={queryFandomIds.length>0?storyHasMore:fanworksHasMore}');
+  expect(atlas).toContain('onMoreHosted={queryFandomIds.length>0?loadMoreSelectedFandomWorks:loadMoreFanworks}');
   expect(atlas).toContain("w.visibility==='public'");
   expect(atlas).toContain('inFandomAtlas={true}');
   expect(atlas).toContain('getStoriesForFandomsPage(queryFandomIds,mode,{offset:0,limit:FANDOM_STORY_PAGE_SIZE})');
@@ -62,6 +62,10 @@ describe('Fandom Atlas includes the same rights-aware Fanfiction collection',()=
   expect(atlas).toContain('queryFandomIds=selected.length?selected:exactFandomId?[exactFandomId]:[]');
   expect(atlas).toContain('storyResultKey===selectionKey');
   expect(atlas).toContain('Load more matching published works');
+  expect(atlas).toContain('loadingMoreHosted={queryFandomIds.length>0?storyLoadingMore:fanworksLoadingMore}');
+  expect(atlas).toContain('No matches among the stories loaded so far.');
+  expect(atlas).toContain('No public works in the pages checked so far.');
+  expect(atlas).not.toContain('No published stories are attached to this constellation yet.');
   expect(atlas).toContain('fandomNames={activeFandomNames}');
   expect(atlas).toContain('fandomMatch={mode}');
   expect(reading).toContain('fandomNames,fandomMatch,completion');
