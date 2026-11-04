@@ -11,9 +11,12 @@ export function normalizeFandomName(input=''){
  */
 // Unlike the directory's older Latin-only search normalizer, route
 // resolution must preserve Chinese, Japanese, Korean and other Unicode names.
+// Strip accent marks attached to Latin letters only. Japanese voicing marks
+// (dakuten / handakuten) and combining marks in other scripts distinguish
+// characters and must never be folded into a different fandom's canon.
 const fandomLinkKey=value=>String(value||'').normalize('NFKD')
- .replace(/\p{M}/gu,'').toLocaleLowerCase()
- .replace(/[^\p{L}\p{N}]+/gu,' ').trim().replace(/\s+/g,' ');
+ .replace(/(\p{Script=Latin})\p{M}+/gu,'$1').toLocaleLowerCase()
+ .replace(/[^\p{L}\p{N}\p{M}]+/gu,' ').trim().replace(/\s+/g,' ');
 export function resolveFandomDirectoryName(rows=[],input=''){
  const key=fandomLinkKey(input);
  if(!key)return null;
