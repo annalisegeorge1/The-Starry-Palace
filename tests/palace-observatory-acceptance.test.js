@@ -29,6 +29,8 @@ describe('Observatory manual review cases',()=>{
   expect(item?.route).toBe('/fandoms?section=fanfiction&fandom=Naruto');
   expect(item?.expected).toContain('directory resolution');
   expect(item?.expected).toContain('without implying no works exist');
+  expect(item?.expected).toContain('Unique accepted aliases');
+  expect(item?.expected).toContain('ambiguous aliases never merge separate canons');
  });
  it('keeps private drafts, rights, anonymous access and responsive navigation in scope',()=>{
   for(const id of ['private-work','permissions','owner-only','small-android','tablet','tags-exclusion'])
