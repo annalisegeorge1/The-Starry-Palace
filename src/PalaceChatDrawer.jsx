@@ -10,7 +10,7 @@ import {filterPalaceDirectInbox,findPalaceChatMessages} from './palaceChatInboxM
 import {collectPalaceSharedMedia,groupPalaceSharedMedia} from './palaceChatSharedMedia';
 import {PALACE_READING_CIRCLE_PROMPTS,PALACE_READING_CIRCLE_KITS,makePalaceCircleDraft} from './palaceReadingCirclePrompts';
 import {makePalaceDirectQuoteDraft} from './palaceDirectQuote';
-import {PALACE_CHAT_V3_ENABLED,getPalaceReactions,changePalaceReaction} from './palaceChatV3';
+import {PALACE_CHAT_V3_ENABLED,PALACE_MESSAGE_REACTIONS_ENABLED,getPalaceReactions,changePalaceReaction} from './palaceChatV3';
 import PalaceChatReactionBar from './PalaceChatReactionBar';
 import './palace-chat-workspace.css';
 import {getMyProfile,getLetters,getDirectConversationMessages,DIRECT_HISTORY_PAGE_SIZE,sendLetter,sendLetterPhoto,editLetterMessage,searchMembers,setConversationPreference,getMemberBoundary,setMemberBoundary,reportConversation,submitCommunityReport} from './palaceData';
@@ -163,12 +163,15 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   return()=>{current=false};
  },[userId,tab,otherUserId]);
  useEffect(()=>{
-  if(!PALACE_CHAT_V3_ENABLED||!open||!roomId||!reactionMessageIds){setReactionRows({roomId:'',rows:[]});return}
+  if(!PALACE_MESSAGE_REACTIONS_ENABLED||!open||!roomId||!reactionMessageIds){setReactionRows({roomId:'',rows:[]});return}
   let alive=true;
-  getPalaceReactions(tab,reactionMessageIds.split(',')).then(rows=>{
+  const refresh=()=>getPalaceReactions(tab,reactionMessageIds.split(',')).then(rows=>{
    if(alive)setReactionRows({roomId,rows});
   }).catch(e=>{if(alive)setError('Reactions could not be loaded. '+errorText(e))});
-  return()=>{alive=false};
+  refresh();
+  const timer=window.setInterval(()=>{if(document.visibilityState==='visible')refresh()},12000);
+  window.addEventListener('focus',refresh);
+  return()=>{alive=false;window.clearInterval(timer);window.removeEventListener('focus',refresh)};
  },[open,roomId,tab,reactionMessageIds,reactionRefresh]);
  useEffect(()=>{if(!photoFile){setPhotoPreview('');return}
   const preview=URL.createObjectURL(photoFile);setPhotoPreview(preview);
@@ -604,7 +607,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   finally{setBusy(false)}
  }
  async function reactToMessage(messageId,key,current){
-  if(!PALACE_CHAT_V3_ENABLED||busy||!roomId)return;
+  if(!PALACE_MESSAGE_REACTIONS_ENABLED||busy||!roomId)return;
   setBusy(true);setError('');
   try{await changePalaceReaction(tab,messageId,userId,key,current);setReactionRefresh(v=>v+1)}
   catch(e){setError('Reaction was not saved. '+errorText(e))}
@@ -830,7 +833,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
         onPointerMove={moveMessageHold} onPointerUp={clearMessageHold} onPointerCancel={clearMessageHold} onPointerLeave={clearMessageHold}
         onContextMenu={e=>{e.preventDefault();openMessageActions(m,e.currentTarget,e.clientX,e.clientY)}}
         onKeyDown={e=>{if(e.target!==e.currentTarget)return;if((e.shiftKey&&e.key==='F10')||e.key==='ContextMenu'||e.key==='Enter'||e.key===' '){e.preventDefault();openMessageActions(m,e.currentTarget)} }}
-        className={'palace-chat-bubble'+(m.sender_id===userId?' mine':'')+(actionMenu?.message.id===m.id?' has-active-actions':'')}>
+        className={'palace-chat-bubble'+(m.sender_id===userId?' mine':'')+(actionMenu?.message.id===m.id?' has-active-actions':'')+(PALACE_MESSAGE_REACTIONS_ENABLED?' has-reaction-control':'')}>
        <div className="palace-chat-sender"><MemberAvatar className="palace-chat-message-avatar" memberId={m.sender_id} profile={tab==='groups'?(m.profiles||activeGroup?.members.find(p=>p.id===m.sender_id)):m.sender_id===userId?selfProfile:activeDirect?.correspondent}/>{tab==='groups'&&m.sender_id!==userId&&<strong>{nameOf(m.profiles)}</strong>}</div>
        {(tab==='groups'||PALACE_CHAT_V3_ENABLED)&&m.reply_to_id&&<button type="button" className="palace-chat-reply-quote" onClick={()=>jumpToQuotedMessage(m.reply_to_id)} aria-label="Jump to replied message"><small>↩ Reply to {nameOf(messages.find(item=>item.id===m.reply_to_id)?.profiles)}</small><p>{messages.find(item=>item.id===m.reply_to_id)?.body?.slice(0,145)||'An earlier group message'}</p></button>}
        {editingMessage===m.id?
@@ -842,7 +845,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
        {m.edited_at&&<small className="palace-chat-edited-mark" title={'Edited '+new Date(m.edited_at).toLocaleString()}>Edited</small>}
        {tab==='groups'&&m.works?.slug&&<Link className="palace-chat-shared-story" to={'/work/'+encodeURIComponent(m.works.slug)} onClick={()=>setOpen(false)}><span aria-hidden="true">✧</span><span><small>PALACE STORY</small><strong>{m.works.title}</strong></span><span aria-hidden="true">↗</span></Link>}
        <small className="palace-chat-timestamp">{dateOf(m.created_at)}</small>
-       {PALACE_CHAT_V3_ENABLED&&<PalaceChatReactionBar message={m} rows={reactionRows.roomId===roomId?reactionRows.rows:[]} userId={userId} disabled={busy||(tab==='direct'&&boundary.blocked)} onReact={reactToMessage}/>}
+       {PALACE_MESSAGE_REACTIONS_ENABLED&&<PalaceChatReactionBar message={m} rows={reactionRows.roomId===roomId?reactionRows.rows:[]} userId={userId} disabled={busy||(tab==='direct'&&boundary.blocked)} onReact={reactToMessage}/>}
        {/* Message actions appear only on long-press, right-click, or keyboard context menu. */}
       </div></React.Fragment>):<p className="palace-chat-empty">Nothing written here yet. Begin with a hello. ✦</p>}
      </div>
