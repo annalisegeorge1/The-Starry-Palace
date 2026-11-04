@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection,fandomFacetOptions,matchesFandomStoryQuery} from './fandomDirectoryModel';
+import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection,fandomFacetOptions,matchesFandomStoryQuery,resolveFandomDirectoryName} from './fandomDirectoryModel';
 const input=[
  {id:'1',name:'Naruto',media_categories:['anime_manga'],aliases:['Naruto Shippuden'],subcategory:'Shōnen fantasy',franchise:'Naruto'},
  {id:'2',name:'Bridgerton',media_categories:['books_literature','tv_shows'],aliases:['Bridgerton Netflix'],usage_count:12},
@@ -34,6 +34,24 @@ describe('Fandom directory media and alias discovery',()=>{
   expect(visibleFandoms(input,{media:'anime_manga',subcategory:'Shōnen fantasy',franchise:'Naruto'}).map(x=>x.name)).toEqual(['Naruto']);
   expect(visibleFandoms(input,{media:'tv_shows',franchise:'Naruto'})).toEqual([]);
   expect(visibleFandoms(input,{media:'anime_manga',subcategory:'Unknown'})).toEqual([]);
+ });
+ it('resolves canonical fandoms and unique public aliases, never ambiguous or unapproved labels',()=>{
+  const named=[
+   {...input[0],category:'fandom',status:'canonical'},
+   {...input[2],category:'fandom',status:'community'},
+   {id:'duplicate-alias',name:'A Separate TV World',category:'fandom',status:'canonical',aliases:['TWD']},
+   {id:'unapproved',name:'Hidden Canon',category:'fandom',status:'pending',aliases:['Secret Alias']},
+   {id:'trope-tag',name:'Fandom Crossover',category:'trope',status:'canonical',aliases:['Crossed Worlds']}
+  ];
+  expect(resolveFandomDirectoryName(named,'Naruto')?.id).toBe('1');
+  expect(resolveFandomDirectoryName(named,'NARUTO—SHIPPUDEN')?.id).toBe('1');
+  expect(resolveFandomDirectoryName(named,'The Walking Dead')?.id).toBe('3');
+  expect(resolveFandomDirectoryName(named,'TWD')).toBeNull();
+  expect(resolveFandomDirectoryName(named,'Secret Alias')).toBeNull();
+  expect(resolveFandomDirectoryName(named,'Crossed Worlds')).toBeNull();
+  expect(resolveFandomDirectoryName(named,'missing')).toBeNull();
+  expect(resolveFandomDirectoryName(named,'')).toBeNull();
+  expect(resolveFandomDirectoryName([...named,{id:'canon-twd',name:'TWD',category:'fandom',status:'canonical'}],'TWD')?.id).toBe('canon-twd');
  });
  it('paginates and limits crossover selections without trusting URL IDs',()=>{
   const all=visibleFandoms(input);
