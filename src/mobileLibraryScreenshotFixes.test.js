@@ -34,7 +34,11 @@ describe('mobile Library screenshot fixes',()=>{
   expect(css).toContain('.palace-chat-launch');
   expect(shell).not.toContain('className="float-btn theme-orb"');
   expect(shell).toContain("<PalaceThemePicker compact value={palaceTheme} onChange={setPalaceTheme}/>");
-  expect(shell).toContain("Switch to Nightfall");
+  const themes=readFileSync('src/PalaceThemePicker.jsx','utf8');
+  expect(themes).toContain("id:'nightfall'");
+  expect(themes).toContain("id:'midnight'");
+  expect(themes).toContain("id:'daylight'");
+  expect(themes).toContain("aria-label={label+' theme'}");
  });
  it('keeps Library search and Letters accessible without redundant mobile floating links',()=>{
   expect(css).toContain('[data-palace-room="library"] .full-topbar .global-search-live');
