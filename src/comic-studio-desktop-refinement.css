@@ -1,0 +1,32 @@
+/* Desktop Comic Studio: aligned settings, compact overview and episode tools. */
+@media(min-width:961px){
+ .palace-shell .comic-studio-home .studio-settings{grid-template-columns:repeat(12,minmax(0,1fr));gap:18px 16px;align-items:start}
+ .palace-shell .comic-studio-home .studio-settings>label{min-width:0;align-content:start;gap:7px;grid-column:span 3}
+ .palace-shell .comic-studio-home .studio-settings>label:has([name="title"]),
+ .palace-shell .comic-studio-home .studio-settings>label:has([name="required_credit_line"]),
+ .palace-shell .comic-studio-home .studio-settings>label.wide{grid-column:1/-1}
+ .palace-shell .comic-studio-home .studio-settings>label:has([name="rating"]),
+ .palace-shell .comic-studio-home .studio-settings>label:has([name="minimum_reader_age"]),
+ .palace-shell .comic-studio-home .studio-settings>label:has([name="completion_status"]){grid-column:span 4}
+ .palace-shell .comic-studio-home .studio-settings :is(input,select){height:44px;min-height:44px;margin:0;min-width:0;box-sizing:border-box}
+ .palace-shell .comic-studio-home .studio-settings label small{font-size:12px;line-height:1.45;letter-spacing:0}
+ .palace-shell .comic-studio-home .studio-settings textarea{min-width:0;margin:0;resize:vertical}
+ .palace-shell .comic-studio-home .episode-create{display:flex;align-items:stretch;gap:16px}
+ .palace-shell .comic-studio-home .episode-create input{flex:1 1 0;width:0;min-width:0;margin:0;box-sizing:border-box}
+ .palace-shell .comic-studio-home .episode-create button{flex:0 0 auto;margin:0;white-space:nowrap}
+ .palace-shell .comic-studio-home .episode-create :is(input,button){height:44px;min-height:44px;box-sizing:border-box}
+ .palace-shell .comic-studio-home .episode-manager-tools{grid-template-columns:minmax(0,2fr) minmax(0,1fr) auto;gap:16px;align-items:end;padding:14px}
+ .palace-shell .comic-studio-home .episode-manager-tools label{display:grid;gap:7px;min-width:0}
+ .palace-shell .comic-studio-home .episode-manager-tools :is(input,select,button){height:44px;min-height:44px;margin:0;box-sizing:border-box;min-width:0}
+ .palace-shell .comic-studio-home .episode-manager-tools label>span{font-size:11px}
+ .palace-shell .comic-studio-home .comic-library-summary{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+ .palace-shell .comic-studio-home .comic-library-summary>span{display:inline-flex;align-items:baseline;gap:6px;flex:0 0 auto;min-width:0;min-height:0;padding:8px 14px;border-radius:999px;font-size:13px}
+ .palace-shell .comic-studio-home .comic-library-summary strong{font-size:15px}
+ .palace-shell .comics-head:has(~ .comic-studio-home){min-height:0!important;padding:24px 28px!important;gap:10px}
+ .palace-shell .comics-head:has(~ .comic-studio-home) h1{margin:0 0 8px;font-size:clamp(28px,2.5vw,38px)}
+ .palace-shell .comics-head:has(~ .comic-studio-home) .lede{margin:0;max-width:78ch;line-height:1.5}
+ .palace-shell .comics-head:has(~ .comic-studio-home) .comic-principles{display:none}
+ .palace-shell .comic-studio-home .episode-manager-empty{display:grid;place-items:center;align-content:center;gap:6px;min-height:0!important;padding:24px!important;text-align:center}
+ .palace-shell .comic-studio-home .episode-manager-empty :is(h3,p){margin:0}
+ .palace-shell .comic-studio-home .episode-manager-empty>span{font-size:24px;line-height:1}
+}
