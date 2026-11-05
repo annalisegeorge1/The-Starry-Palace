@@ -81,12 +81,12 @@ describe('classic literature typesetting',()=>{
   expect(structureClassicText(wrapped)).toEqual([{kind:'paragraph',text:'The evening turned quiet as the townsfolk wandered through the old streets and back towards their homes.'}]);
  });
  it('does not promote a sentence fragment beginning with part to a giant heading',()=>{
-  const source='Prince Vasili spoke languidly, like an actor repeating a stale\\n\\npart. Anna Pavlovna, on the contrary, despite her forty years,\\n\\noverflowed with animation and impulsiveness.';
+  const source='Prince Vasili spoke languidly, like an actor repeating a stale\n\npart. Anna Pavlovna, on the contrary, despite her forty years,\n\noverflowed with animation and impulsiveness.';
   const blocks=structureClassicText(source);
   expect(blocks).toEqual([{kind:'paragraph',text:'Prince Vasili spoke languidly, like an actor repeating a stale part. Anna Pavlovna, on the contrary, despite her forty years, overflowed with animation and impulsiveness.'}]);
  });
  it('keeps actual Part, Book and Chapter heading punctuation intact',()=>{
-  const blocks=structureClassicText('PART I\\nOpening words.\\n\\nBOOK II: A New Beginning\\nFurther words.\\n\\nCHAPTER IV.\\nLast words.');
+  const blocks=structureClassicText('PART I\nOpening words.\n\nBOOK II: A New Beginning\nFurther words.\n\nCHAPTER IV.\nLast words.');
   expect(blocks.filter(block=>block.kind==='heading').map(block=>block.text)).toEqual(['PART I','BOOK II: A New Beginning','CHAPTER IV.']);
  });
  it('handles empty and CRLF source',()=>{
