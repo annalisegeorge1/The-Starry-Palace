@@ -1936,7 +1936,7 @@ function WorkCommunity({work,community,session,reload,setError,chapterReturnTo=n
  async function submitCommentReport(){if(!session||!reporting||!reportReason.trim())return;try{await submitCommunityReport(session.user.id,'comment',reporting.id,reportReason,{work_id:work.id,work_slug:work.slug,comment_author_id:reporting.author_id||null});setReporting(null);setReportReason('');setNotice('Comment report sent to Palace Council for review.')}catch(e){setError(e.message)}}
  const visibleComments=community.comments.filter(c=>own||c.status==='approved'||c.author_id===session?.user?.id);
  const roots=visibleComments.filter(c=>!c.parent_comment_id);
- return <section id="comments" className={"work-community"+(chapterReturnTo?" chapter-end-comments":"")}>
+ return <section id={chapterReturnTo?undefined:"comments"} className={"work-community"+(chapterReturnTo?" chapter-end-comments":"")}>
   {showTags&&<div className="work-tags">{community.tags.map(x=><Link key={x.tags.id} to={"/tags?q="+encodeURIComponent(x.tags.name)}>#{x.tags.name}</Link>)}</div>}
   <p className="eyebrow">READER RESPONSES</p>
   {chapterReturnTo&&<><h2>Leave a thought on this story</h2><p className="chapter-comments-description">Join the story's moderated discussion here, without leaving the chapter. Responses are shared across this work and may contain spoilers.</p></>}
@@ -2124,7 +2124,7 @@ function ReaderChapter({Frame,slug,chapterId}){
   </aside>
   {!session&&<GuestReadingInvitation returnTo={'/work/'+slug+'/chapter/'+chapterId} context="chapter" compact/>}
   <a className="reader-return-top reader-return-top-before-shelf" href="#palace-reader-start">↑ Back to chapter start</a>
-  <div className="reader-comments-after-chapter" aria-label="Reader comments after chapter">
+  <div id="comments" className="reader-comments-after-chapter" aria-label="Reader comments after chapter">
    {readerCommunityStatus==='loading'?<div className="reader-comments-status" role="status">Gathering reader responses…</div>:readerCommunityStatus==='error'?<div className="reader-comments-status" role="status">Reader responses are unavailable right now. <button type="button" onClick={refreshReaderCommunity}>Try again</button></div>:<WorkCommunity work={data.work} community={readerCommunity} session={session} reload={refreshReaderCommunity} setError={setError} showTags={false} chapterReturnTo={'/work/'+slug+'/chapter/'+chapterId+'#comments'}/>}
   </div>
   <ReaderChapterShelf chapters={readable} chapterId={chapterId} workSlug={slug}/>
