@@ -146,7 +146,10 @@ CREATE TABLE public.archive_rights_records(
 ALTER TABLE public.archive_rights_records ENABLE ROW LEVEL SECURITY;
 CREATE POLICY observatory_stage_archive_verified_rights
  ON public.archive_rights_records FOR SELECT TO anon,authenticated
- USING (status='verified');
+ USING (status='verified' AND EXISTS(
+  SELECT 1 FROM public.archive_records r
+  WHERE r.id=record_id AND r.publication_status='published'
+ ));
 GRANT SELECT ON public.archive_rights_records TO anon,authenticated;
 
 -- Text is private by default; only Owner may see its minimal index metadata,
