@@ -76,7 +76,9 @@ SELECT 1 / CASE WHEN NOT EXISTS (
  WHERE has_table_privilege(roles.role_name,'public.'||tables.relname,'INSERT')
     OR has_table_privilege(roles.role_name,'public.'||tables.relname,'UPDATE')
     OR has_table_privilege(roles.role_name,'public.'||tables.relname,'DELETE')
-) AND has_table_privilege('authenticated','public.work_collaborators','SELECT')
+) AND (SELECT count(*) FROM pg_policies
+       WHERE schemaname='public' AND tablename='works')=2
+  AND (SELECT count(*) FROM public.work_collaborators)=0
  THEN 1 ELSE 0 END AS least_privilege_reading_grants;
 
 -- Existing pre-populated stage dummy author remains intact.
