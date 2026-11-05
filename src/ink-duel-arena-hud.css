@@ -169,30 +169,30 @@
 .palace-shell .duel-room-page .duel-bronze-meter>small {font-size:.68rem;line-height:1.5;opacity:.74}
 .palace-shell .duel-room-page .duel-card .duel-gallery.blind article {border-color:rgba(150,207,240,.38);background:rgba(16,31,70,.56)}
 .palace-shell .duel-room-page .duel-card .duel-gallery.blind article>header {border-bottom:1px solid rgba(161,193,236,.23)}
-.palace-shell .ink-duel-dialog .duel-builder-label {color:#f9d394!important;font:850 .76rem/1.45 system-ui,sans-serif!important;letter-spacing:.12em}
-.palace-shell .ink-duel-dialog .duel-content-picker button,
-.palace-shell .ink-duel-dialog .duel-match-picker button,
-.palace-shell .ink-duel-dialog .duel-mode-picker button {
+.ink-duel-dialog .duel-builder-label {color:#f9d394!important;font:850 .76rem/1.45 system-ui,sans-serif!important;letter-spacing:.12em}
+.ink-duel-dialog .duel-content-picker button,
+.ink-duel-dialog .duel-match-picker button,
+.ink-duel-dialog .duel-mode-picker button {
  border:1px solid rgba(164,148,215,.38)!important;
  background:linear-gradient(160deg,rgba(35,37,77,.91),rgba(28,28,63,.83))!important;
  box-shadow:inset 0 1px 0 rgba(255,255,255,.045)!important;
  transition:box-shadow .2s,border-color .2s,background .2s;
 }
-.palace-shell .ink-duel-dialog .duel-content-picker button.active,
-.palace-shell .ink-duel-dialog .duel-match-picker button.active,
-.palace-shell .ink-duel-dialog .duel-mode-picker button.active {
+.ink-duel-dialog .duel-content-picker button.active,
+.ink-duel-dialog .duel-match-picker button.active,
+.ink-duel-dialog .duel-mode-picker button.active {
  border:2px solid #c49dff!important;
  background:linear-gradient(145deg,rgba(89,67,149,.85),rgba(33,70,111,.8))!important;
  box-shadow:0 0 0 2px rgba(169,128,255,.12),0 0 17px rgba(139,92,246,.45),inset 0 1px 10px rgba(191,165,255,.08)!important;
 }
-.palace-shell .ink-duel-dialog .duel-match-picker button.active span {color:#fbd28c}
-.palace-shell .ink-duel-dialog .duel-rule-grid {
+.ink-duel-dialog .duel-match-picker button.active span {color:#fbd28c}
+.ink-duel-dialog .duel-rule-grid {
  display:grid;
  grid-template-columns:repeat(2,minmax(0,1fr));
  gap:12px;
  align-items:start;
 }
-.palace-shell .ink-duel-dialog .duel-stat-selector {
+.ink-duel-dialog .duel-stat-selector {
  min-width:0;
  margin:0;
  padding:12px;
@@ -200,13 +200,13 @@
  border-radius:15px;
  background:rgba(20,25,58,.34);
 }
-.palace-shell .ink-duel-dialog .duel-stat-selector legend {
+.ink-duel-dialog .duel-stat-selector legend {
  padding:0 5px;
  color:#e8d4ff;
  font:800 .79rem/1.5 system-ui,sans-serif;
 }
-.palace-shell .ink-duel-dialog .duel-stat-options {display:flex;flex-wrap:wrap;gap:6px}
-.palace-shell .ink-duel-dialog .duel-stat-options button {
+.ink-duel-dialog .duel-stat-options {display:flex;flex-wrap:wrap;gap:6px}
+.ink-duel-dialog .duel-stat-options button {
  min-width:46px;
  min-height:43px;
  flex:1 1 49px;
@@ -218,16 +218,16 @@
  font:750 .83rem/1.15 system-ui,sans-serif;
  cursor:pointer;
 }
-.palace-shell .ink-duel-dialog .duel-stat-options button small {display:block;font:.62rem/1.25 system-ui,sans-serif;opacity:.8}
-.palace-shell .ink-duel-dialog .duel-stat-options button.active {
+.ink-duel-dialog .duel-stat-options button small {display:block;font:.62rem/1.25 system-ui,sans-serif;opacity:.8}
+.ink-duel-dialog .duel-stat-options button.active {
  background:linear-gradient(145deg,#6650a8,#16617f);
  border-color:#b9e8fa;
  color:#fff;
  box-shadow:0 0 0 2px rgba(111,217,249,.13),0 0 14px rgba(108,202,252,.2);
 }
-.palace-shell .ink-duel-dialog .duel-stat-options button:disabled {opacity:.45;cursor:not-allowed}
-.palace-shell .ink-duel-dialog .duel-fixed-stat {display:block;margin-top:8px;opacity:.8;font-size:.72rem}
-.palace-shell .ink-duel-dialog .button-starlight[form="ink-duel-form"]:not(:disabled){
+.ink-duel-dialog .duel-stat-options button:disabled {opacity:.45;cursor:not-allowed}
+.ink-duel-dialog .duel-fixed-stat {display:block;margin-top:8px;opacity:.8;font-size:.72rem}
+.ink-duel-dialog .button-starlight[form="ink-duel-form"]:not(:disabled){
  min-height:49px;
  background:linear-gradient(115deg,#7c46c7,#1989aa,#9060d8)!important;
  background-size:175% 100%!important;
@@ -235,7 +235,7 @@
  font-weight:850!important;
  letter-spacing:.035em;
 }
-.palace-shell .ink-duel-dialog .button-starlight[form="ink-duel-form"]:disabled{
+.ink-duel-dialog .button-starlight[form="ink-duel-form"]:disabled{
  opacity:.55!important;
  background:#55566a!important;
  color:#e6e6ec!important;
@@ -261,19 +261,19 @@
 .palace-shell.daylight .duel-room-page .duel-bronze-meter-label {color:#654326}
 .palace-shell.daylight .duel-room-page .duel-bronze-meter>span,
 .palace-shell.daylight .duel-room-page .duel-bronze-meter>small {color:#3c4261}
-.palace-shell.daylight .ink-duel-dialog .duel-stat-selector {background:#f7f4fc;border-color:#c9b6e2}
-.palace-shell.daylight .ink-duel-dialog .duel-stat-selector legend {color:#4d3a71}
-.palace-shell.daylight .ink-duel-dialog .duel-stat-options button {background:#fff;color:#353153;border-color:#b7a8cf}
-.palace-shell.daylight .ink-duel-dialog .duel-stat-options button.active {background:#644b9e;color:white;border-color:#594084}
-.palace-shell.daylight .ink-duel-dialog .duel-builder-label {color:#593c83!important}
-.palace-shell.daylight .ink-duel-dialog .duel-content-picker button,
-.palace-shell.daylight .ink-duel-dialog .duel-match-picker button,
-.palace-shell.daylight .ink-duel-dialog .duel-mode-picker button {background:#f2ecfb!important;color:#32264c}
-.palace-shell.daylight .ink-duel-dialog .duel-content-picker button.active,
-.palace-shell.daylight .ink-duel-dialog .duel-match-picker button.active,
-.palace-shell.daylight .ink-duel-dialog .duel-mode-picker button.active {background:linear-gradient(140deg,#e8d8ff,#dceafa)!important;color:#372356}
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-stat-selector {background:#f7f4fc;border-color:#c9b6e2}
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-stat-selector legend {color:#4d3a71}
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-stat-options button {background:#fff;color:#353153;border-color:#b7a8cf}
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-stat-options button.active {background:#644b9e;color:white;border-color:#594084}
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-builder-label {color:#593c83!important}
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-content-picker button,
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-match-picker button,
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-mode-picker button {background:#f2ecfb!important;color:#32264c}
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-content-picker button.active,
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-match-picker button.active,
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-mode-picker button.active {background:linear-gradient(140deg,#e8d8ff,#dceafa)!important;color:#372356}
 @media(max-width:740px) {
- .palace-shell .ink-duel-dialog .duel-rule-grid {grid-template-columns:minmax(0,1fr)}
+ .ink-duel-dialog .duel-rule-grid {grid-template-columns:minmax(0,1fr)}
  .palace-shell .duel-room-page .duel-card > header {gap:10px}
  .palace-shell .duel-room-page .duel-quest-card {padding:12px;gap:9px}
  .palace-shell .duel-room-page .duel-card > header > .duel-clock {min-width:0;padding:9px 16px}
@@ -281,7 +281,24 @@
 }
 @media(prefers-reduced-motion:reduce){
  .palace-shell .duel-timer-pulse {animation:none}
- .palace-shell .ink-duel-dialog .duel-content-picker button,
- .palace-shell .ink-duel-dialog .duel-match-picker button,
- .palace-shell .ink-duel-dialog .duel-mode-picker button {transition:none}
+ .ink-duel-dialog .duel-content-picker button,
+ .ink-duel-dialog .duel-match-picker button,
+ .ink-duel-dialog .duel-mode-picker button {transition:none}
+}
+
+/* The setup wizard is portalled to the document body, outside .palace-shell. */
+.ink-duel-dialog > footer {
+ display:flex;
+ align-items:center;
+ justify-content:flex-end;
+ flex-wrap:wrap;
+ gap:9px;
+}
+.ink-duel-dialog > footer .duel-submit-hint {flex:1 1 100%;order:0}
+.ink-duel-dialog > footer .quiet-button {order:1}
+.ink-duel-dialog > footer .button-starlight[form="ink-duel-form"] {
+ order:2;
+ flex:1 1 100%;
+ width:100%;
+ min-height:50px;
 }
