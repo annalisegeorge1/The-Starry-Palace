@@ -40,6 +40,22 @@ VALUES ('bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb','Moon Harbor Chronicles','fandom'
 INSERT INTO public.work_tags(work_id,tag_id,position)
 VALUES ('55555555-5555-4555-8555-555555555555','bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',1);
 
+-- Archive hosting and Owner status are invented and exist only in this
+-- disposable CI database, never in Supabase Security Staging.
+INSERT INTO public.archive_records(id,slug,title,category,publication_status,host_mode,rights_status)
+VALUES
+ ('cccccccc-cccc-4ccc-8ccc-cccccccccccc','invented-link','Fictional Link Only','licensed_fanfiction','published','citation','permission_pending'),
+ ('dddddddd-dddd-4ddd-8ddd-dddddddddddd','invented-unpublished','Unpublished Archive Fixture','licensed_fanfiction','draft','metadata_only','unresolved');
+INSERT INTO public.archive_rights_records(record_id,basis,status,permits_hosting)
+VALUES ('cccccccc-cccc-4ccc-8ccc-cccccccccccc','unresolved','review',false);
+INSERT INTO public.archive_texts(record_id,body_text,source_url,word_count)
+VALUES ('cccccccc-cccc-4ccc-8ccc-cccccccccccc','Fictional short fixture text','https://example.invalid/fictional',5);
+INSERT INTO auth.users(id) VALUES ('12121212-1212-4212-8212-121212121212');
+INSERT INTO public.profiles(id,username,display_name)
+VALUES ('12121212-1212-4212-8212-121212121212','invented_stage_owner','Staging-only Reviewer');
+INSERT INTO public.platform_memberships(user_id,platform_role,suspended)
+VALUES ('12121212-1212-4212-8212-121212121212','owner',false);
+
 -- The default grants on new exposed tables must be intentionally revoked.
 SELECT 1 / CASE WHEN
   NOT has_table_privilege('anon','public.archive_texts','SELECT')
@@ -59,6 +75,10 @@ SELECT 1 / CASE WHEN (SELECT count(*) FROM public.works WHERE publication_status
 -- Anonymous users must not see any draft/member-only chapter text, nor adult text.
 SELECT 1 / CASE WHEN (SELECT count(*) FROM public.chapters)=1
  THEN 1 ELSE 0 END AS signed_out_chapter_age_gate;
+SELECT 1 / CASE WHEN (SELECT count(*) FROM public.archive_records)=1
+ THEN 1 ELSE 0 END AS published_archive_only;
+SELECT 1 / CASE WHEN (SELECT count(*) FROM public.archive_rights_records)=0
+ THEN 1 ELSE 0 END AS pending_rights_are_not_public;
 SELECT 1 / CASE WHEN (public.search_published_works_v2(p_origin=>'fandom')->>'total')::integer=1
  THEN 1 ELSE 0 END AS adult_metadata_searchable;
 ROLLBACK;
@@ -70,6 +90,17 @@ SELECT 1 / CASE WHEN (SELECT count(*) FROM public.chapters)=2
  THEN 1 ELSE 0 END AS adult_client_chapter_access;
 SELECT 1 / CASE WHEN (SELECT count(*) FROM public.works WHERE publication_status='draft')=0
  THEN 1 ELSE 0 END AS other_user_draft_hidden;
+SELECT 1 / CASE WHEN (SELECT count(record_id) FROM public.archive_texts)=0
+ THEN 1 ELSE 0 END AS non_owner_archive_index_hidden;
+ROLLBACK;
+
+BEGIN;
+SELECT set_config('request.jwt.claim.sub','12121212-1212-4212-8212-121212121212',true);
+SET LOCAL ROLE authenticated;
+SELECT 1 / CASE WHEN (SELECT count(record_id) FROM public.archive_texts)=1
+ THEN 1 ELSE 0 END AS owner_archive_index_readable;
+SELECT 1 / CASE WHEN (SELECT count(*) FROM public.works WHERE publication_status='draft')=0
+ THEN 1 ELSE 0 END AS owner_cannot_read_other_authors_private_drafts;
 ROLLBACK;
 
 -- No real account or content ever leaves this ephemeral Postgres container.
