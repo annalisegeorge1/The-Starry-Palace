@@ -1,0 +1,140 @@
+/* A visible account menu on desktop and mobile, without moving header icons. */
+.full-topbar .full-top-actions .palace-account-menu {
+  position:relative;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  z-index:60;
+}
+.full-topbar .palace-account-menu > summary {
+  list-style:none;
+  cursor:pointer;
+  user-select:none;
+  display:grid;
+  place-items:center;
+  box-sizing:border-box;
+}
+.full-topbar .palace-account-menu > summary::-webkit-details-marker {display:none}
+.full-topbar .palace-account-menu > summary::marker {content:''}
+.full-topbar .palace-account-menu[open] > summary,
+.full-topbar .palace-account-menu > summary:focus-visible {
+  outline:2px solid #bea5f1;
+  outline-offset:2px;
+  background:rgba(137,104,192,.22);
+}
+.full-topbar .palace-account-menu-popover {
+  position:absolute;
+  inset-inline-end:0;
+  top:calc(100% + 10px);
+  z-index:999;
+  width:min(270px,calc(100vw - 24px));
+  min-width:220px;
+  padding:9px;
+  border:1px solid rgba(196,179,234,.35);
+  border-radius:16px;
+  background:#17172e;
+  box-shadow:0 18px 45px rgba(4,5,21,.42);
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  color:#f3eeff;
+  text-align:left;
+}
+.full-topbar .palace-account-menu-caption {
+  padding:7px 10px;
+  font:700 .65rem/1.4 system-ui,sans-serif;
+  color:#b9acd8;
+  letter-spacing:.11em;
+}
+.full-topbar .palace-account-menu-popover > a,
+.full-topbar .palace-account-sign-out {
+  width:100%;
+  min-height:42px;
+  display:flex;
+  align-items:center;
+  padding:9px 11px;
+  border:0;
+  border-radius:10px;
+  font:600 .86rem/1.35 system-ui,sans-serif;
+  text-align:left;
+  text-decoration:none;
+  background:transparent;
+  color:#f3eeff;
+  cursor:pointer;
+}
+.full-topbar .palace-account-menu-popover > a:is(:hover,:focus-visible),
+.full-topbar .palace-account-sign-out:is(:hover,:focus-visible) {
+  background:rgba(144,118,202,.24);
+  color:#fff;
+  outline-offset:2px;
+}
+.full-topbar .palace-account-menu-popover .palace-sign-out-control {
+  display:block;
+  border-top:1px solid rgba(191,171,222,.20);
+  padding-top:5px;
+  margin-top:3px;
+}
+.full-topbar .palace-account-sign-out {color:#ffd4dc}
+.palace-sign-out-control {display:inline-block;max-width:100%}
+.palace-sign-out-control button:disabled {opacity:.65;cursor:wait}
+.palace-sign-out-error {
+  display:block;
+  padding:6px 9px;
+  color:#ffe0e6;
+  font-size:.73rem;
+  line-height:1.45;
+  overflow-wrap:anywhere;
+}
+.account-control-room .account-signout-card {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:14px 22px;
+  padding:1.05rem 1.15rem;
+  border-radius:16px;
+  border:1px solid rgba(176,154,213,.28);
+  background:rgba(106,89,150,.10);
+}
+.account-control-room .account-signout-card h2 {margin:.15rem 0 .35rem}
+.account-control-room .account-signout-card p:not(.eyebrow) {
+  margin:0;
+  max-width:57ch;
+  line-height:1.5;
+}
+.account-control-room .account-signout-action {
+  min-height:44px;
+  white-space:nowrap;
+  padding:.65rem 1.1rem;
+  cursor:pointer;
+}
+.account-control-room .palace-sign-out-error {color:#c84564}
+:root[data-palace-theme='daylight'] .full-topbar .palace-account-menu-popover,
+:root[data-palace-theme='daybreak'] .full-topbar .palace-account-menu-popover {
+  background:#fffaff;
+  border-color:#c9b8e1;
+  box-shadow:0 14px 34px rgba(39,42,85,.20);
+  color:#312445;
+}
+:root[data-palace-theme='daylight'] .full-topbar .palace-account-menu-caption,
+:root[data-palace-theme='daybreak'] .full-topbar .palace-account-menu-caption {color:#66577b}
+:root[data-palace-theme='daylight'] .full-topbar .palace-account-menu-popover > a,
+:root[data-palace-theme='daylight'] .full-topbar .palace-account-sign-out,
+:root[data-palace-theme='daybreak'] .full-topbar .palace-account-menu-popover > a,
+:root[data-palace-theme='daybreak'] .full-topbar .palace-account-sign-out {color:#362847}
+:root[data-palace-theme='daylight'] .full-topbar .palace-account-menu-popover > a:is(:hover,:focus-visible),
+:root[data-palace-theme='daylight'] .full-topbar .palace-account-sign-out:is(:hover,:focus-visible),
+:root[data-palace-theme='daybreak'] .full-topbar .palace-account-menu-popover > a:is(:hover,:focus-visible),
+:root[data-palace-theme='daybreak'] .full-topbar .palace-account-sign-out:is(:hover,:focus-visible) {
+  background:#eee5fb;
+  color:#392353;
+}
+@media(max-width:600px) {
+  .full-topbar .palace-account-menu-popover {
+    top:calc(100% + 6px);
+    width:min(245px,calc(100vw - 16px));
+    right:-45px;
+  }
+  .account-control-room .account-signout-card {align-items:flex-start}
+  .account-control-room .account-signout-action {width:100%}
+}
