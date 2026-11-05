@@ -460,3 +460,130 @@
     column-gap:12px!important;
   }
 }
+
+
+/* Daylight Prompt Orrery: retain airy blue canvas, restore readable hierarchy.
+   Scopes to the writing fold; nightfall palettes and functionality unchanged. */
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-orrery-copy .eyebrow {
+  color:#58409a!important;
+  -webkit-text-fill-color:#58409a!important;
+  font-size:.7rem!important;
+  font-weight:750!important;
+  letter-spacing:.13em!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-orrery-copy h2 {
+  color:#1b2948!important;
+  -webkit-text-fill-color:#1b2948!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-reels > article {
+  background-color:rgba(255,255,255,.87)!important;
+  border-color:rgba(126,96,187,.24)!important;
+  box-shadow:0 8px 23px rgba(56,80,143,.12), inset 0 1px 0 rgba(255,255,255,.8)!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-reels > article > small {
+  color:#594975!important;
+  -webkit-text-fill-color:#594975!important;
+  font-size:.67rem!important;
+  font-weight:800!important;
+  letter-spacing:.075em!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-reels > article > strong {
+  color:#302343!important;
+  -webkit-text-fill-color:#302343!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-reels > article > em {
+  color:#62546f!important;
+  -webkit-text-fill-color:#62546f!important;
+  font-size:.82rem!important;
+  line-height:1.5!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-reel-lock {
+  color:#5d477e!important;
+  border-color:rgba(116,87,164,.45)!important;
+  background:rgba(255,255,255,.90)!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-reel-lock:hover,
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-reel-lock:focus-visible {
+  color:#392153!important;
+  border-color:#7c5aa7!important;
+  background:#eee6fc!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-orbit-facets > span {
+  border-bottom:1px solid rgba(76,89,134,.30)!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-orbit-facets > span > small {
+  color:#505787!important;
+  -webkit-text-fill-color:#505787!important;
+  font-size:.68rem!important;
+  font-weight:800!important;
+  letter-spacing:.085em!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-orbit-facets > span > strong {
+  color:#29324e!important;
+  -webkit-text-fill-color:#29324e!important;
+  font-size:.95rem!important;
+  line-height:1.45!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-filter-row .prompt-filter-drawer > summary {
+  color:#4c326c!important;
+  -webkit-text-fill-color:#4c326c!important;
+  border:1px solid #8b6eb9!important;
+  background:rgba(255,255,255,.46)!important;
+  background-image:none!important;
+  font-size:.82rem!important;
+  font-weight:750!important;
+  box-shadow:0 2px 6px rgba(69,65,113,.055)!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-filter-row .prompt-filter-drawer > summary span,
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-filter-row .prompt-filter-drawer > summary::after {
+  color:#4c326c!important;
+  -webkit-text-fill-color:#4c326c!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-filter-row .prompt-filter-drawer > summary:is(:hover,:focus-visible) {
+  border-color:#65479a!important;
+  background:rgba(255,255,255,.78)!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-filter-match-count {
+  color:#47546f!important;
+  -webkit-text-fill-color:#47546f!important;
+  font-size:.82rem!important;
+  font-weight:600!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-filter-grid label > span {
+  color:#46516d!important;
+  -webkit-text-fill-color:#46516d!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-filter-grid select {
+  color:#29324e!important;
+  border-color:rgba(81,74,130,.45)!important;
+  background:rgba(255,255,255,.88)!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-filter-drawer footer button {
+  color:#4e376e!important;
+  -webkit-text-fill-color:#4e376e!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-orrery-actions > .prompt-lever {
+  background:#7651ac!important;
+  border-color:#7651ac!important;
+  color:white!important;
+  box-shadow:0 4px 11px rgba(93,66,153,.15)!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-orrery-actions > .prompt-lever:hover {
+  background:#603f94!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-orrery-secondary > button {
+  color:#3c4767!important;
+  -webkit-text-fill-color:#3c4767!important;
+  font-size:.85rem!important;
+  font-weight:600!important;
+}
+.palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-orrery-secondary > button:is(:hover,:focus-visible) {
+  color:#513387!important;
+  -webkit-text-fill-color:#513387!important;
+  text-decoration:underline!important;
+  text-underline-offset:3px;
+}
+@media(max-width:700px) {
+  .palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-orbit-facets > span > small {font-size:.69rem!important}
+  .palace-shell.full-palace-shell.daylight .writer-inspiration-fold .prompt-filter-match-count {font-size:.78rem!important}
+}
