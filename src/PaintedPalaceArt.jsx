@@ -1,6 +1,7 @@
 import React,{useId} from 'react';
 import {PAINTED_PALACES,PAINTED_TIERS,CHAMBER_FRAMES} from './paintedCollection';
 import './painted-palace-art.css';
+import OrnamentalFrame from './OrnamentalFrame';
 const root='/assets/palace-watercolours/';
 const protect={onContextMenu:e=>e.preventDefault(),onDragStart:e=>e.preventDefault(),onCopy:e=>e.preventDefault()};
 // Keep the approved raster paintings intact. View boxes isolate one artwork;
@@ -34,12 +35,5 @@ export function PaintedBadge({family,tier='bronze',showFrame=true}){
 }
 export function ChamberFrameArt({slug,size='100%',className=''}){
  const frame=CHAMBER_FRAMES.find(x=>x.slug===slug);if(!frame)return null;
- // Measured transparent gutters in the original artwork; the painted rows
- // occupy about 240px each, with unused space at the bottom of the sheet.
- // Dividing the 1254px canvas into equal fifths clips every later row.
- const columns=[0,262,503,746,993,1254];
- const rows=[0,247,487,722,962,1210];
- const col=frame.index%5,row=Math.floor(frame.index/5);
- const box=[columns[col],rows[row],columns[col+1]-columns[col],rows[row+1]-rows[row]];
- return <PaintedSprite sheet="chamber-frames" sheetSize={[1254,1254]} box={box} padding={8} stretch size={size} className={'painted-chamber-frame '+className} label={frame.name+' chamber frame'}/>;
+ return <OrnamentalFrame frame={frame} size={size} className={className}/>;
 }

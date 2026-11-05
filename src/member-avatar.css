@@ -5,33 +5,14 @@
 .member-avatar>.member-avatar-photo{position:absolute!important;inset:0!important;display:grid!important;place-items:center;width:auto!important;height:auto!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:50%!important;overflow:hidden!important;background:var(--avatar-background,linear-gradient(135deg,#676aa4,#34345c));color:#fff}
 .member-avatar>.member-avatar-photo>img{display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;border:0!important;border-radius:50%!important;margin:0!important;padding:0!important}
 .member-avatar.member-avatar-framed{background:transparent!important;border-color:transparent!important;box-shadow:none!important}
-.member-avatar.member-avatar-framed>.member-avatar-photo{inset:24%!important}
+.member-avatar.member-avatar-framed>.member-avatar-photo{inset:9%!important}
 .member-avatar.member-avatar-framed>.painted-chamber-frame{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;margin:0!important;pointer-events:none;z-index:2}
 .member-avatar.member-avatar-framed:before,.member-avatar.member-avatar-framed:after{content:none!important}
 .member-avatar.palace-chat-message-avatar{width:40px;height:40px;margin:0 .35rem .3rem 0}
 .palace-chat-sender .member-avatar{vertical-align:middle}
 .palace-chat-settings li>.member-avatar{width:38px;height:38px;margin-right:.45rem}
 
-/* Keep the chamber photograph at its original dimensions. The ornament grows
-   outside it; reserve clearance in the copy instead of shrinking the portrait. */
-.member-chamber-atelier.chic-member-profile .member-avatar.legacy-profile-avatar.member-avatar-framed{
- border:0!important;box-shadow:none!important;
-}
-.member-chamber-atelier .legacy-profile-avatar.member-avatar-framed>.member-avatar-photo{inset:0!important}
-.member-chamber-atelier .legacy-profile-avatar.member-avatar-framed>.painted-chamber-frame{
- inset:-34%!important;width:168%!important;height:168%!important;
-}
-.palace-shell .member-chamber-atelier.chic-member-profile:has(.legacy-profile-avatar.member-avatar-framed) .legacy-profile-copy{
- padding-left:216px!important;
-}
-@media(max-width:720px){
- .palace-shell .member-chamber-atelier.chic-member-profile:has(.legacy-profile-avatar.member-avatar-framed) .legacy-profile-copy{
-  padding:88px clamp(12px,3vw,19px) 1.15rem!important;
- }
-}
 
-/* Silver Ripple has an off-centre opening in its painted wave crest. Align
-   that opening with the photograph, rather than centring the sprite bounds. */
-.member-chamber-atelier .legacy-profile-avatar.member-avatar-framed[data-frame="silver-ripple"]>.painted-chamber-frame{
- inset:-29% auto auto -37%!important;width:164%!important;height:164%!important;
-}
+/* Every ornament has the same centred opening, including small chat avatars. */
+.member-chamber-atelier .legacy-profile-avatar.member-avatar-framed>.member-avatar-photo{inset:0!important}
+.member-chamber-atelier .legacy-profile-avatar.member-avatar-framed>.painted-chamber-frame{inset:-11%!important;width:122%!important;height:122%!important}
