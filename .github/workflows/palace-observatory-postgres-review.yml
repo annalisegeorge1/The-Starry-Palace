@@ -45,6 +45,15 @@ jobs:
             sudo apt-get install -y postgresql-client
           fi
           psql -v ON_ERROR_STOP=1 -c 'SELECT version();'
+      - name: Reject a completely unrelated database with no stage sentinel
+        run: |
+          psql -X -v ON_ERROR_STOP=1 -c 'CREATE DATABASE observatory_unknown_ci'
+          for file in database/palace-observatory-stage-*-PROPOSAL.sql; do
+            if psql -X -v ON_ERROR_STOP=1 -d observatory_unknown_ci -f "$file" >/dev/null 2>&1; then
+              echo "UNSAFE: proposed SQL accepted an unrelated database"
+              exit 1
+            fi
+          done
       - name: Bootstrap staging-shaped fictional security fixtures
         run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/palace-observatory-postgres-bootstrap.sql
       - name: Apply proposed additive metadata schema to temporary DB
@@ -55,3 +64,9 @@ jobs:
         run: psql -X -v ON_ERROR_STOP=1 -f database/palace-observatory-stage-age-13-PROPOSAL.sql
       - name: Verify synthetic rights, public metadata, and private chapters
         run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/palace-observatory-postgres-smoke.sql
+      - name: Reject accidental schema replay after the first installation
+        run: |
+          if psql -X -v ON_ERROR_STOP=1 -f database/palace-observatory-stage-additive-schema-PROPOSAL.sql >/dev/null 2>&1; then
+            echo "UNSAFE: staging additive schema did not reject replay"
+            exit 1
+          fi
