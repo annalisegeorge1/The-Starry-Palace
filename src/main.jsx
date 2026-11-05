@@ -156,6 +156,7 @@ import './daylight-writing-workspace.css';
 import './tags-room-desktop-polish.css';
 import './commons-desktop-layout-repair.css';
 import './commons-activity-nightfall-polish.css';
+import './writing-overview-desktop-refinement.css';
 import {palaceCommandIcon,uniquePalaceCommandRecents} from './palaceCommandModel';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
