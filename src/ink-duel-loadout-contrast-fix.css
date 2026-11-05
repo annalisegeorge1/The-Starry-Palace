@@ -299,3 +299,54 @@
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
  }
 }
+
+/* Old .duel-seal-note > span rules were treating the explanation like a
+   34px decorative icon. Use a full-width block instead. */
+.palace-dialog.ink-duel-dialog .ink-duel-form > .duel-seal-note {
+ display:block!important;
+ width:100%!important;
+ max-width:100%!important;
+ min-height:0!important;
+ height:auto!important;
+ overflow:visible!important;
+ box-sizing:border-box!important;
+ padding:11px 13px!important;
+ margin:2px 0 8px!important;
+}
+.palace-dialog.ink-duel-dialog .ink-duel-form > .duel-seal-note > .duel-seal-copy {
+ display:block!important;
+ width:100%!important;
+ height:auto!important;
+ min-width:0!important;
+ max-width:none!important;
+ max-height:none!important;
+ box-sizing:border-box!important;
+ flex:none!important;
+ place-items:initial!important;
+ border:0!important;
+ border-radius:0!important;
+ padding:0!important;
+ margin:0!important;
+ background:transparent!important;
+ font:500 .81rem/1.55 system-ui,sans-serif!important;
+ color:#e8e6f6!important;
+ -webkit-text-fill-color:#e8e6f6!important;
+ white-space:normal!important;
+ overflow-wrap:normal!important;
+ word-break:normal!important;
+ text-align:left!important;
+}
+.palace-dialog.ink-duel-dialog .ink-duel-form > .duel-seal-note > .duel-seal-copy strong {
+ display:inline!important;
+ color:#fff!important;
+ -webkit-text-fill-color:#fff!important;
+ font-weight:800!important;
+}
+.palace-dialog.ink-duel-dialog > footer .quiet-button {
+ min-height:42px!important;
+ min-width:86px!important;
+ width:auto!important;
+ border:1px solid #737797!important;
+ border-radius:10px!important;
+ padding:9px 15px!important;
+}
