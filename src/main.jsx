@@ -154,6 +154,7 @@ import './comic-studio-desktop-refinement.css';
 import './chamber-chat-desktop-refinement.css';
 import './daylight-writing-workspace.css';
 import './tags-room-desktop-polish.css';
+import './commons-desktop-layout-repair.css';
 import {palaceCommandIcon,uniquePalaceCommandRecents} from './palaceCommandModel';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
