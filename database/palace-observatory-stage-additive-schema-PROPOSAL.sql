@@ -69,6 +69,14 @@ CREATE TABLE public.profiles(
  created_at timestamptz NOT NULL DEFAULT now(),
  updated_at timestamptz NOT NULL DEFAULT now()
 );
+-- PostgREST needs an explicit author relationship for the existing
+-- profiles!works_author_id_fkey embed. NOT VALID preserves old fixture rows
+-- whose synthetic author IDs do not yet have matching Auth test profiles.
+-- New inserts are still checked; later validation requires fixture review.
+ALTER TABLE public.works
+ ADD CONSTRAINT works_author_id_fkey
+ FOREIGN KEY (author_id) REFERENCES public.profiles(id)
+ NOT VALID;
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 CREATE POLICY observatory_stage_profiles_public ON public.profiles
  FOR SELECT TO anon,authenticated
