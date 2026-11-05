@@ -5,14 +5,13 @@
 .member-avatar>.member-avatar-photo{position:absolute!important;inset:0!important;display:grid!important;place-items:center;width:auto!important;height:auto!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:50%!important;overflow:hidden!important;background:var(--avatar-background,linear-gradient(135deg,#676aa4,#34345c));color:#fff}
 .member-avatar>.member-avatar-photo>img{display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;border:0!important;border-radius:50%!important;margin:0!important;padding:0!important}
 .member-avatar.member-avatar-framed{background:transparent!important;border-color:transparent!important;box-shadow:none!important}
-.member-avatar.member-avatar-framed>.member-avatar-photo{inset:9%!important}
-.member-avatar.member-avatar-framed>.painted-chamber-frame{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;margin:0!important;pointer-events:none;z-index:2}
+.member-avatar.member-avatar-framed>.member-avatar-photo{inset:0!important}
+.member-avatar.member-avatar-framed>.painted-chamber-frame{position:absolute!important;inset:-10.241%!important;width:120.482%!important;height:120.482%!important;max-width:none!important;margin:0!important;pointer-events:none;z-index:2}
 .member-avatar.member-avatar-framed:before,.member-avatar.member-avatar-framed:after{content:none!important}
 .member-avatar.palace-chat-message-avatar{width:40px;height:40px;margin:0 .35rem .3rem 0}
 .palace-chat-sender .member-avatar{vertical-align:middle}
 .palace-chat-settings li>.member-avatar{width:38px;height:38px;margin-right:.45rem}
 
 
-/* Every ornament has the same centred opening, including small chat avatars. */
-.member-chamber-atelier .legacy-profile-avatar.member-avatar-framed>.member-avatar-photo{inset:0!important}
-.member-chamber-atelier .legacy-profile-avatar.member-avatar-framed>.painted-chamber-frame{inset:-11%!important;width:122%!important;height:122%!important}
+/* The SVG ring has radius 83 in a 200-unit viewBox. Scaling by 100/83
+   places its centreline exactly on the full-size photograph perimeter. */
