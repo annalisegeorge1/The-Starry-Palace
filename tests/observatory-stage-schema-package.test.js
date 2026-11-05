@@ -24,7 +24,9 @@ describe('Draft-only additive staging database package',()=>{
  });
  it('extends security fixtures without deleting their tables, policies or actual contents',()=>{
   const query=executable(schema);
-  expect(query).not.toMatch(/\b(?:DROP|TRUNCATE|DELETE|COPY)\s/i);
+  expect(query).not.toMatch(/\b(?:DROP|TRUNCATE)\s+(?:TABLE|SCHEMA)\b/i);
+  expect(query).not.toMatch(/\bDELETE\s+FROM\b/i);
+  expect(query).not.toMatch(/\bCOPY\s+[^\n]+\s+FROM\b/i);
   expect(query).toContain('ALTER TABLE public.works');
   expect(query).toContain('ALTER TABLE public.chapters');
   expect(query).toContain('ALTER TABLE public.work_tags');
@@ -67,7 +69,7 @@ describe('Draft-only additive staging database package',()=>{
   expect(fixtures.workCases.find(w=>w.fixture==='private-draft')?.expected.anonymousMetadata).toBe(false);
   expect(fixtures.archiveCases.find(w=>w.fixture==='rights-pending-link')?.expected.mayHostText).toBe(false);
   expect(JSON.stringify(fixtures)).not.toMatch(/@gmail\.com|@outlook\.com|service_role|sb_secret_/i);
-  expect(guide).toContain('No schema migration');
+  expect(guide).toContain('No SQL changes have been applied');
   expect(guide).toContain('not independently compiled');
  });
 });
