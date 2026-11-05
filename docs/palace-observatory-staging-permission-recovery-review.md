@@ -15,7 +15,7 @@ Reference: [Supabase RLS documentation](https://supabase.com/docs/guides/databas
 
 ## Actual database backup: blocker, not verified
 
-Supabase's official [Database Backups guide](https://supabase.com/docs/guides/platform/backups) describes daily backups for paid plans and recommends regular offsite logical dumps for free-tier projects. **We have not verified a restorable backup or the staging project's plan-specific backup availability.** Do not assume that migration rollback exists.
+Supabase organization `The Starry Palace` (`wufskbhpeffgjfhfmcsq`) was inspected read-only on 2026-11-04 and reports `plan: free`, `tier: tier_free`. Supabase's official [Database Backups guide](https://supabase.com/docs/guides/platform/backups) says guaranteed daily backups are included on Pro/Team/Enterprise, **not on Free**; it recommends regular offsite logical dumps for free-tier projects. A manual staging-only logical backup, secure retrieval, and successful restore have **not** been verified. Do not assume automatic backups or that migration rollback exists.
 
 Before real staging DDL: an authorized reviewer must confirm the project's backup/restore eligibility or create a protected **staging-only** backup via the supported CLI connection; record its retrieval and encryption/access restrictions, rehearse a restore into a *different* disposable database, verify fixture counts, function definitions, RLS and privileges, and obtain separate installation approval. Do not copy production records or credentials into GitHub or CI. A database migration transaction alone is not a recovery strategy after commit.
 
