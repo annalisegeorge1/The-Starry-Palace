@@ -57,10 +57,10 @@ describe('Reading atlas archive vs classics',()=>{
   const onTagIdentified=vi.fn();
   render(<MemoryRouter><ReadingFacetSidebar archiveWide facets={[]} sort="updated" onSort={()=>{}} onRating={()=>{}} onStatus={()=>{}} onToggle={onToggle} onClear={()=>{}} onSearchTags={onSearchTags} onTagIdentified={onTagIdentified}/></MemoryRouter>);
   fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
-  let tagInput=screen.queryByRole('searchbox',{name:'Other tags to include'});
+  let tagInput=screen.queryByRole('searchbox',{name:/tags to include/i});
   if(!tagInput){
    fireEvent.click(screen.getByRole('button',{name:/Include/}));
-   tagInput=screen.getByRole('searchbox',{name:'Other tags to include'});
+   tagInput=screen.getByRole('searchbox',{name:/tags to include/i});
   }
   fireEvent.change(tagInput,{target:{value:'intrigue'}});
   await waitFor(()=>expect(onSearchTags).toHaveBeenCalledWith('intrigue','all',35),{timeout:2200});
