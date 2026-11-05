@@ -30,6 +30,12 @@ Six functions are declared `SECURITY DEFINER` and currently callable at the SQL 
 
 The security advisor reported 10 RLS-without-policy notices and 6 anonymous / 6 authenticated definer-execute warnings across those six functions. Review each with Supabase's [public-definer-function linter](https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable) and [RLS policy linter](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy). **Do not revoke functions or change RLS speculatively before tests**; some are intentionally public, while two are mutations that already check authentication.
 
+## Production schema structural cross-check (read-only)
+
+The **same** preflight was also run against the production database's schema catalogue, without fetching content rows or manuscripts. It reported **zero missing required columns** and verified both `public.search_published_works_v2` and `private.has_platform_role` exist. The 11 selected production tables each have RLS enabled and at least one policy; these are structural facts, not proof that every policy permits the correct audience.
+
+The comparison corroborates that the **50 missing items are staging compatibility gaps**, not a failure of the corresponding production schema. This is not an approval to copy or sync production data, role assignments or policy grants into staging.
+
 ## Minimal compatibility slice — ordered proposal, not installation
 
 1. **Snapshot and preserve staging.** Record schema definitions, grants, policy names, fixture migration versions and synthetic table counts; verify rollback via a separate recovery path. No production data export, authentication tokens, member manuscripts or real email addresses.
