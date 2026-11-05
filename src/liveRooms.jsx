@@ -1998,6 +1998,11 @@ function ReaderChapter({Frame,slug,chapterId}){
   getWorkCommunity(data.work.id).then(rows=>{if(!active)return;setReaderCommunity(rows);setReaderCommunityStatus('ready')}).catch(()=>{if(active)setReaderCommunityStatus('error')});
   return()=>{active=false};
  },[data?.work?.id,session?.user?.id]);
+ useEffect(()=>{
+  if(!data?.chapter?.id||readerCommunityStatus!=='ready'||window.location.hash!=='#comments')return;
+  const frame=window.requestAnimationFrame(()=>document.getElementById('comments')?.scrollIntoView({block:'start',behavior:'auto'}));
+  return()=>window.cancelAnimationFrame(frame);
+ },[data?.chapter?.id,readerCommunityStatus]);
  async function refreshReaderCommunity(){
   if(!data?.work?.id)return;
   try{setReaderCommentError('');setReaderCommunityStatus('loading');const rows=await getWorkCommunity(data.work.id);setReaderCommunity(rows);setReaderCommunityStatus('ready')}catch{setReaderCommunityStatus('error')}
@@ -2130,7 +2135,7 @@ function ReaderChapter({Frame,slug,chapterId}){
     <button type="button" className={chapterDiscussionView==='story'?'active':''} aria-pressed={chapterDiscussionView==='story'} onClick={()=>setChapterDiscussionView('story')}>Full story comments <span>{readerCommunity.comments.filter(row=>!row.chapter_id&&(row.status==='approved'||row.author_id===session?.user?.id||session?.user?.id===data.work.author_id)).length}</span></button>
    </div>
    {readerCommentError&&<p className="reader-comments-error" role="alert">{readerCommentError}</p>}
-   {readerCommunityStatus==='loading'?<div className="reader-comments-status" role="status">Gathering reader responses…</div>:readerCommunityStatus==='error'?<div className="reader-comments-status" role="status">Reader responses are unavailable right now. <button type="button" onClick={refreshReaderCommunity}>Try again</button></div>:<WorkCommunity work={data.work} community={readerCommunity} session={session} reload={refreshReaderCommunity} setError={setReaderCommentError} showTags={false} chapterId={chapterDiscussionView==='chapter'?chapterId:null} chapterReturnTo={'/work/'+slug+'/chapter/'+chapterId+'#comments'}/>}
+   {readerCommunityStatus==='loading'?<div className="reader-comments-status" role="status">Gathering reader responses…</div>:readerCommunityStatus==='error'?<div className="reader-comments-status" role="status">Reader responses are unavailable right now. <button type="button" onClick={refreshReaderCommunity}>Try again</button></div>:<WorkCommunity work={data.work} community={readerCommunity} session={session} reload={refreshReaderCommunity} setError={setReaderCommentError} key={chapterDiscussionView} showTags={false} chapterId={chapterDiscussionView==='chapter'?chapterId:null} chapterReturnTo={'/work/'+slug+'/chapter/'+chapterId+'#comments'}/>}
   </div>
   <div className="reader-full-work-cta"><div><strong>Prefer the whole book?</strong><p>Read all published chapters together without returning to the chapter list.</p></div><Link to={"/work/"+data.work.slug+"/full"}>☷ Read Full Work →</Link></div>
   <ReaderChapterShelf chapters={readable} chapterId={chapterId} workSlug={slug}/>
