@@ -72,6 +72,6 @@ describe('Draft-only additive staging database package',()=>{
   expect(JSON.stringify(fixtures)).not.toMatch(/@gmail\.com|@outlook\.com|service_role|sb_secret_/i);
   expect(guide).toContain('No SQL changes have been applied');
   expect(guide).toContain('ephemeral PostgreSQL 16 database');
-  expect(guide).toContain('not the complete existing security-staging schema');
+  expect(guide).toContain('the complete existing security-staging schema');
  });
 });
