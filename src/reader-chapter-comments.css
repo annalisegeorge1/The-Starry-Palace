@@ -1,0 +1,132 @@
+/* Story discussion belongs after the chapter text, at the reader's natural stopping point. */
+.palace-shell.full-palace-shell .reader-page.reader-streamlined .reader-return-top-before-shelf {
+ display:inline-flex;
+ align-items:center;
+ width:max-content;
+ max-width:100%;
+ margin:1.3rem 0 .35rem;
+ min-height:42px;
+ font-size:.82rem;
+ font-weight:750;
+ color:inherit;
+ text-decoration:underline;
+ text-underline-offset:3px;
+}
+.palace-shell.full-palace-shell .reader-page .reader-comments-after-chapter {
+ scroll-margin-top:105px;
+ margin:0 0 1.5rem;
+ max-width:100%;
+}
+.palace-shell.full-palace-shell .reader-page .chapter-end-comments {
+ box-sizing:border-box;
+ padding:clamp(1rem,2vw,1.7rem);
+ border-radius:18px;
+ border:1px solid rgba(171,148,225,.33);
+ background:linear-gradient(138deg,rgba(39,38,83,.55),rgba(28,52,90,.42));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+ color:#f4f1ff;
+}
+.palace-shell.full-palace-shell .reader-page .chapter-end-comments > .eyebrow {
+ margin:0 0 .45rem;
+ color:#cbb7fa;
+ letter-spacing:.12em;
+}
+.palace-shell.full-palace-shell .reader-page .chapter-end-comments > h2 {
+ margin:.12rem 0 .45rem;
+ color:#fff;
+ font:700 clamp(1.25rem,2vw,1.6rem)/1.3 Georgia,serif;
+}
+.palace-shell.full-palace-shell .reader-page .chapter-comments-description {
+ max-width:65ch;
+ margin:0 0 1.2rem;
+ color:#d9d6ed;
+ font-size:.86rem;
+ line-height:1.6;
+}
+.palace-shell.full-palace-shell .reader-page .chapter-end-comments .reader-comment {
+ min-width:0;
+ overflow-wrap:anywhere;
+ border-color:rgba(179,169,225,.27);
+}
+.palace-shell.full-palace-shell .reader-page .chapter-end-comments .comment-compose {
+ display:grid;
+ gap:.65rem;
+ max-width:100%;
+ min-width:0;
+ padding:1rem;
+ border-radius:14px;
+ border:1px solid rgba(181,165,224,.38);
+ background:rgba(22,26,61,.52);
+}
+.palace-shell.full-palace-shell .reader-page .chapter-end-comments .comment-compose textarea {
+ display:block;
+ box-sizing:border-box;
+ width:100%;
+ min-width:0;
+ min-height:100px;
+ padding:.9rem;
+ border:1px solid rgba(164,183,232,.55);
+ border-radius:11px;
+ background:#17223d;
+ color:#f7f5ff;
+ line-height:1.5;
+ font:inherit;
+ resize:vertical;
+}
+.palace-shell.full-palace-shell .reader-page .chapter-end-comments .comment-compose textarea::placeholder {
+ color:#d2d4e4;
+ opacity:1;
+}
+.palace-shell.full-palace-shell .reader-page .chapter-end-comments .comment-compose > button {
+ width:max-content;
+ min-height:44px;
+ max-width:100%;
+ padding:.6rem 1.05rem;
+ border-radius:11px;
+ background:linear-gradient(115deg,#7852bc,#357ea5);
+ border:1px solid rgba(214,197,255,.65);
+ color:#fff;
+ font-weight:800;
+ cursor:pointer;
+}
+.palace-shell.full-palace-shell .reader-page .reader-comments-status {
+ padding:1rem;
+ border-radius:13px;
+ border:1px solid rgba(174,162,220,.36);
+ color:inherit;
+ line-height:1.5;
+}
+.palace-shell.full-palace-shell .reader-page .reader-comments-status button {
+ min-height:42px;
+ border-radius:9px;
+ padding:.5rem .75rem;
+ font:700 .82rem/1.35 system-ui,sans-serif;
+ cursor:pointer;
+}
+.palace-shell.full-palace-shell.daylight .reader-page .chapter-end-comments {
+ background:linear-gradient(120deg,#fefcff,#f0f4ff);
+ color:#312a49;
+ border-color:#c6b8df;
+ box-shadow:0 8px 22px rgba(58,57,116,.08);
+}
+.palace-shell.full-palace-shell.daylight .reader-page .chapter-end-comments > .eyebrow {color:#64508d}
+.palace-shell.full-palace-shell.daylight .reader-page .chapter-end-comments > h2 {color:#30234d}
+.palace-shell.full-palace-shell.daylight .reader-page .chapter-comments-description {color:#515069}
+.palace-shell.full-palace-shell.daylight .reader-page .chapter-end-comments .comment-compose {
+ background:#f8f7fc;
+ border-color:#c8bedb;
+ color:#2e2b44;
+}
+.palace-shell.full-palace-shell.daylight .reader-page .chapter-end-comments .comment-compose textarea {
+ background:#fff;
+ border-color:#bcb7d0;
+ color:#2f2e43;
+}
+.palace-shell.full-palace-shell.daylight .reader-page .chapter-end-comments .comment-compose textarea::placeholder {color:#66627a}
+.palace-shell.full-palace-shell.daylight .reader-page .chapter-end-comments .reader-comment :is(p,small) {color:#44465d}
+@media(max-width:640px) {
+ .palace-shell.full-palace-shell .reader-page .reader-comments-after-chapter {margin-bottom:1rem}
+ .palace-shell.full-palace-shell .reader-page .chapter-end-comments {padding:13px;border-radius:15px}
+ .palace-shell.full-palace-shell .reader-page .chapter-end-comments .comment-compose {padding:12px}
+ .palace-shell.full-palace-shell .reader-page .chapter-end-comments .comment-compose > button {width:100%}
+}
