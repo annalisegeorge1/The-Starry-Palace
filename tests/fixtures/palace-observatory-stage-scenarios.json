@@ -1,0 +1,238 @@
+{
+  "label": "FAKE STAGING FIXTURES — NO DATABASE WRITE, NO REAL USERS OR WORKS",
+  "stageOnly": true,
+  "authRequirement": "Create separate fictional staging Auth identities by an explicitly approved admin process. Do not paste production user IDs or credentials.",
+  "minMemberAge": 13,
+  "fandoms": [
+    {
+      "slug": "moon-harbor-chronicles",
+      "name": "Moon Harbor Chronicles",
+      "aliases": [
+        "Moon Harbor"
+      ],
+      "status": "canonical",
+      "media_categories": [
+        "books_literature"
+      ]
+    },
+    {
+      "slug": "silver-orchard-tales",
+      "name": "Silver Orchard Tales",
+      "aliases": [
+        "Silver Orchard"
+      ],
+      "status": "community",
+      "media_categories": [
+        "cartoons_comics"
+      ]
+    },
+    {
+      "slug": "romanized-hana",
+      "name": "花の港",
+      "aliases": [
+        "Hana no Minato"
+      ],
+      "status": "canonical",
+      "media_categories": [
+        "anime_manga"
+      ]
+    }
+  ],
+  "relationships": [
+    "F/M",
+    "F/F",
+    "M/M",
+    "Multi",
+    "Gen"
+  ],
+  "workCases": [
+    {
+      "fixture": "public-general",
+      "title": "The Harbor Lantern",
+      "work_type": "original",
+      "rating": "general",
+      "publication_status": "published",
+      "visibility": "public",
+      "minimum_reader_age": 13,
+      "tags": [
+        "Moon Harbor Chronicles",
+        "Gen"
+      ],
+      "expected": {
+        "anonymousMetadata": true,
+        "anonymousChapterAfterAgeFix": true,
+        "under18Chapter": true
+      }
+    },
+    {
+      "fixture": "public-mature",
+      "title": "Silver Orchard at Night",
+      "work_type": "fanwork",
+      "rating": "mature",
+      "publication_status": "published",
+      "visibility": "public",
+      "minimum_reader_age": 18,
+      "tags": [
+        "Silver Orchard Tales",
+        "F/F"
+      ],
+      "expected": {
+        "anonymousMetadata": true,
+        "anonymousChapterAfterAgeFix": false,
+        "under18Chapter": false,
+        "adultChapter": true
+      }
+    },
+    {
+      "fixture": "public-explicit",
+      "title": "The Secret Starfall",
+      "work_type": "fanwork",
+      "rating": "explicit",
+      "publication_status": "published",
+      "visibility": "public",
+      "minimum_reader_age": 18,
+      "tags": [
+        "Moon Harbor Chronicles",
+        "Silver Orchard Tales",
+        "Multi"
+      ],
+      "expected": {
+        "anonymousMetadata": true,
+        "anonymousChapterAfterAgeFix": false,
+        "under18Chapter": false,
+        "adultChapter": true,
+        "crossoverAndSearch": true,
+        "excludeTagRemoves": true
+      }
+    },
+    {
+      "fixture": "members-only",
+      "title": "Friends of the Inner Court",
+      "work_type": "original",
+      "rating": "teen",
+      "publication_status": "published",
+      "visibility": "members",
+      "minimum_reader_age": 13,
+      "tags": [
+        "Moon Harbor Chronicles",
+        "Gen"
+      ],
+      "expected": {
+        "anonymousMetadata": false,
+        "signedInMetadata": true,
+        "anonymousChapterAfterAgeFix": false
+      }
+    },
+    {
+      "fixture": "private-draft",
+      "title": "The Unpublished Moon",
+      "work_type": "fanwork",
+      "rating": "general",
+      "publication_status": "draft",
+      "visibility": "private",
+      "minimum_reader_age": 13,
+      "tags": [
+        "Silver Orchard Tales",
+        "M/M"
+      ],
+      "expected": {
+        "anonymousMetadata": false,
+        "nonOwnerMetadata": false,
+        "anonymousChapterAfterAgeFix": false
+      }
+    },
+    {
+      "fixture": "unicode-fandom",
+      "title": "花の港 — Dawn",
+      "work_type": "fanwork",
+      "rating": "teen",
+      "publication_status": "published",
+      "visibility": "public",
+      "minimum_reader_age": 13,
+      "tags": [
+        "花の港",
+        "Gen"
+      ],
+      "expected": {
+        "anonymousMetadata": true,
+        "unicodeSearch": true
+      }
+    }
+  ],
+  "archiveCases": [
+    {
+      "fixture": "rights-pending-link",
+      "title": "Synthetic Source Link Only",
+      "category": "licensed_fanfiction",
+      "publication_status": "published",
+      "host_mode": "citation",
+      "rights_status": "permission_pending",
+      "permits_hosting": false,
+      "expected": {
+        "mayLinkOriginalSource": true,
+        "mayHostText": false
+      }
+    },
+    {
+      "fixture": "verified-fictional-author",
+      "title": "Fictional Creator's Demonstration",
+      "category": "licensed_fanfiction",
+      "publication_status": "published",
+      "host_mode": "full",
+      "rights_status": "creator_authorised",
+      "permits_hosting": true,
+      "verifiedEvidenceRequired": true,
+      "expected": {
+        "mayHostTextAfterVerifiedTestRights": true
+      }
+    },
+    {
+      "fixture": "unverified-no-full-hosting",
+      "title": "Permission Unresolved Example",
+      "category": "licensed_fanfiction",
+      "publication_status": "review",
+      "host_mode": "metadata_only",
+      "rights_status": "unresolved",
+      "permits_hosting": false,
+      "expected": {
+        "mayHostText": false,
+        "anonymousMetadata": false
+      }
+    }
+  ],
+  "roleCases": [
+    {
+      "persona": "signed-out",
+      "shouldSeeOwnerIssue": false,
+      "shouldReadPrivateDraft": false
+    },
+    {
+      "persona": "staging-reader-13-to-17",
+      "shouldSeeOwnerIssue": false,
+      "shouldReadAdultChapter": false
+    },
+    {
+      "persona": "staging-reader-adult",
+      "shouldSeeOwnerIssue": false,
+      "shouldReadAdultChapter": true
+    },
+    {
+      "persona": "staging-non-owner",
+      "shouldSeeOwnerIssue": false,
+      "shouldReadPrivateDraft": false
+    },
+    {
+      "persona": "staging-owner",
+      "requiresSeparateRoleGrant": true,
+      "shouldSeeOwnerIssueAfterApproval": true,
+      "mayReadOtherMembersDrafts": false
+    }
+  ],
+  "policyAssertions": [
+    "Published Mature/Explicit metadata is discoverable by tag even when adult chapter text is not accessible.",
+    "An unrelated tag exclusion wins over an inclusion.",
+    "Only published accessible works appear in anonymous search; members-only and drafts remain private.",
+    "Source-linked works never become hosted text without verified fictional testing rights.",
+    "A synthetic Owner must not automatically obtain another author's private manuscript."
+  ]
+}
