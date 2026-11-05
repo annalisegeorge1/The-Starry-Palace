@@ -232,3 +232,26 @@
  border-color:#bab1d2;
  background:#f5f2fc;
 }
+
+/* Give desktop reading room to breathe. The old streamlined pass capped
+   'standard' at 700px even when Full Page was chosen. Explicit width
+   preferences remain available; small devices still use their viewport. */
+@media(min-width:900px){
+ .palace-shell.full-palace-shell .reader-page.reader-streamlined .reader-chapter-head{
+  max-width:min(940px,100%)!important;
+ }
+ .palace-shell.full-palace-shell .reader-page.reader-streamlined.measure-narrow .chapter-text.restored{
+  max-width:min(680px,100%)!important;
+ }
+ .palace-shell.full-palace-shell .reader-page.reader-streamlined.measure-standard .chapter-text.restored{
+  max-width:min(940px,100%)!important;
+ }
+ .palace-shell.full-palace-shell .reader-page.reader-streamlined.measure-wide .chapter-text.restored{
+  max-width:min(1120px,100%)!important;
+ }
+ .palace-shell.full-palace-shell .reader-page.reader-streamlined .reader-comments-after-chapter,
+ .palace-shell.full-palace-shell .reader-page.reader-streamlined .reader-full-work-cta {
+  width:min(940px,100%);
+  margin-inline:auto;
+ }
+}
