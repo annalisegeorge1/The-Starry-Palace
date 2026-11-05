@@ -129,19 +129,29 @@ async function extractDocumentXml(bytes){
 
 function textToHtml(text){
  const lines=String(text||'').replace(/\r\n?/g,'\n').split('\n');
- const blocks=[];let list=[];
+ const blocks=[];let list=[],previousProse='';
  const close=()=>{if(list.length){blocks.push('<ul>'+list.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')+'</ul>');list=[]}};
  for(const line of lines){
   const value=line.trim();
-  if(!value){close();continue}
+  if(!value){close();previousProse='';continue}
   const h=/^(#{1,3})\s+(.+)$/.exec(value);
-  if(h){close();blocks.push('<'+(h[1].length===1?'h2':'h3')+'>'+escapeHtml(h[2])+'</'+(h[1].length===1?'h2':'h3')+'>');continue}
+  if(h){close();previousProse='';blocks.push('<'+(h[1].length===1?'h2':'h3')+'>'+escapeHtml(h[2])+'</'+(h[1].length===1?'h2':'h3')+'>');continue}
   const li=/^[-*+]\s+(.+)$/.exec(value);
-  if(li){list.push(li[1]);continue}
+  if(li){previousProse='';list.push(li[1]);continue}
   close();
-  if(value==='***'||value==='---'){blocks.push('<hr>');continue}
-  if(value.startsWith('> ')){blocks.push('<blockquote><p>'+escapeHtml(value.slice(2))+'</p></blockquote>');continue}
-  blocks.push('<p>'+escapeHtml(value)+'</p>');
+  if(value==='***'||value==='---'){previousProse='';blocks.push('<hr>');continue}
+  if(value.startsWith('> ')){previousProse='';blocks.push('<blockquote><p>'+escapeHtml(value.slice(2))+'</p></blockquote>');continue}
+  // A hard-wrapped prose line is not a new paragraph. Only join long,
+  // unfinished lines continuing in lowercase; keep short verse, dialogue,
+  // intentionally blank-separated paragraphs and Markdown structure intact.
+  if(previousProse.length>=65&&!/[.!?…][”"'’)]?$/.test(previousProse)&&/^[a-zà-ÿ]/.test(value)){
+   const last=blocks.length-1;
+   blocks[last]=blocks[last].slice(0,-4)+' '+escapeHtml(value)+'</p>';
+   previousProse+=' '+value;
+  }else{
+   blocks.push('<p>'+escapeHtml(value)+'</p>');
+   previousProse=value;
+  }
  }
  close();return blocks.join('');
 }
