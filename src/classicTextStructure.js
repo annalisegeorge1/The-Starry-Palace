@@ -5,7 +5,7 @@
 // Historical editions use numerals and spelled-out chapter numbers.
 // Keep the recognition conservative: sentences are not chapter titles.
 const standaloneHeading=/^(?:chapter|book|part|volume|act|scene|prologue|epilogue|prelude|overture|interlude|afterword|postscript|preface|introduction|contents|conclusion)$/i;
-const prefixedHeading=/^(?:chapter|book|part|volume|act|scene|prologue|epilogue|prelude|overture|interlude|afterword|postscript|preface|introduction|contents|conclusion)\s*[:.\-–—].*$/i;
+const prefixedHeading=/^(?:chapter|book|part|volume|act|scene|prologue|epilogue|prelude|overture|interlude|afterword|postscript|preface|introduction|contents|conclusion)\s*[:\-–—]\s*[A-Z0-9][^.!?]{0,75}$/i;
 const numberedHeading=/^(?:chapter|book|part|volume|act|scene)\s+(?:the\s+)?(?:[ivxlcdm]+|\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|eleventh|twelfth)(?:([ \t]*[:.\-–—][ \t]*|[ \t]+)(.*))?$/i;
 // Historical sources also use number-only chapter headers and named prefaces.
 // Keep the formats narrow so ordinary prose is never promoted to a heading.
@@ -110,7 +110,19 @@ export function structureClassicText(source=''){
   flush();
  }
 
- return result;
+ // A few plain-text imports place blank lines in the middle of a prose
+ // sentence. Join only clearly incomplete neighbouring prose fragments;
+ // preserve source wording and genuine paragraph/chapter boundaries.
+ const joined=[];
+ for(const block of result){
+  const previous=joined[joined.length-1];
+  if(block.kind==='paragraph'&&previous?.kind==='paragraph'
+    && !/[.!?][”"'’)]?$/.test(previous.text.trim())
+    && /^[a-zà-ÿ]/.test(block.text)){
+   previous.text+=' '+block.text;
+  }else joined.push(block);
+ }
+ return joined;
 }
 
 /**
