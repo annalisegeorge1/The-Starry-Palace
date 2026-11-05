@@ -46,8 +46,8 @@ export function PalaceAccountMenu({profilePath='/chamber'}){
   return()=>{document.removeEventListener('pointerdown',closeOnOutsideClick);document.removeEventListener('keydown',closeOnEscape)};
  },[]);
  return <details className="palace-account-menu" ref={detailsRef}>
-  <summary className="top-icon-link palace-top-profile-trigger" aria-label="Open account menu" title="My account">
-   <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c.5-4.1 3.1-6.2 7.5-6.2s7 2.1 7.5 6.2"/></svg>
+  <summary className="top-icon-link palace-top-profile-trigger" aria-label="Account menu — profile, settings and sign out" title="Account menu · Sign Out">
+   <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c.5-4.1 3.1-6.2 7.5-6.2s7 2.1 7.5 6.2"/></svg><span className="palace-account-menu-chevron" aria-hidden="true">⌄</span>
   </summary>
   <nav className="palace-account-menu-popover" aria-label="Account options">
    <span className="palace-account-menu-caption">YOUR PALACE ACCOUNT</span>
