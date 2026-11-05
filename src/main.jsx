@@ -146,6 +146,7 @@ import './palace-midnight-theme.css';
 import './member-page-skins.css';
 import './reader-endflow-accessibility.css';
 import './reader-chapter-comments.css';
+import './reader-daybreak-final-contrast.css';
 import './tablet-daybreak-reading-polish.css';
 import './daybreak-dashboard-profile-contrast.css';
 import './daybreak-events-desktop-polish.css';
