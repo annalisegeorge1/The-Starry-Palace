@@ -1,0 +1,57 @@
+name: Observatory disposable PostgreSQL proposal review
+
+# Never deploys, logs into Supabase, uses repository secrets or reaches live data.
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'database/palace-observatory-stage-*-PROPOSAL.sql'
+      - 'tests/sql/palace-observatory-postgres-*.sql'
+      - '.github/workflows/palace-observatory-postgres-review.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  ephemeral-postgres-sql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ephemeral-only-ci
+          POSTGRES_DB: observatory_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d observatory_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      PGHOST: 127.0.0.1
+      PGPORT: 5432
+      PGUSER: postgres
+      PGPASSWORD: ephemeral-only-ci
+      PGDATABASE: observatory_ci
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use disposable PostgreSQL service, never Supabase
+        run: |
+          if ! command -v psql >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y postgresql-client
+          fi
+          psql -v ON_ERROR_STOP=1 -c 'SELECT version();'
+      - name: Bootstrap staging-shaped fictional security fixtures
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/palace-observatory-postgres-bootstrap.sql
+      - name: Apply proposed additive metadata schema to temporary DB
+        run: psql -X -v ON_ERROR_STOP=1 -f database/palace-observatory-stage-additive-schema-PROPOSAL.sql
+      - name: Compile the unchanged invoker-based published-search SQL
+        run: psql -X -v ON_ERROR_STOP=1 -f database/palace-observatory-stage-published-search-PROPOSAL.sql
+      - name: Apply isolated age-13 correction to temporary DB
+        run: psql -X -v ON_ERROR_STOP=1 -f database/palace-observatory-stage-age-13-PROPOSAL.sql
+      - name: Verify synthetic rights, public metadata, and private chapters
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/palace-observatory-postgres-smoke.sql
