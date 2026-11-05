@@ -56,27 +56,30 @@ jobs:
           done
       - name: Bootstrap staging-shaped fictional security fixtures
         run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/palace-observatory-postgres-bootstrap.sql
-      - name: Rehearse recovery of the original disposable security fixtures
+      - name: Rehearse recovery with matching PostgreSQL 16 tools
         run: |
-          # Only synthetic data from the throwaway PostgreSQL service is dumped.
-          # Never use this command on a connected Supabase project.
-          pg_dump --format=custom --no-owner --no-acl \
-            --file="$RUNNER_TEMP/observatory-prechange-fixtures.dump"
-          createdb observatory_recovery_ci
-          pg_restore --exit-on-error --no-owner --no-acl \
-            --dbname=observatory_recovery_ci \
-            "$RUNNER_TEMP/observatory-prechange-fixtures.dump"
-          restored="$(psql -X -v ON_ERROR_STOP=1 -d observatory_recovery_ci -Atc "
-            SELECT CASE WHEN
-              (SELECT count(*) FROM public.works)=1
-              AND to_regclass('public.profiles') IS NULL
-              AND to_regclass('private.staging_chat_rooms') IS NOT NULL
-              AND (SELECT count(*) FROM pg_policies
-                   WHERE schemaname='public' AND tablename='works')=1
-            THEN 'ready' ELSE 'mismatch' END
-          ")"
+          # All data is synthetic and stays inside the temporary Postgres 16 service.
+          # Matching server/client versions avoid unsupported dump settings.
+          cid="$(docker ps -q --filter ancestor=postgres:16 | head -n 1)"
+          test -n "$cid"
+          docker exec --user postgres "$cid" pg_dump -Fc --no-owner --no-acl \
+            -f /tmp/observatory-fixture-recovery.dump observatory_ci
+          docker exec --user postgres "$cid" createdb observatory_recovery_ci
+          docker exec --user postgres "$cid" pg_restore --exit-on-error \
+            --no-owner --no-acl -d observatory_recovery_ci \
+            /tmp/observatory-fixture-recovery.dump
+          restored="$(docker exec --user postgres "$cid" psql -X \
+            -v ON_ERROR_STOP=1 -d observatory_recovery_ci -Atc "
+              SELECT CASE WHEN
+                (SELECT count(*) FROM public.works)=1
+                AND to_regclass('public.profiles') IS NULL
+                AND to_regclass('private.staging_chat_rooms') IS NOT NULL
+                AND (SELECT count(*) FROM pg_policies
+                     WHERE schemaname='public' AND tablename='works')=1
+              THEN 'ready' ELSE 'mismatch' END
+            ")"
           test "$restored" = ready
-          rm -f "$RUNNER_TEMP/observatory-prechange-fixtures.dump"
+          docker exec --user postgres "$cid" rm -f /tmp/observatory-fixture-recovery.dump
       - name: Apply proposed additive metadata schema to temporary DB
         run: psql -X -v ON_ERROR_STOP=1 -f database/palace-observatory-stage-additive-schema-PROPOSAL.sql
       - name: Compile the unchanged invoker-based published-search SQL
