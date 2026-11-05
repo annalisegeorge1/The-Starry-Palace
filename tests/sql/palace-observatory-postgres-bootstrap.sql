@@ -6,6 +6,7 @@ CREATE ROLE authenticated NOLOGIN;
 CREATE SCHEMA auth;
 CREATE SCHEMA private;
 GRANT USAGE ON SCHEMA auth TO anon, authenticated;
+GRANT USAGE ON SCHEMA private TO authenticated;
 GRANT USAGE ON SCHEMA public TO anon, authenticated;
 
 CREATE TABLE auth.users(id uuid PRIMARY KEY);
