@@ -59,7 +59,7 @@ describe('Reading atlas archive vs classics',()=>{
   fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
   let tagInput=screen.queryByRole('searchbox',{name:'Other tags to include'});
   if(!tagInput){
-   fireEvent.click(screen.getByRole('button',{name:/3\\. Include/}));
+   fireEvent.click(screen.getByRole('button',{name:/Include/}));
    tagInput=screen.getByRole('searchbox',{name:'Other tags to include'});
   }
   fireEvent.change(tagInput,{target:{value:'intrigue'}});
