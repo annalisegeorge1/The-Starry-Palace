@@ -138,3 +138,30 @@
   .account-control-room .account-signout-card {align-items:flex-start}
   .account-control-room .account-signout-action {width:100%}
 }
+
+/* A small downward cue makes the account icon recognizable as a menu. */
+.full-topbar .palace-account-menu > summary {
+  position:relative;
+  overflow:visible!important;
+}
+.full-topbar .palace-account-menu-chevron {
+  position:absolute;
+  right:-5px;
+  bottom:-4px;
+  width:14px;
+  height:14px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(206,191,243,.65);
+  border-radius:50%;
+  background:#282044;
+  color:#fff;
+  font:700 12px/1 system-ui,sans-serif;
+  pointer-events:none;
+}
+.full-topbar .palace-account-menu[open] .palace-account-menu-chevron {transform:rotate(180deg)}
+.palace-shell.full-palace-shell.daylight .full-topbar .palace-account-menu-chevron {
+  background:#e7d9f8;
+  color:#3d2a63;
+  border-color:rgba(95,73,146,.55);
+}
