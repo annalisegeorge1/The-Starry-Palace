@@ -2,6 +2,7 @@ import React,{useEffect,useMemo,useRef,useState} from 'react';
 import {Link,useParams} from 'react-router-dom';
 import {getPublishedWorkForReading} from './palaceData';
 import {safeReaderHtml} from './readerHtmlSanitizer';
+import {restoreFlatClassicChapterHtml} from './classicTextStructure';
 import {readPalaceChoice,readPalaceNumber,writePalacePreference} from './browserPreferences';
 import {readerFlow} from './readerFlowModel';
 import PalacePagedReader from './PalacePagedReader';
@@ -35,7 +36,7 @@ export default function FullWorkReader({Frame}){
   }).catch(e=>{if(active)setError(e.message||'Unable to open the full work')});
   return()=>{active=false};
  },[slug,key]);
- const html=useMemo(()=>result?.chapters?.map((ch,i)=>'<section class="palace-full-chapter" id="full-chapter-'+ch.id+'"><h2>'+(i+1)+'. '+escapeHeading(ch.title)+'</h2><div class="chapter-text restored">'+safeReaderHtml(ch.body_html||'')+'</div><p class="palace-full-chapter-discussion"><a href="/work/'+encodeURIComponent(result.work.slug)+'/chapter/'+encodeURIComponent(ch.id)+'#comments">◇ Read chapter '+(i+1)+' comments and leave a response →</a></p></section>').join('')||'',[result]);
+ const html=useMemo(()=>result?.chapters?.map((ch,i)=>'<section class="palace-full-chapter" id="full-chapter-'+ch.id+'"><h2>'+(i+1)+'. '+escapeHeading(ch.title)+'</h2><div class="chapter-text restored">'+(result.work?.is_archive?restoreFlatClassicChapterHtml(safeReaderHtml(ch.body_html||'')):safeReaderHtml(ch.body_html||''))+'</div><p class="palace-full-chapter-discussion"><a href="/work/'+encodeURIComponent(result.work.slug)+'/chapter/'+encodeURIComponent(ch.id)+'#comments">◇ Read chapter '+(i+1)+' comments and leave a response →</a></p></section>').join('')||'',[result]);
  function remember(pct){
   const v=Math.max(0,Math.min(100,Number(pct)||0));placeRef.current=v;
   try{localStorage.setItem(key,String(Math.round(v)))}catch{}
