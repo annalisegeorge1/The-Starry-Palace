@@ -10,6 +10,12 @@
 - Google login is disabled in staging (`VITE_GOOGLE_LOGIN_ENABLED=false`). The separate, production Cloudflare Pages project, Workers and live site are unchanged.
 - Staging Supabase is healthy but has **only a reduced security-testing schema** (9 RLS-enabled public tables). It does not currently contain the full Palace schema, RPCs or test accounts needed for a true end-to-end Observatory review.
 
+## Build isolation guard now configured
+
+The separate Cloudflare Pages project has no Git source and zero deployments. Its build command is now `npm run build:observatory-stage`. The opt-in build guard at `scripts/verify-observatory-stage-env.mjs` explicitly requires the independent Security Staging Supabase URL, a frontend publishable key, disabled Google OAuth and a staging marker. It fails without running the normal production build when any guard fails.
+
+The read-only schema audit is at `docs/palace-observatory-staging-schema-gap-audit.md`. The current small security-test database is intentionally **not** a production-equivalent schema; inspect that report before any migration or synthetic data seeding.
+
 ## Hard gates before any staging deployment
 
 1. Confirm an independently reviewed and migrated **non-production** full Palace schema on staging, including only the app's required functions and policies. Keep all real member data, passwords, drafts, chats, production Auth identities and Storage objects out of staging.
