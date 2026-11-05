@@ -56,12 +56,13 @@ describe('Reading atlas archive vs classics',()=>{
   const onToggle=vi.fn(),onSearchTags=vi.fn().mockResolvedValue([{id:'tag-x',name:'Palace intrigue',category:'trope',status:'canonical'}]);
   const onTagIdentified=vi.fn();
   render(<MemoryRouter><ReadingFacetSidebar archiveWide facets={[]} sort="updated" onSort={()=>{}} onRating={()=>{}} onStatus={()=>{}} onToggle={onToggle} onClear={()=>{}} onSearchTags={onSearchTags} onTagIdentified={onTagIdentified}/></MemoryRouter>);
-  const tagInput=screen.queryByRole('searchbox',{name:'Other tags to include',hidden:true});
+  fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
+  let tagInput=screen.queryByRole('searchbox',{name:'Other tags to include'});
   if(!tagInput){
-   const control=screen.getByRole('button',{name:/3\\. Include/});
-   fireEvent.click(control);
+   fireEvent.click(screen.getByRole('button',{name:/3\\. Include/}));
+   tagInput=screen.getByRole('searchbox',{name:'Other tags to include'});
   }
-  fireEvent.change(screen.getByRole('searchbox',{name:'Other tags to include',hidden:true}),{target:{value:'intrigue'}});
+  fireEvent.change(tagInput,{target:{value:'intrigue'}});
   await waitFor(()=>expect(onSearchTags).toHaveBeenCalledWith('intrigue','all',35),{timeout:2200});
   await waitFor(()=>expect(screen.getByText('Palace intrigue')).toBeTruthy(),{timeout:2200});
   expect(screen.queryByText('Tropes')).toBeNull();
