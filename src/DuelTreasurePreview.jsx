@@ -26,6 +26,11 @@ export default function DuelTreasurePreview({duel}){
     </div>
    </PalaceInfoMark>
   </div>
-  <span>{duelMissingLine(readiness.bronze.missing)}</span>
+  <div className="duel-bronze-meter" role="group" aria-label="Progress toward Bronze participation threshold">
+   <div className="duel-bronze-meter-label"><strong><span aria-hidden="true">◈</span> Bronze qualification</strong><span>{Math.min(Number(duel?.entry_count||0),Number(readiness.bronze.criteria.entries||3))} / {Number(readiness.bronze.criteria.entries||3)} entries</span></div>
+   <progress value={Math.min(Number(duel?.entry_count||0),Number(readiness.bronze.criteria.entries||3))} max={Number(readiness.bronze.criteria.entries||3)}>Bronze entry progress</progress>
+   <span>{duelMissingLine(readiness.bronze.missing)}</span>
+   <small>Participation alone does not guarantee a treasure; independent ballots and an eligible winner are still verified.</small>
+  </div>
  </div>;
 }
