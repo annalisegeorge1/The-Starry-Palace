@@ -10,6 +10,11 @@ VALUES ('22222222-2222-4222-8222-222222222222','invented_author','Fictional Auth
        ('33333333-3333-4333-8333-333333333333','invented_reader','Fictional Reader');
 INSERT INTO private.member_age(user_id,birth_date)
 VALUES ('33333333-3333-4333-8333-333333333333',current_date-interval '25 years');
+INSERT INTO auth.users(id) VALUES ('14141414-1414-4414-8414-141414141414');
+INSERT INTO public.profiles(id,username,display_name)
+VALUES ('14141414-1414-4414-8414-141414141414','fictional_teen','Fictional Teen Reader');
+INSERT INTO private.member_age(user_id,birth_date)
+VALUES ('14141414-1414-4414-8414-141414141414',current_date-interval '15 years');
 
 INSERT INTO public.works(id,author_id,slug,title,summary,work_type,rating,
  publication_status,visibility,minimum_reader_age,last_published_at)
@@ -101,6 +106,16 @@ SELECT 1 / CASE WHEN (SELECT count(record_id) FROM public.archive_texts)=1
  THEN 1 ELSE 0 END AS owner_archive_index_readable;
 SELECT 1 / CASE WHEN (SELECT count(*) FROM public.works WHERE publication_status='draft')=0
  THEN 1 ELSE 0 END AS owner_cannot_read_other_authors_private_drafts;
+ROLLBACK;
+
+BEGIN;
+SELECT set_config('request.jwt.claim.sub','14141414-1414-4414-8414-141414141414',true);
+SET LOCAL ROLE authenticated;
+SELECT 1 / CASE WHEN (SELECT count(*) FROM public.chapters)=1
+ THEN 1 ELSE 0 END AS under_18_chapter_access;
+SELECT 1 / CASE WHEN (SELECT count(*) FROM public.works
+ WHERE rating='explicit' AND publication_status='published')=1
+ THEN 1 ELSE 0 END AS under_18_adult_metadata_is_searchable;
 ROLLBACK;
 
 -- No real account or content ever leaves this ephemeral Postgres container.
