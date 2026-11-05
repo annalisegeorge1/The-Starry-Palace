@@ -38,6 +38,7 @@ import {shouldShowPalacePassage} from './palacePassagePolicy';
 import {palaceRecentDoorKey,readPalaceRecentDoors,addPalaceRecentDoor} from './palaceRecentDoors';
 import './palace-inviting-polish.css';
 import './palace-cohesive-experience.css';
+import './palace-account-menu.css';
 import {
  ChamberLive,OnboardingLive,ReadingLive,ClubLive,WritingLive,SettingsLive,ActivityLive,LibraryLive,
  PalaceLifeLive,LettersLive,EventsLive,TreasuryLive,MemberProfileLive,SearchLive,
