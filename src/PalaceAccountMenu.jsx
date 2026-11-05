@@ -53,7 +53,7 @@ export function PalaceAccountMenu({profilePath='/chamber'}){
    <span className="palace-account-menu-caption">YOUR PALACE ACCOUNT</span>
    <Link to={profilePath} onClick={()=>{detailsRef.current.open=false}}>My profile</Link>
    <Link to="/settings?tab=account" onClick={()=>{detailsRef.current.open=false}}>Account settings</Link>
-   <PalaceSignOutButton className="palace-account-sign-out" onSignedOut={()=>{detailsRef.current.open=false}}/>
+   <PalaceSignOutButton className="palace-account-sign-out" onSignedOut={()=>{if(detailsRef.current)detailsRef.current.open=false}}/>
   </nav>
  </details>;
 }
