@@ -33,6 +33,7 @@ describe('Draft-only additive staging database package',()=>{
   for(const table of ['profiles','fandom_directory','archive_records','archive_rights_records','archive_texts','platform_memberships','comments']){
    expect(query).toContain('CREATE TABLE public.'+table);
    expect(query).toContain('ALTER TABLE public.'+table+' ENABLE ROW LEVEL SECURITY;');
+   expect(query).toContain('REVOKE ALL ON TABLE public.'+table+' FROM PUBLIC, anon, authenticated;');
   }
  });
  it('separates published searchable metadata from restricted text and owner powers',()=>{
