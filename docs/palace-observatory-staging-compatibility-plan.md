@@ -54,3 +54,17 @@ The comparison corroborates that the **50 missing items are staging compatibilit
 **Do not execute a bulk production-schema clone against this existing security fixture project.** It could break security tests and conceal real differences. The next schema package must include a preflight result, exact reversible changes and policies, realistic synthetic seed fixtures, an expected RLS matrix and rollback instructions. Prepare and review that package before any DDL or account grants are applied.
 
 The present work is read-only schema inspection and proposal creation. No schema migration, private manuscript read, Owner assignment, staging deployment, production DNS update or public-site release has taken place.
+
+## Proposed SQL and synthetic review package — ready for independent review
+
+The following **unapplied** draft assets have now been prepared on PR #242:
+
+- `database/palace-observatory-stage-additive-schema-PROPOSAL.sql` — staged-only metadata extensions, new public tables, default-grant revocations, explicit RLS policies and column-scoped archive-text metadata access. It uses the staging fixture sentinel, a transaction, and an intentionally **NOT VALID** author-profile FK to avoid rejecting old synthetic fixture rows.
+- `database/palace-observatory-stage-published-search-PROPOSAL.sql` — exact existing production-reviewed search RPC copied under a separate staging guard with `SECURITY INVOKER`, not a newly invented privileged shortcut.
+- `database/palace-observatory-stage-age-13-PROPOSAL.sql` — deliberately separate review of guest access to age-13 General/Teen chapter text while keeping 18+ content restricted.
+- `tests/fixtures/palace-observatory-stage-scenarios.json` — fictional cases for public, members-only, adult-rated, private, cross-fandom, alias and rights-pending discovery, plus explicit non-Owner denial.
+- `docs/palace-observatory-staging-migration-review.md` — prescribed approval sequence, migration backup and recovery gates.
+
+**Not yet performed:** SQL syntax/application validation in local PostgreSQL, live-stage RLS verification, synthetic Auth-user provisioning, any data seeding, Owner authorization, Observatory issue/evidence migration, stage deployment or production release. The package is a reviewed *proposal*, not an installed staging database.
+
+The remaining full-project test failures reported before this package (in chat responsiveness, relationship-filter lookup and Grand Palace banner geometry) are tracked separately from the Observatory's isolated tests and must also be addressed before release.
