@@ -4,12 +4,14 @@ const all=readFileSync('src/liveRooms.jsx','utf8');
 const tag=all.split('export function TagSearchLive({Frame})')[1].split('export function WorkLive({Frame})')[0];
 const css=readFileSync('src/tag-constellation-mobile-calm.css','utf8');
 const shell=readFileSync('src/main.jsx','utf8');
+const storyFilters=readFileSync('src/TagStoryFilters.jsx','utf8');
 describe('Tag Constellation mobile discovery flow',()=>{
- it('has one primary tag lookup, with separate story text search in disclosure',()=>{
+ it('has one primary tag lookup and a separate archive story filter form',()=>{
   expect(tag).toContain('className="tag-primary-search"');
-  expect(tag).toContain('<details className="tag-story-search-toggle"');
-  expect(tag).toContain('Search published stories by text');
-  expect(tag).toContain('aria-label="Search stories inside the Tag Constellation"');
+  expect(tag).toContain('<TagStoryFilters text={text}');
+  expect(storyFilters).toContain('aria-label="Sort and filter matching stories"');
+  expect(storyFilters).toContain('Story title, writer or phrase');
+  expect(storyFilters).toContain('className="tag-story-filter-more"');
  });
  it('keeps family, view and order behind an accessible toggle',()=>{
   expect(tag).toContain('aria-expanded={tagFiltersOpen}');
