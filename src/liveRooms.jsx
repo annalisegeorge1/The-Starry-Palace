@@ -1215,10 +1215,13 @@ export function PalaceLifeLive({Frame}){
    <button onClick={()=>chooseRoom('clubs')}><PalaceGlowIcon name="shield" tone="silver" size="small" className="palace-life-pulse-icon"/><strong>{counts.requests}</strong><span>steward queue</span><small>Membership decisions</small></button>
   </section>
   <nav className="life-tabs restored" aria-label="Palace Life rooms">
+   <div className="life-primary-tabs" role="group" aria-label="Community rooms">
    {[['commons','Commons','tea-cup','common'],['clubs','Clubs','club-orbit','common'],['forum','Forum','messages','courts'],['stars','Discover Members','star-member','courts']].map(([k,l,name,tone])=><button type="button" key={k} className={room===k?'active':''} aria-current={room===k?'page':undefined} onClick={()=>chooseRoom(k)}><PalaceGlowIcon name={name} tone={tone} size="mini" className="palace-life-room-tab-icon"/>{l}</button>)}
+   </div><div className="life-secondary-actions" role="group" aria-label="More Palace destinations">
    <button type="button" className="life-wander" onClick={wanderPalaceLife}><PalaceGlowIcon name="compass" tone="arts" size="mini" className="palace-life-room-tab-icon"/>Take me somewhere</button>
    <Link to="/activity">Activity Centre →</Link><Link to="/honour">Throne of Honour →</Link>
-  </nav>
+  
+   </div></nav>
   {actionError&&<div className="save-note life-action-error" role="alert">{actionError}<button className="quiet-button" onClick={()=>setActionError('')}>Dismiss</button></div>}
   <State loading={!data&&!error} error={error}>{data&&<section className="life-room-shell restored">
    {room==='commons'&&<div className="life-room chic-commons"><header className="life-room-intro chic-life-intro"><div><p className="eyebrow">PALACE COMMONS</p><h2>The Palace, in motion. <PalaceTopicHelp id="clubs"/></h2><p>A chronological member-led stream for conversation, discoveries and the people you chose to keep near. No popularity ranking decides what deserves to be seen.</p></div><span>CHRONOLOGICAL · MEMBER LED</span></header>
