@@ -1,0 +1,115 @@
+/* Midnight chat parity. Chat is portalled outside .palace-shell, so theme
+   selectors MUST start at html. Covers quick drawer and full Messenger. */
+html[data-palace-theme="midnight"] .palace-chat-v2{
+ --pc-surface:#0d0d10;--pc-elevated:#16161b;--pc-subtle:#111115;
+ --pc-ink:#f2f0f7;--pc-muted:#c0bcca;--pc-line:#38353f;
+ --pc-brand:#e4d8fa;--pc-accent:#b5a0db;--pc-field:#1b1a21;
+ --pc-received:#242229;--pc-received-line:#48434f;
+ --pc-sent:#35303c;--pc-sent-ink:#f9f6ff;--pc-button-ink:#f5f1fb;
+ --chat3-ink:#f2f0f7;--chat3-border:#44404c;
+ --chat3-glint:rgba(255,255,255,.08);
+ --chat3-list:#19171e;--chat3-list-hover:#24212c;
+ --chat3-incoming:#242229;--chat3-outgoing:#393341;
+ --chat3-surface:#0d0d10;--chat3-dock:#151419;--chat3-subtle:#121116;
+ color:#f2f0f7;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 .palace-chat-panel{
+ background:#0d0d10!important;background-image:none!important;
+ color:#f2f0f7!important;border-color:#44404c!important;
+ box-shadow:0 24px 68px rgba(0,0,0,.7),inset 0 1px rgba(255,255,255,.07)!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 .palace-chat-heading{
+ background:#17151c!important;background-image:none!important;
+ color:#f4f1f9!important;border-bottom-color:#423d4a!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 .palace-chat-heading :is(strong,small){color:#eeeaf5!important}
+html[data-palace-theme="midnight"] .palace-chat-v2 .palace-chat-heading .palace-chat-header-actions button,
+html[data-palace-theme="midnight"] .palace-chat-v2 .palace-chat-header-back{
+ background:#232029!important;background-image:none!important;
+ border-color:#524b5a!important;color:#f5f1fb!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 :is(
+ .palace-chat-tabs,.palace-chat-tools,.palace-chat-people,.palace-chat-inbox-refine,
+ .palace-chat-correspondent,.palace-chat-thread-actions,.palace-chat-settings,
+ .palace-chat-invitations,.palace-chat-message-search,.palace-chat-shared-media,
+ .palace-chat-share-shelf,.palace-chat-earlier,.palace-chat-replying,
+ .palace-chat-compose-tools,.palace-chat-draft-hint,.palace-chat-panel>footer
+){
+ background:#15141a!important;background-image:none!important;
+ border-color:#393540!important;color:#eae6f0!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 .palace-chat-messages{
+ background:#0d0d10!important;background-image:none!important;color:#f2eff7!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 .palace-chat-messages .palace-chat-bubble:not(.mine){
+ background:#242229!important;background-image:none!important;
+ border-color:#494450!important;color:#f4f1f8!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 .palace-chat-messages .palace-chat-bubble.mine{
+ background:#393240!important;background-image:none!important;
+ border-color:#66596f!important;color:#fff!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 .palace-chat-bubble>.palace-chat-timestamp{
+ color:#ded7e7!important;opacity:1!important;text-shadow:none!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 :is(
+ .palace-chat-compose,.palace-chat-composer-shell
+){
+ background:#111115!important;background-image:none!important;
+ border-color:#393540!important;color:#f4f1f9!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 :is(
+ input:not([type="checkbox"]):not([type="radio"]),textarea,select,
+ .palace-chat-compose,.palace-chat-people button,.palace-chat-tools button,
+ .palace-chat-thread-actions button,.palace-chat-thread-actions a
+){
+ color:#f4f1f9!important;border-color:#49434f!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 :is(input,textarea,select){
+ background-color:#1c1a21!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 .palace-chat-compose textarea{
+ background:transparent!important;color:#f4f1f9!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 :is(input,textarea)::placeholder{
+ color:#aaa4b5!important;opacity:1!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 .palace-chat-compose .palace-chat-send{
+ background:#6d597d!important;background-image:none!important;
+ border-color:#867393!important;color:#fff!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 .palace-chat-compose .palace-chat-send:disabled{opacity:.55!important}
+html[data-palace-theme="midnight"] .palace-chat-v2 :is(
+ .palace-chat-people button,.palace-chat-tools button,.palace-chat-thread-actions button,
+ .palace-chat-thread-actions a,.palace-chat-inbox-refine button
+){
+ background:#242129!important;background-image:none!important;color:#f0ebf7!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 :is(
+ .palace-chat-people button[aria-pressed="true"],
+ .palace-chat-inbox-refine button[aria-pressed="true"]
+){background:#37303e!important;border-color:#8f79a5!important}
+html[data-palace-theme="midnight"] .palace-chat-v2 .palace-chat-date-divider{
+ color:#cac2d5!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 .palace-chat-notice{
+ background:#20302d!important;color:#e4f5ee!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 .palace-chat-error{
+ background:#38232b!important;color:#ffe3eb!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-actions-menu{
+ background:#1b1920!important;color:#f5f0fa!important;border-color:#5a5262!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-actions-menu>small{color:#c8bbd4!important}
+html[data-palace-theme="midnight"] .palace-chat-actions-menu button:is(:hover,:focus-visible){
+ background:#342b3d!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-workspace-intro{
+ background:#151319!important;background-image:none!important;
+ border-color:#48404f!important;color:#f3eff8!important;
+}
+html[data-palace-theme="midnight"] .palace-chat-v2 :is(button,input,textarea,a,select):focus-visible{
+ outline:2px solid #c3a6e6!important;outline-offset:2px;
+}
+/* Do not recolour user avatars, uploaded media, GIFs or custom group artwork. */
