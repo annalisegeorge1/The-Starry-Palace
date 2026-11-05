@@ -7059,3 +7059,79 @@ body.writing-desk-open.daylight .studio-head-copy h1,
     justify-content:center;
   }
 }
+
+
+/* Ink Duel arrival: a compact, welcoming fencing vignette instead of a blocking splash. */
+.duel-room-page .duel-hero {
+  grid-template-columns:minmax(0,1fr) minmax(198px,245px);
+  gap:clamp(.8rem,2.1vw,1.6rem);
+  align-items:center;
+}
+.duel-room-page .duel-entrance-side {
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:.65rem;
+  min-width:0;
+}
+.duel-room-page .duel-fencing-display {
+  margin:0;
+  padding:.65rem .8rem .55rem;
+  border:1px solid rgba(195,167,238,.28);
+  border-radius:17px;
+  background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(243,241,255,.96));
+  box-shadow:0 10px 24px rgba(7,6,22,.17),inset 0 1px 0 #fff;
+  display:grid;
+  justify-items:center;
+  align-content:center;
+  gap:.3rem;
+  overflow:hidden;
+}
+.duel-room-page .duel-fencing-kicker {
+  color:#75649b;
+  letter-spacing:.13em;
+  font:750 .55rem/1.4 system-ui,sans-serif;
+}
+.duel-room-page .duel-fencing-display picture {
+  display:block;
+  width:100%;
+  max-width:208px;
+  text-align:center;
+}
+.duel-room-page .duel-fencing-display img {
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:154/65;
+  object-fit:contain;
+  image-rendering:auto;
+}
+.duel-room-page .duel-fencing-display figcaption {
+  color:#584876;
+  font:650 .68rem/1.4 system-ui,sans-serif;
+  text-align:center;
+}
+.duel-room-page .duel-entrance-side > .button-starlight {
+  width:100%;
+  min-height:43px;
+  justify-content:center;
+  white-space:normal;
+}
+.palace-shell.daylight .duel-room-page .duel-fencing-display {
+  border-color:rgba(108,82,170,.27);
+  box-shadow:0 8px 20px rgba(73,79,133,.11),inset 0 1px 0 white;
+}
+@media(max-width:760px){
+  .duel-room-page .duel-hero{
+    grid-template-columns:minmax(0,1fr);
+  }
+  .duel-room-page .duel-entrance-side {
+    width:100%;
+    max-width:300px;
+    justify-self:center;
+    margin-inline:auto;
+  }
+  .duel-room-page .duel-fencing-display {
+    padding:.5rem .8rem;
+  }
+}
