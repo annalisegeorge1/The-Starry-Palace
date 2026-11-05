@@ -36,7 +36,7 @@ describe('Isolated Observatory staging build gate',()=>{
   for(const key of ['', 'sb_secret_not_for_the_client','service_role_token','sb_publishable_short']){
    const result=checkObservatoryStageEnvironment({...valid,VITE_SUPABASE_PUBLISHABLE_KEY:key});
    expect(result.ok).toBe(false);
-   expect(result.errors.join(' ')).not.toContain(key);
+   if(key)expect(result.errors.join(' ')).not.toContain(key);
   }
  });
  it('keeps OAuth disabled for the isolated review build',()=>{
