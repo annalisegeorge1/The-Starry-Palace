@@ -22,7 +22,7 @@ describe('careful route loading for the Palace',()=>{
  it('retains a visible recovery path if a deferred screen takes too long',()=>{
   expect(main).toContain('ROOM_IMPORT_TIMEOUT_MS=12000');
   expect(main).toContain('function RouteLoading()');
-  expect(main).toContain("new Error('Palace room load timeout')");
+  expect(readFileSync(resolve(process.cwd(),'src/loadPalaceRoomModule.js'),'utf8')).toContain("new Error('Palace room load timeout')");
   expect(main).toContain('function reloadForStaleChunk(error)');
   expect(main).toContain('RouteErrorBoundary');
  });

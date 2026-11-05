@@ -1,3 +1,4 @@
+import {loadPalaceRoomModule} from './loadPalaceRoomModule';
 import MemberAvatar from './MemberAvatar';
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -182,14 +183,12 @@ function reloadForStaleChunk(error){
  throw new Error(refreshing?'Palace room refresh requested after a stale bundle: '+message:message);
 }
 function importWithRecovery(importer){
- let timer;
- const timeout=new Promise((_,reject)=>{timer=window.setTimeout(()=>reject(new Error('Palace room load timeout')),ROOM_IMPORT_TIMEOUT_MS)});
- return Promise.race([Promise.resolve().then(importer),timeout]).finally(()=>window.clearTimeout(timer)).catch(reloadForStaleChunk);
+ return loadPalaceRoomModule(importer,ROOM_IMPORT_TIMEOUT_MS).catch(reloadForStaleChunk);
 }
 
 if(typeof window!=='undefined'){
- window.addEventListener('vite:preloadError',event=>{
-  event.preventDefault();
+ window.addEventListener('vite:preloadError',()=>{
+  // Let Vite reject the import so recovery receives its real error.
   schedulePalaceReload('palace-preload-reload',40);
  });
  window.addEventListener('unhandledrejection',event=>{

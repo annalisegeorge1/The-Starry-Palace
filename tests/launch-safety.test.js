@@ -1871,7 +1871,7 @@ describe('Starry Palace launch safety',()=>{
     expect(main).not.toContain('palace-room-css-sync-reload');
     expect(main).not.toContain('function RoomBundleWarmup()');
     expect(main).toContain('ROOM_IMPORT_TIMEOUT_MS=12000');
-    expect(main).toContain("new Error('Palace room load timeout')");
+    expect(readFileSync('src/loadPalaceRoomModule.js','utf8')).toContain("new Error('Palace room load timeout')");
     expect(main).toContain("schedulePalaceReload('palace-script-error-reload'");
     expect(main).toContain("const TreasuryCatalogueLazy=React.lazy(()=>importWithRecovery(()=>import('./Treasury')))");
     expect(main).not.toContain('return new Promise(()=>{})');
