@@ -15,6 +15,9 @@ on:
       - 'src/fandomDirectoryPaging.js'
       - 'scripts/verify-observatory-stage-env.mjs'
       - 'tests/observatory-stage-build-gate.test.js'
+      - 'tests/observatory-stage-preflight.test.js'
+      - 'database/palace-observatory-stage-preflight.sql'
+      - 'docs/palace-observatory-staging-compatibility-plan.md'
       - 'package.json'
       - 'tests/fandom-directory-paging.test.js'
       - 'src/fandomDirectoryModel.test.js'
@@ -58,6 +61,6 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
       - name: Run isolated Observatory regression tests
-        run: npx vitest run tests/palace-observatory-model.test.js tests/palace-observatory-verification.test.js tests/palace-observatory-issues.test.js tests/palace-observatory-security.test.js tests/palace-observatory-acceptance.test.js tests/palace-observatory-data-safety.test.js tests/unified-fanwork-catalogue.test.jsx tests/fandom-fanfiction-discovery.test.js tests/fanwork-fandom-navigation.test.jsx tests/reading-archive-hosted-fanworks.test.js tests/fanfiction-reading-first.test.jsx tests/fandom-published-pages.test.js tests/fandom-directory-paging.test.js tests/observatory-stage-build-gate.test.js src/fandomDirectoryModel.test.js src/palaceFandomDirectoryIntegration.test.js src/palaceFandomExpansionV2.test.js src/mobileLibraryScreenshotFixes.test.js src/readingArchiveAtlas.test.jsx src/readingCatalogueIntegration.test.js tests/launch-safety.test.js tests/modern-fanfiction-discovery.test.js tests/remove-legacy-floating-controls.test.js
+        run: npx vitest run tests/palace-observatory-model.test.js tests/palace-observatory-verification.test.js tests/palace-observatory-issues.test.js tests/palace-observatory-security.test.js tests/palace-observatory-acceptance.test.js tests/palace-observatory-data-safety.test.js tests/unified-fanwork-catalogue.test.jsx tests/fandom-fanfiction-discovery.test.js tests/fanwork-fandom-navigation.test.jsx tests/reading-archive-hosted-fanworks.test.js tests/fanfiction-reading-first.test.jsx tests/fandom-published-pages.test.js tests/fandom-directory-paging.test.js tests/observatory-stage-build-gate.test.js tests/observatory-stage-preflight.test.js src/fandomDirectoryModel.test.js src/palaceFandomDirectoryIntegration.test.js src/palaceFandomExpansionV2.test.js src/mobileLibraryScreenshotFixes.test.js src/readingArchiveAtlas.test.jsx src/readingCatalogueIntegration.test.js tests/launch-safety.test.js tests/modern-fanfiction-discovery.test.js tests/remove-legacy-floating-controls.test.js
       - name: Compile the complete website without deploying
         run: npm run build
