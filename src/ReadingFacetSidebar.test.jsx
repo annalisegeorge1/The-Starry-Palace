@@ -1,7 +1,7 @@
 import React from 'react';
 import {MemoryRouter} from 'react-router-dom';
 import {afterEach,expect,it,vi} from 'vitest';
-import {render,screen,fireEvent,cleanup} from '@testing-library/react';
+import {render,screen,fireEvent,cleanup,waitFor} from '@testing-library/react';
 import ReadingFacetSidebar from './ReadingFacetSidebar';
 afterEach(cleanup);
 const props={
@@ -97,13 +97,13 @@ it('finds a trope through Include search and keeps its active choice removable a
  const {rerender}=view({facets,onToggle});
  fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
  expect(screen.queryByText('Tropes')).toBeNull();
- fireEvent.change(screen.getByLabelText('Other tags to include'),{target:{value:'slow'}});
+ fireEvent.change(screen.getByLabelText('Search all tags to include'),{target:{value:'slow'}});
  expect(screen.queryByText('Tropes')).toBeNull();
  expect(screen.getByRole('group',{name:'Include matching tags'})).toBeTruthy();
  fireEvent.click(screen.getByRole('checkbox',{name:'Include Slow Burn'}));
  expect(onToggle).toHaveBeenCalledWith('slow','include');
  rerender(<MemoryRouter><ReadingFacetSidebar {...props} facets={facets} onToggle={onToggle} included={['slow']} selectedTagNames={{slow:'Slow Burn'}}/></MemoryRouter>);
- fireEvent.change(screen.getByLabelText('Other tags to include'),{target:{value:''}});
+ fireEvent.change(screen.getByLabelText('Search all tags to include'),{target:{value:''}});
  expect(screen.queryByText('Tropes')).toBeNull();
  fireEvent.click(screen.getByRole('button',{name:'Remove Slow Burn from include tags'}));
  expect(onToggle).toHaveBeenLastCalledWith('slow','include');
@@ -114,7 +114,7 @@ it('finds hidden tropes through Exclude search without displaying the category b
  fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
  fireEvent.click(screen.getByRole('button',{name:/4\. Exclude/}));
  expect(screen.queryByText('Tropes')).toBeNull();
- fireEvent.change(screen.getByLabelText('Other tags to exclude'),{target:{value:'slow'}});
+ fireEvent.change(screen.getByLabelText('Search all tags to exclude'),{target:{value:'slow'}});
  expect(screen.queryByText('Tropes')).toBeNull();
  expect(screen.getByRole('group',{name:'Exclude matching tags'})).toBeTruthy();
  fireEvent.click(screen.getByRole('checkbox',{name:'Exclude Slow Burn'}));
@@ -154,7 +154,7 @@ it('shows a flat list of individual tags from different categories when searchin
  const onToggle=vi.fn();
  view({facets,onToggle});
  fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
- fireEvent.change(screen.getByLabelText('Other tags to include'),{target:{value:'slow'}});
+ fireEvent.change(screen.getByLabelText('Search all tags to include'),{target:{value:'slow'}});
  expect(screen.queryByText('Tropes')).toBeNull();
  expect(screen.queryByText('Additional tags')).toBeNull();
  expect(screen.queryByText('Genres')).toBeNull();
@@ -172,15 +172,68 @@ it('supports multiple comma-separated tag names in Reading Rooms include and exc
  const onToggle=vi.fn();
  view({facets:[{category:'relationship',label:'Relationships',tags:tags.slice(0,1)},{category:'trope',label:'Tropes',tags:tags.slice(1)}],onToggle});
  fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
- fireEvent.change(screen.getByLabelText('Other tags to include'),{target:{value:'Richonne, Slow Burn'}});
+ fireEvent.change(screen.getByLabelText('Search all tags to include'),{target:{value:'Richonne, Slow Burn'}});
  expect(screen.getByRole('checkbox',{name:'Include Richonne'})).toBeTruthy();
  expect(screen.getByRole('checkbox',{name:'Include Slow Burn'})).toBeTruthy();
  fireEvent.click(screen.getByRole('button',{name:'Add 2 exact tags to include'}));
  expect(onToggle).toHaveBeenCalledWith('rich','include');
  expect(onToggle).toHaveBeenCalledWith('slow','include');
  fireEvent.click(screen.getByRole('button',{name:/4\. Exclude/}));
- fireEvent.change(screen.getByLabelText('Other tags to exclude'),{target:{value:'Found Family; Richonne'}});
+ fireEvent.change(screen.getByLabelText('Search all tags to exclude'),{target:{value:'Found Family; Richonne'}});
  fireEvent.click(screen.getByRole('button',{name:'Add 2 exact tags to exclude'}));
  expect(onToggle).toHaveBeenCalledWith('family','exclude');
  expect(onToggle).toHaveBeenCalledWith('rich','exclude');
+});
+
+it('keeps broad relationship types separate from searchable relationship tags',()=>{
+ const onToggle=vi.fn();
+ const facets=[
+  {category:'relationship',label:'Relationships',tags:[
+   {id:'rich',name:'Richonne',count:6},
+   {id:'parents',name:'Parent and Child',count:3},
+   {id:'friends',name:'Friends to Lovers',count:1}
+  ]},
+  {category:'genre',label:'Genres',tags:[{id:'fantasy',name:'Fantasy',count:2}]},
+  {category:'trope',label:'Tropes',tags:[{id:'slow',name:'Slow Burn',count:4}]},
+  {category:'other',label:'Other tags',tags:[{id:'misc',name:'A Miscellaneous Tag',count:1}]}
+ ];
+ view({facets,onToggle});
+ fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
+ expect(screen.getAllByText('Relationship categories').length).toBeGreaterThan(0);
+ expect(screen.getByRole('checkbox',{name:'Include F/M relationships'})).toBeTruthy();
+ expect(screen.queryByText('Relationships')).toBeNull();
+ expect(screen.queryByText('Tropes')).toBeNull();
+ expect(screen.queryByText('Other tags')).toBeNull();
+ fireEvent.change(screen.getByLabelText('Search all tags to include'),{target:{value:'Richonne, Slow Burn'}});
+ expect(screen.getByRole('checkbox',{name:'Include Richonne'})).toBeTruthy();
+ expect(screen.getByRole('checkbox',{name:'Include Slow Burn'})).toBeTruthy();
+ fireEvent.click(screen.getByRole('checkbox',{name:'Include Richonne'}));
+ expect(onToggle).toHaveBeenCalledWith('rich','include');
+});
+
+it('shows independent Include and Exclude search fields even while Exclude choices are collapsed',()=>{
+ view();
+ fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
+ expect(screen.getByRole('searchbox',{name:'Search all tags to include'})).toBeTruthy();
+ expect(screen.getByRole('searchbox',{name:'Search all tags to exclude'})).toBeTruthy();
+});
+it('searches the full tag directory for both modes even when viewing only loaded shelves',async()=>{
+ const onToggle=vi.fn();
+ const onSearchTags=vi.fn(async (query,category,limit)=>{
+  if(query==='richonne')return [{id:'r',name:'Richonne',category:'relationship',status:'community'}];
+  if(query==='slow')return [{id:'s',name:'Slow Burn',category:'trope',status:'community'}];
+  return [];
+ });
+ view({archiveWide:false,facets:[],onSearchTags,onToggle});
+ fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
+ fireEvent.change(screen.getByRole('searchbox',{name:'Search all tags to include'}),{target:{value:'Richonne'}});
+ await waitFor(()=>expect(screen.getByRole('checkbox',{name:'Include Richonne'})).toBeTruthy());
+ fireEvent.click(screen.getByRole('checkbox',{name:'Include Richonne'}));
+ expect(onToggle).toHaveBeenCalledWith('r','include');
+ fireEvent.change(screen.getByRole('searchbox',{name:'Search all tags to exclude'}),{target:{value:'Slow'}});
+ await waitFor(()=>expect(screen.getByRole('checkbox',{name:'Exclude Slow Burn'})).toBeTruthy());
+ fireEvent.click(screen.getByRole('checkbox',{name:'Exclude Slow Burn'}));
+ expect(onToggle).toHaveBeenCalledWith('s','exclude');
+ expect(onSearchTags).toHaveBeenCalledWith('richonne','all',35);
+ expect(onSearchTags).toHaveBeenCalledWith('slow','all',35);
 });
