@@ -152,3 +152,150 @@
   transition:none!important;
  }
 }
+
+/* Final loadout QA: all selectable surfaces have one consistent palette.
+   Avoid fieldset/legend overlap by using explicit heading above the controls. */
+.palace-dialog.ink-duel-dialog .ink-duel-form .duel-rule-grid {
+ display:grid!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ gap:11px!important;
+ align-items:start!important;
+}
+.palace-dialog.ink-duel-dialog .ink-duel-form .duel-stat-selector {
+ display:flex!important;
+ flex-direction:column!important;
+ align-items:stretch!important;
+ gap:10px!important;
+ min-width:0!important;
+ margin:0!important;
+ padding:12px!important;
+ border:1px solid rgba(153,159,215,.38)!important;
+ border-radius:14px!important;
+ background:#222a48!important;
+ background-image:none!important;
+ color:#f7f5ff!important;
+ box-sizing:border-box!important;
+}
+.palace-dialog.ink-duel-dialog .ink-duel-form .duel-stat-heading {
+ display:flex!important;
+ position:static!important;
+ align-items:center!important;
+ justify-content:space-between!important;
+ gap:6px!important;
+ margin:0!important;
+ padding:0 2px!important;
+ border:0!important;
+ background:transparent!important;
+ color:#f8efff!important;
+ font:800 .82rem/1.4 system-ui,sans-serif!important;
+ line-height:1.4!important;
+ opacity:1!important;
+}
+.palace-dialog.ink-duel-dialog .ink-duel-form .duel-stat-heading .palace-info-mark{
+ flex:none!important;
+ position:static!important;
+ margin:0!important;
+}
+.palace-dialog.ink-duel-dialog .ink-duel-form .duel-stat-options {
+ display:grid!important;
+ grid-template-columns:repeat(4,minmax(0,1fr))!important;
+ gap:7px!important;
+ width:100%!important;
+ min-width:0!important;
+ align-items:stretch!important;
+}
+.palace-dialog.ink-duel-dialog .ink-duel-form .duel-stat-options > button {
+ flex:none!important;
+ display:flex!important;
+ flex-direction:column!important;
+ justify-content:center!important;
+ align-items:center!important;
+ box-sizing:border-box!important;
+ min-width:0!important;
+ width:100%!important;
+ min-height:43px!important;
+ padding:7px 3px!important;
+ border:1px solid #7c83ac!important;
+ border-radius:9px!important;
+ background:#18233f!important;
+ background-image:none!important;
+ color:#f9f7ff!important;
+ -webkit-text-fill-color:#f9f7ff!important;
+ font:800 .79rem/1.2 system-ui,sans-serif!important;
+ box-shadow:none!important;
+ opacity:1!important;
+ text-shadow:none!important;
+}
+.palace-dialog.ink-duel-dialog .ink-duel-form .duel-stat-options > button small {
+ color:#dce3f5!important;
+ -webkit-text-fill-color:#dce3f5!important;
+ opacity:1!important;
+ font:600 .62rem/1.2 system-ui,sans-serif!important;
+}
+.palace-dialog.ink-duel-dialog .ink-duel-form .duel-stat-options > button:is(.active,[aria-pressed="true"]),
+.palace-dialog.ink-duel-dialog .ink-duel-form :is(.duel-content-picker,.duel-match-picker,.duel-mode-picker) > button:is(.active,[aria-pressed="true"]) {
+ background:#6841b7!important;
+ background-image:none!important;
+ color:#fff!important;
+ -webkit-text-fill-color:#fff!important;
+ border:2px solid #ddc0ff!important;
+ box-shadow:0 0 0 2px rgba(154,97,243,.18),0 0 15px rgba(154,97,243,.42)!important;
+}
+.palace-dialog.ink-duel-dialog .ink-duel-form .duel-stat-options > button:is(.active,[aria-pressed="true"]) small,
+.palace-dialog.ink-duel-dialog .ink-duel-form :is(.duel-content-picker,.duel-match-picker,.duel-mode-picker) > button:is(.active,[aria-pressed="true"]) :is(strong,small,span) {
+ color:#fff!important;
+ -webkit-text-fill-color:#fff!important;
+ opacity:1!important;
+}
+.palace-dialog.ink-duel-dialog .ink-duel-form .duel-stat-options > button:disabled {
+ opacity:.43!important;
+ cursor:not-allowed!important;
+ box-shadow:none!important;
+}
+/* These portal-level selectors override accidental light background/white text
+   combinations from inherited Daybreak and pre-HUD stylesheets. */
+.palace-dialog.ink-duel-dialog .ink-duel-form :is(.duel-content-picker,.duel-match-picker,.duel-mode-picker) > button:not(.active):not([aria-pressed="true"]) {
+ background:#212a48!important;
+ background-image:none!important;
+ color:#f7f6ff!important;
+ -webkit-text-fill-color:#f7f6ff!important;
+ border-color:#737aa7!important;
+}
+.palace-dialog.ink-duel-dialog .ink-duel-form :is(.duel-content-picker,.duel-match-picker,.duel-mode-picker) > button:not(.active):not([aria-pressed="true"]) :is(strong,small,span) {
+ color:#f7f6ff!important;
+ -webkit-text-fill-color:#f7f6ff!important;
+}
+.palace-dialog.ink-duel-dialog .ink-duel-form .duel-seal-note{
+ display:block!important;
+ padding:10px 13px!important;
+ margin:2px 0 0!important;
+ min-height:0!important;
+ border:1px solid rgba(195,194,226,.20)!important;
+ border-radius:11px!important;
+ background:rgba(194,188,234,.10)!important;
+ box-shadow:none!important;
+ color:#e7e6f7!important;
+}
+.palace-dialog.ink-duel-dialog .ink-duel-form .duel-seal-note .duel-seal-copy {
+ color:#e7e6f7!important;
+ font:500 .77rem/1.5 system-ui,sans-serif!important;
+}
+.palace-dialog.ink-duel-dialog .ink-duel-form .duel-seal-note .duel-seal-copy strong {
+ color:#fff!important;
+}
+@media(max-width:620px){
+ .palace-dialog.ink-duel-dialog .ink-duel-form .duel-rule-grid {
+  grid-template-columns:minmax(0,1fr)!important;
+ }
+ .palace-dialog.ink-duel-dialog .ink-duel-form .duel-stat-selector {
+  padding:10px!important;
+ }
+ .palace-dialog.ink-duel-dialog .ink-duel-form .duel-stat-options {
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+ }
+}
+@media(max-width:340px){
+ .palace-dialog.ink-duel-dialog .ink-duel-form .duel-stat-options {
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ }
+}
