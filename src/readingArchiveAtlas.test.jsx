@@ -56,7 +56,12 @@ describe('Reading atlas archive vs classics',()=>{
   const onToggle=vi.fn(),onSearchTags=vi.fn().mockResolvedValue([{id:'tag-x',name:'Palace intrigue',category:'trope',status:'canonical'}]);
   const onTagIdentified=vi.fn();
   render(<MemoryRouter><ReadingFacetSidebar archiveWide facets={[]} sort="updated" onSort={()=>{}} onRating={()=>{}} onStatus={()=>{}} onToggle={onToggle} onClear={()=>{}} onSearchTags={onSearchTags} onTagIdentified={onTagIdentified}/></MemoryRouter>);
-  fireEvent.change(screen.getByPlaceholderText(/Search fandoms, characters, relationships, tropes/),{target:{value:'intrigue'}});
+  const tagInput=screen.queryByRole('searchbox',{name:'Other tags to include',hidden:true});
+  if(!tagInput){
+   const control=screen.getByRole('button',{name:/3\\. Include/});
+   fireEvent.click(control);
+  }
+  fireEvent.change(screen.getByRole('searchbox',{name:'Other tags to include',hidden:true}),{target:{value:'intrigue'}});
   await waitFor(()=>expect(onSearchTags).toHaveBeenCalledWith('intrigue','all',35),{timeout:2200});
   await waitFor(()=>expect(screen.getByText('Palace intrigue')).toBeTruthy(),{timeout:2200});
   expect(screen.queryByText('Tropes')).toBeNull();
