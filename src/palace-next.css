@@ -6987,3 +6987,75 @@ body.writing-desk-open.daylight .studio-head-copy h1,
   .prompt-orrery .prompt-reel-lock {transition:none}
   .prompt-orrery .prompt-reel-lock:hover {transform:none}
 }
+
+
+/* Prompt Orrery screenshot follow-up: actual left-aligned text and compact action dock. */
+.prompt-orrery .prompt-reels > article {
+  justify-items:stretch!important;
+  align-content:center;
+}
+.prompt-orrery .prompt-reels > article > small,
+.prompt-orrery .prompt-reels > article > strong,
+.prompt-orrery .prompt-reels > article > em {
+  width:100%;
+  min-width:0;
+  margin-left:0!important;
+  margin-right:0!important;
+  text-align:left!important;
+  justify-self:stretch!important;
+}
+.prompt-orrery .prompt-reels > article > strong,
+.prompt-orrery .prompt-reels > article > em {
+  padding-left:0!important;
+  padding-right:0!important;
+}
+.prompt-orrery .prompt-reels > article > strong {
+  white-space:normal!important;
+  overflow-wrap:break-word;
+}
+.prompt-orrery .prompt-orrery-actions {
+  grid-column:1/-1!important;
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  flex-wrap:nowrap!important;
+  gap:1rem!important;
+  width:100%;
+  min-height:0!important;
+  height:auto!important;
+  padding:.65rem .85rem!important;
+}
+.prompt-orrery .prompt-orrery-secondary {
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  flex-wrap:wrap!important;
+  justify-content:flex-start!important;
+  gap:.45rem!important;
+  flex:1 1 auto;
+  min-width:0;
+  width:auto!important;
+}
+.prompt-orrery .prompt-orrery-actions > .prompt-lever {
+  flex:0 0 auto;
+  width:auto!important;
+  align-self:center!important;
+  margin:0!important;
+  grid-column:auto!important;
+}
+@media (max-width:700px) {
+  .prompt-orrery .prompt-orrery-actions {
+    position:static!important;
+    flex-wrap:wrap!important;
+    gap:.65rem!important;
+    padding:.65rem!important;
+  }
+  .prompt-orrery .prompt-orrery-secondary {
+    flex:1 1 100%;
+  }
+  .prompt-orrery .prompt-orrery-actions > .prompt-lever {
+    width:100%!important;
+    justify-content:center;
+  }
+}
