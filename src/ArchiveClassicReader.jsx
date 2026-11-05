@@ -10,6 +10,7 @@ import {classicChapterChoices,classicNumericPage,CLASSIC_NUMERIC_PAGE_THRESHOLD}
 import './classic-fast-navigation.css';
 import './classic-edition-caption.css';
 import './classic-mobile-reader.css';
+import './classic-reading-setup-polish.css';
 
 const FONT_KEY='palace-classic-font';
 const TONE_KEY='palace-classic-tone';
@@ -133,6 +134,7 @@ function ArchiveClassicReaderEdition({record,text,prepared}){
    }}>✧ View edition, source and translator details ↓</button>
   </header>
   <div className="archive-classic-reader-toolbar" aria-label="Classic reading appearance">
+   <div className="archive-classic-toolbar-heading"><strong>Reading appearance</strong><button type="button" className="archive-classic-reset" onClick={resetSettings}>↺ Reset</button></div>
    <label>Text size
     <span className="archive-classic-font-steps"><button type="button" aria-label="Decrease classic text size" disabled={fontSize<=FONT_MIN} onClick={()=>changeSetting('font',fontSize-1)}>A−</button><output>{fontSize}px</output><button type="button" aria-label="Increase classic text size" disabled={fontSize>=FONT_MAX} onClick={()=>changeSetting('font',fontSize+1)}>A＋</button></span>
    </label>
@@ -140,7 +142,6 @@ function ArchiveClassicReaderEdition({record,text,prepared}){
    <label>Page layout<select aria-label="Classic reading page layout" value={layout} onChange={e=>changeSetting('layout',e.target.value)}>{READER_LAYOUTS.map(option=><option key={option.value} value={option.value}>{option.label}</option>)}</select></label>
    <label>Text width<select value={width} onChange={e=>changeSetting('width',e.target.value)}><option value="narrow">Narrow</option><option value="standard">Book</option><option value="wide">Wide</option></select></label>
    <label>Line spacing<select value={leading} onChange={e=>changeSetting('leading',e.target.value)}><option value="compact">Compact</option><option value="comfortable">Comfortable</option><option value="airy">Airy</option></select></label>
-   <button type="button" className="archive-classic-reset" onClick={resetSettings}>Reset appearance</button>
   </div>
   <div className="archive-classic-locator">
    {contents.length>0?<div className="archive-classic-chapter-controls">
