@@ -67,6 +67,18 @@ SELECT 1 / CASE WHEN
   AND NOT has_column_privilege('authenticated','public.archive_texts','body_text','SELECT')
   AND has_column_privilege('authenticated','public.archive_texts','word_count','SELECT')
   THEN 1 ELSE 0 END AS archive_body_nonexposure;
+-- The four read-only discovery fixtures must not retain direct DML grants.
+-- Preserve separate staged collaboration/rewards fixture permissions.
+SELECT 1 / CASE WHEN NOT EXISTS (
+ SELECT 1
+ FROM unnest(ARRAY['works','chapters','tags','work_tags']) AS tables(relname)
+ CROSS JOIN unnest(ARRAY['anon','authenticated']) AS roles(role_name)
+ WHERE has_table_privilege(roles.role_name,'public.'||tables.relname,'INSERT')
+    OR has_table_privilege(roles.role_name,'public.'||tables.relname,'UPDATE')
+    OR has_table_privilege(roles.role_name,'public.'||tables.relname,'DELETE')
+) AND has_table_privilege('authenticated','public.work_collaborators','SELECT')
+ THEN 1 ELSE 0 END AS least_privilege_reading_grants;
+
 -- Existing pre-populated stage dummy author remains intact.
 SELECT 1 / CASE WHEN EXISTS(
  SELECT 1 FROM public.works WHERE id='11111111-1111-4111-8111-111111111111'::uuid
