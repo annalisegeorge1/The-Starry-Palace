@@ -130,3 +130,77 @@
  .palace-shell.full-palace-shell .reader-page .chapter-end-comments .comment-compose {padding:12px}
  .palace-shell.full-palace-shell .reader-page .chapter-end-comments .comment-compose > button {width:100%}
 }
+
+/* Chapter-specific discussion and story-wide discussion are distinct views. */
+.palace-shell.full-palace-shell .reader-page .reader-comment-scope{
+ display:flex;
+ flex-wrap:wrap;
+ gap:8px;
+ margin:4px 0 13px;
+}
+.palace-shell.full-palace-shell .reader-page .reader-comment-scope button{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ gap:8px;
+ min-height:44px;
+ padding:9px 14px;
+ border:1px solid rgba(180,169,226,.44);
+ border-radius:12px;
+ background:rgba(48,45,96,.27);
+ color:#ede7ff;
+ font:750 .82rem/1.3 system-ui,sans-serif;
+ cursor:pointer;
+}
+.palace-shell.full-palace-shell .reader-page .reader-comment-scope button.active{
+ border-color:#b5c8ff;
+ background:linear-gradient(115deg,#6850a8,#2d7193);
+ color:#fff;
+ box-shadow:0 0 0 2px rgba(144,164,244,.13);
+}
+.palace-shell.full-palace-shell .reader-page .reader-comment-scope button span{
+ min-width:23px;
+ border-radius:999px;
+ padding:2px 6px;
+ background:rgba(255,255,255,.12);
+ font-size:.72rem;
+ font-variant-numeric:tabular-nums;
+}
+.palace-shell.full-palace-shell .reader-page .reader-full-work-cta{
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ justify-content:space-between;
+ gap:12px 20px;
+ margin:12px 0 19px;
+ padding:15px 19px;
+ border:1px solid rgba(166,163,228,.38);
+ border-radius:17px;
+ background:linear-gradient(110deg,rgba(63,53,111,.3),rgba(35,88,118,.25));
+}
+.palace-shell.full-palace-shell .reader-page .reader-full-work-cta>div{flex:1 1 200px;min-width:0}
+.palace-shell.full-palace-shell .reader-page .reader-full-work-cta strong{display:block;color:#f6edff;font:700 1.1rem/1.3 Georgia,serif}
+.palace-shell.full-palace-shell .reader-page .reader-full-work-cta p{margin:5px 0 0;color:#d8d4e7;font-size:.82rem;line-height:1.5}
+.palace-shell.full-palace-shell .reader-page .reader-full-work-cta>a{
+ display:inline-flex;align-items:center;justify-content:center;
+ flex:0 0 auto;min-height:44px;
+ padding:.6rem .9rem;
+ border-radius:12px;border:1px solid rgba(169,218,243,.6);
+ background:linear-gradient(115deg,#6853a7,#286e94);
+ color:#fff;text-decoration:none;font:800 .82rem/1.35 system-ui,sans-serif;
+}
+.palace-shell.full-palace-shell.daylight .reader-page .reader-comment-scope button{
+ background:#f6f3fc;color:#3d3356;border-color:#b6aacd;
+}
+.palace-shell.full-palace-shell.daylight .reader-page .reader-comment-scope button.active{
+ background:#59438d;color:#fff;border-color:#493379;
+}
+.palace-shell.full-palace-shell.daylight .reader-page .reader-full-work-cta{
+ background:linear-gradient(120deg,#faf6ff,#e8f3fa);border-color:#c7b6dc;
+}
+.palace-shell.full-palace-shell.daylight .reader-page .reader-full-work-cta strong{color:#39284f}
+.palace-shell.full-palace-shell.daylight .reader-page .reader-full-work-cta p{color:#56536f}
+@media(max-width:600px){
+ .palace-shell.full-palace-shell .reader-page .reader-comment-scope button{flex:1 1 auto;padding:9px}
+ .palace-shell.full-palace-shell .reader-page .reader-full-work-cta>a{flex:1 1 100%;width:100%}
+}
