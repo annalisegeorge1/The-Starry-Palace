@@ -78,6 +78,9 @@ ALTER TABLE public.works
  FOREIGN KEY (author_id) REFERENCES public.profiles(id)
  NOT VALID;
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+-- Supabase project default privileges can include broad table grants.
+-- Revoke them before applying this proposal's explicit read-only grants.
+REVOKE ALL ON TABLE public.profiles FROM PUBLIC, anon, authenticated;
 CREATE POLICY observatory_stage_profiles_public ON public.profiles
  FOR SELECT TO anon,authenticated
  USING (visibility='public' OR id=(SELECT auth.uid()));
@@ -93,6 +96,9 @@ CREATE TABLE public.fandom_directory(
  updated_at timestamptz NOT NULL DEFAULT now()
 );
 ALTER TABLE public.fandom_directory ENABLE ROW LEVEL SECURITY;
+-- Supabase project default privileges can include broad table grants.
+-- Revoke them before applying this proposal's explicit read-only grants.
+REVOKE ALL ON TABLE public.fandom_directory FROM PUBLIC, anon, authenticated;
 CREATE POLICY observatory_stage_public_fandom_directory
  ON public.fandom_directory FOR SELECT TO anon,authenticated
  USING (EXISTS(
@@ -126,6 +132,9 @@ CREATE TABLE public.archive_records(
   rights_status IN ('creator_authorised','licensed','public_domain_verified'))
 );
 ALTER TABLE public.archive_records ENABLE ROW LEVEL SECURITY;
+-- Supabase project default privileges can include broad table grants.
+-- Revoke them before applying this proposal's explicit read-only grants.
+REVOKE ALL ON TABLE public.archive_records FROM PUBLIC, anon, authenticated;
 CREATE POLICY observatory_stage_archive_public_metadata
  ON public.archive_records FOR SELECT TO anon,authenticated
  USING (publication_status='published');
@@ -144,6 +153,9 @@ CREATE TABLE public.archive_rights_records(
  created_at timestamptz NOT NULL DEFAULT now()
 );
 ALTER TABLE public.archive_rights_records ENABLE ROW LEVEL SECURITY;
+-- Supabase project default privileges can include broad table grants.
+-- Revoke them before applying this proposal's explicit read-only grants.
+REVOKE ALL ON TABLE public.archive_rights_records FROM PUBLIC, anon, authenticated;
 CREATE POLICY observatory_stage_archive_verified_rights
  ON public.archive_rights_records FOR SELECT TO anon,authenticated
  USING (status='verified' AND EXISTS(
@@ -162,6 +174,9 @@ CREATE TABLE public.archive_texts(
  created_at timestamptz NOT NULL DEFAULT now()
 );
 ALTER TABLE public.archive_texts ENABLE ROW LEVEL SECURITY;
+-- Supabase project default privileges can include broad table grants.
+-- Revoke them before applying this proposal's explicit read-only grants.
+REVOKE ALL ON TABLE public.archive_texts FROM PUBLIC, anon, authenticated;
 
 CREATE TABLE public.platform_memberships(
  user_id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -173,6 +188,9 @@ CREATE TABLE public.platform_memberships(
  updated_at timestamptz NOT NULL DEFAULT now()
 );
 ALTER TABLE public.platform_memberships ENABLE ROW LEVEL SECURITY;
+-- Supabase project default privileges can include broad table grants.
+-- Revoke them before applying this proposal's explicit read-only grants.
+REVOKE ALL ON TABLE public.platform_memberships FROM PUBLIC, anon, authenticated;
 CREATE POLICY observatory_stage_own_membership
  ON public.platform_memberships FOR SELECT TO authenticated
  USING (user_id=(SELECT auth.uid()));
@@ -245,6 +263,9 @@ CREATE TABLE public.comments(
   CHECK (status IN ('pending','approved','hidden','deleted'))
 );
 ALTER TABLE public.comments ENABLE ROW LEVEL SECURITY;
+-- Supabase project default privileges can include broad table grants.
+-- Revoke them before applying this proposal's explicit read-only grants.
+REVOKE ALL ON TABLE public.comments FROM PUBLIC, anon, authenticated;
 CREATE POLICY observatory_stage_approved_comment_counts
  ON public.comments FOR SELECT TO anon,authenticated
  USING (status='approved' AND EXISTS(
