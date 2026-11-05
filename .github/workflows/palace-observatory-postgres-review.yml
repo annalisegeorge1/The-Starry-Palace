@@ -56,6 +56,27 @@ jobs:
           done
       - name: Bootstrap staging-shaped fictional security fixtures
         run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/palace-observatory-postgres-bootstrap.sql
+      - name: Rehearse recovery of the original disposable security fixtures
+        run: |
+          # Only synthetic data from the throwaway PostgreSQL service is dumped.
+          # Never use this command on a connected Supabase project.
+          pg_dump --format=custom --no-owner --no-acl \
+            --file="$RUNNER_TEMP/observatory-prechange-fixtures.dump"
+          createdb observatory_recovery_ci
+          pg_restore --exit-on-error --no-owner --no-acl \
+            --dbname=observatory_recovery_ci \
+            "$RUNNER_TEMP/observatory-prechange-fixtures.dump"
+          restored="$(psql -X -v ON_ERROR_STOP=1 -d observatory_recovery_ci -Atc "
+            SELECT CASE WHEN
+              (SELECT count(*) FROM public.works)=1
+              AND to_regclass('public.profiles') IS NULL
+              AND to_regclass('private.staging_chat_rooms') IS NOT NULL
+              AND (SELECT count(*) FROM pg_policies
+                   WHERE schemaname='public' AND tablename='works')=1
+            THEN 'ready' ELSE 'mismatch' END
+          ")"
+          test "$restored" = ready
+          rm -f "$RUNNER_TEMP/observatory-prechange-fixtures.dump"
       - name: Apply proposed additive metadata schema to temporary DB
         run: psql -X -v ON_ERROR_STOP=1 -f database/palace-observatory-stage-additive-schema-PROPOSAL.sql
       - name: Compile the unchanged invoker-based published-search SQL
