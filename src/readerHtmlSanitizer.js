@@ -27,6 +27,13 @@ export function safeReaderHtml(raw=''){
   const name=element.tagName.toUpperCase();
   if(DROP_WITH_CONTENT.has(name)){
    element.remove();
+  }else if(name==='DIV'&&!element.querySelector('p,h2,h3,blockquote,ul,ol,li,hr')&&element.textContent.trim()){
+   // Word/HTML pastes often use a separate DIV for each paragraph. Removing
+   // those tags as inline wrappers joins adjacent paragraphs into one line.
+   // Retain the structural boundary as a safe P, never its attributes.
+   const paragraph=doc.createElement('p');
+   while(element.firstChild)paragraph.appendChild(element.firstChild);
+   element.replaceWith(paragraph);
   }else if(!READER_TAGS.has(name)){
    const replacement=doc.createDocumentFragment();
    while(element.firstChild)replacement.appendChild(element.firstChild);
