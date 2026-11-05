@@ -111,6 +111,17 @@
       });
     })();
   </script>
+  <style id="prompt-orrery-transparent-stage">
+    /* Remove only the large Prompt Orrery panel background, not its cards. */
+    .palace-shell.full-palace-shell .prompt-orrery,
+    .prompt-orrery {
+      background: transparent !important;
+      background-image: none !important;
+      border-color: transparent !important;
+      box-shadow: none !important;
+    }
+    .prompt-orrery::after { display: none !important; }
+  </style>
 </head>
 <body>
   <div id="palace-boot" role="status" aria-live="polite">
