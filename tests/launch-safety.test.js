@@ -1970,7 +1970,9 @@ describe('Starry Palace launch safety',()=>{
     expect(data).toContain('reorderComicPages');
     expect(data).toContain('updateComicPage');
     expect(live).toContain('episode-reorder-controls');
-    expect(live).toContain('comic-page-order-actions');
+    expect(live).toContain('<ComicEpisodePageManager');
+    expect(read('src/ComicEpisodePageManager.jsx')).toContain('comic-page-tile-actions');
+    expect(read('src/ComicEpisodePageManager.jsx')).toContain('onReorder');
     expect(live).toContain('Edit page details');
     expect(live).toContain('Save page details');
     expect(polish).toContain('.episode-reorder-controls');
@@ -2072,7 +2074,8 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('<option value="needs">Needs attention</option>');
     expect(live).toContain('<option value="scheduled">Scheduled</option>');
     expect(live).toContain('comic.comic_episodes.findIndex(x=>x.id===ep.id)');
-    expect(live).toContain('No episodes in this view.');
+    expect(live).toContain('No episodes match these filters.');
+    expect(live).toContain('Your first episode starts here.');
     expect(polish).toContain('.episode-manager-tools');
     expect(polish).toContain('.episode-manager-empty');
   });
