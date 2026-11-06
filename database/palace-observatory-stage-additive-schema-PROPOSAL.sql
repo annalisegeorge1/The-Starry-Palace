@@ -224,12 +224,12 @@ CREATE POLICY observatory_stage_archive_index_owner
 -- Column grants protect body_text even from an Owner browser session.
 GRANT SELECT(record_id,word_count,source_url) ON public.archive_texts TO authenticated;
 
--- Existing fixture tables inherited browser-level write privileges from
--- broad defaults. Their current RLS policies prevent unauthorized writes,
--- but this read-only discovery slice needs SELECT only. Narrow the database
--- grants as a second independent safeguard without touching collaborator,
+-- Existing fixture tables inherited broad browser-level privileges,
+-- including TRUNCATE, REFERENCES and TRIGGER on some tables. RLS does NOT
+-- protect against TRUNCATE. This read-only discovery slice needs SELECT only.
+-- Revoke all write/DDL-related table privileges without touching collaborator,
 -- rewards, comics or other synthetic fixture policies.
-REVOKE INSERT, UPDATE, DELETE
+REVOKE INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER
  ON TABLE public.works, public.chapters, public.tags, public.work_tags
  FROM PUBLIC, anon, authenticated;
 
