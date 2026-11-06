@@ -91,7 +91,7 @@ describe('Draft-only additive staging database package',()=>{
   expect(fixtures.archiveCases.find(w=>w.fixture==='rights-pending-link')?.expected.mayHostText).toBe(false);
   expect(JSON.stringify(fixtures)).not.toMatch(/@gmail\.com|@outlook\.com|service_role|sb_secret_/i);
   expect(guide).toContain('No SQL changes have been applied');
-  expect(guide).toContain('ephemeral PostgreSQL 16 database');
+  expect(guide).toContain('ephemeral PostgreSQL **16 and 17** databases');
   expect(guide).toContain('the complete existing security-staging schema');
  });
 });
