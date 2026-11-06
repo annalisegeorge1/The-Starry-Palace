@@ -27,16 +27,16 @@ describe('Browser-only chapter document import',()=>{
  it('joins long hard-wrapped prose without erasing explicit paragraph breaks',async()=>{
   const first='The distant palace stood behind the mountains, and every traveller remembered how the silver gates had glittered';
   const next='when they reached the hillside and saw the gardens below.';
-  const txt=new File([first+'\\n'+next+'\\n\\nA new paragraph begins.'],'wrapped.txt');
+  const txt=new File([first+'\n'+next+'\n\nA new paragraph begins.'],'wrapped.txt');
   const result=await convertDocumentFile(txt);
   expect(result.html).toContain('<p>'+first+' '+next+'</p>');
   expect(result.html).toContain('<p>A new paragraph begins.</p>');
   expect(result.html).not.toContain('</p><p>'+next);
  });
  it('keeps short lineated poetry and separate Markdown blocks untouched',async()=>{
-  const poem=await convertDocumentFile(new File(['Beneath the moon\\nwe dance alone\\n\\nAnother verse'],'verse.txt'));
+  const poem=await convertDocumentFile(new File(['Beneath the moon\nwe dance alone\n\nAnother verse'],'verse.txt'));
   expect(poem.html).toContain('<p>Beneath the moon</p><p>we dance alone</p>');
-  const md=await convertDocumentFile(new File(['# Chapter One\\n- first\\n- second\\n\\nNew scene.'],'scene.md'));
+  const md=await convertDocumentFile(new File(['# Chapter One\n- first\n- second\n\nNew scene.'],'scene.md'));
   expect(md.html).toContain('<h2>Chapter One</h2><ul><li>first</li><li>second</li></ul><p>New scene.</p>');
  });
  it('blocks unsupported old binary .doc and script-filled HTML',async()=>{

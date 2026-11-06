@@ -21,7 +21,8 @@ describe('Palace content glyph refinement, without changing navigation icons',()
  });
  it('updates activity summary glyphs while preserving controls and unread counts',()=>{
   expect((activity.match(/className="activity-metric-sigil"/g)||[]).length).toBe(4);
-  expect(activity).toContain('className="activity-private-sigil"');
+  expect(activity).toContain('className="activity-private-lock"');
+  expect(css).toContain('.chic-activity-private>.activity-private-lock');
   expect(activity).toContain('aria-pressed={noticeGroup===k}');
   expect(activity).toContain('updateHeaderUnread');
   expect(activity).toContain('savedCount');

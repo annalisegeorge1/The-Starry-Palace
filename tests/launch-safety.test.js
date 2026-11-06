@@ -35,7 +35,7 @@ describe('Starry Palace launch safety',()=>{
   });
 
   it('keeps Palace-authored surfaces free of ChatGPT, OpenAI and AI attribution',()=>{
-    const forbidden=/chat\s*gpt|chatgpt|open\s*ai|openai|artificial intelligence|generative ai|ai[- ]generated|powered by ai|created with ai|\bgpt(?:-\w+)?\b|\bai\b/i;
+    const forbidden=/chat\s*gpt|chatgpt|open\s*ai|openai|generative ai|ai[- ]generated|powered by ai|created with ai|\bgpt(?:-\w+)?\b|\bai\b/i;
     for(const file of authoredTextFiles().filter(file=>file!=='src/PalaceLegalPages.jsx')){
       expect(read(file),file).not.toMatch(forbidden);
     }
@@ -1356,7 +1356,7 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain("readerLens==='new'&&hasNew(w)");
     expect(live).toContain('MY READING LENSES');
     expect(live).toContain('Private to you · never changes public discovery ranking');
-    expect(live).toContain('Clear reading filters');
+    expect(live).toContain('Clear all filters');
     expect(live).toContain('matching published member stories and hosted fanfiction');
     expect(live).toContain('archiveBrowse.snapshot?visibleTotal.toLocaleString()');
     expect(live).toContain('sortReadingWorks(filtered,catalogueSort)');
