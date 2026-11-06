@@ -41,7 +41,7 @@ describe('public reading with member-only participation',()=>{
   const source=readFileSync('src/liveRooms.jsx','utf8');
   expect(source).toContain("{!session&&work.comment_policy!=='closed'&&<GuestReadingInvitation");
   expect(source).toContain("{session&&work.comment_policy!=='closed'&&<form className=\"comment-compose\"");
-  expect(source).toContain("community.comments.filter(c=>own||c.status==='approved'||c.author_id===session?.user?.id)");
+  expect(source).toContain("community.comments.filter(c=>(chapterId?c.chapter_id===chapterId:!c.chapter_id)&&(own||c.status==='approved'||c.author_id===session?.user?.id))");
   expect(source).toContain("!session&&<GuestReadingInvitation returnTo=\"/reading\"");
   expect(source).toContain("!session&&<GuestReadingInvitation returnTo={'/comic/'+data.slug}");
  });
