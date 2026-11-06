@@ -37,6 +37,7 @@ import './palace-chat-compact-menu.css';
 import './palace-chat-mobile-compact.css';
 import './palace-chat-final-details.css';
 import './chamber-chat-desktop-refinement.css';
+import './palace-chat-midnight-parity.css';
 import './palace-chat-midnight.css';
 
 const draftKey=(user,kind,id)=>'palace-chat-draft:'+user+':'+kind+':'+id;
