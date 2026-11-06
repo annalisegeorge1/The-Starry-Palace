@@ -90,7 +90,7 @@ function RepeatingDetail({motif,metal,edge,shine,gem,light}) {
 export default function FineFrameArtwork({frame,style,size='100%',className=''}) {
  const seed=useId().replace(/[^a-zA-Z0-9_-]/g,'');
  const id='fine-art-'+seed;
- const isGemstone=style==='gemstone';
+ const isGemstone=style.gemstone===true;
  const grand=style.thickness==='grand';
  const slender=style.thickness==='delicate';
  const motif=style.motif;
