@@ -104,6 +104,12 @@ export default function ComicPageUploader({userId,comicId,episodeId,episodeTitle
     <button type="button" disabled={busy||!ready.ready||(episodePublished&&!publishedAck)} onClick={start}>{busy?'Uploading…':hasFailures?'Retry remaining':waiting.length===1?'Upload 1 page':'Upload '+waiting.length+' pages'}</button>
    </>}>
    <div className="comic-upload-intro"><strong>{episodeTitle}</strong><p>JPEG, PNG, WebP or AVIF. Up to 15 MiB per image and {COMIC_UPLOAD_BATCH_LIMIT} pages per batch. Files are ordered by filename first; adjust the order below before uploading. If this episode is a draft, the pages stay private until publication.</p></div>
+   <div className="comic-upload-dropzone" role="group" aria-label="Drop comic page images here"
+    onDragOver={e=>{if(!busy)e.preventDefault()}}
+    onDrop={e=>{if(busy)return;e.preventDefault();receiveFiles(e.dataTransfer.files)}}>
+    <strong>Drop your comic pages here</strong><span>Or choose images below. Arrange the pages and add descriptions before uploading.</span>
+    <label className="outline-button">Choose page images<input type="file" accept={COMIC_IMAGE_ACCEPT} multiple disabled={busy||entries.length>=COMIC_UPLOAD_BATCH_LIMIT} onChange={e=>{receiveFiles(e.target.files);e.target.value=''}}/></label>
+   </div>
    {episodePublished&&<label className="comic-upload-published-warning"><input type="checkbox" disabled={busy} checked={publishedAck} onChange={e=>setPublishedAck(e.target.checked)}/><span><strong>This episode is already published.</strong> New pages will become visible to its permitted readers as soon as each upload finishes. I understand.</span></label>}
    <div className="comic-upload-summary" aria-live="polite"><span>{done} of {entries.length} added</span>{busy&&<span>Uploading in sequence; keep this dialog open</span>}</div>
    {message&&<p className={'comic-upload-feedback'+(hasFailures?' is-error':'')} role="status">{message}</p>}
