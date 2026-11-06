@@ -38,3 +38,26 @@
 .daylight .painted-frame-choice:has(.gemstone-avatar-frame){background:#f7f1ff;color:#44335e}
 .daylight .painted-frame-choice:has(.gemstone-avatar-frame)>small{color:#56406d}
 @media(max-width:600px){.painted-frame-collections button{flex:1 1 115px}.painted-frame-choice:has(.gemstone-avatar-frame) .painted-art{width:72px;height:72px}}
+
+
+/* Twelve additional portrait settings: six thick court pieces and six quieter
+   artisan settings, including several without gemstones. */
+.painted-frame-choice:has(.regalia-avatar-frame){
+ border-color:rgba(216,182,234,.42);
+ background:radial-gradient(circle at 50% 20%,rgba(152,95,184,.19),transparent 76%),rgba(33,27,63,.14);
+}
+.painted-frame-choice:has(.regalia-avatar-frame)[aria-pressed=true]{
+ outline-color:#e6bfef;box-shadow:0 6px 20px rgba(118,72,145,.24);
+}
+.painted-frame-choice:has(.regalia-avatar-frame)>small{line-height:1.4;color:#e6d9ec}
+.painted-frame-choice:has(.regalia-avatar-frame[data-thickness="grand"]){
+ border-width:2px;background:radial-gradient(circle at 50% 23%,rgba(175,130,83,.26),transparent 75%),rgba(34,25,61,.17);
+}
+.painted-frame-preview:has(.regalia-avatar-frame[data-thickness="grand"]){
+ width:clamp(150px,18vw,184px);height:clamp(150px,18vw,184px);
+}
+.daylight .painted-frame-choice:has(.regalia-avatar-frame){background:#f8f1fa;color:#4a3259}
+.daylight .painted-frame-choice:has(.regalia-avatar-frame)>small{color:#624966}
+@media(max-width:600px){
+ .painted-frame-choice:has(.regalia-avatar-frame) .painted-art{width:72px;height:72px}
+}
