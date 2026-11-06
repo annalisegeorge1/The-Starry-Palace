@@ -35,3 +35,112 @@ body[data-palace-room="palace"] .palace-chat-fab,body[data-palace-room="home"] .
  .palace-shell.full-palace-shell .legacy-home-dashboard .palace-moon-prompt>div{align-self:center!important;min-width:0}
  .palace-shell.full-palace-shell .full-topbar .global-search-live{width:100%;max-width:600px!important;min-width:0;justify-self:center}
 }
+
+
+/* Signed-in My Palace Home 2026 refinement: preserve routes and artwork,
+   reduce the tall hero and use one consistent set of navigation doors. */
+.legacy-home-dashboard.palace-command-centre{
+ display:flex!important;flex-direction:column!important;align-items:stretch!important;
+ gap:clamp(14px,2vw,22px)!important;
+}
+.legacy-home-dashboard.palace-command-centre>.palace-command-hero{order:-6}
+.legacy-home-dashboard.palace-command-centre>.palace-home-mobile-hero{order:-6}
+.legacy-home-dashboard.palace-command-centre>.palace-resume-section{order:-5}
+.legacy-home-dashboard.palace-command-centre>.palace-home-shortcuts-calm{order:-4}
+.legacy-home-dashboard.palace-command-centre>.palace-moon-prompt{order:-3}
+.legacy-home-dashboard.palace-command-centre>.palace-now-stream{order:-2}
+.legacy-home-dashboard.palace-command-centre>.palace-resume-section .palace-resume-grid{
+ display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important;
+}
+.legacy-home-dashboard.palace-command-centre>.palace-resume-section .palace-resume-card{
+ grid-column:auto!important;min-width:0!important;min-height:145px!important;
+ padding:17px!important;box-sizing:border-box!important;
+}
+.legacy-home-dashboard.palace-command-centre>.palace-resume-section .palace-resume-card h3{
+ overflow-wrap:anywhere!important;
+}
+.legacy-home-dashboard.palace-command-centre>.palace-resume-section .section-heading h2{
+ font-size:clamp(1.4rem,2.4vw,2rem)!important;
+}
+.legacy-home-dashboard.palace-command-centre>.palace-now-stream .section-heading h2{
+ font-size:clamp(1.25rem,2vw,1.7rem)!important;
+}
+@media(min-width:961px){
+ .palace-shell.full-palace-shell .legacy-home-dashboard.palace-command-centre>.palace-command-hero{
+  min-height:0!important;height:auto!important;
+  grid-template-columns:minmax(0,1.25fr) minmax(250px,.75fr)!important;
+  padding:17px!important;gap:16px!important;align-items:center!important;
+ }
+ .palace-shell.full-palace-shell .legacy-home-dashboard.palace-command-centre>.palace-command-hero .palace-belonging-art{
+  position:relative!important;grid-column:2!important;grid-row:1/span 2!important;
+  width:100%!important;height:clamp(160px,16vw,245px)!important;
+  min-height:0!important;max-height:245px!important;object-fit:cover!important;
+  border-radius:16px!important;align-self:center!important;
+ }
+ .palace-shell.full-palace-shell .legacy-home-dashboard.palace-command-centre>.palace-command-hero .palace-home-welcome{
+  grid-column:1!important;grid-row:1!important;
+  padding:9px 14px!important;min-width:0!important;align-self:center!important;
+ }
+ .palace-shell.full-palace-shell .legacy-home-dashboard.palace-command-centre>.palace-command-hero .palace-home-welcome h1{
+  font-size:clamp(2rem,3vw,3rem)!important;line-height:1.09!important;
+  margin:6px 0 12px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-home-dashboard.palace-command-centre>.palace-command-hero .palace-home-pulse{
+  grid-column:1!important;grid-row:2!important;position:static!important;
+  margin:0 14px 5px!important;align-self:end!important;
+ }
+ .palace-shell.full-palace-shell .legacy-home-dashboard.palace-command-centre>.palace-home-shortcuts-calm{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important;
+ }
+ .palace-shell.full-palace-shell .legacy-home-dashboard.palace-command-centre>.palace-home-shortcuts-calm>a,
+ .palace-shell.full-palace-shell .legacy-home-dashboard.palace-command-centre>.palace-home-shortcuts-calm>a:nth-child(-n+2),
+ .palace-shell.full-palace-shell .legacy-home-dashboard.palace-command-centre>.palace-home-shortcuts-calm>a:nth-child(n+3){
+  grid-column:span 1!important;min-height:78px!important;padding:14px!important;
+  flex-direction:row!important;justify-content:flex-start!important;align-items:center!important;
+  gap:12px!important;border-radius:14px!important;
+  background:linear-gradient(115deg,rgba(122,100,170,.23),rgba(44,97,130,.23))!important;
+  border:1px solid rgba(177,169,226,.28)!important;box-shadow:none!important;
+ }
+ .palace-shell.full-palace-shell .legacy-home-dashboard.palace-command-centre>.palace-home-shortcuts-calm>a:is(:hover,:focus-visible){
+  border-color:rgba(205,190,246,.72)!important;
+ }
+ .palace-shell.full-palace-shell .legacy-home-dashboard.palace-command-centre>.palace-moon-prompt{
+  min-height:0!important;grid-template-columns:auto minmax(0,1fr) auto!important;
+  gap:16px!important;padding:15px 19px!important;align-items:center!important;
+ }
+ .palace-shell.full-palace-shell .legacy-home-dashboard.palace-command-centre>.palace-moon-prompt h2{
+  font-size:clamp(1.1rem,1.8vw,1.55rem)!important;line-height:1.25!important;
+ }
+ .palace-shell.full-palace-shell .legacy-home-dashboard.palace-command-centre>.palace-moon-prompt .moon-prompt-actions{
+  align-self:center!important;white-space:nowrap!important;
+ }
+}
+@media(min-width:761px) and (max-width:960px){
+ .legacy-home-dashboard.palace-command-centre>.palace-resume-section .palace-resume-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ }
+ .legacy-home-dashboard.palace-command-centre>.palace-home-shortcuts-calm{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ }
+ .legacy-home-dashboard.palace-command-centre>.palace-home-shortcuts-calm>a:nth-child(n){
+  grid-column:span 1!important;min-height:68px!important;
+ }
+}
+@media(max-width:760px){
+ .legacy-home-dashboard.palace-command-centre>.palace-resume-section .palace-resume-grid{
+  grid-template-columns:minmax(0,1fr)!important;gap:9px!important;
+ }
+ .legacy-home-dashboard.palace-command-centre>.palace-resume-section .palace-resume-card{
+  min-height:0!important;padding:13px!important;
+ }
+ .legacy-home-dashboard.palace-command-centre>.palace-home-shortcuts-calm{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;
+ }
+ .legacy-home-dashboard.palace-command-centre>.palace-home-shortcuts-calm>a:nth-child(n){
+  grid-column:span 1!important;min-height:64px!important;
+  padding:10px!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .legacy-home-dashboard.palace-command-centre>.palace-home-shortcuts-calm>a{transition:none!important}
+}
