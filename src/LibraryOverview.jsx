@@ -1,5 +1,6 @@
 import React from 'react';
 import PalaceIcon from './PalaceIcon';
+import StoryCoverImage from './StoryCoverImage';
 import {Link} from 'react-router-dom';
 import {buildLibraryOverview} from './libraryOverviewModel';
 import './library-overview.css';
@@ -9,7 +10,7 @@ function BookStrip({title,description,items,tab,empty,emptyHref,emptyAction}){
  return <section className="library-overview-section" aria-label={title}>
   <div className="library-overview-section-head"><div><h3>{title}</h3><p>{description}</p></div><Link to={libraryTab(tab)}>Open shelf →</Link></div>
   {items.length?<div className="library-overview-books">{items.map(item=><Link className="library-overview-book" key={item.key} to={item.href}>
-   <span className="library-overview-cover">{item.cover?<img src={item.cover} alt="" loading="lazy" decoding="async"/>:<span aria-hidden="true"><PalaceIcon name={item.type==='comic'?"panels":"book-open"}/></span>}</span>
+   <span className="library-overview-cover">{item.type==='comic'?(item.cover?<img src={item.cover} alt="" loading="lazy" decoding="async"/>:<span aria-hidden="true"><PalaceIcon name="panels"/></span>):<StoryCoverImage src={item.cover}/>}</span>
    <span className="library-overview-book-copy"><strong>{item.title}</strong><small>{item.subtitle}</small><b>{item.type==='comic'?'Open comic':'Open story'} →</b></span>
   </Link>)}</div>:<div className="library-overview-empty"><p>{empty}</p><Link to={emptyHref}>{emptyAction} →</Link></div>}
  </section>;
