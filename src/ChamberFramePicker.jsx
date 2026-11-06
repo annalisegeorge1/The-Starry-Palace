@@ -3,7 +3,7 @@ import {CHAMBER_FRAMES,FRAME_REQUIREMENTS,chamberFrameUnlocked} from './paintedC
 import {ChamberFrameArt} from './PaintedPalaceArt';
 import {savePaintedChamberFrame,getPrismState} from './memberChamberDecorData';
 export default function ChamberFramePicker({decor,onSaved}){
- const [selected,setSelected]=useState(decor?.chamber_frame||''),[collection,setCollection]=useState('gemstone'),[busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState('');
+ const [selected,setSelected]=useState(decor?.chamber_frame||''),[collection,setCollection]=useState('all'),[busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState('');
  useEffect(()=>setSelected(decor?.chamber_frame||''),[decor?.chamber_frame]);
  const frame=CHAMBER_FRAMES.find(x=>x.slug===selected),allowed=!selected||chamberFrameUnlocked(frame,decor?.unlocks);
  const visibleFrames=CHAMBER_FRAMES.filter(f=>collection==='all'||(collection==='gemstone'?f.gemstone:!f.gemstone));
