@@ -1,5 +1,6 @@
 import React,{useId} from 'react';
 import GemstoneOrnamentalFrame from './GemstoneOrnamentalFrame';
+import RegaliaOrnamentalFrame from './RegaliaOrnamentalFrame';
 
 const metals={
  bronze:['#643a25','#bd8150','#f4c99b','#885334'],
@@ -11,6 +12,7 @@ const metals={
 /** Original vector jewellery: a clear circular opening shared by every frame. */
 export default function OrnamentalFrame({frame,size='100%',className=''}){
  const stableId=useId();
+ if(frame?.regalia)return <RegaliaOrnamentalFrame frame={frame} size={size} className={className}/>;
  if(frame?.gemstone)return <GemstoneOrnamentalFrame frame={frame} size={size} className={className}/>;
  const id='ornament-'+stableId.replace(/[^a-zA-Z0-9_-]/g,''),palette=metals[frame.tier]||metals.bronze;
  const style=Math.floor(frame.index/5),rank=['bronze','silver','gold','platinum','emerald'].indexOf(frame.tier);
