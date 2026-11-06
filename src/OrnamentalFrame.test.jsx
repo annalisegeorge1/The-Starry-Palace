@@ -7,7 +7,7 @@ afterEach(cleanup);
 it('renders every existing owned frame as a centred vector with unique gradient references',()=>{
  const {container}=render(<>{CHAMBER_FRAMES.map(frame=><ChamberFrameArt key={frame.slug} slug={frame.slug}/>)}</>);
  const svgs=container.querySelectorAll('.ornamental-avatar-frame');
- expect(svgs).toHaveLength(35);
+ expect(svgs).toHaveLength(47);
  expect(new Set([...svgs].map(s=>s.dataset.tier)).size).toBe(5);
  expect(container.querySelectorAll('[data-ornament="prestige-detail"]')).toHaveLength(14);
  expect(new Set([...svgs].map(s=>s.dataset.style)).size).toBe(7);
