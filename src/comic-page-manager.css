@@ -23,3 +23,15 @@
 .palace-shell.daylight .comic-page-tile-actions button{background:rgba(239,232,252,.9);color:#352b51}
 @media(max-width:640px){.palace-shell .comic-page-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.palace-shell .comic-page-tile{padding:8px}.palace-shell .comic-page-tile-actions button{flex:1 1 auto}}
 @media(max-width:370px){.palace-shell .comic-page-tiles{grid-template-columns:1fr}}
+
+.palace-shell .comic-visual-manager-buttons,.comic-reader-preview-tools,.comic-reader-preview-nav{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.palace-shell .comic-visual-manager-buttons :is(button){min-height:39px;padding:8px 12px;font-size:.82rem}
+.comic-reader-preview-tools{justify-content:center;margin-bottom:12px}
+.comic-reader-preview-tools button[aria-pressed=true]{border-color:#ae92e6;background:rgba(141,108,213,.25)}
+.comic-reader-preview-nav{justify-content:space-between;margin-top:12px;gap:12px}
+.comic-reader-preview-nav span{font-size:.82rem}
+.comic-reader-preview-scroll{max-height:min(67vh,900px);overflow:auto;scrollbar-width:thin;border-radius:12px}
+.comic-reader-preview-scroll figure{margin:0 auto 10px;max-width:760px}
+.comic-reader-preview-scroll img{display:block;width:100%;height:auto;object-fit:contain}
+.comic-reader-preview-scroll figcaption{text-align:center;font-size:.85rem;padding:8px}
+@media(max-width:640px){.palace-shell .comic-visual-manager-buttons{width:100%}.palace-shell .comic-visual-manager-buttons button{flex:1 1 auto}}
