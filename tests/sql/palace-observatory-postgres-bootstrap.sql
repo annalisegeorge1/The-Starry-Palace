@@ -82,3 +82,29 @@ CREATE POLICY "authors and collaborators read works" ON public.works
 INSERT INTO public.works(id,author_id,publication_status,visibility,minimum_reader_age)
 VALUES ('11111111-1111-4111-8111-111111111111',
  '99999999-9999-4999-8999-999999999999','draft','private',13);
+
+-- Disposable permission fixtures only: signatures and initial grants match
+-- the Security Staging reward RPCs; these stubs NEVER award points or write rows.
+CREATE OR REPLACE FUNCTION public.give_palace_praise(
+ p_target_kind text,p_target_id uuid,p_praise_type text)
+ RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path=''
+ AS $fictional_praise$
+BEGIN
+ IF auth.uid() IS NULL THEN
+  RAISE EXCEPTION 'Synthetic fixture: authenticated account required.';
+ END IF;
+ RETURN '{}'::jsonb;
+END
+$fictional_praise$;
+CREATE OR REPLACE FUNCTION public.record_palace_share(p_work_id uuid)
+ RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path=''
+ AS $fictional_share$
+BEGIN
+ IF auth.uid() IS NULL THEN
+  RAISE EXCEPTION 'Synthetic fixture: authenticated account required.';
+ END IF;
+ RETURN '{}'::jsonb;
+END
+$fictional_share$;
+GRANT EXECUTE ON FUNCTION public.give_palace_praise(text,uuid,text),
+ public.record_palace_share(uuid) TO PUBLIC, anon, authenticated;
