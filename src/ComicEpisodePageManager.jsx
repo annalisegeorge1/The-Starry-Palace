@@ -7,7 +7,7 @@ export function movedComicPageIds(pages,fromId,toId){
  const ids=(pages||[]).map(p=>p.id);
  const from=ids.indexOf(fromId),to=ids.indexOf(toId);
  if(from<0||to<0||from===to)return ids;
- const [moved]=ids.splice(from,1);ids.splice(to,0,moved);
+ const [moved]=ids.splice(from,1);ids.splice(ids.indexOf(toId),0,moved);
  return ids;
 }
 
@@ -31,12 +31,12 @@ export default function ComicEpisodePageManager({userId,comicId,episode,pages,on
  const commit=async ids=>{
   if(saving||ids.every((x,i)=>x===pages[i]?.id))return;
   setSaving(true);
-  try{await onReorder(ids)}finally{setSaving(false)}
+  try{await onReorder(ids)}catch{/* The episode editor displays the save error. */}finally{setSaving(false)}
  };
  const move=async (index,offset)=>{
   const target=index+offset;
   if(target<0||target>=pages.length)return;
-  await commit(movedComicPageIds(pages,pages[index].id,pages[target].id));
+  const ids=pages.map(x=>x.id);[ids[index],ids[target]]=[ids[target],ids[index]];await commit(ids);
  };
  return <section className="comic-visual-manager" aria-label={'Page manager for '+episode.title}>
   <header className="comic-visual-manager-heading">
