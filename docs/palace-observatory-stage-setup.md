@@ -16,6 +16,14 @@ The separate Cloudflare Pages project has no Git source and zero deployments. It
 
 The read-only schema audit is at `docs/palace-observatory-staging-schema-gap-audit.md`. The current small security-test database is intentionally **not** a production-equivalent schema; inspect that report before any migration or synthetic data seeding.
 
+## Automatic pull-request preview exposure — verified safety finding
+
+**Verified 2026-11-06 (read-only Cloudflare configuration review):** The ordinary `the-starry-palace` Pages project has GitHub preview builds enabled for all branches. Unlike the separate Observatory staging project, its **preview** `VITE_SUPABASE_URL` points to the **production** Supabase project and Google login is enabled. Cloudflare had already generated ordinary Pages preview deployments for the draft branch before this safeguard. Those previews must **not** be treated as isolated Observatory test sites; do not use them for member-data or age/rights acceptance testing. Existing previews may remain reachable unless separately managed in Cloudflare.
+
+The draft now uses `scripts/verify-observatory-preview-boundary.mjs` at the start of `npm run build`. For `CF_PAGES=1` with the Observatory draft branch, it **refuses to build** without all of: (a) the isolated Security Staging URL, (b) a staging marker, (c) Google sign-in disabled, (d) a publishable staging key, and (e) an explicit `VITE_OBSERVATORY_PREVIEW_APPROVED=true` marker set **only after owner review**. Merely having a staging URL is not deployment approval. Local builds, GitHub nondeploying CI and the `main` production build do not trigger this draft-only check.
+
+This prevents **future successful automatic preview builds from this branch against production**. It does **not** revoke or delete older preview URLs and does **not** change the Pages project's existing preview secrets or the production site. Avoid links to past draft previews; separately review Cloudflare preview-access restrictions and older deployments before sharing the PR outside the trusted review team.
+
 ## Hard gates before any staging deployment
 
 1. Confirm an independently reviewed and migrated **non-production** full Palace schema on staging, including only the app's required functions and policies. Keep all real member data, passwords, drafts, chats, production Auth identities and Storage objects out of staging.
@@ -32,8 +40,8 @@ The read-only schema audit is at `docs/palace-observatory-staging-schema-gap-aud
 - Staging's current reduced schema is intentionally unsuitable for a fully working Palace reader/Observatory. **Do not** treat an empty preview or missing APIs as proof the real site has no matching work.
 - The Phase 3 Observatory schema in `docs/palace-observatory-phase3-schema-proposal.sql` is **a proposal, not an applied migration**. Private issue storage and Owner role are not activated.
 - The manual checklist in `docs/palace-observatory-manual-acceptance.md` has an older numbered outline; the executable draft acceptance list is `src/palaceObservatoryAcceptance.js` and contains 15 cases as of this setup.
-- Last verified Draft PR #242 CI: 1,526 full-repository tests passed and Vite built. This verifies code, **not** staging availability or browser/privacy behavior.
+- PR #242 CI was green after the 2026-11-06 reconciliation (1,609 full-project tests). Newer preview-isolation and RPC review commits require their own CI pass before claiming this draft is green. Passing CI does **not** establish actual staging backup/recovery, browser/privacy behavior, or preview isolation for already-built deployments.
 
 ## Release boundary
 
-The separate Cloudflare project creation and environment configuration are **staging setup only**. No deployment, production DNS adjustment, GitHub merge, production Owner permission, Supabase schema/storage migration or real member data modification has been authorized or performed.
+The separate Observatory staging Cloudflare project and environment configuration are **staging setup only** and it still has zero deployments. Ordinary Palace Pages auto-previews have existed; they are not isolated staging deployments. No production release, production DNS adjustment, GitHub merge, production Owner permission, Supabase schema/storage migration or real member data modification has been authorized or performed.
