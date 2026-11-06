@@ -81,6 +81,15 @@ SELECT 1 / CASE WHEN NOT EXISTS (
   AND (SELECT count(*) FROM public.work_collaborators)=0
  THEN 1 ELSE 0 END AS least_privilege_reading_grants;
 
+-- The anonymous role cannot execute reward mutation RPCs even if its JWT is
+-- empty. Preserve authenticated access; do not blanket-revoke public readers.
+SELECT 1 / CASE WHEN
+ NOT has_function_privilege('anon','public.give_palace_praise(text,uuid,text)','EXECUTE')
+ AND NOT has_function_privilege('anon','public.record_palace_share(uuid)','EXECUTE')
+ AND has_function_privilege('authenticated','public.give_palace_praise(text,uuid,text)','EXECUTE')
+ AND has_function_privilege('authenticated','public.record_palace_share(uuid)','EXECUTE')
+ THEN 1 ELSE 0 END AS only_authenticated_reward_rpc_execution;
+
 -- Existing pre-populated stage dummy author remains intact.
 SELECT 1 / CASE WHEN EXISTS(
  SELECT 1 FROM public.works WHERE id='11111111-1111-4111-8111-111111111111'::uuid
