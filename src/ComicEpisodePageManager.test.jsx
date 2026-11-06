@@ -4,7 +4,7 @@ import {movedComicPageIds} from './ComicEpisodePageManager';
 const pages=[{id:'page-a'},{id:'page-b'},{id:'page-c'},{id:'page-d'}];
 describe('Comic Studio page ordering',()=>{
  it('moves a dragged page before its drop target without dropping other pages',()=>{
-  expect(movedComicPageIds(pages,'page-a','page-c')).toEqual(['page-b','page-c','page-a','page-d']);
+  expect(movedComicPageIds(pages,'page-a','page-c')).toEqual(['page-b','page-a','page-c','page-d']);
  });
  it('supports movement towards the beginning',()=>{
   expect(movedComicPageIds(pages,'page-d','page-b')).toEqual(['page-a','page-d','page-b','page-c']);
