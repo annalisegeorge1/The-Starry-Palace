@@ -814,8 +814,7 @@ function PalaceChatHost(){
 }
 
 function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo pathname={location.pathname}/><PalaceBuildFreshnessWatch/><NavigationReset/><RouteStateReset/><BlankScreenWatchdog/><PalaceAgeGate Frame={Frame}><Frame><RouteGuard><Routes>
- <Route path="/" element={<Home/>}/>
-<Route path="/login" element={<React.Suspense fallback={<RouteLoading/>}><PalaceLogin Frame={Frame}/></React.Suspense>}/><Route path="/auth/callback" element={<React.Suspense fallback={<RouteLoading/>}><PalaceAuthCallback Frame={Frame}/></React.Suspense>}/>
+ <Route path="/" element={<Home/>}/><Route path="/login" element={<React.Suspense fallback={<RouteLoading/>}><PalaceLogin Frame={Frame}/></React.Suspense>}/><Route path="/auth/callback" element={<React.Suspense fallback={<RouteLoading/>}><PalaceAuthCallback Frame={Frame}/></React.Suspense>}/>
  <Route path="/welcome" element={<ProtectedRoute><OnboardingLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/writers" element={<WriterWelcome/>}/>
