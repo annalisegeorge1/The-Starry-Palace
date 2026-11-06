@@ -106,7 +106,7 @@ export default function ComicPageUploader({userId,comicId,episodeId,episodeTitle
    <div className="comic-upload-intro"><strong>{episodeTitle}</strong><p>JPEG, PNG, WebP or AVIF. Up to 15 MiB per image and {COMIC_UPLOAD_BATCH_LIMIT} pages per batch. Files are ordered by filename first; adjust the order below before uploading. If this episode is a draft, the pages stay private until publication.</p></div>
    <div className="comic-upload-dropzone" role="group" aria-label="Drop comic page images here"
     onDragOver={e=>{if(!busy)e.preventDefault()}}
-    onDrop={e=>{if(busy)return;e.preventDefault();receiveFiles(e.dataTransfer.files)}}>
+    onDrop={e=>{e.preventDefault();if(!busy)receiveFiles(e.dataTransfer.files)}}>
     <strong>Drop your comic pages here</strong><span>Or choose images below. Arrange the pages and add descriptions before uploading.</span>
     <label className="outline-button">Choose page images<input type="file" accept={COMIC_IMAGE_ACCEPT} multiple disabled={busy||entries.length>=COMIC_UPLOAD_BATCH_LIMIT} onChange={e=>{receiveFiles(e.target.files);e.target.value=''}}/></label>
    </div>
