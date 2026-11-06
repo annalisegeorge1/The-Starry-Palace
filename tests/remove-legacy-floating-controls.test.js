@@ -2,6 +2,7 @@ import {describe,it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
 
 const shell=readFileSync('src/main.jsx','utf8');
+const theme=readFileSync('src/PalaceThemePicker.jsx','utf8');
 
 describe('retire legacy floating shortcuts without losing destinations',()=>{
  it('does not mount the obsolete hover orbs that overlap room content',()=>{
@@ -17,7 +18,7 @@ describe('retire legacy floating shortcuts without losing destinations',()=>{
   expect(shell).toContain('to="/letters" className={letterBadge?');
   expect(shell).toContain('className="mobile-dock-badge"');
   expect(shell).toContain('<PalaceThemePicker compact value={palaceTheme} onChange={setPalaceTheme}/>');
-  expect(shell).toContain('Switch to Nightfall');
+  expect(theme).toContain("{id:'nightfall',label:'Nightfall'");
   expect(shell).toContain('Open Palace Chat');
  });
  it('preserves the contextual doors behind the compact mobile disclosure',()=>{
