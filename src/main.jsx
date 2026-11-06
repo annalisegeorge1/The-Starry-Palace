@@ -574,8 +574,8 @@ function FrameShell({children}){
   <div className="palace-stage full-stage">
    <header className="topbar full-topbar"><div className="full-topbar-row"><div className="full-brand"><button className="nav-toggle" onClick={togglePalaceNavigation} aria-label="Toggle Palace navigation" aria-expanded={navOpen} aria-controls="palace-sidebar"><PalaceRoomIcon name="menu"/></button><Link to="/"><span className="brandmark palace-brand-sigil"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M19.5 15.3A8.3 8.3 0 0 1 8.7 4.5a8.6 8.6 0 1 0 10.8 10.8Z"/><path d="m17.5 3.5.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z" fill="currentColor" stroke="none"/></svg></span><strong>The Starry Palace</strong></Link><small>BETA</small>{activeRoom&&<span className="top-room-context" aria-label={'Current room: '+activeRoom.label+(activeSection?' · '+activeSection[0]:'')}><span className={"top-room-sigil top-room-sigil-"+activeRoom.id}><PalaceRoomIcon name={activeRoom.id}/></span> {activeRoom.label}{activeSection&&<><b aria-hidden="true">/</b><em>{activeSection[0]}</em></>}</span>}</div><form id="palace-global-search" className={'global-search-live '+(mobileGlobalSearchOpen?'palace-global-search-expanded':'palace-global-search-collapsed')} role="search" aria-label="Search The Starry Palace" onSubmit={submitSearch}><span aria-hidden="true">✦</span><input aria-label="Search works, writers, tags and fandoms" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search works, writers, tags, fandoms…"/><button type="submit">Search</button></form><div className="full-top-actions"><button className="palace-mobile-home-search-trigger" type="button" onClick={()=>setMobileGlobalSearchOpen(open=>!open)} aria-label={mobileGlobalSearchOpen?'Hide Palace search':'Search The Starry Palace'} aria-expanded={mobileGlobalSearchOpen} aria-controls="palace-global-search" title="Search"><svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="10.8" cy="10.8" r="6.2"/><path d="m15.5 15.5 5 5"/></svg></button><button className="command-trigger palace-home-command-trigger" type="button" onClick={()=>setCommandOpen(true)} aria-label="Open Palace quick navigation" aria-expanded={commandOpen} aria-controls="palace-command-dialog" title="Quick navigation · Ctrl or Command K"><span>⌕</span><kbd>⌘K</kbd></button>{session&&<PalaceAccountMenu profilePath={shellProfile?.username?"/member/"+encodeURIComponent(shellProfile.username):"/chamber"}/>}{session&&<button type="button" className="top-icon-link palace-top-chat-trigger" aria-label="Open Palace Chat" title="Open Palace Chat" onClick={()=>window.dispatchEvent(new Event("palace-chat-open"))}><svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M20.5 11.5a8.5 8.5 0 0 1-8.5 8.5 8.4 8.4 0 0 1-3.8-.9L3.5 20.5l1.4-4.7A8.5 8.5 0 1 1 20.5 11.5Z"/></svg></button>}{session&&<Link className="top-icon-link" style={{position:'relative'}} to="/activity" aria-label={activityBadge?activityBadge+' unread notifications':'Notifications'}><PalaceRoomIcon name="bell"/>{activityBadge>0&&<span className="float-unread-badge">{activityBadge>99?'99+':activityBadge}</span>}</Link>}<Link className="write-action" aria-label="Open Writing Chamber" to={session?'/writing':palaceSignInDoor('/writing')}>✎ <span>Write</span></Link></div></div></header>
    <PalaceConnectionNotice/>
-   {shouldShowPalaceTidings(location.pathname)&&<React.Suspense fallback={null}><PalaceTidingsLazy/></React.Suspense>}
-   {session?.user?.id&&shouldCelebratePalaceVictory(location.pathname)&&<React.Suspense fallback={null}><PalaceVictoryCelebrationLazy userId={session.user.id}/></React.Suspense>}
+   {shouldShowPalaceTidings(location.pathname)&&<PalaceOptionalModuleBoundary name="tidings"><React.Suspense fallback={null}><PalaceTidingsLazy/></React.Suspense></PalaceOptionalModuleBoundary>}
+   {session?.user?.id&&shouldCelebratePalaceVictory(location.pathname)&&<PalaceOptionalModuleBoundary name="victory celebration"><React.Suspense fallback={null}><PalaceVictoryCelebrationLazy userId={session.user.id}/></React.Suspense></PalaceOptionalModuleBoundary>}
    {activeRoom&&location.pathname!=='/chamber'&&location.pathname!=='/reading'&&location.pathname!=='/letters'&&location.pathname!=='/settings'&&!location.pathname.startsWith('/member/')&&!location.pathname.startsWith('/events')&&shouldShowPalacePassage(location.pathname)&&<nav className="palace-passage" aria-label="Nearby Palace doors" data-compact-open={passageOpen?'true':'false'}><button type="button" className="palace-passage-expand" aria-controls="palace-passage-doors" aria-expanded={passageOpen} onClick={()=>setPassageOpen(open=>!open)}><span aria-hidden="true">✧</span><strong>Explore nearby rooms</strong><span className="palace-passage-caret" aria-hidden="true">{passageOpen?'⌃':'⌄'}</span></button><div className="palace-passage-context"><span className={"passage-room-sigil passage-room-"+activeRoom.id}><PalaceRoomIcon name={activeRoom.id}/></span><span><small>YOU ARE IN</small><strong>{activeSection?.[0]||activeRoom.label}</strong></span></div><div id="palace-passage-doors" className="palace-passage-doors">{passageDoors.map(door=><Link key={door.path+door.label} to={door.path}><span aria-hidden="true">{door.glyph}</span><span><strong>{door.label}</strong><small>{!session&&door.path.startsWith('/login?next=')?'Sign in to enter · '+door.detail:door.detail}</small></span></Link>)}</div></nav>}
    <main id="palace-content" data-palace-route={currentHref} className="palace-main-stage" tabIndex="-1">{children}</main>
    <footer className="palace-footer">
@@ -752,6 +752,22 @@ function RouteGuard({children}){
  return <RouteErrorBoundary resetKey={resetKey} path={resetKey}>{children}</RouteErrorBoundary>
 }
 
+/* Optional widgets are not part of the room's essential render tree.
+   A failed lazy import must not turn a working member page into a shell error.
+   Preserve unsaved work: recovery is user-triggered, never an eager reload. */
+class PalaceOptionalModuleBoundary extends React.Component{
+ constructor(props){super(props);this.state={error:null}}
+ static getDerivedStateFromError(error){return{error}}
+ componentDidCatch(error,info){
+  const message=String(error?.message||error||'Optional module unavailable').replace(/https?:\/\/\S+/g,'[url]').slice(0,220);
+  console.warn('Palace optional module failed; the room remains available',this.props.name,error,info);
+  safeSessionSet('palace-last-optional-error',JSON.stringify({
+   module:this.props.name||'optional',message,path:window.location.pathname,at:new Date().toISOString()
+  }));
+ }
+ render(){return this.state.error?this.props.fallback??null:this.props.children}
+}
+
 class PalaceRootBoundary extends React.Component{
  constructor(props){super(props);this.state={error:null}}
  static getDerivedStateFromError(error){return{error}}
@@ -779,7 +795,18 @@ function PalaceChatHost(){
  // Its fixed coordinates now use the viewport, never a transformed main.
  if(typeof document==='undefined')return null;
  return createPortal(
-  <React.Suspense fallback={null}><PalaceChatDrawerLazy userId={session.user.id}/></React.Suspense>,
+  <PalaceOptionalModuleBoundary name="floating chat" fallback={
+   <aside className="palace-chat-load-fallback" role="status">
+    <span>Chat couldn't open. Your page is still available.</span>
+    <button type="button" onClick={()=>{
+     // Reload the page once after the member has saved any work.
+     try{const url=new URL(window.location.href);url.searchParams.set('__palace_recover',String(Date.now()));window.location.replace(url.toString())}
+     catch{window.location.reload()}
+    }}>Reload after saving</button>
+   </aside>
+  }>
+   <React.Suspense fallback={null}><PalaceChatDrawerLazy userId={session.user.id}/></React.Suspense>
+  </PalaceOptionalModuleBoundary>,
   document.body
  );
 }
