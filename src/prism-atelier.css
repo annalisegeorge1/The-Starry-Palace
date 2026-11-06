@@ -15,3 +15,17 @@
 .daylight .prism-swatch.jewel-swatch{background:linear-gradient(145deg,#faf4ff,#e8f0fd);color:#332249}
 .daylight .prism-swatch.jewel-swatch small{color:#604c75}
 @media(prefers-reduced-motion:reduce){.prism-swatch.jewel-swatch *, .prism-preview[data-jewel=true] *{animation:none!important}}
+
+
+/* Jewel Court II: keep new colours discoverable while showing earned vs. paid availability. */
+.prism-jewel-guide{
+ display:grid;gap:5px;line-height:1.5;margin:0;
+ border:1px solid rgba(205,166,242,.36);border-radius:13px;
+ padding:11px 13px;background:linear-gradient(110deg,rgba(109,42,161,.22),rgba(32,91,139,.19));
+}
+.prism-jewel-guide strong{font:600 clamp(.9rem,1.25vw,1.08rem)/1.35 Georgia,serif;color:#f0deff}
+.prism-jewel-guide span{font-size:.77rem;color:#d5cfe8}
+.daylight .prism-jewel-guide{background:linear-gradient(110deg,#f5e9fe,#eaf5fb);border-color:#d0b8e8}
+.daylight .prism-jewel-guide strong{color:#522778}
+.daylight .prism-jewel-guide span{color:#4e4365}
+@media(max-width:650px){.prism-jewel-guide{padding:10px}}
