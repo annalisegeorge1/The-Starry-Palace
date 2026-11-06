@@ -117,3 +117,6 @@
  .painted-frame-picker .painted-frame-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
  .painted-frame-picker .painted-frame-choice .painted-art{width:76px!important;height:76px!important}
 }
+
+/* Large catalogues: skip painting offscreen ornamental details on mobile. */
+.painted-frame-picker .painted-frame-grid>.painted-frame-choice{content-visibility:auto;contain-intrinsic-size:auto 170px}
