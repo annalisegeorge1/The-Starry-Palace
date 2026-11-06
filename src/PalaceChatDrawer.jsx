@@ -1,6 +1,6 @@
 import MemberAvatar from './MemberAvatar';
 import PalaceIcon from './PalaceIcon';
-import React,{useEffect,useLayoutEffect,useRef,useState} from 'react';
+import React,{useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
 import {Link,useLocation} from 'react-router-dom';
 import {supabase} from './supabase';
@@ -12,6 +12,7 @@ import {PALACE_READING_CIRCLE_PROMPTS,PALACE_READING_CIRCLE_KITS,makePalaceCircl
 import {makePalaceDirectQuoteDraft} from './palaceDirectQuote';
 import {PALACE_CHAT_V3_ENABLED,PALACE_MESSAGE_REACTIONS_ENABLED,getPalaceReactions,changePalaceReaction} from './palaceChatV3';
 import PalaceChatReactionBar from './PalaceChatReactionBar';
+import {rankPalaceConversationReactions} from './palaceChatReactionRanking';
 import './palace-chat-workspace.css';
 import {getMyProfile,getLetters,getDirectConversationMessages,DIRECT_HISTORY_PAGE_SIZE,sendLetter,sendLetterPhoto,editLetterMessage,searchMembers,setConversationPreference,getMemberBoundary,setMemberBoundary,reportConversation,submitCommunityReport} from './palaceData';
 import {createPalaceGroupChat,getPalaceGroupChatOverview,getPalaceGroupMessages,sendPalaceGroupMessage,sendPalaceGroupPhoto,editPalaceGroupMessage,respondPalaceGroupInvite,invitePalaceGroupMember,removePalaceGroupMember,leavePalaceGroupChat,setPalaceGroupMuted,markPalaceGroupRead,PALACE_GROUP_COLOURS,setPalaceGroupIdentity,pinPalaceGroupMessage,getPinnedPalaceGroupMessage,searchShareablePalaceStories} from './palaceGroupChatData';
@@ -138,6 +139,8 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  const recentDirect=(direct?.messages||[]).filter(m=>m.conversation_id===roomId);
  const messages=tab==='direct'?mergePalaceGroupMessages(directHistory.roomId===roomId?directHistory.items:[],recentDirect):groupMessages.chatId===roomId?groupMessages.items:[];
  const reactionMessageIds=messages.slice(-120).map(m=>m.id).filter(Boolean).join(',');
+ // Frequencies belong only to this open chat, and only its fetched recent messages.
+ const rankedReactions=useMemo(()=>rankPalaceConversationReactions(reactionRows.roomId===roomId?reactionRows.rows:[]),[reactionRows,roomId]);
  const latestMessage=messages[messages.length-1]||null;
  const latestMessageId=latestMessage?.id||'';
  const pinnedMessage=tab==='groups'&&activeGroup?.pinnedMessageId?(messages.find(m=>m.id===activeGroup.pinnedMessageId)||((pinnedPreview.chatId===roomId&&pinnedPreview.messageId===activeGroup.pinnedMessageId)?pinnedPreview.message:null)):null;
@@ -847,7 +850,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
        {m.edited_at&&<small className="palace-chat-edited-mark" title={'Edited '+new Date(m.edited_at).toLocaleString()}>Edited</small>}
        {tab==='groups'&&m.works?.slug&&<Link className="palace-chat-shared-story" to={'/work/'+encodeURIComponent(m.works.slug)} onClick={()=>setOpen(false)}><span aria-hidden="true">✧</span><span><small>PALACE STORY</small><strong>{m.works.title}</strong></span><span aria-hidden="true">↗</span></Link>}
        <small className="palace-chat-timestamp">{dateOf(m.created_at)}</small>
-       {PALACE_MESSAGE_REACTIONS_ENABLED&&<PalaceChatReactionBar message={m} rows={reactionRows.roomId===roomId?reactionRows.rows:[]} userId={userId} disabled={busy||(tab==='direct'&&boundary.blocked)} onReact={reactToMessage}/>}
+       {PALACE_MESSAGE_REACTIONS_ENABLED&&<PalaceChatReactionBar message={m} rows={reactionRows.roomId===roomId?reactionRows.rows:[]} userId={userId} disabled={busy||(tab==='direct'&&boundary.blocked)} onReact={reactToMessage} rankedReactions={rankedReactions}/>}
        {/* Message actions appear only on long-press, right-click, or keyboard context menu. */}
       </div></React.Fragment>):<p className="palace-chat-empty">Nothing written here yet. Begin with a hello. ✦</p>}
      </div>

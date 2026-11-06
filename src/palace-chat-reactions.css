@@ -21,3 +21,32 @@
 .palace-chat-dock.palace-chat-v2 .palace-chat-bubble .palace-chat-react-trigger{background:var(--pc-surface,#202236)!important;border:1px solid var(--pc-line)!important}
 
 .palace-chat-dock.palace-chat-v2 .palace-chat-bubble .palace-chat-reactions{display:contents!important;position:static!important}
+
+/* One familiar quick reaction beside the existing + control. The remaining
+ * choices stay in the existing picker to avoid a permanent row of emojis. */
+.palace-chat-v2 .palace-chat-bubble.has-reaction-control:has(.palace-chat-react-quick){
+ max-width:calc(100% - 72px)!important;
+}
+.palace-chat-v2 .palace-chat-bubble .palace-chat-react-quick{
+ position:absolute!important;right:-68px;left:auto;top:50%;transform:translateY(-50%);
+ display:grid!important;place-items:center;width:30px!important;min-width:30px!important;
+ height:32px!important;min-height:32px!important;padding:0!important;
+ border:1px solid var(--pc-line,#817399)!important;border-radius:50%!important;
+ background:var(--pc-surface,#202236)!important;color:var(--pc-ink,#fff)!important;
+ box-shadow:0 2px 6px #0002!important;cursor:pointer;font-size:18px;line-height:1;
+}
+.palace-chat-v2 .palace-chat-bubble.mine .palace-chat-react-quick{left:-68px;right:auto}
+.palace-chat-v2 .palace-chat-bubble .palace-chat-react-quick:hover,
+.palace-chat-v2 .palace-chat-bubble .palace-chat-react-quick[aria-pressed="true"]{
+ border-color:#b49be9!important;background:var(--pc-elevated,#34304e)!important;
+}
+.palace-chat-v2 .palace-chat-bubble .palace-chat-react-quick:focus-visible{
+ outline:2px solid var(--pc-ink,#fff);outline-offset:2px;
+}
+@media(max-width:420px){
+ .palace-chat-v2 .palace-chat-bubble.has-reaction-control:has(.palace-chat-react-quick){
+  max-width:calc(100% - 68px)!important;
+ }
+ .palace-chat-v2 .palace-chat-bubble .palace-chat-react-quick{width:27px!important;min-width:27px!important;right:-65px;font-size:16px}
+ .palace-chat-v2 .palace-chat-bubble.mine .palace-chat-react-quick{left:-65px;right:auto}
+}
