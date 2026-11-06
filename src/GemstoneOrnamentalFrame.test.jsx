@@ -7,12 +7,13 @@ import {ChamberFrameArt} from './PaintedPalaceArt';
 
 describe('Jewel Court gemstone frames',()=>{
  it('extends the classic catalogue without moving or renaming existing frame IDs',()=>{
-  expect(CHAMBER_FRAMES).toHaveLength(47);
+  expect(CHAMBER_FRAMES).toHaveLength(59);
   expect(GEMSTONE_FRAME_NAMES).toHaveLength(12);
   expect(CHAMBER_FRAMES[0].slug).toBe('bamboo-ink');
   expect(CHAMBER_FRAMES[34].slug).toBe('emerald-eden');
-  expect(CHAMBER_FRAMES.slice(35).every(x=>x.gemstone)).toBe(true);
-  expect(new Set(CHAMBER_FRAMES.map(x=>x.slug)).size).toBe(47);
+  expect(CHAMBER_FRAMES.slice(35,47).every(x=>x.gemstone)).toBe(true);
+  expect(CHAMBER_FRAMES.slice(47).every(x=>x.regalia)).toBe(true);
+  expect(new Set(CHAMBER_FRAMES.map(x=>x.slug)).size).toBe(59);
   for(const frame of CHAMBER_FRAMES)expect(frame.tier).toBe(PAINTED_TIERS[frame.index%5]);
  });
  it('renders twelve accessible original transparent jewelled frames',()=>{
@@ -36,7 +37,7 @@ describe('Jewel Court gemstone frames',()=>{
  });
  it('prepares backend eligibility for every frame and the twelve new free colourways',()=>{
   const sql=readFileSync('database/prism-jewel-court-gemstone-frames.sql','utf8');
-  for(const f of CHAMBER_FRAMES)expect(sql).toContain("'"+f.slug+"'");
+  for(const f of CHAMBER_FRAMES.slice(0,47))expect(sql).toContain("'"+f.slug+"'");
   expect(sql).toContain("'Jewel Court','free'");
   expect((sql.match(/'Jewel Court','free'/g)||[]).length).toBe(12);
   expect(sql).toContain("on conflict(slug) do nothing");
