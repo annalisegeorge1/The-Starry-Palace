@@ -23,8 +23,16 @@ describe('Jewel Court gemstone frames',()=>{
   expect(new Set(svgs.map(x=>x.getAttribute('aria-label'))).size).toBe(12);
   expect(container.querySelectorAll('image')).toHaveLength(0);
   expect(container.querySelectorAll('rect')).toHaveLength(0);
-  expect(container.querySelectorAll('[data-ornament="gemstone-setting"]')).toHaveLength(0);
+  expect(container.querySelectorAll('circle').length).toBeGreaterThan(400);
   expect(new Set([...container.querySelectorAll('[id]')].map(x=>x.id)).size).toBe(container.querySelectorAll('[id]').length);
+ });
+ it('safely changes a selected preview between classic and gemstone styles',()=>{
+  const {container,rerender}=render(<ChamberFrameArt slug="bamboo-ink"/>);
+  expect(container.querySelector('[data-gemstone="true"]')).toBeNull();
+  rerender(<ChamberFrameArt slug="crown-jewel"/>);
+  expect(container.querySelector('[data-gemstone="true"]')).not.toBeNull();
+  rerender(<ChamberFrameArt slug="bamboo-ink"/>);
+  expect(container.querySelector('[data-gemstone="true"]')).toBeNull();
  });
  it('prepares backend eligibility for every frame and the twelve new free colourways',()=>{
   const sql=readFileSync('database/prism-jewel-court-gemstone-frames.sql','utf8');
