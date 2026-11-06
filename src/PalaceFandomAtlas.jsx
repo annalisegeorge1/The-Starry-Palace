@@ -5,6 +5,7 @@ import {FANDOM_MEDIA_SHELVES} from './palaceFandomCatalogue';
 import {FANDOM_STORY_PAGE_SIZE} from './fandomPublishedPages';
 import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection,fandomFacetOptions,matchesFandomStoryQuery,resolveFandomDirectoryName} from './fandomDirectoryModel';
 import StoryRatingBadge from './StoryRatingBadge';
+import StoryCoverImage from './StoryCoverImage';
 import UnifiedFanworkCatalogue from './UnifiedFanworkCatalogue';
 import {isHostedFanfiction,canDisplayHostedArchive} from './palaceFanfictionDiscovery';
 import {toHostedReadingWork} from './hostedReadingWork';
@@ -251,7 +252,7 @@ export default function PalaceFandomAtlas(){
      </label>
      {storyBusy?<p role="status">Gathering tagged stories…</p>:storyError?<p role="alert">{storyError}</p>:matchingSelectedStories.length?<><p>{matchingSelectedStories.length} published {matchingSelectedStories.length===1?'work':'works'} loaded{withinFandom.trim()?' in this local search':''}{storyHasMore?' · More available':''}</p>
       <div>{matchingSelectedStories.map(story=><Link key={story.id} to={'/work/'+story.slug} className="palace-fandom-story">
-       <span className="palace-fandom-story-cover palace-rating-anchor">{story.cover_url?<img alt="" loading="lazy" src={story.cover_url}/>:<span aria-hidden="true">✦</span>}<StoryRatingBadge rating={story.rating}/></span>
+       <span className="palace-fandom-story-cover palace-rating-anchor">{<StoryCoverImage src={story.cover_url}/>}<StoryRatingBadge rating={story.rating}/></span>
        <span><strong>{story.title}</strong><small>{story.profiles?.display_name||story.profiles?.username||'Palace writer'}</small><em>{story.summary||'Read this world in the Palace.'}</em></span>
       </Link>)}</div></>:<p role="status">{storyHasMore
       ?withinFandom.trim()?'No matches among the stories loaded so far. More fandom pages remain; load additional works or clear this search.':'No public works in the pages checked so far. More fandom pages remain to be checked.'
