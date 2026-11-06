@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {configured,supabase} from './supabase';
 import './palace-home-stories.css';
 import StoryRatingBadge from './StoryRatingBadge';
+import StoryCoverImage from './StoryCoverImage';
 import PalaceLaunchStart from './PalaceLaunchStart';
 import {palaceStoryPath} from './palaceLaunchDiscovery';
 
@@ -53,7 +54,7 @@ export default function PalaceNewStories(){
    <div className="home-shelf-toolbar"><span>Newest publications</span><div role="group" aria-label="Story shelf layout"><button type="button" aria-pressed={view==='covers'} onClick={()=>chooseView('covers')}>Covers</button><button type="button" aria-pressed={view==='list'} onClick={()=>chooseView('list')}>List</button></div></div>
    <div className="home-world-grid">
    {works.slice(0,4).map(w=><Link to={palaceStoryPath(w.slug)} key={w.id}>
-    <div className="home-world-cover palace-rating-anchor">{w.cover_url?<img loading="lazy" decoding="async" src={w.cover_url} alt=""/>:<span aria-hidden="true">☾<b>✦</b></span>}<StoryRatingBadge rating={w.rating}/></div>
+    <div className="home-world-cover palace-rating-anchor">{<StoryCoverImage src={w.cover_url}/>}<StoryRatingBadge rating={w.rating}/></div>
     <div><small>{w.last_published_at?new Date(w.last_published_at).toLocaleDateString(undefined,{month:'short',day:'numeric'}):'New'}</small>
      <h3>{w.title}</h3><p>{w.summary||'Enter this world to begin reading.'}</p>
      <b>by {w.profiles?.display_name||w.profiles?.username||'Palace writer'} →</b></div>
