@@ -61,3 +61,59 @@
 @media(max-width:600px){
  .painted-frame-choice:has(.regalia-avatar-frame) .painted-art{width:72px;height:72px}
 }
+
+
+/* Frame quality pass: give crafted detail enough physical space to be seen.
+   No extra motion or changing avatars, frame identities, or permissions. */
+.painted-frame-picker .painted-frame-grid{
+ grid-template-columns:repeat(auto-fill,minmax(132px,1fr));
+ gap:12px;max-height:min(68vh,660px);padding:10px;
+}
+.painted-frame-picker .painted-frame-choice{
+ gap:7px;padding:12px 8px;min-height:170px;
+ justify-content:flex-start;
+}
+.painted-frame-picker .painted-frame-choice .painted-art{
+ width:min(100%,108px);height:108px;
+}
+.painted-frame-picker .painted-frame-choice strong{
+ font-size:.8rem;line-height:1.28;text-align:center;
+}
+.painted-frame-picker .painted-frame-choice small{
+ font-size:.72rem;line-height:1.45;text-align:center;
+}
+.painted-frame-picker .painted-frame-preview,
+.painted-frame-preview:has(.gemstone-avatar-frame),
+.painted-frame-preview:has(.regalia-avatar-frame[data-thickness="grand"]){
+ width:clamp(188px,20vw,230px);
+ height:clamp(188px,20vw,230px);
+ margin:14px auto 4px;
+}
+.painted-frame-picker .painted-frame-preview:before{
+ inset:8.5%;box-shadow:inset 0 8px 24px #ffffff10,inset 0 -16px 24px #0c0c2950;
+}
+.painted-frame-preview-label{
+ margin:4px auto 16px;max-width:350px;text-align:center;
+ font-size:.84rem;line-height:1.4;color:#e4d9f3;
+}
+.daylight .painted-frame-preview-label{color:#594669}
+.painted-frame-choice:has(.ornamental-avatar-frame[data-art-quality="hand-finished"]){
+ background:radial-gradient(ellipse at 50% 25%,rgba(157,113,200,.18),transparent 76%),rgba(35,29,62,.16);
+}
+.daylight .painted-frame-choice:has(.ornamental-avatar-frame[data-art-quality="hand-finished"]){
+ background:radial-gradient(ellipse at 50% 25%,rgba(218,196,245,.5),transparent 78%),#fbf8fd;
+}
+@media(max-width:600px){
+ .painted-frame-picker .painted-frame-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:5px}
+ .painted-frame-picker .painted-frame-choice{padding:8px 5px;min-height:155px}
+ .painted-frame-picker .painted-frame-choice .painted-art{width:92px!important;height:92px!important}
+ .painted-frame-picker .painted-frame-preview,
+ .painted-frame-preview:has(.gemstone-avatar-frame),
+ .painted-frame-preview:has(.regalia-avatar-frame[data-thickness="grand"]){
+  width:190px;height:190px;
+ }
+}
+@media(max-width:350px){
+ .painted-frame-picker .painted-frame-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .painted-frame-picker .painted-frame-choice .painted-art{width:76px!important;height:76px!important}
+}
