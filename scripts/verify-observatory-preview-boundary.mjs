@@ -19,8 +19,8 @@ export function verifyObservatoryPreviewBoundary(env={}){
  const stageMarked=env.VITE_OBSERVATORY_STAGE==='true';
  const googleDisabled=env.VITE_GOOGLE_LOGIN_ENABLED==='false';
  const key=String(env.VITE_SUPABASE_PUBLISHABLE_KEY||'');
- if(url!==OBSERVATORY_STAGE_URL||!stageMarked||!googleDisabled||!key.startsWith('sb_publishable_'))
-  return {ok:false,reason:'Observatory draft Pages preview requires the isolated staging project, staging marker, Google login disabled and a staging publishable key. Use the dedicated staging Pages project after approval.'};
+ if(env.VITE_OBSERVATORY_PREVIEW_APPROVED!=='true'||url!==OBSERVATORY_STAGE_URL||!stageMarked||!googleDisabled||!key.startsWith('sb_publishable_'))
+  return {ok:false,reason:'Observatory draft Pages preview requires explicit preview approval, the isolated staging project, staging marker, Google login disabled and a staging publishable key. Use the dedicated staging Pages project after approval.'};
  return {ok:true,reason:'staging-only-preview-config-checked'};
 }
 const invoked=process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url);
