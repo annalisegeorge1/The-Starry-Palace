@@ -9,7 +9,7 @@ const dialog=writing.slice(writing.indexOf('<PalaceDialog open={duelOpen}'),writ
 
 describe('Ink Duel setup dialog clarity',()=>{
  it('places draw controls after the prompt and keeps help beside the heading',()=>{
-  const prompt=dialog.indexOf('<label>Prompt<textarea');
+  const prompt=dialog.indexOf('<label className="duel-prompt-field">Prompt<textarea');
   const basis=dialog.indexOf('<div className="duel-basis-draw"');
   const special=dialog.indexOf('<div className="duel-twist-label"');
   expect(prompt).toBeGreaterThan(0);
