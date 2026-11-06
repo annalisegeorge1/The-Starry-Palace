@@ -4,6 +4,7 @@ import {getPalaceFandomDirectory,getStoriesForFandoms,getPublishedWorks,getArchi
 import {FANDOM_MEDIA_SHELVES} from './palaceFandomCatalogue';
 import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection,fandomFacetOptions,matchesFandomStoryQuery} from './fandomDirectoryModel';
 import StoryRatingBadge from './StoryRatingBadge';
+import StoryCoverImage from './StoryCoverImage';
 import UnifiedFanworkCatalogue from './UnifiedFanworkCatalogue';
 import {isHostedFanfiction,canDisplayHostedArchive} from './palaceFanfictionDiscovery';
 import {toHostedReadingWork} from './hostedReadingWork';
@@ -181,7 +182,7 @@ export default function PalaceFandomAtlas(){
      </label>
      {storyBusy?<p role="status">Gathering tagged stories…</p>:storyError?<p role="alert">{storyError}</p>:matchingSelectedStories.length?<><p>{matchingSelectedStories.length} published {matchingSelectedStories.length===1?'work':'works'} found{withinFandom.trim()?' in this search':''}</p>
       <div>{matchingSelectedStories.map(story=><Link key={story.id} to={'/work/'+story.slug} className="palace-fandom-story">
-       <span className="palace-fandom-story-cover palace-rating-anchor">{story.cover_url?<img alt="" loading="lazy" src={story.cover_url}/>:<span aria-hidden="true">✦</span>}<StoryRatingBadge rating={story.rating}/></span>
+       <span className="palace-fandom-story-cover palace-rating-anchor">{<StoryCoverImage src={story.cover_url}/>}<StoryRatingBadge rating={story.rating}/></span>
        <span><strong>{story.title}</strong><small>{story.profiles?.display_name||story.profiles?.username||'Palace writer'}</small><em>{story.summary||'Read this world in the Palace.'}</em></span>
       </Link>)}</div></>:<p>{withinFandom.trim()?'No visible stories match this character, relationship or tag inside the selected fandoms. Try a shorter term or clear this search.':'No published stories are attached to this constellation yet. Be the first to write one.'}</p>}
      <small className="palace-fandom-access-note">All published public works can appear here, including Mature and Explicit. Story text still follows reader age restrictions; private or members-only works retain their visibility settings.</small>
