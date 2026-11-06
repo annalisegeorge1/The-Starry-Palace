@@ -12,10 +12,10 @@ export function movedComicPageIds(pages,fromId,toId){
 }
 
 /** Private editor: page assets are requested only after the creator opens the visual view. */
-export default function ComicEpisodePageManager({userId,comicId,episode,pages,onReorder,onEdit,onRemove}){
+export default function ComicEpisodePageManager({userId,comicId,episode,pages,readingDirection='ltr',onReorder,onEdit,onRemove}){
  const [visual,setVisual]=useState(false),[urls,setUrls]=useState({});
  const [loading,setLoading]=useState(false),[loadError,setLoadError]=useState('');
- const [preview,setPreview]=useState(null),[dragged,setDragged]=useState(null);
+ const [preview,setPreview]=useState(null),[readingView,setReadingView]=useState('pages'),[dragged,setDragged]=useState(null);
  const [saving,setSaving]=useState(false);
  const pathSignature=pages.map(x=>x.reader_path).join('|');
  useEffect(()=>{
@@ -41,7 +41,7 @@ export default function ComicEpisodePageManager({userId,comicId,episode,pages,on
  return <section className="comic-visual-manager" aria-label={'Page manager for '+episode.title}>
   <header className="comic-visual-manager-heading">
    <div><strong>Episode pages</strong><p>{pages.length} page{pages.length===1?'':'s'} · {visual?'Select a thumbnail to inspect it. Drag a page to reorder, or use the arrow buttons.':'Open the visual view to inspect your uploaded artwork and page order.'}</p></div>
-   {pages.length>0&&<button type="button" className="outline-button" aria-pressed={visual} onClick={()=>setVisual(v=>!v)}>{visual?'Compact list':'Show page thumbnails'}</button>}
+   <div className="comic-visual-manager-buttons">{pages.length>0&&<button type="button" className="outline-button" aria-pressed={visual} onClick={()=>setVisual(v=>!v)}>{visual?'Compact list':'Show page thumbnails'}</button>}{visual&&pages.some(p=>urls[p.reader_path])&&<button type="button" onClick={()=>setPreview(pages[0])}>Preview episode</button>}</div>
   </header>
   {loading&&<p role="status">Loading your private page previews…</p>}
   {loadError&&<p role="alert">{loadError} Page captions and ordering remain available.</p>}
@@ -71,9 +71,9 @@ export default function ComicEpisodePageManager({userId,comicId,episode,pages,on
     </div>
    </article>)}
    </div>}
-  <PalaceDialog open={!!preview} title={'Preview · Page '+(preview?pages.findIndex(p=>p.id===preview.id)+1:0)} eyebrow="PRIVATE COMIC STUDIO PREVIEW" onClose={()=>setPreview(null)}
+  <PalaceDialog open={!!preview} title={'Episode preview · '+episode.title} eyebrow="PRIVATE COMIC STUDIO PREVIEW" onClose={()=>setPreview(null)}
    actions={<button type="button" onClick={()=>setPreview(null)}>Close preview</button>}>
-   {preview&&urls[preview.reader_path]&&<div className="comic-page-lightbox"><img src={urls[preview.reader_path]} alt={preview.alt_text||'Comic page preview'}/>{preview.caption&&<p>{preview.caption}</p>}</div>}
+   {preview&&<div className="comic-reader-preview"><div className="comic-reader-preview-tools" role="group" aria-label="Preview layout"><button type="button" aria-pressed={readingView==='pages'} onClick={()=>setReadingView('pages')}>Page by page</button><button type="button" aria-pressed={readingView==='scroll'} onClick={()=>setReadingView('scroll')}>Vertical scroll</button></div>{readingView==='pages'?<><div className="comic-page-lightbox">{urls[preview.reader_path]?<img src={urls[preview.reader_path]} alt={preview.alt_text||'Comic page preview'}/>:<p>Preview unavailable for this page.</p>}{preview.caption&&<p>{preview.caption}</p>}</div><nav className="comic-reader-preview-nav" aria-label="Page preview navigation"><button type="button" disabled={pages.indexOf(preview)===0} onClick={()=>setPreview(pages[pages.indexOf(preview)-1])}>Previous page</button><span>{pages.indexOf(preview)+1} / {pages.length}</span><button type="button" disabled={pages.indexOf(preview)===pages.length-1} onClick={()=>setPreview(pages[pages.indexOf(preview)+1])}>Next page</button></nav></>:<div className="comic-reader-preview-scroll" dir={readingDirection==='rtl'?'rtl':'ltr'}>{pages.map((p,i)=><figure key={p.id}>{urls[p.reader_path]?<img loading="lazy" src={urls[p.reader_path]} alt={p.alt_text||'Comic page '+(i+1)}/>:<p>Page {i+1} preview unavailable</p>}{p.caption&&<figcaption>{p.caption}</figcaption>}</figure>)}</div>}</div>}
   </PalaceDialog>
  </section>;
 }
