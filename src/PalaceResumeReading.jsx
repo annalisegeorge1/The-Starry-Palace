@@ -4,7 +4,6 @@ import {supabase} from './supabase';
 import {selectHomeReading,visibleHomeReading,chapterReadingPercent,readingReturnPath,searchHomeReading} from './readingHomeShelf';
 import './palace-resume-reading.css';
 import StoryRatingBadge from './StoryRatingBadge';
-import StoryCoverImage from './StoryCoverImage';
 
 /** Reads only the current member's progress, protected by reading_progress RLS. */
 export default function PalaceResumeReading({memberId}){
@@ -49,7 +48,7 @@ export default function PalaceResumeReading({memberId}){
    const dateLabel=hasDate?'Last opened '+date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):'Your saved reading place';
    const resumeLabel=row.chapter_id?'Resume chapter':'View story';
    return <Link key={row.work_id} to={readingReturnPath(row)}>
-    <span className="palace-resume-cover palace-rating-anchor">{<StoryCoverImage src={work.cover_url}/>}<StoryRatingBadge rating={work.rating}/></span>
+    <span className="palace-resume-cover palace-rating-anchor">{work.cover_url?<img src={work.cover_url} alt="" loading="lazy" decoding="async"/>:<span aria-hidden="true">☾ ✦</span>}<StoryRatingBadge rating={work.rating}/></span>
     <span className="palace-resume-copy"><strong>{work.title}</strong><small>{dateLabel}</small>
      {chapterPercent!==null&&row.chapter_id&&<span className="palace-resume-progress">
       <span className="palace-resume-progress-track" role="progressbar" aria-label={'Chapter progress for '+work.title} aria-valuetext={chapterPercent+' percent through the chapter'} aria-valuemin={0} aria-valuemax={100} aria-valuenow={chapterPercent}><i style={{width:chapterPercent+'%'}}/></span>
