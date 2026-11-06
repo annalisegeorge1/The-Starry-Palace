@@ -7,10 +7,11 @@ afterEach(cleanup);
 it('renders every existing owned frame as a centred vector with unique gradient references',()=>{
  const {container}=render(<>{CHAMBER_FRAMES.map(frame=><ChamberFrameArt key={frame.slug} slug={frame.slug}/>)}</>);
  const svgs=container.querySelectorAll('.ornamental-avatar-frame');
- expect(svgs).toHaveLength(47);
+ expect(svgs).toHaveLength(59);
  expect(new Set([...svgs].map(s=>s.dataset.tier)).size).toBe(5);
  expect(container.querySelectorAll('[data-ornament="prestige-detail"]')).toHaveLength(14);
- expect(new Set([...svgs].map(s=>s.dataset.style)).size).toBe(8);
+ expect(new Set([...svgs].map(s=>s.dataset.style)).size).toBe(10);
+ expect(container.querySelectorAll('[data-regalia="true"]')).toHaveLength(12);
  expect(container.querySelectorAll('[data-gemstone="true"]')).toHaveLength(12);
  const ids=[...container.querySelectorAll('[id]')].map(n=>n.id);
  expect(new Set(ids).size).toBe(ids.length);
