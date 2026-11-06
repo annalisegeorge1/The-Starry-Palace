@@ -22,7 +22,9 @@ describe('Prism Atelier mobile refinement preserves real member choices',()=>{
   expect(studio).toContain('saveMemberChamberDecor(decor.backdrop,ornament,layout)');
  });
  it('retains frames, their unlock checks and saving event',()=>{
-  expect(frames).toContain('CHAMBER_FRAMES.map(');
+  expect(frames).toContain('CHAMBER_FRAMES.filter(');
+  expect(frames).toContain('visibleFrames.map(');
+  expect(frames).toContain('aria-label="Frame collections"');
   expect(frames).toContain('chamberFrameUnlocked(frame,decor?.unlocks)');
   expect(frames).toContain('savePaintedChamberFrame(selected||null)');
   expect(frames).toContain("'palace:frame-changed'");

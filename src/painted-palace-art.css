@@ -25,3 +25,16 @@
 .painted-round-badge>.painted-tier-frame{display:block;max-width:none;max-height:none;margin:0;padding:0;aspect-ratio:1;overflow:visible}
 /* Match the vector ring radius (83/200) so the preview touches the photo edge. */
 .painted-frame-preview:before{inset:8.5%}
+
+
+/* Jewel frame gallery: keep avatar opening unobstructed, show richer previews. */
+.painted-frame-collections{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.painted-frame-collections button{border-radius:999px;padding:9px 13px;min-height:39px;border:1px solid rgba(188,173,233,.38);background:rgba(104,84,167,.13);color:inherit;cursor:pointer;font-size:.8rem}
+.painted-frame-collections button[aria-pressed=true]{border-color:#c8aaf3;background:linear-gradient(120deg,rgba(123,70,183,.5),rgba(63,108,168,.38));box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}
+.painted-frame-choice:has(.gemstone-avatar-frame){border-color:rgba(201,164,232,.43);background:radial-gradient(circle at 50% 12%,rgba(150,98,202,.19),transparent 75%),rgba(31,26,61,.15)}
+.painted-frame-choice:has(.gemstone-avatar-frame)[aria-pressed=true]{outline-color:#e4baff;box-shadow:0 5px 22px rgba(132,71,177,.2)}
+.painted-frame-choice:has(.gemstone-avatar-frame)>small{color:#e4d1f7}
+.painted-frame-preview:has(.gemstone-avatar-frame){width:clamp(150px,16vw,185px);height:clamp(150px,16vw,185px)}
+.daylight .painted-frame-choice:has(.gemstone-avatar-frame){background:#f7f1ff;color:#44335e}
+.daylight .painted-frame-choice:has(.gemstone-avatar-frame)>small{color:#56406d}
+@media(max-width:600px){.painted-frame-collections button{flex:1 1 115px}.painted-frame-choice:has(.gemstone-avatar-frame) .painted-art{width:72px;height:72px}}
