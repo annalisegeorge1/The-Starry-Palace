@@ -1,0 +1,72 @@
+name: Palace Observatory review checks
+
+# This workflow is PR-only. It does not publish, deploy, upload artifacts,
+# read Supabase records or request secrets.
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/PalaceObservatory.jsx'
+      - 'src/PalaceObservatoryIssues.jsx'
+      - 'src/UnifiedFanworkCatalogue.jsx'
+      - 'src/PalaceFandomAtlas.jsx'
+      - 'src/fandomPublishedPages.js'
+      - 'src/fandomDirectoryModel.js'
+      - 'src/fandomDirectoryPaging.js'
+      - 'scripts/verify-observatory-stage-env.mjs'
+      - 'scripts/verify-observatory-preview-boundary.mjs'
+      - 'tests/observatory-preview-boundary.test.js'
+      - 'tests/observatory-stage-build-gate.test.js'
+      - 'tests/observatory-stage-preflight.test.js'
+      - 'tests/observatory-stage-schema-package.test.js'
+      - 'tests/fixtures/palace-observatory-stage-scenarios.json'
+      - 'database/palace-observatory-stage-*-PROPOSAL.sql'
+      - 'docs/palace-observatory-staging-migration-review.md'
+      - 'database/palace-observatory-stage-preflight.sql'
+      - 'docs/palace-observatory-staging-compatibility-plan.md'
+      - 'package.json'
+      - 'tests/fandom-directory-paging.test.js'
+      - 'src/fandomDirectoryModel.test.js'
+      - 'src/palaceFandomDirectoryIntegration.test.js'
+      - 'src/palaceFandomExpansionV2.test.js'
+      - 'src/mobileLibraryScreenshotFixes.test.js'
+      - 'src/readingArchiveAtlas.test.jsx'
+      - 'src/readingCatalogueIntegration.test.js'
+      - 'tests/launch-safety.test.js'
+      - 'tests/modern-fanfiction-discovery.test.js'
+      - 'tests/remove-legacy-floating-controls.test.js'
+      - 'src/palaceData.js'
+      - 'src/hostedReadingWork.js'
+      - 'tests/fanfiction-reading-first.test.jsx'
+      - 'src/liveRooms.jsx'
+      - 'src/unified-fanwork-catalogue.css'
+      - 'tests/unified-fanwork-catalogue.test.jsx'
+      - 'tests/fandom-fanfiction-discovery.test.js'
+      - 'tests/fanwork-fandom-navigation.test.jsx'
+      - 'tests/fandom-published-pages.test.js'
+      - 'docs/palace-observatory-phase3-schema-proposal.sql'
+      - 'src/palaceObservatory*.js'
+      - 'src/palace-observatory.css'
+      - 'src/main.jsx'
+      - 'tests/palace-observatory-*.test.js'
+      - '.github/workflows/palace-observatory-review.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  isolated-test-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Run isolated Observatory regression tests
+        run: npx vitest run tests/palace-observatory-model.test.js tests/palace-observatory-verification.test.js tests/palace-observatory-issues.test.js tests/palace-observatory-security.test.js tests/palace-observatory-acceptance.test.js tests/palace-observatory-data-safety.test.js tests/unified-fanwork-catalogue.test.jsx tests/fandom-fanfiction-discovery.test.js tests/fanwork-fandom-navigation.test.jsx tests/reading-archive-hosted-fanworks.test.js tests/fanfiction-reading-first.test.jsx tests/fandom-published-pages.test.js tests/fandom-directory-paging.test.js tests/observatory-stage-build-gate.test.js tests/observatory-preview-boundary.test.js tests/observatory-stage-preflight.test.js tests/observatory-stage-schema-package.test.js src/fandomDirectoryModel.test.js src/palaceFandomDirectoryIntegration.test.js src/palaceFandomExpansionV2.test.js src/mobileLibraryScreenshotFixes.test.js src/readingArchiveAtlas.test.jsx src/readingCatalogueIntegration.test.js tests/launch-safety.test.js tests/modern-fanfiction-discovery.test.js tests/remove-legacy-floating-controls.test.js
+      - name: Compile the complete website without deploying
+        run: npm run build

@@ -57,7 +57,12 @@ describe('Reading atlas archive vs classics',()=>{
   const onTagIdentified=vi.fn();
   render(<MemoryRouter><ReadingFacetSidebar archiveWide facets={[]} sort="updated" onSort={()=>{}} onRating={()=>{}} onStatus={()=>{}} onToggle={onToggle} onClear={()=>{}} onSearchTags={onSearchTags} onTagIdentified={onTagIdentified}/></MemoryRouter>);
   fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
-  fireEvent.change(screen.getByRole('searchbox',{name:'Search all tags to include'}),{target:{value:'intrigue'}});
+  let tagInput=screen.queryByRole('searchbox',{name:/tags to include/i});
+  if(!tagInput){
+   fireEvent.click(screen.getByRole('button',{name:/Include/}));
+   tagInput=screen.getByRole('searchbox',{name:/tags to include/i});
+  }
+  fireEvent.change(tagInput,{target:{value:'intrigue'}});
   await waitFor(()=>expect(onSearchTags).toHaveBeenCalledWith('intrigue','all',35),{timeout:2200});
   await waitFor(()=>expect(screen.getByText('Palace intrigue')).toBeTruthy(),{timeout:2200});
   expect(screen.queryByText('Tropes')).toBeNull();

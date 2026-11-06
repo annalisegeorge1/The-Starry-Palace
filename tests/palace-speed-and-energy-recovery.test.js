@@ -36,7 +36,7 @@ describe('Palace responsiveness and personality recovery',()=>{
  it('does not continuously poll direct/group chats while launcher is closed',()=>{
   expect(chat).toContain('const timer=open?window.setInterval');
   expect(chat).not.toContain('open?16000:60000');
-  expect(chat).not.toContain('},12000)');
+  expect(chat).toContain('||!open||!roomId||!reactionMessageIds');
   expect(chat).toContain('watchPalaceChatRoom(supabase');
   expect(chat).toContain('getPalaceGroupChatOverview(userId)');
  });

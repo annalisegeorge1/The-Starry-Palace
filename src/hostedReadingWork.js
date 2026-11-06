@@ -1,4 +1,4 @@
-import {readingArchiveWorkType,isHostedFanfiction} from './palaceFanfictionDiscovery';
+import {readingArchiveWorkType,isHostedFanfiction,canDisplayHostedArchive} from './palaceFanfictionDiscovery';
 import {hostedFanfictionGuide,hostedFanfictionCompletion,archiveFanfictionTags} from './fanfictionMetadata';
 
 /** One display model for published archive editions in Reading and Fandom Atlas.
@@ -15,6 +15,7 @@ export function toHostedReadingWork(record){
    archiveFanfictionTags(record)):[];
  return {
   id:'archive-'+record.id,archive_record_id:record.id,is_archive:true,
+  archive_display_ready:canDisplayHostedArchive(record),
   title:record.title,slug:record.slug,summary:record.summary,
   archive_category:record.category,work_type:readingArchiveWorkType(record),
   rating:fanwork?hostedFanfictionGuide(record).rating:(record.rating|| (record.category==='licensed_web_serial'?'teen':'not_rated')),

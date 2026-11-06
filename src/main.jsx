@@ -288,6 +288,7 @@ const PalaceGuidebookLazy=React.lazy(()=>importWithRecovery(()=>import('./Palace
 const PalaceCodeRoom=React.lazy(()=>importWithRecovery(()=>import('./PalaceCodeRoom')));
 const PalaceLostWorksRoom=React.lazy(()=>importWithRecovery(()=>import('./PalaceLostWorksRoom')));
 const PalaceFandomAtlas=React.lazy(()=>importWithRecovery(()=>import('./PalaceFandomAtlas')));
+const PalaceObservatory=React.lazy(()=>importWithRecovery(()=>import('./PalaceObservatory')));
 // Core Palace rooms are imported eagerly for navigation reliability.
 const PalaceChatDrawerLazy=React.lazy(()=>importWithRecovery(()=>import('./PalaceChatDrawer')));
 const PalaceChatWorkspaceLazy=React.lazy(()=>importWithRecovery(()=>import('./PalaceChatWorkspace')));
@@ -846,6 +847,7 @@ function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo
  <Route path="/tag/:tagId" element={<React.Suspense fallback={<RouteLoading/>}><Frame><PalaceTagWorld/></Frame></React.Suspense>}/>
  <Route path="/legal" element={<React.Suspense fallback={<RouteLoading/>}><PalaceLegalPagesLazy/></React.Suspense>}/><Route path="/legal/:policy" element={<React.Suspense fallback={<RouteLoading/>}><PalaceLegalPagesLazy/></React.Suspense>}/>
   <Route path="/fandoms" element={<React.Suspense fallback={<RouteLoading/>}><Frame><PalaceFandomAtlas/></Frame></React.Suspense>}/>
+ <Route path="/admin/observatory" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><PalaceObservatory/></React.Suspense></ProtectedRoute>}/>
  <Route path="/search" element={<SearchLive Frame={Frame}/>}/><Route path="/honour" element={<HonourLive Frame={Frame}/>}/><Route path="/council" element={<ProtectedRoute><CouncilLive Frame={Frame}/></ProtectedRoute>}/><Route path="/council/governance" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><PalaceGovernance Frame={Frame}/></React.Suspense></ProtectedRoute>}/><Route path="/code" element={<React.Suspense fallback={<RouteLoading/>}><PalaceCodeRoom Frame={Frame}/></React.Suspense>}/><Route path="/beta" element={<React.Suspense fallback={<RouteLoading/>}><PalaceBetaGuide Frame={Frame}/></React.Suspense>}/>
  <Route path="/member/:username" element={<MemberProfileLive Frame={Frame}/>}/>
  <Route path="*" element={<Frame><section className="lost-gates-page"><div className="lost-gates-orbit"><span>☾</span><i>✦</i></div><p className="eyebrow">BEYOND THE GATES</p><h1>You left palace grounds.</h1><p>The path thinned, the lamps disappeared, and somehow you wandered beyond the Palace walls.</p><div className="lost-gates-actions"><Link className="button" to="/">Return to the Palace</Link><Link to="/search">Search for a room →</Link></div></section></Frame>}/>

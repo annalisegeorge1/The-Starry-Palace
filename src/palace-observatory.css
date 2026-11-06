@@ -1,0 +1,125 @@
+.palace-observatory{width:min(100%,1120px);margin:0 auto;padding:24px 18px 145px;color:inherit}
+.palace-observatory h1{font-size:clamp(1.65rem,4vw,2.4rem);line-height:1.15;margin:6px 0 12px}
+.palace-observatory h2{font-size:1.12rem;margin:0 0 8px}
+.palace-observatory-header{display:flex;align-items:start;justify-content:space-between;gap:16px;margin-bottom:22px}
+.palace-observatory-header p{max-width:65ch}
+.palace-observatory-lock{display:inline-flex;white-space:nowrap;padding:7px 12px;border:1px solid currentColor;border-radius:99px;font-size:.77rem;opacity:.85}
+.palace-observatory-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0 20px}
+.palace-observatory-metric{display:flex;flex-direction:column;gap:5px;padding:16px 14px;border-radius:14px;border:1px solid color-mix(in srgb,currentColor 17%,transparent);background:color-mix(in srgb,currentColor 4%,transparent)}
+.palace-observatory-metric strong{font-size:1.45rem;font-variant-numeric:tabular-nums}
+.palace-observatory-metric span{opacity:.8;font-size:.82rem}
+.palace-observatory-actions{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.palace-observatory-tabs{display:flex;gap:4px;flex-wrap:wrap}
+.palace-observatory button,.palace-observatory select,.palace-observatory input{font:inherit}
+.palace-observatory button{cursor:pointer;min-height:38px;padding:8px 12px;border-radius:9px;border:1px solid color-mix(in srgb,currentColor 24%,transparent);background:color-mix(in srgb,currentColor 5%,transparent);color:inherit}
+.palace-observatory button.selected{background:color-mix(in srgb,currentColor 15%,transparent);border-color:color-mix(in srgb,currentColor 45%,transparent);font-weight:650}
+.palace-observatory button:disabled{cursor:not-allowed;opacity:.5}
+.palace-observatory button:focus-visible,.palace-observatory a:focus-visible,.palace-observatory input:focus-visible,.palace-observatory select:focus-visible{outline:3px solid #78bbe8;outline-offset:3px}
+.palace-observatory-filters{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}
+.palace-observatory-filters label{display:flex;flex-direction:column;flex:1 1 180px;gap:6px;font-size:.8rem}
+.palace-observatory-filters input,.palace-observatory-filters select{max-width:100%;min-height:39px;padding:9px 10px;color:inherit;background:color-mix(in srgb,currentColor 6%,transparent);border:1px solid color-mix(in srgb,currentColor 25%,transparent);border-radius:9px}
+.palace-observatory-subtitle{font-size:.86rem;opacity:.8;margin:8px 0 15px}
+.palace-observatory-list{display:grid;gap:10px}
+.palace-observatory-row,.palace-observatory-denied{border:1px solid color-mix(in srgb,currentColor 17%,transparent);background:color-mix(in srgb,currentColor 4%,transparent);border-radius:14px;padding:14px 16px}
+.palace-observatory-row-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.palace-observatory-row-head strong{font-size:.99rem;overflow-wrap:anywhere}
+.palace-observatory-row-head span{white-space:nowrap;font-size:.76rem;opacity:.85}
+.palace-observatory-row p{font-size:.87rem;margin:7px 0;overflow-wrap:anywhere}
+.palace-observatory-row small{font-size:.77rem;opacity:.78}
+.palace-observatory-row a{font-weight:650;text-decoration:underline}
+.palace-observatory-denied{margin-top:18px;max-width:760px}
+.palace-observatory-warning{border-left:3px solid #d8905c;padding:10px 12px}
+@media(max-width:740px){.palace-observatory{padding:18px 14px 145px}.palace-observatory-header{flex-direction:column}.palace-observatory-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.palace-observatory-row-head{align-items:flex-start;flex-direction:column;gap:3px}.palace-observatory-actions{align-items:stretch}.palace-observatory-filters label:first-child{flex-basis:100%}}
+@media(prefers-reduced-motion:reduce){.palace-observatory *{scroll-behavior:auto!important}}
+
+.palace-observatory-check-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:12px 0}
+.palace-observatory-check-controls strong{font-size:.9rem}
+.palace-observatory-check-controls label{display:flex;align-items:center;gap:8px;font-size:.82rem}
+.palace-observatory-check-controls select{padding:8px 10px;min-height:38px;max-width:100%;color:inherit;background:color-mix(in srgb,currentColor 6%,transparent);border:1px solid color-mix(in srgb,currentColor 25%,transparent);border-radius:9px}
+@media(max-width:740px){.palace-observatory-check-controls{align-items:stretch;flex-direction:column}.palace-observatory-check-controls label{justify-content:space-between}}
+
+
+/* Phase 3. Compact issue register; no full-height card stacks on mobile. */
+.palace-observatory-issues{margin-top:18px}
+.palace-observatory-issues-head{display:flex;gap:14px;justify-content:space-between;align-items:center;margin-bottom:14px}
+.palace-observatory-issues-head h2{margin:0 0 4px;font-size:1.15rem}
+.palace-observatory-issues-head p{margin:0;font-size:.85rem;opacity:.82}
+.palace-observatory-issues-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.palace-observatory-editor,.palace-observatory-issue-detail{margin:14px 0;padding:16px;border:1px solid color-mix(in srgb,currentColor 20%,transparent);border-radius:14px;background:color-mix(in srgb,currentColor 4%,transparent)}
+.palace-observatory-editor h3,.palace-observatory-issue-detail h3{font-size:1.06rem;margin:0}
+.palace-observatory-editor>p{font-size:.84rem;opacity:.83}
+.palace-observatory-field{display:flex;flex-direction:column;gap:5px;margin:10px 0;flex:1;min-width:0}
+.palace-observatory-field span{font-size:.82rem}
+.palace-observatory .palace-observatory-field input,
+.palace-observatory .palace-observatory-field textarea,
+.palace-observatory .palace-observatory-field select,
+.palace-observatory-issue-tools input,
+.palace-observatory-issue-tools select,
+.palace-observatory-transitions select,
+.palace-observatory-transitions textarea{display:block;width:100%;min-height:39px;padding:9px 11px;color:inherit;background:color-mix(in srgb,currentColor 5%,transparent);border:1px solid color-mix(in srgb,currentColor 28%,transparent);border-radius:9px}
+.palace-observatory .palace-observatory-field textarea,.palace-observatory-transitions textarea{resize:vertical;min-height:70px}
+.palace-observatory-inline{display:flex;gap:12px;flex-wrap:wrap}
+.palace-observatory-issue-tools{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
+.palace-observatory-issue-tools label{font-size:.83rem;display:flex;flex-direction:column;gap:6px;flex:1 1 165px}
+.palace-observatory-issue-tools label:first-child{flex:2 1 240px}
+.palace-observatory-issue-layout{display:grid;grid-template-columns:minmax(220px,1fr) minmax(0,1.35fr);gap:12px;align-items:start}
+.palace-observatory-issue-layout>.palace-observatory-list{max-height:680px;overflow-y:auto}
+.palace-observatory-issue-layout .palace-observatory-row{padding:6px}
+.palace-observatory .palace-observatory-issue-select{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-align:left;padding:10px;border:0;background:transparent;min-height:62px}
+.palace-observatory-issue-select[aria-pressed="true"]{outline:2px solid color-mix(in srgb,currentColor 48%,transparent);outline-offset:-2px}
+.palace-observatory-issue-select span,.palace-observatory-issue-select small{font-size:.77rem;opacity:.84}
+.palace-observatory-issue-detail{margin:0;overflow-wrap:anywhere}
+.palace-observatory-issue-detail p{font-size:.86rem}
+.palace-observatory-issue-detail h4{font-size:.9rem;margin:20px 0 10px}
+.palace-observatory-transitions label{display:flex;flex-direction:column;gap:6px;font-size:.84rem;margin:10px 0}
+.palace-observatory-transitions small{display:block;margin-top:8px;opacity:.8;font-size:.77rem}
+.palace-observatory-screenshots{margin-top:16px;border-top:1px solid color-mix(in srgb,currentColor 18%,transparent)}
+.palace-observatory-screenshots input[type=file]{display:block;width:100%;max-width:100%;margin:10px 0;font-size:.8rem}
+.palace-observatory-evidence-item{display:flex;justify-content:space-between;gap:8px;align-items:center;margin:8px 0;padding:6px 0;border-bottom:1px solid color-mix(in srgb,currentColor 14%,transparent);font-size:.79rem}
+.palace-observatory-evidence-item span{min-width:0;overflow-wrap:anywhere}
+.palace-observatory-evidence-preview img{width:min(100%,460px);height:auto;display:block;border-radius:7px}
+.palace-observatory-evidence-preview small{opacity:.8}
+.palace-observatory-history-item{padding:7px 0;border-bottom:1px solid color-mix(in srgb,currentColor 14%,transparent)}
+@media(max-width:800px){
+ .palace-observatory-issue-layout{grid-template-columns:minmax(0,1fr)}
+ .palace-observatory-issue-layout>.palace-observatory-list{max-height:300px}
+ .palace-observatory-issues-head{align-items:flex-start}
+}
+@media(max-width:480px){
+ .palace-observatory-issues-head{flex-direction:column}
+ .palace-observatory-inline{display:block}
+ .palace-observatory-issue-tools label:first-child{flex-basis:100%}
+}
+
+.palace-observatory-evidence-preview-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
+.palace-observatory-evidence-preview-actions small{flex:1 1 185px;font-size:.76rem}
+@media(max-width:480px){.palace-observatory-evidence-preview-actions{align-items:flex-start;flex-direction:column}}
+
+
+/* Compact, metadata-only comparison within the existing Catalogue tab. */
+.palace-observatory-compare-controls{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:10px 0;font-size:.82rem}
+.palace-observatory-compare-toggle{display:inline-flex;align-items:center;gap:7px;margin-top:7px;font-size:.8rem;cursor:pointer}
+.palace-observatory-compare-toggle input{width:17px;height:17px;accent-color:currentColor}
+.palace-observatory-compare{padding:12px;border:1px solid color-mix(in srgb,currentColor 22%,transparent);border-radius:12px;margin-bottom:16px;max-width:100%}
+.palace-observatory-compare summary{cursor:pointer;font-size:.87rem;font-weight:650}
+.palace-observatory-compare-scroll{overflow-x:auto;max-width:100%;margin-top:10px}
+.palace-observatory-compare table{width:100%;min-width:440px;border-collapse:collapse;font-size:.81rem;table-layout:fixed}
+.palace-observatory-compare :is(th,td){padding:9px 10px;overflow-wrap:anywhere;text-align:left;vertical-align:top;border-bottom:1px solid color-mix(in srgb,currentColor 14%,transparent)}
+.palace-observatory-compare th:first-child{width:30%}
+.palace-observatory-compare tr.different{background:color-mix(in srgb,currentColor 5%,transparent)}
+
+
+/* Phase 5: optional manual UAT worksheet, intentionally without approval controls. */
+.palace-observatory-release{max-width:100%}
+.palace-observatory-release h3{margin:18px 0 8px;font-size:1.05rem}
+.palace-observatory-acceptance-group{margin:10px 0;border:1px solid color-mix(in srgb,currentColor 19%,transparent);border-radius:12px;overflow:hidden}
+.palace-observatory-acceptance-group>summary{cursor:pointer;list-style-position:inside;padding:12px 14px;font-weight:600;font-size:.88rem}
+.palace-observatory-acceptance-group[open]>summary{border-bottom:1px solid color-mix(in srgb,currentColor 16%,transparent)}
+.palace-observatory-acceptance-cases{display:grid;gap:8px;padding:10px}
+.palace-observatory-acceptance-case{padding:12px;border-radius:10px;border:1px solid color-mix(in srgb,currentColor 13%,transparent);background:color-mix(in srgb,currentColor 3%,transparent)}
+.palace-observatory-acceptance-case p{font-size:.83rem;line-height:1.5;margin:8px 0;overflow-wrap:anywhere}
+.palace-observatory-acceptance-case .palace-observatory-row-head{gap:10px}
+.palace-observatory-acceptance-case .palace-observatory-row-head span{white-space:nowrap;font-size:.77rem;opacity:.8}
+.palace-observatory-acceptance-case .palace-observatory-issues-actions{margin-top:11px}
+.palace-observatory-acceptance-case a{align-self:center;font-size:.83rem}
+@media(max-width:480px){.palace-observatory-acceptance-case .palace-observatory-row-head{align-items:flex-start;flex-direction:column}}

@@ -127,7 +127,9 @@ describe('Fanfiction section contains rights-aware historical and modern discove
    expect(modernFanfictionGuide(work).tags.some(t=>t.category==='fandom')).toBe(true);
    expect(modernFanfictionGuide(work).sourceRating).toBeTruthy();
   }
-  expect(MODERN_FANFICTION_LINKS.filter(w=>w.creator==='HushBugger').length).toBeGreaterThanOrEqual(15);
+  const hushbugger=MODERN_FANFICTION_LINKS.filter(w=>w.creator==='HushBugger');
+  expect(hushbugger.length).toBeGreaterThanOrEqual(15);
+  expect(new Set(hushbugger.map(w=>w.sourceUrl)).size).toBe(hushbugger.length);
   expect(MODERN_FANFICTION_LINKS.filter(w=>w.creator==='HushBugger')
     .every(w=>w.permissionLabel.startsWith('CC BY-SA 4.0'))).toBe(true);
   expect(modernFanfictionGuide({id:'hushbugger-human-habits'}).rating).toBe('general');
@@ -247,8 +249,10 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(anime.some(w=>w.id==='lastgoodname-stonewalling')).toBe(false);
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{animeOnly:true,rating:'mature'})
    .map(w=>w.id)).toContain('anime-primulad-sin-milagro');
-  expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{animeOnly:true,query:'Vocaloid'})
-   .map(w=>w.id)).toContain('anime-animeisperfection-synchronicity');
+  const vocaloid=filterModernFanfiction(MODERN_FANFICTION_LINKS,{animeOnly:true,query:'Vocaloid'});
+  expect(vocaloid.map(w=>w.id)).toContain('anime-animeisperfection-synchronicity');
+  expect(vocaloid.every(isAnimeFanfiction)).toBe(true);
+  expect(new Set(vocaloid.map(w=>w.id)).size).toBe(vocaloid.length);
   expect(shelf).toContain('aria-pressed={animeOnly}');
   expect(shelf).toContain('Anime &amp; manga');
   expect(shelf).toContain('animeOnly,fandomNames,fandomMatch');

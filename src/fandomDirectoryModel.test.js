@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection,fandomFacetOptions,matchesFandomStoryQuery} from './fandomDirectoryModel';
+import {visibleFandoms,pageFandoms,fandomMediaLabel,safeFandomSelection,fandomFacetOptions,matchesFandomStoryQuery,resolveFandomDirectoryName} from './fandomDirectoryModel';
 const input=[
  {id:'1',name:'Naruto',media_categories:['anime_manga'],aliases:['Naruto Shippuden'],subcategory:'Shōnen fantasy',franchise:'Naruto'},
  {id:'2',name:'Bridgerton',media_categories:['books_literature','tv_shows'],aliases:['Bridgerton Netflix'],usage_count:12},
@@ -21,6 +21,21 @@ describe('Fandom directory media and alias discovery',()=>{
   expect(visibleFandoms(input,{query:'Bridgerton Netflix'}).map(x=>x.id)).toEqual(['2']);
   expect(visibleFandoms(input,{query:'not here'})).toEqual([]);
  });
+ it('finds Chinese, Japanese and Korean fandoms without folding distinct kana',()=>{
+  const multilingual=[
+   {id:'han',name:'魔道祖师',media_categories:['books_literature'],aliases:['Mo Dao Zu Shi']},
+   {id:'voiced',name:'ガンダム',media_categories:['anime_manga'],aliases:['Gundam']},
+   {id:'unvoiced',name:'カンダム',media_categories:['anime_manga']},
+   {id:'korean',name:'이상한 변호사 우영우',media_categories:['tv_shows']},
+   {id:'accent',name:'Pokémon',media_categories:['video_games'],aliases:['Pokemon']}
+  ];
+  expect(visibleFandoms(multilingual,{query:'魔道祖师'}).map(x=>x.id)).toEqual(['han']);
+  expect(visibleFandoms(multilingual,{query:'ガンダム'}).map(x=>x.id)).toEqual(['voiced']);
+  expect(visibleFandoms(multilingual,{query:'カンダム'}).map(x=>x.id)).toEqual(['unvoiced']);
+  expect(visibleFandoms(multilingual,{query:'이상한'}).map(x=>x.id)).toEqual(['korean']);
+  expect(visibleFandoms(multilingual,{query:'pokemon'}).map(x=>x.id)).toEqual(['accent']);
+  expect(visibleFandoms(multilingual,{query:'Mo Dao Zu Shi'}).map(x=>x.id)).toEqual(['han']);
+ });
  it('sorts predictable counts but never edits the input order',()=>{
   const ordered=visibleFandoms(input,{sort:'used'});
   expect(ordered[0].id).toBe('2');
@@ -34,6 +49,45 @@ describe('Fandom directory media and alias discovery',()=>{
   expect(visibleFandoms(input,{media:'anime_manga',subcategory:'Shōnen fantasy',franchise:'Naruto'}).map(x=>x.name)).toEqual(['Naruto']);
   expect(visibleFandoms(input,{media:'tv_shows',franchise:'Naruto'})).toEqual([]);
   expect(visibleFandoms(input,{media:'anime_manga',subcategory:'Unknown'})).toEqual([]);
+ });
+ it('resolves canonical fandoms and unique public aliases, never ambiguous or unapproved labels',()=>{
+  const named=[
+   {...input[0],category:'fandom',status:'canonical'},
+   {...input[2],category:'fandom',status:'community'},
+   {id:'duplicate-alias',name:'A Separate TV World',category:'fandom',status:'canonical',aliases:['TWD']},
+   {id:'unapproved',name:'Hidden Canon',category:'fandom',status:'pending',aliases:['Secret Alias']},
+   {id:'trope-tag',name:'Fandom Crossover',category:'trope',status:'canonical',aliases:['Crossed Worlds']}
+  ];
+  expect(resolveFandomDirectoryName(named,'Naruto')?.id).toBe('1');
+  expect(resolveFandomDirectoryName(named,'NARUTO—SHIPPUDEN')?.id).toBe('1');
+  expect(resolveFandomDirectoryName(named,'The Walking Dead')?.id).toBe('3');
+  expect(resolveFandomDirectoryName(named,'TWD')).toBeNull();
+  expect(resolveFandomDirectoryName(named,'Secret Alias')).toBeNull();
+  expect(resolveFandomDirectoryName(named,'Crossed Worlds')).toBeNull();
+  expect(resolveFandomDirectoryName(named,'missing')).toBeNull();
+  expect(resolveFandomDirectoryName(named,'')).toBeNull();
+  expect(resolveFandomDirectoryName([...named,{id:'canon-twd',name:'TWD',category:'fandom',status:'canonical'}],'TWD')?.id).toBe('canon-twd');
+  const multilingual=[
+   {id:'cn',name:'魔道祖师',category:'fandom',status:'canonical',aliases:['Mo Dao Zu Shi']},
+   {id:'jp',name:'進撃の巨人',category:'fandom',status:'canonical',aliases:['Shingeki no Kyojin']},
+   {id:'kr',name:'이상한 변호사 우영우',category:'fandom',status:'community',aliases:['Extraordinary Attorney Woo']}
+  ];
+  expect(resolveFandomDirectoryName(multilingual,'魔道祖师')?.id).toBe('cn');
+  expect(resolveFandomDirectoryName(multilingual,'進撃の巨人')?.id).toBe('jp');
+  expect(resolveFandomDirectoryName(multilingual,'이상한 변호사 우영우')?.id).toBe('kr');
+  expect(resolveFandomDirectoryName(multilingual,'mo dao zu shi')?.id).toBe('cn');
+  expect(resolveFandomDirectoryName(multilingual,'SHINGEKI NO KYOJIN')?.id).toBe('jp');
+  // Japanese dakuten distinguishes voiced kana; folding it can route the
+  // reader to an entirely different canon.
+  const voiced=[
+   {id:'ga',name:'ガンダム',category:'fandom',status:'canonical'},
+   {id:'ka',name:'カンダム',category:'fandom',status:'canonical'},
+   {id:'accent',name:'Pokémon',category:'fandom',status:'canonical'}
+  ];
+  expect(resolveFandomDirectoryName(voiced,'ガンダム')?.id).toBe('ga');
+  expect(resolveFandomDirectoryName(voiced,'カンダム')?.id).toBe('ka');
+  expect(resolveFandomDirectoryName(voiced,'ガンダム')?.id).toBe('ga');
+  expect(resolveFandomDirectoryName(voiced,'pokemon')?.id).toBe('accent');
  });
  it('paginates and limits crossover selections without trusting URL IDs',()=>{
   const all=visibleFandoms(input);

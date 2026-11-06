@@ -1,0 +1,37 @@
+# Observatory — Security Staging permission and recovery review
+
+**2026-11-04, owner draft only. NO staging SQL was applied.**
+
+## Read-only inventory, verified on independent Security Staging
+
+Project: `ysbntuyyprnhptlxxsng` (not the production Supabase project). The reproducible read-only query is `database/palace-observatory-stage-access-preflight.sql`.
+
+- The staging fixture sentinel exists. Both `public.profiles` and `public.fandom_directory` remain absent, confirming that the compatibility migration has **not** been installed.
+- **9/9** public fixture tables have RLS enabled. Existing policies: `works` 1, `work_collaborators` 4; the other seven currently have zero. RLS-enabled-without-policy means access is blocked under ordinary restricted roles unless a security-definer or privileged access route applies. Do not disable RLS to work around these intentional fixture protections.
+- The four reader/discovery fixtures `works`, `chapters`, `tags` and `work_tags` currently grant `SELECT/INSERT/UPDATE/DELETE` to both `anon` and `authenticated`; the `chapters`, `tags` and `work_tags` fixtures also grant `TRUNCATE/REFERENCES/TRIGGER`. **RLS does not apply to TRUNCATE**, so that grant is a stronger concern than ordinary DML guarded by RLS. The **unapplied** additive SQL now proposes revoking all six non-read table privileges (`INSERT/UPDATE/DELETE/TRUNCATE/REFERENCES/TRIGGER`) from `PUBLIC`, `anon` and `authenticated` on **only those four tables**. No other existing rewards, chat, collaboration or comic fixture grants are changed, and staging still has the original grants until independently approved installation.
+- Six public `SECURITY DEFINER` functions remain anonymously executable in **actual** Security Staging. Two (praise and share) mutate data but check for a logged-in identity in their bodies; four expose reader-aware aggregates, tag search or praise-state reads. **No real function grants have changed.** The separate, unapplied `database/palace-observatory-stage-mutation-rpc-grants-PROPOSAL.sql` restricts only the two mutation functions from `PUBLIC`/`anon`; its disposable PostgreSQL 16/17 CI must pass independently. See the [RPC permission matrix](palace-observatory-staging-rpc-permission-matrix.md), including an unverified Mature/Explicit tag-count discoverability inconsistency.
+
+Reference: [Supabase RLS documentation](https://supabase.com/docs/guides/database/postgres/row-level-security), [RLS-without-policy advisory](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy), [anonymous definer function advisory](https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable).
+
+## Actual database backup: blocker, not verified
+
+Supabase organization `The Starry Palace` (`wufskbhpeffgjfhfmcsq`) was inspected read-only on 2026-11-04 and reports `plan: free`, `tier: tier_free`. Supabase's official [Database Backups guide](https://supabase.com/docs/guides/platform/backups) says guaranteed daily backups are included on Pro/Team/Enterprise, **not on Free**; it recommends regular offsite logical dumps for free-tier projects. A manual staging-only logical backup, secure retrieval, and successful restore have **not** been verified. Do not assume automatic backups or that migration rollback exists.
+
+Before real staging DDL: follow the explicit [Security Staging real-backup and restore runbook](palace-observatory-stage-real-backup-runbook.md). An authorized reviewer must create a protected **staging-only** backup through a trusted connection, verify encrypted retrieval, rehearse restoring it into a *different* disposable database, compare fixture counts, function definitions, RLS and privileges, and obtain separate installation approval. Do not copy production records or credentials into GitHub or CI. A database migration transaction alone is not a recovery strategy after commit.
+
+## Recovery validation in pull-request CI
+
+`.github/workflows/palace-observatory-postgres-review.yml` now performs a **synthetic-only** pre-installation logical dump and restores it to a separate disposable PostgreSQL 16 database using matching PostgreSQL 16 utilities **inside the temporary service container**. The test checks that the original `works` row, absent compatibility tables, staging fixture sentinel and previous `works` policy survive restoration. It also tests a proposal installation against a separate ephemeral DB and requires a refused replay.
+
+This is a **simulation** of recovery mechanics and cannot verify a real Supabase backup, actual Auth configuration, Storage or external integrations. CI scripts do not use Supabase service keys or connect to the live project.
+
+## Approval gates before staging database installation
+
+1. Independently confirm an accessible and successfully restored backup of the *actual* Security Staging database; verify the 12 original fixture migrations and original policies.
+2. Review the additive compatibility SQL and its narrow-grant changes, especially anonymous versus authenticated metadata and chapter-text access.
+3. Review the age-13 helper and all six public `SECURITY DEFINER` RPCs, with denied/allowed behavior using real staging-only identities.
+4. Approve and apply the staging-only schema, published-search, and age-13 proposals in their documented order, stopping on any unexpected change.
+5. Test RLS, published mature/explicit metadata, protected chapters, privately owned drafts and licensed/source-linked works with synthetic users only.
+6. Obtain **separate** staging website deployment approval. Production Cloudflare, DNS, Supabase data, Owners and GitHub main remain out of scope.
+
+**Outstanding full-project integration:** the last completed full-project run on head `0ab562e` passed 1,586 tests and failed three assertions (chat polling, relationship labels, banner geometry). Review-only fixes were committed afterward, but **no new full-project CI result was available at the time of this update**. Treat all such fixes as unverified until a fresh run. The Observatory's isolated suite and SQL workflow are not substitutes for the full-project release gate.

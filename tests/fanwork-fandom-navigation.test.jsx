@@ -43,7 +43,9 @@ describe('Fanwork-to-fandom integration',()=>{
  it('reads one exact fandom parameter in the Fandom Atlas, without overriding multi-select',()=>{
   const source=readFileSync('src/PalaceFandomAtlas.jsx','utf8');
   expect(source).toContain('fanworkFandomFromSearch(location.search)');
-  expect(source).toContain('const activeFandomNames=selectedNames.length?selectedNames:exactFandom?[exactFandom]:[];');
+  expect(source).toContain('const activeFandomNames=selectedNames.length?selectedNames:namedFandom?[namedFandom.name]:exactFandom?[exactFandom]:[];');
+  expect(source).toContain('resolveFandomDirectoryName(rows,exactFandom)');
+  expect(source).toContain('const queryFandomIds=selected.length?selected:exactFandomId?[exactFandomId]:[];');
   expect(source).toContain('fandomNames={activeFandomNames}');
   expect(source).toContain('defaultSource="all"');
   expect(source).toContain("changeParams({ids:null,match:null,fandom:null})");

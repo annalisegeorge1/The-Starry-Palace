@@ -8,12 +8,13 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/prepare-spa-fallback.mjs",
+    "build": "node scripts/verify-observatory-preview-boundary.mjs && vite build && node scripts/prepare-spa-fallback.mjs",
     "preview": "vite preview",
     "test": "vitest run",
     "verify": "vitest run && npm run build",
     "audit:structure": "node scripts/architecture-inventory.mjs",
-    "audit:css": "node scripts/css-overlap-inventory.mjs"
+    "audit:css": "node scripts/css-overlap-inventory.mjs",
+    "build:observatory-stage": "node scripts/verify-observatory-stage-env.mjs && npm run build"
   },
   "keywords": [],
   "author": "",

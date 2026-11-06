@@ -70,6 +70,9 @@ describe('Expanded Palace canon and media discovery',()=>{
   expect(atlas).toContain('mediaCounts');
   expect(atlas).toContain('palace-fandom-media-count');
   expect(atlas).toContain('safeFandomSelection');
-  expect(atlas).toContain("getStoriesForFandoms(selected,mode)");
+  expect(atlas).toContain('getStoriesForFandomsPage(queryFandomIds,mode,{offset:0,limit:FANDOM_STORY_PAGE_SIZE})');
+  expect(atlas).toContain('loadMoreSelectedFandomWorks');
+  expect(atlas).toContain('storyResultKey===selectionKey');
+  expect(atlas).toContain('Load more matching published works');
  });
 });

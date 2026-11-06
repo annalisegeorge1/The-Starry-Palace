@@ -1,10 +1,32 @@
 import {FANDOM_MEDIA_SHELVES,NON_FANDOM_CLASSIFICATIONS} from './palaceFandomCatalogue';
 
 export const FANDOMS_PER_PAGE=24;
-export function normalizeFandomName(input=''){
- return String(input||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'')
-  .toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
+// The directory search and tag-link resolver must share one Unicode-safe
+// comparison key. Fold Latin accents, but retain script-significant marks
+// such as Japanese dakuten so separate canons never collapse together.
+const fandomLinkKey=value=>String(value||'').normalize('NFKD')
+ .replace(/(\p{Script=Latin})\p{M}+/gu,'$1').toLocaleLowerCase()
+ .replace(/[^\p{L}\p{N}\p{M}]+/gu,' ').trim().replace(/\s+/g,' ');
+export function normalizeFandomName(input=''){return fandomLinkKey(input)}
+/** Resolve an exact public fandom name or one unique registered alias.
+ * Prefer canonical titles; never guess if two fandoms share an alias.
+ * This is link navigation, not fuzzy title search or an automatic tag merge.
+ */
+// Names in links use the same Unicode-safe normalization as directory search.
+export function resolveFandomDirectoryName(rows=[],input=''){
+ const key=fandomLinkKey(input);
+ if(!key)return null;
+ const eligible=(Array.isArray(rows)?rows:[]).filter(row=>
+  row?.id&&row?.name&&(!row.category||row.category==='fandom')
+  &&(!row.status||['canonical','community'].includes(row.status))
+  &&!NON_FANDOM_CLASSIFICATIONS.some(label=>normalizeFandomName(label)===normalizeFandomName(row.name)));
+ const canonical=eligible.filter(row=>fandomLinkKey(row.name)===key);
+ if(canonical.length)return canonical.length===1?canonical[0]:null;
+ const aliases=eligible.filter(row=>Array.isArray(row.aliases)
+  &&row.aliases.some(alias=>fandomLinkKey(alias)===key));
+ return aliases.length===1?aliases[0]:null;
 }
+
 export function visibleFandoms(rows=[],{media='all',query='',sort='alpha',subcategory='all',franchise='all'}={}){
  const needle=normalizeFandomName(query);
  const filtered=(Array.isArray(rows)?rows:[]).filter(row=>{

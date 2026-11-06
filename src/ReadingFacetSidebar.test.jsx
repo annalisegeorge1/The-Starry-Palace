@@ -199,7 +199,7 @@ it('keeps broad relationship types separate from searchable relationship tags',(
  ];
  view({facets,onToggle});
  fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
- expect(screen.getByText('Relationship categories')).toBeTruthy();
+ expect(screen.getAllByText('Relationship categories').length).toBeGreaterThan(0);
  expect(screen.getByRole('checkbox',{name:'Include F/M relationships'})).toBeTruthy();
  expect(screen.queryByText('Relationships')).toBeNull();
  expect(screen.queryByText('Tropes')).toBeNull();

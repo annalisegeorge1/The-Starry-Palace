@@ -2,6 +2,7 @@ import React,{useMemo,useState} from 'react';
 import {Link} from 'react-router-dom';
 import {fanworkFandomHref} from './fanworkFandomNavigation';
 import {MODERN_FANFICTION_LINKS,isHostedFanfiction} from './palaceFanfictionDiscovery';
+import {matchesReadingRelationships} from './readingFacetModel';
 import {modernFanfictionGuide,hostedFanfictionGuide,FANFICTION_RATINGS,
  filterModernFanfiction} from './fanfictionMetadata';
 import './unified-fanwork-catalogue.css';
@@ -30,10 +31,18 @@ export function createUnifiedFanworks(works=[],external=MODERN_FANFICTION_LINKS)
   if(ao3)return 'ao3:'+ao3[1];
   return value.trim().toLowerCase().replace(/\/$/,'');
  };
- const hostedSources=new Set(works.filter(w=>w?.is_archive&&w?.archive_source_url)
+ // A proposed/licence-pending archive copy never replaces a valid link to
+ // the writer's original edition. Treat metadata-only or unverified records
+ // as review intake, not as a readable hosted work.
+ const visibleHosted=works.filter(w=>
+  w&&(!w.publication_status||w.publication_status==='published')
+   &&(!w.visibility||w.visibility==='public')
+   &&(!w.is_archive||w.archive_display_ready===true)
+ );
+ const hostedSources=new Set(visibleHosted.filter(w=>w.is_archive&&w.archive_source_url)
   .map(w=>sourceIdentity(w.archive_source_url)));
- for(const work of works){
-  if(!work||!(work.work_type==='fanwork'||work.is_archive&&isHostedFanfiction(work)))continue;
+ for(const work of visibleHosted){
+  if(!(work.work_type==='fanwork'||work.is_archive&&isHostedFanfiction(work)))continue;
   const key=work.is_archive?'archive:'+work.slug:'member:'+work.id;
   if(!key||seen.has(key))continue;
   seen.add(key);
@@ -50,16 +59,30 @@ export function createUnifiedFanworks(works=[],external=MODERN_FANFICTION_LINKS)
  }
  return all;
 }
-export function filterUnifiedFanworks(rows,{query='',rating='all',source='all',animeOnly=false,includeMature=false,
- fandomNames=[],fandomMatch='any',completion='all'}={}){
+export function filterUnifiedFanworks(rows,{query='',rating='all',source='all',animeOnly=false,
+ fandomNames=[],fandomMatch='any',completion='all',includeTags=[],excludeTags=[],tagNames={},
+ relationshipIncluded=[],relationshipExcluded=[]}={}){
  const needle=normalized(query).trim();
  const matchedLinks=filterModernFanfiction(rows.filter(x=>x.kind==='link').map(x=>x.work),
   {query,rating,animeOnly,fandomNames,fandomMatch});
  const linkedIds=new Set(matchedLinks.map(x=>x.id));
  const selectedFandoms=fandomNames.map(normalized).filter(Boolean);
+ // Reading Rooms supplies canonical tag IDs and the names of selected tags.
+ // Source-linked works have descriptive tag names but no Palace tag IDs.
+ // Compare by ID when possible and by an exact tag name otherwise.
+ const hasTag=(entry,selected)=>{
+  const id=String(selected??'');
+  const name=normalized(tagNames?.[id]||id).trim();
+  return (entry.tagDetails||[]).some(tag=>
+   tag?.id!=null&&String(tag.id)===id||Boolean(name)&&normalized(tag?.name).trim()===name);
+ };
  return rows.filter(x=>{
   if(source==='hosted'&&x.kind==='link'||source==='linked'&&x.kind!=='link')return false;
-  if(x.rating==='mature'||x.rating==='explicit'){if(!includeMature)return false}
+  // Published metadata is searchable at every rating; the actual reader
+  // route independently enforces chapter access and minimum reader age.
+  if(!includeTags.every(tag=>hasTag(x,tag))||excludeTags.some(tag=>hasTag(x,tag)))return false;
+  if(!matchesReadingRelationships({...x.work,work_tags:(x.tagDetails||[]).map(tag=>({tags:tag}))},
+   relationshipIncluded,relationshipExcluded))return false;
   if(x.kind==='link'){
    if(completion!=='all')return false; // completion not verified consistently for external sources
    return linkedIds.has(x.work.id);
@@ -78,27 +101,27 @@ export function filterUnifiedFanworks(rows,{query='',rating='all',source='all',a
 
 export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks=MODERN_FANFICTION_LINKS,
  globalQuery='',globalRating='all',completion='all',fandomNames=[],fandomMatch='any',
- loading=false,loadError='',inFandomAtlas=false,hasMoreHosted=false,onMoreHosted,defaultSource='all'}){
+ includeTags=[],excludeTags=[],tagNames={},relationshipIncluded=[],relationshipExcluded=[],
+ loading=false,loadError='',inFandomAtlas=false,hasMoreHosted=false,loadingMoreHosted=false,onMoreHosted,defaultSource='all'}){
  const [search,setSearch]=useState('');
  const [rating,setRating]=useState('all');
  const [source,setSource]=useState(defaultSource);
  const [animeOnly,setAnimeOnly]=useState(false);
- const [includeMature,setIncludeMature]=useState(false);
  const [visibleCount,setVisibleCount]=useState(24);
  const [sort,setSort]=useState('source');
  const all=useMemo(()=>createUnifiedFanworks(publishedWorks,externalWorks),[publishedWorks,externalWorks]);
  const filtered=useMemo(()=>filterUnifiedFanworks(all,{
-  query:[globalQuery,search].filter(Boolean).join(' '),rating:rating==='all'?globalRating:rating,source,animeOnly,includeMature,
-  fandomNames,fandomMatch,completion
- }),[all,globalQuery,search,rating,globalRating,source,animeOnly,includeMature,fandomNames,fandomMatch,completion]);
+  query:[globalQuery,search].filter(Boolean).join(' '),rating:rating==='all'?globalRating:rating,source,animeOnly,
+  fandomNames,fandomMatch,completion,includeTags,excludeTags,tagNames,relationshipIncluded,relationshipExcluded
+ }),[all,globalQuery,search,rating,globalRating,source,animeOnly,fandomNames,fandomMatch,completion,
+  includeTags,excludeTags,tagNames,relationshipIncluded,relationshipExcluded]);
  const ordered=useMemo(()=>[...filtered].sort((a,b)=>sort==='source'?
   (a.kind==='link'?1:0)-(b.kind==='link'?1:0)||a.title.localeCompare(b.title):
   a.title.localeCompare(b.title)),[filtered,sort]);
  const shown=ordered.slice(0,visibleCount);
  const externalCount=all.filter(x=>x.kind==='link').length;
  const hostedCount=all.length-externalCount;
- const restricted=all.filter(x=>(x.rating==='mature'||x.rating==='explicit')).length;
- const reset=()=>{setSearch('');setRating('all');setSource(defaultSource);setAnimeOnly(false);setIncludeMature(false);setVisibleCount(24);setSort('source')};
+ const reset=()=>{setSearch('');setRating('all');setSource(defaultSource);setAnimeOnly(false);setVisibleCount(24);setSort('source')};
  return <section className="palace-unified-fanworks" aria-labelledby="palace-unified-fanworks-title">
   <header className="palace-unified-fanworks-head">
    <p className="eyebrow">FANFICTION · ONE SHARED DISCOVERY SHELF</p>
@@ -114,7 +137,7 @@ export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks
     <div>
      <label><span>Rating</span><select value={rating} onChange={e=>{setRating(e.target.value);setVisibleCount(24)}}>{FANFICTION_RATINGS.map(x=><option key={x.id} value={x.id}>{x.label}</option>)}</select></label>
      <button type="button" aria-pressed={animeOnly} className={'palace-unified-anime'+(animeOnly?' active':'')} onClick={()=>{setAnimeOnly(x=>!x);setVisibleCount(24)}}>Anime &amp; manga</button>
-     {(search||rating!=='all'||source!==defaultSource||animeOnly||includeMature||sort!=='source')&&<button type="button" className="palace-unified-clear" onClick={reset}>Clear filters</button>}
+     {(search||rating!=='all'||source!==defaultSource||animeOnly||sort!=='source')&&<button type="button" className="palace-unified-clear" onClick={reset}>Clear filters</button>}
     </div>
    </details>
   </div>
@@ -146,10 +169,14 @@ export default function UnifiedFanworkCatalogue({publishedWorks=[],externalWorks
     </div>
     </article></React.Fragment>)}
   </div>
-  {ordered.length===0&&<p className="palace-unified-empty">No fanworks match these choices. Try another title, rating or source.</p>}
+  {ordered.length===0&&!loading&&!loadError&&<p className="palace-unified-empty" role="status">{hasMoreHosted
+   ?'No matching works in the loaded pages. More Palace works can still be checked.'
+   :'No fanworks match these choices. Try another title, rating or source.'}</p>}
   {visibleCount<ordered.length&&<button className="palace-unified-more" type="button" onClick={()=>setVisibleCount(n=>n+24)}>Show more fanworks ({ordered.length-shown.length} remaining)</button>}
-  {restricted>0&&<div className="palace-unified-age"><p>{includeMature?'Mature and explicit recommendations are now shown. This acknowledgement is not age verification.':'Mature and explicit entries are hidden from this unified catalogue by default.'}</p><button type="button" onClick={()=>{setIncludeMature(v=>!v);setVisibleCount(24)}}>{includeMature?'Hide mature works':'I am 18+ · Show mature works'}</button></div>}
-  {hasMoreHosted&&onMoreHosted&&<button className="palace-unified-more-hosted" type="button" onClick={onMoreHosted}>Load additional Palace-published works</button>}
+  <div className="palace-unified-age"><p>Published Mature and Explicit work information may appear in search results. Ratings and content notes help readers choose; protected chapter access still follows the Palace's age and visibility rules.</p></div>
+  {hasMoreHosted&&onMoreHosted&&<button className="palace-unified-more-hosted" type="button"
+   disabled={loadingMoreHosted} aria-busy={loadingMoreHosted} onClick={onMoreHosted}>
+   {loadingMoreHosted?'Loading additional Palace works…':'Load additional Palace-published works'}</button>}
   <p className="palace-unified-rights">Works labeled “Read on the Palace” have a published hosted edition. Author-source links open the original website and are not hosted or copied here. Fanfiction authors' reuse terms do not automatically clear the underlying franchise rights.</p>
   {!inFandomAtlas&&<p className="palace-unified-fandom-link"><Link to="/fandoms?section=fanfiction">Explore fanworks by fandom →</Link></p>}
  </section>;
