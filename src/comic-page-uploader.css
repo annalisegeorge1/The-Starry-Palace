@@ -370,3 +370,12 @@ body:has(.palace-shell.daylight) .comic-upload-dialog .comic-upload-summary{
 body:has(.palace-shell.daylight) .comic-upload-dialog .comic-upload-feedback{
  background:#e6f1fa!important;color:#3e426a!important;
 }
+
+.comic-upload-dropzone{border:2px dashed rgba(176,157,230,.5);border-radius:14px;padding:20px;display:grid;justify-items:center;gap:8px;text-align:center;background:rgba(107,85,164,.1);margin:12px 0}
+.comic-upload-dropzone strong{font-size:1rem}
+.comic-upload-dropzone span{font-size:.83rem;line-height:1.45;opacity:.85}
+.comic-upload-dropzone label{cursor:pointer;position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px 14px}
+.comic-upload-dropzone label input{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+.comic-upload-dropzone label:focus-within{outline:2px solid #c7aef9;outline-offset:3px}
+body:has(.palace-shell.daylight) .comic-upload-dropzone{background:#f3effb;color:#3c3058;border-color:#a18bc3}
+@media(max-width:600px){.comic-upload-dropzone{padding:14px}}
