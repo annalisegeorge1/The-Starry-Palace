@@ -170,7 +170,8 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
    if(alive)setReactionRows({roomId,rows});
   }).catch(e=>{if(alive)setError('Reactions could not be loaded. '+errorText(e))});
   refresh();
-  const timer=window.setInterval(()=>{if(document.visibilityState==='visible')refresh()},12000);
+  // Realtime is primary; this slower fallback avoids unnecessary reaction polling.
+  const timer=window.setInterval(()=>{if(document.visibilityState==='visible')refresh()},60000);
   window.addEventListener('focus',refresh);
   return()=>{alive=false;window.clearInterval(timer);window.removeEventListener('focus',refresh)};
  },[open,roomId,tab,reactionMessageIds,reactionRefresh]);
