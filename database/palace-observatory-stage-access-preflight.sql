@@ -14,9 +14,15 @@ reader_grants AS (
   pg_catalog.has_table_privilege('anon',t.oid,'INSERT') AS anonymous_insert,
   pg_catalog.has_table_privilege('anon',t.oid,'UPDATE') AS anonymous_update,
   pg_catalog.has_table_privilege('anon',t.oid,'DELETE') AS anonymous_delete,
+  pg_catalog.has_table_privilege('anon',t.oid,'TRUNCATE') AS anonymous_truncate,
+  pg_catalog.has_table_privilege('anon',t.oid,'REFERENCES') AS anonymous_references,
+  pg_catalog.has_table_privilege('anon',t.oid,'TRIGGER') AS anonymous_trigger,
   pg_catalog.has_table_privilege('authenticated',t.oid,'INSERT') AS member_insert,
   pg_catalog.has_table_privilege('authenticated',t.oid,'UPDATE') AS member_update,
   pg_catalog.has_table_privilege('authenticated',t.oid,'DELETE') AS member_delete,
+  pg_catalog.has_table_privilege('authenticated',t.oid,'TRUNCATE') AS member_truncate,
+  pg_catalog.has_table_privilege('authenticated',t.oid,'REFERENCES') AS member_references,
+  pg_catalog.has_table_privilege('authenticated',t.oid,'TRIGGER') AS member_trigger,
   t.relrowsecurity AS rls_enabled
  FROM public_tables t
  WHERE t.relname IN ('works','chapters','tags','work_tags')
