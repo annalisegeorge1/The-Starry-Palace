@@ -5,6 +5,9 @@ const read=path=>readFileSync(path,'utf8');
 const schema=read('database/palace-observatory-stage-additive-schema-PROPOSAL.sql');
 const search=read('database/palace-observatory-stage-published-search-PROPOSAL.sql');
 const age=read('database/palace-observatory-stage-age-13-PROPOSAL.sql');
+const rpcGrants=read('database/palace-observatory-stage-mutation-rpc-grants-PROPOSAL.sql');
+const postgresReview=read('.github/workflows/palace-observatory-postgres-review.yml');
+const sqlSmoke=read('tests/sql/palace-observatory-postgres-smoke.sql');
 const canonical=read('supabase/migrations/20261012163000_published_archive_precision_search.sql').trim();
 const guide=read('docs/palace-observatory-staging-migration-review.md');
 const fixtures=JSON.parse(read('tests/fixtures/palace-observatory-stage-scenarios.json'));
@@ -12,7 +15,7 @@ const executable=s=>s.split('\n').filter(x=>!/^\s*--/.test(x)).join('\n');
 
 describe('Draft-only additive staging database package',()=>{
  it('never targets an unknown or production environment without aborting',()=>{
-  for(const script of [schema,search,age]){
+  for(const script of [schema,search,age,rpcGrants]){
    expect(script).toContain("to_regclass('private.staging_chat_rooms')");
    expect(script).toContain('RAISE EXCEPTION');
    expect(script).toMatch(/BEGIN;[\s\S]*COMMIT;/);
@@ -55,6 +58,20 @@ describe('Draft-only additive staging database package',()=>{
   expect(search).toMatch(/language sql stable security invoker/i);
   expect(search).toContain("create or replace function public.search_published_works_v2");
   expect(search).toContain("revoke all on function public.search_published_works_v2");
+ });
+ it('removes guest execution for reward mutations without touching public discovery RPCs',()=>{
+  expect(rpcGrants).toContain('REVOKE EXECUTE ON FUNCTION');
+  expect(rpcGrants).toContain('public.give_palace_praise(text,uuid,text)');
+  expect(rpcGrants).toContain('public.record_palace_share(uuid)');
+  expect(rpcGrants).toContain('FROM PUBLIC, anon;');
+  expect(rpcGrants).toContain("has_function_privilege('authenticated'");
+  expect(executable(rpcGrants)).not.toMatch(/\b(?:CREATE|REPLACE|DROP)\s+FUNCTION\b/i);
+  expect(executable(rpcGrants)).not.toMatch(/\bGRANT\s+EXECUTE\b/i);
+  expect(rpcGrants).not.toContain('search_palace_tags');
+  expect(rpcGrants).not.toContain('get_tag_family_counts');
+  expect(sqlSmoke).toContain('only_authenticated_reward_rpc_execution');
+  expect(postgresReview).toContain("postgres: ['16', '17']");
+  expect(postgresReview).toContain('palace-observatory-stage-mutation-rpc-grants-PROPOSAL.sql');
  });
  it('keeps the age correction separately reviewable and adult chapter restrictions intact',()=>{
   expect(age).toContain('coalesce(p_minimum_age,13)<=13');
