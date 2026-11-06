@@ -33,7 +33,7 @@ describe('Atelier artwork quality refinement',()=>{
    expect(frame.querySelector('image')).toBeNull();
    expect(frame.querySelector('rect')).toBeNull();
    expect([...frame.querySelectorAll('circle')].some(c=>Number(c.getAttribute('r'))>40 && c.getAttribute('fill') && c.getAttribute('fill')!=='none')).toBe(false);
-   expect(frame.querySelectorAll('path').length).toBeGreaterThan(15);
+   expect(frame.querySelectorAll('path, circle, polygon').length).toBeGreaterThan(18);
   }
   const ids=[...container.querySelectorAll('[id]')].map(el=>el.id);
   expect(new Set(ids).size).toBe(ids.length);
