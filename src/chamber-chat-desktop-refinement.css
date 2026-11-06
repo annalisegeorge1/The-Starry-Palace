@@ -223,3 +223,25 @@ html[data-palace-theme="daylight"] .palace-chat-dock.palace-chat-v2 .palace-chat
  .palace-chat-dock.palace-chat-v2:not(.is-workspace):not(.is-thread-open) .palace-chat-list-preview{width:100%!important;max-width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
  .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-unread-spark{color:#ba9aef!important;font-size:10px}
 }
+
+
+/* Desktop quick-chat: the message field and its surrounding compose bar are
+   one control. Keep keyboard focus visible on the bar, not a second blue
+   rectangle around the textarea. Do not affect the full Messenger workspace. */
+@media (min-width:961px) {
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-compose textarea:focus,
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-compose textarea:focus-visible {
+  outline:none!important;
+  outline-offset:0!important;
+  border:0!important;
+  box-shadow:none!important;
+ }
+ .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-compose:focus-within {
+  border-color:var(--pc-accent,#aaa0d2)!important;
+  box-shadow:0 0 0 1px var(--pc-accent,#aaa0d2)!important;
+ }
+ html[data-palace-theme="midnight"] .palace-chat-dock.palace-chat-v2:not(.is-workspace) .palace-chat-compose:focus-within {
+  border-color:#81748f!important;
+  box-shadow:0 0 0 1px #81748f!important;
+ }
+}
