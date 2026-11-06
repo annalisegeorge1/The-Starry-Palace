@@ -15,10 +15,14 @@ permissions:
 jobs:
   ephemeral-postgres-sql:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      matrix:
+        postgres: ['16', '17']
+    timeout-minutes: 12
     services:
       postgres:
-        image: postgres:16
+        image: postgres:${{ matrix.postgres }}
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: ephemeral-only-ci
@@ -56,17 +60,17 @@ jobs:
           done
       - name: Bootstrap staging-shaped fictional security fixtures
         run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/palace-observatory-postgres-bootstrap.sql
-      - name: Rehearse recovery with matching PostgreSQL 16 tools
+      - name: Rehearse recovery with matching PostgreSQL tools
         run: |
-          # All data is synthetic and stays inside the temporary Postgres 16 service.
+          # All data is synthetic and stays inside the temporary service.
           # Matching server/client versions avoid unsupported dump settings.
-          cid="$(docker ps -q --filter ancestor=postgres:16 | head -n 1)"
+          cid="$(docker ps -q --filter ancestor=postgres:${{ matrix.postgres }} | head -n 1)"
           test -n "$cid"
-          docker exec --user postgres "$cid" pg_dump -Fc --no-owner --no-acl \
+          docker exec --user postgres "$cid" pg_dump -Fc --no-owner \
             -f /tmp/observatory-fixture-recovery.dump observatory_ci
           docker exec --user postgres "$cid" createdb observatory_recovery_ci
           docker exec --user postgres "$cid" pg_restore --exit-on-error \
-            --no-owner --no-acl -d observatory_recovery_ci \
+            --no-owner -d observatory_recovery_ci \
             /tmp/observatory-fixture-recovery.dump
           restored="$(docker exec --user postgres "$cid" psql -X \
             -v ON_ERROR_STOP=1 -d observatory_recovery_ci -Atc "
@@ -76,6 +80,8 @@ jobs:
                 AND to_regclass('private.staging_chat_rooms') IS NOT NULL
                 AND (SELECT count(*) FROM pg_policies
                      WHERE schemaname='public' AND tablename='works')=1
+                AND has_function_privilege('anon','public.give_palace_praise(text,uuid,text)','EXECUTE')
+                AND has_function_privilege('authenticated','public.record_palace_share(uuid)','EXECUTE')
               THEN 'ready' ELSE 'mismatch' END
             ")"
           test "$restored" = ready
@@ -86,11 +92,19 @@ jobs:
         run: psql -X -v ON_ERROR_STOP=1 -f database/palace-observatory-stage-published-search-PROPOSAL.sql
       - name: Apply isolated age-13 correction to temporary DB
         run: psql -X -v ON_ERROR_STOP=1 -f database/palace-observatory-stage-age-13-PROPOSAL.sql
+      - name: Revoke anonymous reward-mutation RPC access only in disposable DB
+        run: psql -X -v ON_ERROR_STOP=1 -f database/palace-observatory-stage-mutation-rpc-grants-PROPOSAL.sql
       - name: Verify synthetic rights, public metadata, and private chapters
         run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/palace-observatory-postgres-smoke.sql
       - name: Reject accidental schema replay after the first installation
         run: |
           if psql -X -v ON_ERROR_STOP=1 -f database/palace-observatory-stage-additive-schema-PROPOSAL.sql >/dev/null 2>&1; then
             echo "UNSAFE: staging additive schema did not reject replay"
+            exit 1
+          fi
+      - name: Reject accidental reward RPC permission replay
+        run: |
+          if psql -X -v ON_ERROR_STOP=1 -f database/palace-observatory-stage-mutation-rpc-grants-PROPOSAL.sql >/dev/null 2>&1; then
+            echo "UNSAFE: staging RPC permission proposal did not reject replay"
             exit 1
           fi
