@@ -10,7 +10,7 @@
  --chat3-list:linear-gradient(132deg,rgba(103,72,163,.16),rgba(51,87,140,.14));
  --chat3-list-hover:linear-gradient(130deg,rgba(150,110,211,.28),rgba(66,123,168,.22));
  --chat3-incoming:linear-gradient(131deg,#303554,#303c5b 63%,#2d4e64);
- --chat3-outgoing:linear-gradient(131deg,#7457a7,#555e9d 59%,#3a7d94);
+ --chat3-outgoing:linear-gradient(131deg,#795e9e 0%,#685783 59%,#544d72 100%);
  --chat3-surface:radial-gradient(ellipse at 11% -12%,rgba(114,84,190,.13),transparent 54%),linear-gradient(165deg,#161b30,#181d35 58%,#14283b);
  --chat3-dock:linear-gradient(135deg,rgba(60,54,100,.97),rgba(37,49,78,.97) 64%,rgba(27,66,83,.96));
  --chat3-subtle:rgba(21,24,45,.98);
@@ -22,7 +22,7 @@ html[data-palace-theme="daylight"] .palace-chat-v2{
  --chat3-list:linear-gradient(132deg,rgba(240,224,253,.75),rgba(216,234,250,.78));
  --chat3-list-hover:linear-gradient(132deg,rgba(232,206,253,.96),rgba(187,225,246,.89));
  --chat3-incoming:linear-gradient(132deg,#edeaf8,#e1e8f7 63%,#deeff5);
- --chat3-outgoing:linear-gradient(128deg,#dcc1f1,#c2d5f3 55%,#afdfe8);
+ --chat3-outgoing:linear-gradient(128deg,#e2d1f3 0%,#d6cbe9 55%,#cdd0e4 100%);
  --chat3-surface:radial-gradient(ellipse at 12% 0%,rgba(255,255,255,.95),transparent 57%),linear-gradient(160deg,#f8f6fd,#f0f1fc 60%,#e9f6f8);
  --chat3-dock:linear-gradient(125deg,#f1e9fd,#e8eefa 65%,#e0f5f5);
  --chat3-subtle:#f3effa;
@@ -221,7 +221,7 @@ html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-tabs button[aria
 .palace-chat-v2 .palace-chat-messages .palace-chat-bubble.mine{
  background:var(--chat3-outgoing)!important;color:#fff!important;
  border-color:rgba(215,211,253,.34)!important;
- border-radius:16px 16px 5px 16px!important;
+ border-radius:16px!important;
  box-shadow:0 6px 17px rgba(15,16,50,.2),inset 0 1px 0 rgba(255,255,255,.26)!important;
 }
 html[data-palace-theme="daylight"] .palace-chat-v2 .palace-chat-messages .palace-chat-bubble.mine{
