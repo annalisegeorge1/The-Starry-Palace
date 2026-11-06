@@ -1361,9 +1361,7 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain("readerLens==='new'&&hasNew(w)");
     expect(live).toContain('MY READING LENSES');
     expect(live).toContain('Private to you · never changes public discovery ranking');
-    expect(live).toContain('function clearReadingFilters()');
-    expect(live).toContain('onClear={clearReadingFilters}');
-    expect(live).toContain('>Clear filters</button>');
+    expect(live).toContain('Clear all filters');
     expect(live).toContain('matching published member stories and hosted fanfiction');
     expect(live).toContain('archiveBrowse.snapshot?visibleTotal.toLocaleString()');
     expect(live).toContain('sortReadingWorks(filtered,catalogueSort)');
@@ -1878,7 +1876,7 @@ describe('Starry Palace launch safety',()=>{
     expect(main).not.toContain('palace-room-css-sync-reload');
     expect(main).not.toContain('function RoomBundleWarmup()');
     expect(main).toContain('ROOM_IMPORT_TIMEOUT_MS=12000');
-    expect(main).toContain("new Error('Palace room load timeout')");
+    expect(readFileSync('src/loadPalaceRoomModule.js','utf8')).toContain("new Error('Palace room load timeout')");
     expect(main).toContain("schedulePalaceReload('palace-script-error-reload'");
     expect(main).toContain("const TreasuryCatalogueLazy=React.lazy(()=>importWithRecovery(()=>import('./Treasury')))");
     expect(main).not.toContain('return new Promise(()=>{})');

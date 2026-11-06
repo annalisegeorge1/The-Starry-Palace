@@ -1,0 +1,257 @@
+/* Story discussion belongs after the chapter text, at the reader's natural stopping point. */
+.palace-shell.full-palace-shell .reader-page.reader-streamlined .reader-return-top-before-shelf {
+ display:inline-flex;
+ align-items:center;
+ width:max-content;
+ max-width:100%;
+ margin:1.3rem 0 .35rem;
+ min-height:42px;
+ font-size:.82rem;
+ font-weight:750;
+ color:inherit;
+ text-decoration:underline;
+ text-underline-offset:3px;
+}
+.palace-shell.full-palace-shell .reader-page .reader-comments-after-chapter {
+ scroll-margin-top:105px;
+ margin:0 0 1.5rem;
+ max-width:100%;
+}
+.palace-shell.full-palace-shell .reader-page .chapter-end-comments {
+ box-sizing:border-box;
+ padding:clamp(1rem,2vw,1.7rem);
+ border-radius:18px;
+ border:1px solid rgba(171,148,225,.33);
+ background:linear-gradient(138deg,rgba(39,38,83,.55),rgba(28,52,90,.42));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+ color:#f4f1ff;
+}
+.palace-shell.full-palace-shell .reader-page .chapter-end-comments > .eyebrow {
+ margin:0 0 .45rem;
+ color:#cbb7fa;
+ letter-spacing:.12em;
+}
+.palace-shell.full-palace-shell .reader-page .chapter-end-comments > h2 {
+ margin:.12rem 0 .45rem;
+ color:#fff;
+ font:700 clamp(1.25rem,2vw,1.6rem)/1.3 Georgia,serif;
+}
+.palace-shell.full-palace-shell .reader-page .chapter-comments-description {
+ max-width:65ch;
+ margin:0 0 1.2rem;
+ color:#d9d6ed;
+ font-size:.86rem;
+ line-height:1.6;
+}
+.palace-shell.full-palace-shell .reader-page .chapter-end-comments .reader-comment {
+ min-width:0;
+ overflow-wrap:anywhere;
+ border-color:rgba(179,169,225,.27);
+}
+.palace-shell.full-palace-shell .reader-page .chapter-end-comments .comment-compose {
+ display:grid;
+ gap:.65rem;
+ max-width:100%;
+ min-width:0;
+ padding:1rem;
+ border-radius:14px;
+ border:1px solid rgba(181,165,224,.38);
+ background:rgba(22,26,61,.52);
+}
+.palace-shell.full-palace-shell .reader-page .chapter-end-comments .comment-compose textarea {
+ display:block;
+ box-sizing:border-box;
+ width:100%;
+ min-width:0;
+ min-height:100px;
+ padding:.9rem;
+ border:1px solid rgba(164,183,232,.55);
+ border-radius:11px;
+ background:#17223d;
+ color:#f7f5ff;
+ line-height:1.5;
+ font:inherit;
+ resize:vertical;
+}
+.palace-shell.full-palace-shell .reader-page .chapter-end-comments .comment-compose textarea::placeholder {
+ color:#d2d4e4;
+ opacity:1;
+}
+.palace-shell.full-palace-shell .reader-page .chapter-end-comments .comment-compose > button {
+ width:max-content;
+ min-height:44px;
+ max-width:100%;
+ padding:.6rem 1.05rem;
+ border-radius:11px;
+ background:linear-gradient(115deg,#7852bc,#357ea5);
+ border:1px solid rgba(214,197,255,.65);
+ color:#fff;
+ font-weight:800;
+ cursor:pointer;
+}
+.palace-shell.full-palace-shell .reader-page .reader-comments-status {
+ padding:1rem;
+ border-radius:13px;
+ border:1px solid rgba(174,162,220,.36);
+ color:inherit;
+ line-height:1.5;
+}
+.palace-shell.full-palace-shell .reader-page .reader-comments-status button {
+ min-height:42px;
+ border-radius:9px;
+ padding:.5rem .75rem;
+ font:700 .82rem/1.35 system-ui,sans-serif;
+ cursor:pointer;
+}
+.palace-shell.full-palace-shell.daylight .reader-page .chapter-end-comments {
+ background:linear-gradient(120deg,#fefcff,#f0f4ff);
+ color:#312a49;
+ border-color:#c6b8df;
+ box-shadow:0 8px 22px rgba(58,57,116,.08);
+}
+.palace-shell.full-palace-shell.daylight .reader-page .chapter-end-comments > .eyebrow {color:#64508d}
+.palace-shell.full-palace-shell.daylight .reader-page .chapter-end-comments > h2 {color:#30234d}
+.palace-shell.full-palace-shell.daylight .reader-page .chapter-comments-description {color:#515069}
+.palace-shell.full-palace-shell.daylight .reader-page .chapter-end-comments .comment-compose {
+ background:#f8f7fc;
+ border-color:#c8bedb;
+ color:#2e2b44;
+}
+.palace-shell.full-palace-shell.daylight .reader-page .chapter-end-comments .comment-compose textarea {
+ background:#fff;
+ border-color:#bcb7d0;
+ color:#2f2e43;
+}
+.palace-shell.full-palace-shell.daylight .reader-page .chapter-end-comments .comment-compose textarea::placeholder {color:#66627a}
+.palace-shell.full-palace-shell.daylight .reader-page .chapter-end-comments .reader-comment :is(p,small) {color:#44465d}
+@media(max-width:640px) {
+ .palace-shell.full-palace-shell .reader-page .reader-comments-after-chapter {margin-bottom:1rem}
+ .palace-shell.full-palace-shell .reader-page .chapter-end-comments {padding:13px;border-radius:15px}
+ .palace-shell.full-palace-shell .reader-page .chapter-end-comments .comment-compose {padding:12px}
+ .palace-shell.full-palace-shell .reader-page .chapter-end-comments .comment-compose > button {width:100%}
+}
+
+/* Chapter-specific discussion and story-wide discussion are distinct views. */
+.palace-shell.full-palace-shell .reader-page .reader-comment-scope{
+ display:flex;
+ flex-wrap:wrap;
+ gap:8px;
+ margin:4px 0 13px;
+}
+.palace-shell.full-palace-shell .reader-page .reader-comment-scope button{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ gap:8px;
+ min-height:44px;
+ padding:9px 14px;
+ border:1px solid rgba(180,169,226,.44);
+ border-radius:12px;
+ background:rgba(48,45,96,.27);
+ color:#ede7ff;
+ font:750 .82rem/1.3 system-ui,sans-serif;
+ cursor:pointer;
+}
+.palace-shell.full-palace-shell .reader-page .reader-comment-scope button.active{
+ border-color:#b5c8ff;
+ background:linear-gradient(115deg,#6850a8,#2d7193);
+ color:#fff;
+ box-shadow:0 0 0 2px rgba(144,164,244,.13);
+}
+.palace-shell.full-palace-shell .reader-page .reader-comment-scope button span{
+ min-width:23px;
+ border-radius:999px;
+ padding:2px 6px;
+ background:rgba(255,255,255,.12);
+ font-size:.72rem;
+ font-variant-numeric:tabular-nums;
+}
+.palace-shell.full-palace-shell .reader-page .reader-full-work-cta{
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ justify-content:space-between;
+ gap:12px 20px;
+ margin:12px 0 19px;
+ padding:15px 19px;
+ border:1px solid rgba(166,163,228,.38);
+ border-radius:17px;
+ background:linear-gradient(110deg,rgba(63,53,111,.3),rgba(35,88,118,.25));
+}
+.palace-shell.full-palace-shell .reader-page .reader-full-work-cta>div{flex:1 1 200px;min-width:0}
+.palace-shell.full-palace-shell .reader-page .reader-full-work-cta strong{display:block;color:#f6edff;font:700 1.1rem/1.3 Georgia,serif}
+.palace-shell.full-palace-shell .reader-page .reader-full-work-cta p{margin:5px 0 0;color:#d8d4e7;font-size:.82rem;line-height:1.5}
+.palace-shell.full-palace-shell .reader-page .reader-full-work-cta>a{
+ display:inline-flex;align-items:center;justify-content:center;
+ flex:0 0 auto;min-height:44px;
+ padding:.6rem .9rem;
+ border-radius:12px;border:1px solid rgba(169,218,243,.6);
+ background:linear-gradient(115deg,#6853a7,#286e94);
+ color:#fff;text-decoration:none;font:800 .82rem/1.35 system-ui,sans-serif;
+}
+.palace-shell.full-palace-shell.daylight .reader-page .reader-comment-scope button{
+ background:#f6f3fc;color:#3d3356;border-color:#b6aacd;
+}
+.palace-shell.full-palace-shell.daylight .reader-page .reader-comment-scope button.active{
+ background:#59438d;color:#fff;border-color:#493379;
+}
+.palace-shell.full-palace-shell.daylight .reader-page .reader-full-work-cta{
+ background:linear-gradient(120deg,#faf6ff,#e8f3fa);border-color:#c7b6dc;
+}
+.palace-shell.full-palace-shell.daylight .reader-page .reader-full-work-cta strong{color:#39284f}
+.palace-shell.full-palace-shell.daylight .reader-page .reader-full-work-cta p{color:#56536f}
+@media(max-width:600px){
+ .palace-shell.full-palace-shell .reader-page .reader-comment-scope button{flex:1 1 auto;padding:9px}
+ .palace-shell.full-palace-shell .reader-page .reader-full-work-cta>a{flex:1 1 100%;width:100%}
+}
+
+/* Full-work reading keeps the flow intact while offering each chapter's comments. */
+.palace-shell .palace-full-work-reader .palace-full-chapter-discussion {
+ margin:1.1rem 0 2.15rem;
+ padding:12px 0 0;
+ border-top:1px solid rgba(161,151,205,.25);
+ font:700 .87rem/1.45 system-ui,sans-serif;
+}
+.palace-shell .palace-full-work-reader .palace-full-chapter-discussion a {
+ display:inline-flex;
+ align-items:center;
+ min-height:44px;
+ padding:9px 12px;
+ border-radius:11px;
+ border:1px solid rgba(139,199,235,.4);
+ background:rgba(79,92,155,.14);
+ color:inherit;
+ text-decoration:none;
+}
+.palace-shell .palace-full-work-reader .palace-full-chapter-discussion a:is(:hover,:focus-visible) {
+ outline:2px solid #8acdf0;
+ outline-offset:2px;
+}
+.palace-shell.daylight .palace-full-work-reader .palace-full-chapter-discussion a {
+ color:#3d365b;
+ border-color:#bab1d2;
+ background:#f5f2fc;
+}
+
+/* Give desktop reading room to breathe. The old streamlined pass capped
+   'standard' at 700px even when Full Page was chosen. Explicit width
+   preferences remain available; small devices still use their viewport. */
+@media(min-width:900px){
+ .palace-shell.full-palace-shell .reader-page.reader-streamlined .reader-chapter-head{
+  max-width:min(940px,100%)!important;
+ }
+ .palace-shell.full-palace-shell .reader-page.reader-streamlined.measure-narrow .chapter-text.restored{
+  max-width:min(680px,100%)!important;
+ }
+ .palace-shell.full-palace-shell .reader-page.reader-streamlined.measure-standard .chapter-text.restored{
+  max-width:min(940px,100%)!important;
+ }
+ .palace-shell.full-palace-shell .reader-page.reader-streamlined.measure-wide .chapter-text.restored{
+  max-width:min(1120px,100%)!important;
+ }
+ .palace-shell.full-palace-shell .reader-page.reader-streamlined .reader-comments-after-chapter,
+ .palace-shell.full-palace-shell .reader-page.reader-streamlined .reader-full-work-cta {
+  width:min(940px,100%);
+  margin-inline:auto;
+ }
+}

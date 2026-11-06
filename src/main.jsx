@@ -1,4 +1,6 @@
+import {loadPalaceRoomModule} from './loadPalaceRoomModule';
 import MemberAvatar from './MemberAvatar';
+import {PalaceAccountMenu} from './PalaceAccountMenu';
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createPortal } from 'react-dom';
@@ -36,6 +38,7 @@ import {shouldShowPalacePassage} from './palacePassagePolicy';
 import {palaceRecentDoorKey,readPalaceRecentDoors,addPalaceRecentDoor} from './palaceRecentDoors';
 import './palace-inviting-polish.css';
 import './palace-cohesive-experience.css';
+import './palace-account-menu.css';
 import {
  ChamberLive,OnboardingLive,ReadingLive,ClubLive,WritingLive,SettingsLive,ActivityLive,LibraryLive,
  PalaceLifeLive,LettersLive,EventsLive,TreasuryLive,MemberProfileLive,SearchLive,
@@ -142,6 +145,25 @@ import './palace-mobile-drawer-compact.css';
 import './palace-midnight-theme.css';
 import './member-page-skins.css';
 import './reader-endflow-accessibility.css';
+import './reader-chapter-comments.css';
+import './tablet-daybreak-reading-polish.css';
+import './daybreak-dashboard-profile-contrast.css';
+import './daybreak-events-desktop-polish.css';
+import './daybreak-treasury-desktop-refinement.css';
+import './daybreak-treasury-settings-tablet-finish.css';
+import './daybreak-story-comments-contrast.css';
+import './palace-command-refinement.css';
+import './comic-studio-desktop-refinement.css';
+import './chamber-chat-desktop-refinement.css';
+import './daylight-writing-workspace.css';
+import './tags-room-desktop-polish.css';
+import './commons-desktop-layout-repair.css';
+import './commons-activity-nightfall-polish.css';
+import './writing-overview-desktop-refinement.css';
+import './ink-duel-arena-hud.css';
+import './ink-duel-loadout-contrast-fix.css';
+import './reader-daybreak-final-contrast.css';
+import {palaceCommandIcon,uniquePalaceCommandRecents} from './palaceCommandModel';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
 
@@ -171,14 +193,12 @@ function reloadForStaleChunk(error){
  throw new Error(refreshing?'Palace room refresh requested after a stale bundle: '+message:message);
 }
 function importWithRecovery(importer){
- let timer;
- const timeout=new Promise((_,reject)=>{timer=window.setTimeout(()=>reject(new Error('Palace room load timeout')),ROOM_IMPORT_TIMEOUT_MS)});
- return Promise.race([Promise.resolve().then(importer),timeout]).finally(()=>window.clearTimeout(timer)).catch(reloadForStaleChunk);
+ return loadPalaceRoomModule(importer,ROOM_IMPORT_TIMEOUT_MS).catch(reloadForStaleChunk);
 }
 
 if(typeof window!=='undefined'){
- window.addEventListener('vite:preloadError',event=>{
-  event.preventDefault();
+ window.addEventListener('vite:preloadError',()=>{
+  // Let Vite reject the import so recovery receives its real error.
   schedulePalaceReload('palace-preload-reload',40);
  });
  window.addEventListener('unhandledrejection',event=>{
@@ -525,13 +545,13 @@ function FrameShell({children}){
   {glyph:'✎',label:'Write',detail:'Writing Chamber',path:session?'/writing':palaceSignInDoor('/writing')}
  ];
 
- const recentCommandItems=recentDoorsKey&&recentPalaceRoutes.key===recentDoorsKey?recentPalaceRoutes.items.filter(row=>row.path!==currentHref).slice(0,4):[];
+ const recentCommandItems=recentDoorsKey&&recentPalaceRoutes.key===recentDoorsKey?uniquePalaceCommandRecents(recentPalaceRoutes.items,currentHref):[];
  const defaultCommandItems=[...recentCommandItems,...quickDoors.filter(q=>!recentCommandItems.some(r=>r.path===q.path))].slice(0,8);
  const visibleCommandItems=commandNeedle?commandMatches:defaultCommandItems;
  React.useEffect(()=>{if(!activeRoom||!recentDoorsKey)return;const label=activeSection?.[0]||activeRoom.label;const item={label,path:currentHref,icon:activeRoom.icon,detail:activeSection?activeRoom.label+' · recently visited':'Recently visited',kind:'recent'};setRecentPalaceRoutes(prev=>({key:recentDoorsKey,items:addPalaceRecentDoor(prev.key===recentDoorsKey?prev.items:readPalaceRecentDoors(safeLocalGet,recentDoorsKey),item)}))},[currentHref,activeRoom?.id,activeSection?.[0],recentDoorsKey]);
  React.useEffect(()=>setCommandIndex(0),[commandQuery,commandOpen]);
  function togglePalaceNavigation(){
-  if(typeof window!=='undefined'&&window.matchMedia('(min-width:981px)').matches){setSidebarCollapsed(v=>!v);setNavOpen(false);return}
+  if(typeof window!=='undefined'&&window.matchMedia('(min-width:1121px)').matches){setSidebarCollapsed(v=>!v);setNavOpen(false);return}
   setNavOpen(v=>!v)
  }
  function submitSearch(e){e.preventDefault();if(search.trim())navigate('/search?q='+encodeURIComponent(search.trim()))}
@@ -555,10 +575,10 @@ function FrameShell({children}){
   </aside>
   <button className="nav-scrim" aria-label="Close navigation" onClick={()=>setNavOpen(false)}/>
   <div className="palace-stage full-stage">
-   <header className="topbar full-topbar"><div className="full-topbar-row"><div className="full-brand"><button className="nav-toggle" onClick={togglePalaceNavigation} aria-label="Toggle Palace navigation" aria-expanded={navOpen} aria-controls="palace-sidebar"><PalaceRoomIcon name="menu"/></button><Link to="/"><span className="brandmark palace-brand-sigil"><PalaceRoomIcon name="palace"/></span><strong>The Starry Palace</strong></Link><small>BETA</small>{activeRoom&&<span className="top-room-context" aria-label={'Current room: '+activeRoom.label+(activeSection?' · '+activeSection[0]:'')}><span className={"top-room-sigil top-room-sigil-"+activeRoom.id}><PalaceRoomIcon name={activeRoom.id}/></span> {activeRoom.label}{activeSection&&<><b aria-hidden="true">/</b><em>{activeSection[0]}</em></>}</span>}</div><form id="palace-global-search" className={'global-search-live '+(mobileGlobalSearchOpen?'palace-global-search-expanded':'palace-global-search-collapsed')} role="search" aria-label="Search The Starry Palace" onSubmit={submitSearch}><span aria-hidden="true">✦</span><input aria-label="Search works, writers, tags and fandoms" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search works, writers, tags, fandoms…"/><button type="submit">Search</button></form><div className="full-top-actions"><button className="palace-mobile-home-search-trigger" type="button" onClick={()=>setMobileGlobalSearchOpen(open=>!open)} aria-label={mobileGlobalSearchOpen?'Hide Palace search':'Search The Starry Palace'} aria-expanded={mobileGlobalSearchOpen} aria-controls="palace-global-search" title="Search"><svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="10.8" cy="10.8" r="6.2"/><path d="m15.5 15.5 5 5"/></svg></button><button className="command-trigger palace-home-command-trigger" type="button" onClick={()=>setCommandOpen(true)} aria-label="Open Palace quick navigation" aria-expanded={commandOpen} aria-controls="palace-command-dialog" title="Quick navigation · Ctrl or Command K"><span>⌕</span><kbd>⌘K</kbd></button>{session&&<Link className="top-icon-link palace-top-profile-trigger" to={shellProfile?.username?"/member/"+encodeURIComponent(shellProfile.username):"/chamber"} aria-label="My profile" title="My Chamber profile"><svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c.5-4.1 3.1-6.2 7.5-6.2s7 2.1 7.5 6.2"/></svg></Link>}{session&&<button type="button" className="top-icon-link palace-top-chat-trigger" aria-label="Open Palace Chat" title="Open Palace Chat" onClick={()=>window.dispatchEvent(new Event("palace-chat-open"))}><svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M20.5 11.5a8.5 8.5 0 0 1-8.5 8.5 8.4 8.4 0 0 1-3.8-.9L3.5 20.5l1.4-4.7A8.5 8.5 0 1 1 20.5 11.5Z"/></svg></button>}{session&&<Link className="top-icon-link" style={{position:'relative'}} to="/activity" aria-label={activityBadge?activityBadge+' unread notifications':'Notifications'}><PalaceRoomIcon name="bell"/>{activityBadge>0&&<span className="float-unread-badge">{activityBadge>99?'99+':activityBadge}</span>}</Link>}<Link className="write-action" aria-label="Open Writing Chamber" to={session?'/writing':palaceSignInDoor('/writing')}>✎ <span>Write</span></Link></div></div></header>
+   <header className="topbar full-topbar"><div className="full-topbar-row"><div className="full-brand"><button className="nav-toggle" onClick={togglePalaceNavigation} aria-label="Toggle Palace navigation" aria-expanded={navOpen} aria-controls="palace-sidebar"><PalaceRoomIcon name="menu"/></button><Link to="/"><span className="brandmark palace-brand-sigil"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M19.5 15.3A8.3 8.3 0 0 1 8.7 4.5a8.6 8.6 0 1 0 10.8 10.8Z"/><path d="m17.5 3.5.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z" fill="currentColor" stroke="none"/></svg></span><strong>The Starry Palace</strong></Link><small>BETA</small>{activeRoom&&<span className="top-room-context" aria-label={'Current room: '+activeRoom.label+(activeSection?' · '+activeSection[0]:'')}><span className={"top-room-sigil top-room-sigil-"+activeRoom.id}><PalaceRoomIcon name={activeRoom.id}/></span> {activeRoom.label}{activeSection&&<><b aria-hidden="true">/</b><em>{activeSection[0]}</em></>}</span>}</div><form id="palace-global-search" className={'global-search-live '+(mobileGlobalSearchOpen?'palace-global-search-expanded':'palace-global-search-collapsed')} role="search" aria-label="Search The Starry Palace" onSubmit={submitSearch}><span aria-hidden="true">✦</span><input aria-label="Search works, writers, tags and fandoms" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search works, writers, tags, fandoms…"/><button type="submit">Search</button></form><div className="full-top-actions"><button className="palace-mobile-home-search-trigger" type="button" onClick={()=>setMobileGlobalSearchOpen(open=>!open)} aria-label={mobileGlobalSearchOpen?'Hide Palace search':'Search The Starry Palace'} aria-expanded={mobileGlobalSearchOpen} aria-controls="palace-global-search" title="Search"><svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="10.8" cy="10.8" r="6.2"/><path d="m15.5 15.5 5 5"/></svg></button><button className="command-trigger palace-home-command-trigger" type="button" onClick={()=>setCommandOpen(true)} aria-label="Open Palace quick navigation" aria-expanded={commandOpen} aria-controls="palace-command-dialog" title="Quick navigation · Ctrl or Command K"><span>⌕</span><kbd>⌘K</kbd></button>{session&&<PalaceAccountMenu profilePath={shellProfile?.username?"/member/"+encodeURIComponent(shellProfile.username):"/chamber"}/>}{session&&<button type="button" className="top-icon-link palace-top-chat-trigger" aria-label="Open Palace Chat" title="Open Palace Chat" onClick={()=>window.dispatchEvent(new Event("palace-chat-open"))}><svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M20.5 11.5a8.5 8.5 0 0 1-8.5 8.5 8.4 8.4 0 0 1-3.8-.9L3.5 20.5l1.4-4.7A8.5 8.5 0 1 1 20.5 11.5Z"/></svg></button>}{session&&<Link className="top-icon-link" style={{position:'relative'}} to="/activity" aria-label={activityBadge?activityBadge+' unread notifications':'Notifications'}><PalaceRoomIcon name="bell"/>{activityBadge>0&&<span className="float-unread-badge">{activityBadge>99?'99+':activityBadge}</span>}</Link>}<Link className="write-action" aria-label="Open Writing Chamber" to={session?'/writing':palaceSignInDoor('/writing')}>✎ <span>Write</span></Link></div></div></header>
    <PalaceConnectionNotice/>
-   {shouldShowPalaceTidings(location.pathname)&&<React.Suspense fallback={null}><PalaceTidingsLazy/></React.Suspense>}
-   {session?.user?.id&&shouldCelebratePalaceVictory(location.pathname)&&<React.Suspense fallback={null}><PalaceVictoryCelebrationLazy userId={session.user.id}/></React.Suspense>}
+   {shouldShowPalaceTidings(location.pathname)&&<PalaceOptionalModuleBoundary name="tidings"><React.Suspense fallback={null}><PalaceTidingsLazy/></React.Suspense></PalaceOptionalModuleBoundary>}
+   {session?.user?.id&&shouldCelebratePalaceVictory(location.pathname)&&<PalaceOptionalModuleBoundary name="victory celebration"><React.Suspense fallback={null}><PalaceVictoryCelebrationLazy userId={session.user.id}/></React.Suspense></PalaceOptionalModuleBoundary>}
    {activeRoom&&location.pathname!=='/chamber'&&location.pathname!=='/reading'&&location.pathname!=='/letters'&&location.pathname!=='/settings'&&!location.pathname.startsWith('/member/')&&!location.pathname.startsWith('/events')&&shouldShowPalacePassage(location.pathname)&&<nav className="palace-passage" aria-label="Nearby Palace doors" data-compact-open={passageOpen?'true':'false'}><button type="button" className="palace-passage-expand" aria-controls="palace-passage-doors" aria-expanded={passageOpen} onClick={()=>setPassageOpen(open=>!open)}><span aria-hidden="true">✧</span><strong>Explore nearby rooms</strong><span className="palace-passage-caret" aria-hidden="true">{passageOpen?'⌃':'⌄'}</span></button><div className="palace-passage-context"><span className={"passage-room-sigil passage-room-"+activeRoom.id}><PalaceRoomIcon name={activeRoom.id}/></span><span><small>YOU ARE IN</small><strong>{activeSection?.[0]||activeRoom.label}</strong></span></div><div id="palace-passage-doors" className="palace-passage-doors">{passageDoors.map(door=><Link key={door.path+door.label} to={door.path}><span aria-hidden="true">{door.glyph}</span><span><strong>{door.label}</strong><small>{!session&&door.path.startsWith('/login?next=')?'Sign in to enter · '+door.detail:door.detail}</small></span></Link>)}</div></nav>}
    <main id="palace-content" data-palace-route={currentHref} className="palace-main-stage" tabIndex="-1">{children}</main>
    <footer className="palace-footer">
@@ -569,8 +589,8 @@ function FrameShell({children}){
   </div>
   {commandOpen&&<div className="palace-command-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setCommandOpen(false)}}>
     <section id="palace-command-dialog" className="palace-command" role="dialog" aria-modal="true" aria-label="Palace quick navigation and search">
-      <header><span aria-hidden="true">⌕</span><input autoFocus value={commandQuery} onChange={e=>setCommandQuery(e.target.value)} onKeyDown={e=>{if(e.key==='ArrowDown'){e.preventDefault();setCommandIndex(i=>Math.min(Math.max(visibleCommandItems.length-1,0),i+1))}else if(e.key==='ArrowUp'){e.preventDefault();setCommandIndex(i=>Math.max(0,i-1))}else if(e.key==='Enter'){e.preventDefault();visibleCommandItems[commandIndex]?chooseCommand(visibleCommandItems[commandIndex].path):searchCommand()}}} placeholder="Jump to a room, section, or search…" aria-label="Search Palace rooms, sections or content"/><kbd>ESC</kbd></header>
-      <div className="palace-command-results">{commandNeedle&&<button className="command-search-all" onClick={searchCommand}><span className="command-icon">⌕</span><span><strong>Search all Palace content</strong><small>Stories, comics, writers, tags, fandoms and clubs for “{commandQuery.trim()}”</small></span><em>Search</em></button>}{!commandNeedle&&recentCommandItems.length>0&&<p className="command-group-title">RECENT DOORS</p>}{!commandNeedle&&recentCommandItems.length===0&&<p className="command-group-title">QUICK DOORS</p>}{visibleCommandItems.length?visibleCommandItems.map((item,i)=><button key={item.path+'-'+item.label} className={(i===commandIndex?'selected ':'')+(item.kind==='spark'?'command-spark ':'')+(item.kind==='recent'?'command-recent ':'')} onMouseEnter={()=>setCommandIndex(i)} onClick={()=>chooseCommand(item.path)}><span className="command-icon">{item.icon}</span><span><strong>{item.label}</strong><small>{item.detail}</small></span>{i===commandIndex&&<em>Enter</em>}</button>):commandNeedle?<div className="command-empty"><span>⌕</span><p>No room or section matches that phrase. Search all Palace content instead.</p></div>:<div className="command-empty"><span>☾</span><p>Your recently visited Palace doors will gather here.</p></div>}</div>
+      <header><span className="command-search-symbol" aria-hidden="true"><PalaceRoomIcon name="search"/></span><input autoFocus value={commandQuery} onChange={e=>setCommandQuery(e.target.value)} onKeyDown={e=>{if(e.key==='ArrowDown'){e.preventDefault();setCommandIndex(i=>Math.min(Math.max(visibleCommandItems.length-1,0),i+1))}else if(e.key==='ArrowUp'){e.preventDefault();setCommandIndex(i=>Math.max(0,i-1))}else if(e.key==='Enter'){e.preventDefault();visibleCommandItems[commandIndex]?chooseCommand(visibleCommandItems[commandIndex].path):searchCommand()}}} placeholder="Jump to a room, section, or search…" aria-label="Search Palace rooms, sections or content"/><button type="button" className="command-close" aria-label="Close quick navigation" onClick={()=>setCommandOpen(false)}>Esc</button></header>
+      <div className="palace-command-results">{commandNeedle&&<button className="command-search-all" onClick={searchCommand}><span className="command-icon" data-room="search"><PalaceRoomIcon name="search"/></span><span><strong>Search all Palace content</strong><small>Stories, comics, writers, tags, fandoms and clubs for “{commandQuery.trim()}”</small></span><em>Search</em></button>}{!commandNeedle&&recentCommandItems.length>0&&<p className="command-group-title">RECENT DOORS</p>}{!commandNeedle&&recentCommandItems.length===0&&<p className="command-group-title">QUICK DOORS</p>}{visibleCommandItems.length?visibleCommandItems.map((item,i)=><React.Fragment key={item.path+'-'+item.label}>{!commandNeedle&&i===recentCommandItems.length&&recentCommandItems.length>0&&<p className="command-group-title">QUICK DOORS</p>}<button className={(i===commandIndex?'selected ':'')+(item.kind==='spark'?'command-spark ':'')+(item.kind==='recent'?'command-recent ':'')} onMouseEnter={()=>setCommandIndex(i)} onClick={()=>chooseCommand(item.path)}><span className="command-icon" data-room={palaceCommandIcon(item.path)}><PalaceRoomIcon name={palaceCommandIcon(item.path)}/></span><span><strong>{item.label}</strong><small>{item.detail}</small></span>{i===commandIndex&&<em>Enter</em>}</button></React.Fragment>):commandNeedle?<div className="command-empty"><span>⌕</span><p>No room or section matches that phrase. Search all Palace content instead.</p></div>:<div className="command-empty"><span>☾</span><p>Your recently visited Palace doors will gather here.</p></div>}</div>
       <footer><span>↑ ↓ to move · Enter to open</span><span>Ctrl/⌘ K anywhere</span><span>Esc to close</span></footer>
     </section>
    </div>}
@@ -735,6 +755,22 @@ function RouteGuard({children}){
  return <RouteErrorBoundary resetKey={resetKey} path={resetKey}>{children}</RouteErrorBoundary>
 }
 
+/* Optional widgets are not part of the room's essential render tree.
+   A failed lazy import must not turn a working member page into a shell error.
+   Preserve unsaved work: recovery is user-triggered, never an eager reload. */
+class PalaceOptionalModuleBoundary extends React.Component{
+ constructor(props){super(props);this.state={error:null}}
+ static getDerivedStateFromError(error){return{error}}
+ componentDidCatch(error,info){
+  const message=String(error?.message||error||'Optional module unavailable').replace(/https?:\/\/\S+/g,'[url]').slice(0,220);
+  console.warn('Palace optional module failed; the room remains available',this.props.name,error,info);
+  safeSessionSet('palace-last-optional-error',JSON.stringify({
+   module:this.props.name||'optional',message,path:window.location.pathname,at:new Date().toISOString()
+  }));
+ }
+ render(){return this.state.error?this.props.fallback??null:this.props.children}
+}
+
 class PalaceRootBoundary extends React.Component{
  constructor(props){super(props);this.state={error:null}}
  static getDerivedStateFromError(error){return{error}}
@@ -762,7 +798,18 @@ function PalaceChatHost(){
  // Its fixed coordinates now use the viewport, never a transformed main.
  if(typeof document==='undefined')return null;
  return createPortal(
-  <React.Suspense fallback={null}><PalaceChatDrawerLazy userId={session.user.id}/></React.Suspense>,
+  <PalaceOptionalModuleBoundary name="floating chat" fallback={
+   <aside className="palace-chat-load-fallback" role="status">
+    <span>Chat couldn't open. Your page is still available.</span>
+    <button type="button" onClick={()=>{
+     // Reload the page once after the member has saved any work.
+     try{const url=new URL(window.location.href);url.searchParams.set('__palace_recover',String(Date.now()));window.location.replace(url.toString())}
+     catch{window.location.reload()}
+    }}>Reload after saving</button>
+   </aside>
+  }>
+   <React.Suspense fallback={null}><PalaceChatDrawerLazy userId={session.user.id}/></React.Suspense>
+  </PalaceOptionalModuleBoundary>,
   document.body
  );
 }

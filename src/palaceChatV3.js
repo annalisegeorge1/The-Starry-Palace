@@ -6,6 +6,8 @@ import {supabase} from './supabase';
 // must not activate an untested database schema on a shared production backend.
 // Enable only in a separately approved follow-up after staging RLS tests.
 export const PALACE_CHAT_V3_ENABLED=false;
+// Reactions were released independently after participant/outsider RLS verification.
+export const PALACE_MESSAGE_REACTIONS_ENABLED=true;
 export const PALACE_REACTIONS=Object.freeze([
  {key:'heart',emoji:'❤️',label:'Heart'},
  {key:'star',emoji:'⭐',label:'Star'},
@@ -16,7 +18,7 @@ export const PALACE_REACTIONS=Object.freeze([
 ]);
 const kinds={direct:'direct_message_id',groups:'group_message_id'};
 function requireV3(){
- if(!PALACE_CHAT_V3_ENABLED)throw new Error('New reactions are not enabled for this environment.');
+ if(!PALACE_MESSAGE_REACTIONS_ENABLED)throw new Error('New reactions are not enabled for this environment.');
  if(!supabase)throw new Error('Palace Chat is not connected.');
 }
 export function reactionSummary(rows=[],messageId='',userId=''){

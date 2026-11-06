@@ -4,7 +4,7 @@ const live=readFileSync('src/liveRooms.jsx','utf8');
 const tagSection=live.split('export function TagSearchLive({Frame})')[1].split('export function WorkLive({Frame})')[0];
 describe('full archive tag searches',()=>{
  it('uses server totals and pagination',()=>{
-  expect(tagSection).toContain('searchPublishedArchive({text:needle');
+  expect(tagSection).toContain('searchPublishedArchive({...selectedFilters,text:needle');
   expect(tagSection).toContain('setResultCount(response.total)');
   expect(tagSection).toContain('limit:20,offset:page*20');
   expect(tagSection).toContain('<ReadingArchivePager page={resultsPage}');

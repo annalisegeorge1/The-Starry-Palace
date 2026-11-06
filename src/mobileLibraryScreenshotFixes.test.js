@@ -6,6 +6,7 @@ describe('mobile Library screenshot fixes',()=>{
  const css=readFileSync('src/mobile-reading-chamber-review.css','utf8');
  const rooms=readFileSync('src/liveRooms.jsx','utf8');
  const shell=readFileSync('src/main.jsx','utf8');
+ const theme=readFileSync('src/PalaceThemePicker.jsx','utf8');
  it('centres the chosen Library tab horizontally without changing the vertical page position',()=>{
   expect(libraryTabScrollLeft({railWidth:320,railLeft:0,tabLeft:510,tabWidth:95})).toBe(398);
   expect(libraryTabScrollLeft({railWidth:320,railLeft:0,tabLeft:0,tabWidth:95})).toBe(0);

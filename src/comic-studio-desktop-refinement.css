@@ -1,0 +1,68 @@
+/* Desktop Comic Studio: aligned settings, compact overview and episode tools. */
+@media(min-width:961px){
+ .palace-shell .comic-studio-home .studio-settings{grid-template-columns:repeat(12,minmax(0,1fr));gap:18px 16px;align-items:start}
+ .palace-shell .comic-studio-home .studio-settings>label{min-width:0;align-content:start;gap:7px;grid-column:span 3}
+ .palace-shell .comic-studio-home .studio-settings>label:has([name="title"]),
+ .palace-shell .comic-studio-home .studio-settings>label:has([name="required_credit_line"]),
+ .palace-shell .comic-studio-home .studio-settings>label.wide{grid-column:1/-1}
+ .palace-shell .comic-studio-home .studio-settings>label:has([name="rating"]),
+ .palace-shell .comic-studio-home .studio-settings>label:has([name="minimum_reader_age"]),
+ .palace-shell .comic-studio-home .studio-settings>label:has([name="completion_status"]){grid-column:span 4}
+ .palace-shell .comic-studio-home .studio-settings :is(input,select){height:44px;min-height:44px;margin:0;min-width:0;box-sizing:border-box}
+ .palace-shell .comic-studio-home .studio-settings label small{font-size:12px;line-height:1.45;letter-spacing:0}
+ .palace-shell .comic-studio-home .studio-settings textarea{min-width:0;margin:0;resize:vertical}
+ .palace-shell .comic-studio-home .episode-create{display:flex;align-items:stretch;gap:16px}
+ .palace-shell .comic-studio-home .episode-create input{flex:1 1 0;width:0;min-width:0;margin:0;box-sizing:border-box}
+ .palace-shell .comic-studio-home .episode-create button{flex:0 0 auto;margin:0;white-space:nowrap}
+ .palace-shell .comic-studio-home .episode-create :is(input,button){height:44px;min-height:44px;box-sizing:border-box}
+ .palace-shell .comic-studio-home .episode-manager-tools{grid-template-columns:minmax(0,2fr) minmax(0,1fr) auto;gap:16px;align-items:end;padding:14px}
+ .palace-shell .comic-studio-home .episode-manager-tools label{display:grid;gap:7px;min-width:0}
+ .palace-shell .comic-studio-home .episode-manager-tools :is(input,select,button){height:44px;min-height:44px;margin:0;box-sizing:border-box;min-width:0}
+ .palace-shell .comic-studio-home .episode-manager-tools label>span{font-size:11px}
+ .palace-shell .comic-studio-home .comic-library-summary{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+ .palace-shell .comic-studio-home .comic-library-summary>span{display:inline-flex;align-items:baseline;gap:6px;flex:0 0 auto;min-width:0;min-height:0;padding:8px 14px;border-radius:999px;font-size:13px}
+ .palace-shell .comic-studio-home .comic-library-summary strong{font-size:15px}
+ .palace-shell .comics-head:has(~ .comic-studio-home){min-height:0!important;padding:24px 28px!important;gap:10px}
+ .palace-shell .comics-head:has(~ .comic-studio-home) h1{margin:0 0 8px;font-size:clamp(28px,2.5vw,38px)}
+ .palace-shell .comics-head:has(~ .comic-studio-home) .lede{margin:0;max-width:78ch;line-height:1.5}
+ .palace-shell .comics-head:has(~ .comic-studio-home) .comic-principles{display:none}
+ .palace-shell .comic-studio-home .episode-manager-empty{display:grid;place-items:center;align-content:center;gap:6px;min-height:0!important;padding:24px!important;text-align:center}
+ .palace-shell .comic-studio-home .episode-manager-empty :is(h3,p){margin:0}
+ .palace-shell .comic-studio-home .episode-manager-empty>span{font-size:24px;line-height:1}
+}
+
+@media(min-width:961px){
+ .palace-shell .comic-studio-home .comic-library-tools{grid-template-columns:minmax(220px,400px) 170px 180px;justify-content:start;align-items:center;gap:12px;padding:12px;margin:12px 0 8px}
+ .palace-shell .comic-studio-home .comic-library-tools>select,
+ .palace-shell .comic-studio-home .comic-library-search{height:44px;min-height:44px;box-sizing:border-box;margin:0}
+ .palace-shell .comic-studio-home .comic-library-search input{width:100%;height:42px;box-sizing:border-box;margin:0}
+ .palace-shell .comic-studio-home .new-work{grid-template-columns:minmax(220px,400px) max-content;justify-content:start;align-items:end;gap:12px;padding:16px 18px;margin:8px 0 16px}
+ .palace-shell .comic-studio-home .new-work label{min-width:0;gap:8px}
+ .palace-shell .comic-studio-home .new-work :is(input,button){height:44px;min-height:44px;margin:0;box-sizing:border-box}
+ .palace-shell .comic-studio-home .new-work button{white-space:nowrap}
+ .palace-shell .comic-studio-home .comic-library-summary{margin-bottom:8px}
+ .palace-shell .comic-studio-home .comic-studio-list{margin-top:0}
+ .palace-shell .comic-tabs button.active{font-weight:750!important;color:#fff!important;background:rgba(151,122,221,.18)!important;border-bottom-color:#b89af2!important;box-shadow:inset 0 -3px #b89af2!important}
+ .palace-shell.daylight .comic-tabs button.active{color:#3b2866!important;background:rgba(127,94,196,.12)!important;border-bottom-color:#805ac1!important;box-shadow:inset 0 -3px #805ac1!important}
+ .palace-shell.full-palace-shell .full-stage>header.topbar.full-topbar{isolation:isolate;background:#10162c!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+ .palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar{background:#f5f2fc!important}
+ .palace-shell.full-palace-shell.midnight .full-stage>header.topbar.full-topbar{background:#0b0c12!important}
+}
+
+@media(min-width:961px){
+ .palace-shell.full-palace-shell .comic-studio-home .episode-studio>.episode-create{display:flex!important;gap:12px!important;align-items:center!important}
+ .palace-shell.full-palace-shell .comic-studio-home .episode-create>input{flex:1 1 0!important;width:0!important;min-width:0!important;text-align:left!important}
+ .palace-shell.full-palace-shell .comic-studio-home .episode-create>button{flex:0 0 auto!important;width:auto!important;align-self:center!important;text-align:center}
+ .palace-shell.full-palace-shell .comic-studio-home .episode-create>:is(input,button){height:44px!important;min-height:44px!important;max-height:44px;margin:0!important;box-sizing:border-box!important;line-height:1.3}
+ .palace-shell .comic-studio-home .comic-tag-search{display:grid;grid-template-columns:minmax(200px,400px) minmax(145px,190px) max-content;justify-content:start;gap:12px;align-items:center}
+ .palace-shell .comic-studio-home .comic-tag-search>:is(input,select,button){min-width:0;width:100%;height:44px;min-height:44px;box-sizing:border-box;margin:0}
+ .palace-shell .comic-studio-home .comic-tag-search>button{width:auto;white-space:nowrap}
+ .palace-shell .comic-studio-home .comic-tag-studio :is(.studio-tags.attached,.studio-tag-results){display:flex!important;flex-wrap:wrap;gap:8px;align-items:start;justify-content:flex-start}
+ .palace-shell .comic-studio-home .comic-tag-studio :is(.studio-tags.attached,.studio-tag-results)>button{flex:0 1 auto!important;width:auto!important;min-width:0;max-width:100%;justify-self:start;overflow-wrap:anywhere}
+ .palace-shell .comic-studio-home .comic-readiness-head{align-items:center}
+ .palace-shell .comic-studio-home .comic-readiness-head>b{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;min-width:40px;min-height:40px;max-height:40px;padding:0;border-radius:50%;font-size:12px;background:transparent;box-shadow:none;align-self:center}
+ .palace-shell.full-palace-shell .comic-studio-home .comic-studio-card>header{padding:18px 20px;align-items:center}
+ .palace-shell.full-palace-shell .comic-studio-home .comic-studio-body{padding:20px}
+ .palace-shell.full-palace-shell .comic-studio-home .comic-card-head-actions{margin-left:auto;justify-content:flex-end;align-self:center}
+ .palace-shell .comic-studio-home .studio-settings>label:has([name="required_credit_line"]){grid-column:1/-1;width:100%;box-sizing:border-box}
+}

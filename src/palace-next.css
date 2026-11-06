@@ -6877,3 +6877,185 @@ body.writing-desk-open.daylight .studio-head-copy h1,
 .daylight .duel-twist-label button{background:linear-gradient(120deg,#eee9fd,#e6f1fc);color:#433366;border-color:#c4b5e8}
 @media(max-width:1050px){.duel-discovery-tools{grid-template-columns:minmax(0,1fr) minmax(180px,.75fr)}.duel-focus-filter{grid-column:1/-1}}
 @media(max-width:700px){.duel-how-it-works{grid-template-columns:repeat(2,minmax(0,1fr))}.duel-how-it-works>span{padding:.55rem;font-size:.64rem}.duel-discovery-tools{grid-template-columns:minmax(0,1fr);padding:.78rem}.duel-focus-filter{grid-column:auto}.duel-focus-filter>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.duel-focus-filter button{white-space:normal}.duel-remix-bar button{width:100%}}
+
+
+/* Prompt Orrery · final legibility and filter controls polish (Nov 2026).
+   Keep the card control semantics: it locks/unlocks a reel, not a single-card reroll. */
+.prompt-orrery .prompt-reels article,
+.prompt-orrery .prompt-reels article > strong,
+.prompt-orrery .prompt-reels article > em {
+  text-align:left!important;
+}
+.prompt-orrery .prompt-reels article > strong {
+  display:block;
+  align-self:stretch;
+}
+.prompt-orrery .prompt-reels article > em {
+  color:rgba(255,255,255,.72);
+  opacity:1;
+}
+.prompt-orrery .prompt-reel-lock {
+  color:#e9dff9;
+  border-color:rgba(224,202,252,.56);
+  background:rgba(55,36,91,.82);
+  transition:color .18s ease,background .18s ease,border-color .18s ease,transform .18s ease;
+}
+.prompt-orrery .prompt-reel-lock:hover,
+.prompt-orrery .prompt-reel-lock:focus-visible {
+  color:#fff;
+  border-color:rgba(245,225,255,.9);
+  background:rgba(112,77,166,.94);
+  transform:rotate(12deg);
+}
+.prompt-orrery .prompt-reel-lock:focus-visible {
+  outline:2px solid #e5c5ff;
+  outline-offset:2px;
+}
+.daylight .prompt-orrery .prompt-reels article > em {
+  color:#675b75;
+}
+.daylight .prompt-orrery .prompt-reel-lock {
+  color:#604579;
+  background:rgba(255,255,255,.91);
+  border-color:rgba(102,65,150,.4);
+}
+.daylight .prompt-orrery .prompt-reel-lock:hover,
+.daylight .prompt-orrery .prompt-reel-lock:focus-visible {
+  color:#452469;
+  background:#f1e7fb;
+}
+.prompt-orrery .prompt-filter-drawer {
+  position:relative;
+}
+.prompt-orrery .prompt-filter-drawer > summary {
+  padding-right:3.2rem;
+}
+.prompt-orrery .prompt-filter-help {
+  position:absolute;
+  top:.6rem;
+  right:.7rem;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.prompt-orrery .prompt-filter-help button {
+  min-width:32px;
+  min-height:32px;
+}
+.prompt-orrery .prompt-filter-grid select {
+  min-height:38px;
+  height:40px;
+  padding-top:.35rem;
+  padding-bottom:.35rem;
+  border-radius:12px;
+}
+.prompt-orrery .prompt-filter-drawer > footer {
+  display:flex;
+  justify-content:flex-start;
+  align-items:center;
+  padding-top:.45rem;
+}
+.prompt-orrery .prompt-filter-drawer > footer .quiet-button {
+  min-height:34px;
+  padding:.35rem .72rem;
+}
+@media (min-width:1000px) {
+  .prompt-orrery .prompt-orrery-actions {
+    position:sticky;
+    bottom:0;
+    z-index:5;
+    padding:.65rem .75rem;
+    border:1px solid rgba(188,156,232,.18);
+    border-radius:16px;
+    background:rgba(23,18,46,.95);
+    box-shadow:0 -8px 24px rgba(8,6,22,.12);
+    backdrop-filter:blur(12px);
+  }
+  .daylight .prompt-orrery .prompt-orrery-actions {
+    background:rgba(250,247,255,.96);
+    border-color:rgba(97,65,135,.18);
+  }
+}
+/* Mobile retains the normal document flow, avoiding overlap with the fixed site nav. */
+@media (max-width:999px) {
+  .prompt-orrery .prompt-orrery-actions {
+    position:static;
+  }
+}
+@media (prefers-reduced-motion:reduce) {
+  .prompt-orrery .prompt-reel-lock {transition:none}
+  .prompt-orrery .prompt-reel-lock:hover {transform:none}
+}
+
+
+/* Prompt Orrery screenshot follow-up: actual left-aligned text and compact action dock. */
+.prompt-orrery .prompt-reels > article {
+  justify-items:stretch!important;
+  align-content:center;
+}
+.prompt-orrery .prompt-reels > article > small,
+.prompt-orrery .prompt-reels > article > strong,
+.prompt-orrery .prompt-reels > article > em {
+  width:100%;
+  min-width:0;
+  margin-left:0!important;
+  margin-right:0!important;
+  text-align:left!important;
+  justify-self:stretch!important;
+}
+.prompt-orrery .prompt-reels > article > strong,
+.prompt-orrery .prompt-reels > article > em {
+  padding-left:0!important;
+  padding-right:0!important;
+}
+.prompt-orrery .prompt-reels > article > strong {
+  white-space:normal!important;
+  overflow-wrap:break-word;
+}
+.prompt-orrery .prompt-orrery-actions {
+  grid-column:1/-1!important;
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  flex-wrap:nowrap!important;
+  gap:1rem!important;
+  width:100%;
+  min-height:0!important;
+  height:auto!important;
+  padding:.65rem .85rem!important;
+}
+.prompt-orrery .prompt-orrery-secondary {
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  flex-wrap:wrap!important;
+  justify-content:flex-start!important;
+  gap:.45rem!important;
+  flex:1 1 auto;
+  min-width:0;
+  width:auto!important;
+}
+.prompt-orrery .prompt-orrery-actions > .prompt-lever {
+  flex:0 0 auto;
+  width:auto!important;
+  align-self:center!important;
+  margin:0!important;
+  grid-column:auto!important;
+}
+@media (max-width:700px) {
+  .prompt-orrery .prompt-orrery-actions {
+    position:static!important;
+    flex-wrap:wrap!important;
+    gap:.65rem!important;
+    padding:.65rem!important;
+  }
+  .prompt-orrery .prompt-orrery-secondary {
+    flex:1 1 100%;
+  }
+  .prompt-orrery .prompt-orrery-actions > .prompt-lever {
+    width:100%!important;
+    justify-content:center;
+  }
+}

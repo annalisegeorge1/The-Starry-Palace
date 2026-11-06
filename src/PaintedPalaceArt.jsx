@@ -1,6 +1,7 @@
 import React,{useId} from 'react';
 import {PAINTED_PALACES,PAINTED_TIERS,CHAMBER_FRAMES} from './paintedCollection';
 import './painted-palace-art.css';
+import OrnamentalFrame from './OrnamentalFrame';
 const root='/assets/palace-watercolours/';
 const protect={onContextMenu:e=>e.preventDefault(),onDragStart:e=>e.preventDefault(),onCopy:e=>e.preventDefault()};
 // Keep the approved raster paintings intact. View boxes isolate one artwork;
@@ -16,9 +17,9 @@ export function PaintedSigil({palace,size=64,decorative=false,className=''}){
  const slug=typeof palace==='string'?palace:palace?.slug,index=PAINTED_PALACES.indexOf(slug);if(index<0)return null;
  return <PaintedSprite sheet="sigils" sheetSize={[1983,793]} box={[22+(index%5)*396,18+Math.floor(index/5)*386,355,355]} size={size} shape="circle" className={'palace-emblem '+className} label={(palace?.name||slug.replaceAll('-',' '))+' sigil'} decorative={decorative}/>;
 }
-export function PalaceBanner({palace,className='',wide=false}){
+export function PalaceBanner({palace,className='',wide=false,rectangular=false}){
  const slug=typeof palace==='string'?palace:palace?.slug,index=PAINTED_PALACES.indexOf(slug);if(index<0)return null;
- return <PaintedSprite sheet="banners" sheetSize={[1536,1024]} box={[100+(index%2)*702,55+Math.floor(index/2)*186,643,158]} size="100%" shape="banner" stretch={wide} className={'painted-palace-banner '+(wide?'painted-palace-banner-wide ':'')+className} label={(palace?.name||slug.replaceAll('-',' '))+' banner'}/>;
+ return <PaintedSprite sheet="banners" sheetSize={[1536,1024]} box={[100+(index%2)*702,55+Math.floor(index/2)*186,643,158]} size="100%" shape={rectangular?'rectangle':'banner'} stretch={wide} className={'painted-palace-banner '+(wide?'painted-palace-banner-wide ':'')+className} label={(palace?.name||slug.replaceAll('-',' '))+' banner'}/>;
 }
 export function WriterAward({kind,size=26,decorative=true}){
  const boxes={crown:[35,115,540,450],heart:[620,145,465,420],moon:[1170,110,478,485],star:[1650,110,500,480]};if(!boxes[kind])return null;
@@ -34,12 +35,5 @@ export function PaintedBadge({family,tier='bronze',showFrame=true}){
 }
 export function ChamberFrameArt({slug,size='100%',className=''}){
  const frame=CHAMBER_FRAMES.find(x=>x.slug===slug);if(!frame)return null;
- // Measured transparent gutters in the original artwork; the painted rows
- // occupy about 240px each, with unused space at the bottom of the sheet.
- // Dividing the 1254px canvas into equal fifths clips every later row.
- const columns=[0,262,503,746,993,1254];
- const rows=[0,247,487,722,962,1210];
- const col=frame.index%5,row=Math.floor(frame.index/5);
- const box=[columns[col],rows[row],columns[col+1]-columns[col],rows[row+1]-rows[row]];
- return <PaintedSprite sheet="chamber-frames" sheetSize={[1254,1254]} box={box} padding={8} stretch size={size} className={'painted-chamber-frame '+className} label={frame.name+' chamber frame'}/>;
+ return <OrnamentalFrame frame={frame} size={size} className={className}/>;
 }

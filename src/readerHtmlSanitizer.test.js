@@ -18,6 +18,14 @@ describe('Reader HTML boundary',()=>{
   expect(safeReaderHtml('<div><p>Read <a href="javascript:alert(1)">this</a> chapter</p><span>Always</span></div>'))
    .toBe('<p>Read this chapter</p>Always');
  });
+ it('preserves paragraph boundaries when imported HTML uses separate divs',()=>{
+  const imported='<div class="word-line" onclick="bad()">First paragraph continues.</div><div style="color:red">Second paragraph.</div>';
+  expect(safeReaderHtml(imported)).toBe('<p>First paragraph continues.</p><p>Second paragraph.</p>');
+ });
+ it('keeps a div around existing structured paragraphs without nesting extra paragraphs',()=>{
+  const imported='<div><h2>Chapter One</h2><p>A paragraph.</p><p>Another paragraph.</p></div>';
+  expect(safeReaderHtml(imported)).toBe('<h2>Chapter One</h2><p>A paragraph.</p><p>Another paragraph.</p>');
+ });
  it('escapes all markup when no DOM parser is available, instead of trusting a regex',()=>{
   vi.stubGlobal('DOMParser',undefined);
   const result=safeReaderHtml('<img src=x onerror="alert(1)"><b>Keep & read</b>');

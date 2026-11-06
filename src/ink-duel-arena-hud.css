@@ -1,0 +1,304 @@
+/* Ink Duel Arena HUD: a real game-like hierarchy, not an additional dashboard.
+   Presentation only. Duel qualification, clocks, votes and validation stay server-driven. */
+.palace-shell .duel-room-page {--arena-cyan:#70e5f7;--arena-gold:#f5cb79;--arena-purple:#bd9afd;}
+.palace-shell .duel-room-page .duel-hero {
+ border:1px solid rgba(170,137,247,.34);
+ border-radius:24px;
+ background:linear-gradient(115deg,rgba(32,30,79,.95),rgba(22,51,92,.92));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 14px 32px rgba(6,9,28,.19);
+}
+.palace-shell .duel-room-page .duel-hero .eyebrow {color:var(--arena-gold)!important;letter-spacing:.15em}
+.palace-shell .duel-room-page .duel-hero h2 {font-family:Georgia,serif;color:#f8f4ff}
+.palace-shell .duel-room-page .duel-card {
+ position:relative;
+ isolation:isolate;
+ border:1px solid rgba(136,181,234,.39);
+ border-radius:24px;
+ background:linear-gradient(145deg,rgba(24,29,66,.97),rgba(17,24,58,.95));
+ box-shadow:0 14px 38px rgba(8,10,37,.22),inset 0 1px 0 rgba(255,255,255,.09);
+ overflow:visible;
+}
+.palace-shell .duel-room-page .duel-card:before {
+ content:'';
+ position:absolute;
+ inset:0 0 auto;
+ height:3px;
+ border-radius:24px 24px 0 0;
+ background:linear-gradient(90deg,transparent,#82efff 35%,#dab6fc 72%,transparent);
+ opacity:.85;
+ pointer-events:none;
+}
+.palace-shell .duel-room-page .duel-card > header {
+ display:grid!important;
+ grid-template-columns:minmax(0,1fr)!important;
+ justify-items:stretch;
+ gap:12px!important;
+ align-items:center;
+}
+.palace-shell .duel-room-page .duel-card > header > div:first-child {grid-row:2;min-width:0;width:100%}
+.palace-shell .duel-room-page .duel-card > header > .duel-clock {
+ grid-row:1;
+ justify-self:center;
+ width:max-content;
+ max-width:100%;
+ min-width:190px;
+ margin:0 auto!important;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ gap:10px;
+ flex-wrap:wrap;
+ padding:10px 20px;
+ border:1px solid rgba(118,222,244,.65);
+ border-radius:999px;
+ background:linear-gradient(105deg,rgba(16,83,108,.75),rgba(62,36,109,.72));
+ box-shadow:0 0 0 3px rgba(67,195,236,.09),0 0 24px rgba(69,202,239,.16);
+}
+.palace-shell .duel-room-page .duel-clock small,
+.palace-shell .duel-room-page .duel-clock strong {margin:0;color:#edfbff!important;line-height:1.3}
+.palace-shell .duel-room-page .duel-clock strong {font:800 clamp(1.18rem,2.3vw,1.6rem)/1.2 system-ui,sans-serif;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.palace-shell .duel-room-page .duel-timer-pulse {
+ display:inline-block;
+ width:9px;
+ height:9px;
+ border-radius:50%;
+ background:#77f5d9;
+ margin-right:5px;
+ box-shadow:0 0 11px rgba(107,255,223,.9);
+ animation:palace-duel-heartbeat 2s ease-in-out infinite;
+}
+@keyframes palace-duel-heartbeat {50%{opacity:.48;transform:scale(.78)}}
+.palace-shell .duel-room-page .duel-arena-title {
+ font:800 clamp(1.8rem,3.2vw,2.7rem)/1.13 Georgia,'Times New Roman',serif!important;
+ letter-spacing:-.025em;
+ margin:7px 0 12px!important;
+ color:#fff5dd!important;
+ overflow-wrap:anywhere;
+ text-shadow:0 3px 16px rgba(237,193,92,.13);
+}
+.palace-shell .duel-room-page .duel-quest-card {
+ display:flex;
+ align-items:flex-start;
+ gap:14px;
+ margin:10px 0 16px;
+ padding:16px clamp(14px,2vw,22px);
+ border:1px solid rgba(245,204,115,.75);
+ border-left:4px solid #f5cb79;
+ border-radius:16px;
+ background:linear-gradient(110deg,rgba(128,86,44,.24),rgba(39,69,94,.44));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.11),0 0 22px rgba(251,202,109,.08);
+}
+.palace-shell .duel-room-page .duel-quest-sigil {font-size:1.4rem;color:#ffd77d;flex:none;line-height:1.4}
+.palace-shell .duel-room-page .duel-quest-card>div {min-width:0}
+.palace-shell .duel-room-page .duel-quest-card small {
+ font:850 .68rem/1.4 system-ui,sans-serif;
+ color:#f8d68b!important;
+ letter-spacing:.13em;
+}
+.palace-shell .duel-room-page .duel-quest-card p {
+ margin:6px 0 0!important;
+ font:600 clamp(.99rem,1.7vw,1.12rem)/1.62 Georgia,serif!important;
+ color:#f9f6ff!important;
+ overflow-wrap:anywhere;
+}
+.palace-shell .duel-room-page .duel-discovery-fold {
+ border:1px solid rgba(145,155,219,.25);
+ border-radius:14px;
+ margin:10px 0 14px;
+ background:rgba(20,27,64,.24);
+}
+.palace-shell .duel-room-page .duel-discovery-fold > summary {
+ cursor:pointer;
+ list-style:none;
+ padding:12px 15px;
+ color:#dad2f8;
+ font:750 .83rem/1.4 system-ui,sans-serif;
+}
+.palace-shell .duel-room-page .duel-discovery-fold > summary::-webkit-details-marker {display:none}
+.palace-shell .duel-room-page .duel-discovery-fold > summary::after{content:' ⌄';float:right;color:#b6dfff}
+.palace-shell .duel-room-page .duel-discovery-fold[open]>summary::after{content:' ⌃'}
+.palace-shell .duel-room-page .duel-discovery-fold summary span{font-weight:500;opacity:.8}
+.palace-shell .duel-room-page .duel-discovery-tools {margin:0 10px 10px}
+.palace-shell .duel-room-page .duel-vault {
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ flex-direction:column;
+ text-align:center;
+ gap:9px;
+ min-height:176px;
+ margin:14px 0;
+ padding:25px 18px;
+ border:1px dashed rgba(154,203,237,.6);
+ border-radius:19px;
+ background:radial-gradient(ellipse at center,rgba(87,87,157,.2),rgba(8,21,47,.38));
+}
+.palace-shell .duel-room-page .duel-vault.is-sealed {border-style:solid;border-color:rgba(245,199,111,.62)}
+.palace-shell .duel-room-page .duel-vault.is-open {min-height:unset;padding:15px 17px;flex-direction:row;text-align:left;flex-wrap:wrap}
+.palace-shell .duel-room-page .duel-vault-emblem {font-size:2.2rem;color:var(--arena-gold);line-height:1;text-shadow:0 0 20px rgba(245,202,108,.26)}
+.palace-shell .duel-room-page .duel-vault.is-open .duel-vault-emblem {font-size:1.4rem}
+.palace-shell .duel-room-page .duel-vault-copy {max-width:55ch;min-width:0}
+.palace-shell .duel-room-page .duel-vault-copy strong {display:block;font:700 1.23rem/1.4 Georgia,serif;color:#f7eac9}
+.palace-shell .duel-room-page .duel-vault-copy p {margin:5px 0;color:#dfdcf1;line-height:1.5}
+.palace-shell .duel-room-page .duel-unseal-action {
+ min-height:44px;
+ border:1px solid rgba(142,236,252,.75);
+ border-radius:12px;
+ padding:10px 22px;
+ background:linear-gradient(120deg,#146f8b,#6853b0);
+ color:white;
+ box-shadow:0 4px 21px rgba(72,171,234,.15);
+ font:800 .84rem/1.4 system-ui,sans-serif;
+ text-transform:uppercase;
+ letter-spacing:.04em;
+ cursor:pointer;
+}
+.palace-shell .duel-room-page .duel-unseal-action:is(:hover,:focus-visible){filter:brightness(1.18)}
+.palace-shell .duel-room-page .duel-bronze-meter {display:grid;gap:9px;margin-top:2px;min-width:0}
+.palace-shell .duel-room-page .duel-bronze-meter-label {display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font:.76rem/1.4 system-ui,sans-serif;color:#f9e2ad}
+.palace-shell .duel-room-page .duel-bronze-meter-label strong {font-weight:850}
+.palace-shell .duel-room-page .duel-bronze-meter progress {
+ display:block;width:100%;height:13px;border-radius:999px;
+ accent-color:#f8c375;overflow:hidden;
+ background:rgba(182,182,218,.2);
+}
+.palace-shell .duel-room-page .duel-bronze-meter progress::-webkit-progress-bar {background:rgba(182,182,218,.2);border-radius:999px}
+.palace-shell .duel-room-page .duel-bronze-meter progress::-webkit-progress-value {background:linear-gradient(90deg,#a87545,#f7cc76);border-radius:999px}
+.palace-shell .duel-room-page .duel-bronze-meter progress::-moz-progress-bar {background:linear-gradient(90deg,#a87545,#f7cc76);border-radius:999px}
+.palace-shell .duel-room-page .duel-bronze-meter>span {font-size:.81rem;line-height:1.45}
+.palace-shell .duel-room-page .duel-bronze-meter>small {font-size:.68rem;line-height:1.5;opacity:.74}
+.palace-shell .duel-room-page .duel-card .duel-gallery.blind article {border-color:rgba(150,207,240,.38);background:rgba(16,31,70,.56)}
+.palace-shell .duel-room-page .duel-card .duel-gallery.blind article>header {border-bottom:1px solid rgba(161,193,236,.23)}
+.ink-duel-dialog .duel-builder-label {color:#f9d394!important;font:850 .76rem/1.45 system-ui,sans-serif!important;letter-spacing:.12em}
+.ink-duel-dialog .duel-content-picker button,
+.ink-duel-dialog .duel-match-picker button,
+.ink-duel-dialog .duel-mode-picker button {
+ border:1px solid rgba(164,148,215,.38)!important;
+ background:linear-gradient(160deg,rgba(35,37,77,.91),rgba(28,28,63,.83))!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.045)!important;
+ transition:box-shadow .2s,border-color .2s,background .2s;
+}
+.ink-duel-dialog .duel-content-picker button.active,
+.ink-duel-dialog .duel-match-picker button.active,
+.ink-duel-dialog .duel-mode-picker button.active {
+ border:2px solid #c49dff!important;
+ background:linear-gradient(145deg,rgba(89,67,149,.85),rgba(33,70,111,.8))!important;
+ box-shadow:0 0 0 2px rgba(169,128,255,.12),0 0 17px rgba(139,92,246,.45),inset 0 1px 10px rgba(191,165,255,.08)!important;
+}
+.ink-duel-dialog .duel-match-picker button.active span {color:#fbd28c}
+.ink-duel-dialog .duel-rule-grid {
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:12px;
+ align-items:start;
+}
+.ink-duel-dialog .duel-stat-selector {
+ min-width:0;
+ margin:0;
+ padding:12px;
+ border:1px solid rgba(177,150,232,.38);
+ border-radius:15px;
+ background:rgba(20,25,58,.34);
+}
+.ink-duel-dialog .duel-stat-selector legend {
+ padding:0 5px;
+ color:#e8d4ff;
+ font:800 .79rem/1.5 system-ui,sans-serif;
+}
+.ink-duel-dialog .duel-stat-options {display:flex;flex-wrap:wrap;gap:6px}
+.ink-duel-dialog .duel-stat-options button {
+ min-width:46px;
+ min-height:43px;
+ flex:1 1 49px;
+ padding:6px;
+ border:1px solid rgba(164,153,214,.42);
+ border-radius:9px;
+ background:rgba(21,27,60,.58);
+ color:#f1ecff;
+ font:750 .83rem/1.15 system-ui,sans-serif;
+ cursor:pointer;
+}
+.ink-duel-dialog .duel-stat-options button small {display:block;font:.62rem/1.25 system-ui,sans-serif;opacity:.8}
+.ink-duel-dialog .duel-stat-options button.active {
+ background:linear-gradient(145deg,#6650a8,#16617f);
+ border-color:#b9e8fa;
+ color:#fff;
+ box-shadow:0 0 0 2px rgba(111,217,249,.13),0 0 14px rgba(108,202,252,.2);
+}
+.ink-duel-dialog .duel-stat-options button:disabled {opacity:.45;cursor:not-allowed}
+.ink-duel-dialog .duel-fixed-stat {display:block;margin-top:8px;opacity:.8;font-size:.72rem}
+.ink-duel-dialog .button-starlight[form="ink-duel-form"]:not(:disabled){
+ min-height:49px;
+ background:linear-gradient(115deg,#7c46c7,#1989aa,#9060d8)!important;
+ background-size:175% 100%!important;
+ box-shadow:0 0 0 2px rgba(166,130,255,.13),0 8px 21px rgba(90,76,182,.32)!important;
+ font-weight:850!important;
+ letter-spacing:.035em;
+}
+.ink-duel-dialog .button-starlight[form="ink-duel-form"]:disabled{
+ opacity:.55!important;
+ background:#55566a!important;
+ color:#e6e6ec!important;
+ box-shadow:none!important;
+ cursor:not-allowed!important;
+}
+.palace-shell.daylight .duel-room-page .duel-card {
+ background:linear-gradient(150deg,#fffaff,#e9f0fc);
+ border-color:#b9a5d9;
+ box-shadow:0 10px 28px rgba(63,72,117,.11);
+}
+.palace-shell.daylight .duel-room-page .duel-arena-title {color:#34244c!important;text-shadow:none}
+.palace-shell.daylight .duel-room-page .duel-clock small,
+.palace-shell.daylight .duel-room-page .duel-clock strong {color:#fff!important}
+.palace-shell.daylight .duel-room-page .duel-quest-card {background:linear-gradient(100deg,#fff0d7,#e3f6ff);border-color:#c1923d}
+.palace-shell.daylight .duel-room-page .duel-quest-card small {color:#79531a!important}
+.palace-shell.daylight .duel-room-page .duel-quest-card p {color:#292d4d!important}
+.palace-shell.daylight .duel-room-page .duel-discovery-fold {background:rgba(255,255,255,.8);border-color:#c7bbe0}
+.palace-shell.daylight .duel-room-page .duel-discovery-fold summary {color:#3c335c}
+.palace-shell.daylight .duel-room-page .duel-vault {background:linear-gradient(125deg,#f8f3ff,#e6f4fc);border-color:#9e90c6}
+.palace-shell.daylight .duel-room-page .duel-vault-copy strong {color:#352551}
+.palace-shell.daylight .duel-room-page .duel-vault-copy p {color:#4c4864}
+.palace-shell.daylight .duel-room-page .duel-bronze-meter-label {color:#654326}
+.palace-shell.daylight .duel-room-page .duel-bronze-meter>span,
+.palace-shell.daylight .duel-room-page .duel-bronze-meter>small {color:#3c4261}
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-stat-selector {background:#f7f4fc;border-color:#c9b6e2}
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-stat-selector legend {color:#4d3a71}
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-stat-options button {background:#fff;color:#353153;border-color:#b7a8cf}
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-stat-options button.active {background:#644b9e;color:white;border-color:#594084}
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-builder-label {color:#593c83!important}
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-content-picker button,
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-match-picker button,
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-mode-picker button {background:#f2ecfb!important;color:#32264c}
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-content-picker button.active,
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-match-picker button.active,
+:root[data-palace-theme='daylight'] .ink-duel-dialog .duel-mode-picker button.active {background:linear-gradient(140deg,#e8d8ff,#dceafa)!important;color:#372356}
+@media(max-width:740px) {
+ .ink-duel-dialog .duel-rule-grid {grid-template-columns:minmax(0,1fr)}
+ .palace-shell .duel-room-page .duel-card > header {gap:10px}
+ .palace-shell .duel-room-page .duel-quest-card {padding:12px;gap:9px}
+ .palace-shell .duel-room-page .duel-card > header > .duel-clock {min-width:0;padding:9px 16px}
+ .palace-shell .duel-room-page .duel-vault.is-open {flex-direction:column;text-align:center}
+}
+@media(prefers-reduced-motion:reduce){
+ .palace-shell .duel-timer-pulse {animation:none}
+ .ink-duel-dialog .duel-content-picker button,
+ .ink-duel-dialog .duel-match-picker button,
+ .ink-duel-dialog .duel-mode-picker button {transition:none}
+}
+
+/* The setup wizard is portalled to the document body, outside .palace-shell. */
+.ink-duel-dialog > footer {
+ display:flex;
+ align-items:center;
+ justify-content:flex-end;
+ flex-wrap:wrap;
+ gap:9px;
+}
+.ink-duel-dialog > footer .duel-submit-hint {flex:1 1 100%;order:0}
+.ink-duel-dialog > footer .quiet-button {order:1}
+.ink-duel-dialog > footer .button-starlight[form="ink-duel-form"] {
+ order:2;
+ flex:1 1 100%;
+ width:100%;
+ min-height:50px;
+}

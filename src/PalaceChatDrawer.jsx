@@ -2,7 +2,7 @@ import MemberAvatar from './MemberAvatar';
 import PalaceIcon from './PalaceIcon';
 import React,{useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
-import {Link} from 'react-router-dom';
+import {Link,useLocation} from 'react-router-dom';
 import {supabase} from './supabase';
 import {watchPalaceChatRoom} from './palaceChatRealtime';
 import {buildPalaceDirectPreviews} from './palaceChatDirectPreview';
@@ -10,7 +10,7 @@ import {filterPalaceDirectInbox,findPalaceChatMessages} from './palaceChatInboxM
 import {collectPalaceSharedMedia,groupPalaceSharedMedia} from './palaceChatSharedMedia';
 import {PALACE_READING_CIRCLE_PROMPTS,PALACE_READING_CIRCLE_KITS,makePalaceCircleDraft} from './palaceReadingCirclePrompts';
 import {makePalaceDirectQuoteDraft} from './palaceDirectQuote';
-import {PALACE_CHAT_V3_ENABLED,getPalaceReactions,changePalaceReaction} from './palaceChatV3';
+import {PALACE_CHAT_V3_ENABLED,PALACE_MESSAGE_REACTIONS_ENABLED,getPalaceReactions,changePalaceReaction} from './palaceChatV3';
 import PalaceChatReactionBar from './PalaceChatReactionBar';
 import './palace-chat-workspace.css';
 import {getMyProfile,getLetters,getDirectConversationMessages,DIRECT_HISTORY_PAGE_SIZE,sendLetter,sendLetterPhoto,editLetterMessage,searchMembers,setConversationPreference,getMemberBoundary,setMemberBoundary,reportConversation,submitCommunityReport} from './palaceData';
@@ -36,6 +36,8 @@ import './palace-chat-conversation-first.css';
 import './palace-chat-compact-menu.css';
 import './palace-chat-mobile-compact.css';
 import './palace-chat-final-details.css';
+import './chamber-chat-desktop-refinement.css';
+import './palace-chat-midnight.css';
 
 const draftKey=(user,kind,id)=>'palace-chat-draft:'+user+':'+kind+':'+id;
 const nameOf=p=>p?.display_name||p?.username||'Palace member';
@@ -46,6 +48,9 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  const[selfProfile,setSelfProfile]=useState(null);
  useEffect(()=>{let active=true;setSelfProfile(null);Promise.resolve().then(()=>getMyProfile(userId)).then(p=>{if(active)setSelfProfile(p)}).catch(()=>{});return()=>{active=false}},[userId]);
  const[open,setOpen]=useState(Boolean(workspace));
+ const[composeToolsOpen,setComposeToolsOpen]=useState(false);
+ const chatLocation=useLocation();
+ useEffect(()=>{if(!workspace&&window.matchMedia?.('(min-width:961px)').matches){setOpen(false);setActionMenu(null)}},[chatLocation.pathname,workspace]);
  useEffect(()=>{if(workspace)return;const openFromHeader=()=>{setActionMenu(null);setThreadOpen(false);setOpen(true)};window.addEventListener("palace-chat-open",openFromHeader);return()=>window.removeEventListener("palace-chat-open",openFromHeader)},[workspace]);
  const[threadOpen,setThreadOpen]=useState(Boolean(initialRoom?.roomId));
  const[loadingDirect,setLoadingDirect]=useState(true);
@@ -159,12 +164,16 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   return()=>{current=false};
  },[userId,tab,otherUserId]);
  useEffect(()=>{
-  if(!PALACE_CHAT_V3_ENABLED||!open||!roomId||!reactionMessageIds){setReactionRows({roomId:'',rows:[]});return}
+  if(!PALACE_MESSAGE_REACTIONS_ENABLED||!open||!roomId||!reactionMessageIds){setReactionRows({roomId:'',rows:[]});return}
   let alive=true;
-  getPalaceReactions(tab,reactionMessageIds.split(',')).then(rows=>{
+  const refresh=()=>getPalaceReactions(tab,reactionMessageIds.split(',')).then(rows=>{
    if(alive)setReactionRows({roomId,rows});
   }).catch(e=>{if(alive)setError('Reactions could not be loaded. '+errorText(e))});
-  return()=>{alive=false};
+  refresh();
+  // Realtime is primary; this slower fallback avoids unnecessary reaction polling.
+  const timer=window.setInterval(()=>{if(document.visibilityState==='visible')refresh()},60000);
+  window.addEventListener('focus',refresh);
+  return()=>{alive=false;window.clearInterval(timer);window.removeEventListener('focus',refresh)};
  },[open,roomId,tab,reactionMessageIds,reactionRefresh]);
  useEffect(()=>{if(!photoFile){setPhotoPreview('');return}
   const preview=URL.createObjectURL(photoFile);setPhotoPreview(preview);
@@ -600,7 +609,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   finally{setBusy(false)}
  }
  async function reactToMessage(messageId,key,current){
-  if(!PALACE_CHAT_V3_ENABLED||busy||!roomId)return;
+  if(!PALACE_MESSAGE_REACTIONS_ENABLED||busy||!roomId)return;
   setBusy(true);setError('');
   try{await changePalaceReaction(tab,messageId,userId,key,current);setReactionRefresh(v=>v+1)}
   catch(e){setError('Reaction was not saved. '+errorText(e))}
@@ -741,7 +750,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
     <button type="button" aria-pressed={tab==='direct'} onClick={()=>{setActionMenu(null);setThreadOpen(false);setTab('direct');setSearch('');setUnreadOnly(false);setStarredOnly(false);setShowArchived(false);setCreating(false);setManaging(false);setError('')}}>✉ Direct {directUnread>0&&<span>{directUnread}</span>}</button>
     <button type="button" aria-pressed={tab==='groups'} onClick={()=>{setActionMenu(null);setThreadOpen(false);setTab('groups');setSearch('');setUnreadOnly(false);setStarredOnly(false);setShowArchived(false);setCreating(false);setManaging(false);setError('')}}>♧ Groups {(groupUnread+groupData.invitations.length)>0&&<span>{groupUnread+groupData.invitations.length}</span>}</button>
    </nav>
-   <details className={"palace-chat-advanced-controls"+((tab==='groups'&&groupData.groups.length===0||tab==='direct'&&directRows.length===1&&archivedCount===0)&&!search&&!unreadOnly&&!starredOnly&&!showArchived?' is-quiet-single':'')}><summary aria-label="Search and filter conversations">⋯ Search & filters</summary><div className="palace-chat-tools"><input aria-label="Find a conversation" placeholder={tab==='groups'?'Find a circle or member…':'Search direct conversations…'} value={search} onChange={e=>setSearch(e.target.value)}/>
+   <details className={"palace-chat-advanced-controls"+((tab==='groups'&&groupData.groups.length===0||tab==='direct'&&directRows.length===1&&archivedCount===0)&&!search&&!unreadOnly&&!starredOnly&&!showArchived?' is-quiet-single':'')}><summary aria-label="Search and filter conversations"><PalaceIcon name="search" size={16}/> Search & filters</summary><div className="palace-chat-tools"><input aria-label="Find a conversation" placeholder={tab==='groups'?'Find a circle or member…':'Search direct conversations…'} value={search} onChange={e=>setSearch(e.target.value)}/>
     {tab==='direct'?<Link to="/letters" onClick={()=>setOpen(false)}>All letters ↗</Link>:<button type="button" onClick={()=>{setCreating(v=>!v);setManaging(false);setMemberResults([]);setMemberSearch('');setError('')}}>{creating?'Cancel':'＋ Group'}</button>}
    </div>
    {!creating&&<div className="palace-chat-inbox-refine" aria-label="Conversation filters">
@@ -826,7 +835,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
         onPointerMove={moveMessageHold} onPointerUp={clearMessageHold} onPointerCancel={clearMessageHold} onPointerLeave={clearMessageHold}
         onContextMenu={e=>{e.preventDefault();openMessageActions(m,e.currentTarget,e.clientX,e.clientY)}}
         onKeyDown={e=>{if(e.target!==e.currentTarget)return;if((e.shiftKey&&e.key==='F10')||e.key==='ContextMenu'||e.key==='Enter'||e.key===' '){e.preventDefault();openMessageActions(m,e.currentTarget)} }}
-        className={'palace-chat-bubble'+(m.sender_id===userId?' mine':'')+(actionMenu?.message.id===m.id?' has-active-actions':'')}>
+        className={'palace-chat-bubble'+(m.sender_id===userId?' mine':'')+(actionMenu?.message.id===m.id?' has-active-actions':'')+(PALACE_MESSAGE_REACTIONS_ENABLED?' has-reaction-control':'')}>
        <div className="palace-chat-sender"><MemberAvatar className="palace-chat-message-avatar" memberId={m.sender_id} profile={tab==='groups'?(m.profiles||activeGroup?.members.find(p=>p.id===m.sender_id)):m.sender_id===userId?selfProfile:activeDirect?.correspondent}/>{tab==='groups'&&m.sender_id!==userId&&<strong>{nameOf(m.profiles)}</strong>}</div>
        {(tab==='groups'||PALACE_CHAT_V3_ENABLED)&&m.reply_to_id&&<button type="button" className="palace-chat-reply-quote" onClick={()=>jumpToQuotedMessage(m.reply_to_id)} aria-label="Jump to replied message"><small>↩ Reply to {nameOf(messages.find(item=>item.id===m.reply_to_id)?.profiles)}</small><p>{messages.find(item=>item.id===m.reply_to_id)?.body?.slice(0,145)||'An earlier group message'}</p></button>}
        {editingMessage===m.id?
@@ -838,17 +847,17 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
        {m.edited_at&&<small className="palace-chat-edited-mark" title={'Edited '+new Date(m.edited_at).toLocaleString()}>Edited</small>}
        {tab==='groups'&&m.works?.slug&&<Link className="palace-chat-shared-story" to={'/work/'+encodeURIComponent(m.works.slug)} onClick={()=>setOpen(false)}><span aria-hidden="true">✧</span><span><small>PALACE STORY</small><strong>{m.works.title}</strong></span><span aria-hidden="true">↗</span></Link>}
        <small className="palace-chat-timestamp">{dateOf(m.created_at)}</small>
-       {PALACE_CHAT_V3_ENABLED&&<PalaceChatReactionBar message={m} rows={reactionRows.roomId===roomId?reactionRows.rows:[]} userId={userId} disabled={busy||(tab==='direct'&&boundary.blocked)} onReact={reactToMessage}/>}
+       {PALACE_MESSAGE_REACTIONS_ENABLED&&<PalaceChatReactionBar message={m} rows={reactionRows.roomId===roomId?reactionRows.rows:[]} userId={userId} disabled={busy||(tab==='direct'&&boundary.blocked)} onReact={reactToMessage}/>}
        {/* Message actions appear only on long-press, right-click, or keyboard context menu. */}
       </div></React.Fragment>):<p className="palace-chat-empty">Nothing written here yet. Begin with a hello. ✦</p>}
      </div>
      {newWhileAway&&messages.length>0&&<button type="button" className="palace-chat-jump-latest" onClick={jumpToLatest}>New messages · Jump to latest ↓</button>}
      {(tab==='groups'||PALACE_CHAT_V3_ENABLED)&&replyTarget?.chatId===roomId&&<div className="palace-chat-replying"><span>Replying to: {replyTarget.body.slice(0,96)}{replyTarget.body.length>96?'…':''}</span><button type="button" aria-label={tab==='groups'?"Cancel group reply":"Cancel reply"} onClick={()=>setReplyTarget(null)}>×</button></div>}
-     <div className="palace-chat-composer-shell"><div className="palace-chat-compose-tools"><PalaceEmojiPicker label="Palace Chat" onPick={insertChatEmoji}/><button type="button" className="palace-chat-gif-toggle" aria-expanded={gifOpen} onClick={()=>setGifOpen(v=>!v)} aria-label="Choose a GIF">GIF</button><button type="button" className="palace-chat-photo-toggle" aria-label="Attach photo" disabled={busy} onClick={()=>photoInputRef.current?.click()}><span aria-hidden="true"><PalaceIcon name="image"/></span><span className="palace-chat-photo-label">Photo</span></button><input ref={photoInputRef} className="palace-chat-photo-file" type="file" accept="image/jpeg,image/png,image/webp,image/avif" aria-label="Choose photo to send" onChange={e=>{const file=e.target.files?.[0];if(file){if(!['image/jpeg','image/png','image/webp','image/avif'].includes(file.type)||file.size>18*1024*1024){setError('Use a JPEG, PNG, WebP or AVIF photo under 18 MB.');e.target.value='';return}setPhotoFile(file);setGifOpen(false)}}}/></div>
+     <div className="palace-chat-composer-shell"><div id="palace-chat-compose-tools" className={"palace-chat-compose-tools"+(composeToolsOpen?" is-tools-open":"")}><PalaceEmojiPicker label="Palace Chat" onPick={insertChatEmoji}/><button type="button" className="palace-chat-gif-toggle" aria-expanded={gifOpen} onClick={()=>setGifOpen(v=>!v)} aria-label="Choose a GIF">GIF</button><button type="button" className="palace-chat-photo-toggle" aria-label="Attach photo" disabled={busy} onClick={()=>photoInputRef.current?.click()}><span aria-hidden="true"><PalaceIcon name="image"/></span><span className="palace-chat-photo-label">Photo</span></button><input ref={photoInputRef} className="palace-chat-photo-file" type="file" accept="image/jpeg,image/png,image/webp,image/avif" aria-label="Choose photo to send" onChange={e=>{const file=e.target.files?.[0];if(file){if(!['image/jpeg','image/png','image/webp','image/avif'].includes(file.type)||file.size>18*1024*1024){setError('Use a JPEG, PNG, WebP or AVIF photo under 18 MB.');e.target.value='';return}setPhotoFile(file);setGifOpen(false)}}}/></div>
      {gifOpen&&<PalaceGiphyPicker busy={busy} onSend={sendGif} onClose={()=>setGifOpen(false)}/>}
      {photoFile&&<form className="palace-chat-photo-stage" onSubmit={sendPhoto}><div>{photoPreview&&<img src={photoPreview} alt="Selected photo preview"/>}<span><strong>{photoFile.name}</strong><small>Private photo · {Math.round(photoFile.size/1024)} KB · {currentDraft.trim()?'Your drafted text becomes its caption':'Add an optional caption below'}</small></span></div><footer><button type="button" onClick={()=>{setPhotoFile(null);if(photoInputRef.current)photoInputRef.current.value=''}}>Cancel</button><button type="submit" disabled={busy}>{busy?'Sending…':'Send photo ↗'}</button></footer></form>}
      {tab==='direct'&&boundary.blocked&&<p className="palace-chat-safety-blocked" role="status">You blocked this member. Unblock them in Safety to resume sending.</p>}
-     <form className="palace-chat-compose" onSubmit={send}><label className="sr-only" htmlFor="palace-quick-chat-message">Your message</label><textarea ref={composerRef} id="palace-quick-chat-message" aria-label={tab==='groups'?'Write a group message':'Write a private message'} placeholder={tab==='groups'?'Write to your circle…':'Write a little note…'} rows={1} maxLength={3000} value={currentDraft} onChange={e=>setDraft(e.target.value)} onInput={e=>{const field=e.currentTarget;field.style.height='auto';field.style.height=Math.min(112,Math.max(46,field.scrollHeight))+'px'}} onKeyDown={e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();if(currentDraft.trim())e.currentTarget.form?.requestSubmit()}}}/><button type="submit" className="palace-chat-send" disabled={busy||!currentDraft.trim()||(tab==='direct'&&boundary.blocked)}>{busy?'Sending…':<>Send <span aria-hidden="true">↗</span></>}</button></form>
+     <form className="palace-chat-compose" onSubmit={send}><button type="button" className="palace-chat-add-media" aria-label="Emoji, GIF and photo options" aria-expanded={composeToolsOpen} aria-controls="palace-chat-compose-tools" onClick={()=>setComposeToolsOpen(v=>!v)}>+</button><label className="sr-only" htmlFor="palace-quick-chat-message">Your message</label><textarea ref={composerRef} id="palace-quick-chat-message" aria-label={tab==='groups'?'Write a group message':'Write a private message'} placeholder={tab==='groups'?'Write to your circle…':'Write a little note…'} rows={1} maxLength={3000} value={currentDraft} onChange={e=>setDraft(e.target.value)} onInput={e=>{const field=e.currentTarget;field.style.height='auto';field.style.height=Math.min(112,Math.max(46,field.scrollHeight))+'px'}} onKeyDown={e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();if(currentDraft.trim())e.currentTarget.form?.requestSubmit()}}}/><button type="submit" aria-label={busy?"Sending message":"Send message"} className="palace-chat-send" disabled={busy||!currentDraft.trim()||(tab==='direct'&&boundary.blocked)}>{busy?<span aria-hidden="true">…</span>:<><span className="palace-chat-send-label">Send</span><PalaceIcon name="arrow-up-right" size={19}/></>}</button></form>
      <small className="palace-chat-draft-hint">{currentDraft?'Draft kept on this device':'Ctrl/⌘ + Enter to send · Enter for a new line'}</small></div>
     </>:((tab==='groups'&&groupRows.length>0)||(tab==='direct'&&visibleDirect.length>0)||search||unreadOnly||starredOnly||showArchived)?null:<div className={'palace-chat-empty'+(!loadingDirect&&!error&&!search&&!unreadOnly&&!starredOnly&&!showArchived&&(tab==='groups'?groupData.groups.length===0&&groupData.invitations.length===0:directRows.length===0)?' palace-chat-zero-state':'')}>
      {!loadingDirect&&!error&&!search&&!unreadOnly&&!starredOnly&&!showArchived&&(tab==='groups'?groupData.groups.length===0&&groupData.invitations.length===0:directRows.length===0)&&<span className="palace-chat-empty-moon" aria-hidden="true">☾</span>}

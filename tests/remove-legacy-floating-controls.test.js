@@ -2,6 +2,7 @@ import {describe,it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
 
 const shell=readFileSync('src/main.jsx','utf8');
+const theme=readFileSync('src/PalaceThemePicker.jsx','utf8');
 
 describe('retire legacy floating shortcuts without losing destinations',()=>{
  it('does not mount the obsolete hover orbs that overlap room content',()=>{

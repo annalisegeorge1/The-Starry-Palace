@@ -164,3 +164,38 @@
 @media(prefers-reduced-motion:reduce){
  .palace-update-peek{transition:none!important;animation:none!important}
 }
+
+/* A stale optional chat module must never replace the entire Palace shell.
+   The recover control remains available on mobile without overlapping nav. */
+.palace-chat-load-fallback{
+ position:fixed;z-index:1200;
+ right:clamp(12px,2vw,26px);bottom:clamp(14px,3vw,26px);
+ display:flex;align-items:center;flex-wrap:wrap;gap:9px;
+ width:min(330px,calc(100vw - 24px));
+ box-sizing:border-box;padding:12px 14px;
+ border:1px solid rgba(187,173,229,.42);border-radius:15px;
+ background:linear-gradient(125deg,#24213b,#151b32);
+ color:#f1eafa;box-shadow:0 12px 32px rgba(6,6,23,.3);
+ font:550 .76rem/1.5 system-ui,sans-serif;
+}
+.palace-chat-load-fallback span{flex:1 1 125px;min-width:0}
+.palace-chat-load-fallback button{
+ min-height:40px;flex:0 1 auto;padding:8px 11px;
+ border:1px solid rgba(195,179,235,.55);border-radius:10px;
+ background:rgba(158,133,218,.16);color:inherit;
+ font:700 .74rem/1.3 system-ui,sans-serif;cursor:pointer;
+}
+.palace-chat-load-fallback button:focus-visible{outline:3px solid #badbff;outline-offset:2px}
+html[data-palace-theme="midnight"] .palace-chat-load-fallback{
+ background:#151318;border-color:#514659;color:#f5f0f9;
+}
+html[data-palace-theme="daylight"] .palace-chat-load-fallback{
+ background:#f6f0fd;border-color:#b2a1cf;color:#392f53;
+ box-shadow:0 12px 30px rgba(56,40,97,.15);
+}
+@media(max-width:720px){
+ .palace-chat-load-fallback{
+  left:12px;right:12px;
+  bottom:calc(82px + env(safe-area-inset-bottom));width:auto;
+ }
+}

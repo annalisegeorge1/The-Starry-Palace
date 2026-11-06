@@ -6,7 +6,7 @@ import './palace-relationship-filters.css';
 export default function PalaceRelationshipFilters({included=[],excluded=[],onToggle,disabled=false,mode='both'}){
  const single=mode==='include'||mode==='exclude';
  return <fieldset className={'palace-relationship-types'+(single?' palace-relationship-single':' palace-relationship-dual')} disabled={disabled}>
-  <legend className="visually-hidden">Relationship categories</legend>
+  <legend className="visually-hidden">Relationship type choices</legend>
   <details className="palace-relationship-help"><summary>ⓘ About relationship categories</summary><p>Based on explicit author tags only. Not tagged means no declared category.</p></details>
   <div className="palace-relationship-options">
    {RELATIONSHIP_TYPES.map(([key,name])=><div className="palace-relationship-option" key={key}>

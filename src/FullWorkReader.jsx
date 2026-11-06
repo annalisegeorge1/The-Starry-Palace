@@ -2,6 +2,7 @@ import React,{useEffect,useMemo,useRef,useState} from 'react';
 import {Link,useParams} from 'react-router-dom';
 import {getPublishedWorkForReading} from './palaceData';
 import {safeReaderHtml} from './readerHtmlSanitizer';
+import {restoreFlatClassicChapterHtml} from './classicTextStructure';
 import {readPalaceChoice,readPalaceNumber,writePalacePreference} from './browserPreferences';
 import {readerFlow} from './readerFlowModel';
 import PalacePagedReader from './PalacePagedReader';
@@ -35,7 +36,7 @@ export default function FullWorkReader({Frame}){
   }).catch(e=>{if(active)setError(e.message||'Unable to open the full work')});
   return()=>{active=false};
  },[slug,key]);
- const html=useMemo(()=>result?.chapters?.map((ch,i)=>'<section class="palace-full-chapter" id="full-chapter-'+ch.id+'"><h2>'+(i+1)+'. '+escapeHeading(ch.title)+'</h2><div class="chapter-text restored">'+safeReaderHtml(ch.body_html||'')+'</div></section>').join('')||'',[result]);
+ const html=useMemo(()=>result?.chapters?.map((ch,i)=>'<section class="palace-full-chapter" id="full-chapter-'+ch.id+'"><h2>'+(i+1)+'. '+escapeHeading(ch.title)+'</h2><div class="chapter-text restored">'+(result.work?.is_archive?restoreFlatClassicChapterHtml(safeReaderHtml(ch.body_html||'')):safeReaderHtml(ch.body_html||''))+'</div><p class="palace-full-chapter-discussion"><a href="/work/'+encodeURIComponent(result.work.slug)+'/chapter/'+encodeURIComponent(ch.id)+'#comments">◇ Read chapter '+(i+1)+' comments and leave a response →</a></p></section>').join('')||'',[result]);
  function remember(pct){
   const v=Math.max(0,Math.min(100,Number(pct)||0));placeRef.current=v;
   try{localStorage.setItem(key,String(Math.round(v)))}catch{}
@@ -95,7 +96,7 @@ export default function FullWorkReader({Frame}){
     <PalacePagedReader key={slug+':full'} html={html} fontSize={fontSize} initialPercent={place} onPositionChange={remember} label="Turn pages through the full published work"/>:
     <div ref={contentRef} className="palace-full-reader-content" style={{fontSize:fontSize+'px'}} dangerouslySetInnerHTML={{__html:html}}/>:
     <p>No published chapters are available to read.</p>}
-   <footer className="reader-nav"><Link to={'/work/'+work.slug}>← Back to the story</Link><p>For chapter-specific notes, reactions, and reading rewards, open an individual chapter.</p></footer>
+   <footer className="reader-nav"><Link to={'/work/'+work.slug}>← Back to the story</Link><p>To read or leave comments on a particular chapter, select its discussion link below that chapter. Private notes, reactions, and reading rewards remain available in the individual chapter reader.</p></footer>
   </article>}
  </Frame>;
 }

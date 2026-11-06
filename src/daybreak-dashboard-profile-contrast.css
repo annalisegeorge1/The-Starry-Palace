@@ -1,0 +1,194 @@
+/* Daybreak contrast and tablet/desktop dashboard finish.
+   Do not alter Nightfall, Midnight, the honours cabinet, or the stats grid. */
+
+/* Dashboard shortcuts are pearl/lavender cards in Daybreak, so their text
+   must never inherit the night-theme white label from my-palace-calm.css. */
+.palace-shell.full-palace-shell.daylight .legacy-home-dashboard.palace-command-centre
+.palace-home-shortcuts-calm > a {
+  border:1px solid #c9bfdf !important;
+  background:#f8f5fd !important;
+  background-image:none !important;
+  box-shadow:0 2px 8px rgba(49,44,83,.06) !important;
+  color:#273149 !important;
+  text-shadow:none !important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-home-dashboard
+.palace-home-shortcuts-calm > a > small {
+  display:block !important;
+  min-width:0 !important;
+  color:#25324b !important;
+  opacity:1 !important;
+  text-shadow:none !important;
+  font-weight:750 !important;
+  line-height:1.3 !important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-home-dashboard
+.palace-home-shortcuts-calm > a:nth-child(-n+2) {
+  background:#eee8f8 !important;
+  background-image:none !important;
+  border-color:#b5a6d4 !important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-home-dashboard
+.palace-home-shortcuts-calm > a:hover {
+  background:#eae3f7 !important;
+  border-color:#8f7eb9 !important;
+  transform:none !important;
+}
+/* Keep the jewel artwork itself; restore a visible SVG icon if global icon
+   styles wash it out against Daybreak's light shortcut surfaces. */
+.palace-shell.full-palace-shell.daylight .legacy-home-dashboard
+.palace-home-shortcuts-calm > a > span {
+  opacity:1 !important;
+}
+.palace-shell.full-palace-shell.daylight .legacy-home-dashboard
+.palace-home-shortcuts-calm > a:focus-visible {
+  outline:3px solid #6c529d !important;
+  outline-offset:2px !important;
+}
+
+/* Public chamber interests under the personal quote should be actual,
+   readable pills—not pale text on an almost identical pale background. */
+.palace-shell.full-palace-shell.daylight .chic-member-profile .legacy-profile-tags > span {
+  background:#eae4f5 !important;
+  background-image:none !important;
+  border:1px solid #b4a5d2 !important;
+  color:#3d305a !important;
+  opacity:1 !important;
+  text-shadow:none !important;
+  font-weight:700 !important;
+  line-height:1.4 !important;
+  white-space:normal !important;
+  overflow-wrap:anywhere;
+}
+
+/* The selected main/sub-room items match the restrained Daybreak palette.
+   Preserve the left marker, icon colours and keyboard focus. */
+.palace-shell.full-palace-shell.daylight #palace-sidebar
+.full-nav-room > a.active {
+  color:#3e2d5d !important;
+  background:#e9e1f5 !important;
+  background-image:none !important;
+  border-color:#b9a8d8 !important;
+  box-shadow:inset 3px 0 #7655a6 !important;
+  text-shadow:none !important;
+}
+.palace-shell.full-palace-shell.daylight #palace-sidebar
+.full-subnav > a.active,
+.palace-shell.full-palace-shell.daylight #palace-sidebar
+.palace-more-subdoors > a.active {
+  color:#38294f !important;
+  background:#e5dff2 !important;
+  background-image:none !important;
+  border-left:3px solid #7655a6 !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+}
+.palace-shell.full-palace-shell.daylight #palace-sidebar
+:is(.full-nav-room > a.active,.full-subnav > a.active) :is(span,small) {
+  color:inherit !important;
+  opacity:1 !important;
+}
+
+/* Header separation is subtle, opaque and consistent on wider screens. */
+@media (min-width:761px) {
+  .palace-shell.full-palace-shell.daylight .full-stage > header.topbar.full-topbar {
+    box-shadow:0 3px 13px rgba(48,42,86,.13) !important;
+    border-bottom:1px solid #d8cfe7 !important;
+  }
+
+  /* Preserve the six real doors; remove the oversized empty card height. */
+  .palace-shell.full-palace-shell.daylight .legacy-home-dashboard.palace-command-centre
+  .palace-home-shortcuts-calm > a {
+    min-height:54px !important;
+    height:auto !important;
+    padding:9px 13px !important;
+    justify-content:flex-start !important;
+    align-items:center !important;
+    gap:11px !important;
+    border-radius:12px !important;
+  }
+  .palace-shell.full-palace-shell.daylight .legacy-home-dashboard.palace-command-centre
+  .palace-home-shortcuts-calm > a:nth-child(-n+2) {
+    min-height:62px !important;
+  }
+  .palace-shell.full-palace-shell.daylight .legacy-home-dashboard
+  .palace-home-shortcuts-calm > a > span {
+    display:inline-flex !important;
+    flex:0 0 auto !important;
+    align-items:center !important;
+    justify-content:center !important;
+  }
+
+  /* The refresh action stays wired to load(); the existing text remains its
+     accessible name while a compact icon is shown on desktop and tablet. */
+  .palace-shell.full-palace-shell.daylight .legacy-home-dashboard
+  .palace-now-stream > .section-heading {
+    position:relative !important;
+    align-items:flex-start !important;
+    padding-right:48px !important;
+  }
+  .palace-shell.full-palace-shell.daylight .legacy-home-dashboard
+  .palace-now-stream > .section-heading > div {
+    min-width:0;
+    flex:1 1 auto;
+  }
+  .palace-shell.full-palace-shell.daylight .legacy-home-dashboard
+  .palace-now-stream > .section-heading > button.quiet-button {
+    position:absolute !important;
+    top:0 !important;
+    right:0 !important;
+    display:grid !important;
+    place-items:center !important;
+    flex:none !important;
+    width:38px !important;
+    min-width:38px !important;
+    height:38px !important;
+    min-height:38px !important;
+    margin:0 !important;
+    padding:0 !important;
+    border:1px solid #beb2d6 !important;
+    border-radius:10px !important;
+    background:#f2ecfa !important;
+    background-image:none !important;
+    color:#493660 !important;
+    font-size:0 !important;
+    box-shadow:none !important;
+    cursor:pointer;
+  }
+  .palace-shell.full-palace-shell.daylight .legacy-home-dashboard
+  .palace-now-stream > .section-heading > button.quiet-button::before {
+    content:"↻";
+    font:750 1.4rem/1 system-ui,sans-serif !important;
+    color:#493660 !important;
+  }
+  .palace-shell.full-palace-shell.daylight .legacy-home-dashboard
+  .palace-now-stream > .section-heading > button.quiet-button:hover {
+    background:#e7ddf5 !important;
+    border-color:#9885b9 !important;
+  }
+  .palace-shell.full-palace-shell.daylight .legacy-home-dashboard
+  .palace-now-stream > .section-heading > button.quiet-button:focus-visible {
+    outline:3px solid #7657ac !important;
+    outline-offset:2px !important;
+  }
+}
+@media (min-width:761px) and (max-width:1100px) {
+  .palace-shell.full-palace-shell.daylight .legacy-home-dashboard.palace-command-centre
+  .palace-home-shortcuts-calm {
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  }
+  .palace-shell.full-palace-shell.daylight .legacy-home-dashboard.palace-command-centre
+  .palace-home-shortcuts-calm > a:nth-child(-n+2) {
+    grid-column:span 2 !important;
+  }
+}
+
+/* System contrast settings take precedence over themed surfaces. */
+@media (forced-colors:active) {
+  .palace-shell.full-palace-shell.daylight .legacy-home-dashboard .palace-home-shortcuts-calm > a,
+  .palace-shell.full-palace-shell.daylight .chic-member-profile .legacy-profile-tags > span {
+    background:Canvas !important;
+    border-color:CanvasText !important;
+    color:CanvasText !important;
+  }
+}
