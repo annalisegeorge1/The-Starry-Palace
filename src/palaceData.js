@@ -1568,6 +1568,22 @@ export async function setConversationPreference(userId,conversationId,patch){
  const{data,error}=await needClient().from('conversation_preferences').upsert({user_id:userId,conversation_id:conversationId,...patch,updated_at:new Date().toISOString()},{onConflict:'user_id,conversation_id'}).select().single();if(error)throw error;return data
 }
 
+/**
+ * Temporary owner-only URLs for private comic-editor previews.
+ * Never infer a public storage URL from a page path.
+ */
+export async function getComicStudioPagePreviews(userId,comicId,episodeId,pages=[]){
+ const own=await needClient().from('comics').select('id').eq('id',comicId).eq('creator_id',userId).maybeSingle();
+ if(own.error)throw own.error;
+ if(!own.data)throw new Error('Only the comic creator can preview these draft pages.');
+ const ep=await needClient().from('comic_episodes').select('id').eq('id',episodeId).eq('comic_id',comicId).maybeSingle();
+ if(ep.error)throw ep.error;
+ if(!ep.data)throw new Error('This episode does not belong to the selected comic.');
+ const prefix=userId+'/'+comicId+'/'+episodeId+'/';
+ const unique=[...new Set((pages||[]).map(x=>String(x?.reader_path||'')).filter(x=>x.startsWith(prefix)))].slice(0,120);
+ return Object.fromEntries(await Promise.all(unique.map(async path=>[path,await signedAsset('comic-pages',path,1800)])));
+}
+
 export async function getMyComics(userId){
  const{data,error}=await needClient().from('comics').select('*,comic_episodes(id,title,position,status,revision,revision_note,scheduled_for,published_at,comic_pages(id,position,caption,alt_text,decorative,reader_path,width,height))').eq('creator_id',userId).order('updated_at',{ascending:false});if(error)throw error;
  const comics=data||[];const ids=comics.map(x=>x.id);let tagRows=[];
