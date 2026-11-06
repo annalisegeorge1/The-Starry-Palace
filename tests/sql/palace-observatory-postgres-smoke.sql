@@ -67,15 +67,15 @@ SELECT 1 / CASE WHEN
   AND NOT has_column_privilege('authenticated','public.archive_texts','body_text','SELECT')
   AND has_column_privilege('authenticated','public.archive_texts','word_count','SELECT')
   THEN 1 ELSE 0 END AS archive_body_nonexposure;
--- The four read-only discovery fixtures must not retain direct DML grants.
+-- The four read-only discovery fixtures must retain no write/DDL grants.
+-- PostgreSQL RLS does not protect against TRUNCATE; check it explicitly.
 -- Preserve separate staged collaboration/rewards fixture permissions.
 SELECT 1 / CASE WHEN NOT EXISTS (
  SELECT 1
  FROM unnest(ARRAY['works','chapters','tags','work_tags']) AS tables(relname)
  CROSS JOIN unnest(ARRAY['anon','authenticated']) AS roles(role_name)
- WHERE has_table_privilege(roles.role_name,'public.'||tables.relname,'INSERT')
-    OR has_table_privilege(roles.role_name,'public.'||tables.relname,'UPDATE')
-    OR has_table_privilege(roles.role_name,'public.'||tables.relname,'DELETE')
+ CROSS JOIN unnest(ARRAY['INSERT','UPDATE','DELETE','TRUNCATE','REFERENCES','TRIGGER']) AS perms(name)
+ WHERE has_table_privilege(roles.role_name,'public.'||tables.relname,perms.name)
 ) AND (SELECT count(*) FROM pg_policies
        WHERE schemaname='public' AND tablename='works')=2
   AND (SELECT count(*) FROM public.work_collaborators)=0
