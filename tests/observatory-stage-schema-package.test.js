@@ -30,6 +30,9 @@ describe('Draft-only additive staging database package',()=>{
   expect(query).toContain('ALTER TABLE public.works');
   expect(query).toContain('ALTER TABLE public.chapters');
   expect(query).toContain('ALTER TABLE public.work_tags');
+  // RLS cannot prevent TRUNCATE; browser roles must retain SELECT only.
+  expect(query).toContain('REVOKE INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER');
+  expect(query).toContain('ON TABLE public.works, public.chapters, public.tags, public.work_tags');
   for(const table of ['profiles','fandom_directory','archive_records','archive_rights_records','archive_texts','platform_memberships','comments']){
    expect(query).toContain('CREATE TABLE public.'+table);
    expect(query).toContain('ALTER TABLE public.'+table+' ENABLE ROW LEVEL SECURITY;');
