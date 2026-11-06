@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 1000" role="img" aria-label="Default purple book cover">
+ <defs>
+  <linearGradient id="cover" x1="0" x2="0.95" y1="0" y2="1">
+   <stop offset="0" stop-color="#25204a"/>
+   <stop offset=".5" stop-color="#483174"/>
+   <stop offset="1" stop-color="#8154b3"/>
+  </linearGradient>
+ </defs>
+ <rect width="700" height="1000" rx="48" fill="url(#cover)"/>
+ <rect x="18" y="18" width="664" height="964" rx="38" fill="none" stroke="#b28ad7" stroke-width="5"/>
+ <g fill="none" stroke="#fff" stroke-width="24" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M350 423c-38-35-85-45-148-35v191c63-10 110 0 148 35V423Z"/>
+  <path d="M350 423c38-35 85-45 148-35v191c-63-10-110 0-148 35V423Z"/>
+ </g>
+</svg>
