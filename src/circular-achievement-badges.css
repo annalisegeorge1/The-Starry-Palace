@@ -3,8 +3,6 @@
 .circular-achievement-badge .circular-achievement-stage{position:relative;display:block;width:160px;height:160px;max-width:100%;aspect-ratio:1;isolation:isolate;flex:none;overflow:visible;margin-inline:auto}
 .circular-achievement-badge .circular-achievement-subject{position:absolute;inset:21%;display:grid;place-items:center;border-radius:50%;overflow:hidden;z-index:1}
 .circular-achievement-badge .circular-achievement-subject>*{position:static!important;display:block!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;margin:0!important;transform:none!important;object-fit:contain!important;filter:none!important}
-.circular-achievement-badge .circular-achievement-subject>.painted-round-badge{position:relative!important}
-.circular-achievement-badge .painted-round-picture{inset:0!important}
 .circular-achievement-badge .circular-achievement-mount{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain;pointer-events:none;z-index:2}
 .circular-achievement-badge.is-locked .circular-achievement-stage{filter:saturate(.55);opacity:.72}
 .circular-achievement-badge figcaption{text-transform:capitalize}
@@ -17,5 +15,7 @@
 .circular-achievement-stage[data-tier="platinum"] .circular-achievement-subject{inset:auto;left:15.63%;top:19.53%;width:67.19%;height:67.19%}
 .circular-achievement-stage[data-tier="emerald"] .circular-achievement-subject{inset:auto;left:19.14%;top:15.63%;width:61.72%;height:61.72%}
 /* Fit both Treasury cabinet variants within their existing fixed artwork slots. */
-.palace-shell .treasury-room.refined .badge-grid.refined>.achievement-card .circular-achievement-stage{width:114px;height:114px}
 .palace-shell .badge-grid:not(.refined) .badge-art-preview-button .circular-achievement-stage{width:120px;height:120px}
+
+/* Round paintings extend just under the inner lip of the illustrated mount. */
+.circular-achievement-subject.is-painted{transform:scale(1.07)}
