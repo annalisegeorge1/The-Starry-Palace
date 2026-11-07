@@ -3,6 +3,7 @@ import {describe,it,expect} from 'vitest';
 import {render,screen,cleanup} from '@testing-library/react';
 import fs from 'node:fs';
 import badges from './badges.json';
+import PalaceBadge from './PalaceBadge';
 import {MergedBadgeArt,buildCourtForegroundMask,courtPortraitCellRect,findTransparentGridCuts,foregroundBounds,mergedBadgeArtwork,mergedBadgePathCount,mergedCourtPaths,mergedObjectPaths} from './MergedBadgeArt';
 
 describe('merged 100-path badge artwork',()=>{
@@ -66,20 +67,15 @@ describe('merged 100-path badge artwork',()=>{
   const fallback=courtPortraitCellRect(1000,800,{column:4,row:3});
   expect(fallback).toEqual({x:800,y:600,width:200,height:200});
  });
- it('keeps badge art transparent and uses the painted Bronze-to-Emerald tier mounts',()=>{
-  const css=fs.readFileSync('src/treasury.css','utf8');
-  const component=fs.readFileSync('src/PalaceBadge.jsx','utf8');
-  expect(fs.existsSync('public/assets/palace-originals/palace-watercolour-tier-mounts.png')).toBe(true);
-  expect(css).toContain('.approved-badge-stage{background:transparent');
-  expect(css).toContain('.merged-badge-stage.is-object{');
-  expect(css).toContain('.painted-tier-stage');
-  expect(css).toContain('.painted-badge-inner');
-  expect(css).toContain('.painted-tier-mount');
-  expect(css).not.toContain('.badge-tier-frame::before');
-  expect(component).toContain('palace-watercolour-tier-mounts.png');
-  expect(component).toContain('painted-tier-stage merged-badge-stage');
-  expect(component).toContain('painted-tier-stage approved-badge-stage is-object');
-  expect(component).toContain('<PaintedTierMount rank={rank}');
-  expect(component).not.toContain('badge-tier-ornament');
+ it('keeps the original object painting for each rank and labels locked previews',()=>{
+  for(const rank of ['bronze','silver','gold','platinum','emerald']){
+   const {container,unmount}=render(<PalaceBadge family={{id:'infinite-inkwell',name:'Infinite Inkwell'}} tier={rank} locked/>);
+   expect(screen.getByRole('img',{name:`Infinite Inkwell · ${rank} artwork (preview)`})).toBeTruthy();
+   const img=container.querySelector('.circular-achievement-mount');
+   expect(fs.existsSync('public'+img.getAttribute('src'))).toBe(true);
+   expect(img.getAttribute('src')).toContain('/'+rank+'.webp');
+   expect(container.querySelector('.merged-badge-object').getAttribute('src')).toContain('moonlit-inkwell-'+rank+'.png');
+   unmount();
+  }
  });
 });

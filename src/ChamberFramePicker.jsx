@@ -2,6 +2,11 @@ import {useEffect,useState} from 'react';
 import {CHAMBER_FRAMES,FRAME_REQUIREMENTS,chamberFrameUnlocked} from './paintedCollection';
 import {ChamberFrameArt} from './PaintedPalaceArt';
 import {savePaintedChamberFrame,getPrismState} from './memberChamberDecorData';
+// The grid shares one small atlas; only the selected preview requests full-size art.
+function FrameThumbnail({frame}){
+ const cell=192,x=frame.index%8*cell,y=Math.floor(frame.index/8)*cell;
+ return <svg className="painted-art painted-chamber-frame" width="84" height="84" viewBox={[x,y,cell,cell].join(' ')} aria-hidden="true" focusable="false"><image href="/assets/atelier-illustrated/picker-v2.webp" width="1536" height="1536"/></svg>;
+}
 export default function ChamberFramePicker({decor,onSaved}){
  const [selected,setSelected]=useState(decor?.chamber_frame||''),[collection,setCollection]=useState('all'),[busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState('');
  useEffect(()=>setSelected(decor?.chamber_frame||''),[decor?.chamber_frame]);
@@ -15,6 +20,6 @@ export default function ChamberFramePicker({decor,onSaved}){
  ].map(([key,label])=><button key={key} type="button" aria-pressed={collection===key} onClick={()=>setCollection(key)}>{label}</button>)}
  </div>
  <div className="painted-frame-preview" aria-hidden="true"><ChamberFrameArt slug={selected}/></div><p className="painted-frame-preview-label" role="status">{frame?`Previewing ${frame.name}${frame.thickness?` · ${frame.thickness} setting`:frame.gemstone?" · gemstone setting":""}`:"Previewing your portrait without a frame"}</p>
- <div className="painted-frame-grid"><button type="button" className="painted-frame-choice painted-frame-none" aria-pressed={!selected} onClick={()=>setSelected('')}><span className="painted-frame-none-ring" aria-hidden="true">◌</span><strong>No frame</strong></button>{visibleFrames.map(f=><button type="button" className="painted-frame-choice" key={f.slug} aria-pressed={selected===f.slug} onClick={()=>{setSelected(f.slug);setNotice('')}}><ChamberFrameArt slug={f.slug} size={84}/><strong>{f.name}</strong><small>{f.gemstone?'Gemstone · ':f.regalia?(f.thickness==='grand'?'Thick · ':f.thickness==='delicate'?'Delicate · ':'Artisan · '):''}{f.tier} · {chamberFrameUnlocked(f,decor?.unlocks)?'Available':'Locked'}</small></button>)}</div>
+ <div className="painted-frame-grid"><button type="button" className="painted-frame-choice painted-frame-none" aria-pressed={!selected} onClick={()=>setSelected('')}><span className="painted-frame-none-ring" aria-hidden="true">◌</span><strong>No frame</strong></button>{visibleFrames.map(f=><button type="button" className="painted-frame-choice" key={f.slug} aria-pressed={selected===f.slug} onClick={()=>{setSelected(f.slug);setNotice('')}}><FrameThumbnail frame={f}/><strong>{f.name}</strong><small>{f.gemstone?'Gemstone · ':f.regalia?(f.thickness==='grand'?'Thick · ':f.thickness==='delicate'?'Delicate · ':'Artisan · '):''}{f.tier} · {chamberFrameUnlocked(f,decor?.unlocks)?'Available':'Locked'}</small></button>)}</div>
  <div className="painted-frame-action"><p>{frame?`${frame.name} · ${FRAME_REQUIREMENTS[frame.tier]}`:'Your portrait without a frame.'}</p><button type="button" disabled={busy||!allowed} onClick={save}>{busy?'Saving…':allowed?'Wear this frame':'Keep creating to unlock'}</button></div>{error&&<p role="alert">{error}</p>}{notice&&<p role="status">{notice}</p>}</section>;
 }

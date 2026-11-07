@@ -6,12 +6,9 @@ import originals from './originalBadges.json';
 import ApprovedBadgeArt,{approvedBadgeFrame} from './ApprovedBadgeArt';
 import {MergedBadgeArt,mergedBadgeArtwork} from './MergedBadgeArt';
 import './treasury.css';
+import './circular-achievement-badges.css';
 const protectArt={onContextMenu:e=>e.preventDefault(),onDragStart:e=>e.preventDefault(),onCopy:e=>e.preventDefault(),onCut:e=>e.preventDefault()};
 
-// Only the twenty painted badge families introduced on October 11, 2026,
-// use the frameless variant. Older merged/approved badge mounts and original
-// historical frames must remain visible. This changes presentation only.
-const SHOW_WEEKEND_PAINTED_BADGE_FRAMES=false;
 const ranks=['bronze','silver','gold','platinum','emerald'];
 const normal=value=>String(value||'').toLowerCase().replace(/[^a-z0-9]/g,'');
 const catalogue=new Map(originals.map(b=>[normal(b.name),b.id]));
@@ -32,18 +29,6 @@ function loadFrames(rank){
 function SheetArt({frame,id,mount=false,className=''}) {
  const base=mount?'original-badge-mount':'original-badge-picture';
  return <svg {...protectArt} className={base+(className?' '+className:'')} viewBox={frame.box.join(' ')} preserveAspectRatio={mount?'xMidYMid meet':'xMidYMid meet'} focusable="false" aria-hidden="true"><defs><clipPath id={id} clipPathUnits="userSpaceOnUse"><path d={frame.clip} transform={`translate(${frame.box[0]} ${frame.box[1]})`} fillRule={mount?'evenodd':undefined} clipRule={mount?'evenodd':undefined}/></clipPath></defs><image href={'/assets/palace-originals/'+frame.asset} width={frame.width} height={frame.height} clipPath={`url(#${id})`}/></svg>;
-}
-
-const tierMounts={
- bronze:{box:[0,50,434,595],clip:'M0 0H434V595H0Z M106 146H328V390H106Z',width:2172,height:724,asset:'palace-watercolour-tier-mounts.png'},
- silver:{box:[434,50,435,595],clip:'M0 0H435V595H0Z M107 146H328V390H107Z',width:2172,height:724,asset:'palace-watercolour-tier-mounts.png'},
- gold:{box:[869,50,434,595],clip:'M0 0H434V595H0Z M106 146H328V390H106Z',width:2172,height:724,asset:'palace-watercolour-tier-mounts.png'},
- platinum:{box:[1303,50,435,595],clip:'M0 0H435V595H0Z M107 146H328V390H107Z',width:2172,height:724,asset:'palace-watercolour-tier-mounts.png'},
- emerald:{box:[1738,50,434,595],clip:'M0 0H434V595H0Z M106 146H328V390H106Z',width:2172,height:724,asset:'palace-watercolour-tier-mounts.png'}
-};
-
-function PaintedTierMount({rank,id}){
- return <SheetArt frame={tierMounts[rank]||tierMounts.bronze} id={id} mount className="painted-tier-mount"/>;
 }
 
 // Art never grants achievements: unlock records remain authoritative.
@@ -68,10 +53,16 @@ export default function PalaceBadge({family,tier='bronze',locked=false}){
  },[rank,originalId,namedId,Boolean(approved),Boolean(merged),Boolean(painted)]);
 
  const name=family?.name||'Palace achievement';
- const weekendFrameHidden=Boolean(painted)&&!SHOW_WEEKEND_PAINTED_BADGE_FRAMES;
-
- return <figure {...protectArt} className={'palace-watercolour-badge protected-palace-art tier-'+rank+(locked?' is-locked':'')+(painted?' has-painted-round':'')+(weekendFrameHidden?' no-new-badge-frames':'')+((merged||approved)?' has-original-tier-frame':'')}>
-  {painted?<PaintedBadge family={painted} tier={rank} showFrame={SHOW_WEEKEND_PAINTED_BADGE_FRAMES}/>:merged?<span className={'original-badge-stage painted-tier-stage merged-badge-stage '+(merged.type==='court'?'is-character':'is-object')}><span className="painted-badge-inner"><MergedBadgeArt art={merged} name={name}/></span><PaintedTierMount rank={rank} id={id+'-painted-tier'}/></span>:approved?<span className="original-badge-stage painted-tier-stage approved-badge-stage is-object"><span className="painted-badge-inner"><ApprovedBadgeArt frame={approved} name={name} tier={rank}/></span><PaintedTierMount rank={rank} id={id+'-painted-tier'}/></span>:frame?<span className={'original-badge-stage'+(frame.character?' is-character':'')} role="img" aria-label={name+' · '+rank+' artwork'+(locked?' (preview)':'')}><SheetArt frame={frame} id={id}/>{frame.mount&&<SheetArt frame={frame.mount} id={id+'-mount'} mount/>}</span>:<span className="original-badge-stage" role="status">{loading?'Artwork loading…':'Artwork unavailable'}</span>}
+ const subject=painted?<PaintedBadge family={painted} tier={rank} showFrame={false}/>
+  :merged?<MergedBadgeArt art={merged} name={name}/>
+  :approved?<ApprovedBadgeArt frame={approved} name={name} tier={rank}/>
+  :frame?<SheetArt frame={frame} id={id}/>
+  :<span role="status">{loading?'Artwork loading…':'Artwork unavailable'}</span>;
+ return <figure {...protectArt} className={'palace-watercolour-badge protected-palace-art circular-achievement-badge tier-'+rank+(locked?' is-locked':'')}>
+  <span className="circular-achievement-stage" data-tier={rank} role="img" aria-label={name+' · '+rank+' artwork'+(locked?' (preview)':'')}>
+   <span className={'circular-achievement-subject'+(merged?.type==='court'||frame?.character?' is-character':'')}>{subject}</span>
+   <img className="circular-achievement-mount" src={'/assets/badges-illustrated/v2/'+rank+'.webp'} alt="" aria-hidden="true" draggable="false" loading="lazy"/>
+  </span>
   <figcaption>{rank}{locked?' · Preview':''}</figcaption>
  </figure>;
 }
