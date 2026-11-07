@@ -27,8 +27,8 @@ describe('Treasury mobile badge showcase without artwork regression',()=>{
   expect(treasury).toContain('className="achievement-progress-label"');
   expect(treasury).toContain('Bronze → Silver → Gold → Platinum → Emerald');
   expect(badge).toContain('PaintedBadge');
-  expect(badge).toContain('original-badge-stage');
-  expect(badge).toContain('PaintedTierMount');
+  expect(badge).toContain('circular-achievement-stage');
+  expect(badge).toContain('/assets/badges-illustrated/v2/');
  });
  it('retains earned showcases while rendering Remove as a smaller secondary action',()=>{
   expect(treasury).toContain('onClick={()=>toggleAchievement(a,current)}');
