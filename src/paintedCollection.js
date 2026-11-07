@@ -8,7 +8,7 @@ const chamberNames=['Bamboo Ink','Willow Mist','Lotus Thread','Orchid Frost','Ja
 export const GEMSTONE_FRAME_NAMES=["Crown Jewel","Midnight Sapphire","Starlit Amethyst","Black Diamond","Emerald Garden","Ruby Coronation","Rose Palace","Opal Dream","Treasury Relic","Celestial Aquamarine","Golden Topaz","Violet Empress"];
 export const GRAND_FRAME_NAMES=['Grand Coronation','Sapphire Cathedral','Emerald Fortress','Black Diamond Throne','Amethyst Empress','Treasury Vault'];
 export const ARTISAN_FRAME_NAMES=['Rose Palace Deluxe','Moonstone Halo','Opal Bloom','Star Garland','Golden Ivy','Twilight Pearl'];
-export const CHAMBER_FRAMES=[...chamberNames,...GEMSTONE_FRAME_NAMES,...GRAND_FRAME_NAMES,...ARTISAN_FRAME_NAMES].map((name,index)=>({
+const illustratedFrames=[...chamberNames,...GEMSTONE_FRAME_NAMES,...GRAND_FRAME_NAMES,...ARTISAN_FRAME_NAMES].map((name,index)=>({
  name,slug:slugify(name),index,tier:PAINTED_TIERS[index%5],
  gemstone:index>=chamberNames.length&&index<chamberNames.length+GEMSTONE_FRAME_NAMES.length,
  regalia:index>=chamberNames.length+GEMSTONE_FRAME_NAMES.length,
@@ -17,5 +17,18 @@ export const CHAMBER_FRAMES=[...chamberNames,...GEMSTONE_FRAME_NAMES,...GRAND_FR
    :['Star Garland','Golden Ivy'].includes(name)?'delicate':'medium')
   :null
 }));
+export const SOLID_CIRCLE_FRAMES=[
+ {name:'Midnight Ink',solidColor:'#252535'},
+ {name:'Pearl White',solidColor:'#F8F3E8'},
+ {name:'Palace Gold',solidColor:'#E3B74E'},
+ {name:'Ruby Red',solidColor:'#CA3D53'},
+ {name:'Sapphire Blue',solidColor:'#3977D5'},
+ {name:'Amethyst Violet',solidColor:'#9864D7'},
+ {name:'Emerald Green',solidColor:'#269B73'},
+ {name:'Lagoon Teal',solidColor:'#27ADAC'},
+].map((frame,index)=>({
+ ...frame,slug:'solid-'+slugify(frame.name),index:illustratedFrames.length+index,tier:'bronze'
+}));
+export const CHAMBER_FRAMES=[...illustratedFrames,...SOLID_CIRCLE_FRAMES];
 export const FRAME_REQUIREMENTS={bronze:'Included',silver:'Publish 1 chapter or finish 5 rewarded chapter reads',gold:'Publish 5 chapters or finish 25 rewarded chapter reads',platinum:'Publish 20 chapters or finish 100 rewarded chapter reads',emerald:'Publish 50 chapters or finish 250 rewarded chapter reads'};
 export function chamberFrameUnlocked(frame,unlocks){const i=PAINTED_TIERS.indexOf(frame?.tier);return i===0||Number(unlocks?.published_chapters||0)>=[0,1,5,20,50][i]||Number(unlocks?.reading_chapters||0)>=[0,5,25,100,250][i]}

@@ -11,9 +11,9 @@ import {REGALIA_FRAME_DESIGNS} from './RegaliaOrnamentalFrame';
 afterEach(cleanup);
 
 describe('Atelier artwork quality refinement',()=>{
- const newFrames=CHAMBER_FRAMES.slice(35);
+ const newFrames=CHAMBER_FRAMES.slice(35,59);
  it('retains the 35 established frames and all 24 new frame identities',()=>{
-  expect(CHAMBER_FRAMES).toHaveLength(59);
+  expect(CHAMBER_FRAMES).toHaveLength(67);
   expect(CHAMBER_FRAMES.slice(0,35)).toHaveLength(35);
   expect(newFrames).toHaveLength(24);
   expect(new Set(newFrames.map(f=>f.slug)).size).toBe(24);
