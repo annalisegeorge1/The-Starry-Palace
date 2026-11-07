@@ -22,9 +22,9 @@ describe('Jewel Court gemstone frames',()=>{
   const svgs=[...container.querySelectorAll('svg[data-gemstone="true"]')];
   expect(svgs).toHaveLength(12);
   expect(new Set(svgs.map(x=>x.getAttribute('aria-label'))).size).toBe(12);
-  expect(container.querySelectorAll('image')).toHaveLength(0);
+  expect(container.querySelectorAll('image')).toHaveLength(12);
   expect(container.querySelectorAll('rect')).toHaveLength(0);
-  expect(container.querySelectorAll('circle').length).toBeGreaterThan(400);
+  expect(new Set([...container.querySelectorAll('image')].map(x=>x.getAttribute('href'))).size).toBe(12);
   expect(new Set([...container.querySelectorAll('[id]')].map(x=>x.id)).size).toBe(container.querySelectorAll('[id]').length);
  });
  it('safely changes a selected preview between classic and gemstone styles',()=>{
