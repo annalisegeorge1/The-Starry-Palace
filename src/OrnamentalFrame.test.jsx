@@ -24,3 +24,16 @@ it('leaves unknown or removed frames empty',()=>{
  const {container}=render(<ChamberFrameArt slug="not-a-frame"/>);
  expect(container.innerHTML).toBe('');
 });
+
+it('includes eight distinct flat single-colour rings with open portrait centres',()=>{
+ const rings=CHAMBER_FRAMES.filter(frame=>frame.solidColor);
+ expect(rings).toHaveLength(8);
+ expect(new Set(rings.map(frame=>frame.solidColor)).size).toBe(8);
+ for(const frame of rings){
+  expect(frame.tier).toBe('bronze');
+  const {container,unmount}=render(<ChamberFrameArt slug={frame.slug}/>);
+  expect(container.querySelector('circle').getAttribute('stroke')).toBe(frame.solidColor);
+  expect(container.querySelector('circle').getAttribute('fill')).toBe('none');
+  unmount();
+ }
+});

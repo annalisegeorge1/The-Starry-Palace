@@ -6,6 +6,12 @@ import './classic-circular-frames.css';
 
 /** Stable collection identity and unlocks are independent of the artwork. */
 export default function OrnamentalFrame({frame,size='100%',className=''}){
+ if(frame?.solidColor){
+  return <svg className={'painted-art painted-chamber-frame solid-circle-frame '+className}
+   width={size} height={size} viewBox="0 0 200 200" role="img" aria-label={frame.name+' circle frame'}>
+   <circle cx="100" cy="100" r="83" fill="none" stroke={frame.solidColor} strokeWidth="8"/>
+  </svg>;
+ }
  if(frame?.regalia)return <RegaliaOrnamentalFrame frame={frame} size={size} className={className}/>;
  if(frame?.gemstone)return <GemstoneOrnamentalFrame frame={frame} size={size} className={className}/>;
  return <svg className={'painted-art painted-chamber-frame ornamental-avatar-frame classic-circular-frame '+className}

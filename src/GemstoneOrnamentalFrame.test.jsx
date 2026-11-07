@@ -7,14 +7,14 @@ import {ChamberFrameArt} from './PaintedPalaceArt';
 
 describe('Jewel Court gemstone frames',()=>{
  it('extends the classic catalogue without moving or renaming existing frame IDs',()=>{
-  expect(CHAMBER_FRAMES).toHaveLength(59);
+  expect(CHAMBER_FRAMES).toHaveLength(67);
   expect(GEMSTONE_FRAME_NAMES).toHaveLength(12);
   expect(CHAMBER_FRAMES[0].slug).toBe('bamboo-ink');
   expect(CHAMBER_FRAMES[34].slug).toBe('emerald-eden');
   expect(CHAMBER_FRAMES.slice(35,47).every(x=>x.gemstone)).toBe(true);
-  expect(CHAMBER_FRAMES.slice(47).every(x=>x.regalia)).toBe(true);
-  expect(new Set(CHAMBER_FRAMES.map(x=>x.slug)).size).toBe(59);
-  for(const frame of CHAMBER_FRAMES)expect(frame.tier).toBe(PAINTED_TIERS[frame.index%5]);
+  expect(CHAMBER_FRAMES.slice(47,59).every(x=>x.regalia)).toBe(true);
+  expect(new Set(CHAMBER_FRAMES.map(x=>x.slug)).size).toBe(67);
+  for(const frame of CHAMBER_FRAMES.slice(0,59))expect(frame.tier).toBe(PAINTED_TIERS[frame.index%5]);
  });
  it('renders twelve accessible original transparent jewelled frames',()=>{
   const gemFrames=CHAMBER_FRAMES.filter(f=>f.gemstone);

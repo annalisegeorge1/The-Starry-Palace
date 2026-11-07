@@ -10,18 +10,18 @@ afterEach(cleanup);
 
 describe('Prism Atelier grand and artisan frame collection',()=>{
  it('keeps all 47 previous frames in the same order and adds twelve distinct designs',()=>{
-  expect(CHAMBER_FRAMES).toHaveLength(59);
+  expect(CHAMBER_FRAMES).toHaveLength(67);
   expect(GRAND_FRAME_NAMES).toHaveLength(6);
   expect(ARTISAN_FRAME_NAMES).toHaveLength(6);
   expect(CHAMBER_FRAMES[34].slug).toBe('emerald-eden');
   expect(CHAMBER_FRAMES[46].slug).toBe('violet-empress');
   expect(CHAMBER_FRAMES.slice(47,53).every(x=>x.regalia&&x.thickness==='grand')).toBe(true);
-  expect(CHAMBER_FRAMES.slice(53).every(x=>x.regalia&&x.thickness!=='grand')).toBe(true);
-  expect(new Set(CHAMBER_FRAMES.map(x=>x.slug)).size).toBe(59);
-  for(const frame of CHAMBER_FRAMES)expect(frame.tier).toBe(PAINTED_TIERS[frame.index%5]);
+  expect(CHAMBER_FRAMES.slice(53,59).every(x=>x.regalia&&x.thickness!=='grand')).toBe(true);
+  expect(new Set(CHAMBER_FRAMES.map(x=>x.slug)).size).toBe(67);
+  for(const frame of CHAMBER_FRAMES.slice(0,59))expect(frame.tier).toBe(PAINTED_TIERS[frame.index%5]);
  });
  it('provides six genuinely thick settings and six lighter artisan settings with an open centre',()=>{
-  const frames=CHAMBER_FRAMES.slice(47);
+  const frames=CHAMBER_FRAMES.slice(47,59);
   const {container}=render(<>{frames.map(f=><ChamberFrameArt key={f.slug} slug={f.slug} size={84}/>)}</>);
   const svgs=[...container.querySelectorAll('svg[data-regalia="true"]')];
   expect(svgs).toHaveLength(12);
@@ -48,7 +48,7 @@ describe('Prism Atelier grand and artisan frame collection',()=>{
  });
  it('extends the server-side frame whitelist and the eligibility calculation, not member privileges',()=>{
   const sql=readFileSync('database/atelier-grand-and-artisan-frames.sql','utf8');
-  for(const frame of CHAMBER_FRAMES)expect(sql).toContain("'"+frame.slug+"'");
+  for(const frame of CHAMBER_FRAMES.slice(0,59))expect(sql).toContain("'"+frame.slug+"'");
   expect(sql).toContain('private.painted_frame_eligible');
   expect(sql).toContain('Existing Palace frame whitelist differs; aborting expansion');
   expect(sql).toContain('chamber_frame is null or chamber_frame in');
