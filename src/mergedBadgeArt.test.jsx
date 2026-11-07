@@ -67,9 +67,19 @@ describe('merged 100-path badge artwork',()=>{
   const fallback=courtPortraitCellRect(1000,800,{column:4,row:3});
   expect(fallback).toEqual({x:800,y:600,width:200,height:200});
  });
+ it('adds the new frame only when the expanded catalogue requests it',()=>{
+  const family={id:'chapter-weaver',name:'Chapter Weaver'};
+  const {container,rerender,unmount}=render(<PalaceBadge family={family} tier="silver"/>);
+  expect(container.querySelector('.painted-round-picture')).toBeTruthy();
+  expect(container.querySelector('.circular-achievement-mount')).toBeNull();
+  rerender(<PalaceBadge family={family} tier="silver" catalogueFrame/>);
+  expect(container.querySelector('.circular-achievement-mount').getAttribute('src')).toContain('silver.webp');
+  expect(container.querySelector('.circular-achievement-subject > svg')).toBeTruthy();
+  unmount();
+ });
  it('keeps the original object painting for each rank and labels locked previews',()=>{
   for(const rank of ['bronze','silver','gold','platinum','emerald']){
-   const {container,unmount}=render(<PalaceBadge family={{id:'infinite-inkwell',name:'Infinite Inkwell'}} tier={rank} locked/>);
+   const {container,unmount}=render(<PalaceBadge family={{id:'infinite-inkwell',name:'Infinite Inkwell'}} tier={rank} catalogueFrame locked/>);
    expect(screen.getByRole('img',{name:`Infinite Inkwell · ${rank} artwork (preview)`})).toBeTruthy();
    const img=container.querySelector('.circular-achievement-mount');
    expect(fs.existsSync('public'+img.getAttribute('src'))).toBe(true);

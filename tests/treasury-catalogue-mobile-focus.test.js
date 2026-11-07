@@ -20,7 +20,7 @@ describe('Full Treasury catalogue remains artwork-first on mobile',()=>{
   expect(css).toContain('max-height:min(80dvh,680px)');
  });
  it('keeps full illustrated badges and tier progress without a repeated preview line',()=>{
-  expect(page).toContain('<PalaceBadge family={b} tier={badgeRank(b)}/>');
+  expect(page).toContain("<PalaceBadge family={b} tier={badgeRank(b)} catalogueFrame={collection==='expanded'}/>");
   expect(page).toContain('className="treasury-tier-dots"');
   expect(page).toContain("collection==='originals'&&t==='bronze'?'preview':''");
   expect(page).not.toContain('<small>Five collectible tiers · Preview</small>');
