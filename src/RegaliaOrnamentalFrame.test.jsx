@@ -10,14 +10,14 @@ afterEach(cleanup);
 
 describe('Prism Atelier grand and artisan frame collection',()=>{
  it('keeps all 47 previous frames in the same order and adds twelve distinct designs',()=>{
-  expect(CHAMBER_FRAMES).toHaveLength(67);
+  expect(CHAMBER_FRAMES).toHaveLength(73);
   expect(GRAND_FRAME_NAMES).toHaveLength(6);
   expect(ARTISAN_FRAME_NAMES).toHaveLength(6);
   expect(CHAMBER_FRAMES[34].slug).toBe('emerald-eden');
   expect(CHAMBER_FRAMES[46].slug).toBe('violet-empress');
   expect(CHAMBER_FRAMES.slice(47,53).every(x=>x.regalia&&x.thickness==='grand')).toBe(true);
   expect(CHAMBER_FRAMES.slice(53,59).every(x=>x.regalia&&x.thickness!=='grand')).toBe(true);
-  expect(new Set(CHAMBER_FRAMES.map(x=>x.slug)).size).toBe(67);
+  expect(new Set(CHAMBER_FRAMES.map(x=>x.slug)).size).toBe(73);
   for(const frame of CHAMBER_FRAMES.slice(0,59))expect(frame.tier).toBe(PAINTED_TIERS[frame.index%5]);
  });
  it('provides six genuinely thick settings and six lighter artisan settings with an open centre',()=>{
