@@ -1,4 +1,6 @@
 import React from 'react';
+import {readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
 import {render,cleanup} from '@testing-library/react';
 import {describe,it,expect,afterEach} from 'vitest';
 import {CHAMBER_FRAMES} from './paintedCollection';
@@ -18,25 +20,24 @@ describe('Atelier artwork quality refinement',()=>{
   expect(Object.keys(GEMSTONE_FRAME_DESIGNS)).toHaveLength(12);
   expect(Object.keys(REGALIA_FRAME_DESIGNS)).toHaveLength(12);
  });
- it('keeps portrait centres clear while adding fine metalwork, jewel facets and unique crests',()=>{
-  const {container}=render(<>{newFrames.map(frame=><ChamberFrameArt slug={frame.slug} key={frame.slug} size={110}/>)}</>);
-  const svg=[...container.querySelectorAll('svg[data-art-quality="hand-finished"]')];
-  expect(svg).toHaveLength(24);
-  expect(svg.filter(x=>x.dataset.gemstone==='true')).toHaveLength(12);
-  expect(svg.filter(x=>x.dataset.regalia==='true')).toHaveLength(12);
-  expect(new Set(svg.map(x=>x.getAttribute('aria-label'))).size).toBe(24);
-  for(const frame of svg){
-   expect(frame.getAttribute('viewBox')).toBe('0 0 200 200');
-   expect(frame.querySelectorAll('linearGradient').length).toBeGreaterThanOrEqual(2);
-   expect(frame.querySelectorAll('radialGradient').length).toBeGreaterThanOrEqual(1);
-   expect(frame.querySelectorAll('feDropShadow')).toHaveLength(1);
-   expect(frame.querySelector('image')).toBeNull();
-   expect(frame.querySelector('rect')).toBeNull();
-   expect([...frame.querySelectorAll('circle')].some(c=>Number(c.getAttribute('r'))>40 && c.getAttribute('fill') && c.getAttribute('fill')!=='none')).toBe(false);
-   expect(frame.querySelectorAll('path, circle, polygon').length).toBeGreaterThan(18);
+ it('loads 24 separate illustrated assets with stable accessible names',()=>{
+  const {container}=render(<>{newFrames.map(frame=><ChamberFrameArt slug={frame.slug} key={frame.slug} size={84}/>)}</>);
+  const artwork=[...container.querySelectorAll('svg[data-art-quality="illustrated"]')];
+  expect(artwork).toHaveLength(24);
+  expect(artwork.filter(x=>x.dataset.gemstone==='true')).toHaveLength(12);
+  expect(artwork.filter(x=>x.dataset.regalia==='true')).toHaveLength(12);
+  const hashes=new Set();
+  for(const [i,svg] of artwork.entries()){
+   expect(svg.getAttribute('aria-label')).toBe(newFrames[i].name+' illustrated chamber frame');
+   expect(svg.getAttribute('width')).toBe('84');
+   const href=svg.querySelector('image').getAttribute('href');
+   expect(href).toBe('/assets/atelier-illustrated/v1/'+newFrames[i].slug+'.webp');
+   const bytes=readFileSync('public'+href);
+   expect(bytes.toString('ascii',8,12)).toBe('WEBP');
+   hashes.add(createHash('sha256').update(bytes).digest('hex'));
+   expect(svg.querySelector('circle,polygon,path')).toBeNull();
   }
-  const ids=[...container.querySelectorAll('[id]')].map(el=>el.id);
-  expect(new Set(ids).size).toBe(ids.length);
+  expect(hashes.size).toBe(24);
  });
  it('preserves thick and lighter frame silhouettes and distinct motifs',()=>{
   const styles=Object.values(REGALIA_FRAME_DESIGNS);

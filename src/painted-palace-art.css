@@ -97,10 +97,10 @@
  font-size:.84rem;line-height:1.4;color:#e4d9f3;
 }
 .daylight .painted-frame-preview-label{color:#594669}
-.painted-frame-choice:has(.ornamental-avatar-frame[data-art-quality="hand-finished"]){
+.painted-frame-choice:has(.ornamental-avatar-frame[data-art-quality="illustrated"]){
  background:radial-gradient(ellipse at 50% 25%,rgba(157,113,200,.18),transparent 76%),rgba(35,29,62,.16);
 }
-.daylight .painted-frame-choice:has(.ornamental-avatar-frame[data-art-quality="hand-finished"]){
+.daylight .painted-frame-choice:has(.ornamental-avatar-frame[data-art-quality="illustrated"]){
  background:radial-gradient(ellipse at 50% 25%,rgba(218,196,245,.5),transparent 78%),#fbf8fd;
 }
 @media(max-width:600px){
@@ -118,5 +118,3 @@
  .painted-frame-picker .painted-frame-choice .painted-art{width:76px!important;height:76px!important}
 }
 
-/* Large catalogues: skip painting offscreen ornamental details on mobile. */
-.painted-frame-picker .painted-frame-grid>.painted-frame-choice{content-visibility:auto;contain-intrinsic-size:auto 170px}

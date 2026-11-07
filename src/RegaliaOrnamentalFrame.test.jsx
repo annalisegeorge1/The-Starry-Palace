@@ -31,9 +31,9 @@ describe('Prism Atelier grand and artisan frame collection',()=>{
   expect(new Set(svgs.map(s=>s.getAttribute('aria-label'))).size).toBe(12);
   for(const svg of svgs){
    expect(svg.getAttribute('viewBox')).toBe('0 0 200 200');
-   expect(svg.querySelector('image')).toBeNull();
+   expect(svg.querySelector('image').getAttribute('href')).toMatch(/^\/assets\/atelier-illustrated\/v1\/[a-z-]+\.webp$/);
    expect(svg.querySelector('rect')).toBeNull();
-   expect(svg.querySelector('g[fill="none"]')).not.toBeNull();
+   expect(svg.dataset.artQuality).toBe('illustrated');
   }
   const ids=[...container.querySelectorAll('[id]')].map(el=>el.id);
   expect(new Set(ids).size).toBe(ids.length);
