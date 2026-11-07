@@ -29,6 +29,17 @@ export const SOLID_CIRCLE_FRAMES=[
 ].map((frame,index)=>({
  ...frame,slug:'solid-'+slugify(frame.name),index:illustratedFrames.length+index,tier:'bronze'
 }));
-export const CHAMBER_FRAMES=[...illustratedFrames,...SOLID_CIRCLE_FRAMES];
+export const METAL_BAND_FRAMES=[
+ ['White Gold','#81714f','#ded3ae','#fffbea'],
+ ['Rose Gold','#7c4844','#db9b91','#ffe3d7'],
+ ['Silver','#525960','#b2b7bc','#f8fafc'],
+ ['Copper','#723826','#cd8353','#ffcfaa'],
+ ['Bronze','#534126','#a78048','#e1bd84'],
+ ['Platinum','#5b6879','#cbd6df','#f5ffff']
+].map(([name,shadow,body,light],index)=>({
+ name,slug:'metal-'+slugify(name),metal:{shadow,body,light},
+ index:illustratedFrames.length+SOLID_CIRCLE_FRAMES.length+index,tier:'bronze'
+}));
+export const CHAMBER_FRAMES=[...illustratedFrames,...SOLID_CIRCLE_FRAMES,...METAL_BAND_FRAMES];
 export const FRAME_REQUIREMENTS={bronze:'Included',silver:'Publish 1 chapter or finish 5 rewarded chapter reads',gold:'Publish 5 chapters or finish 25 rewarded chapter reads',platinum:'Publish 20 chapters or finish 100 rewarded chapter reads',emerald:'Publish 50 chapters or finish 250 rewarded chapter reads'};
 export function chamberFrameUnlocked(frame,unlocks){const i=PAINTED_TIERS.indexOf(frame?.tier);return i===0||Number(unlocks?.published_chapters||0)>=[0,1,5,20,50][i]||Number(unlocks?.reading_chapters||0)>=[0,5,25,100,250][i]}
