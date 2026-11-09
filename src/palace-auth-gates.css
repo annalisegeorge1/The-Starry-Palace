@@ -24,3 +24,5 @@
   .palace-login-panel .palace-google-login { transition: none; }
   .palace-login-panel .palace-google-login:hover:not(:disabled) { transform: none; }
 }
+.palace-login-panel .palace-google-note a,.palace-auth-callback-error a{color:inherit;text-decoration:underline}
+.palace-login-panel>input[type="date"]{width:100%;margin-bottom:.4rem}

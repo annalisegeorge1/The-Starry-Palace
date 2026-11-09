@@ -30,6 +30,11 @@ export function PalaceLogin({ Frame }) {
   const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
+  const ageCutoff = new Date();
+  ageCutoff.setFullYear(ageCutoff.getFullYear()-13);
+  const latestBirthDate = ageCutoff.toISOString().slice(0,10);
+  const signupAgeMessage = !birthDate ? 'Enter your date of birth to create an account.'
+    : birthDate > latestBirthDate ? 'You must be at least 13 to create a Palace account.' : '';
   const requested = location.state?.from || new URLSearchParams(location.search).get('next');
   const destination = safePalaceReturnPath(requested);
   useEffect(() => {
@@ -39,6 +44,7 @@ export function PalaceLogin({ Frame }) {
   async function submit(event) {
     event.preventDefault();
     if (!supabase || busy) return;
+    if (mode === 'signup' && signupAgeMessage) { setMessage(signupAgeMessage); return; }
     setBusy(true); setMessage('');
     try {
       if (mode === 'signup') rememberPalaceAuthDestination(window.sessionStorage, destination);
@@ -55,7 +61,7 @@ export function PalaceLogin({ Frame }) {
 
   async function magic() {
     if (!email.trim()) { setMessage('Enter your email address first to request a magic link.'); return; }
-    if (mode === 'signup' && !birthDate) { setMessage('Enter your date of birth to create an account.'); return; }
+    if (mode === 'signup' && signupAgeMessage) { setMessage(signupAgeMessage); return; }
     if (!supabase || busy) return;
     setBusy(true); setMessage('');
     try {
@@ -98,20 +104,23 @@ export function PalaceLogin({ Frame }) {
     <div className="auth-panel palace-login-panel">
       {!configured ? <p role="alert">Sign-in is not configured.</p> : <>
         {googleLoginEnabled() && mode !== 'signup' && <>
+          <p className="palace-google-note">First visit? <Link to={'/login?mode=signup&next='+encodeURIComponent(destination)}>Create a Palace account with email</Link>.</p>
           <button type="button" className="palace-google-login" disabled={busy || loading} onClick={google}>
             <GoogleLogo /> <span>Continue with Google</span>
           </button>
           <div className="auth-divider"><span>or enter with email</span></div>
         </>}
+        {mode === 'signup' && location.state?.firstVisit && <p role="status">To join with your Google email, enter it below with your date of birth, then confirm the link in your inbox.</p>}
         <label htmlFor="palace-email">Email</label>
         <input id="palace-email" type="email" autoComplete="email" value={email}
           onChange={event => setEmail(event.target.value)} placeholder="you@example.com" required />
+        {mode === 'signup' && <><label htmlFor="palace-signup-birth-date">Date of birth</label><input id="palace-signup-birth-date" type="date" autoComplete="bday" max={latestBirthDate} value={birthDate} onChange={event => setBirthDate(event.target.value)} required/><small className="password-note">The Palace minimum account age is 13. Your date of birth is stored privately for age eligibility and reader restrictions.</small></>}
         <button type="button" className="magic-button" disabled={busy || loading} onClick={magic}>
-          Email me a passwordless entrance link
+          {mode === 'signup' ? 'Create my account with an email link' : 'Email me a passwordless entrance link'}
         </button>
         <div className="auth-divider"><span>or use a Palace password</span></div>
         <form onSubmit={submit}>
-          {mode === 'signup' && <><label htmlFor="palace-signup-birth-date">Date of birth</label><input id="palace-signup-birth-date" type="date" autoComplete="bday" max={(()=>{const d=new Date();d.setFullYear(d.getFullYear()-13);return d.toISOString().slice(0,10)})()} value={birthDate} onChange={event => setBirthDate(event.target.value)} required/><small className="password-note">The Palace minimum account age is 13. Your date of birth is stored privately for age eligibility and reader restrictions.</small></>}
+
           <label htmlFor="palace-password">Password</label>
           <div className="password-field">
             <input id="palace-password" type={showPassword ? 'text' : 'password'}
@@ -152,7 +161,11 @@ export function PalaceAuthCallback({ Frame }) {
     if (session && !loading) clearPalaceAuthDestination(window.sessionStorage);
   }, [session, loading]);
 
-  const oauthError = params.get('error_description') || params.get('error');
+  const fragment = new URLSearchParams(window.location.hash.slice(1));
+  const oauthError = params.get('error_description') || fragment.get('error_description') || params.get('error') || fragment.get('error');
+  if (!session && /database error saving new user/i.test(oauthError || error || '')) {
+    return <Navigate to="/login?mode=signup" state={{from:pending,firstVisit:true}} replace />;
+  }
   if (oauthError || error || (!session && !loading && !waiting)) {
     if (!oauthError && !error && !params.has('code'))
       return <Navigate to="/login" replace />;
