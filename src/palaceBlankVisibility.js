@@ -1,17 +1,28 @@
-/**
- * Keep the blank-screen watchdog from mistaking a hidden first panel for
- * an entirely invisible room. Responsive layouts can render a hidden
- * illustration, dialog or decorative node before their visible content.
- *
- * This checks top-level render surfaces only; callers supply the browser
- * visibility predicate, keeping this policy testable without a live browser.
- */
-export function isPalaceRoomVisuallyBlank(content, isInvisible){
+const NON_RENDERING=new Set(['STYLE','SCRIPT','TEMPLATE','NOSCRIPT']);
+
+function hasVisibleSurface(node,isInvisible){
+ if(node.nodeType===Node.TEXT_NODE){
+  if(!node.textContent.trim())return false;
+  const range=node.ownerDocument.createRange();
+  range.selectNodeContents(node);
+  return Array.from(range.getClientRects()).some(rect=>rect.width>0&&rect.height>0);
+ }
+ if(node.nodeType!==Node.ELEMENT_NODE||NON_RENDERING.has(node.tagName))return false;
+ if(!isInvisible(node))return true;
+ // A display:contents wrapper has no box. Its children supply the boxes
+ // (and sometimes bare text) that are actually painted in the room.
+ if(getComputedStyle(node).display==='contents'){
+  return Array.from(node.childNodes).some(child=>hasVisibleSurface(child,isInvisible));
+ }
+ return false;
+}
+
+export function isPalaceRoomVisuallyBlank(content,isInvisible){
  if(!content||typeof isInvisible!=='function')return false;
- if(isInvisible(content))return true;
- const surfaces=Array.from(content.children||[]).filter(node=>
-  node&&node.nodeType===1&&!['STYLE','SCRIPT','TEMPLATE','NOSCRIPT'].includes(node.tagName)
+ if(isInvisible(content))return !hasVisibleSurface(content,isInvisible);
+ const surfaces=Array.from(content.childNodes).filter(node=>
+  node.nodeType===Node.ELEMENT_NODE&&!NON_RENDERING.has(node.tagName)||
+  node.nodeType===Node.TEXT_NODE&&node.textContent.trim()
  );
- if(surfaces.length===0)return false;
- return surfaces.every(node=>isInvisible(node));
+ return surfaces.length>0&&!surfaces.some(node=>hasVisibleSurface(node,isInvisible));
 }

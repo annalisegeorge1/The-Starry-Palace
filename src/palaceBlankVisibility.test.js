@@ -19,6 +19,21 @@ describe('blank-screen visibility before emergency recovery',()=>{
   expect(isPalaceRoomVisuallyBlank(room(true,true,false),invisible)).toBe(false);
   expect(isPalaceRoomVisuallyBlank(room(false,true),invisible)).toBe(false);
  });
+ it('looks through nested display:contents wrappers on a member chamber',()=>{
+  const content=document.createElement('main');
+  const wrapper=document.createElement('div');
+  wrapper.className='public-chamber-appearance';
+  wrapper.style.display='contents';
+  const nested=wrapper.cloneNode();
+  const profile=document.createElement('section');
+  nested.append(profile);
+  wrapper.append(nested);
+  content.append(wrapper);
+  const noBox=node=>node.style.display==='contents'||node.hidden;
+  expect(isPalaceRoomVisuallyBlank(content,noBox)).toBe(false);
+  profile.hidden=true;
+  expect(isPalaceRoomVisuallyBlank(content,noBox)).toBe(true);
+ });
  it('detects genuinely invisible rooms and all-hidden top-level room panels',()=>{
   const collapsed=room(false);
   collapsed.dataset.invisible='true';
