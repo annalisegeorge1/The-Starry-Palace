@@ -1,3 +1,4 @@
+import {useMemberAppearance} from './useMemberAppearance';
 import MemberAvatar from './MemberAvatar';
 import PalaceIcon from './PalaceIcon';
 import React,{useEffect,useLayoutEffect,useRef,useState} from 'react';
@@ -132,6 +133,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  const scrollPinned=useRef(true);
  const lastAcknowledgedRef=useRef({roomId:'',messageId:''});
  const activeDirect=direct?.conversations?.find(c=>c.conversation_id===selectedDirect&&!c.preference?.archived&&c.conversations?.kind==='direct');
+ const correspondentAppearance=useMemberAppearance(open&&threadOpen&&tab==='direct'?activeDirect?.correspondent?.id:null,userId);
  const activeGroup=groupData.groups.find(g=>g.id===selectedGroup);
  const active=tab==='direct'?activeDirect:activeGroup;
  const roomId=tab==='direct'?activeDirect?.conversation_id:activeGroup?.id;
@@ -718,7 +720,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   {!open?<button type="button" className="palace-chat-launch" aria-label={'Open Palace chat'+(unread?' · '+unread+' new items':'')} aria-expanded={false} onClick={()=>{setActionMenu(null);setThreadOpen(false);setOpen(true)}}><span aria-hidden="true">✉</span><span>Chat</span>{unread>0&&<b>{unread>99?'99+':unread}</b>}</button>:
   <section className="palace-chat-panel" aria-label="Palace Chat" role="region">
    <header className="palace-chat-heading"><div className="palace-chat-brand">{!workspace&&<button type="button" className="palace-chat-mobile-back" aria-label={threadOpen?"Back to chat list":"Close Palace Chat"} onClick={()=>{setActionMenu(null);if(threadOpen){setThreadOpen(false)}else{setOpen(false)}}}>←</button>}<span className="palace-chat-brand-mark" aria-hidden="true">✦</span><div className="palace-chat-brand-copy"><small>PRIVATE CONVERSATIONS</small><strong>{workspace?"Palace Messenger":"Palace Chat"}</strong></div></div>
-    {active&&threadOpen&&<div className="palace-chat-thread-identity">
+    {active&&threadOpen&&<div className="palace-chat-thread-identity" data-correspondent-appearance={correspondentAppearance?.kind} style={correspondentAppearance?.style}>
      <button type="button" className="palace-chat-header-back" aria-label="Back to inbox" onClick={()=>{setActionMenu(null);setThreadOpen(false)}}>←</button>
      {tab==='direct'?<MemberAvatar className="palace-chat-header-avatar" profile={activeDirect?.correspondent}/>:<span className="palace-chat-header-avatar" aria-hidden="true">✧</span>}
      <span className="palace-chat-header-person"><strong>{openedRoomName}</strong><small><i aria-hidden="true" className={!deviceOnline?'is-offline':liveStatus==='live'?'is-live':''}/>{!deviceOnline?'Offline':liveStatus==='live'?'Live updates':'Refreshes automatically'}</small></span>
