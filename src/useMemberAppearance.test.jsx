@@ -14,6 +14,14 @@ it('uses validated skin colours, then returns to the worn palette and accent',()
  expect(prismAppearance({})).toBeNull();
 });
 
+it('suspends saved skins for No colour and returns exact palette values when worn',()=>{
+ const skin={colors:SKIN_DEFAULTS,appearance_mode:'none'};
+ expect(prismAppearance({...decor,personal_skin:skin})).toBeNull();
+ const look=prismAppearance({...decor,personal_skin:{...skin,appearance_mode:'palette'}});
+ expect(look.style['--appearance-secondary']).toBe('#356467');
+ expect(look.style['--palette-panel-ink']).toBe('#ffffff');
+ expect(look.style['--palette-accent-ink']).toBe('#000000');
+});
 it('keeps browsing colours tied to the viewer across saves, late loads and sign-out',async()=>{
  let finish;
  getMemberAppearance.mockReturnValueOnce(new Promise(r=>{finish=r})).mockResolvedValue(null);

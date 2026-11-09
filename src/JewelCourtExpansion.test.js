@@ -38,6 +38,6 @@ describe('Jewel Court II collectible palette rollout',()=>{
   expect(atelier).toContain('Earn to unlock');
   expect(atelier).toContain('Unlock earned shades');
   expect(atelier).toContain('purchasePrismPalette(choice.slug)');
-  expect(atelier).toContain('selectPrismPalette(palette,finish,accent)');
+  expect(atelier).toContain('applyAtelierColour(palette,finish,accent,decor.backdrop,ornament,layout)');
  });
 });

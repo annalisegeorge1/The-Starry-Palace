@@ -45,8 +45,9 @@ export default function MemberPageSkinImporter({decor,onSaved}){
    <button type="button" disabled={busy} onClick={()=>save(false)}>{busy?'Saving…':'Apply to my Palace and chamber'}</button>
    <button type="button" className="quiet-button" onClick={()=>setCandidate(null)}>Cancel</button>
   </div>}
-  {decor?.personal_skin&&<div className="chamber-skin-current">
-   <span>Active imported skin: <strong>{decor.personal_skin.name}</strong></span>
+  {decor?.personal_skin?.name&&<div className="chamber-skin-current">
+   <span>{['none','palette'].includes(decor.personal_skin.appearance_mode)?'Saved skin':'Active skin'} · <strong>{decor.personal_skin.name}</strong></span>
+   {['none','palette'].includes(decor.personal_skin.appearance_mode)&&<button type="button" disabled={busy} onClick={()=>{setCandidate(decor.personal_skin);setRemoveArmed(false)}}>Preview saved skin</button>}
    <button type="button" className="quiet-button" disabled={busy} onClick={()=>removeArmed?save(true):setRemoveArmed(true)}>
     {removeArmed?'Confirm remove skin':'Restore Prism colours'}
    </button>
