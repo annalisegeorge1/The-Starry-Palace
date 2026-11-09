@@ -585,7 +585,7 @@ function FrameShell({children}){
    <main id="palace-content" data-palace-route={currentHref} className="palace-main-stage" tabIndex="-1">{children}</main>
    <footer className="palace-footer">
     <div><span className="palace-footer-mark" aria-hidden="true">☾<b>✦</b></span><div><strong>The Starry Palace</strong><small>Gather. Have a cup of tea. Write and read with me.</small></div></div>
-   <nav aria-label="Palace footer"><Link to="/writers">For Writers</Link><Link to="/code">Palace Code</Link><Link to="/legal">Policies & notices</Link><Link to="/council/governance">Council</Link><Link to="/beta">Beta feedback</Link><Link to="/search">Search</Link>{session&&<Link to="/settings">Settings & Safety</Link>}</nav>
+   <nav aria-label="Palace footer"><Link to="/writers">For Writers</Link><Link to="/code">Palace Code</Link><Link to="/legal">Policies & notices</Link><Link to="/legal/privacy">Privacy Policy</Link><Link to="/legal/terms">Terms of Service</Link><Link to="/council/governance">Council</Link><Link to="/beta">Beta feedback</Link><Link to="/search">Search</Link>{session&&<Link to="/settings">Settings & Safety</Link>}</nav>
    </footer>
    <div className="palace-mobile-end-spacer" aria-hidden="true"/>
   </div>
