@@ -2,14 +2,26 @@ import ChamberFramePicker from './ChamberFramePicker';
 import MemberPageSkinImporter from './MemberPageSkinImporter';
 import './prism-seasonal-effects.css';
 import React,{useEffect,useMemo,useState}from'react';
-import{getMemberChamberDecor,saveMemberChamberDecor,getPrismState,purchasePrismPalette,selectPrismPalette,savePrismLook}from'./memberChamberDecorData';
+import{getMemberPageSkin,saveMemberChamberDecor,getPrismState,purchasePrismPalette,selectPrismPalette,savePrismLook}from'./memberChamberDecorData';
 import './member-chamber-decor.css';
 import './prism-atelier.css';
 export const CHAMBER_ORNAMENTS=[['none','Unadorned','·','Included'],['stars','Falling Stars','✧','Included'],['crescent','Crescent Halo','☾','Publish 1 chapter'],['ink-vines','Ink Vines','❦','Publish 500 words'],['silver-branches','Silver Branches','♧','Read 5 rewarded chapters'],['royal-constellation','Royal Constellation','♛','Reach 300 lifetime points']];
 export const CHAMBER_LAYOUTS=[['classic','Classic Gallery','▦','Included'],['compact','Collector’s Cabinet','▤','Included'],['spotlight','Spotlight Gallery','✦','Publish 1 chapter']];
 const unlocked=(key,u)=>['none','stars','classic','compact'].includes(key)||!!u?.[key];
-export function useChamberDecor(memberId){const[decor,setDecor]=useState(null);useEffect(()=>{let active=true;setDecor(null);if(memberId)getPrismState(memberId).then(x=>{if(active)setDecor(x)}).catch(()=>{});return()=>{active=false}},[memberId]);return[decor,setDecor]}
-const accents={harmony:null,silver:'#dde7f5',rose:'#f7bad5',mint:'#a7efdb',gold:'#f3d59f'};
+export function useChamberDecor(memberId,viewerId){
+ const [decor,setDecor]=useState(null);
+ useEffect(()=>{
+  let active=true;
+  setDecor(null);
+  if(memberId){
+   const request=viewerId?getPrismState(memberId):getMemberPageSkin(memberId).then(skin=>({user_id:memberId,personal_skin:skin}));
+   request.then(value=>{if(active)setDecor(value)}).catch(()=>{});
+  }
+  return ()=>{active=false};
+ },[memberId,viewerId]);
+ return [decor?.user_id===memberId?decor:null,setDecor];
+}
+import {PRISM_ACCENTS as accents} from './prismAppearance';
 const finishes=[['soft','Soft Wash'],['glass','Moon Glass'],['shimmer','Starlit Shimmer'],['lacquer','Royal Lacquer'],['aurora','Aurora Haze']];
 const sections=['All','Jewel Court','Moon & Night','Ocean','Violet','Rose','Nature','Regalia','Seasonal','Prestige','Legendary'];
 export default function MemberChamberDecor({decor,onSaved,own}){
@@ -24,7 +36,7 @@ export default function MemberChamberDecor({decor,onSaved,own}){
  const run=async(fn,success)=>{if(busy)return;setBusy(true);setError('');setNotice('');try{const next=await fn();const updated=await getPrismState(decor.user_id);onSaved(updated);setNotice(success||'Your chamber has been updated.')}catch(e){setError(e.message)}finally{setBusy(false)}};
  if(!own||!decor)return null;
  const buy=(choice?.category==='treasury'||choice?.category==='seasonal'&&choice?.available_now)&&!choice.unlocked;
- return <section className="chamber-decorator prism-atelier" aria-label="Prism Atelier"><header className={open?'prism-studio-heading is-open':'prism-studio-heading'}><div><p className="eyebrow">THE PRISM ATELIER · {catalogue.length} CELESTIAL COLOURS</p><h2>{open?'Prism Atelier':'Every colour tells a different story.'}</h2>{!open&&<p>Spin through the spectrum. Preview freely, unlock colours by creating, or collect special hues from the Treasury and tournaments.</p>}</div><button type="button" className="prism-studio-toggle" aria-controls="prism-workspace" aria-expanded={open} aria-label={open?'Close colour studio':'Open Prism Atelier'} onClick={()=>setOpen(v=>!v)}>{open?'← Back':'Open Prism Atelier ✧'}</button></header>
+ return <section className="chamber-decorator prism-atelier" aria-label="Prism Atelier"><header className={open?'prism-studio-heading is-open':'prism-studio-heading'}><div><p className="eyebrow">THE PRISM ATELIER · {catalogue.length} CELESTIAL COLOURS</p><h2>{open?'Prism Atelier':'Every colour tells a different story.'}</h2>{!open&&<p>Wear a palette across your Palace. Visitors see your colours on your chamber, shelves and gallery.</p>}</div><button type="button" className="prism-studio-toggle" aria-controls="prism-workspace" aria-expanded={open} aria-label={open?'Close colour studio':'Open Prism Atelier'} onClick={()=>setOpen(v=>!v)}>{open?'← Back':'Open Prism Atelier ✧'}</button></header>
  {open&&<div id="prism-workspace" className="prism-workspace">
  <div className={"prism-preview prism-scene "+(motion?"motion-enabled":"")} style={preview} data-finish={finish} data-jewel={choice?.family==="Jewel Court"?"true":"false"}><div className="prism-scene-veil" aria-hidden="true"/><div className="prism-scene-moon" aria-hidden="true">☾</div><div className="prism-preview-stars" aria-hidden="true">✧　✦　☾</div><span>YOUR CHAMBER · LIVE PREVIEW</span><strong>{choice?.name||'Midnight Velvet'}</strong><p>Somewhere between a story and a constellation.</p><div className="prism-preview-pills"><span>♛ Celestial title</span><span>✧ Achievement gallery</span></div><small>{choice?.unlocked?'Available to wear':(choice?.category==='treasury'||choice?.category==='seasonal')?choice.price+' points · '+(choice.available_now?'one-time purchase':'season closed'):'Preview only · '+(choice?.category||'locked')}</small></div>
  <div className="prism-main"><div className="prism-palette-column"><h3>Choose a colour family</h3><p className="prism-jewel-guide"><strong>Jewel Court · {jewelCourt.length} powerful shades</strong><span>{jewelCounts.included} included · {jewelCounts.earned} earned · {jewelCounts.treasury} Treasury. Preview every colour for free. Unlock earned shades through your Palace milestones or collect Treasury colours with points.</span></p><div className="prism-families" role="group" aria-label="Colour families">{sections.map(x=><button key={x} type="button" className={family===x?'active':''} aria-pressed={family===x} onClick={()=>setFamily(x)}>{x==='Jewel Court'?x+' · '+jewelCourt.length:x}</button>)}</div><div className="prism-categories" role="group" aria-label="Colour availability">{[['all','All '+catalogue.length],['free','Included'],['earned','Earned'],['treasury','Treasury'],['seasonal','Seasonal'],['prestige','Tournaments'],['legendary','Legendary'],['owned','Unlocked']].map(([id,label])=><button key={id} className={category===id?'active':''} aria-pressed={category===id} onClick={()=>setCategory(id)}>{label}</button>)}</div>

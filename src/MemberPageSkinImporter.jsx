@@ -24,7 +24,7 @@ export default function MemberPageSkinImporter({decor,onSaved}){
    else await saveMemberPageSkin(ownerId,candidate);
    onSaved(await getPrismState(ownerId));
    setCandidate(null);setRemoveArmed(false);
-   setNotice(remove?'Your chamber is back to its Prism colours.':'Your personal colour skin is live on your chamber.');
+   setNotice(remove?'Your Palace and chamber now use your Prism palette.':'Your skin is active across your Palace and on your public chamber.');
   }catch(e){setError(e.message||'Could not save this skin.')}finally{setBusy(false)}
  }
  function sample(){
@@ -33,16 +33,16 @@ export default function MemberPageSkinImporter({decor,onSaved}){
   setTimeout(()=>URL.revokeObjectURL(url),1500);
  }
  return <section className="chamber-skin-importer" aria-label="Import a personal chamber skin">
-  <header><div><small>PERSONAL CHAMBER COLOURS</small><h3>Import a skin</h3></div></header>
-  <p>Make your own chamber colours. Import a Palace skin JSON file or six approved CSS colour variables. Your imported colours affect only your profile—not the Palace site, other members, or your manuscripts.</p>
+  <header><div><small>PERSONAL APPEARANCE</small><h3>Import a skin</h3></div></header>
+  <p>Set the colours of your Palace navigation, backgrounds and panels. Visitors see the same skin on your chamber, creative shelves and gallery. Import a Palace JSON skin or a CSS file with the six colour variables in the example.</p>
   <div className="chamber-skin-actions">
    <label>Choose a skin <input type="file" accept=".json,.css,application/json,text/css" onChange={readFile}/></label>
    <button type="button" className="quiet-button" onClick={sample}>Download example .json</button>
   </div>
   <p className="chamber-skin-info">For safety, full stylesheets with selectors, animations, URLs, scripts or external fonts cannot be imported. Bright text needs readable contrast.</p>
   {candidate&&<div className="chamber-skin-staged" aria-label="Imported skin preview" style={pageSkinStyle(candidate)}>
-   <div className="chamber-skin-preview"><strong>{candidate.name}</strong><span>Only your chamber · private preview</span><div>Example text and colour accents ✦</div></div>
-   <button type="button" disabled={busy} onClick={()=>save(false)}>{busy?'Saving…':'Apply these colours to my chamber'}</button>
+   <div className="chamber-skin-preview"><strong>{candidate.name}</strong><span>Private preview</span><div>Example text and colour accents ✦</div></div>
+   <button type="button" disabled={busy} onClick={()=>save(false)}>{busy?'Saving…':'Apply to my Palace and chamber'}</button>
    <button type="button" className="quiet-button" onClick={()=>setCandidate(null)}>Cancel</button>
   </div>}
   {decor?.personal_skin&&<div className="chamber-skin-current">
