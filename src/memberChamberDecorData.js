@@ -14,6 +14,9 @@ export async function getMemberAppearance(id){
 }
 export const purchasePrismPalette=slug=>call('purchase_chamber_prism_palette',{p_slug:slug});
 export const selectPrismPalette=(slug,finish='soft',accent='harmony')=>call('select_chamber_prism_palette',{p_slug:slug,p_finish:finish,p_accent:accent});
+export const applyAtelierColour=(slug,finish,accent,backdrop,ornament,layout)=>call('apply_atelier_colour',{
+ p_slug:slug,p_finish:finish,p_accent:accent,p_backdrop:backdrop,p_ornament:ornament,p_gallery_layout:layout
+});
 export const savePrismLook=(slot,name,slug,finish,accent)=>call('save_chamber_prism_look',{p_slot:slot,p_name:name,p_slug:slug,p_finish:finish,p_accent:accent});
 
 export const savePaintedChamberFrame=slug=>call('set_painted_chamber_frame',{p_slug:slug});
@@ -24,15 +27,15 @@ export const getPaintedMemberFrame=id=>call('get_painted_chamber_state',{p_membe
 export async function getMemberPageSkin(memberId){
  if(!supabase||!memberId)return null;
  const {data,error}=await supabase.from('member_page_skins')
-  .select('name,colors').eq('user_id',memberId).maybeSingle();
+  .select('name,colors,appearance_mode').eq('user_id',memberId).maybeSingle();
  if(error)throw error;
- return data?{name:data.name,colors:data.colors}:null;
+ return data;
 }
 export async function saveMemberPageSkin(memberId,skin){
  if(!supabase||!memberId)throw Error('Sign in to import a chamber skin.');
  const {data,error}=await supabase.from('member_page_skins')
-  .upsert({user_id:memberId,name:skin.name,colors:skin.colors,updated_at:new Date().toISOString()},{onConflict:'user_id'})
-  .select('name,colors').single();
+  .upsert({user_id:memberId,name:skin.name,colors:skin.colors,appearance_mode:'skin',updated_at:new Date().toISOString()},{onConflict:'user_id'})
+  .select('name,colors,appearance_mode').single();
  if(error)throw error;
  return data;
 }

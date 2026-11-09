@@ -18,8 +18,8 @@ describe('Prism Atelier mobile refinement preserves real member choices',()=>{
   expect(studio).toContain('pts available');
   expect(studio).toContain('Purchase {choice.name} · {choice.price} pts');
   expect(studio).toContain('purchasePrismPalette(choice.slug)');
-  expect(studio).toContain('selectPrismPalette(palette,finish,accent)');
-  expect(studio).toContain('saveMemberChamberDecor(decor.backdrop,ornament,layout)');
+  expect(studio).toContain('applyAtelierColour(palette,finish,accent,decor.backdrop,ornament,layout)');
+  expect(studio).toContain('Original Palace theme');
  });
  it('retains frames, their unlock checks and saving event',()=>{
   expect(frames).toContain('CHAMBER_FRAMES.filter(');
