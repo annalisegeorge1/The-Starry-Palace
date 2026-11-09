@@ -202,3 +202,18 @@
     background:rgba(245,241,252,.98)!important;
   }
 }
+
+/* A standalone edition scrolls with the document. Only the archive dialog
+   needs a height-limited reading pane. */
+.palace-direct-classic .archive-reader-sheet.archive-classic-experience{
+  max-height:none;
+  overflow:visible;
+}
+@media(max-width:720px){
+  .palace-direct-classic .archive-reader-sheet.archive-classic-experience{
+    padding-inline:0;
+  }
+  .palace-direct-classic .archive-classic-mobile-bar{
+    top:calc(64px + env(safe-area-inset-top));
+  }
+}
