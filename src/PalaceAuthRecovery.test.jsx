@@ -33,3 +33,15 @@ it.each(['?','#'])('recovers a first-time provider callback (%s) through age-che
   email:'member@example.invalid',options:expect.objectContaining({shouldCreateUser:true,data:{palace_birth_date:'2000-01-01'}})
  }));
 });
+
+it('returns the authorization code and flow ID to the requesting browser without forwarding other URL data',async()=>{
+ const path='/auth/callback?code=test-code&sb_flow_id=test-flow&extra=discard';
+ window.history.replaceState({},'',path);
+ const writeText=vi.fn().mockResolvedValue(undefined);
+ Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText}});
+ render(<MemoryRouter initialEntries={[path]}><PalaceAuthCallback Frame={Frame}/></MemoryRouter>);
+ expect(screen.getByRole('heading',{name:'Finish signing in'})).toBeTruthy();
+ fireEvent.click(screen.getByRole('button',{name:'Copy sign-in link'}));
+ await waitFor(()=>expect(writeText).toHaveBeenCalledWith(window.location.origin+'/auth/callback?code=test-code&sb_flow_id=test-flow'));
+ expect(screen.getByRole('link',{name:'Sign in to your account'}).getAttribute('href')).toBe('/login');
+});

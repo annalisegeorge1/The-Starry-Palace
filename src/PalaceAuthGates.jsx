@@ -30,6 +30,12 @@ export function PalaceLogin({ Frame }) {
   const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
+  const [mailCooldown, setMailCooldown] = useState(false);
+  useEffect(() => {
+    if (!mailCooldown) return;
+    const timer = window.setTimeout(() => setMailCooldown(false), 60000);
+    return () => window.clearTimeout(timer);
+  }, [mailCooldown]);
   const ageCutoff = new Date();
   ageCutoff.setFullYear(ageCutoff.getFullYear()-13);
   const latestBirthDate = ageCutoff.toISOString().slice(0,10);
@@ -44,6 +50,7 @@ export function PalaceLogin({ Frame }) {
   async function submit(event) {
     event.preventDefault();
     if (!supabase || busy) return;
+    if (mode === 'signup' && mailCooldown) return;
     if (mode === 'signup' && signupAgeMessage) { setMessage(signupAgeMessage); return; }
     setBusy(true); setMessage('');
     try {
@@ -52,14 +59,17 @@ export function PalaceLogin({ Frame }) {
         ? await supabase.auth.signUp({ email, password, options: { emailRedirectTo: palaceAuthRedirect(window.location.origin), data: { palace_birth_date: birthDate } } })
         : await supabase.auth.signInWithPassword({ email, password });
       if (result.error) throw result.error;
-      if (mode === 'signup' && !result.data?.session)
-        setMessage('Check your inbox for the confirmation link, then return to the Palace.');
+      if (mode === 'signup' && !result.data?.session) {
+        setMailCooldown(true);
+        setMessage('Check your inbox. Open the confirmation link in the browser you are using now.');
+      }
     } catch (error) {
       setMessage(readableAuthError(error));
     } finally { setBusy(false); }
   }
 
   async function magic() {
+    if (mailCooldown) return;
     if (!email.trim()) { setMessage('Enter your email address first to request a magic link.'); return; }
     if (mode === 'signup' && signupAgeMessage) { setMessage(signupAgeMessage); return; }
     if (!supabase || busy) return;
@@ -71,7 +81,8 @@ export function PalaceLogin({ Frame }) {
         options: { emailRedirectTo: palaceAuthRedirect(window.location.origin), shouldCreateUser: mode === 'signup', ...(mode === 'signup' ? { data: { palace_birth_date: birthDate } } : {}) },
       });
       if (error) throw error;
-      setMessage('A passwordless entrance link has been sent. Check your inbox to enter the Palace.');
+      setMailCooldown(true);
+      setMessage('Check your inbox. Open the newest Palace link in the browser you are using now.');
     } catch (error) {
       setMessage(readableAuthError(error));
     } finally { setBusy(false); }
@@ -115,7 +126,7 @@ export function PalaceLogin({ Frame }) {
         <input id="palace-email" type="email" autoComplete="email" value={email}
           onChange={event => setEmail(event.target.value)} placeholder="you@example.com" required />
         {mode === 'signup' && <><label htmlFor="palace-signup-birth-date">Date of birth</label><input id="palace-signup-birth-date" type="date" autoComplete="bday" max={latestBirthDate} value={birthDate} onChange={event => setBirthDate(event.target.value)} required/><small className="password-note">The Palace minimum account age is 13. Your date of birth is stored privately for age eligibility and reader restrictions.</small></>}
-        <button type="button" className="magic-button" disabled={busy || loading} onClick={magic}>
+        <button type="button" className="magic-button" disabled={busy || loading || mailCooldown} onClick={magic}>
           {mode === 'signup' ? 'Create my account with an email link' : 'Email me a passwordless entrance link'}
         </button>
         <div className="auth-divider"><span>or use a Palace password</span></div>
@@ -133,7 +144,7 @@ export function PalaceLogin({ Frame }) {
             </button>
           </div>
           {mode === 'signup' && <small className="password-note">Use at least 8 characters. Never use your inbox password.</small>}
-          <button disabled={busy || loading}>{busy ? 'Please wait…' : mode === 'signup' ? 'Create my chamber' : 'Enter the Palace'}</button>
+          <button disabled={busy || loading || (mode === 'signup' && mailCooldown)}>{busy ? 'Please wait…' : mode === 'signup' ? 'Create my chamber' : 'Enter the Palace'}</button>
         </form>
         {mode === 'signup' && <p className="palace-google-note">Use email to create a new account. Google sign-in is available for existing members.</p>}
         <button type="button" className="secondary" disabled={busy}
@@ -151,12 +162,7 @@ export function PalaceAuthCallback({ Frame }) {
   const { session, loading, error } = useAuth();
   const params = new URLSearchParams(window.location.search);
   const [pending] = useState(() => recallPalaceAuthDestination(window.sessionStorage));
-  const [waiting, setWaiting] = useState(params.has('code'));
-  useEffect(() => {
-    if (session || !params.has('code')) return;
-    const timeout = window.setTimeout(() => setWaiting(false), 12000);
-    return () => window.clearTimeout(timeout);
-  }, [session]);
+  const [copyFeedback,setCopyFeedback] = useState('');
   useEffect(() => {
     if (session && !loading) clearPalaceAuthDestination(window.sessionStorage);
   }, [session, loading]);
@@ -166,15 +172,34 @@ export function PalaceAuthCallback({ Frame }) {
   if (!session && /database error saving new user/i.test(oauthError || error || '')) {
     return <Navigate to="/login?mode=signup" state={{from:pending,firstVisit:true}} replace />;
   }
-  if (oauthError || error || (!session && !loading && !waiting)) {
-    if (!oauthError && !error && !params.has('code'))
-      return <Navigate to="/login" replace />;
-    const feedback = oauthError || error || 'We could not complete your sign-in. Please try again.';
+  if (loading) return <Frame><p role="status" className="palace-auth-pending">Completing your Palace sign-in…</p></Frame>;
+  if (session) return <Navigate to={pending} replace />;
+  if (params.has('code') && !oauthError) {
+    // Supabase has finished initialising. A code opened without its browser's
+    // verifier cannot start a session here. Keep it available for that browser.
+    async function copyFinishLink() {
+      const url = new URL('/auth/callback',window.location.origin);
+      url.searchParams.set('code',params.get('code'));
+      if (params.has('sb_flow_id')) url.searchParams.set('sb_flow_id',params.get('sb_flow_id'));
+      try {
+        await navigator.clipboard.writeText(url.href);
+        setCopyFeedback('Copied. Paste the link into the browser where you requested it.');
+      } catch {
+        setCopyFeedback('Use your browser menu to open this page in the browser where you requested the link.');
+      }
+    }
     return <Frame><section className="room-title palace-auth-callback-error">
-      <h1>Sign-in could not finish</h1><p role="alert">{feedback}</p>
-      <Link to="/login">Return to the Palace gates</Link>
+      <h1>Finish signing in</h1>
+      <p>Open this page in the browser where you requested the link. If your email app opened a separate window, use its browser menu or copy the link below.</p>
+      <button type="button" onClick={copyFinishLink}>Copy sign-in link</button>
+      {copyFeedback && <p role="status">{copyFeedback}</p>}
+      <p>Already confirmed your email? Sign in with the same address. If the link has expired, request a fresh one.</p>
+      <Link to="/login" state={{from:pending}}>Sign in to your account</Link>
     </section></Frame>;
   }
-  if (loading || (waiting && !session)) return <Frame><p role="status" className="palace-auth-pending">Completing your Palace sign-in…</p></Frame>;
-  return <Navigate to={session ? pending : '/login'} replace />;
+  if (oauthError || error) return <Frame><section className="room-title palace-auth-callback-error">
+    <h1>Sign-in could not finish</h1><p role="alert">{oauthError || error}</p>
+    <Link to="/login" state={{from:pending}}>Return to the Palace gates</Link>
+  </section></Frame>;
+  return <Navigate to="/login" state={{from:pending}} replace />;
 }
