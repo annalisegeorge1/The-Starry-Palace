@@ -29,7 +29,7 @@ The existing `/auth/callback` remains intact for Google OAuth and legacy emails.
 | Confirm signup | Confirm Your Place Among the Stars \| The Starry Palace | `confirmation.html` |
 | Reset password | Reset Your Palace Password \| The Starry Palace | `recovery.html` |
 | Magic link / OTP | Your One-Time Palace Entrance \| The Starry Palace | `magic_link.html` |
-| Invite user | An Invitation Awaits You \\| The Starry Palace | `invite.html` |
+| Invite user | An Invitation Awaits You \| The Starry Palace | `invite.html` |
 | Change email address | Confirm Your New Palace Email | `email_change.html` |
 | Reauthentication | Your Palace Verification Code | `reauthentication.html` |
 | Password changed notification (optional) | Your Palace Password Was Changed | `password_changed_notification.html` |
