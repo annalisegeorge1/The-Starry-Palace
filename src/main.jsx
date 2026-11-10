@@ -642,6 +642,8 @@ const PalaceLogin = React.lazy(() => import('./PalaceAuthGates').then(module => 
 const PalaceAuthCallback = React.lazy(() => import('./PalaceAuthGates').then(module => ({ default: module.PalaceAuthCallback })));
 const PalaceForgotPassword = React.lazy(() => import('./PalaceRecovery').then(module => ({ default: module.PalaceForgotPassword })));
 const PalaceEmailAction = React.lazy(() => import('./PalaceRecovery').then(module => ({ default: module.PalaceEmailAction })));
+const PalaceInvitationLanding = React.lazy(() => import('./PalaceInvitations').then(module => ({ default: module.PalaceInvitationLanding })));
+const PalaceInvitationAdmin = React.lazy(() => import('./PalaceInvitations').then(module => ({ default: module.PalaceInvitationAdmin })));
 
 function NavigationReset(){
  const location=useLocation();
@@ -822,6 +824,8 @@ function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo
  <Route path="/" element={<Home/>}/><Route path="/login" element={<React.Suspense fallback={<RouteLoading/>}><PalaceLogin Frame={Frame}/></React.Suspense>}/><Route path="/auth/callback" element={<React.Suspense fallback={<RouteLoading/>}><PalaceAuthCallback Frame={Frame}/></React.Suspense>}/>
  <Route path="/auth/forgot-password" element={<React.Suspense fallback={<RouteLoading/>}><PalaceForgotPassword Frame={Frame}/></React.Suspense>}/>
  <Route path="/auth/verify" element={<React.Suspense fallback={<RouteLoading/>}><PalaceEmailAction Frame={Frame}/></React.Suspense>}/>
+ <Route path="/invitation" element={<React.Suspense fallback={<RouteLoading/>}><PalaceInvitationLanding Frame={Frame}/></React.Suspense>}/>
+ <Route path="/admin/invitations" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><PalaceInvitationAdmin Frame={Frame}/></React.Suspense></ProtectedRoute>}/>
  <Route path="/welcome" element={<ProtectedRoute><OnboardingLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/writers" element={<WriterWelcome/>}/>
