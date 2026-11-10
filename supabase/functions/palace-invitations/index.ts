@@ -4,7 +4,7 @@ import {renderAgeSafeInvitation} from './email.ts';
 
 const SITE='https://thestarrypalace.com';
 const EMAIL_API='https://api.resend.com/emails';
-const EMAIL_RE=/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+const EMAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function corsHeaders(origin:string|null){
  const allowed=origin===SITE ||
