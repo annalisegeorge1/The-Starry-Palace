@@ -33,6 +33,16 @@ describe('Palace transaction email templates',()=>{
    expect(html).not.toContain('https://sservftxygunkacmwsad.supabase.co');
   }
  });
+ it('presents invitations as a ceremonial letter while preserving one-time verification',()=>{
+  const html=get('invite');
+  expect(html).toContain('BY PERSONAL INVITATION');
+  expect(html).toContain('The gates have opened for you.');
+  expect(html).toContain('Accept My Invitation');
+  expect(html).toContain('aged 13 and older');
+  expect(html).toContain('https://thestarrypalace.com/auth/verify#token_hash={{ .TokenHash }}&amp;type=invite');
+  expect(html).toContain('display:none');
+  expect(html).not.toMatch(/<img|<script|<iframe|https?:\\/\\/(?!thestarrypalace\\.com)/i);
+ });
  it('uses a code, not a link, for reauthentication',()=>{
   const html=get('reauthentication');
   expect(html).toContain('{{ .Token }}');
