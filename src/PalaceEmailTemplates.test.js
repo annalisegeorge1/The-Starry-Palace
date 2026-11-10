@@ -4,7 +4,7 @@ import {describe,it,expect} from 'vitest';
 const actionTypes={
  confirmation:'email',
  recovery:'recovery',
- magic_link:'magiclink',
+ magic_link:'email',
  invite:'invite',
  email_change:'email_change',
 };
@@ -28,6 +28,7 @@ describe('Palace transaction email templates',()=>{
   for(const [name,type] of Object.entries(actionTypes)){
    const html=get(name);
    expect(html).toContain('https://thestarrypalace.com/auth/verify#token_hash={{ .TokenHash }}&amp;type='+type);
+   if(name==='magic_link') expect(html).toContain('&amp;type=email&amp;intent=magiclink');
    expect(html).not.toContain('{{ .ConfirmationURL }}');
    expect(html).not.toContain('https://sservftxygunkacmwsad.supabase.co');
   }

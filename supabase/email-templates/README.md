@@ -10,6 +10,8 @@ The existing Supabase PKCE flow redirects an email link to `/auth/callback?code=
 
 The existing `/auth/callback` remains intact for Google OAuth and legacy emails.
 
+**Passwordless Magic Link nuance:** Supabase now documents `verifyOtp({token_hash, type:'email'})` for Magic Link PKCE sessions, not `type:'magiclink'`. The Magic Link template uses `#token_hash={{ .TokenHash }}&type=email&intent=magiclink`. The `intent` fragment only selects Palace passwordless sign-in wording; it never changes the OTP type sent to Supabase. Confirm signup continues using `type=email` without `intent`.
+
 ### Mandatory staged release (owner/deployer checklist)
 
 1. **Review and test the PR**: lint/build and Vitest; inspect login, forgot password, verification and recovery on desktop and Android. Check Nightfall, Daybreak and Midnight. No live emails should be sent from an unreviewed preview.
