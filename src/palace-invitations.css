@@ -1,0 +1,33 @@
+/* Public invitation letter and administrator invitation desk. All theme modes retain contrast. */
+.palace-invite-room {max-width:900px;margin:0 auto;padding:clamp(32px,7vw,70px) 18px 120px;}
+.palace-invite-letter {max-width:620px;margin:auto;background:#fffaf3;border:2px solid #c6a76e;border-radius:18px;overflow:hidden;box-shadow:0 24px 70px rgba(8,9,27,.25);color:#302947;}
+.palace-invite-letter-head {padding:38px 30px 31px;background:#101329;text-align:center;color:#fff9f0;}
+.palace-invite-stars {font:24px/1.4 Georgia,serif;letter-spacing:8px;color:#e8c88d;margin:0 0 12px;}
+.palace-invite-wordmark {font:clamp(25px,5vw,33px)/1.2 Georgia,'Times New Roman',serif;margin:0 0 13px;}
+.palace-invite-letter-rule {display:block;width:84px;height:1px;background:#b89a64;margin:0 auto;}
+.palace-invite-overline {font:700 11px/1.8 Arial,sans-serif;letter-spacing:3px;color:#e8d2a0;margin:14px 0 0;}
+.palace-invite-letter-body {text-align:center;padding:clamp(28px,5vw,45px);}
+.palace-invite-kicker {font:700 12px/1.5 Arial,sans-serif;letter-spacing:2px;color:#84643c;margin:0 0 20px;}
+.palace-invite-letter-body h1 {font:normal clamp(30px,6vw,42px)/1.22 Georgia,'Times New Roman',serif;color:#292340;margin:0 0 23px;text-wrap:balance;}
+.palace-invite-letter-body p {font:16px/1.75 Arial,Helvetica,sans-serif;color:#494153;}
+.palace-invite-poem {font:italic 21px/1.6 Georgia,'Times New Roman',serif!important;color:#5c4d78!important;margin:0 0 24px;}
+.palace-invite-feature {margin:27px auto;background:#f2ecfa;border:1px solid #ddcff0;border-radius:13px;padding:22px 18px;max-width:500px;}
+.palace-invite-feature strong {font:normal 23px/1.4 Georgia,serif;color:#382b60;}
+.palace-invite-feature p {font-size:14px;line-height:1.95;margin:12px 0 0;color:#514669;overflow-wrap:anywhere;}
+.palace-invite-feature a {color:#47347a;text-decoration:underline;}
+.palace-invite-age {font-size:13px!important;color:#645b6d!important;line-height:1.65!important;}
+.palace-invite-actions {display:grid;justify-items:center;gap:17px;margin-top:29px;}
+.palace-invite-primary {display:inline-block;font:700 15px/1.5 Arial,Helvetica,sans-serif;background:#493375;color:#fff!important;text-decoration:none!important;border:1px solid #b79b6a;border-radius:11px;padding:15px 24px;cursor:pointer;min-height:49px;max-width:100%;transition:filter .15s;}
+.palace-invite-primary:disabled {opacity:.6;cursor:not-allowed;}
+.palace-invite-primary:hover:not(:disabled) {filter:brightness(1.12);}
+.palace-invite-primary:focus-visible,.palace-invite-letter-body a:focus-visible {outline:3px solid #8f62df;outline-offset:3px;}
+.palace-invite-actions a:not(.palace-invite-primary),.palace-invite-back a {color:#493375;text-decoration:underline;text-underline-offset:3px;font-weight:600;}
+.palace-invite-letter-foot {background:#171831;text-align:center;padding:23px 14px;color:#e5d7fa;font:italic 16px/1.6 Georgia,serif;}
+.palace-invite-form {text-align:left;display:grid;gap:12px;margin-top:25px;}
+.palace-invite-form label {color:#382b60;font-weight:700;}
+.palace-invite-form input {box-sizing:border-box;width:100%;border:1px solid #9a8eb4;background:#fff;color:#2d2542;padding:13px;border-radius:10px;min-height:48px;}
+.palace-invite-form .palace-invite-primary {justify-self:start;}
+.palace-invite-notice {padding:12px;background:#f2ecfa;border-radius:10px;overflow-wrap:anywhere;}
+.palace-invite-back {margin-top:24px;}
+@media(max-width:560px){.palace-invite-room{padding:14px 10px 110px;}.palace-invite-letter-body{padding:30px 19px;}.palace-invite-feature{padding:19px 13px;}}
+@media(prefers-reduced-motion:reduce){.palace-invite-primary{transition:none;}}
