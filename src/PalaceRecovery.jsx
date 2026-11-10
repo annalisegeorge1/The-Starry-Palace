@@ -16,8 +16,11 @@ export function readPalaceEmailAction(hash) {
   const params = new URLSearchParams((hash || '').replace(/^#/, ''));
   const type = params.get('type');
   const token = params.get('token_hash');
+  // Supabase's current passwordless magic-link flow verifies with OTP
+  // type "email". A separate non-security "intent" controls the display copy.
+  const intent = type === 'email' && params.get('intent') === 'magiclink' ? 'magiclink' : null;
   return type && Object.prototype.hasOwnProperty.call(ACTIONS,type) && token && /^[A-Za-z0-9_-]+$/.test(token)
-    ? {type,token} : null;
+    ? {type,token,...(intent ? {intent} : {})} : null;
 }
 
 function AuthRoom({Frame,children,title,subtitle}) {
@@ -165,7 +168,7 @@ export function PalaceEmailAction({Frame}) {
     }
   }
 
-  const actionInfo=action ? ACTIONS[action.type] : null;
+  const actionInfo=action ? ACTIONS[action.intent || action.type] : null;
   return <AuthRoom Frame={Frame}
     title={mode==='password'?'Choose a new password.':mode==='updated'?'Your Palace key is renewed.':(actionInfo?.title || 'This Palace link cannot be opened.')}
     subtitle={mode==='updated'?'Your password was changed. Sign in again with your new password.':(actionInfo?.detail || 'The link is incomplete or invalid. Request a fresh one from The Starry Palace.')}>
