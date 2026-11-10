@@ -29,10 +29,12 @@ The existing `/auth/callback` remains intact for Google OAuth and legacy emails.
 | Confirm signup | Confirm Your Place Among the Stars \| The Starry Palace | `confirmation.html` |
 | Reset password | Reset Your Palace Password \| The Starry Palace | `recovery.html` |
 | Magic link / OTP | Your One-Time Palace Entrance \| The Starry Palace | `magic_link.html` |
-| Invite user | An Invitation to The Starry Palace | `invite.html` |
+| Invite user | An Invitation Awaits You \| The Starry Palace | `invite.html` |
 | Change email address | Confirm Your New Palace Email | `email_change.html` |
 | Reauthentication | Your Palace Verification Code | `reauthentication.html` |
 | Password changed notification (optional) | Your Palace Password Was Changed | `password_changed_notification.html` |
+
+The invitation is intentionally more ceremonial than the other transaction emails: a royal-blue and gold letter, special invitation seal, elegant serif headline, and a distinct **Accept My Invitation** action. It remains image-free, accessible, and uses the same secure one-time `type=invite` token link. The invitation is for existing Supabase **Invite user** operations, not a general marketing email.
 
 All HTML files are in this `supabase/email-templates/` directory. Copy **the full raw HTML** and matching subject into the corresponding hosted Supabase template editor. These are transactional emails; they avoid marketing, trackers, remote fonts, and untrusted external images. The wordmark is text-based so it remains visible even when Gmail blocks images.
 
