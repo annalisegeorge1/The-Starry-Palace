@@ -1,8 +1,8 @@
 import {readFileSync} from 'node:fs';
 import {describe,it,expect} from 'vitest';
-const edge=readFileSync(new URL('../supabase/functions/palace-invitations/index.ts',import.meta.url),'utf8');
-const sql=readFileSync(new URL('../supabase/migrations/20261111010000_palace_age_safe_outbound_invitations.sql',import.meta.url),'utf8');
-const mail=readFileSync(new URL('../supabase/functions/palace-invitations/email.ts',import.meta.url),'utf8');
+const edge=readFileSync('supabase/functions/palace-invitations/index.ts','utf8');
+const sql=readFileSync('supabase/migrations/20261111010000_palace_age_safe_outbound_invitations.sql','utf8');
+const mail=readFileSync('supabase/functions/palace-invitations/email.ts','utf8');
 
 describe('Palace invitation-first server security',()=>{
  it('requires server-verified authenticated administrator and private sending key',()=>{
