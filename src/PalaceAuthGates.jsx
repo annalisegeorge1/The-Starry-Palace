@@ -165,6 +165,7 @@ export function PalaceAuthCallback({ Frame }) {
   const params = new URLSearchParams(window.location.search);
   const [pending] = useState(() => recallPalaceAuthDestination(window.sessionStorage));
   const [copyFeedback,setCopyFeedback] = useState('');
+  const [recoveryComplete,setRecoveryComplete] = useState(false);
   useEffect(() => {
     if (session && !loading) clearPalaceAuthDestination(window.sessionStorage);
   }, [session, loading]);
@@ -175,7 +176,8 @@ export function PalaceAuthCallback({ Frame }) {
     return <Navigate to="/login?mode=signup" state={{from:pending,firstVisit:true}} replace />;
   }
   if (loading) return <Frame><p role="status" className="palace-auth-pending">Completing your Palace sign-in…</p></Frame>;
-  if (session && recoverySession) return <PalaceLegacyRecovery Frame={Frame} onFinish={clearRecoverySession} />;
+  if (recoveryComplete) return <Frame><section className="room-title palace-auth-callback-error"><h1>Your password is updated.</h1><p role="status">Return to the Palace gates and sign in with your new password.</p><Link to="/login">Sign in with your new password</Link></section></Frame>;
+  if (session && recoverySession) return <PalaceLegacyRecovery Frame={Frame} onFinish={() => { setRecoveryComplete(true); clearRecoverySession?.(); }} />;
   if (session) return <Navigate to={pending} replace />;
   if (params.has('code') && !oauthError) {
     // Supabase has finished initialising. A code opened without its browser's
