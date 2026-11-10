@@ -640,6 +640,8 @@ function Home(){
 // Keep authentication UI out of the busy Palace shell; both routes share one on-demand module.
 const PalaceLogin = React.lazy(() => import('./PalaceAuthGates').then(module => ({ default: module.PalaceLogin })));
 const PalaceAuthCallback = React.lazy(() => import('./PalaceAuthGates').then(module => ({ default: module.PalaceAuthCallback })));
+const PalaceForgotPassword = React.lazy(() => import('./PalaceRecovery').then(module => ({ default: module.PalaceForgotPassword })));
+const PalaceEmailAction = React.lazy(() => import('./PalaceRecovery').then(module => ({ default: module.PalaceEmailAction })));
 
 function NavigationReset(){
  const location=useLocation();
@@ -818,6 +820,8 @@ function PalaceChatHost(){
 
 function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo pathname={location.pathname}/><PalaceBuildFreshnessWatch/><NavigationReset/><RouteStateReset/><BlankScreenWatchdog/><PalaceAgeGate Frame={Frame}><Frame><RouteGuard><Routes>
  <Route path="/" element={<Home/>}/><Route path="/login" element={<React.Suspense fallback={<RouteLoading/>}><PalaceLogin Frame={Frame}/></React.Suspense>}/><Route path="/auth/callback" element={<React.Suspense fallback={<RouteLoading/>}><PalaceAuthCallback Frame={Frame}/></React.Suspense>}/>
+ <Route path="/auth/forgot-password" element={<React.Suspense fallback={<RouteLoading/>}><PalaceForgotPassword Frame={Frame}/></React.Suspense>}/>
+ <Route path="/auth/verify" element={<React.Suspense fallback={<RouteLoading/>}><PalaceEmailAction Frame={Frame}/></React.Suspense>}/>
  <Route path="/welcome" element={<ProtectedRoute><OnboardingLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/writers" element={<WriterWelcome/>}/>
