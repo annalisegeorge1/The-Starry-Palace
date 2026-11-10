@@ -1,9 +1,11 @@
 import React,{useEffect,useState}from'react';
+import {useLocation} from 'react-router-dom';
 import{useAuth}from'./auth';
 import{supabase}from'./supabase';
 
 export function PalaceAgeGate({Frame,children}){
- const{session}=useAuth();
+ const{session,recoverySession}=useAuth();
+ const location=useLocation();
  const[status,setStatus]=useState('checking');
  const[birthDate,setBirthDate]=useState('');
  const[busy,setBusy]=useState(false);
@@ -30,6 +32,9 @@ export function PalaceAgeGate({Frame,children}){
   }catch(e){setError(e?.message||'Your age could not be confirmed. Please check the date and try again.');}
   finally{setBusy(false)}
  }
+ // A verified recovery session must be allowed to change the password even if
+ // age eligibility still needs to be checked. Other Palace routes stay gated.
+ if(location.pathname==='/auth/verify'||(location.pathname==='/auth/callback'&&recoverySession))return children;
  if(!session?.user?.id)return children;
  if(status==='eligible')return children;
  const title=status==='checking'?'Checking the Palace gates':status==='unavailable'?'Age check unavailable':'Confirm your age to continue';

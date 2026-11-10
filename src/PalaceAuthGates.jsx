@@ -9,6 +9,7 @@ import {
   rememberPalaceAuthDestination, recallPalaceAuthDestination,
   clearPalaceAuthDestination, readableAuthError,
 } from './palaceOAuth';
+import { PalaceLegacyRecovery } from './PalaceRecovery';
 import './palace-auth-gates.css';
 
 const GoogleLogo = () => (
@@ -61,7 +62,7 @@ export function PalaceLogin({ Frame }) {
       if (result.error) throw result.error;
       if (mode === 'signup' && !result.data?.session) {
         setMailCooldown(true);
-        setMessage('Check your inbox. Open the confirmation link in the browser you are using now.');
+        setMessage('Check your inbox for your Palace confirmation link. If it opens in a different browser, follow the instructions on that page.');
       }
     } catch (error) {
       setMessage(readableAuthError(error));
@@ -82,7 +83,7 @@ export function PalaceLogin({ Frame }) {
       });
       if (error) throw error;
       setMailCooldown(true);
-      setMessage('Check your inbox. Open the newest Palace link in the browser you are using now.');
+      setMessage('Check your inbox for your one-time Palace link.');
     } catch (error) {
       setMessage(readableAuthError(error));
     } finally { setBusy(false); }
@@ -144,6 +145,7 @@ export function PalaceLogin({ Frame }) {
             </button>
           </div>
           {mode === 'signup' && <small className="password-note">Use at least 8 characters. Never use your inbox password.</small>}
+          {mode === 'login' && <p className="palace-forgot-link"><Link to="/auth/forgot-password">Forgot password?</Link></p>}
           <button disabled={busy || loading || (mode === 'signup' && mailCooldown)}>{busy ? 'Please wait…' : mode === 'signup' ? 'Create my chamber' : 'Enter the Palace'}</button>
         </form>
         {mode === 'signup' && <p className="palace-google-note">Use email to create a new account. Google sign-in is available for existing members.</p>}
@@ -159,10 +161,11 @@ export function PalaceLogin({ Frame }) {
 }
 
 export function PalaceAuthCallback({ Frame }) {
-  const { session, loading, error } = useAuth();
+  const { session, loading, error, recoverySession, clearRecoverySession } = useAuth();
   const params = new URLSearchParams(window.location.search);
   const [pending] = useState(() => recallPalaceAuthDestination(window.sessionStorage));
   const [copyFeedback,setCopyFeedback] = useState('');
+  const [recoveryComplete,setRecoveryComplete] = useState(false);
   useEffect(() => {
     if (session && !loading) clearPalaceAuthDestination(window.sessionStorage);
   }, [session, loading]);
@@ -173,6 +176,8 @@ export function PalaceAuthCallback({ Frame }) {
     return <Navigate to="/login?mode=signup" state={{from:pending,firstVisit:true}} replace />;
   }
   if (loading) return <Frame><p role="status" className="palace-auth-pending">Completing your Palace sign-in…</p></Frame>;
+  if (recoveryComplete) return <Frame><section className="room-title palace-auth-callback-error"><h1>Your password is updated.</h1><p role="status">Return to the Palace gates and sign in with your new password.</p><Link to="/login">Sign in with your new password</Link></section></Frame>;
+  if (session && recoverySession) return <PalaceLegacyRecovery Frame={Frame} onFinish={() => { setRecoveryComplete(true); clearRecoverySession?.(); }} />;
   if (session) return <Navigate to={pending} replace />;
   if (params.has('code') && !oauthError) {
     // Supabase has finished initialising. A code opened without its browser's
@@ -193,7 +198,7 @@ export function PalaceAuthCallback({ Frame }) {
       <p>Open this page in the browser where you requested the link. If your email app opened a separate window, use its browser menu or copy the link below.</p>
       <button type="button" onClick={copyFinishLink}>Copy sign-in link</button>
       {copyFeedback && <p role="status">{copyFeedback}</p>}
-      <p>Already confirmed your email? Sign in with the same address. If the link has expired, request a fresh one.</p>
+      <p>If you opened an email-confirmation link, your address may already be verified. Try signing in normally. A passwordless sign-in may still require its original browser.</p>
       <Link to="/login" state={{from:pending}}>Sign in to your account</Link>
     </section></Frame>;
   }

@@ -7,6 +7,7 @@ export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [recoverySession, setRecoverySession] = useState(false);
   useEffect(() => {
     if (!supabase) { setLoading(false); return; }
     let active = true;
@@ -19,7 +20,9 @@ export function AuthProvider({ children }) {
       }
     }, 8000);
     try {
-      subscription = supabase.auth.onAuthStateChange((_event, next) => {
+      subscription = supabase.auth.onAuthStateChange((event, next) => {
+        if (active && event === 'PASSWORD_RECOVERY' && next) setRecoverySession(true);
+        if (active && event === 'SIGNED_OUT') setRecoverySession(false);
         authChanged = true;
         window.clearTimeout(sessionTimeout);
         if (active) { setSession(next || null); setError(''); setLoading(false); }
@@ -42,7 +45,7 @@ export function AuthProvider({ children }) {
     return () => { active = false; window.clearTimeout(sessionTimeout); try { subscription?.unsubscribe?.(); } catch {} };
   }, []);
   useEffect(()=>{if(!session?.user?.id)return;let cancelled=false;recordPalaceVisit().then(result=>{if(!cancelled&&result?.points_earned_today){window.dispatchEvent(new CustomEvent('palace:streak-earned',{detail:result}));}}).catch(()=>{});return()=>{cancelled=true}},[session?.user?.id]);
-  return <AuthContext.Provider value={{ session, loading, error }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ session, loading, error, recoverySession, clearRecoverySession: () => setRecoverySession(false) }}>{children}</AuthContext.Provider>;
 }
 export const useAuth = () => useContext(AuthContext);
 export function ProtectedRoute({ children }) {

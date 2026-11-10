@@ -26,3 +26,19 @@
 }
 .palace-login-panel .palace-google-note a,.palace-auth-callback-error a{color:inherit;text-decoration:underline}
 .palace-login-panel>input[type="date"]{width:100%;margin-bottom:.4rem}
+
+/* Authentication recovery uses the established Palace gate layout in every theme. */
+.palace-recovery-gate .gate-copy h1 { overflow-wrap: break-word; }
+.palace-recovery-panel form { display: grid; gap: .7rem; }
+.palace-recovery-panel input[type="email"],
+.palace-recovery-panel input[type="password"],
+.palace-recovery-panel input[type="text"] { width: 100%; min-width: 0; }
+.palace-login-panel .palace-forgot-link { text-align: right; margin: .35rem 0 .75rem; }
+.palace-login-panel .palace-forgot-link a,
+.palace-recovery-panel a { color: inherit; text-decoration: underline; text-underline-offset: .2em; }
+.palace-recovery-panel .palace-recovery-hint { font-size: .9rem; line-height: 1.65; opacity: .85; margin: .25rem 0 .85rem; }
+.palace-recovery-panel .palace-recovery-back { margin-top: 1.25rem; }
+.palace-recovery-panel .palace-recovery-status { line-height: 1.6; }
+.palace-recovery-panel .palace-recovery-link { display: inline-block; margin-top: 1rem; }
+.palace-recovery-panel [role="alert"] { overflow-wrap: anywhere; line-height: 1.6; }
+@media(max-width:640px) {.palace-recovery-panel{max-width:100%;min-width:0;} .palace-recovery-gate{padding-bottom:clamp(96px,17vh,144px);}}
