@@ -66,7 +66,7 @@ it('does not consume cross-browser email verification tokens before the member c
  expect(screen.getByRole('button',{name:'Confirm my email'})).toBeTruthy();
  fireEvent.click(screen.getByRole('button',{name:'Confirm my email'}));
  await waitFor(()=>expect(supabase.auth.verifyOtp).toHaveBeenCalledWith({token_hash:'example-hash',type:'email'}));
- expect(screen.getByText(/Your email is confirmed/)).toBeTruthy();
+ expect(await screen.findByText(/Your email is confirmed/)).toBeTruthy();
  expect(screen.getByRole('link',{name:'Continue to your chamber'}).getAttribute('href')).toBe('/chamber');
 });
 
@@ -75,6 +75,7 @@ it('supports recovery in a separate browser and changes password only after veri
  expect(supabase.auth.updateUser).not.toHaveBeenCalled();
  fireEvent.click(screen.getByRole('button',{name:'Continue to new password'}));
  await waitFor(()=>expect(supabase.auth.verifyOtp).toHaveBeenCalledWith({token_hash:'recover-me',type:'recovery'}));
+ await screen.findByLabelText('New password');
  fireEvent.change(screen.getByLabelText('New password'),{target:{value:'more-secure-than-before'}});
  fireEvent.change(screen.getByLabelText('Confirm new password'),{target:{value:'more-secure-than-before'}});
  fireEvent.click(screen.getByRole('button',{name:'Save new password'}));
