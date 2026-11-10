@@ -10,7 +10,7 @@ const state=vi.hoisted(()=>({current:{session:{user:{id:'recovering-member'}},lo
 vi.mock('./auth',()=>({useAuth:()=>state.current}));
 vi.mock('./supabase',()=>({configured:true,supabase:{auth:{updateUser:vi.fn(),signOut:vi.fn()}}}));
 const Frame=({children})=><main>{children}</main>;
-afterEach(()=>{cleanup();vi.clearAllMocks();window.history.replaceState({},'','/');state.current={session:{user:{id:'recovering-member'}},loading:false,error:null,recoverySession:true,clearRecoverySession:vi.fn()}};});
+afterEach(()=>{cleanup();vi.clearAllMocks();window.history.replaceState({},'','/');state.current={session:{user:{id:'recovering-member'}},loading:false,error:null,recoverySession:true,clearRecoverySession:vi.fn()};});
 
 it('legacy callback shows password update instead of redirecting to chamber after PASSWORD_RECOVERY',()=>{
  render(<MemoryRouter initialEntries={['/auth/callback?code=already-exchanged']}><PalaceAuthCallback Frame={Frame}/></MemoryRouter>);
