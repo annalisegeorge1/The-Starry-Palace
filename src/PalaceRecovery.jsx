@@ -88,9 +88,11 @@ export function PalaceLegacyRecovery({Frame,onFinish}) {
     try {
       const {error}=await supabase.auth.updateUser({password});
       if (error) throw error;
-      try {await supabase.auth.signOut({scope:'local'});} catch {}
+      // Signal success before signing out; the auth provider may immediately
+      // rerender the callback when SIGNED_OUT arrives.
       setPassword('');setConfirm('');setUpdated(true);
       onFinish?.();
+      try {await supabase.auth.signOut({scope:'local'});} catch {}
     } catch {
       setMessage('We could not update your password. Request another recovery email if the link has expired.');
     } finally {setBusy(false);}
