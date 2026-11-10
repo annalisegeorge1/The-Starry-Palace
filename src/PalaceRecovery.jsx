@@ -68,6 +68,53 @@ export function PalaceForgotPassword({Frame}) {
   </AuthRoom>;
 }
 
+// The default hosted Supabase recovery template still sends an authorization
+// code to /auth/callback. Supabase emits PASSWORD_RECOVERY after exchanging
+// that code in the original PKCE browser; give members a password form instead
+// of incorrectly redirecting them to their chamber.
+export function PalaceLegacyRecovery({Frame,onFinish}) {
+  const [password,setPassword] = useState('');
+  const [confirm,setConfirm] = useState('');
+  const [visible,setVisible] = useState(false);
+  const [busy,setBusy] = useState(false);
+  const [updated,setUpdated] = useState(false);
+  const [message,setMessage] = useState('');
+  async function submit(event) {
+    event.preventDefault();
+    if (busy || updated || !supabase) return;
+    if (password.length<8) {setMessage('Use at least 8 characters for your new password.');return;}
+    if (password!==confirm) {setMessage('Your passwords do not match.');return;}
+    setBusy(true);setMessage('');
+    try {
+      const {error}=await supabase.auth.updateUser({password});
+      if (error) throw error;
+      try {await supabase.auth.signOut({scope:'local'});} catch {}
+      setPassword('');setConfirm('');setUpdated(true);
+      onFinish?.();
+    } catch {
+      setMessage('We could not update your password. Request another recovery email if the link has expired.');
+    } finally {setBusy(false);}
+  }
+  return <AuthRoom Frame={Frame} title={updated?'Your Palace key is renewed.':'Choose a new password.'}
+    subtitle={updated?'Sign in again with your new password.':'Your recovery link was accepted. Choose a new password for your Palace account.'}>
+    {updated ? <p role="status">Your password was changed. <Link to="/login">Sign in with your new password</Link>.</p>
+      : <form onSubmit={submit}>
+        <label htmlFor="palace-legacy-password">New password</label>
+        <div className="password-field">
+          <input id="palace-legacy-password" type={visible?'text':'password'} autoComplete="new-password" minLength={8} required value={password}
+            onChange={e=>setPassword(e.target.value)} />
+          <button type="button" aria-label={visible?'Hide password':'Show password'} onClick={()=>setVisible(v=>!v)}>{visible?'Hide':'Show'}</button>
+        </div>
+        <label htmlFor="palace-legacy-confirm">Confirm new password</label>
+        <input id="palace-legacy-confirm" type={visible?'text':'password'} autoComplete="new-password" minLength={8} required value={confirm}
+          onChange={e=>setConfirm(e.target.value)}/>
+        <button disabled={busy}>{busy?'Updating password…':'Save new password'}</button>
+      </form>}
+    {message && <p className="palace-auth-message" role="alert">{message}</p>}
+    <p className="palace-recovery-back"><Link to="/login">Return to the Palace gates</Link></p>
+  </AuthRoom>;
+}
+
 export function PalaceEmailAction({Frame}) {
   const location=useLocation();
   const [action] = useState(() => readPalaceEmailAction(location.hash || window.location.hash));
