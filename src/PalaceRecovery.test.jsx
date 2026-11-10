@@ -56,6 +56,7 @@ it('shows the same non-enumerating message for an unknown address/provider error
 it('accepts only supported email actions with token hashes',()=>{
  expect(readPalaceEmailAction('#token_hash=test_123&type=email')).toEqual({token:'test_123',type:'email'});
  expect(readPalaceEmailAction('#token_hash=test&type=recovery')).toEqual({token:'test',type:'recovery'});
+ expect(readPalaceEmailAction('#token_hash=passwordless&type=email&intent=magiclink')).toEqual({token:'passwordless',type:'email',intent:'magiclink'});
  expect(readPalaceEmailAction('#token_hash=secret&type=unknown')).toBeNull();
  expect(readPalaceEmailAction('#type=email')).toBeNull();
 });
@@ -68,6 +69,16 @@ it('does not consume cross-browser email verification tokens before the member c
  await waitFor(()=>expect(supabase.auth.verifyOtp).toHaveBeenCalledWith({token_hash:'example-hash',type:'email'}));
  expect(await screen.findByText(/Your email is confirmed/)).toBeTruthy();
  expect(screen.getByRole('link',{name:'Continue to your chamber'}).getAttribute('href')).toBe('/chamber');
+});
+
+it('redeems passwordless Palace magic links as Supabase email OTPs while showing the right sign-in copy',async()=>{
+ at('/auth/verify#token_hash=magic-hash&type=email&intent=magiclink',PalaceEmailAction);
+ expect(screen.getByRole('heading',{name:'Enter The Starry Palace'})).toBeTruthy();
+ expect(screen.getByRole('button',{name:'Sign in to the Palace'})).toBeTruthy();
+ expect(supabase.auth.verifyOtp).not.toHaveBeenCalled();
+ fireEvent.click(screen.getByRole('button',{name:'Sign in to the Palace'}));
+ await waitFor(()=>expect(supabase.auth.verifyOtp).toHaveBeenCalledWith({token_hash:'magic-hash',type:'email'}));
+ expect(await screen.findByText(/Your Palace sign-in is complete/)).toBeTruthy();
 });
 
 it('supports recovery in a separate browser and changes password only after verifying the link',async()=>{
