@@ -21,7 +21,7 @@ describe('Palace transaction email templates',()=>{
    expect(html).toContain('font-family:');
    expect(html).not.toContain('supabase.co');
    expect(html).not.toMatch(/<script|<iframe|tracking|google-analytics/i);
-   expect(html).not.toMatch(/https?:\/\/[^"\s]*token_hash=/);
+   expect(html).not.toContain('?token_hash=');
   }
  });
  it('uses one-time fragment links with correct Supabase OTP type for each action',()=>{
