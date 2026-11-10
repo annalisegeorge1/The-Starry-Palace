@@ -9,6 +9,7 @@ import {
   rememberPalaceAuthDestination, recallPalaceAuthDestination,
   clearPalaceAuthDestination, readableAuthError,
 } from './palaceOAuth';
+import { PalaceLegacyRecovery } from './PalaceRecovery';
 import './palace-auth-gates.css';
 
 const GoogleLogo = () => (
@@ -160,7 +161,7 @@ export function PalaceLogin({ Frame }) {
 }
 
 export function PalaceAuthCallback({ Frame }) {
-  const { session, loading, error } = useAuth();
+  const { session, loading, error, recoverySession, clearRecoverySession } = useAuth();
   const params = new URLSearchParams(window.location.search);
   const [pending] = useState(() => recallPalaceAuthDestination(window.sessionStorage));
   const [copyFeedback,setCopyFeedback] = useState('');
@@ -174,6 +175,7 @@ export function PalaceAuthCallback({ Frame }) {
     return <Navigate to="/login?mode=signup" state={{from:pending,firstVisit:true}} replace />;
   }
   if (loading) return <Frame><p role="status" className="palace-auth-pending">Completing your Palace sign-in…</p></Frame>;
+  if (session && recoverySession) return <PalaceLegacyRecovery Frame={Frame} onFinish={clearRecoverySession} />;
   if (session) return <Navigate to={pending} replace />;
   if (params.has('code') && !oauthError) {
     // Supabase has finished initialising. A code opened without its browser's
