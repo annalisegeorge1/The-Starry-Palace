@@ -144,7 +144,7 @@ export function PalaceLogin({ Frame }) {
             </button>
           </div>
           {mode === 'signup' && <small className="password-note">Use at least 8 characters. Never use your inbox password.</small>}
-          {mode === 'login' && <p className="palace-forgot-link"><Link to="/auth/forgot-password">Forgot password?</Link></p>
+          {mode === 'login' && <p className="palace-forgot-link"><Link to="/auth/forgot-password">Forgot password?</Link></p>}
           <button disabled={busy || loading || (mode === 'signup' && mailCooldown)}>{busy ? 'Please wait…' : mode === 'signup' ? 'Create my chamber' : 'Enter the Palace'}</button>
         </form>
         {mode === 'signup' && <p className="palace-google-note">Use email to create a new account. Google sign-in is available for existing members.</p>}
