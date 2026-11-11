@@ -1402,7 +1402,7 @@ export async function saveChapter(userId,chapterId,patch,version){
 export async function getChapterSnapshots(chapterId){
  // Keep named checkpoints accessible even when autosave creates many automatic
  // versions. Queries remain subject to the existing per-author RLS policies.
- const fields='id,chapter_id,created_by,label,title,body_html,revision_note,word_count,source_revision,created_at';
+ const fields='id,chapter_id,created_by,label,title,word_count,source_revision,created_at';
  const base=()=>needClient().from('chapter_revision_snapshots').select(fields).eq('chapter_id',chapterId);
  const [named,automatic]=await Promise.all([
   base().or('label.is.null,label.neq."Automatic safety checkpoint"').order('created_at',{ascending:false}).limit(80),
@@ -1411,6 +1411,14 @@ export async function getChapterSnapshots(chapterId){
  if(named.error)throw named.error;
  if(automatic.error)throw automatic.error;
  return [...(named.data||[]),...(automatic.data||[])].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+}
+export async function getChapterSnapshotBody(chapterId,snapshotId){
+ const {data,error}=await needClient().from('chapter_revision_snapshots')
+  .select('id,chapter_id,label,title,body_html,revision_note,word_count,source_revision,created_at')
+  .eq('chapter_id',chapterId).eq('id',snapshotId).maybeSingle();
+ if(error)throw error;
+ if(!data||typeof data.body_html!=='string')throw Error('This checkpoint could not be opened.');
+ return data;
 }
 export async function createChapterSnapshot(userId,chapter,label=''){
  if(!chapter?.id)throw new Error('Open a chapter before creating a snapshot.');

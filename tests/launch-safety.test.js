@@ -1252,7 +1252,7 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('Compare revision');
     expect(live).toContain('NON-DESTRUCTIVE REVIEW');
     expect(live).toContain('Comparison never changes the draft.');
-    expect(live).toContain('Restore this snapshot');
+    expect(live).toContain('restoreSnapshot(snapshotCompare.snapshot)');
     expect(next).toContain('Snapshot comparison — inspect before restoring.');
     expect(next).toContain('.snapshot-compare-columns');
   });
