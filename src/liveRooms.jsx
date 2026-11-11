@@ -867,7 +867,7 @@ export function WritingLive({Frame}){
  {tab==='duels'&&<section className="duel-room-page">
  <section className="duel-hero">
   <div><p className="eyebrow">INK DUELS · CREATIVE ARENA</p><div className="palace-info-heading"><h2>One prompt. Many forms. Let the Palace decide.</h2><PalaceInfoMark title="How Ink Duels work"><p>Challenge one rival, invite a small court, or open the arena. Fiction, poetry, haiku, drabbles, dialogue, art and comics all compete from one shared prompt.</p><ol><li>Choose your craft and prompt.</li><li>Submit a sealed entry before the deadline.</li><li>Independent readers judge blind.</li><li>Entries and qualified treasures are revealed after voting.</li></ol></PalaceInfoMark><PalaceTopicHelp id="duel-fairness"/></div></div>
-  <button className="button-starlight" type="button" onClick={()=>setDuelOpen(true)}>Open an Ink Duel ✦</button>
+  <div className="duel-entrance-side"><figure className="duel-fencing-display"><span className="duel-fencing-kicker" aria-hidden="true">✦ THE CREATIVE ARENA ✦</span><picture><source media="(prefers-reduced-motion: reduce)" srcSet="/assets/palace/ink-duel-fencers-still.svg"/><img src="/assets/palace/ink-duel-fencers.gif" width="154" height="65" loading="eager" alt="Two sketch fencers, one blue and one red, facing off with swords"/></picture><figcaption>Where stories cross blades.</figcaption></figure><button className="button-starlight" type="button" onClick={()=>setDuelOpen(true)}>Open an Ink Duel ✦</button></div>
  </section>
  <InkDuelSpotlight duels={duels} onGoToDuel={returnToInkDuel}/>
  {duelRecord&&<section className="duel-record-strip" aria-label="My Ink Duel record">
