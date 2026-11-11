@@ -8,14 +8,13 @@ const main=readFileSync('src/main.jsx','utf8');
 
 describe('Chosen Prism colour contrast across Palace Letters',()=>{
  it('picks independently readable ink for the primary ground, secondary panel, and accent',()=>{
-  const schemes=[
-   {primary:'#20345B',secondary:'#87ACD5',accent:'#DBA6D7'},
-   {primary:'#61365B',secondary:'#E7B9D3',accent:'#7A3C7B'},
-   {primary:'#F1E7D7',secondary:'#2D4A54',accent:'#BD7A53'},
-   {primary:'#191A22',secondary:'#21232E',accent:'#7D73C7'},
-   {primary:'#7A9BD0',secondary:'#E7E4F9',accent:'#BCA4E9'}
-  ];
-  for(const palette of schemes){
+  const seeds=['chamber-prism-atelier-colours','chamber-prism-seasonal-collections','prism-jewel-court-gemstone-frames','jewel-court-collectible-expansion'];
+  const palettes=seeds.flatMap(seed=>Array.from(
+   readFileSync('database/'+seed+'.sql','utf8').matchAll(/'(#[a-f0-9]{6})'\s*,\s*'(#[a-f0-9]{6})'\s*,\s*'(#[a-f0-9]{6})'/gi),
+   ([,primary,secondary,accent])=>({primary,secondary,accent})
+  ));
+  expect(palettes.length).toBeGreaterThanOrEqual(85);
+  for(const palette of palettes){
    const appearance=prismAppearance({prism_colour_chosen:true,prism_palette_data:{slug:'example',...palette}});
    expect(appearance?.kind).toBe('palette');
    const values=appearance.style;
@@ -26,43 +25,19 @@ describe('Chosen Prism colour contrast across Palace Letters',()=>{
    ])expect(contrastRatio(values[colour],values[ink])).toBeGreaterThanOrEqual(4.5);
   }
  });
- it('only adjusts Daybreak layout when the member selected a palette',()=>{
-  expect(css).toContain('.daylight[data-viewer-appearance="palette"]');
-  expect(css).toContain('var(--palette-ground-ink)!important');
-  expect(css).toContain('var(--palette-panel-ink)!important');
-  expect(css).toContain('var(--palette-accent-ink)!important');
-  expect(css).not.toContain('data-viewer-appearance="none"');
-  expect(css).not.toContain('data-member-appearance');
+ it('keeps viewer tokens outside the shell and private correspondence',()=>{
+  expect(main).not.toContain('data-viewer-appearance');
+  expect(css).not.toContain('data-viewer-appearance');
+  expect(readFileSync('src/liveRooms.jsx','utf8')).toContain('className="legacy-home-dashboard palace-command-centre" data-viewer-appearance=');
  });
- it('corrects the very dark Palace Letters heading and muted descriptive copy',()=>{
-  expect(css).toContain('.chic-letters-head :is(h1,.eyebrow,.lede,p,small)');
-  expect(css).toContain('.chic-letters-top-actions>span');
-  expect(css).toContain('.chic-letters-head .letters-stats>span');
-  expect(css).toContain('opacity:1!important');
- });
- it('separates light coloured list and correspondent header from neutral letter paper',()=>{
-  for(const selector of [
-   '.chic-letter-list>button','.letter-paper-head','.chic-letter-paper',
-   '.letters-filter-buttons>button','.letters-search>input','.chic-letter-stream article.mine',
-   '.letter-compose-input>textarea','.letter-compose-footer>small'
-  ])expect(css).toContain(selector);
-  expect(css).toContain('--letter-palette-paper:#fcfbff');
-  expect(css).toContain('--letter-palette-ink:#29253b');
-  expect(css).toContain('background:var(--appearance-secondary)!important');
-  expect(css).toContain('color:var(--letter-palette-ink)!important');
- });
- it('keeps dark appearance modes in charge of shared Palace Letters colours',()=>{
-  expect(css).toContain('.palace-shell.full-palace-shell.nightfall');
-  expect(css).toContain('.palace-shell.full-palace-shell.midnight');
-  expect(css).toContain('--letters-night-surface:#111015;');
-  expect(css).toContain('--letters-night-ink:#f5f1f8;');
-  expect(css).toContain('.palace-shell.full-palace-shell:is(.nightfall,.midnight)');
- });
- it('leaves message content, member artwork and saved preferences untouched',()=>{
-  expect(css).not.toContain('.legacy-profile-cover');
-  expect(css).not.toContain('.painted-chamber-frame');
-  expect(css).not.toContain('.public-chamber-appearance');
-  expect(main.indexOf("import './palace-prism-letter-contrast.css'")).toBeGreaterThan(main.indexOf("import './palace-dark-theme-priority.css'"));
-  expect(main.indexOf("import './palace-prism-letter-contrast.css'")).toBeGreaterThan(main.indexOf("import './heritage-dark-vibrancy.css'"));
+ it('provides readable text, controls and outgoing letters for every mode',()=>{
+  for(const mode of ['daylight','nightfall','midnight']){
+   const block=css.split('.'+mode+' #palace-content')[1].split('}')[0];
+   const token=key=>block.match(new RegExp('--letters-'+key+':(#[a-f0-9]{6})'))[1];
+   for(const surface of ['surface','raised']){
+    for(const ink of ['ink','muted'])expect(contrastRatio(token(surface),token(ink))).toBeGreaterThanOrEqual(4.5);
+   }
+   expect(contrastRatio(token('action'),'#ffffff')).toBeGreaterThanOrEqual(4.5);
+  }
  });
 });

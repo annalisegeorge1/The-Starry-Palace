@@ -22,7 +22,7 @@
  .creator-worlds-room>.section-heading p:not(.eyebrow),
 .palace-shell.full-palace-shell .public-chamber-appearance[data-member-appearance="palette"]
  .creator-worlds-room>.chamber-shelf-count {
- opacity:.92!important;
+ opacity:1!important;
  font-weight:500;
 }
 /* The same palette may have a light secondary shade. Keep card foreground
@@ -75,7 +75,7 @@
 .palace-shell.full-palace-shell .public-chamber-appearance[data-member-appearance="palette"]
  .creator-worlds-room .chamber-shelf-search input::placeholder {
  color:var(--palette-panel-ink)!important;
- opacity:.75!important;
+ opacity:1!important;
 }
 .palace-shell.full-palace-shell .public-chamber-appearance[data-member-appearance="palette"]
  .creator-worlds-room .chamber-shelf-filters button {

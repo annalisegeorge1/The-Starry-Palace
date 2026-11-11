@@ -145,7 +145,6 @@ import './palace-mobile-drawer-compact.css';
 import './palace-midnight-theme.css';
 import './member-page-skins.css';
 import './prism-appearance.css';
-import {useMemberAppearance} from './useMemberAppearance';
 import './reader-endflow-accessibility.css';
 import './reader-chapter-comments.css';
 import './tablet-daybreak-reading-polish.css';
@@ -380,7 +379,6 @@ function Frame(props){
 }
 function FrameShell({children}){
  const {session}=useAuth();
- const appearance=useMemberAppearance(session?.user?.id);
  // Notify the non-React boot cover only after the visible shell has committed.
  React.useEffect(()=>{window.__palaceBootReady?.()},[]);
  const [navOpen,setNavOpen]=useState(false);
@@ -573,7 +571,7 @@ function FrameShell({children}){
  function submitSearch(e){e.preventDefault();if(search.trim())navigate('/search?q='+encodeURIComponent(search.trim()))}
  function chooseCommand(path){setCommandOpen(false);setCommandQuery('');setCommandIndex(0);navigate(path)}
  function searchCommand(){const q=commandQuery.trim();if(!q)return;setCommandOpen(false);setCommandQuery('');setCommandIndex(0);navigate('/search?q='+encodeURIComponent(q))}
- return <div data-viewer-appearance={appearance?.kind} style={appearance?.style} data-palace-frame="ready" data-palace-room={activeRoom?.id||"unknown"} className={"palace-shell full-palace-shell "+(navOpen?'nav-open ':'')+(sidebarCollapsed?'sidebar-collapsed ':'')+(daylight?'daylight':'nightfall')+(palaceTheme==='midnight'?' midnight':'')}>
+ return <div data-palace-frame="ready" data-palace-room={activeRoom?.id||"unknown"} className={"palace-shell full-palace-shell "+(navOpen?'nav-open ':'')+(sidebarCollapsed?'sidebar-collapsed ':'')+(daylight?'daylight':'nightfall')+(palaceTheme==='midnight'?' midnight':'')}>
   <a className="skip-to-content" href="#palace-content">Skip to main content</a>
   <aside id="palace-sidebar" className="sidebar full-sidebar" aria-label="Palace navigation" role={navOpen?'dialog':undefined} aria-modal={navOpen?'true':undefined} tabIndex={navOpen?-1:undefined}>
    <div className="palace-cover-live restored-cover dusk-gif-cover"><img src="/assets/palace/palace-belonging.gif" alt="" aria-hidden="true" loading="lazy" decoding="async"/><div className="dusk-cover-glass" aria-hidden="true"/><button className="sidebar-retract" type="button" onClick={()=>setSidebarCollapsed(true)} aria-label="Retract Palace sidebar" title="Retract sidebar">‹</button><button className="nav-close" onClick={()=>setNavOpen(false)} aria-label="Close Palace navigation">×</button></div>

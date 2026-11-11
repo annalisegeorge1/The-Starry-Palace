@@ -2,7 +2,7 @@
    by their existing layout classes, including the cover editor preview. */
 :where(.member-avatar){position:relative}
 .member-avatar.member-avatar{display:inline-grid;place-items:center;flex-shrink:0;isolation:isolate;overflow:visible!important;box-sizing:border-box;vertical-align:middle}
-.member-avatar>.member-avatar-photo{position:absolute!important;inset:0!important;display:grid!important;place-items:center;width:auto!important;height:auto!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:50%!important;overflow:hidden!important;background:var(--avatar-background,var(--appearance-raised,var(--ui-raised,#28253c)));color:#fff}
+.member-avatar>.member-avatar-photo{position:absolute!important;inset:0!important;display:grid!important;place-items:center;width:auto!important;height:auto!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:50%!important;overflow:hidden!important;background:var(--avatar-background,var(--appearance-raised,var(--ui-raised,#28253c)));color:var(--appearance-ink,var(--ui-text,#fff))}
 .member-avatar>.member-avatar-photo>img{display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;border:0!important;border-radius:50%!important;margin:0!important;padding:0!important}
 .member-avatar.member-avatar-framed{background:transparent!important;border-color:transparent!important;box-shadow:none!important}
 .member-avatar.member-avatar-framed>.member-avatar-photo{inset:0!important}
