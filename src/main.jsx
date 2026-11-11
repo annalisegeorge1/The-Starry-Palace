@@ -169,6 +169,8 @@ import './reader-daybreak-final-contrast.css';
 import './chamber-avatar-palette-correction.css';
 // Global theme choice outranks member palette on shell/navigation, but not authored Chamber art.
 import './palace-dark-theme-priority.css';
+// Owner-scoped colour contrast comes last, after global dark-mode styling.
+import './chamber-personal-contrast-repair.css';
 import {palaceCommandIcon,uniquePalaceCommandRecents} from './palaceCommandModel';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
