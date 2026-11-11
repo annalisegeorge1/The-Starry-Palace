@@ -142,7 +142,7 @@
    controls. Never suppress festival themes or their already-matching markers. */
 .palace-shell.full-palace-shell:is(.nightfall,.midnight)
  #palace-content[data-palace-route^="/events"]
- .heritage-grid.enriched .heritage-card .heritage-save {
+ .heritage-grid.enriched .heritage-card > button {
  background:rgba(15,18,38,.24)!important;
  color:#fff9ff!important;
  border:1px solid rgba(250,235,255,.42)!important;
