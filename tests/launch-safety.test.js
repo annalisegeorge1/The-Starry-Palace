@@ -530,7 +530,8 @@ describe('Starry Palace launch safety',()=>{
   it('keeps dual-layer writing recovery and Palace Life discovery wired',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
-    expect(live).toContain('palace-recovery:');
+    expect(live).toContain('chapterRecoveryCopies(localStorage,ch)');
+    expect(live).toContain('recoveryWriteKey(chapterId)');
     expect(live).toContain('Saved to Palace');
     expect(live).toContain('Recovery copy kept on this device');
     expect(live).toContain('commons-lens');

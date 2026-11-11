@@ -6,6 +6,9 @@ on:
       - src/palaceData.js
       - src/chapterCloudSave.js
       - src/manuscriptSaveCoordinator.js
+      - src/manuscriptRecoveryCopies.js
+      - src/manuscriptRestoreStage.js
+      - src/manuscriptNavigationGuard.js
       - tests/browser/writing*
       - .github/workflows/writing-browser.yml
 permissions:
