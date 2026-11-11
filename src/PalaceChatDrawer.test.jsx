@@ -43,6 +43,34 @@ beforeEach(()=>{
 });
 afterEach(cleanup);
 describe('Palace quick chat',()=>{
+ it('keeps conversation search in the header and exposes it only on request',async()=>{
+  mount();
+  fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  expect(screen.getByRole('button',{name:'Search messages in this conversation'})).toBeTruthy();
+  expect(screen.queryByLabelText('Find in loaded messages')).toBeNull();
+  const search=screen.getByRole('button',{name:'Search messages in this conversation'});
+  fireEvent.click(search);
+  expect(screen.getByLabelText('Find in loaded messages')).toBeTruthy();
+  fireEvent.click(screen.getByRole('button',{name:'Close message search'}));
+  expect(screen.queryByLabelText('Find in loaded messages')).toBeNull();
+  expect(document.querySelector('.palace-chat-advanced-controls.is-thread-hidden')).toBeTruthy();
+ });
+ it('provides contextual message actions and a React command in the action menu',async()=>{
+  mount();
+  fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(screen.getByRole('button',{name:/Groups/}));
+  fireEvent.click(await screen.findByRole('button',{name:'Moonlight Readers'}));
+  const bubble=screen.getByText('Welcome to the circle').closest('.palace-chat-bubble');
+  const options=within(bubble).getByRole('button',{name:'Message options'});
+  fireEvent.click(options);
+  expect(screen.getByRole('menu',{name:'Message actions'})).toBeTruthy();
+  expect(screen.getByRole('menuitem',{name:'Reply'})).toBeTruthy();
+  expect(screen.getByRole('menuitem',{name:'React to message'})).toBeTruthy();
+  fireEvent.click(screen.getByRole('menuitem',{name:'React to message'}));
+  expect(screen.getByRole('group',{name:'Choose a message reaction'})).toBeTruthy();
+  expect(screen.getByRole('menuitem',{name:'Copy text'})).toBeTruthy();
+ });
 
  it('makes full Messenger unmistakable from the quick-chat inbox and a thread',async()=>{
   mount();
