@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run policy assertions on disposable PostgreSQL
         run: |
-          pg_virtualenv -v 16 bash -eu -c '
+          pg_virtualenv bash -eu -c '
             createdb palace_credits_fixture
             psql -X -d palace_credits_fixture -f tests/postgres/guest-edition-credits.sql
           '
