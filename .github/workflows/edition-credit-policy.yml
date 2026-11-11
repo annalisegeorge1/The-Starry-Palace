@@ -1,0 +1,21 @@
+name: Edition credit policy fixture
+on:
+  pull_request:
+    paths:
+      - database/review/guest-archive-translation-credits.sql
+      - tests/postgres/guest-edition-credits.sql
+      - .github/workflows/edition-credit-policy.yml
+permissions:
+  contents: read
+jobs:
+  guest-edition-credits:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run policy assertions on disposable PostgreSQL
+        run: |
+          pg_virtualenv -v 16 bash -eu -c '
+            createdb palace_credits_fixture
+            psql -X -d palace_credits_fixture -f tests/postgres/guest-edition-credits.sql
+          '
