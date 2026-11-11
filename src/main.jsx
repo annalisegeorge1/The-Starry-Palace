@@ -173,6 +173,8 @@ import './palace-dark-theme-priority.css';
 import './chamber-personal-contrast-repair.css';
 // Final chat pass: quiet contextual actions, embedded reactions, compact search.
 import './palace-chat-calm-actions.css';
+// Shared pink-and-gold festival markers and matching Heritage Calendar legend.
+import './heritage-festival-pink-gold.css';
 import {palaceCommandIcon,uniquePalaceCommandRecents} from './palaceCommandModel';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
