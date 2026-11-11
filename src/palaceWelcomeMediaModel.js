@@ -9,5 +9,5 @@ export function validatePalaceWelcomeImage(file) {
  return '';
 }
 export function palaceWelcomeFandoms(value) {
- return [...new Set(String(value || '').split(',').map(s=>s.trim()).filter(Boolean))].slice(0,40);
+ return [...new Set(String(value || '').split(',').map(s=>s.trim()).filter(Boolean))].slice(0,10);
 }
