@@ -31,7 +31,7 @@ describe('honest writer statistics and safely recoverable drafts',()=>{
   expect(live).toContain('Keep copy');
   expect(live).not.toContain('window.confirm(');
   expect(live).toContain('Restore copy');
-  expect(live).toContain("localStorage.removeItem(recoveryKey())");
+  expect(live).toContain("discardDisplayedCopy(localStorage,recovery)");
  });
 });
 describe('next Celestial title pathway',()=>{

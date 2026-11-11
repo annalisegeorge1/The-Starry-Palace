@@ -82,7 +82,7 @@ def api(route):
             data = [{key: value for key, value in checkpoint.items() if key in fields}]
     route.fulfill(json=data, headers={"Access-Control-Allow-Origin": "*", "Content-Type": "application/json"})
 
-def install_fixture(context):
+def install_fixture(context, initial_text="Initial text"):
     context.route("http://127.0.0.1:4174/**", api)
     # Replace only the test server's auth module; the test has no Palace credentials.
     context.route(re.compile(r"^http://127\.0\.0\.1:4173/src/auth\.jsx(?:\?.*)?$"),
@@ -90,7 +90,7 @@ def install_fixture(context):
                          body="export const useAuth=()=>({session:{user:{id:'owner'}}}); export const AuthProvider=({children})=>children; export const ProtectedRoute=AuthProvider;"))
     page = context.new_page()
     page.goto("http://127.0.0.1:4173/tests/browser/writing.html")
-    expect(page.locator('[contenteditable=true]').first).to_have_text("Initial text", timeout=45000)
+    expect(page.locator('[contenteditable=true]').first).to_have_text(initial_text, timeout=45000)
     return page
 
 with sync_playwright() as playwright:
@@ -105,7 +105,7 @@ with sync_playwright() as playwright:
     expect(second.locator('.writer-toolbar-save-state')).to_contain_text("Cloud save failed")
     expect(b).to_have_text("Unsaved version retained by B")
     assert writes == [True, False] and "Cloud version saved by A" in chapter["body_html"]
-    assert "Unsaved version retained by B" in second.evaluate("localStorage.getItem('palace-recovery:c1')")
+    assert "Unsaved version retained by B" in second.evaluate("Object.entries(localStorage).filter(([k])=>k.startsWith('palace-recovery:c1:')).map(([,v])=>v).join()")
     second.get_by_label("More chapter actions").click()
     with second.expect_download() as download:
         second.get_by_role("button", name=re.compile("Download backup .txt")).click()
@@ -174,5 +174,27 @@ with sync_playwright() as playwright:
     first.locator('.studio-back-link').click()
     dialog.get_by_role("button", name="Keep a device copy and leave").click()
     expect(a).to_have_count(0)
-    assert "This draft survived a full device" in first.evaluate("localStorage.getItem('palace-recovery:c1')")
+    assert "This draft survived a full device" in first.evaluate("Object.entries(localStorage).filter(([k])=>k.startsWith('palace-recovery:c1:')).map(([,v])=>v).join()")
+    context = browser.new_context()
+    left = install_fixture(context, chapter["body_html"])
+    right = context.new_page()
+    right.goto(left.url)
+    le = left.locator('[contenteditable=true]').first
+    ri = right.locator('[contenteditable=true]').first
+    expect(ri).to_have_text(chapter["body_html"])
+    le.fill("First tab private draft")
+    ri.fill("Second tab private draft")
+    for page in (left, right):
+        expect(page.locator('.writer-toolbar-save-state')).to_contain_text("Cloud save failed")
+    left.reload()
+    choices = left.get_by_label("Choose a recovery copy")
+    expect(choices.locator("option")).to_have_count(2)
+    recovered = []
+    for i in range(2):
+        choices.select_option(index=i)
+        with left.expect_download() as download:
+            left.get_by_role("button", name="Download recovery .txt").click()
+        recovered.append(Path(download.value.path()).read_text())
+    assert any("First tab private draft" in item for item in recovered)
+    assert any("Second tab private draft" in item for item in recovered)
     browser.close()

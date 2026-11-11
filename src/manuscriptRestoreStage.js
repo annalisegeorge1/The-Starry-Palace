@@ -3,7 +3,7 @@
  * It must not be mistaken for cloud-saved text until the writer explicitly
  * saves it. This protects the manuscript from automatic stale responses.
  */
-export function stageManuscriptRestore({chapterId,draft,storage,markChanged,savedAt}={}){
+export function stageManuscriptRestore({chapterId,draft,storage,storageKey,markChanged,savedAt}={}){
  if(!chapterId||typeof markChanged!=='function')throw new TypeError('An open chapter and revision tracker are required');
  const restored={
   title:String(draft?.title||''),
@@ -15,7 +15,7 @@ export function stageManuscriptRestore({chapterId,draft,storage,markChanged,save
  let stored=false;
  try{
   if(storage&&typeof storage.setItem==='function'){
-   storage.setItem('palace-recovery:'+chapterId,JSON.stringify(restored));
+   storage.setItem(storageKey??('palace-recovery:'+chapterId),JSON.stringify(restored));
    stored=true;
   }
  }catch{}
