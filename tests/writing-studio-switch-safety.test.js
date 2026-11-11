@@ -10,7 +10,7 @@ describe('writing desk selection and cloud status protection',()=>{
   expect(studio).toContain('loadChapter:id=>getChapterForWork(data,id)');
   expect(studio).not.toContain('loadRevisions:id=>getChapterSnapshots(id)');
   expect(studio).toContain('setChapter(ch);');
-  expect(studio).toContain('setRecovery(snap);');
+  expect(studio).toContain('setRecovery(copies[0]||null);');
   expect(studio).toContain("setChapter(null);setSnapshots([]);setSnapshotRemoving(null);setRecovery(null);setChapterMap([])");
  });
  it('does not confuse a new chapter with the settings form while it loads',()=>{
