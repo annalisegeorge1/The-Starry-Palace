@@ -97,7 +97,7 @@
 }
 /* Override the older selected-palette button backgrounds in top navigation. */
 .palace-shell.full-palace-shell:is(.nightfall,.midnight)
- :is(.full-topbar .top-icon-link,.full-topbar .palace-top-profile-trigger,.full-topbar button,.full-topbar a) {
+ :is(.full-topbar .top-icon-link,.full-topbar .palace-top-profile-trigger) {
  color:#f2eefc!important;
 }
 .palace-shell.full-palace-shell.nightfall .full-topbar .top-icon-link{
