@@ -42,3 +42,36 @@
 .palace-recovery-panel .palace-recovery-link { display: inline-block; margin-top: 1rem; }
 .palace-recovery-panel [role="alert"] { overflow-wrap: anywhere; line-height: 1.6; }
 @media(max-width:640px) {.palace-recovery-panel{max-width:100%;min-width:0;} .palace-recovery-gate{padding-bottom:clamp(96px,17vh,144px);}}
+
+/* Email-confirmed state: a calmer, centered welcome in all Palace modes. */
+.palace-email-confirmed .palace-recovery-gate {
+  box-sizing: border-box;
+  width: min(100%, 940px);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+  justify-items: center;
+  align-content: center;
+  gap: clamp(18px,3vw,32px);
+  padding: clamp(28px,5vw,56px) clamp(16px,4vw,36px) 110px;
+}
+.palace-email-confirmed .gate-copy { width: min(100%, 680px); text-align: center; }
+.palace-email-confirmed .gate-copy h1 {
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  line-height: 1.1;
+  text-wrap: balance;
+  margin-inline: auto;
+}
+.palace-email-confirmed .gate-copy p { max-width: 56ch; margin-inline: auto; }
+.palace-email-confirmed .palace-recovery-panel {
+  box-sizing: border-box;
+  width: min(100%, 520px);
+  min-width: 0;
+  text-align: center;
+}
+.palace-email-confirmed .palace-recovery-status h2 { font-size: clamp(1.25rem,3vw,1.65rem); }
+.palace-email-confirmed .palace-recovery-link { min-height: 44px; }
+@media (max-width: 640px) {
+  .palace-email-confirmed .palace-recovery-gate { padding-top: 24px; gap: 18px; }
+  .palace-email-confirmed .gate-copy h1 { font-size: clamp(1.9rem, 8vw, 2.6rem); }
+}
