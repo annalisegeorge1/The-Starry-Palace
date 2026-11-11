@@ -31,6 +31,11 @@ describe('Palace welcome image selection',()=>{
   view.unmount();
   expect(revoke).toHaveBeenCalledWith('blob:palace-preview');
  });
+ it('preserves current member artwork until a replacement is selected',()=>{
+  render(<PalaceWelcomeMediaPicker kind="cover" label="Chamber cover" file={null} existingImage="https://example.com/current-cover.webp" onChange={vi.fn()}/>);
+  expect(screen.getByAltText('Current chamber cover preview').getAttribute('src')).toContain('current-cover.webp');
+  expect(screen.getByText('Current image will be kept')).toBeTruthy();
+ });
  it('normalizes and deduplicates fandom interests',()=>{
   expect(palaceWelcomeFandoms('Star Wars,  Doctor Who, Star Wars,  ')).toEqual(['Star Wars','Doctor Who']);
  });
