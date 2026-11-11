@@ -176,3 +176,30 @@
   transition:none!important;
  }
 }
+
+/* Emoji shortcuts inside the touch context menu; reachable without hovering. */
+.palace-chat-actions-menu .palace-chat-actions-reaction-options {
+ display:flex;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:4px;
+ padding:5px 3px 9px;
+ border-bottom:1px solid var(--pc-line,rgba(180,164,213,.25));
+}
+.palace-chat-actions-menu .palace-chat-actions-reaction-options>button {
+ display:grid;
+ place-items:center;
+ width:36px!important;
+ min-width:36px!important;
+ height:36px!important;
+ min-height:36px!important;
+ border:0!important;
+ border-radius:10px!important;
+ background:transparent!important;
+ font-size:21px!important;
+ padding:4px!important;
+}
+.palace-chat-actions-menu .palace-chat-actions-reaction-options>button:hover,
+.palace-chat-actions-menu .palace-chat-actions-reaction-options>button:focus-visible {
+ background:var(--pc-elevated,rgba(140,120,195,.25))!important;
+}
