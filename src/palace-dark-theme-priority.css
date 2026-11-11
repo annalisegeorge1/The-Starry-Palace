@@ -1,0 +1,173 @@
+/* Dark modes take priority over viewer-selected Prism palettes in the global Palace UI.
+   The visited member's expressly chosen Chamber appearance stays inside
+   .public-chamber-appearance; artwork, covers, book pages and illustrations
+   are intentionally excluded from these global corrections. */
+
+.palace-shell.full-palace-shell.nightfall {
+ --appearance-ground:#0b142d!important;
+ --appearance-raised:#17213b!important;
+ --appearance-edge:#465077!important;
+ --appearance-ink:#f4f2ff!important;
+ --appearance-muted:#c6c7e0!important;
+ --appearance-highlight:#30335b!important;
+ --palette-panel-ink:#f4f2ff!important;
+ --palette-ground-ink:#f4f2ff!important;
+ --palette-accent-ink:#fff!important;
+}
+.palace-shell.full-palace-shell.midnight {
+ --appearance-ground:#050506!important;
+ --appearance-raised:#111115!important;
+ --appearance-edge:#38343f!important;
+ --appearance-ink:#f4f1f9!important;
+ --appearance-muted:#c5bfce!important;
+ --appearance-highlight:#25212c!important;
+ --palette-panel-ink:#f4f1f9!important;
+ --palette-ground-ink:#f4f1f9!important;
+ --palette-accent-ink:#f4f1f9!important;
+}
+
+/* Nightfall: blue-black and restrained violet. Never inherit pastel
+   palette surfaces on navigation, toolbar, sidebar, search or overlays. */
+.palace-shell.full-palace-shell.nightfall :is(
+ .full-sidebar,.full-stage,.palace-stage,.palace-main-stage,
+ .full-topbar,.mobile-palace-dock,.mobile-more-sheet,.palace-command
+) {
+ color:#f4f2ff!important;
+ border-color:#455071!important;
+}
+.palace-shell.full-palace-shell.nightfall .full-stage,
+.palace-shell.full-palace-shell.nightfall .palace-stage {
+ background:#0b142d!important;
+ background-image:linear-gradient(145deg,#101a35,#0b142d)!important;
+}
+.palace-shell.full-palace-shell.nightfall :is(.full-sidebar,.mobile-more-sheet,.palace-command){
+ background:#121b34!important;background-image:none!important;
+}
+.palace-shell.full-palace-shell.nightfall :is(.full-topbar,.mobile-palace-dock){
+ background:#121a32!important;background-image:none!important;
+}
+.palace-shell.full-palace-shell.nightfall .full-stage>header.topbar.full-topbar::before{
+ background:#121a32!important;background-image:none!important;
+}
+
+/* Midnight is strict black/charcoal, not blue or purple. */
+.palace-shell.full-palace-shell.midnight .full-stage,
+.palace-shell.full-palace-shell.midnight .palace-stage {
+ background:#050506!important;background-image:linear-gradient(160deg,#08080b,#050506)!important;
+}
+.palace-shell.full-palace-shell.midnight :is(.full-sidebar,.mobile-more-sheet,.palace-command){
+ background:#0c0c0f!important;background-image:none!important;
+ border-color:#33303b!important;
+}
+.palace-shell.full-palace-shell.midnight :is(.full-topbar,.mobile-palace-dock){
+ background:#0e0e11!important;background-image:none!important;
+ border-color:#33303b!important;
+}
+.palace-shell.full-palace-shell.midnight .full-stage>header.topbar.full-topbar::before{
+ background:#0e0e11!important;background-image:none!important;
+}
+
+/* Shared navigation contrast. Palette accent colours must never make
+   important labels nearly invisible on the selected dark appearance. */
+.palace-shell.full-palace-shell:is(.nightfall,.midnight) #palace-sidebar
+ :is(.nav-section-label,.palace-calm-label,.full-subnav>small,.palace-theme-caption){
+ color:#d3cde7!important;opacity:1!important;text-shadow:none!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight) #palace-sidebar
+ :is(.full-nav-room>a,.full-subnav>a,.palace-more-subdoors>a,.palace-more-subdoors>summary) {
+ color:#eeeafb!important;background-image:none!important;text-shadow:none!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight) #palace-sidebar
+ :is(.full-nav-room>a,.full-subnav>a,.palace-more-subdoors>a,.palace-more-subdoors>summary)>span{
+ color:inherit!important;opacity:1!important;
+}
+.palace-shell.full-palace-shell.nightfall #palace-sidebar
+ :is(.full-nav-room>a.active,.full-subnav>a.active,.palace-more-subdoors>a.active){
+ color:#fff!important;background:#343359!important;
+ border-color:#786aaf!important;box-shadow:inset 3px 0 #ad9ce7!important;
+}
+.palace-shell.full-palace-shell.midnight #palace-sidebar
+ :is(.full-nav-room>a.active,.full-subnav>a.active,.palace-more-subdoors>a.active){
+ color:#fff!important;background:#242129!important;
+ border-color:#595264!important;box-shadow:inset 3px 0 #b6a8cc!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight) #palace-sidebar
+ :is(.full-nav-room>a.active,.full-subnav>a.active,.palace-more-subdoors>a.active)>span{
+ color:#fff!important;
+}
+/* Override the older selected-palette button backgrounds in top navigation. */
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ :is(.full-topbar .top-icon-link,.full-topbar .palace-top-profile-trigger,.full-topbar button,.full-topbar a) {
+ color:#f2eefc!important;
+}
+.palace-shell.full-palace-shell.nightfall .full-topbar .top-icon-link{
+ background:#242c48!important;border-color:#65709b!important;
+}
+.palace-shell.full-palace-shell.midnight .full-topbar .top-icon-link{
+ background:#222027!important;border-color:#49434f!important;
+}
+
+/* Account menu is an overlay, not part of the member's custom Chamber.
+   Explicitly style every row; inherited button and link colours from viewer
+   palette and form controls previously resulted in black-on-black. */
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ .full-topbar .palace-account-menu-popover {
+ background:#13131a!important;
+ background-image:none!important;
+ border-color:#605569!important;
+ color:#f6f2ff!important;
+ color-scheme:dark;
+ box-shadow:0 18px 42px rgba(0,0,0,.55)!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ .full-topbar .palace-account-menu-caption {
+ color:#d1c6dd!important;opacity:1!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ .full-topbar .palace-account-menu-popover > a,
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ .full-topbar .palace-account-sign-out {
+ background:transparent!important;
+ color:#f5f0fa!important;
+ border-color:transparent!important;
+ text-shadow:none!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ .full-topbar .palace-account-menu-popover > a:is(:hover,:focus-visible),
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ .full-topbar .palace-account-sign-out:is(:hover,:focus-visible) {
+ background:#34303e!important;color:#fff!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ .full-topbar .palace-account-menu-popover .palace-sign-out-control {
+ border-top-color:#524a5d!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ .full-topbar .palace-account-menu-popover :is(a,button):focus-visible{
+ outline:3px solid #bca8df!important;outline-offset:2px!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ .full-topbar .palace-account-sign-out:disabled {opacity:.6!important;}
+
+/* The search control belongs to the selected global appearance, not Prism. */
+.palace-shell.full-palace-shell.nightfall .full-topbar :is(input[type=search],.palace-global-search){
+ background:#202844!important;color:#f4f0ff!important;border-color:#626c97!important;
+}
+.palace-shell.full-palace-shell.midnight .full-topbar :is(input[type=search],.palace-global-search){
+ background:#1d1b22!important;color:#f4f0ff!important;border-color:#4a4453!important;
+}
+
+/* Do not globally repaint .public-chamber-appearance, .legacy-profile-cover,
+   .member-avatar, illustrated frames, media, the text of reading manuscripts,
+   or imported member skins. Dark modes own the outer shell, not creators' work. */
+@media(forced-colors:active){
+ .palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ .full-topbar .palace-account-menu-popover {
+  background:Canvas!important;color:CanvasText!important;
+  border-color:CanvasText!important;
+ }
+ .palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ .full-topbar .palace-account-menu-popover :is(a,button){
+  background:Canvas!important;color:CanvasText!important;
+ }
+}
