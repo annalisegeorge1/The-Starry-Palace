@@ -67,7 +67,6 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  const[directHistory,setDirectHistory]=useState({roomId:'',items:[],hasOlder:false,loading:false});
  const[drafts,setDrafts]=useState({});
  const[busy,setBusy]=useState(false);
- const[liveStatus,setLiveStatus]=useState('polling');
  const[deviceOnline,setDeviceOnline]=useState(()=>typeof navigator==='undefined'||navigator.onLine!==false);
  useEffect(()=>{
   const onOnline=()=>setDeviceOnline(true);
@@ -191,7 +190,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   return()=>{document.removeEventListener('keydown',onKey);window.clearTimeout(timer)};
  },[actionMenu]);
 
- useEffect(()=>{setOpen(Boolean(workspace));setThreadOpen(Boolean(initialRoom?.roomId));setTab(initialRoom?.tab==='groups'?'groups':'direct');setLoadingDirect(true);setDirect(null);setGroupData({groups:[],invitations:[]});setSelectedDirect(initialRoom?.tab==='direct'?initialRoom.roomId||'':'');setSelectedGroup(initialRoom?.tab==='groups'?initialRoom.roomId||'':'');setGroupMessages({chatId:'',items:[]});setDirectHistory({roomId:'',items:[],hasOlder:false,loading:false});setNewWhileAway(false);setLiveStatus('polling');lastAcknowledgedRef.current={roomId:'',messageId:''};setReplyTarget(null);setStorySharing(false);setShowCirclePrompts(false);setPinnedPreview({chatId:'',messageId:'',message:null});setDrafts({});setError('');setNotice('');setCreating(false);setManaging(false);setSearch('');setUnreadOnly(false);setStarredOnly(false);setShowArchived(false);setMessageSearch('');setSearchWithinThread(false);setShowSharedMedia(false);setMediaFilter('all');setHistoryLoading(false);setHasOlder(false);historyScrollRef.current=null;directScrollRef.current=null;exhaustedHistoryRef.current.clear()},[userId,workspace]);
+ useEffect(()=>{setOpen(Boolean(workspace));setThreadOpen(Boolean(initialRoom?.roomId));setTab(initialRoom?.tab==='groups'?'groups':'direct');setLoadingDirect(true);setDirect(null);setGroupData({groups:[],invitations:[]});setSelectedDirect(initialRoom?.tab==='direct'?initialRoom.roomId||'':'');setSelectedGroup(initialRoom?.tab==='groups'?initialRoom.roomId||'':'');setGroupMessages({chatId:'',items:[]});setDirectHistory({roomId:'',items:[],hasOlder:false,loading:false});setNewWhileAway(false);lastAcknowledgedRef.current={roomId:'',messageId:''};setReplyTarget(null);setStorySharing(false);setShowCirclePrompts(false);setPinnedPreview({chatId:'',messageId:'',message:null});setDrafts({});setError('');setNotice('');setCreating(false);setManaging(false);setSearch('');setUnreadOnly(false);setStarredOnly(false);setShowArchived(false);setMessageSearch('');setSearchWithinThread(false);setShowSharedMedia(false);setMediaFilter('all');setHistoryLoading(false);setHasOlder(false);historyScrollRef.current=null;directScrollRef.current=null;exhaustedHistoryRef.current.clear()},[userId,workspace]);
  useEffect(()=>{
   if(!userId)return;
   let alive=true;
@@ -247,11 +246,10 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
  // RLS-protected live events wake a fresh fetch. Polling remains a fallback
  // when a connection is lost or an older client cannot subscribe.
  useEffect(()=>{
-  if(!open||!roomId||!userId){setLiveStatus('polling');return}
+  if(!open||!roomId||!userId)return
   let active=true;
   let fetching=false;
   let repeat=false;
-  setLiveStatus('connecting');
   const refresh=async()=>{
    if(!active||document.visibilityState==='hidden')return;
    if(fetching){repeat=true;return}
@@ -264,7 +262,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
      const letters=await getLetters(userId);
      if(active)setDirect(letters);
     }
-   }catch{if(active)setLiveStatus('polling')}
+   }catch{/* Normal refresh fallback remains available if the network fails. */}
    finally{
     fetching=false;
     if(active&&repeat){repeat=false;refresh()}
@@ -274,8 +272,8 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
    userId,kind:tab,roomId,onChange:refresh,
    onStatus:status=>{
     if(!active)return;
-    if(status==='SUBSCRIBED'){setLiveStatus('live');refresh()}
-    else if(['CHANNEL_ERROR','TIMED_OUT','CLOSED'].includes(status))setLiveStatus('polling');
+    if(status==='SUBSCRIBED')refresh();
+    // Connection errors remain handled by existing refresh fallback; no status label is shown.
    }
   });
   const onVisibility=()=>{if(document.visibilityState==='visible')refresh()};
@@ -723,7 +721,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
     {active&&threadOpen&&<div className="palace-chat-thread-identity" data-correspondent-appearance={correspondentAppearance?.kind} style={correspondentAppearance?.style}>
      <button type="button" className="palace-chat-header-back" aria-label="Back to inbox" onClick={()=>{setActionMenu(null);setThreadOpen(false)}}>←</button>
      {tab==='direct'?<MemberAvatar className="palace-chat-header-avatar" profile={activeDirect?.correspondent}/>:<span className="palace-chat-header-avatar" aria-hidden="true">✧</span>}
-     <span className="palace-chat-header-person"><strong>{openedRoomName}</strong><small><i aria-hidden="true" className={!deviceOnline?'is-offline':liveStatus==='live'?'is-live':''}/>{!deviceOnline?'Offline':liveStatus==='live'?'Live updates':'Refreshes automatically'}</small></span>
+     <span className="palace-chat-header-person"><strong>{openedRoomName}</strong>{!deviceOnline&&<small role="status" className="palace-chat-connection is-offline">Offline</small>}</span>
      {tab==='groups'&&<button type="button" className="palace-chat-header-group-settings" aria-label="Group settings" aria-expanded={managing} onClick={()=>{setManaging(v=>!v);setIdentity({title:activeGroup.title,description:activeGroup.description||'',colorKey:activeGroup.colorKey||'moonlit'})}}><PalaceIcon name="settings"/></button>}
     </div>}
     <details className="palace-chat-help"><summary aria-label="How Palace Chat works" title="Chat tips and shortcuts">?</summary><div className="palace-chat-help-card"><strong>Palace Chat guide</strong><p>Choose a conversation to read and reply. Use <b>Direct</b> for one-to-one messages, or <b>Groups</b> for private circles.</p><p><b>Message options:</b> press and hold a bubble (or right-click it). You can copy, edit your own message, reply in groups, and pin messages when hosting a group.</p><p><b>Writing:</b> Ctrl/⌘ + Enter sends; Enter starts a new line. Use Emoji, GIF or Photo beside your message.</p><small>Messages stay within the conversation you open.</small></div></details>
@@ -787,7 +785,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
       groupRows.map(g=><button type="button" key={g.id} aria-label={g.title} onClick={()=>{setActionMenu(null);setSelectedGroup(g.id);setThreadOpen(true);setManaging(false);setIdentity({title:g.title,description:g.description||'',colorKey:g.colorKey||'moonlit'})}} aria-pressed={activeGroup?.id===g.id} title={g.description||g.title}><span className="palace-chat-room-symbol" aria-hidden="true">✧</span><span className="palace-chat-list-details"><span className="palace-chat-room-name">{g.title}</span><small className="palace-chat-list-preview">{g.description||'Private group conversation'}</small></span><span className="palace-chat-list-meta">{palaceChatUnreadGroup(g)&&<span className="palace-chat-unread-spark" aria-label="Unread messages">●</span>}{g.muted&&<span className="palace-chat-muted-symbol" title="Muted" aria-label="Muted">◌</span>}</span></button>)}
      {((tab==='groups'&&!groupRows.length)||(tab==='direct'&&!visibleDirect.length))&&(search||unreadOnly||starredOnly)&&<span className="palace-chat-filter-empty">No matching conversations. Clear filters to see your other rooms.</span>}
     </div>
-    {active?<><div className="palace-chat-correspondent"><button className="palace-chat-thread-back" type="button" onClick={()=>{setActionMenu(null);setThreadOpen(false)}} aria-label="Back to conversations">← Conversations</button><div className="palace-chat-person">{tab==='direct'?<MemberAvatar className="palace-chat-person-avatar" profile={activeDirect?.correspondent}/>:<span className="palace-chat-person-avatar" aria-hidden="true">✧</span>}<div className="palace-chat-person-copy"><strong>{openedRoomName}</strong><small>{tab==='groups'?activeGroup.members.length+' members · Invitation-only group':'Private correspondence · Palace boundaries apply'}</small><small className="palace-chat-connection" role="status"><i aria-hidden="true" className={!deviceOnline?'is-offline':liveStatus==='live'?'is-live':''}/>{!deviceOnline?'Offline':liveStatus==='live'?'Live updates':'Refreshes automatically'}</small>{tab==='groups'&&activeGroup.description&&<p className="palace-chat-circle-description">{activeGroup.description}</p>}</div></div>{tab==='groups'&&<button type="button" aria-expanded={managing} onClick={()=>{setManaging(v=>!v);setIdentity({title:activeGroup.title,description:activeGroup.description||'',colorKey:activeGroup.colorKey||'moonlit'})}}>Members & settings ⚙</button>}</div>
+    {active?<><div className="palace-chat-correspondent"><button className="palace-chat-thread-back" type="button" onClick={()=>{setActionMenu(null);setThreadOpen(false)}} aria-label="Back to conversations">← Conversations</button><div className="palace-chat-person">{tab==='direct'?<MemberAvatar className="palace-chat-person-avatar" profile={activeDirect?.correspondent}/>:<span className="palace-chat-person-avatar" aria-hidden="true">✧</span>}<div className="palace-chat-person-copy"><strong>{openedRoomName}</strong><small>{tab==='groups'?activeGroup.members.length+' members · Invitation-only group':'Private correspondence · Palace boundaries apply'}</small>{tab==='groups'&&activeGroup.description&&<p className="palace-chat-circle-description">{activeGroup.description}</p>}</div></div>{tab==='groups'&&<button type="button" aria-expanded={managing} onClick={()=>{setManaging(v=>!v);setIdentity({title:activeGroup.title,description:activeGroup.description||'',colorKey:activeGroup.colorKey||'moonlit'})}}>Members & settings ⚙</button>}</div>
  {tab==='direct'&&activeDirect&&safetyOpen&&<section className="palace-chat-safety" aria-label="Private conversation safety">
   <header><strong>Safety & boundaries</strong><button type="button" onClick={()=>setSafetyOpen(false)} aria-label="Close safety tools">×</button></header>
   <p>Blocking limits contact. Reporting sends a confidential notice for moderator review. Reports do not automatically remove messages.</p>
