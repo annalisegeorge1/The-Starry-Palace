@@ -852,7 +852,6 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
        <small className="palace-chat-timestamp">{dateOf(m.created_at)}</small>
        {PALACE_MESSAGE_REACTIONS_ENABLED&&<PalaceChatReactionBar message={m} rows={reactionRows.roomId===roomId?reactionRows.rows:[]} userId={userId} disabled={busy||(tab==='direct'&&boundary.blocked)} onReact={reactToMessage}/>}
        <button type="button" className="palace-chat-message-options-trigger" aria-label="Message options" title="Message actions" aria-haspopup="menu" aria-expanded={actionMenu?.message.id===m.id} onClick={e=>{e.stopPropagation();openMessageActions(m,e.currentTarget)}}><span aria-hidden="true">⋯</span></button>
-      }
       </div></React.Fragment>):<p className="palace-chat-empty">Nothing written here yet. Begin with a hello. ✦</p>}
      </div>
      {newWhileAway&&messages.length>0&&<button type="button" className="palace-chat-jump-latest" onClick={jumpToLatest}>New messages · Jump to latest ↓</button>}
