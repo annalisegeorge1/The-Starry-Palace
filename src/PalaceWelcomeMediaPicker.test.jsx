@@ -31,6 +31,17 @@ describe('Palace welcome image selection',()=>{
   view.unmount();
   expect(revoke).toHaveBeenCalledWith('blob:palace-preview');
  });
+ it('accepts reselecting the same image after clearing the input',()=>{
+  const onChange=vi.fn();
+  const file=new File(['portrait'],'portrait.png',{type:'image/png'});
+  render(<PalaceWelcomeMediaPicker kind="avatar" label="Avatar" file={null} onChange={onChange}/>);
+  const input=screen.getByLabelText('Upload avatar image');
+  fireEvent.change(input,{target:{files:[file]}});
+  expect(onChange).toHaveBeenCalledWith(file);
+  expect(input.value).toBe('');
+  fireEvent.change(input,{target:{files:[file]}});
+  expect(onChange).toHaveBeenCalledTimes(2);
+ });
  it('preserves current member artwork until a replacement is selected',()=>{
   render(<PalaceWelcomeMediaPicker kind="cover" label="Chamber cover" file={null} existingImage="https://example.com/current-cover.webp" onChange={vi.fn()}/>);
   expect(screen.getByAltText('Current chamber cover preview').getAttribute('src')).toContain('current-cover.webp');
