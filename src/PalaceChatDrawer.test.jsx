@@ -516,6 +516,8 @@ describe('Palace quick chat',()=>{
   await act(async()=>{directConfig.onStatus('SUBSCRIBED')});
   expect(screen.queryByText('Live updates')).toBeNull();
   expect(screen.queryByText('Refreshes automatically')).toBeNull();
+  // The compact header belongs to an open thread, not to the inbox list.
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
   act(()=>window.dispatchEvent(new Event('offline')));
   expect(screen.getAllByText('Offline')).toHaveLength(1);
   act(()=>window.dispatchEvent(new Event('online')));
