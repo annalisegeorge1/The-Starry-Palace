@@ -112,3 +112,110 @@
   .palace-welcome-page .welcome-media-grid {grid-template-columns:minmax(0,1fr);}
   .palace-welcome-page .welcome-media-grid .palace-welcome-upload {min-height:128px;padding:16px;}
 }
+
+/* Palace onboarding: complete single-page identity, media and discovery experience. */
+.palace-welcome-page .palace-welcome-hero {overflow-wrap:anywhere;}
+.palace-welcome-page .palace-welcome-hero h1 {font-size:clamp(2.05rem,5.5vw,4.4rem);line-height:1.1;text-wrap:balance;}
+.palace-welcome-page .palace-welcome-jump-links {
+ display:flex; flex-wrap:wrap; align-items:center; gap:10px;
+ padding-top:20px; margin-top:10px; border-top:1px solid rgba(171,150,223,.22);
+}
+.palace-welcome-page .palace-welcome-jump-links a {
+ display:inline-flex; align-items:center; padding:10px 14px; min-height:44px;
+ color:var(--palace-text,#f2edff); text-decoration:none; font-size:.86rem;
+ border-radius:999px; border:1px solid rgba(168,151,227,.5);
+ background:rgba(143,118,203,.12); font-weight:700;
+}
+.palace-welcome-page .palace-welcome-jump-links a:hover {border-color:#bea4f5;background:rgba(146,116,223,.22);}
+.palace-welcome-page .palace-welcome-jump-links a:focus-visible,
+.palace-welcome-page .welcome-choice-grid button:focus-visible,
+.palace-welcome-page .palace-welcome-media-choose:focus-within,
+.palace-welcome-page .palace-welcome-media-remove:focus-visible {
+ outline:3px solid #c4a9ff;outline-offset:3px;
+}
+.palace-welcome-page .welcome-card[id] {scroll-margin-top:110px;}
+.palace-welcome-page .welcome-media-grid {
+ grid-column:1/-1; width:100%; max-width:100%; box-sizing:border-box;
+ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(14px,2vw,23px);
+}
+.palace-welcome-page .welcome-media-grid .palace-welcome-media-card {
+ min-width:0; display:grid; grid-template-columns:100px minmax(0,1fr);
+ align-items:center; gap:10px 17px; padding:18px; border-radius:18px;
+ border:1px solid rgba(162,142,226,.58);
+ background:linear-gradient(125deg,rgba(102,89,175,.17),rgba(18,25,64,.17));
+ box-sizing:border-box;
+}
+.palace-welcome-page .palace-welcome-media-copy {grid-column:1/-1;display:grid;gap:5px}
+.palace-welcome-page .palace-welcome-media-copy strong {font-size:1.03rem;line-height:1.3}
+.palace-welcome-page .palace-welcome-media-copy small {opacity:.85;font-size:.8rem;line-height:1.45}
+.palace-welcome-page .palace-welcome-media-preview {
+ grid-row:2/span 3; width:100px; height:100px; border-radius:14px;
+ overflow:hidden; display:grid;place-items:center; border:1px solid rgba(173,161,228,.5);
+ background:rgba(9,14,40,.35); color:#c8b9ff; font-size:2.5rem;
+}
+.palace-welcome-page .palace-welcome-media-card.portrait .palace-welcome-media-preview {border-radius:50%;}
+.palace-welcome-page .palace-welcome-media-preview img {display:block;width:100%;height:100%;object-fit:cover;}
+.palace-welcome-page .palace-welcome-media-choose {
+ grid-column:2;position:relative;display:flex;align-items:center;justify-content:center;
+ box-sizing:border-box; min-height:46px; padding:9px 12px; border-radius:10px;
+ border:1px solid rgba(184,164,236,.8); cursor:pointer;
+ background:rgba(114,87,187,.32);font-weight:750;text-align:center;line-height:1.35;
+}
+.palace-welcome-page .palace-welcome-media-choose:hover {background:rgba(131,98,214,.45);}
+.palace-welcome-page .palace-welcome-media-choose input[type=file] {
+ position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;
+}
+.palace-welcome-page .palace-welcome-media-choose:has(input:disabled) {opacity:.6;cursor:wait;}
+.palace-welcome-page .palace-welcome-media-filename {
+ grid-column:2;margin:0;font-size:.78rem;line-height:1.4;
+ overflow-wrap:anywhere; opacity:.9;
+}
+.palace-welcome-page .palace-welcome-media-remove {
+ grid-column:2;background:transparent;border:1px solid rgba(195,175,234,.5);
+ border-radius:9px;min-height:38px; padding:7px 10px;color:inherit;
+ text-decoration:underline;cursor:pointer;text-underline-offset:3px;
+}
+.palace-welcome-page .palace-welcome-media-error {grid-column:1/-1;margin:0;color:#ffd2d9;font-weight:700;line-height:1.5}
+.palace-welcome-page .palace-welcome-selection-count {
+ font-size:.82rem; opacity:.83; margin:0 0 10px; font-weight:650;
+}
+.palace-welcome-page .welcome-choice-grid button.selected,
+.palace-welcome-page .welcome-choice-grid button[aria-pressed=true] {
+ color:#fff!important;background:#51418e!important;border:2px solid #c3a9ff!important;
+ box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),0 0 0 2px rgba(138,113,211,.16);
+ font-weight:800;
+}
+.palace-welcome-page .welcome-choice-grid button[aria-pressed=true]::before {content:'✓ ';font-weight:900}
+.palace-shell.daylight .palace-welcome-page .palace-welcome-jump-links a {
+ color:#352456;background:#f2ecfc;border-color:#957bb9;
+}
+.palace-shell.daylight .palace-welcome-page .palace-welcome-media-card {
+ background:#f5f0fc;color:#302448;border-color:#a995c6;
+}
+.palace-shell.daylight .palace-welcome-page .palace-welcome-media-preview {
+ background:#ece3f9;color:#5c408d;border-color:#ac97c8;
+}
+.palace-shell.daylight .palace-welcome-page .palace-welcome-media-choose {
+ color:#302448;background:#e6d9fb;border-color:#8b69b6;
+}
+.palace-shell.daylight .palace-welcome-page .palace-welcome-media-remove {color:#442b69;border-color:#a18cba;}
+.palace-shell.daylight .palace-welcome-page .palace-welcome-media-error {color:#8f2140;}
+.palace-shell.daylight .palace-welcome-page .welcome-choice-grid button[aria-pressed=true] {
+ color:#fff!important;background:#654592!important;border-color:#624085!important;
+}
+@media(max-width:850px) {
+ .palace-welcome-page .welcome-media-grid {grid-template-columns:1fr;}
+}
+@media(max-width:620px) {
+ .palace-welcome-page .palace-welcome-jump-links {display:grid;grid-template-columns:1fr;gap:8px;}
+ .palace-welcome-page .palace-welcome-jump-links a {justify-content:center;}
+ .palace-welcome-page .welcome-media-grid .palace-welcome-media-card {padding:14px;grid-template-columns:76px minmax(0,1fr);gap:8px 11px;}
+ .palace-welcome-page .palace-welcome-media-preview {width:76px;height:76px;}
+ .palace-welcome-page .palace-welcome-media-choose {font-size:.83rem;}
+ .palace-welcome-page .welcome-actions {display:flex;flex-direction:column;align-items:stretch;gap:12px;}
+ .palace-welcome-page .welcome-actions button {width:100%;min-height:48px;}
+}
+@media(prefers-reduced-motion:reduce) {
+ .palace-welcome-page .palace-welcome-jump-links a,
+ .palace-welcome-page .palace-welcome-media-choose {transition:none;}
+}
