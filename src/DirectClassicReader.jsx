@@ -9,19 +9,25 @@ import './direct-classic-reader.css';
 /** Standalone reading doorway: no archive catalogue, modal, or extra title pages. */
 export default function DirectClassicReader({Frame}){
  const {slug}=useParams();
+ return <ClassicEdition key={slug} slug={slug} Frame={Frame}/>;
+}
+function ClassicEdition({slug,Frame}){
  const [state,setState]=useState({slug:null,status:'loading',book:null,error:''});
- const [ageConfirmed,setAgeConfirmed]=useState(false);
+ const [attempt,setAttempt]=useState(0);
+ const [adultRequest,setAdultRequest]=useState(null);
+ const ageConfirmed=state.slug===slug && state.ageConfirmed;
  useEffect(()=>{
   let active=true;
   setState({slug,status:'loading',book:null,error:''});
-  setAgeConfirmed(false);
-  openHostedClassic(slug).then(book=>{
-   if(active)setState({slug,status:book?'ready':'missing',book,error:''});
-  }).catch(error=>{
-   if(active)setState({slug,status:'error',book:null,error:error?.message||'This book could not be opened.'});
+  const adultRead=adultRequest?.slug===slug && adultRequest.attempt===attempt;
+  const request=adultRead?openHostedClassic(slug,18):openHostedClassic(slug);
+  request.then(book=>{
+   if(active)setState({slug,status:(adultRead?book?.text?.body_text:book)?'ready':'missing',book,ageConfirmed:adultRead});
+  }).catch(()=>{
+   if(active)setState({slug,status:'error',book:null});
   });
   return()=>{active=false};
- },[slug]);
+ },[slug,attempt,adultRequest]);
  const current=state.slug===slug?state:{status:'loading',book:null,error:''};
  const fanwork=isHostedFanfiction(current.book?.record);
  const adultEdition=Number(current.book?.record?.minimum_reader_age)>=18;
@@ -29,20 +35,13 @@ export default function DirectClassicReader({Frame}){
   <nav className="palace-direct-classic-nav" aria-label="Reading navigation"><Link to={fanwork?'/reading?section=fanfiction':'/lost-works'}><span className="palace-direct-classic-back-icon" aria-hidden="true">‹</span><span>{fanwork?'Back to Fanfiction':'Back to Classic archive'}</span></Link></nav>
   {current.status==='loading'&&<div className="palace-direct-classic-status" role="status"><span aria-hidden="true">☾</span><h1>Opening your book…</h1><p>Preparing the hosted edition and its original chapters.</p></div>}
   {current.status==='missing'&&<div className="palace-direct-classic-status" role="status"><h1>This hosted edition isn't available to read here.</h1><p>It may be unavailable or awaiting publication and rights review.</p><Link to="/reading?section=fanfiction">Explore available fanfiction →</Link></div>}
-  {current.status==='error'&&<div className="palace-direct-classic-status" role="alert"><h1>We couldn't open this edition.</h1><p>{current.error}</p><Link to="/reading">Return to Reading Rooms →</Link></div>}
+  {current.status==='error'&&<div className="palace-direct-classic-status" role="alert"><h1>We couldn't open this edition.</h1><p>The Palace could not load this edition. Try again, or choose another book in Reading Rooms.</p><button type="button" onClick={()=>setAttempt(value=>value+1)}>Try again</button> <Link to="/reading">Return to Reading Rooms →</Link></div>}
   {current.status==='ready'&&current.book&&adultEdition&&!ageConfirmed&&<div className="palace-direct-classic-status palace-direct-classic-age-card" role="region" aria-label="Adult reading confirmation">
   <h1>Confirm your age before reading</h1>
   <p>This work is rated {current.book.record.rating==='explicit'?'Explicit':'Mature'} for its content. This rating does not refer to any character's identity or LGBTQ+ themes.</p>
   <p>You must be at least 18 to continue. This is a self-declaration, not independent age verification.</p>
   <div className="palace-direct-classic-age-actions">
-  <button className="palace-direct-classic-confirm" type="button" onClick={async()=>{
-    setState({slug,status:'loading',book:null,error:''});
-    try{
-      const next=await openHostedClassic(slug,18);
-      setAgeConfirmed(Boolean(next?.text?.body_text));
-      setState({slug,status:next?.text?.body_text?'ready':'missing',book:next,error:''});
-    }catch(error){setState({slug,status:'error',book:null,error:error?.message||'This book could not be opened.'});}
-  }}>I confirm I am 18 or older</button>
+  <button className="palace-direct-classic-confirm" type="button" onClick={()=>setAdultRequest({slug,attempt})}>I confirm I am 18 or older</button>
   <Link className="palace-direct-classic-underage" to="/reading">I am under 18 · Return to Reading Rooms</Link>
   </div>
  </div>}
