@@ -30,4 +30,4 @@ jobs:
           npm run dev -- --host 127.0.0.1 --port 4173 --strictPort >/tmp/writer-vite.log 2>&1 &
           trap 'kill $! || true' EXIT
           curl --retry 15 --retry-connrefused --retry-delay 1 --fail -s http://127.0.0.1:4173/tests/browser/writing.html >/dev/null
-          python tests/browser/writing_conflict.py
+          pg_virtualenv bash -eu -c 'createdb palace_writer_fixture && python tests/browser/writing_conflict.py'

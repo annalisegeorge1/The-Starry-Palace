@@ -1,5 +1,6 @@
 """Two isolated browser contexts, real editor and client, synthetic REST responses only."""
 import re
+import subprocess
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
@@ -11,6 +12,17 @@ checkpoint = dict(id="s1", chapter_id="c1", title="Checkpoint", label="Before ed
                   body_html="Checkpoint text", revision_note="", word_count=2, created_at=chapter["updated_at"])
 reads = []
 writes = []
+reject_write = False
+
+def fixture_sql(statement, **values):
+    args = ["psql", "-XAtq", "-d", "palace_writer_fixture", "-v", "ON_ERROR_STOP=1"]
+    for name, value in values.items():
+        args.extend(["-v", f"{name}={value}"])
+    return subprocess.run(args, input=statement, text=True, check=True, capture_output=True).stdout.strip()
+
+fixture_sql("CREATE TABLE chapters (id text PRIMARY KEY, body_html text NOT NULL, updated_at timestamptz NOT NULL);")
+fixture_sql("INSERT INTO chapters VALUES (:'id', :'body', :'stamp');",
+            id=chapter["id"], body=chapter["body_html"], stamp=chapter["updated_at"])
 
 def api(route):
     request = route.request
@@ -25,7 +37,16 @@ def api(route):
         if request.method == "PATCH":
             expected = query.get("updated_at", [None])[0]
             assert expected is not None, "Missing cloud version predicate"
-            matches = (expected == "eq." + chapter["updated_at"] and query.get("id") == ["eq.c1"])
+            if reject_write:
+                route.fulfill(status=400, json={"message":"Simulated save failure"})
+                return
+            assert query["id"] == ["eq.c1"] and expected.startswith("eq.")
+            patch = request.post_data_json
+            result = fixture_sql(
+                "UPDATE chapters SET body_html=:'body', updated_at=:'stamp' "
+                "WHERE id=:'id' AND updated_at=:'previous'::timestamptz RETURNING id;",
+                body=patch["body_html"], stamp=patch["updated_at"], id=query["id"][0][3:], previous=expected[3:])
+            matches = result == "c1"
             writes.append(matches)
             if matches:
                 chapter.update(request.post_data_json)
@@ -81,4 +102,18 @@ with sync_playwright() as playwright:
     restore.click()
     expect(a).to_have_text("Checkpoint text")
     assert "Cloud version saved by A" in chapter["body_html"]
+    expect(first.get_by_role("button", name="Save this chapter now")).to_be_visible()
+    first.get_by_role("button", name="Save this chapter now").click()
+    expect(first.locator('.writer-toolbar-save-state')).to_contain_text("Saved to Palace")
+    first.reload()
+    expect(a).to_have_text("Checkpoint text")
+    reject_write = True
+    a.fill("Draft kept during a failed request")
+    expect(first.locator('.writer-toolbar-save-state')).to_contain_text("Cloud save failed")
+    expect(a).to_have_text("Draft kept during a failed request")
+    assert fixture_sql("SELECT body_html FROM chapters WHERE id='c1'") == "Checkpoint text"
+    reject_write = False
+    first.get_by_role("button", name="Save this chapter now").click()
+    expect(first.locator('.writer-toolbar-save-state')).to_contain_text("Saved to Palace")
+    assert "Draft kept during a failed request" in fixture_sql("SELECT body_html FROM chapters WHERE id='c1'")
     browser.close()
