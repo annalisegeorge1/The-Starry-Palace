@@ -47,12 +47,12 @@ describe('Palace quick chat',()=>{
   mount();
   fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
   fireEvent.click(await screen.findByRole('button',{name:'River'}));
-  expect(screen.getByRole('button',{name:'Search messages in this conversation'})).toBeTruthy();
+  expect(screen.getByRole('button',{name:'Open header search'})).toBeTruthy();
   expect(screen.queryByLabelText('Find in loaded messages')).toBeNull();
-  const search=screen.getByRole('button',{name:'Search messages in this conversation'});
+  const search=screen.getByRole('button',{name:'Open header search'});
   fireEvent.click(search);
   expect(screen.getByLabelText('Find in loaded messages')).toBeTruthy();
-  fireEvent.click(screen.getByRole('button',{name:'Close message search'}));
+  fireEvent.click(screen.getByRole('button',{name:'Close header search'}));
   expect(screen.queryByLabelText('Find in loaded messages')).toBeNull();
   expect(document.querySelector('.palace-chat-advanced-controls.is-thread-hidden')).toBeTruthy();
  });
