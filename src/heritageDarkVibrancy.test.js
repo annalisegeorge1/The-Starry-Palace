@@ -25,7 +25,7 @@ describe('vivid event cards in the dark Palace themes',()=>{
  });
  it('gives every heritage theme an opaque, distinct and saturated gradient',()=>{
   for(const name of themeTokens)expect(css).toContain('.heritage-card.heritage-theme-'+name);
-  const gradientDeclarations=[...css.matchAll(/--holiday-wash:linear-gradient\\([\\s\\S]*?\\);/g)].map(m=>m[0]);
+  const gradientDeclarations=[...css.matchAll(/--holiday-wash:linear-gradient\([\s\S]*?\);/g)].map(m=>m[0]);
   expect(gradientDeclarations).toHaveLength(themeTokens.length);
   expect(new Set(gradientDeclarations).size).toBe(themeTokens.length);
   // With nearly-white body copy, even the brightest gradient stop must meet WCAG AA.
