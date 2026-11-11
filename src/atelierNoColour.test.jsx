@@ -22,3 +22,18 @@ it('previews No colour before applying and retains the ornament and gallery sett
  await waitFor(()=>expect(onSaved).toHaveBeenCalledWith(updated));
  expect(applyAtelierColour).toHaveBeenCalledWith('none','soft','harmony','midnight','stars','classic');
 });
+
+it('defaults the Atelier to No colour without overriding intentionally worn palettes',async()=>{
+ const undecorated={user_id:'new-member',backdrop:'midnight',prism_palette:'midnight',prism_colour_chosen:false,ornament:'stars',gallery_layout:'classic',
+  prism_catalogue:[{slug:'midnight',name:'Midnight',primary:'#14182d',secondary:'#262848',accent:'#a6b4ea',unlocked:true}]};
+ getPrismState.mockResolvedValue(undecorated);
+ const view=render(<MemberChamberDecor decor={undecorated} own onSaved={vi.fn()}/>);
+ fireEvent.click(screen.getByRole('button',{name:'Open Prism Atelier'}));
+ expect(screen.getByRole('button',{name:/No colour.*Original Palace theme/}).getAttribute('aria-pressed')).toBe('true');
+ expect(screen.getByText(/This is the default until you choose a colour/)).toBeTruthy();
+ view.unmount();
+ const chosen={...undecorated,prism_colour_chosen:true};
+ render(<MemberChamberDecor decor={chosen} own onSaved={vi.fn()}/>);
+ fireEvent.click(screen.getByRole('button',{name:'Open Prism Atelier'}));
+ expect(screen.getByRole('button',{name:/No colour.*Original Palace theme/}).getAttribute('aria-pressed')).toBe('false');
+});
