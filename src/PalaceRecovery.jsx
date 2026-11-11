@@ -169,9 +169,10 @@ export function PalaceEmailAction({Frame}) {
   }
 
   const actionInfo=action ? ACTIONS[action.intent || action.type] : null;
-  return <AuthRoom Frame={Frame}
-    title={mode==='password'?'Choose a new password.':mode==='updated'?'Your Palace key is renewed.':(actionInfo?.title || 'This Palace link cannot be opened.')}
-    subtitle={mode==='updated'?'Your password was changed. Sign in again with your new password.':(actionInfo?.detail || 'The link is incomplete or invalid. Request a fresh one from The Starry Palace.')}>
+  const isConfirmedEmail=mode==='done' && action?.type==='email' && !action?.intent;
+  return <div className={isConfirmedEmail?'palace-email-confirmed':''}><AuthRoom Frame={Frame}
+    title={isConfirmedEmail?'Your place among the stars is secured.':mode==='password'?'Choose a new password.':mode==='updated'?'Your Palace key is renewed.':(actionInfo?.title || 'This Palace link cannot be opened.')}
+    subtitle={isConfirmedEmail?'Your email is confirmed. Welcome home to The Starry Palace.':mode==='updated'?'Your password was changed. Sign in again with your new password.':(actionInfo?.detail || 'The link is incomplete or invalid. Request a fresh one from The Starry Palace.')}>
     {!action && <p role="alert">This link is missing its secure verification information.</p>}
     {mode==='ready' && action && <>
       <p className="palace-recovery-hint">For your security, this one-time link is only used when you press the button below.</p>
@@ -179,7 +180,7 @@ export function PalaceEmailAction({Frame}) {
     </>}
     {mode==='verifying' && <p role="status">Verifying your one-time Palace link…</p>}
     {mode==='done' && <div role="status" className="palace-recovery-status">
-      <h2>All set</h2><p>{actionInfo.success}</p>
+      <h2>{isConfirmedEmail?'Welcome to the Palace':'All set'}</h2><p>{actionInfo.success}</p>
       <Link className="button palace-recovery-link" to="/chamber">Continue to your chamber</Link>
     </div>}
     {(mode==='password'||mode==='updating') && <form onSubmit={updatePassword}>
@@ -199,5 +200,5 @@ export function PalaceEmailAction({Frame}) {
     {(mode==='failed'||!action) && <p className="palace-recovery-back"><Link to="/auth/forgot-password">Request a new recovery link</Link></p>}
     {message && <p role="alert" className="palace-auth-message">{message}</p>}
     {mode!=='updated' && <p className="palace-recovery-back"><Link to="/login">Return to the Palace gates</Link></p>}
-  </AuthRoom>;
+  </AuthRoom></div>;
 }
