@@ -1,0 +1,171 @@
+/* Heritage calendar: vivid artwork-style cards in Nightfall and Midnight.
+   The overall Palace chrome stays dark. Festival dots/legend, actual observance
+   content, user artwork, and imported skins are intentionally untouched.
+   Legacy theme washes were translucent; against a black page those looked
+   grey and muddy. Opaque jewel-tone gradients maintain the event identity. */
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card {
+ --heritage-night-veil:linear-gradient(180deg,rgba(6,8,23,.05),rgba(6,8,23,.10));
+ background-color:#1b2744!important;
+ background-image:var(--heritage-night-veil),var(--holiday-wash)!important;
+ color:#fff9ff!important;
+ border:1px solid rgba(204,181,246,.5)!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 12px 32px rgba(3,6,20,.24)!important;
+ filter:none!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.midnight
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card {
+ --heritage-night-veil:linear-gradient(180deg,rgba(4,4,8,.11),rgba(4,4,8,.18));
+ border-color:rgba(197,167,231,.42)!important;
+}
+/* Text stays light and legible regardless of the selected festival palette. */
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card :is(
+ h2,p,small,blockquote,.heritage-context,.heritage-month,.heritage-date strong
+ ) {
+ color:#fff9ff!important;
+ text-shadow:0 1px 2px rgba(8,9,24,.22)!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card .heritage-date {
+ background:transparent!important;
+ box-shadow:none!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card :is(button,a):focus-visible {
+ outline:3px solid #ffd8f4!important;
+ outline-offset:3px!important;
+}
+/* Distinct saturated, *opaque* washes by actual content theme. These tokens
+   are applied to event cards only; calendar day dots and legends are separate. */
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card.heritage-theme-winter {
+ --holiday-wash:linear-gradient(120deg,#155c60,#316c80 53%,#814469);
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card.heritage-theme-spring {
+ --holiday-wash:linear-gradient(120deg,#6d428b,#327a7a 55%,#94557f);
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card.heritage-theme-carnival {
+ --holiday-wash:linear-gradient(120deg,#763078,#156f88 55%,#a45649);
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card.heritage-theme-lamplight {
+ --holiday-wash:linear-gradient(120deg,#704199,#975b4c 55%,#90436c);
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card.heritage-theme-crescent {
+ --holiday-wash:linear-gradient(120deg,#156b74,#375681 55%,#594e91);
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card.heritage-theme-lunar {
+ --holiday-wash:linear-gradient(120deg,#983f5d,#a15a3a 55%,#286f60);
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card.heritage-theme-twilight {
+ --holiday-wash:linear-gradient(120deg,#5b3f94,#88466e 55%,#28457e);
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card.heritage-theme-midnight {
+ --holiday-wash:linear-gradient(120deg,#255a9f,#654691 55%,#21748b);
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card.heritage-theme-olive {
+ --holiday-wash:linear-gradient(120deg,#296c56,#486b4e 55%,#7b4c62);
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card.heritage-theme-river {
+ --holiday-wash:linear-gradient(120deg,#176b8a,#297e6d 55%,#57589b);
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card.heritage-theme-horizon {
+ --holiday-wash:linear-gradient(120deg,#2f649a,#96517a 55%,#207583);
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card.heritage-theme-festival {
+ --holiday-wash:linear-gradient(120deg,#934587,#376fa3 55%,#a04a81);
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card.heritage-theme-heritage {
+ --holiday-wash:linear-gradient(120deg,#2d7080,#576894 55%,#6d568d);
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card.heritage-theme-sepia {
+ --holiday-wash:linear-gradient(120deg,#7a555e,#786351 55%,#5a5a8b);
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card.heritage-theme-sapphire {
+ --holiday-wash:linear-gradient(120deg,#285ba0,#2c7b96 55%,#66569d);
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card.heritage-theme-mint {
+ --holiday-wash:linear-gradient(120deg,#28766c,#397c82 55%,#575e9f);
+}
+/* Rainbow / Pride belongs on the full card, not a faded dark gradient.
+   Keep white copy legible even against the brighter bands. */
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card.heritage-theme-rainbow,
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card.heritage-prism {
+ --holiday-wash:linear-gradient(116deg,
+  #965077 0%,#996235 17%,#557846 33%,#26766d 50%,
+  #486ba5 68%,#805799 85%,#965077 100%);
+ background-image:var(--heritage-night-veil),var(--holiday-wash)!important;
+}
+/* Keep the coloured card visible, but use theme-appropriate understated Save
+   controls. Never suppress festival themes or their already-matching markers. */
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card .heritage-save {
+ background:rgba(15,18,38,.24)!important;
+ color:#fff9ff!important;
+ border:1px solid rgba(250,235,255,.42)!important;
+}
+@media(prefers-reduced-motion:reduce) {
+ .palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card {
+  transition:none!important;
+ }
+}
+@media(forced-colors:active) {
+ .palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card {
+  background:Canvas!important;
+  background-image:none!important;
+  border-color:CanvasText!important;
+  color:CanvasText!important;
+ }
+ .palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/events"]
+ .heritage-grid.enriched .heritage-card :is(h2,p,small,blockquote,.heritage-context) {
+  color:CanvasText!important;
+ }
+}
