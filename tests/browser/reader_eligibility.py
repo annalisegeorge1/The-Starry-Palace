@@ -42,7 +42,7 @@ def assert_inside(page, locator):
 with sync_playwright() as pw:
     browser = pw.chromium.launch(channel="chrome")
     Path("reader-qa").mkdir(exist_ok=True)
-    for width,height,mode in [(390,844,"midnight"),(768,1024,"daybreak"),(1440,900,"night")]:
+    for width,height,mode in [(390,844,"midnight"),(768,1024,"daylight"),(1440,900,"night")]:
         context = browser.new_context(viewport=dict(width=width,height=height),is_mobile=width<500,has_touch=width<900)
         editions = Editions()
         context.add_init_script(f"localStorage.setItem('palace-theme','{mode}')")
@@ -55,6 +55,7 @@ with sync_playwright() as pw:
         confirm = page.get_by_role("button",name="I confirm I am 18 or older")
         leave = page.get_by_role("link",name="I am under 18 · Return to Reading Rooms")
         expect(confirm).to_be_visible()
+        expect(page.locator("html")).to_have_attribute("data-palace-theme","nightfall" if mode=="night" else mode)
         a,b = assert_inside(page,confirm),assert_inside(page,leave)
         assert a["x"]+a["width"]<=b["x"]+1 or b["x"]+b["width"]<=a["x"]+1 or a["y"]+a["height"]<=b["y"]+1 or b["y"]+b["height"]<=a["y"]+1
         assert editions.body_requests == 0
