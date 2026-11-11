@@ -1,0 +1,205 @@
+/* Palace Messenger: calm reading surface, contextual actions, tucked reactions.
+   This stylesheet is loaded last to take precedence over legacy floating controls. */
+
+/* Search and inbox filters belong to the inbox, never between a conversation
+   header and its messages. Thread-specific search is reached through the header. */
+.palace-chat-dock.palace-chat-v2.is-thread-open .palace-chat-advanced-controls.is-thread-hidden {
+ display:none!important;
+}
+.palace-chat-dock.palace-chat-v2 .palace-chat-header-search-trigger {
+ display:inline-grid!important;
+ place-items:center;
+ flex:0 0 36px;
+ width:36px;
+ height:36px;
+ min-width:36px;
+ min-height:36px;
+ padding:6px;
+ border:1px solid var(--pc-line,rgba(173,155,223,.4));
+ border-radius:11px;
+ background:transparent;
+ color:var(--pc-ink,#f5f0ff);
+ cursor:pointer;
+}
+.palace-chat-dock.palace-chat-v2 .palace-chat-header-search-trigger:is(:hover,[aria-expanded="true"]) {
+ background:var(--pc-elevated,rgba(137,114,190,.23));
+}
+.palace-chat-dock.palace-chat-v2 .palace-chat-header-search-trigger:focus-visible {
+ outline:3px solid var(--pc-accent,#bcabec);
+ outline-offset:2px;
+}
+
+/* No perpetual floating arrows: buttons appear on hover, keyboard focus,
+   or while a message action menu is open. */
+.palace-chat-dock.palace-chat-v2 .palace-chat-messages .palace-chat-bubble {
+ position:relative;
+}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble .palace-chat-message-options-trigger {
+ position:absolute!important;
+ top:4px;
+ right:-32px;
+ left:auto;
+ display:grid!important;
+ place-items:center;
+ box-sizing:border-box;
+ width:28px!important;
+ min-width:28px!important;
+ height:30px!important;
+ min-height:30px!important;
+ padding:0!important;
+ border:0!important;
+ border-radius:10px!important;
+ background:var(--pc-elevated,#29263b)!important;
+ color:var(--pc-ink,#f6f2ff)!important;
+ font-size:22px!important;
+ line-height:1!important;
+ opacity:0!important;
+ visibility:hidden;
+ pointer-events:none;
+ transform:none!important;
+ box-shadow:0 2px 8px rgba(0,0,0,.12)!important;
+ transition:opacity .12s ease;
+ z-index:4;
+ cursor:pointer;
+}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble.mine .palace-chat-message-options-trigger {
+ right:auto;
+ left:-32px;
+}
+/* The old reaction trigger resembled a permanent floating reply action.
+   Keep it available on hover/focus, not visible beside every message. */
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble .palace-chat-react-trigger {
+ top:40px!important;
+ right:-32px!important;
+ left:auto!important;
+ width:28px!important;
+ min-width:28px!important;
+ height:30px!important;
+ min-height:30px!important;
+ opacity:0!important;
+ visibility:hidden;
+ pointer-events:none;
+ transform:none!important;
+ transition:opacity .12s ease;
+ z-index:4;
+}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble.mine .palace-chat-react-trigger {
+ left:-32px!important;
+ right:auto!important;
+}
+@media(hover:hover) and (pointer:fine) {
+ .palace-chat-dock.palace-chat-v2 .palace-chat-bubble:is(:hover,:focus-within,.has-active-actions) :is(.palace-chat-message-options-trigger,.palace-chat-react-trigger) {
+  opacity:1!important;
+  visibility:visible;
+  pointer-events:auto;
+ }
+}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble :is(.palace-chat-message-options-trigger,.palace-chat-react-trigger):focus-visible,
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble .palace-chat-react-trigger[aria-expanded="true"] {
+ opacity:1!important;
+ visibility:visible;
+ pointer-events:auto;
+ outline:2px solid var(--pc-accent,#c7b0f3);
+ outline-offset:2px;
+}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble:focus-within :is(.palace-chat-message-options-trigger,.palace-chat-react-trigger),
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble.has-active-actions :is(.palace-chat-message-options-trigger,.palace-chat-react-trigger) {
+ opacity:1!important;
+ visibility:visible;
+ pointer-events:auto;
+}
+
+/* Reactions are anchored to the bubble edge, not a separate floating row.
+   Reserve only a narrow overhang so successive bubbles never collide. */
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble:has(.palace-chat-reactions.has-reactions) {
+ margin-bottom:16px!important;
+}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble .palace-chat-reaction-pills {
+ top:calc(100% - 12px)!important;
+ left:9px!important;
+ right:auto!important;
+ display:flex!important;
+ flex-wrap:wrap!important;
+ gap:4px!important;
+ padding:2px 4px!important;
+ margin:0!important;
+ max-width:min(270px,calc(100vw - 95px));
+ border:1px solid var(--pc-line,rgba(191,176,225,.45))!important;
+ border-radius:999px!important;
+ background:var(--pc-surface,#211e30)!important;
+ box-shadow:0 2px 6px rgba(0,0,0,.13)!important;
+ z-index:3;
+}
+.palace-chat-dock.palace-chat-v2 .palace-chat-bubble.mine .palace-chat-reaction-pills {
+ left:auto!important;
+ right:9px!important;
+ justify-content:flex-end;
+}
+.palace-chat-dock.palace-chat-v2 .palace-chat-reaction-pills>button:not(.palace-chat-react-trigger) {
+ min-height:24px!important;
+ height:24px!important;
+ border:0!important;
+ background:transparent!important;
+ box-shadow:none!important;
+ padding:1px 6px!important;
+}
+.palace-chat-dock.palace-chat-v2 .palace-chat-reaction-pills>button[aria-pressed="true"] {
+ background:var(--pc-elevated,rgba(143,119,205,.28))!important;
+}
+.palace-chat-dock.palace-chat-v2 .palace-chat-reaction-choices {
+ z-index:20!important;
+}
+
+/* On touch the whole bubble is the discoverable message action; don't leave
+   an invisible tiny trigger permanently blocking the bubble edge. Existing
+   reactions remain tappable and the choices popover stays available. */
+@media(hover:none), (pointer:coarse) {
+ .palace-chat-dock.palace-chat-v2 .palace-chat-bubble .palace-chat-message-options-trigger {
+  display:none!important;
+ }
+ .palace-chat-dock.palace-chat-v2 .palace-chat-bubble .palace-chat-react-trigger {
+  opacity:0!important;
+  visibility:hidden;
+  pointer-events:none;
+ }
+ .palace-chat-dock.palace-chat-v2 .palace-chat-bubble .palace-chat-react-trigger[aria-expanded="true"] {
+  opacity:1!important;
+  visibility:visible;
+  pointer-events:auto;
+ }
+ .palace-chat-dock.palace-chat-v2 .palace-chat-bubble {
+  -webkit-tap-highlight-color:transparent;
+ }
+}
+@media(prefers-reduced-motion:reduce) {
+ .palace-chat-dock.palace-chat-v2 .palace-chat-bubble :is(.palace-chat-message-options-trigger,.palace-chat-react-trigger) {
+  transition:none!important;
+ }
+}
+
+/* Emoji shortcuts inside the touch context menu; reachable without hovering. */
+.palace-chat-actions-menu .palace-chat-actions-reaction-options {
+ display:flex;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:4px;
+ padding:5px 3px 9px;
+ border-bottom:1px solid var(--pc-line,rgba(180,164,213,.25));
+}
+.palace-chat-actions-menu .palace-chat-actions-reaction-options>button {
+ display:grid;
+ place-items:center;
+ width:36px!important;
+ min-width:36px!important;
+ height:36px!important;
+ min-height:36px!important;
+ border:0!important;
+ border-radius:10px!important;
+ background:transparent!important;
+ font-size:21px!important;
+ padding:4px!important;
+}
+.palace-chat-actions-menu .palace-chat-actions-reaction-options>button:hover,
+.palace-chat-actions-menu .palace-chat-actions-reaction-options>button:focus-visible {
+ background:var(--pc-elevated,rgba(140,120,195,.25))!important;
+}

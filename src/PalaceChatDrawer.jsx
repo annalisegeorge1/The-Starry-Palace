@@ -11,7 +11,7 @@ import {filterPalaceDirectInbox,findPalaceChatMessages} from './palaceChatInboxM
 import {collectPalaceSharedMedia,groupPalaceSharedMedia} from './palaceChatSharedMedia';
 import {PALACE_READING_CIRCLE_PROMPTS,PALACE_READING_CIRCLE_KITS,makePalaceCircleDraft} from './palaceReadingCirclePrompts';
 import {makePalaceDirectQuoteDraft} from './palaceDirectQuote';
-import {PALACE_CHAT_V3_ENABLED,PALACE_MESSAGE_REACTIONS_ENABLED,getPalaceReactions,changePalaceReaction} from './palaceChatV3';
+import {PALACE_CHAT_V3_ENABLED,PALACE_MESSAGE_REACTIONS_ENABLED,PALACE_REACTIONS,reactionSummary,getPalaceReactions,changePalaceReaction} from './palaceChatV3';
 import PalaceChatReactionBar from './PalaceChatReactionBar';
 import './palace-chat-workspace.css';
 import {getMyProfile,getLetters,getDirectConversationMessages,DIRECT_HISTORY_PAGE_SIZE,sendLetter,sendLetterPhoto,editLetterMessage,searchMembers,setConversationPreference,getMemberBoundary,setMemberBoundary,reportConversation,submitCommunityReport} from './palaceData';
@@ -728,7 +728,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
     </div>}
     <details className="palace-chat-help"><summary aria-label="How Palace Chat works" title="Chat tips and shortcuts">?</summary><div className="palace-chat-help-card"><strong>Palace Chat guide</strong><p>Choose a conversation to read and reply. Use <b>Direct</b> for one-to-one messages, or <b>Groups</b> for private circles.</p><p><b>Message options:</b> press and hold a bubble (or right-click it). You can copy, edit your own message, reply in groups, and pin messages when hosting a group.</p><p><b>Writing:</b> Ctrl/⌘ + Enter sends; Enter starts a new line. Use Emoji, GIF or Photo beside your message.</p><small>Messages stay within the conversation you open.</small></div></details>
      <div className="palace-chat-header-actions">
-     {active&&threadOpen&&<div className="palace-chat-more-wrap" ref={conversationOptionsRef}>
+     {active&&threadOpen&&<button type="button" className="palace-chat-header-search-trigger" aria-label={searchWithinThread?'Close header search':'Open header search'} title="Search messages" aria-expanded={searchWithinThread} onClick={()=>{setSearchWithinThread(v=>!v);setShowSharedMedia(false);setMessageSearch('');setConversationOptionsOpen(false)}}><PalaceIcon name="search" size={17}/></button>}{active&&threadOpen&&<div className="palace-chat-more-wrap" ref={conversationOptionsRef}>
        <button type="button" className="palace-chat-more-trigger" aria-label="More conversation options" title="Conversation options" aria-expanded={conversationOptionsOpen} aria-haspopup="true" onClick={()=>setConversationOptionsOpen(v=>!v)}><span aria-hidden="true">⋯</span></button>
        {conversationOptionsOpen&&<div className="palace-chat-options-dropdown" role="group" aria-label="Conversation tools">
          <small className="palace-chat-options-label">EXPLORE</small>
@@ -752,7 +752,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
     <button type="button" aria-pressed={tab==='direct'} onClick={()=>{setActionMenu(null);setThreadOpen(false);setTab('direct');setSearch('');setUnreadOnly(false);setStarredOnly(false);setShowArchived(false);setCreating(false);setManaging(false);setError('')}}>✉ Direct {directUnread>0&&<span>{directUnread}</span>}</button>
     <button type="button" aria-pressed={tab==='groups'} onClick={()=>{setActionMenu(null);setThreadOpen(false);setTab('groups');setSearch('');setUnreadOnly(false);setStarredOnly(false);setShowArchived(false);setCreating(false);setManaging(false);setError('')}}>♧ Groups {(groupUnread+groupData.invitations.length)>0&&<span>{groupUnread+groupData.invitations.length}</span>}</button>
    </nav>
-   <details className={"palace-chat-advanced-controls"+((tab==='groups'&&groupData.groups.length===0||tab==='direct'&&directRows.length===1&&archivedCount===0)&&!search&&!unreadOnly&&!starredOnly&&!showArchived?' is-quiet-single':'')}><summary aria-label="Search and filter conversations"><PalaceIcon name="search" size={16}/> Search & filters</summary><div className="palace-chat-tools"><input aria-label="Find a conversation" placeholder={tab==='groups'?'Find a circle or member…':'Search direct conversations…'} value={search} onChange={e=>setSearch(e.target.value)}/>
+   <details className={"palace-chat-advanced-controls"+(threadOpen?' is-thread-hidden':'')+((tab==='groups'&&groupData.groups.length===0||tab==='direct'&&directRows.length===1&&archivedCount===0)&&!search&&!unreadOnly&&!starredOnly&&!showArchived?' is-quiet-single':'')}><summary aria-label="Search and filter conversations"><PalaceIcon name="search" size={16}/> Search & filters</summary><div className="palace-chat-tools"><input aria-label="Find a conversation" placeholder={tab==='groups'?'Find a circle or member…':'Search direct conversations…'} value={search} onChange={e=>setSearch(e.target.value)}/>
     {tab==='direct'?<Link to="/letters" onClick={()=>setOpen(false)}>All letters ↗</Link>:<button type="button" onClick={()=>{setCreating(v=>!v);setManaging(false);setMemberResults([]);setMemberSearch('');setError('')}}>{creating?'Cancel':'＋ Group'}</button>}
    </div>
    {!creating&&<div className="palace-chat-inbox-refine" aria-label="Conversation filters">
@@ -836,6 +836,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
         onPointerDown={e=>beginMessageHold(e,m)}
         onPointerMove={moveMessageHold} onPointerUp={clearMessageHold} onPointerCancel={clearMessageHold} onPointerLeave={clearMessageHold}
         onContextMenu={e=>{e.preventDefault();openMessageActions(m,e.currentTarget,e.clientX,e.clientY)}}
+        onClick={e=>{if(e.target.closest('button,a,input,textarea,select'))return;if(window.matchMedia?.('(pointer: coarse)').matches)openMessageActions(m,e.currentTarget)}}
         onKeyDown={e=>{if(e.target!==e.currentTarget)return;if((e.shiftKey&&e.key==='F10')||e.key==='ContextMenu'||e.key==='Enter'||e.key===' '){e.preventDefault();openMessageActions(m,e.currentTarget)} }}
         className={'palace-chat-bubble'+(m.sender_id===userId?' mine':'')+(actionMenu?.message.id===m.id?' has-active-actions':'')+(PALACE_MESSAGE_REACTIONS_ENABLED?' has-reaction-control':'')}>
        <div className="palace-chat-sender"><MemberAvatar className="palace-chat-message-avatar" memberId={m.sender_id} profile={tab==='groups'?(m.profiles||activeGroup?.members.find(p=>p.id===m.sender_id)):m.sender_id===userId?selfProfile:activeDirect?.correspondent}/>{tab==='groups'&&m.sender_id!==userId&&<strong>{nameOf(m.profiles)}</strong>}</div>
@@ -850,7 +851,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
        {tab==='groups'&&m.works?.slug&&<Link className="palace-chat-shared-story" to={'/work/'+encodeURIComponent(m.works.slug)} onClick={()=>setOpen(false)}><span aria-hidden="true">✧</span><span><small>PALACE STORY</small><strong>{m.works.title}</strong></span><span aria-hidden="true">↗</span></Link>}
        <small className="palace-chat-timestamp">{dateOf(m.created_at)}</small>
        {PALACE_MESSAGE_REACTIONS_ENABLED&&<PalaceChatReactionBar message={m} rows={reactionRows.roomId===roomId?reactionRows.rows:[]} userId={userId} disabled={busy||(tab==='direct'&&boundary.blocked)} onReact={reactToMessage}/>}
-       {/* Message actions appear only on long-press, right-click, or keyboard context menu. */}
+       <button type="button" className="palace-chat-message-options-trigger" aria-label="Message options" title="Message actions" aria-haspopup="menu" aria-expanded={actionMenu?.message.id===m.id} onClick={e=>{e.stopPropagation();openMessageActions(m,e.currentTarget)}}><span aria-hidden="true">⋯</span></button>
       </div></React.Fragment>):<p className="palace-chat-empty">Nothing written here yet. Begin with a hello. ✦</p>}
      </div>
      {newWhileAway&&messages.length>0&&<button type="button" className="palace-chat-jump-latest" onClick={jumpToLatest}>New messages · Jump to latest ↓</button>}
@@ -880,6 +881,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
     {tab==='direct'&&<button type="button" role="menuitem" aria-label="Quote in draft" onClick={()=>applyMessageAction('quote')}><span aria-hidden="true">↩</span><span>Quote in draft</span></button>}
     {actionMenu.message.sender_id===userId&&!parsePalaceGif(actionMenu.message.body)&&<button type="button" role="menuitem" aria-label="Edit message" onClick={()=>applyMessageAction('edit')}><span aria-hidden="true">✎</span><span>Edit message</span></button>}
     {actionMenu.message.sender_id!==userId&&<button type="button" role="menuitem" aria-label="Report message" onClick={()=>applyMessageAction('report')}><span aria-hidden="true">⚑</span><span>Report message</span></button>}
+    {PALACE_MESSAGE_REACTIONS_ENABLED&&<><button type="button" role="menuitem" aria-label="React to message" aria-expanded={!!actionMenu.showReactions} onClick={()=>setActionMenu(v=>({...v,showReactions:!v.showReactions}))}><span aria-hidden="true">♡</span><span>React</span></button>{actionMenu.showReactions&&<div className="palace-chat-actions-reaction-options" role="group" aria-label="Choose a message reaction">{PALACE_REACTIONS.map(item=><button type="button" key={item.key} aria-label={'React with '+item.label} disabled={busy||(tab==='direct'&&boundary.blocked)} onClick={()=>{const mine=reactionSummary(reactionRows.roomId===roomId?reactionRows.rows:[],actionMenu.message.id,userId).mine;reactToMessage(actionMenu.message.id,item.key,mine);setActionMenu(null)}}>{item.emoji}</button>)}</div>}</>}
     <button type="button" role="menuitem" aria-label="Copy text" onClick={()=>applyMessageAction('copy')}><span aria-hidden="true">⧉</span><span>Copy text</span></button>
     {tab==='groups'&&owner&&<button type="button" role="menuitem" aria-label={activeGroup?.pinnedMessageId===actionMenu.message.id?'Unpin message':'Pin message'} disabled={busy} onClick={()=>applyMessageAction('pin')}><span aria-hidden="true">✧</span><span>{activeGroup?.pinnedMessageId===actionMenu.message.id?'Unpin message':'Pin message'}</span></button>}
     <button type="button" className="palace-chat-action-dismiss" role="menuitem" onClick={()=>setActionMenu(null)}>Cancel</button>
