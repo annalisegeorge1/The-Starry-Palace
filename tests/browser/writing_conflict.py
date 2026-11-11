@@ -17,6 +17,8 @@ reject_write = False
 work_published = False
 delay_release_read = False
 held_reads = []
+held_writes = []
+hold_next_write = False
 
 def fixture_sql(statement, **values):
     args = ["psql", "-XAtq", "-d", "palace_writer_fixture", "-v", "ON_ERROR_STOP=1"]
@@ -29,7 +31,7 @@ fixture_sql("INSERT INTO chapters VALUES (:'id', :'body', :'stamp');",
             id=chapter["id"], body=chapter["body_html"], stamp=chapter["updated_at"])
 
 def api(route):
-    global work_published, delay_release_read
+    global work_published, delay_release_read, hold_next_write
     request = route.request
     url = urlsplit(request.url)
     query = parse_qs(url.query)
@@ -53,6 +55,10 @@ def api(route):
                 return
             expected = query.get("updated_at", [None])[0]
             assert expected is not None, "Missing cloud version predicate"
+            if hold_next_write:
+                hold_next_write = False
+                held_writes.append(route)
+                return
             if reject_write:
                 route.fulfill(status=400, json={"message":"Simulated save failure"})
                 return
@@ -197,4 +203,35 @@ with sync_playwright() as playwright:
         recovered.append(Path(download.value.path()).read_text())
     assert any("First tab private draft" in item for item in recovered)
     assert any("Second tab private draft" in item for item in recovered)
+    # Reconnect a detached network request, then navigate while a save is in flight.
+    reject_write = False
+    offline = install_fixture(browser.new_context(), chapter["body_html"])
+    editor = offline.locator('[contenteditable=true]').first
+    def disconnect(route):
+        if route.request.method == "PATCH":
+            route.abort("internetdisconnected")
+        else:
+            route.fallback()
+    chapters_api = "**/rest/v1/chapters?*"
+    offline.route(chapters_api, disconnect)
+    editor.fill("Words typed without a connection")
+    expect(offline.locator('.writer-toolbar-save-state')).to_contain_text("Cloud save failed", timeout=30000)
+    expect(editor).to_have_text("Words typed without a connection")
+    assert "Words typed without a connection" not in fixture_sql("SELECT body_html FROM chapters WHERE id='c1'")
+    offline.unroute(chapters_api, disconnect)
+    offline.get_by_role("button", name="Save this chapter now").click()
+    expect(offline.locator('.writer-toolbar-save-state')).to_contain_text("Saved to Palace")
+    hold_next_write = True
+    editor.fill("Latest text before leaving")
+    for _ in range(200):
+        if held_writes:
+            break
+        offline.wait_for_timeout(50)
+    assert held_writes
+    offline.locator('.studio-back-link').click()
+    offline.get_by_role("button", name="Save and leave").click()
+    expect(editor).to_have_text("Latest text before leaving")
+    api(held_writes.pop())
+    expect(editor).to_have_count(0)
+    assert fixture_sql("SELECT body_html FROM chapters WHERE id='c1'") == "Latest text before leaving"
     browser.close()
