@@ -3,29 +3,6 @@
    .public-chamber-appearance; artwork, covers, book pages and illustrations
    are intentionally excluded from these global corrections. */
 
-.palace-shell.full-palace-shell.nightfall {
- --appearance-ground:#0b142d!important;
- --appearance-raised:#17213b!important;
- --appearance-edge:#465077!important;
- --appearance-ink:#f4f2ff!important;
- --appearance-muted:#c6c7e0!important;
- --appearance-highlight:#30335b!important;
- --palette-panel-ink:#f4f2ff!important;
- --palette-ground-ink:#f4f2ff!important;
- --palette-accent-ink:#fff!important;
-}
-.palace-shell.full-palace-shell.midnight {
- --appearance-ground:#050506!important;
- --appearance-raised:#111115!important;
- --appearance-edge:#38343f!important;
- --appearance-ink:#f4f1f9!important;
- --appearance-muted:#c5bfce!important;
- --appearance-highlight:#25212c!important;
- --palette-panel-ink:#f4f1f9!important;
- --palette-ground-ink:#f4f1f9!important;
- --palette-accent-ink:#f4f1f9!important;
-}
-
 /* Nightfall: blue-black and restrained violet. Never inherit pastel
    palette surfaces on navigation, toolbar, sidebar, search or overlays. */
 .palace-shell.full-palace-shell.nightfall :is(

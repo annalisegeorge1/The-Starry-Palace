@@ -13,11 +13,6 @@ describe('Chamber avatar ring and palette corrections',()=>{
   expect(css).not.toMatch(/\.painted-chamber-frame\s*\{[^}]*display\s*:\s*none/s);
   expect(css).not.toMatch(/\.painted-chamber-frame\s*\{[^}]*opacity\s*:\s*0/s);
  });
- it('only forces personalised navigation colours for selected palettes',()=>{
-  expect(css).toContain('[data-viewer-appearance="palette"] #palace-sidebar');
-  expect(css).toContain('var(--palette-panel-ink)');
-  expect(css).toContain('var(--palette-accent-ink)');
- });
  it('uses the visited member palette rather than a hardcoded pink or cyan for profile content',()=>{
   expect(css).toContain('[data-member-appearance="palette"]');
   expect(css).toContain('var(--palette-ground-ink)');

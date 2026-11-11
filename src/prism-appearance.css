@@ -1,5 +1,4 @@
-/* Viewer colours belong to the navigation and shared room surfaces.
-   A visited chamber defines its owner's colours at its own boundary. */
+/* Personal colours start at the dashboard or the visited Chamber. */
 .public-chamber-appearance{display:contents}
 
 :is([data-viewer-appearance="palette"],[data-member-appearance="palette"]){
@@ -10,7 +9,7 @@
  --appearance-muted:var(--palette-panel-ink);
  --appearance-highlight:var(--appearance-accent);
 }
-:is(.palace-shell[data-viewer-appearance="skin"],.public-chamber-appearance[data-member-appearance="skin"],.daylight .public-chamber-appearance[data-member-appearance="skin"],.palace-shell.daylight[data-viewer-appearance="skin"]){
+:is([data-viewer-appearance="skin"],[data-member-appearance="skin"]){
  --appearance-ground:var(--member-skin-background);
  --appearance-raised:var(--member-skin-surface);
  --appearance-ink:var(--member-skin-text);
@@ -18,41 +17,15 @@
  --appearance-edge:var(--member-skin-border);
  --appearance-highlight:linear-gradient(115deg,var(--member-skin-surface),var(--member-skin-background));
 }
-.palace-shell.full-palace-shell[data-viewer-appearance="skin"]{
- --ui-surface:var(--appearance-raised);
- --ui-raised:var(--appearance-raised);
- --ui-line:var(--appearance-edge);
- --ui-selected:var(--appearance-highlight);
- --ui-text:var(--appearance-ink);
- --ui-muted:var(--appearance-muted);
-}
-.palace-shell.full-palace-shell[data-viewer-appearance]{
- background:var(--appearance-ground)!important;
-}
-/* Named-layer important rules take precedence over legacy room theme overrides. */
 @layer prismPersonalAppearance{
-.palace-shell[data-viewer-appearance] .full-stage{
- background:linear-gradient(160deg,var(--appearance-raised),var(--appearance-ground) 34rem)!important;
-}
-.palace-shell[data-viewer-appearance] :is(.full-topbar,.full-sidebar,.mobile-palace-dock,.palace-command){
+[data-viewer-appearance] .palace-dashboard-section{
  background:var(--appearance-raised)!important;
  border-color:var(--appearance-edge)!important;
  color:var(--appearance-ink)!important;
 }
-.palace-shell[data-viewer-appearance] :is(.mobile-palace-dock a,.full-sidebar a,.full-topbar button,.full-topbar a){
+[data-viewer-appearance] .palace-dashboard-section>.section-heading :is(h2,p,.eyebrow){
  color:var(--appearance-ink)!important;
-}
-.palace-shell[data-viewer-appearance] :is(.full-topbar button,.mobile-palace-dock a.active,.full-sidebar a[aria-current="page"]){
- background:var(--appearance-highlight)!important;
- border-color:var(--appearance-edge)!important;
-}
-.palace-shell[data-viewer-appearance] .mobile-palace-dock a.active::after{
- background:var(--appearance-accent)!important;
-}
-.palace-shell[data-viewer-appearance="skin"] .palace-main-stage > :is(.room-title,.room-panel,.panel,.dashboard-panel){
- background:var(--appearance-raised)!important;
- border-color:var(--appearance-edge)!important;
- color:var(--appearance-ink)!important;
+ opacity:1!important;
 }
 .public-chamber-appearance[data-member-appearance] :is(.chamber-section-nav,.chamber-about-card,.chamber-contact-state,.creator-shelf-block,.chamber-posts-room,.chamber-atelier-gallery,.legacy-profile-stats){
  background:var(--appearance-raised)!important;
@@ -71,31 +44,11 @@
  color:var(--appearance-ink)!important;
 }
 
-.palace-shell[data-viewer-appearance] :is(.palace-dashboard-section,.chic-rail-card,.palace-command,.full-sidebar,.mobile-palace-dock) :is(h2,h3,strong,small){
- color:var(--appearance-ink)!important;
-}
-.palace-shell[data-viewer-appearance] :is(.palace-dashboard-section,.chic-rail-card){
- background:var(--appearance-raised)!important;
- color:var(--appearance-ink)!important;
- border-color:var(--appearance-edge)!important;
-}
 .palace-chat-thread-identity[data-correspondent-appearance] .palace-chat-header-person{
  border-inline-start:3px solid var(--appearance-accent);
  padding-inline-start:8px;
 }
 
-.palace-shell[data-viewer-appearance] .full-stage::before,
-.palace-shell[data-viewer-appearance] .full-stage::after{
- background:none!important;
-}
-.palace-shell[data-viewer-appearance] .palace-main-stage{
- background:transparent!important;
-}
-
-.palace-shell[data-viewer-appearance="palette"] .full-stage{
- background:var(--appearance-ground)!important;
-}
-.palace-shell[data-viewer-appearance="palette"] :is(.full-topbar button,.mobile-palace-dock a.active,.full-sidebar a[aria-current="page"]),
 .public-chamber-appearance[data-member-appearance="palette"] :is(.legacy-profile-tags span,.chamber-title-mark,.chamber-section-nav a,.primary-profile-action,.chamber-crown-title){
  color:var(--palette-accent-ink)!important;
 }

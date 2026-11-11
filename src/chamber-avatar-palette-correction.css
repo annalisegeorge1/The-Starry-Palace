@@ -43,37 +43,6 @@
  box-shadow:none!important;
 }
 
-/* Personal colours should drive readable labels, not legacy neon/cyan defaults.
-   These rules apply ONLY when the viewer has deliberately chosen a palette. */
-.palace-shell[data-viewer-appearance="palette"] #palace-sidebar :is(.nav-section-label,.palace-calm-label,.full-subnav>small) {
- color:var(--palette-panel-ink)!important;
- opacity:.8!important;
- text-shadow:none!important;
-}
-.palace-shell[data-viewer-appearance="palette"] #palace-sidebar :is(.full-nav-room>a,.full-subnav>a,.palace-more-subdoors>a,.palace-more-subdoors>summary) {
- color:var(--palette-panel-ink)!important;
- text-shadow:none!important;
-}
-.palace-shell[data-viewer-appearance="palette"] #palace-sidebar :is(.full-nav-room>a,.full-subnav>a,.palace-more-subdoors>a) > span {
- color:inherit!important;
- opacity:1!important;
- text-shadow:none!important;
-}
-.palace-shell[data-viewer-appearance="palette"] #palace-sidebar :is(.full-nav-room>a.active,.full-subnav>a.active,.palace-more-subdoors>a.active) {
- color:var(--palette-accent-ink)!important;
- background:var(--appearance-accent)!important;
- border-color:var(--appearance-accent)!important;
- box-shadow:none!important;
-}
-.palace-shell[data-viewer-appearance="palette"] #palace-sidebar :is(.full-nav-room>a.active,.full-subnav>a.active,.palace-more-subdoors>a.active) > span {
- color:inherit!important;
-}
-/* Keep pictorial room icons colour-coded; don't repaint their artwork. */
-.palace-shell[data-viewer-appearance="palette"] #palace-sidebar :is(.full-nav-room>a,.full-subnav>a):focus-visible {
- outline:3px solid var(--palette-panel-ink)!important;
- outline-offset:2px!important;
-}
-
 /* Inner Chamber colours belong to the visited member, not the viewer's
    unrelated sidebar palette. Use the contrast tokens already computed for
    primary (profile body), secondary (stats) and accent (chips). */

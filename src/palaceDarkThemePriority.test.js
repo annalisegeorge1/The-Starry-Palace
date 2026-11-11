@@ -9,10 +9,10 @@ describe('Palace dark appearance precedence',()=>{
  });
  it('keeps Nightfall dark and Midnight near-black independently of viewer palette',()=>{
   expect(css).toContain('.palace-shell.full-palace-shell.nightfall');
-  expect(css).toContain('--appearance-ground:#0b142d!important;');
+  expect(css).toContain('background:#0b142d!important;');
   expect(css).toContain('.palace-shell.full-palace-shell.midnight');
-  expect(css).toContain('--appearance-ground:#050506!important;');
-  expect(css).toContain('--appearance-raised:#111115!important;');
+  expect(css).toContain('background:#050506!important;');
+  expect(css).toContain('background:#0e0e11!important;');
  });
  it('makes account menu links and sign out readable on dark overlay',()=>{
   expect(css).toContain('.palace-account-menu-popover > a');
