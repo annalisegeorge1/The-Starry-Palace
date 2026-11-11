@@ -1,6 +1,7 @@
 import React from 'react';
-import {render,screen,fireEvent,waitFor} from '@testing-library/react';
-import {expect,it,vi} from 'vitest';
+import {render,screen,fireEvent,waitFor,cleanup} from '@testing-library/react';
+import {expect,it,vi,afterEach} from 'vitest';
+afterEach(()=>cleanup());
 import MemberChamberDecor from './MemberChamberDecor';
 import {applyAtelierColour,getPrismState} from './memberChamberDecorData';
 
