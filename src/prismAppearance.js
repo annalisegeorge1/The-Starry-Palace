@@ -6,6 +6,8 @@ export function prismAppearance(decor){
  const palette=decor?.prism_palette_data;
  const savedSkin=decor?.personal_skin;
  if(savedSkin?.appearance_mode==='none')return null;
+ // A backdrop fallback is not a colour selected by the member. Preserve deliberately imported skins.
+ if(decor?.prism_colour_chosen===false && savedSkin?.appearance_mode!=='skin')return null;
  const skin=savedSkin?.appearance_mode==='palette'?null:pageSkinStyle(savedSkin);
  const validPalette=palette&&[palette.primary,palette.secondary,palette.accent].every(value=>/^#[0-9a-f]{6}$/i.test(value));
  if(!skin&&!validPalette)return null;

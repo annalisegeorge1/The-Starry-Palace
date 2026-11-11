@@ -38,3 +38,10 @@ it('keeps browsing colours tied to the viewer across saves, late loads and sign-
  expect(hook.result.current).toBeNull();
  hook.unmount();
 });
+
+it('uses the original Palace appearance when a palette was never chosen',()=>{
+ const unchosen={...decor,prism_colour_chosen:false};
+ expect(prismAppearance(unchosen)).toBeNull();
+ expect(prismAppearance({...unchosen,personal_skin:{colors:SKIN_DEFAULTS,appearance_mode:'skin'}}).kind).toBe('skin');
+ expect(prismAppearance({...unchosen,prism_colour_chosen:true}).kind).toBe('palette');
+});
