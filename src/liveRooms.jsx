@@ -2660,6 +2660,27 @@ useEffect(()=>{if(data?.id&&access?.owner)refreshFolders(data.id);else setFolder
   setStudioDialog('draft-preview');
  }
  function currentChapterReady(){const title=String(editorRef.current?.closest('form')?.querySelector('input[name="title"]')?.value||chapter?.title||'').trim();if(!title){setError('Give the chapter a title before publishing.');return false}if(countWords(editorRef.current?.innerHTML||'')<1){setError('Write something in this chapter before publishing.');return false}setError('');return true}
+ async function refreshChapterAfterRelease(id){
+  await load();
+  const result=await getChapter(slug,id);
+  if(!result?.chapter||selectedRef.current!==id)return;
+  const remote=result.chapter;
+  const form=editorRef.current?.closest('form');
+  if(!form)return;
+  const fields=new FormData(form);
+  const unchanged=!saveCoordinatorRef.current.isDirty(id)
+   && editorRef.current.innerHTML===(remote.body_html??'')
+   && String(fields.get('title')??'').trim()===(remote.title??'')
+   && String(fields.get('revision_note')??'')===(remote.revision_note??'');
+  if(unchanged){
+   cloudVersionRef.current={chapterId:id,updatedAt:remote.updated_at};
+  }else{
+   setError('The editor and cloud chapter differ. Export your local text and reopen the chapter to compare versions.');
+  }
+  // Release metadata can refresh without replacing typing in the editable DOM.
+  setChapter(previous=>previous?.id===id?{...previous,status:remote.status,
+   scheduled_for:remote.scheduled_for,published_at:remote.published_at}:previous);
+ }
  function publish(){if(access?.owner&&currentChapterReady())setStudioDialog('publish')}
  async function confirmPublish(){
   if(releaseLockRef.current||!access?.owner||!chapter||!currentChapterReady())return;
@@ -2672,8 +2693,7 @@ useEffect(()=>{if(data?.id&&access?.owner)refreshFolders(data.id);else setFolder
    await ensureChapterSavedForRelease({chapterId:id,save:()=>persistChapter(form),isDirty:cid=>saveCoordinatorRef.current.isDirty(cid),isSelected:cid=>selectedRef.current===cid});
    await publishChapter(session.user.id,id);
    setStudioDialog(null);setSaved('Chapter published.');
-   await load();
-   const d=await getChapter(slug,id);if(selectedRef.current===d?.chapter?.id){cloudVersionRef.current={chapterId:d.chapter.id,updatedAt:d.chapter.updated_at};setChapter(d.chapter);}
+   await refreshChapterAfterRelease(id);
   }catch(e){
    setError(e.message);
    setSaved(saveCoordinatorRef.current.isDirty(id)?saveFailureNotice():'Publication was not completed. Your chapter remains available.');
@@ -2696,14 +2716,13 @@ useEffect(()=>{if(data?.id&&access?.owner)refreshFolders(data.id);else setFolder
    await ensureChapterSavedForRelease({chapterId:id,save:()=>persistChapter(form),isDirty:cid=>saveCoordinatorRef.current.isDirty(cid),isSelected:cid=>selectedRef.current===cid});
    await scheduleChapter(session.user.id,id,scheduledAt.toISOString());
    setStudioDialog(null);setSaved('Chapter scheduled for '+scheduledAt.toLocaleString()+'.');
-   await load();
-   const d=await getChapter(slug,id);if(selectedRef.current===d?.chapter?.id){cloudVersionRef.current={chapterId:d.chapter.id,updatedAt:d.chapter.updated_at};setChapter(d.chapter);}
+   await refreshChapterAfterRelease(id);
   }catch(e){
    setError(e.message);
    setSaved(saveCoordinatorRef.current.isDirty(id)?saveFailureNotice():'Scheduling was not completed. Your chapter remains available.');
   }finally{releaseLockRef.current=false;setReleaseBusy(false)}
  }
- async function cancelSchedule(){try{await cancelChapterSchedule(session.user.id,chapter.id);setSaved('Scheduled publication cancelled.');await load();const d=await getChapter(slug,chapter.id);if(selectedRef.current===d?.chapter?.id){cloudVersionRef.current={chapterId:d.chapter.id,updatedAt:d.chapter.updated_at};setChapter(d.chapter)}}catch(e){setError(e.message)}}
+ async function cancelSchedule(){try{await cancelChapterSchedule(session.user.id,chapter.id);setSaved('Scheduled publication cancelled.');await refreshChapterAfterRelease(chapter.id)}catch(e){setError(e.message)}}
  async function refreshWorkCommunity(){const fresh=await getWorkCommunity(data.id);setCommunity(fresh);return fresh}
  function refocusTagSearch(){window.requestAnimationFrame(()=>tagSearchRef.current?.focus({preventScroll:true}))}
  async function attachTagToWork(tag){if(!tag?.id||tagBusy)return;setTagBusy(true);try{setError('');await addWorkTag(session.user.id,data.id,tag.id);await refreshWorkCommunity();setSaved('#'+tag.name+' added · keep choosing tags.');refocusTagSearch()}catch(e){setError(e.message)}finally{setTagBusy(false)}}
