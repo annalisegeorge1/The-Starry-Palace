@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import {validatePalaceWelcomeImage} from './palaceWelcomeMediaModel';
 import {validateComicImage} from './comicUploadPreparation';
 import {PALACE_CHAT_V3_ENABLED} from './palaceChatV3';
 import {INITIAL_FANDOM_DIRECTORY} from './palaceFandomCatalogue';
@@ -146,18 +147,30 @@ export async function updateMyProfile(userId,patch){
  if(error)throw error;return data
 }
 export async function uploadProfileMedia(userId,file,kind='avatar'){
- if(!file)throw new Error('Choose an image first.');
- if(file.size>6291456)throw new Error('Profile images must be 6 MB or smaller.');
- const ext=(file.name?.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
- const path=userId+'/'+kind+'-'+Date.now()+'.'+ext;
- const{error}=await needClient().storage.from('profile-media').upload(path,file,{upsert:false,contentType:file.type||undefined});
+ const issue=validatePalaceWelcomeImage(file);
+ if(issue)throw new Error(issue);
+ if(kind!=='avatar'&&kind!=='cover')throw new Error('Choose a supported Palace image location.');
+ // Derive the extension from the validated MIME type, not an untrusted filename.
+ const extensions={'image/jpeg':'jpg','image/png':'png','image/webp':'webp','image/gif':'gif'};
+ const ext=extensions[file.type];
+ const suffix=typeof crypto!=='undefined'&&typeof crypto.randomUUID==='function'?crypto.randomUUID():Date.now()+'-'+Math.random().toString(36).slice(2);
+ const path=userId+'/'+kind+'-'+suffix+'.'+ext;
+ const bucket=needClient().storage.from('profile-media');
+ const{error}=await bucket.upload(path,file,{upsert:false,contentType:file.type});
  if(error)throw error;
- const{data}=needClient().storage.from('profile-media').getPublicUrl(path);
- const url=data?.publicUrl;if(!url)throw new Error('Profile image URL could not be created.');
- const column=kind==='cover'?'cover_url':'avatar_url';
- const{data:profile,error:profileError}=await needClient().from('profiles').update({[column]:url}).eq('id',userId).select().single();
- if(profileError)throw profileError;
- return profile
+ try{
+  const{data}=bucket.getPublicUrl(path);
+  const url=data?.publicUrl;
+  if(!url)throw new Error('Profile image URL could not be created.');
+  const column=kind==='cover'?'cover_url':'avatar_url';
+  const{data:profile,error:profileError}=await needClient().from('profiles').update({[column]:url}).eq('id',userId).select().single();
+  if(profileError)throw profileError;
+  return profile;
+ }catch(error){
+  // Do not leave an orphaned image when updating the profile fails.
+  try{await bucket.remove([path]);}catch{}
+  throw error;
+ }
 }
 export async function getMyPrivacy(userId){const{data,error}=await needClient().from('privacy_preferences').select('*').eq('user_id',userId).maybeSingle();if(error)throw error;return data}
 export async function ensureMyPrivacy(userId){const current=await getMyPrivacy(userId);if(current)return current;const{data,error}=await needClient().from('privacy_preferences').insert({user_id:userId}).select().single();if(error)throw error;return data}
