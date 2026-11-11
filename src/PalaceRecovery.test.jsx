@@ -67,7 +67,7 @@ it('does not consume cross-browser email verification tokens before the member c
  expect(screen.getByRole('button',{name:'Confirm my email'})).toBeTruthy();
  fireEvent.click(screen.getByRole('button',{name:'Confirm my email'}));
  await waitFor(()=>expect(supabase.auth.verifyOtp).toHaveBeenCalledWith({token_hash:'example-hash',type:'email'}));
- expect(await screen.findByText(/Your email is confirmed/, {selector:'p'})).toBeTruthy();
+ expect((await screen.findByRole('status')).textContent).toMatch(/Your email is confirmed/);
  expect(screen.getByRole('heading',{name:'Your place among the stars is secured.'})).toBeTruthy();
  expect(screen.getByRole('heading',{name:'Welcome to the Palace'})).toBeTruthy();
  expect(screen.getByRole('link',{name:'Continue to your chamber'}).getAttribute('href')).toBe('/chamber');
