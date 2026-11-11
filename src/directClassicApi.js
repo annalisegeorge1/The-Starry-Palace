@@ -11,16 +11,20 @@ export async function openHostedClassic(slug,declaredAge=null){
   .select('id,slug,title,creator_name,record_nature,category,rating,minimum_reader_age,summary,original_language,rights_status,host_mode,provenance_summary,known_gaps,source_notes,publication_status,verified_at')
   .eq('slug',value).eq('publication_status','published').maybeSingle();
  if(error)throw error;
- if(!record)return null;
- // The public reader must independently verify licensed hosting rights even
- // when reached by a direct /classic URL rather than through a catalogue.
- if(record.rights_status==='licensed'||record.rights_status==='creator_authorised'){
-  const rights=await supabase.from('archive_rights_records').select('id,valid_from,valid_until')
-   .eq('record_id',record.id).eq('status','verified').eq('permits_hosting',true).limit(100);
-  if(rights.error)return null;
+ if(!record||!['full','excerpt'].includes(record.host_mode))return null;
+ const licensed=['licensed','creator_authorised'].includes(record.rights_status);
+ if(licensed){
+  if(!record.verified_at)return null;
   const today=new Date().toISOString().slice(0,10);
-  record.hosted_rights_verified=Boolean(rights.data?.some(grant=>
-   (!grant.valid_from||grant.valid_from<=today)&&(!grant.valid_until||grant.valid_until>=today)));
+  const rights=await supabase.from('archive_rights_records').select('id')
+   .eq('record_id',record.id).eq('status','verified').eq('permits_hosting',true)
+   .or('valid_from.is.null,valid_from.lte.'+today)
+   .or('valid_until.is.null,valid_until.gte.'+today).limit(1);
+  if(rights.error)throw rights.error;
+  if(!rights.data?.length)return null;
+  record.hosted_rights_verified=true;
+ }else if(record.rights_status!=='public_domain_verified'){
+  return null;
  }
  const adultEdition=Number(record.minimum_reader_age)>=18;
  let text=null;
@@ -34,7 +38,7 @@ export async function openHostedClassic(slug,declaredAge=null){
  }
  // Modern licensed editions must be fully present before being advertised
  // or opened. A metadata-only record must never look like a published book.
- if(record.rights_status==='licensed'||record.rights_status==='creator_authorised'){
+ if(licensed){
   record.hosted_text_ready=Boolean(String(text?.body_text||'').trim());
  }
  if(!canReadHostedClassic(record))return null;
