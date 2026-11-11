@@ -167,6 +167,8 @@ import './ink-duel-loadout-contrast-fix.css';
 import './reader-daybreak-final-contrast.css';
 // Loaded last so older blue portrait halos and neon sidebar overrides cannot return.
 import './chamber-avatar-palette-correction.css';
+// Global theme choice outranks member palette on shell/navigation, but not authored Chamber art.
+import './palace-dark-theme-priority.css';
 import {palaceCommandIcon,uniquePalaceCommandRecents} from './palaceCommandModel';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
