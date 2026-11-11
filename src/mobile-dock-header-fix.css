@@ -120,3 +120,22 @@
     font-size:1rem!important;
   }
 }
+
+/* Follow-up polish: give the welcome introduction a clear visual pause before
+   the status pills, while keeping the existing verified scroll clearance. */
+@media(max-width:760px){
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"] .palace-mobile-welcome-intro{
+   margin-bottom:16px!important;
+ }
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/chamber"] .palace-mobile-stats{
+   margin-top:0!important;
+ }
+ .palace-shell.full-palace-shell .full-stage>header.topbar.full-topbar{
+   background:#0d142c!important;
+   -webkit-backdrop-filter:blur(12px) saturate(115%)!important;
+   backdrop-filter:blur(12px) saturate(115%)!important;
+ }
+ .palace-shell.full-palace-shell.daylight .full-stage>header.topbar.full-topbar{
+   background:#f0ecfa!important;
+ }
+}
