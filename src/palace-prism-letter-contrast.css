@@ -1,0 +1,330 @@
+/* Selected Prism palettes must use the ink calculated for the actual surface.
+   A dark PRIMARY behind a Daybreak heading cannot inherit Daybreak's dark ink.
+   A pale SECONDARY card cannot inherit the PRIMARY's light ink.
+   This is presentation-only; user palettes, artwork, and content remain unchanged. */
+
+/* OUTER PAGE: use primary-surface ink for headings placed directly on the
+   selected Chamber/Palace ground. Only deliberate palette selections qualify. */
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content > :is(.room-title,.section-heading) :is(h1,h2,h3,p,.eyebrow,.lede,small),
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content > :is(.room-title,.section-heading) > :is(h1,h2,h3,p,.eyebrow,.lede,small) {
+ color:var(--palette-ground-ink)!important;
+ opacity:1!important;
+ text-shadow:none!important;
+}
+
+/* Palette paper is intentionally easier to read than the saturated backdrop.
+   A selected Prism colour shapes the borders, accents and panels, while the
+   actual message body stays on a calm neutral writing surface. */
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] {
+ --letter-palette-paper:#fcfbff;
+ --letter-palette-ink:#29253b;
+ --letter-palette-muted:#5b526b;
+ --letter-palette-border:rgba(68,60,100,.25);
+ color:var(--palette-ground-ink)!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .chic-letters-head :is(h1,.eyebrow,.lede,p,small),
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .chic-letters-top-actions>span {
+ color:var(--palette-ground-ink)!important;
+ opacity:1!important;
+ text-shadow:none!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .chic-letters-head .letters-stats>span{
+ background:var(--appearance-secondary)!important;
+ border-color:var(--appearance-accent)!important;
+ color:var(--palette-panel-ink)!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .chic-letters-head .letters-stats>span :is(strong,small){
+ color:var(--palette-panel-ink)!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .chic-letters-top-actions>button{
+ background:var(--appearance-accent)!important;
+ color:var(--palette-accent-ink)!important;
+ border:1px solid var(--appearance-accent)!important;
+ font-size:.85rem!important;
+ font-weight:700!important;
+ box-shadow:none!important;
+}
+/* Selected SECONDARY panels: text uses the contrasting ink of THAT colour. */
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] :is(
+ .chic-letters-toolbar,.chic-letter-list,.chic-letter-requests
+ ){
+ background:var(--appearance-secondary)!important;
+ background-image:none!important;
+ border-color:var(--appearance-accent)!important;
+ color:var(--palette-panel-ink)!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .letters-filter-rail::after{
+ background:linear-gradient(90deg,transparent,var(--appearance-secondary))!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .letters-search{
+ background:transparent!important;
+ color:var(--palette-panel-ink)!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .letters-search>input {
+ background:var(--appearance-secondary)!important;
+ border-color:var(--appearance-accent)!important;
+ color:var(--palette-panel-ink)!important;
+ caret-color:var(--palette-panel-ink)!important;
+ box-shadow:none!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .letters-search>input::placeholder{
+ color:var(--palette-panel-ink)!important;
+ opacity:.8!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .letters-filter-buttons>button {
+ background:transparent!important;
+ color:var(--palette-panel-ink)!important;
+ border-color:var(--appearance-accent)!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .letters-filter-buttons>button:is(.active,[aria-pressed="true"]){
+ background:var(--appearance-accent)!important;
+ color:var(--palette-accent-ink)!important;
+ font-weight:750!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .chic-letter-list>button{
+ background:var(--appearance-secondary)!important;
+ color:var(--palette-panel-ink)!important;
+ border-color:var(--appearance-accent)!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .chic-letter-list>button:is(.active,[aria-selected="true"],[aria-current="true"]){
+ background:var(--appearance-accent)!important;
+ color:var(--palette-accent-ink)!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .chic-letter-list>button :is(strong,small,time){
+ color:inherit!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .chic-letter-requests :is(h2,p,small,strong){
+ color:var(--palette-panel-ink)!important;
+ opacity:1!important;
+}
+/* Reader/writer paper intentionally uses a neutral surface; do not force
+   the palette's secondary foreground onto near-white message paper. */
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .chic-letter-paper,
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .chic-letter-compose,
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .chic-letter-stream{
+ background:var(--letter-palette-paper)!important;
+ background-image:none!important;
+ color:var(--letter-palette-ink)!important;
+ border-color:var(--letter-palette-border)!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .letter-paper-head{
+ background:var(--appearance-secondary)!important;
+ background-image:none!important;
+ border:1px solid var(--appearance-accent)!important;
+ color:var(--palette-panel-ink)!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .letter-paper-head :is(h2,p,small,a,.letter-member-link){
+ color:var(--palette-panel-ink)!important;
+ opacity:1!important;
+ text-shadow:none!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] :is(.letter-options>button,.letter-more>button){
+ background:transparent!important;
+ border-color:var(--appearance-accent)!important;
+ color:var(--palette-panel-ink)!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] :is(.letter-options>button,.letter-more>button):is(:hover,:focus-visible,[aria-pressed="true"]){
+ background:var(--appearance-accent)!important;
+ color:var(--palette-accent-ink)!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .chic-letter-stream article:not(.mine){
+ background:#ece9f6!important;
+ color:var(--letter-palette-ink)!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .chic-letter-stream article.mine{
+ background:var(--appearance-accent)!important;
+ color:var(--palette-accent-ink)!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .chic-letter-stream article :is(p,time){
+ color:inherit!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .chic-letter-stream article time{
+ opacity:.8!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .letter-compose-input>textarea{
+ background:#fff!important;
+ border-color:var(--letter-palette-border)!important;
+ color:var(--letter-palette-ink)!important;
+ caret-color:var(--letter-palette-ink)!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .letter-compose-input>textarea::placeholder,
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .letter-compose-footer>small{
+ color:var(--letter-palette-muted)!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] .letter-compose-footer>button{
+ background:var(--appearance-accent)!important;
+ color:var(--palette-accent-ink)!important;
+ border-color:var(--appearance-accent)!important;
+}
+
+/* Nightfall and Midnight control the entire Letters interface regardless of
+   Prism selection. Prevent pale Daybreak papers and dark text leaking in. */
+.palace-shell.full-palace-shell.nightfall #palace-content[data-palace-route^="/letters"]{
+ --letters-night-surface:#162443;
+ --letters-night-raised:#233355;
+ --letters-night-ink:#f5f1ff;
+ --letters-night-muted:#d0cae0;
+ --letters-night-border:#4e628b;
+ --letters-night-action:#7566b0;
+}
+.palace-shell.full-palace-shell.midnight #palace-content[data-palace-route^="/letters"]{
+ --letters-night-surface:#111015;
+ --letters-night-raised:#24212b;
+ --letters-night-ink:#f5f1f8;
+ --letters-night-muted:#cbc4d6;
+ --letters-night-border:#4b4357;
+ --letters-night-action:#524765;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/letters"] :is(
+ .chic-letters-head h1,.chic-letters-head .eyebrow,.chic-letters-head .lede,
+ .chic-letters-top-actions>span
+ ){
+ color:var(--letters-night-ink)!important;
+ opacity:1!important;
+ text-shadow:none!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/letters"] .chic-letters-head .letters-stats>span {
+ background:var(--letters-night-raised)!important;
+ color:var(--letters-night-ink)!important;
+ border-color:var(--letters-night-border)!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/letters"] .chic-letters-head .letters-stats>span strong{
+ color:var(--letters-night-ink)!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/letters"] :is(
+ .chic-letters-toolbar,.chic-letter-list,.chic-letter-paper,
+ .chic-letter-compose,.chic-letter-requests,.chic-letter-stream
+ ){
+ background:var(--letters-night-surface)!important;
+ background-image:none!important;
+ color:var(--letters-night-ink)!important;
+ border-color:var(--letters-night-border)!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/letters"] :is(.letter-paper-head,.chic-letter-list>button){
+ background:var(--letters-night-raised)!important;
+ color:var(--letters-night-ink)!important;
+ border-color:var(--letters-night-border)!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/letters"] :is(
+ .letter-paper-head h2,.letter-paper-head p,.letter-paper-head small,
+ .letter-paper-head .letter-member-link,
+ .chic-letter-list>button strong,.chic-letter-list>button small,.chic-letter-list>button time,
+ .chic-letter-requests h2,.chic-letter-requests p,
+ .chic-letter-stream article :is(p,time)
+ ){
+ color:var(--letters-night-ink)!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/letters"] :is(.letters-search>input,.letter-compose-input>textarea){
+ background:var(--letters-night-raised)!important;
+ border-color:var(--letters-night-border)!important;
+ color:var(--letters-night-ink)!important;
+ caret-color:var(--letters-night-ink)!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/letters"] :is(.letters-search>input,.letter-compose-input>textarea)::placeholder {
+ color:var(--letters-night-muted)!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/letters"] .letters-filter-rail::after{
+ background:linear-gradient(90deg,transparent,var(--letters-night-surface))!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/letters"] .letters-filter-buttons>button,
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/letters"] :is(.letter-options>button,.letter-more>button) {
+ background:var(--letters-night-raised)!important;
+ color:var(--letters-night-ink)!important;
+ border-color:var(--letters-night-border)!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/letters"] .letters-filter-buttons>button:is(.active,[aria-pressed="true"]){
+ background:var(--letters-night-action)!important;
+ color:#fff!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/letters"] .chic-letter-stream article{
+ background:var(--letters-night-raised)!important;
+ color:var(--letters-night-ink)!important;
+ border-color:var(--letters-night-border)!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/letters"] .chic-letter-stream article.mine{
+ background:var(--letters-night-action)!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/letters"] .letter-compose-footer>small{
+ color:var(--letters-night-muted)!important;
+ opacity:1!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/letters"] .chic-letters-top-actions>button,
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/letters"] .letter-compose-footer>button {
+ background:var(--letters-night-action)!important;
+ color:#fff!important;
+ border-color:var(--letters-night-border)!important;
+}
+.palace-shell.full-palace-shell:is(.nightfall,.midnight)
+ #palace-content[data-palace-route^="/letters"] :is(button,input,textarea,a):focus-visible,
+.palace-shell.full-palace-shell.daylight[data-viewer-appearance="palette"]
+ #palace-content[data-palace-route^="/letters"] :is(button,input,textarea,a):focus-visible{
+ outline:3px solid var(--appearance-accent,#b9a9ef)!important;
+ outline-offset:2px!important;
+}
+@media(forced-colors:active){
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/letters"]
+ :is(.chic-letters-head,.chic-letters-toolbar,.chic-letter-paper,.chic-letter-compose){
+  background:Canvas!important;
+  color:CanvasText!important;
+  border-color:CanvasText!important;
+ }
+}
