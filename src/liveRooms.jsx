@@ -2510,10 +2510,14 @@ useEffect(()=>{if(data?.id&&access?.owner)refreshFolders(data.id);else setFolder
  }
  function leaveWritingWithRecovery(){
   if(leavingBusy||!pendingExitHref)return;
-  const destination=pendingExitHref;
-  recoverySchedulerRef.current?.flush();
+  const form=editorRef.current?.closest('form');
+  const copy=snapshotDraft(form);
   setPendingExitHref(null);
-  navigate(destination);
+  if(!copy||!recoveryStorageRef.current){
+   setError('Your browser could not keep the latest recovery copy. Your draft is still open. Download a backup or save to the Palace before leaving.');
+   return;
+  }
+  navigate(pendingExitHref);
  }
  function updateChapterGoal(value){if(!chapter)return;const next=cleanManuscriptGoal(value);setGoal(next);writePalacePreference('chapter-goal:'+chapter.id,next)}
  function focusChapterTitle(){const input=editorRef.current?.closest('form')?.querySelector('input[name="title"]');if(!input)return;input.scrollIntoView({block:'center',behavior:'smooth'});window.setTimeout(()=>{input.focus();input.select()},180)}
@@ -2856,8 +2860,8 @@ useEffect(()=>{if(data?.id&&access?.owner)refreshFolders(data.id);else setFolder
   {snapshotCompare?.snapshot&&<section className="snapshot-compare-room"><header><div><small>CURRENT DRAFT</small><strong>{snapshotCompare.current.title}</strong><span>{Number(snapshotCompare.current.word_count||0).toLocaleString()} words</span></div><div className="snapshot-compare-delta"><span>{Number(snapshotCompare.current.word_count||0)-Number(snapshotCompare.snapshot.word_count||0)>=0?'+':''}{(Number(snapshotCompare.current.word_count||0)-Number(snapshotCompare.snapshot.word_count||0)).toLocaleString()}</span><small>word delta</small></div><div><small>{new Date(snapshotCompare.snapshot.created_at).toLocaleString()}</small><strong>{snapshotCompare.snapshot.label||snapshotCompare.snapshot.title}</strong><span>{Number(snapshotCompare.snapshot.word_count||0).toLocaleString()} words</span></div></header><div className="snapshot-compare-columns"><article><div><small>NOW</small><strong>{snapshotCompare.current.title}</strong></div><pre>{compareText(snapshotCompare.current.body_html)||'This version is empty.'}</pre>{snapshotCompare.current.revision_note&&<footer>Revision note · {snapshotCompare.current.revision_note}</footer>}</article><article><div><small>SNAPSHOT</small><strong>{snapshotCompare.snapshot.title}</strong></div><pre>{compareText(snapshotCompare.snapshot.body_html)||'This snapshot is empty.'}</pre>{snapshotCompare.snapshot.revision_note&&<footer>Revision note · {snapshotCompare.snapshot.revision_note}</footer>}</article></div><p className="quiet-copy">Comparison never changes the draft. Restore only if you deliberately want the snapshot loaded back into the editor.</p></section>}
  </PalaceDialog>
  <PalaceDialog open={studioDialog==='tag'} title="Add a Palace tag" eyebrow="TAG CONSTELLATION" onClose={()=>setStudioDialog(null)} actions={<><button className="quiet-button" onClick={()=>setStudioDialog(null)}>Cancel</button><button className="button-starlight" onClick={submitTag}>Add & attach tag ✦</button></>}><label>Tag name<input minLength="2" maxLength="80" value={studioForm.name||''} onChange={e=>setStudioForm(v=>({...v,name:e.target.value}))}/></label><label>Tag family<select value={studioForm.category||'additional'} onChange={e=>setStudioForm(v=>({...v,category:e.target.value}))}>{['genre','trope','mood','setting','theme','fandom','character','relationship','warning','language','format','identity','era','accessibility','additional'].map(x=><option key={x} value={x}>{x.replaceAll('_',' ')}</option>)}</select></label><p className="quiet-copy">Community tags can be used immediately. Palace stewardship can later merge duplicates or promote a tag without breaking stories already using it.</p></PalaceDialog>
- <PalaceDialog open={!!pendingExitHref} title="Leave your Writing Studio?" eyebrow="UNSAVED MANUSCRIPT" onClose={()=>{if(!leavingBusy)setPendingExitHref(null)}} actions={<><button type="button" className="quiet-button" disabled={leavingBusy} onClick={()=>setPendingExitHref(null)}>Keep writing</button><button type="button" className="quiet-button" disabled={leavingBusy} onClick={leaveWritingWithRecovery}>Leave anyway</button><button type="button" className="button-starlight" disabled={leavingBusy} onClick={saveAndLeaveWriting}>{leavingBusy?'Saving the latest draft…':'Save and leave'}</button></>}>
-  <p className="quiet-copy">Your latest edits have not been confirmed saved to the Palace. Save before leaving, or keep a private recovery copy on this device. If local recovery is unavailable, leaving can lose unsaved writing.</p>
+ <PalaceDialog open={!!pendingExitHref} title="Leave your Writing Studio?" eyebrow="UNSAVED MANUSCRIPT" onClose={()=>{if(!leavingBusy)setPendingExitHref(null)}} actions={<><button type="button" className="quiet-button" disabled={leavingBusy} onClick={()=>setPendingExitHref(null)}>Keep writing</button><button type="button" className="quiet-button" disabled={leavingBusy} onClick={leaveWritingWithRecovery}>Keep a device copy and leave</button><button type="button" className="button-starlight" disabled={leavingBusy} onClick={saveAndLeaveWriting}>{leavingBusy?'Saving the latest draft…':'Save and leave'}</button></>}>
+  <p className="quiet-copy">Your latest edits have not been confirmed saved to the Palace. Save before leaving, or keep a private recovery copy on this device. If the device copy fails, your editor stays open.</p>
   <button type="button" className="quiet-button" onClick={downloadDraftBackup}>↓ Download a text backup</button>
   {backupMessage&&<p className="writer-backup-feedback" role="status">{backupMessage}</p>}
  </PalaceDialog>

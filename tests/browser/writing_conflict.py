@@ -154,4 +154,25 @@ with sync_playwright() as playwright:
     held_reads.pop().fulfill(json=[chapter])
     expect(first.get_by_text("The editor and cloud chapter differ.",exact=False)).to_be_visible()
     expect(a).to_have_text("Fresh text typed during publication refresh")
+    # A quota failure must keep the editor mounted even if an older backup exists.
+    reject_write = True
+    first.evaluate("""() => {
+      const write = Storage.prototype.setItem;
+      Storage.prototype.setItem = function(key, value) {
+        if (key.startsWith('palace-recovery:')) throw new DOMException('Full', 'QuotaExceededError');
+        return write.call(this, key, value);
+      };
+      window.restoreDeviceStorage = () => { Storage.prototype.setItem = write; };
+    }""")
+    a.fill("This draft survived a full device")
+    expect(first.locator('.writer-toolbar-save-state')).to_contain_text("Cloud save failed")
+    first.locator('.studio-back-link').click()
+    dialog.get_by_role("button", name="Keep a device copy and leave").click()
+    expect(a).to_have_text("This draft survived a full device")
+    expect(first.get_by_text("Your draft is still open.", exact=False)).to_be_visible()
+    first.evaluate("window.restoreDeviceStorage()")
+    first.locator('.studio-back-link').click()
+    dialog.get_by_role("button", name="Keep a device copy and leave").click()
+    expect(a).to_have_count(0)
+    assert "This draft survived a full device" in first.evaluate("localStorage.getItem('palace-recovery:c1')")
     browser.close()
