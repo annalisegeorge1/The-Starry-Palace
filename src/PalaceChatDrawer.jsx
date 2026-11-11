@@ -11,7 +11,7 @@ import {filterPalaceDirectInbox,findPalaceChatMessages} from './palaceChatInboxM
 import {collectPalaceSharedMedia,groupPalaceSharedMedia} from './palaceChatSharedMedia';
 import {PALACE_READING_CIRCLE_PROMPTS,PALACE_READING_CIRCLE_KITS,makePalaceCircleDraft} from './palaceReadingCirclePrompts';
 import {makePalaceDirectQuoteDraft} from './palaceDirectQuote';
-import {PALACE_CHAT_V3_ENABLED,PALACE_MESSAGE_REACTIONS_ENABLED,getPalaceReactions,changePalaceReaction} from './palaceChatV3';
+import {PALACE_CHAT_V3_ENABLED,PALACE_MESSAGE_REACTIONS_ENABLED,PALACE_REACTIONS,reactionSummary,getPalaceReactions,changePalaceReaction} from './palaceChatV3';
 import PalaceChatReactionBar from './PalaceChatReactionBar';
 import './palace-chat-workspace.css';
 import {getMyProfile,getLetters,getDirectConversationMessages,DIRECT_HISTORY_PAGE_SIZE,sendLetter,sendLetterPhoto,editLetterMessage,searchMembers,setConversationPreference,getMemberBoundary,setMemberBoundary,reportConversation,submitCommunityReport} from './palaceData';
@@ -881,6 +881,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
     {tab==='direct'&&<button type="button" role="menuitem" aria-label="Quote in draft" onClick={()=>applyMessageAction('quote')}><span aria-hidden="true">↩</span><span>Quote in draft</span></button>}
     {actionMenu.message.sender_id===userId&&!parsePalaceGif(actionMenu.message.body)&&<button type="button" role="menuitem" aria-label="Edit message" onClick={()=>applyMessageAction('edit')}><span aria-hidden="true">✎</span><span>Edit message</span></button>}
     {actionMenu.message.sender_id!==userId&&<button type="button" role="menuitem" aria-label="Report message" onClick={()=>applyMessageAction('report')}><span aria-hidden="true">⚑</span><span>Report message</span></button>}
+    {PALACE_MESSAGE_REACTIONS_ENABLED&&<><button type="button" role="menuitem" aria-label="React to message" aria-expanded={!!actionMenu.showReactions} onClick={()=>setActionMenu(v=>({...v,showReactions:!v.showReactions}))}><span aria-hidden="true">♡</span><span>React</span></button>{actionMenu.showReactions&&<div className="palace-chat-actions-reaction-options" role="group" aria-label="Choose a message reaction">{PALACE_REACTIONS.map(item=><button type="button" key={item.key} aria-label={'React with '+item.label} disabled={busy||(tab==='direct'&&boundary.blocked)} onClick={()=>{const mine=reactionSummary(reactionRows.roomId===roomId?reactionRows.rows:[],actionMenu.message.id,userId).mine;reactToMessage(actionMenu.message.id,item.key,mine);setActionMenu(null)}}>{item.emoji}</button>)}</div>}</>}
     <button type="button" role="menuitem" aria-label="Copy text" onClick={()=>applyMessageAction('copy')}><span aria-hidden="true">⧉</span><span>Copy text</span></button>
     {tab==='groups'&&owner&&<button type="button" role="menuitem" aria-label={activeGroup?.pinnedMessageId===actionMenu.message.id?'Unpin message':'Pin message'} disabled={busy} onClick={()=>applyMessageAction('pin')}><span aria-hidden="true">✧</span><span>{activeGroup?.pinnedMessageId===actionMenu.message.id?'Unpin message':'Pin message'}</span></button>}
     <button type="button" className="palace-chat-action-dismiss" role="menuitem" onClick={()=>setActionMenu(null)}>Cancel</button>
