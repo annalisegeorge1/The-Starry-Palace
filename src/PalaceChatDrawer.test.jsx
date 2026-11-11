@@ -505,7 +505,7 @@ describe('Palace quick chat',()=>{
   fireEvent.click(screen.getByRole('menuitem',{name:'Pin message'}));
   await waitFor(()=>expect(pinPalaceGroupMessage).toHaveBeenCalledWith('group-one','m1'));
  });
- it('subscribes only while a selected chat is open and labels an active connection honestly',async()=>{
+ it('subscribes silently while showing only a useful offline warning',async()=>{
   mount();
   expect(watchPalaceChatRoom).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
@@ -514,7 +514,12 @@ describe('Palace quick chat',()=>{
   })));
   const directConfig=watchPalaceChatRoom.mock.calls.find(call=>call[1]?.kind==='direct')?.[1];
   await act(async()=>{directConfig.onStatus('SUBSCRIBED')});
-  expect(await screen.findByText('Live updates')).toBeTruthy();
+  expect(screen.queryByText('Live updates')).toBeNull();
+  expect(screen.queryByText('Refreshes automatically')).toBeNull();
+  act(()=>window.dispatchEvent(new Event('offline')));
+  expect(screen.getAllByText('Offline')).toHaveLength(1);
+  act(()=>window.dispatchEvent(new Event('online')));
+  expect(screen.queryByText('Offline')).toBeNull();
   fireEvent.click(screen.getByRole('button',{name:/Groups/}));
   await waitFor(()=>expect(watchPalaceChatRoom).toHaveBeenCalledWith(null,expect.objectContaining({
    kind:'groups',roomId:'group-one',userId:user
