@@ -1,0 +1,58 @@
+/* Heritage Calendar: festivals wear both celebratory pink and warm gold.
+   Keep the key and actual date markers identical in all Palace modes. */
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"]
+.palace-month-calendar.heritage {
+  --palace-festival-marker: linear-gradient(
+    135deg,
+    #ef4eaa 0%,
+    #ef4eaa 47%,
+    #f2bf72 53%,
+    #f2bf72 100%
+  );
+}
+
+/* Festival dots use a single, recognisable two-tone jewel. These selectors
+   override the older gold-only marker without changing other event types. */
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"]
+.palace-month-calendar.heritage .palace-calendar-days
+.calendar-kind-dots>i.dot-festival,
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"]
+.palace-month-calendar.heritage .calendar-heritage-legend
+.legend-festival>i {
+  display:inline-block!important;
+  box-sizing:border-box!important;
+  width:8px!important;
+  height:8px!important;
+  min-width:8px!important;
+  min-height:8px!important;
+  border-radius:50%!important;
+  border:1px solid rgba(104,48,110,.23)!important;
+  background:var(--palace-festival-marker)!important;
+  background-image:var(--palace-festival-marker)!important;
+  box-shadow:0 0 0 1px rgba(239,78,170,.12)!important;
+  flex-shrink:0!important;
+}
+
+/* A restrained pink edge also identifies festival detail cards, while
+   retaining each observance's own heritage theme and readable text. */
+.palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"]
+.palace-month-calendar.heritage .calendar-selection li.heritage-type-festival {
+  border-inline-start:3px solid #ef4eaa!important;
+}
+
+/* The festival key stays distinguishable in Daybreak, Nightfall and Midnight. */
+.palace-shell.full-palace-shell.daylight #palace-content[data-palace-route^="/events"]
+.palace-month-calendar.heritage .calendar-heritage-legend
+.legend-festival>i {
+  border-color:rgba(102,43,102,.36)!important;
+}
+@media (forced-colors:active) {
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"]
+ .palace-month-calendar.heritage .calendar-heritage-legend .legend-festival>i,
+ .palace-shell.full-palace-shell #palace-content[data-palace-route^="/events"]
+ .palace-month-calendar.heritage .calendar-kind-dots>i.dot-festival {
+   border:2px solid CanvasText!important;
+   background:Canvas!important;
+   box-shadow:none!important;
+ }
+}
