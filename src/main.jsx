@@ -177,6 +177,8 @@ import './palace-chat-calm-actions.css';
 import './heritage-festival-pink-gold.css';
 // Dark shells stay near-black; heritage event cards regain vibrant, readable artwork colours.
 import './heritage-dark-vibrancy.css';
+// Last: selected Prism colours get correct foregrounds on dark grounds and light Letters paper.
+import './palace-prism-letter-contrast.css';
 import {palaceCommandIcon,uniquePalaceCommandRecents} from './palaceCommandModel';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
