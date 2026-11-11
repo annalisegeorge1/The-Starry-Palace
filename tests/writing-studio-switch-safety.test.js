@@ -7,8 +7,8 @@ describe('writing desk selection and cloud status protection',()=>{
  it('loads only the currently selected chapter through the cancellable loader',()=>{
   expect(studio).toContain('return loadSelectedManuscript({');
   expect(studio).toContain('chapterId:selected');
-  expect(studio).toContain('loadChapter:id=>getChapter(slug,id)');
-  expect(studio).toContain('loadRevisions:id=>getChapterSnapshots(id)');
+  expect(studio).toContain('loadChapter:id=>getChapterForWork(data,id)');
+  expect(studio).not.toContain('loadRevisions:id=>getChapterSnapshots(id)');
   expect(studio).toContain('setChapter(ch);');
   expect(studio).toContain('setRecovery(snap);');
   expect(studio).toContain("setChapter(null);setSnapshots([]);setSnapshotRemoving(null);setRecovery(null);setChapterMap([])");

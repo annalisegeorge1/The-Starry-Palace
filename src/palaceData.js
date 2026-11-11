@@ -1,3 +1,4 @@
+import {writeChapterVersion} from './chapterCloudSave';
 import { supabase } from './supabase';
 import {validatePalaceWelcomeImage} from './palaceWelcomeMediaModel';
 import {validateComicImage} from './comicUploadPreparation';
@@ -1330,7 +1331,18 @@ export async function getPublishedWorkForReading(slug){
  batches.sort((a,b)=>(order.get(a.id)??Infinity)-(order.get(b.id)??Infinity));
  return {work,chapters:batches};
 }
-export async function getChapter(workSlug,chapterId){const work=await getWorkBySlug(workSlug);if(!work)return null;const{data,error}=await needClient().from('chapters').select('id,work_id,title,position,body_html,status,revision,revision_note,scheduled_for,published_at,word_count,star_count,updated_at').eq('id',chapterId).eq('work_id',work.id).maybeSingle();if(error)throw error;return data?{work,chapter:data}:null}
+export async function getChapter(workSlug,chapterId){
+ const work=await getWorkBySlug(workSlug);
+ return getChapterForWork(work,chapterId);
+}
+export async function getChapterForWork(work,chapterId){
+ if(!work?.id)return null;
+ const {data,error}=await needClient().from('chapters')
+  .select('id,work_id,title,position,body_html,status,revision,revision_note,scheduled_for,published_at,word_count,star_count,updated_at')
+  .eq('id',chapterId).eq('work_id',work.id).maybeSingle();
+ if(error)throw error;
+ return data?{work,chapter:data}:null;
+}
 export async function getMyChapterStar(userId,chapterId){
  const{data,error}=await needClient().from('chapter_stars').select('chapter_id').eq('user_id',userId).eq('chapter_id',chapterId).maybeSingle();
  if(error)throw error;return!!data
@@ -1378,7 +1390,15 @@ export async function reorderWorkChapters(workId,chapterIds){
  if(error)throw error;return data
 }
 function plainWordCount(text){return text.replace(/<[^>]*>/g,' ').trim().split(/\s+/).filter(Boolean).length}
-export async function saveChapter(userId,chapterId,patch){const body=patch.body_html??'';const{data,error}=await needClient().from('chapters').update({title:patch.title?.trim(),body_html:body,word_count:plainWordCount(body),revision_note:patch.revision_note??'',updated_at:new Date().toISOString()}).eq('id',chapterId).select().single();if(error)throw error;return data}
+export async function saveChapter(userId,chapterId,patch,version){
+ const body=patch.body_html??'';
+ const previous=version?.updatedAt?Date.parse(version.updatedAt):0;
+ const updatedAt=new Date(Math.max(Date.now(),previous+1)).toISOString();
+ return writeChapterVersion(needClient(),chapterId,{
+  title:patch.title?.trim(),body_html:body,word_count:plainWordCount(body),
+  revision_note:patch.revision_note??'',updated_at:updatedAt
+ },version);
+}
 export async function getChapterSnapshots(chapterId){
  // Keep named checkpoints accessible even when autosave creates many automatic
  // versions. Queries remain subject to the existing per-author RLS policies.
