@@ -1,11 +1,6 @@
+import {reviewedClassicGenre} from './hostedFanworkMetadata';
 import {readingArchiveWorkType,isHostedFanfiction} from './palaceFanfictionDiscovery';
 import {hostedFanfictionGuide,hostedFanfictionCompletion,archiveFanfictionTags} from './fanfictionMetadata';
-
-const classicGenres=new Map([
- ['a-house-boat-on-the-styx-john-kendrick-bangs','Literary crossover'],
- ['alice-in-blunderland-john-kendrick-bangs','Literary satire'],
- ['edisons-conquest-of-mars-garrett-p-serviss','Literary sequel']
-]);
 
 /** One display model for published archive editions in Reading and Fandom Atlas.
  * This never turns permission-only metadata into a published story. Callers
@@ -13,7 +8,7 @@ const classicGenres=new Map([
  */
 export function toHostedReadingWork(record){
  const fanwork=isHostedFanfiction(record);
- const classicGenre=record.category==='historical_fanfiction'&&classicGenres.get(record.slug);
+ const classicGenre=reviewedClassicGenre(record);
  const fanCollection=fanwork&&!classicGenre;
  const collectionName=fanCollection?'Fan-made Works':'Palace Classics';
  const category=classicGenre||String(record.category||'classic').replaceAll('_',' ');
