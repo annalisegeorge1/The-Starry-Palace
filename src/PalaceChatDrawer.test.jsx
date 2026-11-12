@@ -180,6 +180,20 @@ describe('Palace quick chat',()=>{
   fireEvent.click(screen.getByRole('button',{name:/Favourites/}));
   expect(screen.getByRole('button',{name:'River'})).toBeTruthy();
  });
+ it('preserves a newer composer draft when an earlier message is acknowledged',async()=>{
+  let acknowledge;
+  sendLetter.mockImplementationOnce(()=>new Promise(resolve=>{acknowledge=resolve}));
+  mount();fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
+  fireEvent.click(await screen.findByRole('button',{name:'River'}));
+  const composer=screen.getByRole('textbox',{name:'Write a private message'});
+  fireEvent.change(composer,{target:{value:'First letter'}});
+  fireEvent.click(screen.getByRole('button',{name:'Send message'}));
+  fireEvent.change(composer,{target:{value:'Second unsent letter'}});
+  acknowledge();
+  await screen.findByText('Message sent.');
+  expect(composer.value).toBe('Second unsent letter');
+  expect(Object.values(localStorage)).toContain('Second unsent letter');
+ });
  it('does not suggest a duplicate send after a successful write when inbox sync fails',async()=>{
   let sent=false;
   sendLetter.mockImplementation(async()=>{sent=true});

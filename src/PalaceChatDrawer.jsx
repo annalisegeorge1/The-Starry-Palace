@@ -446,8 +446,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   }
   // The attachment message was confirmed; never retry it due to a refresh error.
   setPhotoFile(null);
-  setDrafts(previous=>({...previous,[sentDraftKey]:''}));
-  try{localStorage.removeItem(sentDraftKey)}catch{}
+  clearAcknowledgedDraft(sentDraftKey,currentDraft);
   setReplyTarget(null);
   if(photoInputRef.current)photoInputRef.current.value='';
   scrollPinned.current=true;setNotice('Photo sent.');
@@ -540,6 +539,15 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
    togglePin(message);
   }
  }
+ function clearAcknowledgedDraft(key,submittedDraft){
+  setDrafts(previous=>{
+   if(previous[key]!==undefined&&previous[key]!==submittedDraft)return previous;
+   return {...previous,[key]:''};
+  });
+  try{
+   if(localStorage.getItem(key)===submittedDraft)localStorage.removeItem(key);
+  }catch{}
+ }
  function setDraft(value){
   if(!roomId)return;
   setDrafts(p=>({...p,[draftsKey]:value}));
@@ -562,8 +570,7 @@ export default function PalaceChatDrawer({userId,workspace=false,initialRoom=nul
   }
   // The write succeeded: clear only the draft that was actually sent.
   // A separate refresh failure must never invite the member to send it twice.
-  setDrafts(p=>({...p,[sentDraftKey]:''}));
-  try{localStorage.removeItem(sentDraftKey)}catch{}
+  clearAcknowledgedDraft(sentDraftKey,currentDraft);
   setReplyTarget(null);scrollPinned.current=true;setNotice('Message sent.');
   try{
    if(sentKind==='groups'){
