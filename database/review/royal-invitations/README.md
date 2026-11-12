@@ -2,6 +2,12 @@
 
 The additional SQL is review material. It is outside the automatic migration directory. Historic provider receipts remain in the original private ledger. The same ledger supplies rate limits for new sealed dispatches.
 
+## Approved initial Royal Invitation Desk holder
+
+The Palace owner approved **TheBlueMoonJune** as the first sealed Royal Invitation Desk administrator on 2026-11-13. The approved production Supabase Auth user ID is `50c3246a-db88-4bdd-a355-4e6562ebf744`. Production read-only verification confirmed that this ID belongs to the `thebluemoonjune` profile, its Auth account has a confirmed email, and a private member-age eligibility record exists. A profile name, visible title, or email address by itself must never grant the desk privilege.
+
+This is **approval of the designated identity only**, not approval to install the Royal Invitation schema, enable sealed dispatch/redemption, or grant privileges in live production immediately. During a separate, approved migration/activation window, verify the same Auth identity and age/confirmation eligibility again. Bootstrap only that verified account as a `royal_invitation.issuers` row of kind `desk` using the reviewed, idempotent operator script `initial-desk-holder.review.sql`; do not automatically seed the desk holder when installing foundation.sql. Keep both production activation switches disabled until the hosted end-to-end tests and reward integrations have passed. Record the manual authorization event in the deployment handover.
+
 ## Installation and activation
 
 In an isolated environment, apply foundation.sql, recipient-api.sql, dispatch-api.sql then treasury.sql, catalogue.sql, exclusive-inventory.sql and atelier.sql in that order as one release unit. The legacy invitation migration and the existing Treasury schema are prerequisites. A verified user needs a private.member_age row. A service-role session cannot call the private foundation functions. Session-bound RPCs use auth.uid(). Member issuing and recipient claiming default to disabled. Neither a desk holder nor a Founding period is seeded.
