@@ -1448,10 +1448,12 @@ export async function cancelChapterSchedule(userId,chapterId){
  const own=await needClient().from('works').select('id').eq('id',ch.data.work_id).eq('author_id',userId).maybeSingle();if(own.error)throw own.error;if(!own.data)throw new Error('Only the work owner can change this schedule.');
  const{data,error}=await needClient().from('chapters').update({scheduled_for:null,updated_at:new Date().toISOString()}).eq('id',chapterId).neq('status','published').select().maybeSingle();if(error)throw error;return data
 }
-export async function publishChapter(userId,chapterId){
- const ready=await assertChapterPublishable(userId,chapterId);const now=new Date().toISOString();
- const{data,error}=await needClient().from('chapters').update({status:'published',published_at:now,scheduled_for:null,updated_at:now}).eq('id',chapterId).select('id,work_id').single();if(error)throw error;
- const update={publication_status:'published',last_published_at:now,updated_at:now};if(!ready.work.first_published_at)update.first_published_at=now;const wr=await needClient().from('works').update(update).eq('id',data.work_id).eq('author_id',userId);if(wr.error)throw wr.error;return data
+export async function publishChapter(chapterId,expectedUpdatedAt){
+ if(!expectedUpdatedAt)throw new Error('Reopen this chapter before publishing.');
+ const {error}=await needClient().rpc('publish_manuscript_chapter',{
+  p_chapter_id:chapterId,p_expected_updated_at:expectedUpdatedAt
+ });
+ if(error)throw error;
 }
 export async function saveWorkToLibrary(userId,workId){const{error}=await needClient().from('saved_works').upsert({user_id:userId,work_id:workId},{onConflict:'user_id,work_id'});if(error)throw error}
 export async function subscribeWork(userId,workId){const{error}=await needClient().from('story_subscriptions').upsert({user_id:userId,work_id:workId,enabled:true,updated_at:new Date().toISOString()},{onConflict:'user_id,work_id'});if(error)throw error}

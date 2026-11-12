@@ -2702,7 +2702,7 @@ useEffect(()=>{if(data?.id&&access?.owner)refreshFolders(data.id);else setFolder
   if(saveTimerRef.current){clearTimeout(saveTimerRef.current);saveTimerRef.current=null}
   try{
    await ensureChapterSavedForRelease({chapterId:id,save:()=>persistChapter(form),isDirty:cid=>saveCoordinatorRef.current.isDirty(cid),isSelected:cid=>selectedRef.current===cid});
-   await publishChapter(session.user.id,id);
+   await publishChapter(id,cloudVersionRef.current?.updatedAt);
    setStudioDialog(null);setSaved('Chapter published.');
    await refreshChapterAfterRelease(id);
   }catch(e){

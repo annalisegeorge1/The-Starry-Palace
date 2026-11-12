@@ -38,6 +38,14 @@ def api(route):
     query = parse_qs(url.query)
     table = url.path.split("/")[-1]
     data = []
+    if table == "publish_manuscript_chapter":
+        args = request.post_data_json
+        assert args == {"p_chapter_id": "c1", "p_expected_updated_at": chapter["updated_at"]}
+        stamp = fixture_sql("UPDATE chapters SET updated_at=clock_timestamp() WHERE id='c1' RETURNING updated_at;")
+        chapter.update(status="published", updated_at=stamp, published_at=stamp, scheduled_for=None)
+        work_published = True
+        route.fulfill(status=204)
+        return
     if table == "works":
         if request.method == "PATCH":
             assert query.get("author_id") == ["eq.owner"]
