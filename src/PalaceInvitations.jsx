@@ -2,6 +2,7 @@ import React, {useEffect,useState} from 'react';
 import {Link} from 'react-router-dom';
 import {useAuth} from './auth';
 import {configured, supabase} from './supabase';
+import {renderAgeSafeInvitation} from '../supabase/functions/palace-invitations/email.ts';
 import './palace-invitations.css';
 
 export const PALACE_PUBLIC_INVITATION_URL = 'https://thestarrypalace.com/invitation';
@@ -51,6 +52,9 @@ export function getInvitationDispatchEndpoint(origin){
 export function PalaceInvitationAdmin({Frame}){
  const {session,loading}=useAuth();
  const [email,setEmail]=useState('');
+ const [reviewing,setReviewing]=useState(false);
+ const submitting=React.useRef(false);
+ const letter=renderAgeSafeInvitation();
  const [checking,setChecking]=useState(true);
  const [allowed,setAllowed]=useState(false);
  const [configuredToSend,setConfiguredToSend]=useState(false);
@@ -77,10 +81,11 @@ export function PalaceInvitationAdmin({Frame}){
  }
  async function send(event){
   event.preventDefault();
-  if(!allowed||!configuredToSend||busy||!endpoint||!session?.access_token)return;
+  if(!allowed||!configuredToSend||submitting.current||!endpoint||!session?.access_token)return;
   const trimmed=email.trim();
   if(trimmed.length>254||!emailPattern.test(trimmed)){setNotice('Enter a valid recipient email address.');return;}
-  setBusy(true);setNotice('');
+  if(!reviewing){setReviewing(true);setNotice('');return;}
+  submitting.current=true;setBusy(true);setNotice('');
   try{
    const response=await fetch(endpoint,{method:'POST',
     headers:{'Content-Type':'application/json',Authorization:'Bearer '+session.access_token,apikey:import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY||''},
@@ -89,10 +94,13 @@ export function PalaceInvitationAdmin({Frame}){
     if(response.status===429)throw new Error('Invitation sending limit reached. Please try again later.');
     throw new Error(response.status===503?'Invitation email delivery has not been configured yet.':'The invitation could not be sent. Please retry later.');
    }
+   const receipt=await response.json().catch(()=>null);
+   if(receipt?.accepted!==true)throw new Error('The Palace could not confirm the provider accepted this letter. Check its status before sending again.');
+   setReviewing(false);
    setNotice('Invitation accepted by the email provider. Delivery to the recipient is not yet confirmed.');
    setEmail('');
   }catch(error){setNotice(error.message||'The invitation could not be sent.');}
-  finally{setBusy(false);}
+  finally{submitting.current=false;setBusy(false);}
  }
  return <InvitationPanel Frame={Frame} eyebrow="PALACE INVITATION DESK" title="Send a letter from the Palace.">
    <p>Create a personal invitation to The Starry Palace. Inviting someone doesn't create an account; the recipient signs up and declares their own date of birth through the normal 13+ process.</p>
@@ -103,9 +111,18 @@ export function PalaceInvitationAdmin({Frame}){
    </div>
    {loading||checking?<p role="status">Checking invitation permissions…</p>:allowed?<form onSubmit={send} className="palace-invite-form">
      <label htmlFor="palace-invite-email">Recipient email</label>
-     <input id="palace-invite-email" type="email" autoComplete="off" placeholder="reader@example.com" required maxLength={254} value={email} onChange={event=>setEmail(event.target.value)}/>
+     <input id="palace-invite-email" type="email" autoComplete="off" placeholder="reader@example.com" required readOnly={reviewing||busy} maxLength={254} value={email} onChange={event=>setEmail(event.target.value)}/>
      <p className="palace-invite-age">The recipient will receive the royal invitation. No Palace user is created by sending it.</p>
-     <button type="submit" className="palace-invite-primary" disabled={busy||!configuredToSend}>{busy?'Sending invitation…':configuredToSend?'Email royal invitation':'Email sending not yet configured'}</button>
+     {reviewing&&<section aria-label="Review invitation email">
+       <h2>Review your letter</h2>
+       <p><strong>To</strong> {email.trim()}</p>
+       <p><strong>Subject</strong> {letter.subject}</p>
+       <details><summary>Read the plain-text letter</summary>
+         {letter.text.split('\n\n').map((paragraph,index)=><p key={index}>{paragraph}</p>)}
+       </details>
+       <button type="button" disabled={busy} onClick={()=>{setReviewing(false);setNotice('');}}>Edit recipient</button>
+     </section>}
+     <button type="submit" className="palace-invite-primary" disabled={busy||!configuredToSend}>{busy?'Sending invitation…':configuredToSend?(reviewing?'Send this invitation':'Review invitation'):'Email sending not yet configured'}</button>
    </form>:<p className="palace-invite-age">Sending invitations is restricted to authorised Palace administrators. You may share the public invitation link above.</p>}
    {notice&&<p role="status" className="palace-invite-notice">{notice}</p>}
    <p className="palace-invite-back"><Link to="/">Return to the Palace</Link></p>
