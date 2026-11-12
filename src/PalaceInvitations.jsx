@@ -121,7 +121,7 @@ export function PalaceInvitationAdmin({Frame}){
   finally{submitting.current=false;setBusy(false);}
  }
  return <InvitationPanel Frame={Frame} eyebrow="PALACE INVITATION DESK" title="Send a letter from the Palace.">
-   <p>Create a personal invitation to The Starry Palace. Inviting someone doesn't create an account; the recipient signs up and declares their own date of birth through the normal 13+ process.</p>
+   <p>This desk sends an ordinary Palace welcome email. It helps someone register but does not issue a unique Royal Invitation Seal or exclusive honours. Special invitations will be issued from My Royal Invitations when the secure Royal Envoy system is enabled. Every recipient follows the normal 13+ registration process.</p>
    <div className="palace-invite-feature">
     <strong>Share an ordinary Palace welcome link</strong>
     <p><a href={PALACE_PUBLIC_INVITATION_URL}>{PALACE_PUBLIC_INVITATION_URL}</a></p>
@@ -131,7 +131,7 @@ export function PalaceInvitationAdmin({Frame}){
    {loading||checking?<p role="status">Checking invitation permissions…</p>:allowed?<form onSubmit={send} className="palace-invite-form">
      <label htmlFor="palace-invite-email">Recipient email</label>
      <input id="palace-invite-email" type="email" autoComplete="off" placeholder="reader@example.com" required readOnly={reviewing||busy} maxLength={254} value={email} onChange={event=>setEmail(event.target.value)}/>
-     <p className="palace-invite-age">The recipient will receive the royal invitation. No Palace user is created by sending it.</p>
+     <p className="palace-invite-age">The recipient will receive a Palace welcome letter, not a sealed Royal Invitation. No account is created by sending it.</p>
      {reviewing&&<section aria-label="Review invitation email">
        <h2>Review your letter</h2>
        <p><strong>To</strong> {email.trim()}</p>
