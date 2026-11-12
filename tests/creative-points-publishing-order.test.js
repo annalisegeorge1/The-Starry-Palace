@@ -5,7 +5,11 @@ const src=readFileSync('src/palaceData.js','utf8');
 
 describe('actual chapter publishing earns creative rewards',()=>{
  it('covers chapter-first then parent-work publication order',()=>{
-  expect(src.indexOf(".from('chapters').update({status:'published'")).toBeLessThan(src.indexOf("const update={publication_status:'published',last_published_at:now"));
+  const release=readFileSync('database/review/writing-desk/publish.sql','utf8');
+  expect(src).toContain("rpc('publish_manuscript_chapter'");
+  const chapterUpdate=release.indexOf("update public.chapters set status = 'published'");
+  expect(chapterUpdate).toBeGreaterThan(-1);
+  expect(release.indexOf("update public.works set publication_status = 'published'")).toBeGreaterThan(chapterUpdate);
   expect(sql).toContain('after update of publication_status,visibility on public.works');
   expect(sql).toContain("new.publication_status='published' and new.visibility='public'");
   expect(sql).toContain('private.credit_visible_published_chapters(new.id)');

@@ -25,10 +25,10 @@ export function createManuscriptSaveCoordinator(send){
   return false;
  }
  function isSaving(chapterId){return(inFlight.get(String(chapterId))||0)>0}
- function persist(chapterId,body,revision){
+ function persist(chapterId,body,revision,version){
   const key=String(chapterId);
   inFlight.set(key,(inFlight.get(key)||0)+1);
-  const write=tail.catch(()=>{}).then(()=>send(chapterId,body));
+  const write=tail.catch(()=>{}).then(()=>send(chapterId,body,version));
   tail=write.catch(()=>{});
   return write.then(saved=>{
    const isCurrent=currentRevision(key)===revision;

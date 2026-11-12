@@ -530,7 +530,8 @@ describe('Starry Palace launch safety',()=>{
   it('keeps dual-layer writing recovery and Palace Life discovery wired',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
-    expect(live).toContain('palace-recovery:');
+    expect(live).toContain('chapterRecoveryCopies(localStorage,ch)');
+    expect(live).toContain('recoveryWriteKey(chapterId)');
     expect(live).toContain('Saved to Palace');
     expect(live).toContain('Recovery copy kept on this device');
     expect(live).toContain('commons-lens');
@@ -1252,7 +1253,7 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('Compare revision');
     expect(live).toContain('NON-DESTRUCTIVE REVIEW');
     expect(live).toContain('Comparison never changes the draft.');
-    expect(live).toContain('Restore this snapshot');
+    expect(live).toContain('restoreSnapshot(snapshotCompare.snapshot)');
     expect(next).toContain('Snapshot comparison — inspect before restoring.');
     expect(next).toContain('.snapshot-compare-columns');
   });

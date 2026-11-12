@@ -7,11 +7,11 @@ describe('writing desk selection and cloud status protection',()=>{
  it('loads only the currently selected chapter through the cancellable loader',()=>{
   expect(studio).toContain('return loadSelectedManuscript({');
   expect(studio).toContain('chapterId:selected');
-  expect(studio).toContain('loadChapter:id=>getChapter(slug,id)');
-  expect(studio).toContain('loadRevisions:id=>getChapterSnapshots(id)');
+  expect(studio).toContain('loadChapter:id=>getChapterForWork(data,id)');
+  expect(studio).not.toContain('loadRevisions:id=>getChapterSnapshots(id)');
   expect(studio).toContain('setChapter(ch);');
-  expect(studio).toContain('setRecovery(snap);');
-  expect(studio).toContain("setChapter(null);setSnapshots([]);setSnapshotRemoving(null);setRecovery(null);setChapterMap([])");
+  expect(studio).toContain('setRecovery(copies[0]||null);');
+  expect(studio).toContain("setChapter(null);setSnapshots([]);setSnapshotRemoving(null);setRecovery(null);setRecoveryCopies([]);setChapterMap([])");
  });
  it('does not confuse a new chapter with the settings form while it loads',()=>{
   expect(studio).toContain("selected&&chapter?.id!==selected?<section className=\"palace-chapter-opening\"");
