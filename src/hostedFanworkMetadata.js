@@ -1,3 +1,4 @@
+import {LICENSED_ANIME_FANWORK_BY_SLUG} from './licensedAnimeFanworkIntake';
 import {intakeFandomNames} from './fanworkFandomNavigation';
 
 /**
@@ -5,6 +6,17 @@ import {intakeFandomNames} from './fanworkFandomNavigation';
  * This is descriptive metadata, NOT proof that a fanwork may be hosted.
  * The actual text and independent rights evidence are gated elsewhere.
  */
+const classicGenres=new Map([
+ ['a-house-boat-on-the-styx-john-kendrick-bangs','Literary crossover'],
+ ['alice-in-blunderland-john-kendrick-bangs','Literary satire'],
+ ['edisons-conquest-of-mars-garrett-p-serviss','Literary sequel']
+]);
+
+export function reviewedClassicGenre(record){
+ const category=record?.archive_category||record?.category;
+ return category==='historical_fanfiction'?classicGenres.get(record.slug):undefined;
+}
+
 const RATINGS=new Set(['general','teen','mature','explicit','not_rated']);
 const STATUSES=new Set(['in_progress','complete','hiatus','abandoned']);
 const TAG_GROUPS=Object.freeze({
@@ -42,7 +54,12 @@ export function parseHostedFanworkMetadata(work){
  const fandomNames=Array.isArray(data.fandom)?
   cleanList(data.fandom).flatMap(intakeFandomNames):intakeFandomNames(cleanText(data.fandom,400));
  add('fandom',[...new Set(fandomNames)].slice(0,15));
- add('format',['Fanfiction','Anime & Manga']);
+ const category=work.archive_category||work.category;
+ if(!reviewedClassicGenre(work))add('format',['Fanfiction']);
+ if(category==='licensed_fanfiction'){
+  add('format',cleanList(data.formats));
+  if(LICENSED_ANIME_FANWORK_BY_SLUG[work.slug])add('format',['Anime & Manga']);
+ }
  const language=cleanText(work.original_language||data.language,40);
  if(language)add('language',[language]);
  for(const [category,key] of Object.entries(TAG_GROUPS))add(category,cleanList(data[key]));

@@ -19,6 +19,7 @@ describe('Public-domain hosted fanfiction source metadata',()=>{
  it('uses original archive metadata for historical works without treating them as modern link-only intake',()=>{
   const x=parseHostedFanworkMetadata(pd);
   expect(x).toBeTruthy();
+  expect(x.tags.filter(t=>t.category==='format')).toEqual([]);
   expect(x.rating).toBe('general');
   expect(x.ratingBasis).toBe('editorial');
   expect(x.tags.some(t=>t.category==='fandom'&&t.name==='Alice in Wonderland')).toBe(true);

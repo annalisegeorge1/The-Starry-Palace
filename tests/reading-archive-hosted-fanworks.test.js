@@ -17,7 +17,7 @@ describe('Main Reading Room includes genuinely readable archive fanfiction',()=>
   expect(source).toContain('includeHosted:origin===\'all\'');
   expect(source).toContain('visibleCatalogue.map(w=>{');
   expect(source).toContain("archiveRows.filter(canDisplayHostedArchive)");
-  expect(source).toContain('matching published member stories and hosted fanfiction');
+  expect(source).toContain('matching published stories and hosted works');
   expect(source).toContain('total={archiveBrowse.snapshot?.total||0}');
  });
  it('keeps unpublished permission notes out of the Reading shelf and reader',()=>{

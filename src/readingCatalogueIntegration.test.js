@@ -18,7 +18,7 @@ describe('real browsing, not an artificial 24-story ceiling',()=>{
   expect(live).toContain("getPublishedWorks({offset:works.length,limit:48})");
   expect(live).toContain("setReadingChoice('visibleCount',current=>current+48)");
   expect(live).toContain('archiveBrowse.snapshot?visibleTotal.toLocaleString()');
-  expect(live).toContain('matching published member stories and hosted fanfiction');
+  expect(live).toContain('matching published stories and hosted works');
   expect(live).toContain('matchesReadingFacets(w,effectiveReadingTags,excludedTags)&&matchesReadingRelationships(w,relationshipIncluded,relationshipExcluded)');
   expect(live).toContain('<ReadingFacetSidebar facets={tagFacets}');
  });

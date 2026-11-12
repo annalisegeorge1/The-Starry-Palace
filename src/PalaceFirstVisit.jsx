@@ -5,7 +5,7 @@ import {supabase} from './supabase';
 import './palace-first-visit.css';
 
 const WELCOME_STEPS=[
- {id:'read',icon:'book-open',name:'Find a story',detail:'Explore published stories and save one for later.',url:'/reading'},
+ {id:'read',icon:'book-open',name:'Find a story',detail:'Save a story for later or leave a comment from its reader.',url:'/reading'},
  {id:'write',icon:'pen-line',name:'Open your writing pad',detail:'Create a private draft. You decide when it becomes public.',url:'/writing'},
  {id:'palace',icon:'regal-crown',name:'Meet your Grand Palace',detail:'Discover your court, its banner and shared activities.',url:'/grand-palaces'},
  {id:'gather',icon:'moon-court',name:'Explore Palace Life',detail:'Find conversations, writers and creative rooms.',url:'/palace-life'}
@@ -48,7 +48,7 @@ export function PalaceStartingPath({memberId}){
     <p className="eyebrow">A GENTLE FIRST JOURNEY</p>
     <h2>Make yourself at home.</h2>
     <p>There's no need to learn every room at once. Open any doorway that interests you; this little map is here when you return.</p>
-    <p className="palace-first-guidebook-link">Want a little more context? <Link to="/guidebook">Browse the Palace Guidebook →</Link></p>
+    <p className="palace-first-guidebook-link"><Link to="/settings">Review your privacy and notification settings</Link> or <Link to="/guidebook">browse the Palace Guidebook</Link>.</p>
     <p className="palace-starting-next">{nextStep?<>A place to start: <strong>{nextStep.name}</strong></>:<>You have opened every doorway on this map. Wander wherever curiosity takes you.</>}</p>
     <div className="palace-starting-meter">
      <div className="palace-starting-track" role="progressbar" aria-label="Welcome doorways opened" aria-valuenow={count} aria-valuemin={0} aria-valuemax={4}><span style={{width:(count/4*100)+'%'}}/></div>
