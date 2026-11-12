@@ -1,5 +1,6 @@
 import React,{useState} from 'react';
 import {Link} from 'react-router-dom';
+import {reviewedClassicGenre} from './hostedFanworkMetadata';
 import {directClassicHref} from './directClassicModel';
 import {isHistoricalFanfiction,MODERN_FANFICTION_LINKS} from './palaceFanfictionDiscovery';
 import {
@@ -7,6 +8,12 @@ import {
  fanfictionRatingLabel,filterModernFanfiction
 } from './fanfictionMetadata';
 import './palace-fanfiction-shelf.css';
+
+function shelfGuide(work){
+ const guide=historicFanfictionGuide(work);
+ if(!reviewedClassicGenre(work))return guide;
+ return {...guide,rating:work.rating,tags:(work.work_tags||[]).map(row=>row.tags).filter(Boolean)};
+}
 
 function FanfictionGuide({guide}){
  const visible=guide.tags.slice(0,4);
@@ -39,7 +46,7 @@ export default function PalaceFanfictionShelf({archiveWorks=[],showHistorical=tr
  const historic=archiveWorks.filter(work=>work.is_archive&&isHistoricalFanfiction(work))
   .filter(work=>{
    if(animeOnly)return false;
-   const guide=historicFanfictionGuide(work);
+   const guide=shelfGuide(work);
    return (rating==='all'||guide.rating===rating)&&(!needle||
     [work.title,work.creator_name,work.summary,...guide.tags.map(t=>t.name)].filter(Boolean).join(' ').toLowerCase().includes(needle));
   });
@@ -56,7 +63,7 @@ export default function PalaceFanfictionShelf({archiveWorks=[],showHistorical=tr
    <p className="eyebrow">FANFICTION · OLD WORLDS, NEW STORIES</p>
    <h2 id="palace-fanfiction-shelf-title">{inFandomAtlas?'Fanfiction across the fandoms':'Modern fanfiction'} · {MODERN_FANFICTION_LINKS.length} stories to explore</h2>
    <p>{inFandomAtlas?'Explore original-author fanfiction links by fandom, genre and rating. Choose fandoms in the Atlas to narrow these recommendations; member-published stories are listed separately in the crossover search.':'Discover modern fanfictions at their authors\' original websites, with ratings, fandom tags and content notes. Palace-hosted and member fanfiction appears in the next section below.'}</p>
-   <p className="palace-fanfiction-catalogue-total" role="status"><strong>{MODERN_FANFICTION_LINKS.length} linked modern fanfics</strong> · {inFandomAtlas?'2 historical fanfics hosted in Reading Rooms':archiveWorks.filter(work=>work.is_archive&&isHistoricalFanfiction(work)).length+' hosted historical fanfics'} · Select a story below to read at its original source</p>
+   <p className="palace-fanfiction-catalogue-total" role="status"><strong>{MODERN_FANFICTION_LINKS.length} linked modern fanfics</strong> · {inFandomAtlas?'2 historical fanfics hosted in Reading Rooms':archiveWorks.filter(work=>work.is_archive&&isHistoricalFanfiction(work)).length+' hosted historical works'} · Select a story below to read at its original source</p>
    {!inFandomAtlas&&<p className="palace-fanfiction-atlas-jump"><Link to="/fandoms?section=fanfiction">Explore these fanfics by fandom →</Link></p>}
    {inFandomAtlas&&fandomNames.length>0&&<p className="palace-fanfiction-selected-worlds">Matching {fandomMatch==='all'?'all':'any'} selected fandoms: {fandomNames.join(' · ')}</p>}
   </header>
@@ -72,13 +79,14 @@ export default function PalaceFanfictionShelf({archiveWorks=[],showHistorical=tr
   </div>
   {inFandomAtlas&&<div className="palace-fanfiction-atlas-links"><Link to="/reading?section=fanfiction">View fanfiction alongside Palace-hosted member stories</Link><span>Historical fanfiction:</span><Link to="/classic/old-friends-and-new-fancies-sybil-g-brinton">Old Friends and New Fancies</Link><Link to="/classic/the-adventure-of-the-two-collaborators-j-m-barrie">The Adventure of the Two Collaborators</Link></div>}
   {showHistorical&&historic.length>0&&<div className="palace-fanfiction-group">
-   <h3>Read here · historical fanfiction</h3>
+   <h3>Read here · historical works</h3>
    <div className="palace-fanfiction-grid">
     {historic.map(work=><article key={work.id} className="palace-fanfiction-entry">
      <small>PUBLIC DOMAIN · HOSTED ON THE PALACE</small>
      <strong>{work.title}</strong>
      <span>by {work.creator_name||work.profiles?.display_name||'Historical author'}</span>
-     <FanfictionGuide guide={historicFanfictionGuide(work)}/>
+     {reviewedClassicGenre(work)&&<span>{reviewedClassicGenre(work)}</span>}
+     <FanfictionGuide guide={shelfGuide(work)}/>
      <p>{work.summary}</p>
      <Link className="palace-fanfiction-historic-link" to={directClassicHref(work)}>Open the complete work →</Link>
     </article>)}

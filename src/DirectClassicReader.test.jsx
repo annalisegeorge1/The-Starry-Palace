@@ -40,3 +40,13 @@ it('ignores a delayed edition response after navigation to a different book',asy
  expect(screen.getByRole('heading',{name:/isn't available/})).toBeTruthy();
  expect(openHostedClassic.mock.calls).toEqual([['first'],['second']]);
 });
+
+it('keeps the reviewed literary classification from the archive card through the reader',async()=>{
+ const slug='alice-in-blunderland-john-kendrick-bangs';
+ openHostedClassic.mockResolvedValue({record:{id:'test',slug,category:'historical_fanfiction',title:'Alice in Blunderland',minimum_reader_age:13},
+  text:{body_text:'Chapter I\n\nA synthetic page.'}});
+ render(<MemoryRouter initialEntries={['/classic/'+slug]}><Routes><Route path="/classic/:slug" element={<DirectClassicReader Frame={React.Fragment}/>}/></Routes></MemoryRouter>);
+ expect((await screen.findByRole('link',{name:'Back to Reading Rooms'})).getAttribute('href')).toBe('/reading');
+ expect(screen.getByText(/Literary satire ·/)).toBeTruthy();
+ expect(screen.getByLabelText('Literary tags')).toBeTruthy();
+});

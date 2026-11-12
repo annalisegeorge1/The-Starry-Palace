@@ -78,7 +78,7 @@ describe('Fanfiction section contains rights-aware historical and modern discove
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{query:'Bonnie Bennett',rating:'teen'}).map(w=>w.id)).toContain('simplynia-irresistible');
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{rating:'mature'}).map(w=>w.id)).toContain('ken1245632-naruto-dragon-chronicles');
   expect(filterModernFanfiction(MODERN_FANFICTION_LINKS,{rating:'not_rated'}).some(w=>w.id==='dawn-home-alone')).toBe(true);
-  expect(shelf).toContain('<FanfictionGuide guide={historicFanfictionGuide(work)}/>');
+  expect(shelf).toContain('<FanfictionGuide guide={shelfGuide(work)}/>');
   expect(shelf).toContain('modernFanfictionGuide(work)');
   expect(hostedModel).toContain('archiveFanfictionTags(record)');
  });
