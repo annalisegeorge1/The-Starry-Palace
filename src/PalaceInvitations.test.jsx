@@ -11,7 +11,7 @@ afterEach(()=>cleanup());
 it('invites readers to an age-checked signup, never to an admin-created user or token callback',()=>{
  render(<MemoryRouter><PalaceInvitationLanding Frame={Frame}/></MemoryRouter>);
  expect(screen.getByRole('heading',{name:'The gates have opened for you.'})).toBeTruthy();
- expect(screen.getByRole('link',{name:'Create my Palace chamber'}).getAttribute('href')).toBe('/login?mode=signup');
+ expect(screen.getByRole('link',{name:'Accept my invitation'}).getAttribute('href')).toBe('/login?mode=signup');
  expect(screen.getByText(/Membership is for people aged 13 or older/)).toBeTruthy();
  expect(screen.getByRole('link',{name:'Already a member? Sign in'}).getAttribute('href')).toBe('/login');
  expect(document.body.textContent).not.toMatch(/skip age|bypass the age check/i);

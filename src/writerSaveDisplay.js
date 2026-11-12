@@ -3,6 +3,8 @@
  */
 export function writerSaveDisplay(message='',dirty=false,recoveryAvailable=true){
  const value=String(message||'').trim();
+ if(value==='Chapter changed or access lost · export draft')return {label:value,phase:'attention'};
+ if(value==='Saving to Palace…')return {label:value,phase:'pending'};
  if(dirty){
   if(/failed|unavailable|cannot|not completed/i.test(value)){
    return {label:recoveryAvailable?'Cloud save failed · device copy kept':'Cloud save failed · download backup',phase:'attention'};

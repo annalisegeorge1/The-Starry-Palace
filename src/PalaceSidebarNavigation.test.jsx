@@ -25,7 +25,7 @@ describe('restored familiar Palace navigation',()=>{
   mount();
   const main=screen.getByRole('navigation',{name:'Main Palace rooms'});
   const other=screen.getByRole('navigation',{name:'Other Palace rooms'});
-  expect(dividePalaceRooms(rooms).primary).toHaveLength(4);
+  expect(dividePalaceRooms(rooms).primary.map(room=>room.id)).toEqual(['reading','writing','life','library','palace']);
   expect([...main.querySelectorAll('.full-nav-room>a'),...other.querySelectorAll('.full-nav-room>a')]).toHaveLength(rooms.length);
   expect(within(other).getByRole('link',{name:/Royal Treasury/}).getAttribute('href')).toBe('/treasury');
   expect(screen.queryByRole('button',{name:/All sections|More Palace rooms/})).toBeNull();

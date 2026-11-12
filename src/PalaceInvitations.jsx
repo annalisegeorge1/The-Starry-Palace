@@ -28,17 +28,16 @@ function InvitationPanel({children,Frame,title,eyebrow='A LETTER FROM THE PALACE
 }
 
 export function PalaceInvitationLanding({Frame}){
+ const {session,loading}=useAuth();
  return <InvitationPanel Frame={Frame} title="The gates have opened for you.">
    <p className="palace-invite-poem">Some stories begin with a door.<br/>Yours begins beneath the stars.</p>
    <p>You've been invited to discover The Starry Palace: a home for readers, writers and artists, where your stories and imagination have a place to shine.</p>
-   <div className="palace-invite-feature">
-     <strong>A world of stories awaits</strong>
-     <p>✦ Explore the Reading Rooms<br/>✦ Share your creations<br/>✦ Find a chamber among the stars</p>
-   </div>
    <p className="palace-invite-age">Membership is for people aged 13 or older. You'll enter your own date of birth privately during registration. An invitation does not bypass this requirement.</p>
    <div className="palace-invite-actions">
-     <Link className="palace-invite-primary" to="/login?mode=signup">Create my Palace chamber</Link>
-     <Link to="/login">Already a member? Sign in</Link>
+     {!loading&&(session?<Link className="palace-invite-primary" to="/chamber">Enter my Chamber</Link>:<>
+      <Link className="palace-invite-primary" to="/login?mode=signup">Accept my invitation</Link>
+      <Link to="/login">Already a member? Sign in</Link>
+     </>)}
      <Link to="/reading">Explore public stories first</Link>
    </div>
  </InvitationPanel>;
