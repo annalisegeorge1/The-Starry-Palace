@@ -29,3 +29,17 @@ it('keeps appreciation icons compact and decorative beside their button text',()
  expect(container.querySelector('svg').getAttribute('width')).toBe('24');
  expect(container.querySelector('svg').getAttribute('aria-hidden')).toBe('true');
 });
+it('offers only the owner’s invitation frame and preserves the existing collection filters',async()=>{
+ const base={user_id:'member',unlocks:{}};
+ const saved=vi.fn(),view=render(<ChamberFramePicker decor={base} onSaved={saved}/>);
+ expect(screen.queryByRole('button',{name:/Starforged Circlet/})).toBeNull();
+ view.rerender(<ChamberFramePicker decor={{...base,invitation_frame:'starforged-circlet'}} onSaved={saved}/>);
+ expect(screen.queryByRole('button',{name:/Moonlit Heirloom/})).toBeNull();
+ fireEvent.click(screen.getByRole('button',{name:/Classic frames/}));
+ expect(screen.queryByRole('button',{name:/Starforged Circlet/})).toBeNull();
+ fireEvent.click(screen.getByRole('button',{name:/All frames/}));
+ fireEvent.click(screen.getByRole('button',{name:/Starforged Circlet/}));
+ fireEvent.click(screen.getByRole('button',{name:'Wear this frame'}));
+ await waitFor(()=>expect(saved).toHaveBeenCalled());
+ expect(api.save).toHaveBeenCalledWith('starforged-circlet');
+});

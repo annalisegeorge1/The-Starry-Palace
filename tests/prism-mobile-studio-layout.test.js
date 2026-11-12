@@ -22,7 +22,7 @@ describe('Prism Atelier mobile refinement preserves real member choices',()=>{
   expect(studio).toContain('Original Palace theme');
  });
  it('retains frames, their unlock checks and saving event',()=>{
-  expect(frames).toContain('CHAMBER_FRAMES.filter(');
+  expect(frames).toContain('visibleFrames=frames.filter(');
   expect(frames).toContain('visibleFrames.map(');
   expect(frames).toContain('aria-label="Frame collections"');
   expect(frames).toContain('chamberFrameUnlocked(frame,decor?.unlocks)');
