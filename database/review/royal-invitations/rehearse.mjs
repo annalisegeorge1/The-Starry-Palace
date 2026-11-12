@@ -28,6 +28,21 @@ try {
  await query(await readFile(new URL('./recipient-api.sql',import.meta.url),'utf8'));
  await query(await readFile(new URL('./dispatch-api.sql',import.meta.url),'utf8'));
  console.log('PostgreSQL',await val('show server_version'));
+ await check('Approved first Desk holder bootstrap is idempotent and never enables sealed issuing',async()=>{
+  const syntheticOwner='50c3246a-db88-4bdd-a355-4e6562ebf744';
+  await query('create table public.profiles(id uuid primary key,username text not null)');
+  await query("insert into auth.users(id,email,email_confirmed_at,created_at,banned_until) values($1,'owner-test@example.invalid',now(),now()-interval '1 month',null)",[syntheticOwner]);
+  await query("insert into private.member_age values($1,current_date-interval '25 years')",[syntheticOwner]);
+  await query("insert into public.profiles values($1,'TheBlueMoonJune')",[syntheticOwner]);
+  const script=await readFile(new URL('./initial-desk-holder.review.sql',import.meta.url),'utf8');
+  await query(script);
+  await query(script);
+  assert.equal(await val("select count(*)::int from royal_invitation.issuers where member_id=$1 and kind='desk' and enabled",[syntheticOwner]),1);
+  assert.equal(await val("select count(*)::int from royal_invitation.issuers where kind='desk'"),1);
+  const gates=(await query('select member_sending,recipient_claims from royal_invitation.policy')).rows[0];
+  assert.equal(gates.member_sending,false);
+  assert.equal(gates.recipient_claims,false);
+ });
  async function member(email,{age=25,verified=true,old=false}={}){
    const id=randomUUID();await query("insert into auth.users values($1,$2,case when $3 then now() end,now() - case when $4 then interval '1 year' else interval '0' end,null)",[id,email,verified,old]);
    await query("insert into private.member_age values($1,current_date-make_interval(years=>$2))",[id,age]);return id;
