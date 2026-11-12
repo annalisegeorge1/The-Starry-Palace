@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react';
 import {Link,useParams} from 'react-router-dom';
 import ArchiveClassicReader from './ArchiveClassicReader';
 import {openHostedClassic} from './directClassicApi';
+import {reviewedClassicGenre} from './hostedFanworkMetadata';
 import {isHostedFanfiction} from './palaceFanfictionDiscovery';
 import {hostedFanfictionGuide,fanfictionRatingLabel} from './fanfictionMetadata';
 import './direct-classic-reader.css';
@@ -29,10 +30,11 @@ function ClassicEdition({slug,Frame}){
   return()=>{active=false};
  },[slug,attempt,adultRequest]);
  const current=state.slug===slug?state:{status:'loading',book:null,error:''};
- const fanwork=isHostedFanfiction(current.book?.record);
+ const classicGenre=reviewedClassicGenre(current.book?.record);
+ const fanwork=!classicGenre&&isHostedFanfiction(current.book?.record);
  const adultEdition=Number(current.book?.record?.minimum_reader_age)>=18;
  return <Frame><section className={'palace-direct-classic'+(current.status==='ready'&&current.book&&adultEdition&&!ageConfirmed?' palace-direct-classic-age-screen':'')} aria-label={fanwork?'Fanfiction reading room':'Classic reading room'}>
-  <nav className="palace-direct-classic-nav" aria-label="Reading navigation"><Link to={fanwork?'/reading?section=fanfiction':'/lost-works'}><span className="palace-direct-classic-back-icon" aria-hidden="true">‹</span><span>{fanwork?'Back to Fanfiction':'Back to Classic archive'}</span></Link></nav>
+  <nav className="palace-direct-classic-nav" aria-label="Reading navigation"><Link to={classicGenre?'/reading':fanwork?'/reading?section=fanfiction':'/lost-works'}><span className="palace-direct-classic-back-icon" aria-hidden="true">‹</span><span>{classicGenre?'Back to Reading Rooms':fanwork?'Back to Fanfiction':'Back to Classic archive'}</span></Link></nav>
   {current.status==='loading'&&<div className="palace-direct-classic-status" role="status"><span aria-hidden="true">☾</span><h1>Opening your book…</h1><p>Preparing the hosted edition and its original chapters.</p></div>}
   {current.status==='missing'&&<div className="palace-direct-classic-status" role="status"><h1>This hosted edition isn't available to read here.</h1><p>It may be unavailable or awaiting publication and rights review.</p><Link to="/reading?section=fanfiction">Explore available fanfiction →</Link></div>}
   {current.status==='error'&&<div className="palace-direct-classic-status" role="alert"><h1>We couldn't open this edition.</h1><p>The Palace could not load this edition. Try again, or choose another book in Reading Rooms.</p><button type="button" onClick={()=>setAttempt(value=>value+1)}>Try again</button> <Link to="/reading">Return to Reading Rooms →</Link></div>}
@@ -47,10 +49,10 @@ function ClassicEdition({slug,Frame}){
  </div>}
   {current.status==='ready'&&current.book&&(!adultEdition||ageConfirmed)&&current.book.text&&<><h1 className="palace-direct-classic-screenreader-title">{current.book.record.title}</h1>
    {isHostedFanfiction(current.book.record)&&<details className="palace-historic-fanfiction-notes">
-    <summary>{current.book.record.category==='licensed_fanfiction'?'Licensed fan-made work':'Historical fanfiction'} · {fanfictionRatingLabel(hostedFanfictionGuide(current.book.record))} · Tags &amp; notes</summary>
+    <summary>{classicGenre||(current.book.record.category==='licensed_fanfiction'?'Licensed fan-made work':'Historical fanfiction')} · {fanfictionRatingLabel(hostedFanfictionGuide(current.book.record))} · Tags &amp; notes</summary>
     <div>
      <p>{current.book.record.category==='licensed_fanfiction'?'Hosted with the original fan writer’s recorded reuse terms. The underlying franchise remains the property of its respective rightsholders.':'Public-domain historical text.'} Ratings follow the recorded source or editorial classification.</p>
-     <div aria-label="Fanfiction tags">{hostedFanfictionGuide(current.book.record).tags.map(tag=><span key={tag.category+tag.name}>{tag.name}</span>)}</div>
+     <div aria-label={classicGenre?'Literary tags':'Fanfiction tags'}>{hostedFanfictionGuide(current.book.record).tags.map(tag=><span key={tag.category+tag.name}>{tag.name}</span>)}</div>
     </div>
    </details>}
    <ArchiveClassicReader key={current.book.record.id} record={current.book.record} text={current.book.text}/></>}
