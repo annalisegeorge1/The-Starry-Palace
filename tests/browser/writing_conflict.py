@@ -1,6 +1,7 @@
 """Two isolated browser contexts, real editor and client, synthetic REST responses only."""
 import re
 import subprocess
+import tempfile
 from datetime import datetime, timedelta
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
@@ -183,7 +184,8 @@ with sync_playwright() as playwright:
     dialog.get_by_role("button", name="Keep a device copy and leave").click()
     expect(a).to_have_count(0)
     assert "This draft survived a full device" in first.evaluate("Object.entries(localStorage).filter(([k])=>k.startsWith('palace-recovery:c1:')).map(([,v])=>v).join()")
-    context = browser.new_context()
+    device = tempfile.TemporaryDirectory()
+    context = playwright.chromium.launch_persistent_context(device.name, channel="chrome")
     left = install_fixture(context, chapter["body_html"])
     right = context.new_page()
     right.goto(left.url)
@@ -221,12 +223,16 @@ with sync_playwright() as playwright:
     left.get_by_role("button", name="Confirm discard", exact=True).click()
     assert left.evaluate("(key) => localStorage.getItem(key)", chosen) is None
     expect(left.get_by_role("button", name="Download recovery .txt")).to_be_visible()
-    left.reload()
+    context.close()
+    context = playwright.chromium.launch_persistent_context(device.name, channel="chrome")
+    left = install_fixture(context, chapter["body_html"])
     with left.expect_download() as remaining:
         left.get_by_role("button", name="Download recovery .txt").click()
     remaining_text = Path(remaining.value.path()).read_text()
     for draft in ("First tab private draft", "Second tab private draft"):
         assert (draft in remaining_text) == (draft not in discarded_body)
+    context.close()
+    device.cleanup()
     # Reconnect a detached network request, then navigate while a save is in flight.
     reject_write = False
     offline = install_fixture(browser.new_context(), chapter["body_html"])
