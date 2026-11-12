@@ -201,3 +201,16 @@ html[data-palace-theme="midnight"] :is(.archive-classic-dialog,.archive-classic-
 html[data-palace-theme="daylight"] :is(.archive-classic-dialog,.archive-classic-dialog .palace-dialog-body)::-webkit-scrollbar-thumb{
  background:#a59ac5;border-radius:8px;
 }
+
+.classic-appearance-disclosure > summary {
+ min-height: 44px;
+ box-sizing: border-box;
+ padding: 12px 14px;
+ border: 1px solid var(--palace-glass-edge, currentColor);
+ border-radius: 10px;
+ color: inherit;
+ cursor: pointer;
+ font-weight: 650;
+}
+.classic-appearance-disclosure > summary span { margin-inline-start: .5rem; font-weight: 400; }
+.classic-appearance-disclosure > summary:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
