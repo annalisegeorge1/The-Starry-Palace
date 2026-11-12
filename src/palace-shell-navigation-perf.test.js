@@ -29,6 +29,11 @@ describe('Fast and accessible Palace navigation',()=>{
   expect(main).toContain("React.useEffect(()=>setNavOpen(false),[location.pathname,location.search]);");
   expect(css).toContain('.palace-shell.nav-open .full-sidebar :is(a,button,summary):focus-visible');
  });
+ it('keeps Royal Invitations in My Palace and protects the member-specific route',()=>{
+  expect(main).toContain("['Royal Invitations','/my-invitations']");
+  expect(main).toContain('<Route path="/my-invitations" element={<ProtectedRoute>');
+  expect(main).toContain('PalaceMyRoyalInvitations Frame={Frame}');
+ });
  it('preserves eager core routes and memoizes stable story collections',()=>{
   expect(main).toContain("} from './liveRooms';");
   expect(live).toContain("const allReadingWorks=useMemo(");

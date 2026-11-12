@@ -2,7 +2,7 @@ import React from 'react';
 import {afterEach,expect,it,vi} from 'vitest';
 import {cleanup,fireEvent,render,screen} from '@testing-library/react';
 import {MemoryRouter} from 'react-router-dom';
-import {PalaceInvitationLanding,PalaceInvitationAdmin,getInvitationDispatchEndpoint,PALACE_PUBLIC_INVITATION_URL} from './PalaceInvitations';
+import {PalaceInvitationLanding,PalaceInvitationAdmin,PalaceMyRoyalInvitations,getInvitationDispatchEndpoint,PALACE_PUBLIC_INVITATION_URL} from './PalaceInvitations';
 import {renderAgeSafeInvitation} from '../supabase/functions/palace-invitations/email.ts';
 const auth=vi.hoisted(()=>({session:null,loading:false}));
 vi.mock('./auth',()=>({useAuth:()=>auth}));
@@ -62,4 +62,12 @@ it.each([true,false])('reviews the actual email and reports provider acknowledge
  await screen.findByText(accepted?/Invitation accepted by the email provider/:/could not confirm the provider accepted/);
  expect(fetcher).toHaveBeenCalledTimes(2);
  expect(input.value).toBe(accepted?'':'guest@example.invalid');
+});
+
+it('opens the member invitation guide without claiming a reward or requesting a privilege',()=>{
+ const network=vi.fn();vi.stubGlobal('fetch',network);
+ render(<MemoryRouter><PalaceMyRoyalInvitations Frame={Frame}/></MemoryRouter>);
+ expect(screen.getByRole('heading',{name:'My Royal Invitations'})).toBeTruthy();
+ expect(screen.getByText(/Member issuing and sealed welcome gifts are still being prepared/)).toBeTruthy();
+ expect(screen.queryByRole('button')).toBeNull();expect(network).not.toHaveBeenCalled();
 });

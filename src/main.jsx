@@ -346,7 +346,7 @@ function PalaceRoomIcon({name}) {
 
 const fullPalaceRooms=[
  {id:'palace',icon:'☾',label:'My Palace',path:'/chamber',private:true,sections:[
-  ['Home','/chamber'],['My chamber','/member']
+  ['Home','/chamber'],['My chamber','/member'],['Royal Invitations','/my-invitations']
  ]},
  {id:'reading',icon:'◈',label:'Reading Rooms',path:'/reading',sections:[
   ['All works','/reading'],['Fanfiction','/reading?section=fanfiction'],['Advanced search','/reading?view=search'],['Fandoms','/fandoms'],['Comics','/comics'],['Lost Works','/lost-works'],['Series','/series'],['Tags room','/tags']
@@ -664,6 +664,7 @@ const PalaceForgotPassword = React.lazy(() => import('./PalaceRecovery').then(mo
 const PalaceEmailAction = React.lazy(() => import('./PalaceRecovery').then(module => ({ default: module.PalaceEmailAction })));
 const PalaceInvitationLanding = React.lazy(() => import('./PalaceInvitations').then(module => ({ default: module.PalaceInvitationLanding })));
 const PalaceInvitationAdmin = React.lazy(() => import('./PalaceInvitations').then(module => ({ default: module.PalaceInvitationAdmin })));
+const PalaceMyRoyalInvitations = React.lazy(() => import('./PalaceInvitations').then(module => ({ default: module.PalaceMyRoyalInvitations })));
 
 function NavigationReset(){
  const location=useLocation();
@@ -846,6 +847,7 @@ function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo
  <Route path="/auth/verify" element={<React.Suspense fallback={<RouteLoading/>}><PalaceEmailAction Frame={Frame}/></React.Suspense>}/>
  <Route path="/invitation" element={<React.Suspense fallback={<RouteLoading/>}><PalaceInvitationLanding Frame={Frame}/></React.Suspense>}/>
  <Route path="/admin/invitations" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><PalaceInvitationAdmin Frame={Frame}/></React.Suspense></ProtectedRoute>}/>
+  <Route path="/my-invitations" element={<ProtectedRoute><React.Suspense fallback={<RouteLoading/>}><PalaceMyRoyalInvitations Frame={Frame}/></React.Suspense></ProtectedRoute>}/>
  <Route path="/welcome" element={<ProtectedRoute><OnboardingLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/chamber" element={<ProtectedRoute><ChamberLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/writers" element={<WriterWelcome/>}/>

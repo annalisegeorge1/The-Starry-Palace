@@ -35,12 +35,20 @@ export function PalaceInvitationLanding({Frame}){
    <p>You've been invited to discover The Starry Palace: a home for readers, writers and artists, where your stories and imagination have a place to shine.</p>
    <p className="palace-invite-age">Membership is for people aged 13 or older. You'll enter your own date of birth privately during registration. An invitation does not bypass this requirement.</p>
    <div className="palace-invite-actions">
-     {!loading&&(session?<Link className="palace-invite-primary" to="/chamber">Enter my Chamber</Link>:<>
+     {!loading&&(session?<><Link className="palace-invite-primary" to="/chamber">Enter my Chamber</Link><Link to="/my-invitations">View My Royal Invitations</Link></>:<>
       <Link className="palace-invite-primary" to="/login?mode=signup">Accept my invitation</Link>
       <Link to="/login">Already a member? Sign in</Link>
      </>)}
      <Link to="/reading">Explore public stories first</Link>
    </div>
+ </InvitationPanel>;
+}
+
+export function PalaceMyRoyalInvitations({Frame}){
+ return <InvitationPanel Frame={Frame} eyebrow="MY PALACE" title="My Royal Invitations">
+  <p>Royal Envoys are members trusted to welcome others. Readers, artists and writers can be considered for this honour regardless of follower count or publishing history.</p>
+  <p>During the supervised beta, administrators send the welcome letters. Member issuing and sealed welcome gifts are still being prepared.</p>
+  <Link to="/reading">Explore Reading Rooms</Link>
  </InvitationPanel>;
 }
 
