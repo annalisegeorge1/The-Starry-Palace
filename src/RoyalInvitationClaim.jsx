@@ -3,7 +3,8 @@ import {Link} from 'react-router-dom';
 import {supabase} from './supabase';
 
 const seals={royal:'Royal Seal',honoured:'Honoured Guest Seal',founding:'Founding Guest Seal'};
-const gifts={'seal-ornament':'Seal ornament','guest-title':'Guest title'};
+import {welcomeGifts as gifts} from './royalWelcomeGifts';
+import RoyalWelcomeChest from './RoyalWelcomeChest';
 export function readInvitationSecret(hash){
  const value=new URLSearchParams(hash.slice(1)).get('seal');
  return value&&/^[0-9a-f]{64}$/.test(value)?value:null;
@@ -24,6 +25,7 @@ export function RoyalInvitationClaim({secret,member}){
   try{
    const {data,error}=await supabase.rpc(name,args);
    if(error||!data||!Object.hasOwn(seals,data.class)||!data.accepted)throw new Error();
+   if(name==='royal_invitation_welcome_gift'&&data.gift!==args.p_choice)throw new Error();
    if(mounted.current)setKeepsake(data);
   }catch{
    if(mounted.current)setMessage(name==='royal_invitation_claim'
@@ -41,10 +43,7 @@ export function RoyalInvitationClaim({secret,member}){
  return <section aria-label="Your sealed invitation" aria-busy={busy}>
   {keepsake?<><h2>{seals[keepsake.class]}</h2><p>Your private keepsake records your acceptance on {new Date(keepsake.accepted).toLocaleDateString()}.</p>
    {keepsake.message&&<blockquote>{keepsake.message}</blockquote>}
-   {keepsake.gift?<p>Welcome gift selected · {gifts[keepsake.gift]}</p>:<fieldset disabled={busy}><legend>Choose one welcome gift</legend>
-    {Object.entries(gifts).map(([choice,label])=><button type="button" key={choice}
-     onClick={()=>request('royal_invitation_welcome_gift',{p_choice:choice})}>{label}</button>)}
-   </fieldset>}
+   {keepsake.gift?<p>Welcome gift selected · {gifts[keepsake.gift]}</p>:<RoyalWelcomeChest busy={busy} onChoose={choice=>request('royal_invitation_welcome_gift',{p_choice:choice})}/>}
    <p><Link to="/chamber">Enter my Chamber</Link></p>
   </>:<><p>Accept with the verified account that received this letter. Your keepsake is private.</p>
     <button type="button" disabled={busy} className="palace-invite-primary"

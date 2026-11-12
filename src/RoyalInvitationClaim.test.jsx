@@ -23,7 +23,7 @@ it('requires an explicit action and a confirmed server result before recognising
  rpc.mockResolvedValueOnce({data:receipt});fireEvent.click(screen.getByRole('button',{name:'Accept my Royal Invitation'}));
  await screen.findByRole('heading',{name:'Founding Guest Seal'});
  expect(rpc).toHaveBeenLastCalledWith('royal_invitation_claim',{p_token:secret});
- rpc.mockResolvedValueOnce({data:{...receipt,gift:'guest-title'}});
- fireEvent.click(screen.getByRole('button',{name:'Guest title'}));
- await screen.findByText(/Welcome gift selected · Guest title/);
+ rpc.mockResolvedValueOnce({data:{...receipt,gift:'celestial-dawn'}});
+ fireEvent.click(screen.getByRole('button',{name:/Celestial Dawn/}));
+ await screen.findByText(/Welcome gift selected · Celestial Dawn/);
 });

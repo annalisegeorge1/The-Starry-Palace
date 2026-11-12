@@ -37,7 +37,7 @@ create table royal_invitation.letters (
  issued_at timestamptz not null default now(), expires_at timestamptz not null,
  state text not null default 'pending' check(state in ('pending','redeemed','expired','revoked')),
  accepted_by uuid unique references auth.users(id), accepted_at timestamptz,
- welcome_gift text check (welcome_gift in ('seal-ornament','guest-title')),
+ welcome_gift text check (welcome_gift in ('starforged-circlet','moonlit-heirloom','rose-of-the-court','royal-midnight','celestial-dawn')),
  check ((state='redeemed')=(accepted_by is not null)),
  check ((accepted_at is not null)=(accepted_by is not null)),
  check (welcome_gift is null or state='redeemed'),
@@ -134,7 +134,7 @@ create function royal_invitation.choose_gift(actor uuid, choice text) returns bo
  language plpgsql set search_path='' as $$
 declare letter uuid;
 begin
- if not royal_invitation.eligible(actor) or choice is null or choice not in ('seal-ornament','guest-title') then return false; end if;
+ if not royal_invitation.eligible(actor) or choice is null or choice not in ('starforged-circlet','moonlit-heirloom','rose-of-the-court','royal-midnight','celestial-dawn') then return false; end if;
  update royal_invitation.letters set welcome_gift=choice where accepted_by=actor and state='redeemed'
    and welcome_gift is null returning id into letter;
  if not found then return exists(select 1 from royal_invitation.letters where accepted_by=actor and welcome_gift=choice); end if;

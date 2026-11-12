@@ -2,7 +2,8 @@ import React,{useState,useEffect,useRef} from 'react';
 import {Link} from 'react-router-dom';
 import {supabase} from './supabase';
 const classes={royal:'Royal Invitation',honoured:'Honoured Guest Invitation',founding:'Founding Invitation'};
-const gifts={'seal-ornament':'Seal ornament','guest-title':'Guest title'};
+import {welcomeGifts as gifts} from './royalWelcomeGifts';
+import RoyalWelcomeChest from './RoyalWelcomeChest';
 export default function RoyalEnvoyDesk({endpoint,session}){
  const [record,setRecord]=useState(null),[refresh,setRefresh]=useState(0);
  const [loading,setLoading]=useState(true),[recordError,setRecordError]=useState(false);
@@ -54,14 +55,14 @@ export default function RoyalEnvoyDesk({endpoint,session}){
   {record.keepsake&&<section><h3>My private keepsake</h3>
    <p>{classes[record.keepsake.class]} · Accepted {new Date(record.keepsake.accepted).toLocaleDateString()}</p>
    {record.keepsake.message&&<blockquote>{record.keepsake.message}</blockquote>}
-   {record.keepsake.gift?<p>Welcome gift selected · {gifts[record.keepsake.gift]}</p>:<fieldset disabled={busy}><legend>Choose your welcome gift</legend>
-   {Object.entries(gifts).map(([choice,label])=><button key={choice} type="button" onClick={()=>run(async()=>{
-     await rpc('royal_invitation_welcome_gift',{p_choice:choice});return 'Your choice has been saved.';
-   })}>{label}</button>)}</fieldset>}
+   {record.keepsake.gift?<p>Welcome gift selected · {gifts[record.keepsake.gift]}</p>:<RoyalWelcomeChest busy={busy} onChoose={choice=>run(async()=>{
+    const receipt=await rpc('royal_invitation_welcome_gift',{p_choice:choice});
+    if(receipt?.gift!==choice)throw new Error();
+    return 'Your choice has been saved.';
+   })}/>}
    <Link to="/palace-life">Visit Palace Life</Link></section>}
   {(record.envoy||record.desk)&&<p>{record.desk?'Invitation Desk':'Royal Envoy'} · {record.available} seals available · {record.reserved} reserved · {record.accepted} accepted</p>}
-  {(record.envoy||record.accepted>0)&&<p>Envoy milestones · {record.accepted} verified acceptances.
-   {record.accepted>=10?' Celestial Patron milestone reached.':record.accepted>=5?' Starward Ambassador milestone reached.':record.accepted>=1?' Keeper of the Gate milestone reached.':' Keeper of the Gate begins with your first accepted letter.'}</p>}
+  {(record.envoy||record.accepted>0)&&<p>Envoy milestones · {record.accepted} verified acceptances. Permanent achievement awards will appear after the Palace activates them.</p>}
   {(canIssue||review)&&<form onSubmit={event=>{event.preventDefault();
    if(!review){setReview({email:email.trim(),invitationClass:kind,requestId:crypto.randomUUID(),greeting:greeting.trim(),message:message.trim()});return}
    run(async()=>{

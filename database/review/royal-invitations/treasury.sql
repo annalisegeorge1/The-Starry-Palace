@@ -2,7 +2,7 @@
 -- Bind each key only to an approved, finished, invitation-exclusive gift.
 begin;
 create table royal_invitation.cosmetics(
- benefit text primary key check(benefit in ('royal','honoured','founding','seal-ornament','guest-title')),
+ benefit text primary key check(benefit in ('royal','honoured','founding','starforged-circlet','moonlit-heirloom','rose-of-the-court','royal-midnight','celestial-dawn')),
  gift_id uuid unique not null references public.virtual_gifts(id)
 );
 revoke all on royal_invitation.cosmetics from public,anon,authenticated,service_role;

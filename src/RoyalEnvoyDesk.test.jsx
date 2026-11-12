@@ -23,7 +23,7 @@ it('confirms cost and recipient before spending; ambiguous receipt retains the r
  expect(JSON.parse(send.mock.calls[1][1].body).message).toBe('Welcome to the Reading Rooms.');
 });
 it('shows a recipient their keepsake and reception without presenting issuer controls',async()=>{
- mount({...member,envoy:false,available:0,keepsake:{class:'honoured',accepted:'2026-11-12',gift:'seal-ornament',message:'Welcome!'}});
+ mount({...member,envoy:false,available:0,keepsake:{class:'honoured',accepted:'2026-11-12',gift:'starforged-circlet',message:'Welcome!'}});
  expect(await screen.findByText('My private keepsake')).toBeTruthy();
  expect(screen.getByText('Welcome!')).toBeTruthy();expect(screen.getByRole('link',{name:'Visit Palace Life'}).getAttribute('href')).toBe('/palace-life');
  expect(screen.queryByLabelText('Recipient email')).toBeNull();

@@ -92,9 +92,9 @@ try {
    assert.equal((await balance()).accepted,1);assert.equal((await balance()).available,1);
  });
  await check('One welcome choice survives retries; private summary exposes no email or token',async()=>{
-  assert.equal(await rpc('choose_gift',[invited,'guest-title']),true);assert.equal(await rpc('choose_gift',[invited,'guest-title']),true);
-  assert.equal(await rpc('choose_gift',[invited,'seal-ornament']),false);assert.equal(await rpc('choose_gift',[visitor,'guest-title']),false);
-  const s=await rpc('member_summary',[invited]);assert.equal(s.keepsake.gift,'guest-title');assert.equal(s.keepsake.class,'royal');assert.doesNotMatch(JSON.stringify(await balance()),/@|token|recipient_binding/);
+  assert.equal(await rpc('choose_gift',[invited,'celestial-dawn']),true);assert.equal(await rpc('choose_gift',[invited,'celestial-dawn']),true);
+  assert.equal(await rpc('choose_gift',[invited,'starforged-circlet']),false);assert.equal(await rpc('choose_gift',[visitor,'celestial-dawn']),false);
+  const s=await rpc('member_summary',[invited]);assert.equal(s.keepsake.gift,'celestial-dawn');assert.equal(s.keepsake.class,'royal');assert.doesNotMatch(JSON.stringify(await balance()),/@|token|recipient_binding/);
  });
  await check('Existing account admission and expired letter cannot be claimed',async()=>{
   const a=letter(desk,'honoured','reader@example.invalid');await issue(a);await assert.rejects(()=>rpc('redeem',[visitor,a[4]]),/Invitation unavailable/);
@@ -105,7 +105,7 @@ try {
  await check('Suspension revokes pending letters and preserves acquired honours',async()=>{
   await rpc('manage_envoy',[desk,envoy,false]);await assert.rejects(()=>issue(letter()),/Issuing unavailable/);
   assert.equal((await balance()).reserved,0);assert.equal((await balance()).accepted,1);
-  assert.equal((await rpc('member_summary',[invited])).keepsake.gift,'guest-title');
+  assert.equal((await rpc('member_summary',[invited])).keepsake.gift,'celestial-dawn');
  });
  await check('Public RPC derives the recipient from the session and preserves a private keepsake',async()=>{
   const a=letter(desk,'honoured','honoured@example.invalid');await issue(a);
@@ -120,8 +120,8 @@ try {
   assert.equal((await val('select public.royal_invitation_my_record()')).keepsake,null);
   await query("select set_config('request.jwt.claim.sub',$1,false)",[guest]);
   assert.equal((await val('select public.royal_invitation_claim($1)',[token])).class,'honoured');
-  assert.equal((await val("select public.royal_invitation_welcome_gift('seal-ornament')")).gift,'seal-ornament');
-  assert.equal((await val('select public.royal_invitation_my_record()')).keepsake.gift,'seal-ornament');
+  assert.equal((await val("select public.royal_invitation_welcome_gift('starforged-circlet')")).gift,'starforged-circlet');
+  assert.equal((await val('select public.royal_invitation_my_record()')).keepsake.gift,'starforged-circlet');
   await query('reset role');
  });
  await check('Service-only dispatch reuses the original quota ledger, one seal and one provider receipt',async()=>{
@@ -142,7 +142,7 @@ try {
   assert.equal((await balance()).reserved,1);assert.equal((await balance()).accepted,1);
  });
  await check('Treasury grants roll back with a missing mapping and populate existing inventory once',async()=>{
-  await query(`create table public.virtual_gifts(id uuid primary key,art_status text,reward_eligible boolean);
+  await query(`create table public.virtual_gifts(id uuid primary key default gen_random_uuid(),art_status text,reward_eligible boolean,gift_key text unique,catalogue_number integer unique,name text,description text,court_name text,collection_type text,catalogue_status text,upgrade_copies integer);
    create table public.gift_grant_ledger(user_id uuid,gift_id uuid,tier text,quantity integer,source_type text,source_key text,note text,unique(user_id,source_type,source_key));
    create table public.user_gift_inventory(user_id uuid,gift_id uuid,tier text,copies integer,updated_at timestamptz,primary key(user_id,gift_id,tier));`);
   await query(await readFile(new URL('./inventory-trigger-fixture.sql',import.meta.url),'utf8'));
@@ -150,14 +150,40 @@ try {
   const a=letter(desk,'founding','treasury@example.invalid');await issue(a);const guest=await member(a[3]);
   await assert.rejects(()=>rpc('redeem',[guest,a[4]]),/Invitation benefit unavailable/);
   assert.equal(await val('select state from royal_invitation.letters where id=$1',[a[1]]),'pending');
-  for(const benefit of ['founding','guest-title']){
-   const id=randomUUID();await query("insert into public.virtual_gifts values($1,'final',false)",[id]);
-   await query('insert into royal_invitation.cosmetics values($1,$2)',[benefit,id]);
-  }
+  await query(await readFile(new URL('./catalogue.sql',import.meta.url),'utf8'));
+  assert.equal(await val('select count(*)::int from royal_invitation.cosmetics'),8);
+  await assert.rejects(()=>rpc('redeem',[guest,a[4]]),/Invitation benefit unavailable/);
+  await query("update public.virtual_gifts set art_status='final'"); // approve only in this disposable cluster
+  await query(await readFile(new URL('./exclusive-inventory.sql',import.meta.url),'utf8'));
   await rpc('redeem',[guest,a[4]]);await rpc('redeem',[guest,a[4]]);
-  await rpc('choose_gift',[guest,'guest-title']);await rpc('choose_gift',[guest,'guest-title']);
+  await rpc('choose_gift',[guest,'celestial-dawn']);await rpc('choose_gift',[guest,'celestial-dawn']);
   assert.equal(await val('select count(*)::int from public.gift_grant_ledger'),2);
   assert.equal(await val('select sum(copies)::int from public.user_gift_inventory where user_id=$1',[guest]),2);
+ });
+ await check('Every class and welcome choice grants once, persists and equips only for the entitled member',async()=>{
+  await query(await readFile(new URL('./atelier-fixture.sql',import.meta.url),'utf8'));
+  await query(await readFile(new URL('./atelier.sql',import.meta.url),'utf8'));
+  for(const kind of ['royal','honoured','founding'])for(const [index,choice] of ['starforged-circlet','moonlit-heirloom','rose-of-the-court','royal-midnight','celestial-dawn'].entries()){
+   const a=letter(desk,kind,kind+'-'+choice+'@example.invalid');await issue(a);const user=await member(a[3]);
+   await rpc('redeem',[user,a[4]]);
+   const results=await Promise.all([rpc('choose_gift',[user,choice]),rpc('choose_gift',[user,choice],other)]);
+   assert.deepEqual(results,[true,true]);assert.equal(await rpc('choose_gift',[user,'invalid']),false);
+   assert.equal(await rpc('choose_gift',[user,index===0?'royal-midnight':'starforged-circlet']),false);
+   assert.equal(await val('select count(*)::int from public.user_gift_inventory where user_id=$1 and copies=1',[user]),2);
+   const wear=index<3?'select public.set_painted_chamber_frame($1)':"select public.select_chamber_prism_palette($1,'soft','harmony')";
+   await query("select set_config('request.jwt.claim.sub',$1,false)",[visitor]);
+   await assert.rejects(()=>val(wear,[choice]),/not unlocked/);
+   await query("select set_config('request.jwt.claim.sub',$1,false)",[user]);await query('set role authenticated');
+   const equipped=await val(wear,[choice]);assert.equal(equipped[index<3?'chamber_frame':'prism_palette'],choice);
+   await query('reset role');
+   const row=(await other.query('select * from public.member_chamber_decor where user_id=$1',[user])).rows[0];
+   assert.equal(row[index<3?'chamber_frame':'prism_palette'],choice);
+   if(index<3){await val(wear,[null]);assert.equal((await val(wear,[choice])).invitation_frame,choice)}
+   await assert.rejects(()=>query("delete from public.user_gift_inventory where user_id=$1",[user]),/personal/);
+   const id=await val('select gift_id from royal_invitation.cosmetics where benefit=$1',[choice]);
+   await assert.rejects(()=>query("insert into public.user_gift_inventory values($1,$2,'bronze',1,now())",[visitor,id]),/personal/);
+   await assert.rejects(()=>query("update public.user_gift_inventory set copies=0 where user_id=$1 and gift_id=$2",[user,id]),/personal/);
+  }
  });
  await check('Invalid claim attempts commit and throttle a later valid token',async()=>{
   const a=letter(desk,'royal','limited@example.invalid');await issue(a);const guest=await member(a[3]);

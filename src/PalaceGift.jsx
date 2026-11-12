@@ -1,3 +1,4 @@
+import {invitationFrames, invitationPalettes} from './royalWelcomeGifts';
 import { useId } from 'react';
 import './treasury.css';
 import {CollectibleArt} from './PalaceCollectibles';
@@ -135,6 +136,15 @@ export default function PalaceGift({gift,tier='bronze',compact=false,locked=fals
  const court=gift?.court_name||'The Starry Palace';
  const courtMeta=giftCourt(gift);
  const treasure=treasureForGift(gift);
+ const benefit=gift?.gift_key?.startsWith('royal-invitation:')?gift.gift_key.slice('royal-invitation:'.length):'';
+ if(Object.hasOwn(invitationFrames,benefit)||Object.hasOwn(invitationPalettes,benefit)||['royal','honoured','founding'].includes(benefit)){
+  return <figure className={'palace-gift-art'+(compact?' compact':'')} aria-label={name}>
+   {invitationFrames[benefit]?<img alt="" width="96" height="96" src={'/assets/royal-invitations/'+benefit+'.webp'}/>:
+    invitationPalettes[benefit]?<span aria-hidden="true">{invitationPalettes[benefit].map(color=><span key={color} style={{display:'inline-block',background:color,width:24,height:36}}/>)}</span>:
+    <span aria-hidden="true">{{royal:'♛',honoured:'✧',founding:'✦'}[benefit]}</span>}
+   <figcaption>{name}</figcaption>
+  </figure>;
+ }
  if(treasure)return <figure {...protectArt} className={`palace-gift-art protected-palace-art treasure-painting tier-${rank}${compact?' compact':''}`} aria-label={`${name}, ${rank} collection rank`}><CollectibleArt item={treasure}/>{!compact&&<figcaption><strong>{treasure.artEdition} artwork edition</strong><span>{rank} collection rank</span></figcaption>}</figure>;
  const painting=paintedFamilyForKind(kind);
  if(painting)return <figure {...protectArt} className={`palace-gift-art protected-palace-art painted-tea tier-${rank}${compact?' compact':''}${locked?' is-locked':''}`} aria-label={`${name}, ${rank} Palace collectible from ${courtMeta.name}`}><PaintedGiftArtwork key={painting.id+'-'+rank} family={painting.id} tier={rank} compact={compact}/>{!compact&&<figcaption><strong>{courtMeta.sigil} {court}</strong><span>{painting.name} watercolour · {rank}</span></figcaption>}</figure>;

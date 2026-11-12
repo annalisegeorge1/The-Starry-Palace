@@ -1,3 +1,4 @@
+import {invitationFrames} from './royalWelcomeGifts';
 import React,{useId} from 'react';
 import {PAINTED_PALACES,PAINTED_TIERS,CHAMBER_FRAMES} from './paintedCollection';
 import './painted-palace-art.css';
@@ -40,6 +41,7 @@ export function PaintedBadge({family,tier='bronze',showFrame=true}){
  </span>;
 }
 export function ChamberFrameArt({slug,size='100%',className=''}){
+ if(Object.hasOwn(invitationFrames,slug))return <img className={'painted-art painted-chamber-frame '+className} src={'/assets/royal-invitations/'+slug+'.webp'} alt="" style={{width:size,height:size}}/>;
  const frame=CHAMBER_FRAMES.find(x=>x.slug===slug);if(!frame)return null;
  return <OrnamentalFrame frame={frame} size={size} className={className}/>;
 }
