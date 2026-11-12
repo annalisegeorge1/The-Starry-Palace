@@ -1542,6 +1542,11 @@ export async function searchPublishedArchive(filters={}){
  if(args.p_min_words!==null&&args.p_max_words!==null&&args.p_min_words>args.p_max_words){
   throw new Error('The maximum word count must be greater than or equal to the minimum.');
  }
+ // Archive-only facet IDs cannot occur on member works. Dropping a required
+ // archive facet from this RPC would return unrelated member stories.
+ if(Array.isArray(filters.include)&&filters.include.some(id=>typeof id==='string'&&id.startsWith('archive-'))){
+  return {results:[],total:0,limit:args.p_limit,offset:args.p_offset};
+ }
  const {data,error}=await needClient().rpc('search_published_works_v2',args);
  if(error)throw error;
  return {results:Array.isArray(data?.results)?data.results:[],total:Math.max(0,Number(data?.total)||0),limit:args.p_limit,offset:args.p_offset};
