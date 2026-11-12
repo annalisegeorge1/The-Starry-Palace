@@ -5,6 +5,7 @@ const classes={royal:'Royal Invitation',honoured:'Honoured Guest Invitation',fou
 const gifts={'seal-ornament':'Seal ornament','guest-title':'Guest title'};
 export default function RoyalEnvoyDesk({endpoint,session}){
  const [record,setRecord]=useState(null),[refresh,setRefresh]=useState(0);
+ const [loading,setLoading]=useState(true),[recordError,setRecordError]=useState(false);
  const [email,setEmail]=useState(''),[kind,setKind]=useState('royal'),[review,setReview]=useState(null);
  const [greeting,setGreeting]=useState(''),[message,setMessage]=useState('');
  const [member,setMember]=useState(''),[action,setAction]=useState('approve');
@@ -12,7 +13,15 @@ export default function RoyalEnvoyDesk({endpoint,session}){
  const active=useRef(false);
  useEffect(()=>{
   let current=true;
-  supabase.rpc('royal_invitation_my_record').then(({data,error})=>{if(current&&!error)setRecord(data)});
+  setLoading(true);setRecordError(false);
+  supabase.rpc('royal_invitation_my_record')
+   .then(({data,error})=>{
+    if(!current)return;
+    setRecord(error?null:data);
+    setRecordError(Boolean(error)||!data);
+   })
+   .catch(()=>{if(current){setRecord(null);setRecordError(true);}})
+   .finally(()=>{if(current)setLoading(false);});
   return()=>{current=false};
  },[refresh]);
  async function run(fn){
@@ -25,10 +34,23 @@ export default function RoyalEnvoyDesk({endpoint,session}){
  async function rpc(name,args){
   const {data,error}=await supabase.rpc(name,args);if(error||data===false)throw new Error();return data;
  }
- if(!record||!(record.envoy||record.desk||record.keepsake||record.history.length))return null;
+ if(loading&&!record)return <section aria-label="My Royal Invitations" className="palace-invite-feature"><h2>My Royal Invitations</h2><p role="status">Checking your Royal Invitation privileges…</p></section>;
+ if(recordError||!record)return <section aria-label="My Royal Invitations" className="palace-invite-feature">
+  <h2>My Royal Invitations</h2>
+  <p role="status">The Royal Envoy system is being prepared. No member-issued invitation privileges are available here yet.</p>
+  <p>Royal Invitations will be awarded to approved Envoys when the secure issuing system opens. You can still explore the Palace in the meantime.</p>
+  <Link to="/reading">Explore Reading Rooms</Link>
+ </section>;
  const canIssue=record.desk||(record.envoy&&record.sending&&record.available>0);
  return <section aria-label="My Royal Invitations" className="palace-invite-feature">
   <h2>My Royal Invitations</h2>
+  {!record.envoy&&!record.desk&&!record.keepsake&&<section aria-label="Royal Envoy eligibility">
+   <h3>Royal Envoy · Not yet awarded</h3>
+   <p>Royal Invitations are a special privilege for approved members in good standing. Readers, writers and artists can all become eligible; you do not need followers or published stories.</p>
+   <p>When the Palace opens member-issued invitations, approved Envoys will be able to send a limited number of personal letters. Ordinary membership already includes the Palace's essential reading, writing and community features.</p>
+   <Link to="/guidebook">Explore the Palace Guidebook</Link>
+  </section>}
+  {record.envoy&&!record.sending&&<p role="status">Your Royal Envoy status is recognised, but sending invitations is not enabled yet.</p>}
   {record.keepsake&&<section><h3>My private keepsake</h3>
    <p>{classes[record.keepsake.class]} · Accepted {new Date(record.keepsake.accepted).toLocaleDateString()}</p>
    {record.keepsake.message&&<blockquote>{record.keepsake.message}</blockquote>}
