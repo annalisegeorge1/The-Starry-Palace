@@ -2,7 +2,7 @@ import React from 'react';
 import {afterEach,expect,it,vi} from 'vitest';
 import {cleanup,fireEvent,render,screen} from '@testing-library/react';
 import {MemoryRouter} from 'react-router-dom';
-import {PalaceInvitationLanding,PalaceInvitationAdmin,getInvitationDispatchEndpoint,PALACE_PUBLIC_INVITATION_URL} from './PalaceInvitations';
+import {PalaceInvitationLanding,PalaceInvitationAdmin,PalaceMyRoyalInvitations,getInvitationDispatchEndpoint,PALACE_PUBLIC_INVITATION_URL} from './PalaceInvitations';
 import {renderAgeSafeInvitation} from '../supabase/functions/palace-invitations/email.ts';
 const auth=vi.hoisted(()=>({session:null,loading:false}));
 vi.mock('./auth',()=>({useAuth:()=>auth}));
@@ -20,7 +20,7 @@ it('invites readers to an age-checked signup, never to an admin-created user or 
 
 it('does not show the send form to an unauthenticated or unapproved visitor',()=>{
  render(<MemoryRouter><PalaceInvitationAdmin Frame={Frame}/></MemoryRouter>);
- expect(screen.getByText(/Share an invitation link/)).toBeTruthy();
+ expect(screen.getByText(/Share an ordinary Palace welcome link/)).toBeTruthy();
  expect(screen.queryByRole('button',{name:'Review invitation'})).toBeNull();
 });
 
@@ -62,4 +62,21 @@ it.each([true,false])('reviews the actual email and reports provider acknowledge
  await screen.findByText(accepted?/Invitation accepted by the email provider/:/could not confirm the provider accepted/);
  expect(fetcher).toHaveBeenCalledTimes(2);
  expect(input.value).toBe(accepted?'':'guest@example.invalid');
+});
+
+it('clarifies that a public welcome link cannot grant Royal Invitation privileges',()=>{
+ render(<MemoryRouter><PalaceInvitationAdmin Frame={Frame}/></MemoryRouter>);
+ expect(screen.getByText(/Exclusive Royal Invitation honours require a unique/)).toBeTruthy();
+ expect(screen.getByRole('button',{name:'Copy welcome link'})).toBeTruthy();
+});
+it('links a signed-in member to the dedicated Royal Invitation hub',()=>{
+ auth.session={user:{id:'fixture-id'},access_token:'fixture'};
+ render(<MemoryRouter><PalaceInvitationLanding Frame={Frame}/></MemoryRouter>);
+ expect(screen.getByRole('link',{name:'View My Royal Invitations'}).getAttribute('href')).toBe('/my-invitations');
+});
+it('explains the member hub without exposing Envoy issuing controls to a signed-out visitor',()=>{
+ render(<MemoryRouter><PalaceMyRoyalInvitations Frame={Frame}/></MemoryRouter>);
+ expect(screen.getByRole('heading',{name:'My Royal Invitations.'})).toBeTruthy();
+ expect(screen.getByRole('link',{name:'Sign in to view your Royal Invitation status'}).getAttribute('href')).toBe('/login');
+ expect(screen.queryByRole('button',{name:'Review sealed invitation'})).toBeNull();
 });
