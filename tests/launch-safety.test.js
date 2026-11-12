@@ -685,7 +685,7 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('chapterMatchesView');
     expect(live).toContain('shownChapters');
     expect(live).toContain('CHAPTER MANAGER');
-    expect(live).toContain('<option value="ready">Ready to publish</option>');
+    expect(live).toContain('<option value="ready">Drafts with text</option>');
     expect(live).toContain('<option value="scheduled">Scheduled</option>');
     expect(live).toContain('No chapters in this view.');
     expect(polish).toContain('/* Writing Chamber chapter manager */');
@@ -1358,7 +1358,7 @@ describe('Starry Palace launch safety',()=>{
     expect(live).toContain('MY READING LENSES');
     expect(live).toContain('Private to you · never changes public discovery ranking');
     expect(live).toContain('Clear all filters');
-    expect(live).toContain('matching published member stories and hosted fanfiction');
+    expect(live).toContain('matching published stories and hosted works');
     expect(live).toContain('archiveBrowse.snapshot?visibleTotal.toLocaleString()');
     expect(live).toContain('sortReadingWorks(filtered,catalogueSort)');
     expect(polish).toContain('Reading Room private lenses + catalogue controls · October 6 2026');

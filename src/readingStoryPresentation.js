@@ -5,15 +5,20 @@
 const RATINGS={general:'General',teen:'Teen',mature:'Mature',explicit:'Explicit'};
 const STATES={complete:'Complete',in_progress:'In progress',hiatus:'On hiatus'};
 const TYPES={original:'Original work',fanwork:'Fanwork',poetry:'Poetry',essay:'Essay',other:'Other'};
+export function archiveKind(work){
+ if(work.archive_category==='licensed_fanfiction')return 'Hosted fanfiction';
+ if(work.archive_category==='licensed_web_serial')return 'Hosted web serial';
+ return 'Palace Classic';
+}
 export function readingStoryPresentation(work={}){
  const tags=(work.work_tags||[]).map(x=>x?.tags).filter(t=>t?.name&&['canonical','community'].includes(t.status));
  const fandoms=[...new Set(tags.filter(t=>t.category==='fandom').map(t=>String(t.name).trim()).filter(Boolean))];
  return {
-  kind:work.is_archive?'Palace Classic':TYPES[work.work_type]||'Story',
+  kind:work.is_archive?archiveKind(work):TYPES[work.work_type]||'Story',
   fandoms,
   rating:RATINGS[work.rating]||'Not rated',
   status:STATES[work.completion_status]||'Status not specified',
   language:String(work.language||'').trim()||null,
-  summary:String(work.summary||'').trim()||(work.is_archive?'A classic from the Palace archives.':'No summary provided by the writer yet.')
+  summary:String(work.summary||'').trim()||(work.is_archive&&archiveKind(work)==='Palace Classic'?'A classic from the Palace archives.':'No summary provided by the writer yet.')
  };
 }

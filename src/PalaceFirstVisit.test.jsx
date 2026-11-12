@@ -16,6 +16,7 @@ describe('gentle first-visit Palace map',()=>{
   fireEvent.click(heading.closest('summary'));
   expect(screen.getByRole('progressbar',{name:'Welcome doorways opened'}).getAttribute('aria-valuenow')).toBe('0');
   expect(screen.getByRole('link',{name:/Find a story/}).getAttribute('href')).toBe('/reading');
+  expect(screen.getByRole('link',{name:/privacy and notification settings/i}).getAttribute('href')).toBe('/settings');
   expect(screen.getByRole('link',{name:/Open your writing pad/}).getAttribute('href')).toBe('/writing');
   expect(screen.getByRole('link',{name:/Meet your Grand Palace/}).getAttribute('href')).toBe('/grand-palaces');
   expect(screen.getByRole('link',{name:/Explore Palace Life/}).getAttribute('href')).toBe('/palace-life');
