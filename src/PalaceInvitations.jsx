@@ -48,7 +48,17 @@ export function PalaceInvitationLanding({Frame}){
      </>)}
      <Link to="/reading">Explore public stories first</Link>
    </div>
-  {!loading&&session?.user?.id&&!secret&&<RoyalEnvoyDesk key={session.user.id} session={session} endpoint={getInvitationDispatchEndpoint(import.meta.env.VITE_SUPABASE_URL)}/>}
+  {!loading&&session?.user?.id&&!secret&&<p className="palace-invite-back"><Link to="/my-invitations">View My Royal Invitations</Link></p>}
+ </InvitationPanel>;
+}
+
+export function PalaceMyRoyalInvitations({Frame}){
+ const {session,loading}=useAuth();
+ return <InvitationPanel Frame={Frame} eyebrow="YOUR ROYAL GATE" title="My Royal Invitations.">
+  <p>Royal Invitations are a limited privilege granted to approved Royal Envoys. Everyone can read, write and belong to the Palace, whether they registered normally or were personally invited.</p>
+  {loading?<p role="status">Checking your Palace membership…</p>:session?.user?.id
+   ?<RoyalEnvoyDesk key={session.user.id} session={session} endpoint={getInvitationDispatchEndpoint(import.meta.env.VITE_SUPABASE_URL)}/>
+   :<p><Link to="/login">Sign in to view your Royal Invitation status</Link></p>}
  </InvitationPanel>;
 }
 
@@ -113,9 +123,10 @@ export function PalaceInvitationAdmin({Frame}){
  return <InvitationPanel Frame={Frame} eyebrow="PALACE INVITATION DESK" title="Send a letter from the Palace.">
    <p>Create a personal invitation to The Starry Palace. Inviting someone doesn't create an account; the recipient signs up and declares their own date of birth through the normal 13+ process.</p>
    <div className="palace-invite-feature">
-    <strong>Share an invitation link</strong>
+    <strong>Share an ordinary Palace welcome link</strong>
     <p><a href={PALACE_PUBLIC_INVITATION_URL}>{PALACE_PUBLIC_INVITATION_URL}</a></p>
-    <button type="button" className="palace-invite-primary" onClick={copyLink}>{copied?'Invitation link copied':'Copy invitation link'}</button>
+    <p className="palace-invite-age">This public link leads to ordinary registration. Exclusive Royal Invitation honours require a unique, recipient-bound sealed letter issued through the Royal Envoy system.</p>
+    <button type="button" className="palace-invite-primary" onClick={copyLink}>{copied?'Palace welcome link copied':'Copy welcome link'}</button>
    </div>
    {loading||checking?<p role="status">Checking invitation permissions…</p>:allowed?<form onSubmit={send} className="palace-invite-form">
      <label htmlFor="palace-invite-email">Recipient email</label>
