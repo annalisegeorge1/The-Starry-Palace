@@ -28,3 +28,23 @@ it('shows a recipient their keepsake and reception without presenting issuer con
  expect(screen.getByText('Welcome!')).toBeTruthy();expect(screen.getByRole('link',{name:'Visit Palace Life'}).getAttribute('href')).toBe('/palace-life');
  expect(screen.queryByLabelText('Recipient email')).toBeNull();
 });
+
+it('shows ordinary members an honest invitation status without issuing controls',async()=>{
+ mount({...member,envoy:false,sending:false,available:0});
+ expect(await screen.findByRole('heading',{name:'Royal Envoy · Not yet awarded'})).toBeTruthy();
+ expect(screen.getByText(/Readers, writers and artists can all become eligible/)).toBeTruthy();
+ expect(screen.getByRole('link',{name:'Explore the Palace Guidebook'}).getAttribute('href')).toBe('/guidebook');
+ expect(screen.queryByRole('button',{name:'Review sealed invitation'})).toBeNull();
+ expect(screen.queryByLabelText('Recipient email')).toBeNull();
+});
+it('shows a safe preparation state when the Royal Envoy RPC has not been activated',async()=>{
+ rpc.mockResolvedValue({data:null,error:{message:'function not installed'}});
+ render(<MemoryRouter><RoyalEnvoyDesk session={{access_token:'fixture'}} endpoint="https://example.invalid/dispatch"/></MemoryRouter>);
+ expect(await screen.findByText(/Royal Envoy system is being prepared/)).toBeTruthy();
+ expect(screen.queryByRole('button',{name:'Review sealed invitation'})).toBeNull();
+});
+it('does not offer issuing controls while member sending is disabled',async()=>{
+ mount({...member,sending:false});
+ expect(await screen.findByText(/sending invitations is not enabled yet/)).toBeTruthy();
+ expect(screen.queryByRole('button',{name:'Review sealed invitation'})).toBeNull();
+});
