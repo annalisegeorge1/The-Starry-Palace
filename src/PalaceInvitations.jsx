@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom';
 import {useAuth} from './auth';
 import {configured, supabase} from './supabase';
 import {renderAgeSafeInvitation} from '../supabase/functions/palace-invitations/email.ts';
+import RoyalEnvoyDesk from './RoyalEnvoyDesk';
+import {RoyalInvitationClaim,readInvitationSecret} from './RoyalInvitationClaim';
 import './palace-invitations.css';
 
 export const PALACE_PUBLIC_INVITATION_URL = 'https://thestarrypalace.com/invitation';
@@ -30,17 +32,23 @@ function InvitationPanel({children,Frame,title,eyebrow='A LETTER FROM THE PALACE
 
 export function PalaceInvitationLanding({Frame}){
  const {session,loading}=useAuth();
+ const [secret]=useState(()=>readInvitationSecret(window.location.hash));
+ useEffect(()=>{
+  if(secret)window.history.replaceState(window.history.state,'',window.location.pathname+window.location.search);
+ },[secret]);
  return <InvitationPanel Frame={Frame} title="The gates have opened for you.">
    <p className="palace-invite-poem">Some stories begin with a door.<br/>Yours begins beneath the stars.</p>
    <p>You've been invited to discover The Starry Palace: a home for readers, writers and artists, where your stories and imagination have a place to shine.</p>
    <p className="palace-invite-age">Membership is for people aged 13 or older. You'll enter your own date of birth privately during registration. An invitation does not bypass this requirement.</p>
    <div className="palace-invite-actions">
-     {!loading&&(session?<Link className="palace-invite-primary" to="/chamber">Enter my Chamber</Link>:<>
+     {!loading&&secret&&<RoyalInvitationClaim key={session?.user?.id||'guest'} member={session?.user?.id} secret={secret}/>}
+     {!loading&&!secret&&(session?<Link className="palace-invite-primary" to="/chamber">Enter my Chamber</Link>:<>
       <Link className="palace-invite-primary" to="/login?mode=signup">Accept my invitation</Link>
       <Link to="/login">Already a member? Sign in</Link>
      </>)}
      <Link to="/reading">Explore public stories first</Link>
    </div>
+  {!loading&&session?.user?.id&&!secret&&<RoyalEnvoyDesk key={session.user.id} session={session} endpoint={getInvitationDispatchEndpoint(import.meta.env.VITE_SUPABASE_URL)}/>}
  </InvitationPanel>;
 }
 

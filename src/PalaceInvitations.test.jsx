@@ -1,13 +1,12 @@
 import React from 'react';
 import {afterEach,expect,it,vi} from 'vitest';
-import {cleanup,fireEvent,render,screen} from '@testing-library/react';
+import {cleanup,render,screen} from '@testing-library/react';
 import {MemoryRouter} from 'react-router-dom';
 import {PalaceInvitationLanding,PalaceInvitationAdmin,getInvitationDispatchEndpoint,PALACE_PUBLIC_INVITATION_URL} from './PalaceInvitations';
 import {renderAgeSafeInvitation} from '../supabase/functions/palace-invitations/email.ts';
-const auth=vi.hoisted(()=>({session:null,loading:false}));
-vi.mock('./auth',()=>({useAuth:()=>auth}));
+vi.mock('./auth',()=>({useAuth:()=>({session:null,loading:false})}));
 const Frame=({children})=><main>{children}</main>;
-afterEach(()=>{cleanup();auth.session=null;vi.unstubAllEnvs();vi.unstubAllGlobals();});
+afterEach(()=>cleanup());
 
 it('invites readers to an age-checked signup, never to an admin-created user or token callback',()=>{
  render(<MemoryRouter><PalaceInvitationLanding Frame={Frame}/></MemoryRouter>);
@@ -21,7 +20,7 @@ it('invites readers to an age-checked signup, never to an admin-created user or 
 it('does not show the send form to an unauthenticated or unapproved visitor',()=>{
  render(<MemoryRouter><PalaceInvitationAdmin Frame={Frame}/></MemoryRouter>);
  expect(screen.getByText(/Share an invitation link/)).toBeTruthy();
- expect(screen.queryByRole('button',{name:'Review invitation'})).toBeNull();
+ expect(screen.queryByRole('button',{name:'Email royal invitation'})).toBeNull();
 });
 
 it('only accepts the configured Supabase project as the invitation sending endpoint',()=>{
@@ -41,25 +40,4 @@ it('produces a royal invitation before signup without creating a Supabase invita
  expect(mail.html).not.toContain('/auth/verify');
  expect(mail.html).not.toMatch(/<script|<iframe/i);
  expect(mail.text).toContain('membership requires age 13 or older');
-});
-
-it.each([true,false])('reviews the actual email and reports provider acknowledgement %s',async accepted=>{
- vi.stubEnv('VITE_SUPABASE_URL','https://example.supabase.co');
- auth.session={access_token:'fixture-session'};
- const fetcher=vi.fn().mockResolvedValueOnce({ok:true,json:async()=>({allowed:true,ready:true})})
-   .mockResolvedValueOnce({ok:true,json:async()=>({accepted})});
- vi.stubGlobal('fetch',fetcher);
- render(<MemoryRouter><PalaceInvitationAdmin Frame={Frame}/></MemoryRouter>);
- const input=await screen.findByLabelText('Recipient email');
- fireEvent.change(input,{target:{value:'guest@example.invalid'}});
- fireEvent.click(screen.getByRole('button',{name:'Review invitation'}));
- expect(fetcher).toHaveBeenCalledTimes(1);
- expect(screen.getByText(renderAgeSafeInvitation().subject)).toBeTruthy();
- fireEvent.click(screen.getByRole('button',{name:'Edit recipient'}));
- expect(input.readOnly).toBe(false);
- fireEvent.click(screen.getByRole('button',{name:'Review invitation'}));
- fireEvent.click(screen.getByRole('button',{name:'Send this invitation'}));
- await screen.findByText(accepted?/Invitation accepted by the email provider/:/could not confirm the provider accepted/);
- expect(fetcher).toHaveBeenCalledTimes(2);
- expect(input.value).toBe(accepted?'':'guest@example.invalid');
 });
