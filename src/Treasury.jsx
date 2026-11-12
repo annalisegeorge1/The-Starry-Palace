@@ -180,7 +180,7 @@ export default function Treasury({Frame}) {
    <p className="catalogue-preview-note">Catalogue artwork is a preview. Earned badges, gifts and showcase choices reflect verified Palace activity.</p>
   </section>
 
-  <p><a href="/invitation">My Royal Invitations and keepsakes</a></p>
+  <p><a href="/my-invitations">My Royal Invitations and keepsakes</a></p>
   <section className="catalogue-celestial-doorway"><div><p className="eyebrow">CELESTIAL HONOURS</p><h2>Special titles are in the Royal Treasury <PalaceTopicHelp id="titles"/></h2></div><a href="/treasury?tab=titles" className="button-moonstone">View titles →</a></section>
 
   <div className="badge-collection-switch treasury-collection-switch" role="group" aria-label="Treasury collection">
