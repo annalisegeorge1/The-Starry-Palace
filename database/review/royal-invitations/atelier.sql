@@ -10,7 +10,7 @@ $$;
 revoke all on function royal_invitation.owns_welcome(uuid,text) from public,anon,authenticated,service_role;
 insert into public.chamber_prism_palettes(slug,name,family,category,primary_hex,secondary_hex,accent_hex,unlock_key,description)
 values ('royal-midnight','Royal Midnight','Royal Invitations','prestige','#14142b','#2d264b','#e4c580','royal_invitation','Exclusive welcome gift for your Chamber.'),
- ('celestial-dawn','Celestial Dawn','Royal Invitations','prestige','#f4e8f2','#e9dbf2','#755283','royal_invitation','Exclusive welcome gift for your Chamber.');
+ ('celestial-dawn','Celestial Dawn','Royal Invitations','prestige','#faf4e8','#e9dbf2','#92672b','royal_invitation','Exclusive welcome gift for your Chamber.');
 do $$
 declare original text;
 begin

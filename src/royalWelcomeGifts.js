@@ -5,7 +5,7 @@ export const invitationFrames = {
 };
 export const invitationPalettes = {
   'royal-midnight': ['#14142b', '#2d264b', '#e4c580'],
-  'celestial-dawn': ['#f4e8f2', '#e9dbf2', '#755283'],
+  'celestial-dawn': ['#faf4e8', '#e9dbf2', '#92672b'],
 };
 export const welcomeGifts = {
   ...invitationFrames,

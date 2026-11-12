@@ -9,7 +9,7 @@ with items(benefit,name,description) as (values
  ('moonlit-heirloom','Moonlit Heirloom','Silver and lilac moonlit portrait frame.'),
  ('rose-of-the-court','Rose of the Court','Rose-gold floral portrait frame.'),
  ('royal-midnight','Royal Midnight','Midnight blue and gold Chamber palette.'),
- ('celestial-dawn','Celestial Dawn','Lilac and rose Chamber palette.')
+ ('celestial-dawn','Celestial Dawn','Ivory, lilac and warm gold Chamber palette.')
 ), created as (
  insert into public.virtual_gifts(gift_key,catalogue_number,name,description,court_name,collection_type,catalogue_status,art_status,reward_eligible,upgrade_copies)
  select 'royal-invitation:'||benefit,(select coalesce(max(catalogue_number),0) from public.virtual_gifts)+row_number() over(order by benefit),

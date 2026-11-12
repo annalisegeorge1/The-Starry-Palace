@@ -185,6 +185,15 @@ try {
    await assert.rejects(()=>query("update public.user_gift_inventory set copies=0 where user_id=$1 and gift_id=$2",[user,id]),/personal/);
   }
  });
+ await check('Racing distinct choices grants one gift and a fresh connection observes the winner',async()=>{
+  const a=letter(desk,'honoured','choice-race@example.invalid');await issue(a);const guest=await member(a[3]);
+  await rpc('redeem',[guest,a[4]]);const choices=['starforged-circlet','celestial-dawn'];
+  const results=await Promise.all([rpc('choose_gift',[guest,choices[0]]),rpc('choose_gift',[guest,choices[1]],other)]);
+  assert.equal(results.filter(Boolean).length,1);
+  const fresh=await connect(),selected=choices[results.indexOf(true)];
+  assert.equal((await rpc('member_summary',[guest],fresh)).keepsake.gift,selected);
+  assert.equal((await fresh.query("select count(*)::int as n from public.gift_grant_ledger where user_id=$1 and source_key='royal-invitation:welcome-chest'",[guest])).rows[0].n,1);
+ });
  await check('Invalid claim attempts commit and throttle a later valid token',async()=>{
   const a=letter(desk,'royal','limited@example.invalid');await issue(a);const guest=await member(a[3]);
   await query("select set_config('request.jwt.claim.sub',$1,false)",[guest]);await query('set role authenticated');
