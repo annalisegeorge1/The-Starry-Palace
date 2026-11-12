@@ -35,8 +35,10 @@ it('offers clear all for current choices',()=>{
 it('include and exclude relationship checkboxes work in their respective sections',()=>{
  const onToggleRelationship=vi.fn();view({onToggleRelationship});
  fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
+ fireEvent.click(screen.getByText('Relationship categories'));
  fireEvent.click(screen.getByRole('checkbox',{name:'Include F/F relationships'}));
  fireEvent.click(screen.getByRole('button',{name:/4\. Exclude/}));
+ fireEvent.click(screen.getAllByText('Relationship categories').at(-1));
  fireEvent.click(screen.getByRole('checkbox',{name:'Exclude M/M relationships'}));
  expect(onToggleRelationship).toHaveBeenNthCalledWith(1,'ff','include');
  expect(onToggleRelationship).toHaveBeenNthCalledWith(2,'mm','exclude');
@@ -199,7 +201,9 @@ it('keeps broad relationship types separate from searchable relationship tags',(
  ];
  view({facets,onToggle});
  fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
- expect(screen.getByText('Relationship categories')).toBeTruthy();
+ const relationshipOptions=screen.getByText('Relationship categories');
+ expect(relationshipOptions.closest('details').open).toBe(false);
+ fireEvent.click(relationshipOptions);
  expect(screen.getByRole('checkbox',{name:'Include F/M relationships'})).toBeTruthy();
  expect(screen.queryByText('Relationships')).toBeNull();
  expect(screen.queryByText('Tropes')).toBeNull();

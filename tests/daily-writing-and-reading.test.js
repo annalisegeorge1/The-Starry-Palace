@@ -24,7 +24,7 @@ describe('editor and reader daily-use guarantees',()=>{
   expect(writer).toContain("localStorage.setItem(recoveryKey(),JSON.stringify(snap))");
   expect(writer).toContain('createManuscriptSaveCoordinator(');
   expect(writer).toContain('await persistChapter(form)');
-  expect(writer).toContain('setSaved(saveFailureNotice())');
+  expect(writer).toContain('setSaved(saveFailureNotice(err))');
   expect(writer).toContain("recoveryStorageRef.current?'Cloud save failed · recovery copy kept on this device':'Cloud save failed · export draft now'");
   expect(writer).toContain('setRecoveryStorageAvailable(false)');
  });

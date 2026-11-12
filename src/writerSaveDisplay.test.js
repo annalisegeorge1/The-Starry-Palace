@@ -7,6 +7,8 @@ describe('honest writer save status',()=>{
   expect(writerSaveDisplay('Saved to Palace',true).phase).toBe('pending');
  });
  it('prioritizes failed saves and recovery options',()=>{
+  expect(writerSaveDisplay('New edits waiting to save…',true).label).toBe('New changes not yet saved');
+  expect(writerSaveDisplay('Chapter changed or access lost · export draft',true).phase).toBe('attention');
   expect(writerSaveDisplay('Cloud save failed',true,true).label).toContain('device copy kept');
   expect(writerSaveDisplay('Cloud save failed',true,false).label).toContain('download backup');
   expect(writerSaveDisplay('Restored locally · unsaved cloud edits',true).phase).toBe('recovery');

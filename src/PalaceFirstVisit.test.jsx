@@ -49,6 +49,9 @@ describe('gentle first-visit Palace map',()=>{
   fireEvent.click(screen.getByRole('button',{name:'Hide this introduction'}));
   expect(screen.queryByText('Your first four doorways')).toBeNull();
   expect(JSON.parse(localStorage.getItem('palace-first-visit:v1:new-reader')).hidden).toBe(true);
+  fireEvent.click(screen.getByRole('button',{name:'Show my welcome guide'}));
+  fireEvent.click(screen.getByText('Your first four doorways').closest('summary'));
+  expect(screen.getByRole('link',{name:'Explore Comic Studio'}).getAttribute('href')).toBe('/comics/studio');
  });
  it('does not show the member introduction to visitors without an account',()=>{
   mount(null);

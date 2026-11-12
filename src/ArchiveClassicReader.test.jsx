@@ -61,6 +61,9 @@ describe('long-form classic reader',()=>{
  it('retains an explicit excerpt warning and supports font-size adjustments',async()=>{
   render(<ArchiveClassicReader record={{...record,host_mode:'excerpt',id:'short-excerpt'}} text={textFor(2)}/>);
   expect(await screen.findByText(/Only the hosted excerpt/)).toBeTruthy();
+  const summary=screen.getByText('Reading appearance');
+  expect(summary.closest('details').open).toBe(false);
+  fireEvent.click(summary);
   fireEvent.click(screen.getByRole('button',{name:'Increase classic text size'}));
   expect(screen.getByText('20px')).toBeTruthy();
  });

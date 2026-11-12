@@ -61,7 +61,7 @@ describe('Palace quick chat',()=>{
   fireEvent.click(screen.getByRole('button',{name:/Open Palace chat/}));
   fireEvent.click(screen.getByRole('button',{name:/Groups/}));
   fireEvent.click(await screen.findByRole('button',{name:'Moonlight Readers'}));
-  const bubble=screen.getByText('Welcome to the circle').closest('.palace-chat-bubble');
+  const bubble=(await screen.findByText('Welcome to the circle')).closest('.palace-chat-bubble');
   const options=within(bubble).getByRole('button',{name:'Message options'});
   fireEvent.click(options);
   expect(screen.getByRole('menu',{name:'Message actions'})).toBeTruthy();

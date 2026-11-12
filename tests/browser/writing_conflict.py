@@ -116,10 +116,15 @@ with sync_playwright() as playwright:
     assert reads == [], "Opening the writing desk fetched history"
     a = first.locator('[contenteditable=true]').first
     b = second.locator('[contenteditable=true]').first
+    first.get_by_role("button", name="Enter focus", exact=True).click()
+    expect(first.locator("body")).to_have_class(re.compile("focus-editor"))
     a.fill("Cloud version saved by A")
+    a.press("Escape")
+    expect(first.locator("body")).not_to_have_class(re.compile("focus-editor"))
+    expect(a).to_have_text("Cloud version saved by A")
     expect(first.locator('.writer-toolbar-save-state')).to_contain_text("Saved to Palace")
     b.fill("Unsaved version retained by B")
-    expect(second.locator('.writer-toolbar-save-state')).to_contain_text("Cloud save failed")
+    expect(second.locator('.writer-toolbar-save-state')).to_contain_text("Chapter changed or access lost · export draft")
     expect(b).to_have_text("Unsaved version retained by B")
     assert writes == [True, False] and "Cloud version saved by A" in chapter["body_html"]
     assert "Unsaved version retained by B" in second.evaluate("Object.entries(localStorage).filter(([k])=>k.startsWith('palace-recovery:c1:')).map(([,v])=>v).join()")

@@ -30,7 +30,9 @@ export function PalaceStartingPath({memberId}){
   setSnapshot({key,guide:next});
   try{localStorage.setItem(key,JSON.stringify(next))}catch{}
  }
- if(!memberId||state.hidden)return null;
+ if(!memberId)return null;
+ if(state.hidden)return <button className="palace-tour-dismiss" type="button"
+  onClick={()=>change({...state,hidden:false})}>Show my welcome guide</button>;
 
  const count=state.visited.length;
  const nextStep=WELCOME_STEPS.find(step=>!state.visited.includes(step.id));
@@ -48,7 +50,7 @@ export function PalaceStartingPath({memberId}){
     <p className="eyebrow">A GENTLE FIRST JOURNEY</p>
     <h2>Make yourself at home.</h2>
     <p>There's no need to learn every room at once. Open any doorway that interests you; this little map is here when you return.</p>
-    <p className="palace-first-guidebook-link"><Link to="/settings">Review your privacy and notification settings</Link> or <Link to="/guidebook">browse the Palace Guidebook</Link>.</p>
+    <p className="palace-first-guidebook-link"><Link to="/comics/studio">Explore Comic Studio</Link> · <Link to="/settings">Privacy and notification settings</Link> · <Link to="/guidebook">Palace Guidebook</Link></p>
     <p className="palace-starting-next">{nextStep?<>A place to start: <strong>{nextStep.name}</strong></>:<>You have opened every doorway on this map. Wander wherever curiosity takes you.</>}</p>
     <div className="palace-starting-meter">
      <div className="palace-starting-track" role="progressbar" aria-label="Welcome doorways opened" aria-valuenow={count} aria-valuemin={0} aria-valuemax={4}><span style={{width:(count/4*100)+'%'}}/></div>

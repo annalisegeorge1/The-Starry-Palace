@@ -177,3 +177,13 @@
 .reading-facet-controls .reading-facet-order-head:first-of-type{margin-top:8px;padding-top:0;border-top:0}
 .daylight .reading-facet-controls .reading-facet-order-head{color:#3b2e50;border-top-color:rgba(94,79,126,.25)}
 .reading-facet-sidebar .palace-relationship-types{margin-bottom:7px}
+
+.reading-facet-relationship-cluster > summary {
+ cursor: pointer;
+ padding: .65rem 0;
+ font-weight: 700;
+}
+.reading-facet-relationship-cluster > summary:focus-visible {
+ outline: 2px solid currentColor;
+ outline-offset: 2px;
+}

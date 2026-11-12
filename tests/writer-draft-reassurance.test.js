@@ -23,7 +23,7 @@ describe('writer safety and truthful save feedback',()=>{
   expect(live).toContain('try{localStorage.setItem(recoveryKey(),JSON.stringify(snap));');
   expect(live).toContain('setRecoveryStorageAvailable(false)');
   expect(live).toContain('Device recovery unavailable.');
-  expect(live).toContain("function saveFailureNotice()");
+  expect(live).toContain("function saveFailureNotice(err)");
   expect(live).toContain('Saved to Palace');
  });
  it('routes keyboard save through the same button action and cancels pending timer',()=>{

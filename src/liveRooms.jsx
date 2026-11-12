@@ -2392,6 +2392,7 @@ useEffect(()=>{if(data?.id&&access?.owner)refreshFolders(data.id);else setFolder
   if(cloudVersionRef.current?.chapterId!==chapter.id)throw Error('Reopen the chapter to resume saving.');
   const chapterId=chapter.id;
   const snap=snapshotDraft(form);
+  setSaved('Saving to Palace…');
   const {saved:updated,isCurrent}=await saveCoordinatorRef.current.persist(chapterId,{
    title:snap.title||chapter.title,body_html:snap.body_html||'',revision_note:snap.revision_note||''
   },snap._saveRevision,cloudVersionRef.current);
@@ -2416,11 +2417,13 @@ useEffect(()=>{if(data?.id&&access?.owner)refreshFolders(data.id);else setFolder
   }
   return updated;
  }
- function saveFailureNotice(){return recoveryStorageRef.current?'Cloud save failed · recovery copy kept on this device':'Cloud save failed · export draft now'}
+ function saveFailureNotice(err){
+  if(err?.code==='CHAPTER_WRITE_REJECTED')return 'Chapter changed or access lost · export draft';
+  return recoveryStorageRef.current?'Cloud save failed · recovery copy kept on this device':'Cloud save failed · export draft now'}
  async function saveCh(e){
   e.preventDefault();
   if(saveTimerRef.current){clearTimeout(saveTimerRef.current);saveTimerRef.current=null}
-  try{await persistChapter(e.currentTarget)}catch(e){setSaved(saveFailureNotice());setError(e.message)}
+  try{await persistChapter(e.currentTarget)}catch(e){setSaved(saveFailureNotice(e));setError(e.message)}
  }
  function queueSave(form){
   if(!form||!chapter)return;
@@ -2428,14 +2431,14 @@ useEffect(()=>{if(data?.id&&access?.owner)refreshFolders(data.id);else setFolder
   // keystrokes were saved. Full HTML capture now happens after typing settles.
   saveCoordinatorRef.current.markChanged(chapter.id);
   recoverySchedulerRef.current?.schedule();
-  setSaved('Saving to Palace…');
+  setSaved('New edits waiting to save…');
   if(saveTimerRef.current)clearTimeout(saveTimerRef.current);
   saveTimerRef.current=setTimeout(async()=>{
    saveTimerRef.current=null;
-   try{await persistChapter(form)}catch(err){setSaved(saveFailureNotice());setError(err.message)}
+   try{await persistChapter(form)}catch(err){setSaved(saveFailureNotice(err));setError(err.message)}
   },900);
  }
- async function quickSaveChapter(){const form=editorRef.current?.closest('form');if(!form||!chapter)return;if(saveTimerRef.current){clearTimeout(saveTimerRef.current);saveTimerRef.current=null}setSaved('Saving to Palace…');try{await persistChapter(form)}catch(err){setSaved(saveFailureNotice());setError(err.message)}}
+ async function quickSaveChapter(){const form=editorRef.current?.closest('form');if(!form||!chapter)return;if(saveTimerRef.current){clearTimeout(saveTimerRef.current);saveTimerRef.current=null}setSaved('Saving to Palace…');try{await persistChapter(form)}catch(err){setSaved(saveFailureNotice(err));setError(err.message)}}
  useManuscriptReconnect({chapterId:chapter?.id,coordinator:saveCoordinatorRef.current,retry:quickSaveChapter});
  function downloadDraftBackup(){
   const form=editorRef.current?.closest('form');
@@ -2472,7 +2475,7 @@ useEffect(()=>{if(data?.id&&access?.owner)refreshFolders(data.id);else setFolder
    try{await persistChapter(form)}
    catch(err){
     if(!switchGateRef.current.isCurrent(intent))return;
-    setSaved(saveFailureNotice());setError(err.message);return;
+    setSaved(saveFailureNotice(err));setError(err.message);return;
    }
   }
   if(!switchGateRef.current.isCurrent(intent)||selectedRef.current!==original)return;
@@ -2506,7 +2509,7 @@ useEffect(()=>{if(data?.id&&access?.owner)refreshFolders(data.id);else setFolder
    navigate(destination);
   }catch(err){
    setError(err.message);
-   setSaved(saveCoordinatorRef.current.hasUnsavedChanges()?saveFailureNotice():'Your writing desk remains open.');
+   setSaved(saveCoordinatorRef.current.hasUnsavedChanges()?saveFailureNotice(err):'Your writing desk remains open.');
    setPendingExitHref(null);
   }finally{setLeavingBusy(false)}
  }
@@ -2708,7 +2711,7 @@ useEffect(()=>{if(data?.id&&access?.owner)refreshFolders(data.id);else setFolder
    await refreshChapterAfterRelease(id);
   }catch(e){
    setError(e.message);
-   setSaved(saveCoordinatorRef.current.isDirty(id)?saveFailureNotice():'Publication was not completed. Your chapter remains available.');
+   setSaved(saveCoordinatorRef.current.isDirty(id)?saveFailureNotice(e):'Publication was not completed. Your chapter remains available.');
   }finally{releaseLockRef.current=false;setReleaseBusy(false)}
  }
  function schedulePublication(){if(!access?.owner||!currentChapterReady())return;setScheduleAt(palaceLocalDateTimeValue(chapter?.scheduled_for));setStudioDialog('schedule')}
@@ -2731,7 +2734,7 @@ useEffect(()=>{if(data?.id&&access?.owner)refreshFolders(data.id);else setFolder
    await refreshChapterAfterRelease(id);
   }catch(e){
    setError(e.message);
-   setSaved(saveCoordinatorRef.current.isDirty(id)?saveFailureNotice():'Scheduling was not completed. Your chapter remains available.');
+   setSaved(saveCoordinatorRef.current.isDirty(id)?saveFailureNotice(e):'Scheduling was not completed. Your chapter remains available.');
   }finally{releaseLockRef.current=false;setReleaseBusy(false)}
  }
  async function cancelSchedule(){try{await cancelChapterSchedule(session.user.id,chapter.id);setSaved('Scheduled publication cancelled.');await refreshChapterAfterRelease(chapter.id)}catch(e){setError(e.message)}}

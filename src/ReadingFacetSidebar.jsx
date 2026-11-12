@@ -202,10 +202,10 @@ export default function ReadingFacetSidebar({
     category:tag?.category||null};
   }).filter(tag=>!tag.category||!QUICK_TAG_CATEGORIES.has(tag.category)):[];
   return <div className="reading-facet-mode-body" id={'reading-mode-'+mode}>
-   <div className="reading-facet-relationship-cluster">
-    <h4>Relationship categories</h4>
+   <details className="reading-facet-relationship-cluster" open={selectedRelationships.length>0||undefined}>
+    <summary>Relationship categories</summary>
     <PalaceRelationshipFilters mode={mode} included={relationshipIncluded} excluded={relationshipExcluded} onToggle={onToggleRelationship}/>
-   </div>
+   </details>
    {busy[mode]&&<p className="reading-facet-hint" role="status">Finding matching tags…</p>}
    {errors[mode]&&<p className="reading-facet-hint" role="alert">{errors[mode]}</p>}
    {savedHiddenTags.length>0&&<div className="reading-facet-hidden-choices" aria-label={'Selected extra tags to '+mode}>
@@ -265,7 +265,7 @@ export default function ReadingFacetSidebar({
     <label>Rating<select value={rating} onChange={e=>onRating(e.target.value)}><option value="all">All ratings</option><option value="general">General</option><option value="teen">Teen</option><option value="mature">Mature</option><option value="explicit">Explicit</option><option value="not_rated">Not rated</option></select></label>
     <label>Work status<select value={status} onChange={e=>onStatus(e.target.value)}><option value="all">All statuses</option><option value="in_progress">In progress</option><option value="complete">Complete</option><option value="hiatus">Hiatus</option><option value="abandoned">Abandoned</option></select></label>
    </div>
-   <div className="reading-facet-precision"><div><strong>Include &amp; Exclude</strong><small>Choose what to see and what to leave out</small></div>{active>0&&<button type="button" onClick={onClear}>Clear choices</button>}</div>
+   <div className="reading-facet-precision"><div><strong>Include &amp; Exclude</strong><small>All included tags must match. Any excluded tag hides a work.</small></div>{active>0&&<button type="button" onClick={onClear}>Clear choices</button>}</div>
    {modes.map((mode,index)=>{
     const isExpanded=expandedModes[mode];
     const count=mode==='include'?included.length+relationshipIncluded.length:excluded.length+relationshipExcluded.length;

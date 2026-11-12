@@ -53,7 +53,7 @@ describe('Daybreak badges, Settings and tablet navigation',()=>{
   expect(css).toContain('.settings-preset-head>span');
  });
  it('switches from permanent sidebar to existing drawer through 1120px',()=>{
-  expect(main).toContain("window.matchMedia('(min-width:1121px)').matches");
+  expect(main).toContain("window.matchMedia?.('(min-width:1121px)').matches");
   expect(main).toContain('setNavOpen(v=>!v)');
   expect(css).toContain('@media (min-width:981px) and (max-width:1120px)');
   expect(css).toContain('.palace-shell.full-palace-shell.nav-open #palace-sidebar.full-sidebar');

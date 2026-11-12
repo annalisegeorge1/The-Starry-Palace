@@ -5,11 +5,11 @@ import './palace-navigation-calm-doors.css';
 
 // Familiar Palace navigation: every room is immediately visible. Its own
 // sections appear while visiting it, rather than crowding every other room.
-const PRIMARY_IDS=new Set(['palace','reading','writing','life']);
+const PRIMARY_IDS=['reading','writing','life','library','palace'];
 export function dividePalaceRooms(rooms=[]){
  return {
-  primary:rooms.filter(room=>PRIMARY_IDS.has(room.id)),
-  additional:rooms.filter(room=>!PRIMARY_IDS.has(room.id))
+  primary:PRIMARY_IDS.map(id=>rooms.find(room=>room.id===id)).filter(Boolean),
+  additional:rooms.filter(room=>!PRIMARY_IDS.includes(room.id))
  };
 }
 function PalaceNavRoom({room,active,currentHref,profilePath,renderIcon}){
