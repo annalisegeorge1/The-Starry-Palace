@@ -2406,7 +2406,7 @@ useEffect(()=>{if(data?.id&&access?.owner)refreshFolders(data.id);else setFolder
     if(copy?.saved_at===snap.saved_at&&copy.body_html===snap.body_html&&copy.title===snap.title&&copy.revision_note===snap.revision_note)localStorage.removeItem(key);
    }catch{}
    if(selectedRef.current===chapterId){
-    setWordCount(countWords(updated.body_html||''));
+    setWordCount(updated.word_count);
     setRecovery(null);
     setSaved('Saved to Palace');
    }

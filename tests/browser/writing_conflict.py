@@ -72,7 +72,9 @@ def api(route):
             writes.append(matches)
             if matches:
                 chapter.update(request.post_data_json)
-                data = [chapter]
+                fields = query["select"][0].split(",")
+                assert "body_html" not in fields and "*" not in fields
+                data = [{field: chapter.get(field) for field in fields}]
         else:
             if delay_release_read and chapter["status"] == "published" and "revision_note" in query.get("select",[""])[0]:
                 delay_release_read = False
@@ -203,6 +205,28 @@ with sync_playwright() as playwright:
         recovered.append(Path(download.value.path()).read_text())
     assert any("First tab private draft" in item for item in recovered)
     assert any("Second tab private draft" in item for item in recovered)
+    # A rejected file export must leave the selected draft available.
+    chosen = choices.input_value()
+    discarded_body = left.evaluate("(key) => JSON.parse(localStorage.getItem(key)).body_html", chosen)
+    left.evaluate("""() => {
+      const original = URL.createObjectURL;
+      URL.createObjectURL = () => { throw new Error('Export unavailable'); };
+      window.restoreExport = () => { URL.createObjectURL = original; };
+    }""")
+    left.get_by_role("button", name="Download recovery .txt").click()
+    expect(left.get_by_text("This browser could not export the recovery copy.", exact=False)).to_be_visible()
+    assert choices.input_value() == chosen and left.evaluate("(key) => localStorage.getItem(key) !== null", chosen)
+    left.evaluate("window.restoreExport()")
+    left.get_by_role("button", name="Discard", exact=True).click()
+    left.get_by_role("button", name="Confirm discard", exact=True).click()
+    assert left.evaluate("(key) => localStorage.getItem(key)", chosen) is None
+    expect(left.get_by_role("button", name="Download recovery .txt")).to_be_visible()
+    left.reload()
+    with left.expect_download() as remaining:
+        left.get_by_role("button", name="Download recovery .txt").click()
+    remaining_text = Path(remaining.value.path()).read_text()
+    for draft in ("First tab private draft", "Second tab private draft"):
+        assert (draft in remaining_text) == (draft not in discarded_body)
     # Reconnect a detached network request, then navigate while a save is in flight.
     reject_write = False
     offline = install_fixture(browser.new_context(), chapter["body_html"])
