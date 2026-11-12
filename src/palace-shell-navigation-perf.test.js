@@ -25,7 +25,7 @@ describe('Fast and accessible Palace navigation',()=>{
  it('keeps the mobile navigation keyboard accessible and closes it on navigation',()=>{
   expect(main).toContain("usePalaceDialogFocusTrap(navOpen,'palace-sidebar','.nav-toggle')");
   expect(main).toContain("aria-modal={navOpen?'true':undefined}");
-  expect(main).toContain("aria-expanded={navOpen}");
+  expect(main).toContain("aria-expanded={desktopNavigation?!sidebarCollapsed:navOpen}");
   expect(main).toContain("React.useEffect(()=>setNavOpen(false),[location.pathname,location.search]);");
   expect(css).toContain('.palace-shell.nav-open .full-sidebar :is(a,button,summary):focus-visible');
  });

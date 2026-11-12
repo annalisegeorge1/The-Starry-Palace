@@ -1386,7 +1386,7 @@ describe('Starry Palace launch safety',()=>{
 
   it('keeps navigation overlays explicit and prevents background scroll',()=>{
     expect(main).toContain('aria-controls="palace-sidebar"');
-    expect(main).toContain('aria-expanded={navOpen}');
+    expect(main).toContain('aria-expanded={desktopNavigation?!sidebarCollapsed:navOpen}');
     expect(main).toContain('aria-controls="palace-command-dialog"');
     expect(main).toContain("document.body.style.overflow='hidden'");
     expect(main).toContain('[navOpen,mobileMoreOpen,commandOpen]');
