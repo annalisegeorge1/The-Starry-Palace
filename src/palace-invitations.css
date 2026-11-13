@@ -61,3 +61,38 @@
 @media(prefers-reduced-motion:reduce){.palace-invite-letter-body a.palace-invite-member-action{transition:none;}}
 @media(max-width:560px){.palace-invite-room{padding:14px 10px 110px;}.palace-invite-letter-body{padding:30px 19px;}.palace-invite-feature{padding:19px 13px;}}
 @media(prefers-reduced-motion:reduce){.palace-invite-primary{transition:none;}}
+
+/* Sealed Royal Welcome Chest: preview five gifts before the irrevocable claim. */
+.royal-welcome-chest {
+ min-width:0;margin:18px 0;padding:20px 16px;border:1px solid #b49cce;
+ background:#fbf7ff;border-radius:14px;text-align:left;color:#332a49;
+}
+.royal-welcome-chest legend {font:normal 22px/1.3 Georgia,'Times New Roman',serif;color:#32244e;padding:0 8px;}
+.palace-invite-letter-body .royal-welcome-chest>p {margin:0 0 17px;font-size:14px;line-height:1.7;color:#40344f;}
+.royal-welcome-options {display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:11px;}
+.royal-welcome-option {
+ display:flex;min-width:0;flex-direction:column;align-items:center;justify-content:space-between;
+ gap:7px;text-align:center;min-height:178px;padding:14px 9px 11px;
+ border:2px solid #cab8db;border-radius:12px;background:#fffdfb;color:#34254c;
+ cursor:pointer;font:inherit;transition:border-color .16s,background-color .16s;
+}
+.royal-welcome-option:hover {border-color:#8161ac;background:#f5effe;}
+.royal-welcome-option.is-selected {border-color:#52367e;background:#eae0f9;box-shadow:inset 0 0 0 1px #52367e;}
+.royal-welcome-option:focus-visible {outline:3px solid #8160cc;outline-offset:3px;}
+.royal-welcome-option-frame {display:block;width:86px;height:86px;max-width:100%;object-fit:contain;}
+.royal-welcome-option-palette {display:flex;overflow:hidden;width:86px;height:86px;max-width:100%;border:1px solid #a794b6;border-radius:12px;box-shadow:0 2px 7px #27203921;}
+.royal-welcome-option-palette>span {flex:1;min-width:0;}
+.royal-welcome-option strong {font:700 15px/1.25 Arial,Helvetica,sans-serif;color:#302144;}
+.royal-welcome-option small {font:12px/1.35 Arial,Helvetica,sans-serif;color:#594a69;}
+.royal-welcome-selected-mark {font:700 11px/1.3 Arial,sans-serif;letter-spacing:.04em;color:#52367e;}
+.royal-welcome-confirm {margin-top:18px;padding-top:14px;border-top:1px solid #d6c8e6;}
+.palace-invite-letter-body .royal-welcome-confirm p {margin:0 0 10px;font:14px/1.6 Arial,sans-serif;color:#443357;}
+.royal-welcome-confirm .palace-invite-primary {white-space:normal;text-align:center;width:100%;box-sizing:border-box;}
+.royal-welcome-chest:disabled .royal-welcome-option {cursor:wait;}
+@media(max-width:560px) {
+ .royal-welcome-chest {padding:16px 11px;}
+ .royal-welcome-options {grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;}
+ .royal-welcome-option {padding:10px 6px;min-height:170px;}
+}
+@media(max-width:360px) {.royal-welcome-options {grid-template-columns:1fr;}}
+@media(prefers-reduced-motion:reduce) {.royal-welcome-option {transition:none;}}
