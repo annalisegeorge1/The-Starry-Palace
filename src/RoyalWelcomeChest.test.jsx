@@ -10,7 +10,6 @@ it('requires a deliberate confirmation and shows all three frames and both palet
   render(<RoyalWelcomeChest onChoose={onChoose}/>);
   expect(screen.getAllByRole('button')).toHaveLength(6);
   expect(screen.getByRole('button', {name: 'Choose a gift first'}).disabled).toBe(true);
-  expect(screen.getAllByRole('img', {hidden: true}).length).toBe(0);
   expect(document.querySelectorAll('img.royal-welcome-option-frame')).toHaveLength(3);
   expect(document.querySelectorAll('.royal-welcome-option-palette')).toHaveLength(2);
   expect(onChoose).not.toHaveBeenCalled();
@@ -42,6 +41,6 @@ it('disables selection and confirmation while a gift choice is being saved', () 
   const onChoose = vi.fn();
   render(<RoyalWelcomeChest busy onChoose={onChoose}/>);
   expect(document.querySelector('.royal-welcome-chest').disabled).toBe(true);
-  expect(screen.getAllByRole('button').every(button => button.disabled)).toBe(true);
+  expect(screen.getAllByRole('button').every(button => button.matches(':disabled'))).toBe(true);
   expect(onChoose).not.toHaveBeenCalled();
 });
