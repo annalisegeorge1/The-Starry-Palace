@@ -9,14 +9,14 @@ export const PALACE_PUBLIC_INVITATION_URL = 'https://thestarrypalace.com/invitat
 const FN_NAME='palace-invitations';
 const emailPattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function InvitationPanel({children,Frame,title,eyebrow='A LETTER FROM THE PALACE'}){
+function InvitationPanel({children,Frame,title,eyebrow='A LETTER FROM THE PALACE',overline='BY PERSONAL INVITATION'}){
  return <Frame><section className="palace-invite-room">
    <div className="palace-invite-letter">
      <header className="palace-invite-letter-head">
        <p className="palace-invite-stars" aria-hidden="true">✧ ✦ ✧</p>
        <p className="palace-invite-wordmark">The Starry Palace</p>
        <span className="palace-invite-letter-rule" aria-hidden="true"/>
-       <p className="palace-invite-overline">BY PERSONAL INVITATION</p>
+       <p className="palace-invite-overline">{overline}</p>
      </header>
      <div className="palace-invite-letter-body">
        <p className="palace-invite-kicker">{eyebrow}</p>
@@ -45,10 +45,49 @@ export function PalaceInvitationLanding({Frame}){
 }
 
 export function PalaceMyRoyalInvitations({Frame}){
- return <InvitationPanel Frame={Frame} eyebrow="MY PALACE" title="My Royal Invitations">
-  <p>Royal Envoys are members trusted to welcome others. Readers, artists and writers can be considered for this honour regardless of follower count or publishing history.</p>
-  <p>During the supervised beta, administrators send the welcome letters. Member issuing and sealed welcome gifts are still being prepared.</p>
-  <Link to="/reading">Explore Reading Rooms</Link>
+ const {session,loading}=useAuth();
+ const [adminAccess,setAdminAccess]=useState(false);
+ const endpoint=getInvitationDispatchEndpoint(import.meta.env.VITE_SUPABASE_URL);
+ useEffect(()=>{
+  let active=true;
+  setAdminAccess(false);
+  if(loading||!session?.access_token||!endpoint)return()=>{active=false;};
+  // Use the existing protected invitation service as the source of truth.
+  // A navigation link is not an authorization check; the desk rechecks access.
+  fetch(endpoint,{headers:{
+   Authorization:'Bearer '+session.access_token,
+   apikey:import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY||''
+  }}).then(response=>response.ok?response.json():null)
+   .then(result=>{if(active)setAdminAccess(result?.allowed===true);})
+   .catch(()=>{if(active)setAdminAccess(false);});
+  return()=>{active=false;};
+ },[loading,session?.access_token,endpoint]);
+ return <InvitationPanel Frame={Frame} eyebrow="MY PALACE" title="My Royal Invitations" overline="THE ROYAL INVITATION PRIVILEGE">
+  <p className="palace-invite-member-lead">An invitation is an honour to receive and a responsibility to give. Here is how the privilege will work.</p>
+  <section className="palace-invite-member-status" aria-label="Royal Invitations availability">
+   <span className="palace-invite-status-label">SUPERVISED BETA</span>
+   <h2>Sealed Royal Invitations are being prepared</h2>
+   <p>Royal Envoy sending, exclusive admission seals and welcome gifts are not active yet. You can still enjoy the full Palace through an ordinary account.</p>
+  </section>
+  <div className="palace-invite-member-grid">
+   <section>
+    <h2>Receiving an invitation</h2>
+    <p>When sealed invitations open, eligible recipients will be able to claim a class-specific keepsake and choose an exclusive welcome gift after verified registration.</p>
+   </section>
+   <section>
+    <h2>Earning the right to invite</h2>
+    <p>Royal Envoys will be approved for responsible participation—not follower counts or publishing popularity. Readers, artists and writers can all be considered.</p>
+   </section>
+  </div>
+  {adminAccess&&<section className="palace-invite-member-admin" aria-label="Existing administrator invitation desk">
+   <h2>Your administrator welcome desk</h2>
+   <p>Your existing administrator access lets you send ordinary Palace welcome letters now. These do not grant sealed invitation honours or spend Royal Envoy seals.</p>
+   <Link className="palace-invite-primary" to="/admin/invitations">Open administrator invitation desk</Link>
+  </section>}
+  <nav className="palace-invite-member-actions" aria-label="Continue exploring the Palace">
+   <Link className="palace-invite-member-action" to="/reading">Explore Reading Rooms</Link>
+   <Link className="palace-invite-member-action" to="/chamber">Return to my Chamber</Link>
+  </nav>
  </InvitationPanel>;
 }
 
