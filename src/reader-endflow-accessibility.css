@@ -32,10 +32,10 @@
 .palace-shell .work-page .story-trail-grid > :is(a,.story-trail-door){min-width:0;max-width:100%;box-sizing:border-box}
 .palace-shell .work-page .story-trail-door :is(strong,small){display:block;overflow-wrap:anywhere}
 
-/* Compact praise controls: one swipeable accessible pill row on phones,
+/* Compact praise controls: wrapping accessible pills on phones,
  * with legible labels, counts, and the ordinary Share action. */
 .palace-shell .reader-page .reader-afterword-praise{
- margin-block:18px 14px;padding:clamp(10px,2vw,15px);
+ margin-block:12px;padding:8px;inline-size:fit-content;max-inline-size:100%;box-sizing:border-box;
 }
 .palace-shell .reader-page .reader-afterword-praise .chapter-praise-room{
  gap:9px;padding:0;border:0;background:transparent;box-shadow:none;
@@ -48,9 +48,9 @@
 }
 .palace-shell .reader-page .reader-afterword-praise .chapter-praise-actions{
  display:flex!important;grid-template-columns:none!important;
- flex-wrap:nowrap!important;gap:6px;overflow-x:auto;
+ flex-wrap:wrap!important;gap:6px;
  overscroll-behavior-x:contain;max-width:100%;min-width:0;
- padding:2px 2px 8px;scrollbar-width:thin;
+ padding:2px;
  -webkit-overflow-scrolling:touch;
 }
 .palace-shell .reader-page .reader-afterword-praise .chapter-praise-actions > button{
