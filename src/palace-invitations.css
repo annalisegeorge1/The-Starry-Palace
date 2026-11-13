@@ -29,5 +29,36 @@
 .palace-invite-form .palace-invite-primary {justify-self:start;}
 .palace-invite-notice {padding:12px;background:#f2ecfa;border-radius:10px;overflow-wrap:anywhere;}
 .palace-invite-back {margin-top:24px;}
+
+/* The member hub is information, not an invitation letter being redeemed. */
+.palace-invite-letter-body .palace-invite-member-lead {max-width:470px;margin:0 auto 22px;color:#463b56;line-height:1.65;}
+.palace-invite-member-status {background:#f1ebf8;border:1px solid #c4b2df;border-radius:13px;padding:22px 20px;margin:22px auto 20px;text-align:left;}
+.palace-invite-status-label {display:inline-block;font:700 11px/1.4 Arial,sans-serif;color:#432b71;background:#e4d7f4;border:1px solid #aa91cd;border-radius:99px;padding:5px 11px;letter-spacing:.08em;}
+.palace-invite-member-status h2,.palace-invite-member-grid h2,.palace-invite-member-admin h2 {font:normal 21px/1.35 Georgia,'Times New Roman',serif;color:#292340;margin:12px 0 8px;}
+.palace-invite-letter-body .palace-invite-member-status p {font-size:14px;line-height:1.65;margin:0;color:#494153;}
+.palace-invite-member-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;text-align:left;}
+.palace-invite-member-grid section {border:1px solid #d9c9e5;background:#fdf9f5;border-radius:12px;padding:15px;}
+.palace-invite-member-grid h2 {font-size:18px;margin:0 0 8px;}
+.palace-invite-letter-body .palace-invite-member-grid p {font-size:13px;line-height:1.6;margin:0;color:#52475d;}
+.palace-invite-member-admin {border:1px solid #c1a36d;background:#fbf3e5;border-radius:12px;padding:18px;margin-top:18px;text-align:left;}
+.palace-invite-member-admin h2 {margin:0 0 7px;}
+.palace-invite-letter-body .palace-invite-member-admin p {font-size:14px;line-height:1.6;margin:0 0 15px;color:#463c50;}
+.palace-invite-member-actions {display:flex;justify-content:center;align-items:stretch;gap:12px;flex-wrap:wrap;margin-top:20px;}
+/* Scope links to the parchment; site-wide Daybreak/Nightfall/Midnight link colors must not wash them out. */
+.palace-invite-letter-body a:not(.palace-invite-primary) {color:#493375!important;text-decoration:underline;text-underline-offset:3px;}
+.palace-invite-letter-body a.palace-invite-member-action {
+ display:inline-flex;justify-content:center;align-items:center;min-height:44px;
+ padding:10px 15px;border:1px solid #765992;background:#eee7f6;
+ border-radius:10px;color:#35244f!important;font:700 14px/1.4 Arial,Helvetica,sans-serif;
+ text-decoration:none!important;transition:background-color .15s;
+}
+.palace-invite-letter-body a.palace-invite-member-action:hover {background:#e2d5f0;}
+.palace-invite-letter-body a.palace-invite-member-action:focus-visible {outline:3px solid #8f62df;outline-offset:3px;}
+@media(max-width:560px){
+ .palace-invite-member-grid{grid-template-columns:1fr;}
+ .palace-invite-member-status{padding:18px 15px;}
+ .palace-invite-member-actions{flex-direction:column;}
+}
+@media(prefers-reduced-motion:reduce){.palace-invite-letter-body a.palace-invite-member-action{transition:none;}}
 @media(max-width:560px){.palace-invite-room{padding:14px 10px 110px;}.palace-invite-letter-body{padding:30px 19px;}.palace-invite-feature{padding:19px 13px;}}
 @media(prefers-reduced-motion:reduce){.palace-invite-primary{transition:none;}}
