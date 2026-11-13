@@ -21,7 +21,8 @@ it('requires a deliberate confirmation and shows all three frames and both palet
   const confirm = screen.getByRole('button', {name: /Confirm Starforged Circlet as my permanent gift/});
   expect(confirm.disabled).toBe(false);
   fireEvent.click(confirm);
-  expect(onChoose).toHaveBeenCalledExactlyOnceWith('starforged-circlet');
+  expect(onChoose).toHaveBeenCalledTimes(1);
+  expect(onChoose).toHaveBeenCalledWith('starforged-circlet');
 });
 
 it('lets members change their preview before confirmation', () => {
@@ -34,7 +35,8 @@ it('lets members change their preview before confirmation', () => {
   expect(screen.getByRole('button', {name: /Moonlit Heirloom.*Exclusive portrait frame/i}).getAttribute('aria-pressed')).toBe('false');
   expect(onChoose).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole('button', {name: /Confirm Royal Midnight as my permanent gift/}));
-  expect(onChoose).toHaveBeenCalledExactlyOnceWith('royal-midnight');
+  expect(onChoose).toHaveBeenCalledTimes(1);
+  expect(onChoose).toHaveBeenCalledWith('royal-midnight');
 });
 
 it('disables selection and confirmation while a gift choice is being saved', () => {
