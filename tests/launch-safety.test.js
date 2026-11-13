@@ -434,10 +434,8 @@ describe('Starry Palace launch safety',()=>{
   it('reopens completed prose only when new chapters arrive and preserves mid-story resume',()=>{
     const data=read('src/palaceData.js');
     const polish=read('src/polish.css');
-    expect(data).toContain("select('chapter_id,progress_percent,chapter_progress_percent,completed')");
-    expect(data).toContain('const sameChapter=current.data?.chapter_id===chapterId');
-    expect(data).toContain('const done=sameChapter?Boolean(current.data?.completed||completed):Boolean(completed)');
-    expect(data).toContain('chapter_progress_percent:precise');
+    expect(data).toContain("rpc('save_reading_position'");
+    expect(data).toContain('p_expected:revision');
     expect(live).toContain('For Your Nightstand');
     expect(live).toContain('rememberReaderPosition(window.localStorage,session.user.id,data.chapter.id,pct)');
     expect(read('src/readerPosition.js')).toContain('readerPositionKey(userId,chapterId)');
