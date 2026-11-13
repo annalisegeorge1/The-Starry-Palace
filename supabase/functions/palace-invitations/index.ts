@@ -41,8 +41,7 @@ async function verifiedSender(req:Request){
  if(!resp.ok)return null;
  const user=await resp.json();
  if(!user?.id||!user.email||!user.email_confirmed_at)return null;
- if(!adminEmails().includes(String(user.email).trim().toLowerCase()))return null;
- return {id:String(user.id)};
+ return {id:String(user.id),admin:adminEmails().includes(String(user.email).trim().toLowerCase())};
 }
 async function rpc(name:string,args:Record<string,unknown>){
  const key=secret('SUPABASE_SERVICE_ROLE_KEY');
@@ -83,30 +82,57 @@ Deno.serve(async(req:Request)=>{
  if(!originAllowed)return json({error:'Forbidden'},403,headers);
  if(req.method!=='GET'&&req.method!=='POST')
   return json({error:'Method not allowed'},405,headers);
- let sender:{id:string}|null=null;
+ const sealed=new URL(req.url).searchParams.get('sealed')==='1';
+ let sender:{id:string,admin:boolean}|null=null;
  try{sender=await verifiedSender(req);}catch{sender=null;}
- if(!sender)return json({error:'Forbidden'},403,headers);
+ if(!sender||(!sealed&&!sender.admin))return json({error:'Forbidden'},403,headers);
+ if(sealed&&(req.method!=='POST'||secret('PALACE_SEALED_INVITATIONS')!=='enabled'||secret('PALACE_INVITATION_TOKEN_KEY').length<32))
+  return json({error:'Sealed invitations unavailable'},403,headers);
  if(req.method==='GET')return json({allowed:true,ready:configured()},200,headers);
  if(!configured())return json({error:'Sending is not configured'},503,headers);
 
- let to='';
+ let to='';let requestId='';let invitationClass='';let greeting='';let message='';
  try{
   if(!req.headers.get('content-type')?.toLowerCase().includes('application/json'))
    return json({error:'Invalid request'},400,headers);
   const data=await req.json();
   if(!data||typeof data.email!=='string')return json({error:'Invalid email'},400,headers);
   to=data.email.trim().toLowerCase();
+  if(sealed){
+   requestId=data.requestId;invitationClass=data.invitationClass;
+   greeting=data.greeting??'';message=data.message??'';
+   if(typeof greeting!=='string'||typeof message!=='string'||greeting.length>60||message.length>300)
+    return json({error:'Invalid personal letter'},400,headers);
+   if(typeof requestId!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(requestId)
+    ||!['royal','honoured','founding'].includes(invitationClass)||(!sender.admin&&invitationClass!=='royal'))
+    return json({error:'Invalid invitation'},400,headers);
+  }
   if(to.length>254||!EMAIL_RE.test(to))return json({error:'Invalid email'},400,headers);
  }catch{return json({error:'Invalid request'},400,headers);}
 
+ let token='';
+ if(sealed){
+  const encoder=new TextEncoder();
+  const key=await crypto.subtle.importKey('raw',encoder.encode(secret('PALACE_INVITATION_TOKEN_KEY')),{name:'HMAC',hash:'SHA-256'},false,['sign']);
+  const bytes=await crypto.subtle.sign('HMAC',key,encoder.encode('admission-v1/'+sender.id+'/'+requestId));
+  token=Array.from(new Uint8Array(bytes),n=>n.toString(16).padStart(2,'0')).join('');
+ }
  let id='';
  try{
+  if(sealed){
+   const prepared=await rpc('royal_invitation_prepare_dispatch',{p_actor:sender.id,p_request:requestId,p_class:invitationClass,
+    p_recipient:to,p_token:token,p_fingerprint:await fingerprint(to),p_greeting:greeting,p_message:message});
+   if(prepared==='provider_accepted')return json({accepted:true},200,headers);
+   if(prepared!=='send')throw new Error('INVITATION_LEDGER_UNAVAILABLE');
+   id=requestId;
+  }else{
   const reserved=await rpc('palace_invitation_reserve',{
    p_sender_id:sender.id,p_recipient_fingerprint:await fingerprint(to)
   });
   if(typeof reserved!=='string'||!/^[0-9a-f-]{36}$/i.test(reserved))
    throw new Error('INVITATION_LEDGER_UNAVAILABLE');
   id=reserved;
+  }
  }catch(error){
   const limited=error instanceof Error&&error.message==='RATE_LIMITED';
   return json({error:limited?'Too many invitations. Please try later.':'Invitation service unavailable'},
@@ -115,7 +141,7 @@ Deno.serve(async(req:Request)=>{
 
  let sent=false;let providerId='';
  try{
-  const letter=renderAgeSafeInvitation();
+  const letter=renderAgeSafeInvitation(sealed?{token,kind:invitationClass,greeting,message}:undefined);
   const response=await fetch(EMAIL_API,{
    method:'POST',
    headers:{Authorization:'Bearer '+secret('RESEND_API_KEY'),'Content-Type':'application/json',
@@ -127,18 +153,23 @@ Deno.serve(async(req:Request)=>{
   });
   if(!response.ok)throw new Error('Provider rejected request');
   const result=await response.json();
-  sent=true;providerId=String(result?.id||'').slice(0,200);
+  providerId=String(result?.id||'').slice(0,200);
+  if(!providerId)throw new Error('Provider receipt missing');
+  sent=true;
  }catch{
   // Never log recipient addresses, request bodies, or Resend credentials.
   console.error('Palace invitation email provider rejected a request.');
  }
  try{
-  await rpc('palace_invitation_finish',{
+  if(sealed){
+   if(!await rpc('royal_invitation_finish_dispatch',{p_request:id,p_accepted:sent,p_provider_id:providerId}))throw new Error('UNCONFIRMED');
+  }else await rpc('palace_invitation_finish',{
    p_id:id,p_accepted:sent,p_provider_message_id:providerId
   });
  }catch{
   // Provider idempotency protects retries made under this reservation id.
   console.error('Palace invitation accounting could not finish.');
+  if(sealed)return json({error:'Dispatch status uncertain. Retry with the same invitation reference.'},503,headers);
  }
  return sent?json({accepted:true},200,headers):
   json({error:'Invitation email could not be sent'},502,headers);

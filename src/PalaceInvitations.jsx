@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom';
 import {useAuth} from './auth';
 import {configured, supabase} from './supabase';
 import {renderAgeSafeInvitation} from '../supabase/functions/palace-invitations/email.ts';
+import RoyalEnvoyDesk from './RoyalEnvoyDesk';
+import {RoyalInvitationClaim,readInvitationSecret} from './RoyalInvitationClaim';
 import './palace-invitations.css';
 
 export const PALACE_PUBLIC_INVITATION_URL = 'https://thestarrypalace.com/invitation';
@@ -30,17 +32,23 @@ function InvitationPanel({children,Frame,title,eyebrow='A LETTER FROM THE PALACE
 
 export function PalaceInvitationLanding({Frame}){
  const {session,loading}=useAuth();
+ const [secret]=useState(()=>readInvitationSecret(window.location.hash));
+ useEffect(()=>{
+  if(secret)window.history.replaceState(window.history.state,'',window.location.pathname+window.location.search);
+ },[secret]);
  return <InvitationPanel Frame={Frame} title="The gates have opened for you.">
    <p className="palace-invite-poem">Some stories begin with a door.<br/>Yours begins beneath the stars.</p>
    <p>You've been invited to discover The Starry Palace: a home for readers, writers and artists, where your stories and imagination have a place to shine.</p>
    <p className="palace-invite-age">Membership is for people aged 13 or older. You'll enter your own date of birth privately during registration. An invitation does not bypass this requirement.</p>
    <div className="palace-invite-actions">
-     {!loading&&(session?<><Link className="palace-invite-primary" to="/chamber">Enter my Chamber</Link><Link to="/my-invitations">View My Royal Invitations</Link></>:<>
+     {!loading&&secret&&<RoyalInvitationClaim key={session?.user?.id||'guest'} member={session?.user?.id} secret={secret}/>}
+     {!loading&&!secret&&(session?<Link className="palace-invite-primary" to="/chamber">Enter my Chamber</Link>:<>
       <Link className="palace-invite-primary" to="/login?mode=signup">Accept my invitation</Link>
       <Link to="/login">Already a member? Sign in</Link>
      </>)}
      <Link to="/reading">Explore public stories first</Link>
    </div>
+  {!loading&&session?.user?.id&&!secret&&<p className="palace-invite-back"><Link to="/my-invitations">View My Royal Invitations</Link></p>}
  </InvitationPanel>;
 }
 
@@ -52,8 +60,8 @@ export function PalaceMyRoyalInvitations({Frame}){
   let active=true;
   setAdminAccess(false);
   if(loading||!session?.access_token||!endpoint)return()=>{active=false;};
-  // Use the existing protected invitation service as the source of truth.
-  // A navigation link is not an authorization check; the desk rechecks access.
+  // Legacy welcome-letter permissions are checked by the existing service.
+  // A visible navigation link is never the authority for sending an email.
   fetch(endpoint,{headers:{
    Authorization:'Bearer '+session.access_token,
    apikey:import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY||''
@@ -63,25 +71,23 @@ export function PalaceMyRoyalInvitations({Frame}){
   return()=>{active=false;};
  },[loading,session?.access_token,endpoint]);
  return <InvitationPanel Frame={Frame} eyebrow="MY PALACE" title="My Royal Invitations" overline="THE ROYAL INVITATION PRIVILEGE">
-  <p className="palace-invite-member-lead">An invitation is an honour to receive and a responsibility to give. Here is how the privilege will work.</p>
-  <section className="palace-invite-member-status" aria-label="Royal Invitations availability">
-   <span className="palace-invite-status-label">SUPERVISED BETA</span>
-   <h2>Sealed Royal Invitations are being prepared</h2>
-   <p>Royal Envoy sending, exclusive admission seals and welcome gifts are not active yet. You can still enjoy the full Palace through an ordinary account.</p>
-  </section>
+  <p className="palace-invite-member-lead">An invitation is an honour to receive and a responsibility to give. Royal Envoy status is an earned privilege; ordinary members retain the Palace's essential reading, writing and community features.</p>
   <div className="palace-invite-member-grid">
    <section>
-    <h2>Receiving an invitation</h2>
-    <p>When sealed invitations open, eligible recipients will be able to claim a class-specific keepsake and choose an exclusive welcome gift after verified registration.</p>
+    <h2>Receiving a sealed invitation</h2>
+    <p>When the system opens, verified invitees can receive a permanent admission keepsake and choose one of five exclusive welcome gifts.</p>
    </section>
    <section>
-    <h2>Earning the right to invite</h2>
-    <p>Royal Envoys will be approved for responsible participation—not follower counts or publishing popularity. Readers, artists and writers can all be considered.</p>
+    <h2>Earning Royal Envoy status</h2>
+    <p>Approved members may eventually issue limited sealed letters. Readers, artists and writers can qualify regardless of followers or publishing history.</p>
    </section>
   </div>
+  {loading?<p role="status">Checking your Palace membership…</p>:session?.user?.id
+   ?<RoyalEnvoyDesk key={session.user.id} session={session} endpoint={endpoint}/>
+   :<p><Link to="/login">Sign in to view your Royal Invitation status</Link></p>}
   {adminAccess&&<section className="palace-invite-member-admin" aria-label="Existing administrator invitation desk">
    <h2>Your administrator welcome desk</h2>
-   <p>Your existing administrator access lets you send ordinary Palace welcome letters now. These do not grant sealed invitation honours or spend Royal Envoy seals.</p>
+   <p>You can send ordinary Palace welcome letters now. They do not grant Royal Envoy admission seals or exclusive gifts.</p>
    <Link className="palace-invite-primary" to="/admin/invitations">Open administrator invitation desk</Link>
   </section>}
   <nav className="palace-invite-member-actions" aria-label="Continue exploring the Palace">
@@ -150,16 +156,17 @@ export function PalaceInvitationAdmin({Frame}){
   finally{submitting.current=false;setBusy(false);}
  }
  return <InvitationPanel Frame={Frame} eyebrow="PALACE INVITATION DESK" title="Send a letter from the Palace.">
-   <p>Create a personal invitation to The Starry Palace. Inviting someone doesn't create an account; the recipient signs up and declares their own date of birth through the normal 13+ process.</p>
+   <p>This desk sends an ordinary Palace welcome email. It helps someone register but does not issue a unique Royal Invitation Seal or exclusive honours. Special invitations will be issued from My Royal Invitations when the secure Royal Envoy system is enabled. Every recipient follows the normal 13+ registration process.</p>
    <div className="palace-invite-feature">
-    <strong>Share an invitation link</strong>
+    <strong>Share an ordinary Palace welcome link</strong>
     <p><a href={PALACE_PUBLIC_INVITATION_URL}>{PALACE_PUBLIC_INVITATION_URL}</a></p>
-    <button type="button" className="palace-invite-primary" onClick={copyLink}>{copied?'Invitation link copied':'Copy invitation link'}</button>
+    <p className="palace-invite-age">This public link leads to ordinary registration. Exclusive Royal Invitation honours require a unique, recipient-bound sealed letter issued through the Royal Envoy system.</p>
+    <button type="button" className="palace-invite-primary" onClick={copyLink}>{copied?'Palace welcome link copied':'Copy welcome link'}</button>
    </div>
    {loading||checking?<p role="status">Checking invitation permissions…</p>:allowed?<form onSubmit={send} className="palace-invite-form">
      <label htmlFor="palace-invite-email">Recipient email</label>
      <input id="palace-invite-email" type="email" autoComplete="off" placeholder="reader@example.com" required readOnly={reviewing||busy} maxLength={254} value={email} onChange={event=>setEmail(event.target.value)}/>
-     <p className="palace-invite-age">The recipient will receive the royal invitation. No Palace user is created by sending it.</p>
+     <p className="palace-invite-age">The recipient will receive a Palace welcome letter, not a sealed Royal Invitation. No account is created by sending it.</p>
      {reviewing&&<section aria-label="Review invitation email">
        <h2>Review your letter</h2>
        <p><strong>To</strong> {email.trim()}</p>

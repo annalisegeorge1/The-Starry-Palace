@@ -6,6 +6,7 @@ import {PalaceInvitationLanding,PalaceInvitationAdmin,PalaceMyRoyalInvitations,g
 import {renderAgeSafeInvitation} from '../supabase/functions/palace-invitations/email.ts';
 const auth=vi.hoisted(()=>({session:null,loading:false}));
 vi.mock('./auth',()=>({useAuth:()=>auth}));
+vi.mock('./RoyalEnvoyDesk',()=>({default:()=> <div data-testid="envoy-status">Envoy status loaded</div>}));
 const Frame=({children})=><main>{children}</main>;
 afterEach(()=>{cleanup();auth.session=null;vi.unstubAllEnvs();vi.unstubAllGlobals();});
 
@@ -20,7 +21,7 @@ it('invites readers to an age-checked signup, never to an admin-created user or 
 
 it('does not show the send form to an unauthenticated or unapproved visitor',()=>{
  render(<MemoryRouter><PalaceInvitationAdmin Frame={Frame}/></MemoryRouter>);
- expect(screen.getByText(/Share an invitation link/)).toBeTruthy();
+ expect(screen.getByText(/Share an ordinary Palace welcome link/)).toBeTruthy();
  expect(screen.queryByRole('button',{name:'Review invitation'})).toBeNull();
 });
 
@@ -64,44 +65,54 @@ it.each([true,false])('reviews the actual email and reports provider acknowledge
  expect(input.value).toBe(accepted?'':'guest@example.invalid');
 });
 
-it('explains the disabled sealed system to ordinary members with accessible navigation',()=>{
- const network=vi.fn();vi.stubGlobal('fetch',network);
+it('clarifies that a public welcome link cannot grant Royal Invitation privileges',()=>{
+ render(<MemoryRouter><PalaceInvitationAdmin Frame={Frame}/></MemoryRouter>);
+ expect(screen.getByText(/Exclusive Royal Invitation honours require a unique/)).toBeTruthy();
+ expect(screen.getByRole('button',{name:'Copy welcome link'})).toBeTruthy();
+});
+it('links a signed-in member to the dedicated Royal Invitation hub',()=>{
+ auth.session={user:{id:'fixture-id'},access_token:'fixture'};
+ render(<MemoryRouter><PalaceInvitationLanding Frame={Frame}/></MemoryRouter>);
+ expect(screen.getByRole('link',{name:'View My Royal Invitations'}).getAttribute('href')).toBe('/my-invitations');
+});
+it('explains the member hub without exposing Envoy issuing controls to a signed-out visitor',()=>{
  render(<MemoryRouter><PalaceMyRoyalInvitations Frame={Frame}/></MemoryRouter>);
  expect(screen.getByRole('heading',{name:'My Royal Invitations'})).toBeTruthy();
- expect(screen.getByRole('heading',{name:'Sealed Royal Invitations are being prepared'})).toBeTruthy();
- expect(screen.getByText(/not active yet/)).toBeTruthy();
+ expect(screen.getByRole('link',{name:'Sign in to view your Royal Invitation status'}).getAttribute('href')).toBe('/login');
+ expect(screen.queryByRole('button',{name:'Review sealed invitation'})).toBeNull();
+});
+
+
+it('keeps the sealed member hub informative even before member privileges are activated',()=>{
+ const network=vi.fn();vi.stubGlobal('fetch',network);
+ render(<MemoryRouter><PalaceMyRoyalInvitations Frame={Frame}/></MemoryRouter>);
+ expect(screen.getByRole('heading',{name:'Receiving a sealed invitation'})).toBeTruthy();
+ expect(screen.getByRole('heading',{name:'Earning Royal Envoy status'})).toBeTruthy();
  expect(screen.getByRole('link',{name:'Explore Reading Rooms'}).getAttribute('href')).toBe('/reading');
  expect(screen.getByRole('link',{name:'Return to my Chamber'}).getAttribute('href')).toBe('/chamber');
  expect(screen.queryByRole('link',{name:'Open administrator invitation desk'})).toBeNull();
- expect(screen.queryByRole('button')).toBeNull();
  expect(network).not.toHaveBeenCalled();
 });
 
-it('shows the existing administrator desk only after the invitation service verifies access',async()=>{
+it('reveals the existing admin welcome desk only after a verified service acknowledgement',async()=>{
  vi.stubEnv('VITE_SUPABASE_URL','https://example.supabase.co');
- auth.session={access_token:'verified-test-account'};
+ auth.session={user:{id:'test-owner'},access_token:'signed-in-fixture'};
  const network=vi.fn().mockResolvedValue({ok:true,json:async()=>({allowed:true,ready:true})});
  vi.stubGlobal('fetch',network);
  render(<MemoryRouter><PalaceMyRoyalInvitations Frame={Frame}/></MemoryRouter>);
- const desk=await screen.findByRole('link',{name:'Open administrator invitation desk'});
- expect(desk.getAttribute('href')).toBe('/admin/invitations');
- expect(screen.getByText(/These do not grant sealed invitation honours/)).toBeTruthy();
+ const link=await screen.findByRole('link',{name:'Open administrator invitation desk'});
+ expect(link.getAttribute('href')).toBe('/admin/invitations');
  expect(network).toHaveBeenCalledWith('https://example.supabase.co/functions/v1/palace-invitations',{
-  headers:{Authorization:'Bearer verified-test-account',apikey:''}
+  headers:{Authorization:'Bearer signed-in-fixture',apikey:''}
  });
- expect(screen.queryByRole('button')).toBeNull();
 });
 
-it.each([{ok:true,data:{allowed:false}},{ok:false,data:null}])(
- 'fails closed when existing administrator access is not verified (%o)',async outcome=>{
+it('does not expose administrator shortcuts after a denied service check',async()=>{
  vi.stubEnv('VITE_SUPABASE_URL','https://example.supabase.co');
- auth.session={access_token:'regular-member'};
- const network=vi.fn().mockResolvedValue({ok:outcome.ok,json:async()=>outcome.data});
+ auth.session={user:{id:'test-reader'},access_token:'regular-fixture'};
+ const network=vi.fn().mockResolvedValue({ok:false});
  vi.stubGlobal('fetch',network);
  render(<MemoryRouter><PalaceMyRoyalInvitations Frame={Frame}/></MemoryRouter>);
- await screen.findByRole('heading',{name:'Sealed Royal Invitations are being prepared'});
- // Fetch is asynchronous; flush the promise resolution before checking access.
  await vi.waitFor(()=>expect(network).toHaveBeenCalledOnce());
  expect(screen.queryByRole('link',{name:'Open administrator invitation desk'})).toBeNull();
- });
-
+});
