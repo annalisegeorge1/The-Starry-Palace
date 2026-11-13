@@ -37,7 +37,16 @@ try {
  const row=(await a.query('select * from reading_progress')).rows[0];assert.equal(row.chapter_progress_percent,'5');assert.equal(row.completed,true);
  await b.query("select set_config('test.uid',$1,false)",['10000000-0000-0000-0000-000000000002']);
  assert.equal(await save(b,4),null);assert.equal((await b.query('select * from reading_progress')).rowCount,0);
- await admin.query(sql('rollback'));assert.equal((await admin.query('select * from reading_progress')).rowCount,1);
+ // An old browser inserted the second member's row without a revision.
+ await b.query('insert into reading_progress(user_id,work_id,chapter_id,progress_percent,chapter_progress_percent,completed,updated_at) values(auth.uid(),$1,$2,10,10,false,now())',[work,ch]);
+ await b.query('update reading_progress set chapter_progress_percent=20 where user_id=auth.uid()');
+ assert.equal(await save(b,0),null);
+ assert.equal(await save(b,-1),'1');
+ await admin.query('delete from chapters where id=$1',[ch]);
+ const detached=(await a.query('select chapter_id,progress_revision from reading_progress')).rows[0];
+ assert.equal(detached.chapter_id,null);assert.equal(detached.progress_revision,'5');
+ assert.equal(await save(a,4,next),null);
+ await admin.query(sql('rollback'));assert.equal((await admin.query('select * from reading_progress')).rowCount,2);
  console.log('PASS concurrent creation and updates, delayed write, rereading, completion retention, legacy writer rejection, account isolation, rollback');
 } finally {
  await Promise.all(clients.map(c=>c.end()));await cluster.stop();
