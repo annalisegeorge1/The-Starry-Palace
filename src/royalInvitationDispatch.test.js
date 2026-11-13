@@ -42,3 +42,33 @@ it('returns an existing provider acknowledgement without sending again',async()=
  const fetcher=vi.fn(async url=>Response.json(url.endsWith('/auth/v1/user')?sender:'provider_accepted'));
  vi.stubGlobal('fetch',fetcher);expect(await (await send()).json()).toEqual({accepted:true});expect(fetcher).toHaveBeenCalledTimes(2);
 });
+
+
+it('does not send a sealed email when the server-side issuer authorization rejects the actor',async()=>{
+ const fetcher=vi.fn(async url=>{
+  if(url.endsWith('/auth/v1/user'))return Response.json(sender);
+  if(url.endsWith('/royal_invitation_prepare_dispatch'))
+   return Response.json({error:'Issuing unavailable'},{status:403});
+  throw new Error('Unexpected request after denied dispatch');
+ });
+ vi.stubGlobal('fetch',fetcher);
+ const result=await send();
+ expect(result.status).toBe(503);
+ expect(fetcher).toHaveBeenCalledTimes(2);
+ expect(fetcher.mock.calls.every(([url])=>url!=='https://api.resend.com/emails')).toBe(true);
+});
+
+it('fails closed when sealed dispatch is disabled even for a signed-in member',async()=>{
+ const original=env.PALACE_SEALED_INVITATIONS;
+ env.PALACE_SEALED_INVITATIONS='';
+ try{
+  const fetcher=vi.fn(async url=>{
+   if(url.endsWith('/auth/v1/user'))return Response.json(sender);
+   throw new Error('Sealed backend must not be called while disabled');
+  });
+  vi.stubGlobal('fetch',fetcher);
+  const result=await send();
+  expect(result.status).toBe(403);
+  expect(fetcher).toHaveBeenCalledTimes(1);
+ }finally{env.PALACE_SEALED_INVITATIONS=original;}
+});
