@@ -1,7 +1,8 @@
-import React, {useRef, useState} from 'react';
+import React, {useId, useRef, useState} from 'react';
 import {addComment} from './palaceData';
 
 export default function ReaderCommentComposer({userId, workId, chapterId, reload, setError}) {
+  const fieldId = useId();
   const key = 'palace-comment-draft:' + JSON.stringify([userId, workId, chapterId]);
   const empty = {body: '', spoiler: false};
   const [draft, setDraft] = useState(() => {
@@ -42,7 +43,8 @@ export default function ReaderCommentComposer({userId, workId, chapterId, reload
 
   const prompt = chapterId ? 'Leave a comment about this chapter…' : 'Leave a response for the writer…';
   return <form className="comment-compose" onSubmit={submit}>
-    <textarea aria-label={prompt} placeholder={prompt} value={draft.body} disabled={sending}
+    {chapterId && <label htmlFor={fieldId}>Chapter comment</label>}
+    <textarea id={fieldId} aria-label={chapterId ? undefined : prompt} placeholder={prompt} value={draft.body} disabled={sending}
       onChange={event => update({...draft, body: event.target.value})} required/>
     <label><input type="checkbox" checked={draft.spoiler} disabled={sending}
       onChange={event => update({...draft, spoiler: event.target.checked})}/> Contains spoilers</label>

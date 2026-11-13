@@ -24,7 +24,9 @@ it('keeps a failed spoiler draft across remount, isolated by chapter and account
   }
   show('alice', 'one');
   expect(screen.getByRole('checkbox').checked).toBe(true);
-  expect(screen.getByRole('textbox').value).toBe('Synthetic response');
+  const restoredField = screen.getByRole('textbox', {name: 'Chapter comment'});
+  expect(screen.getByText('Chapter comment', {selector: 'label'}).control).toBe(restoredField);
+  expect(restoredField.value).toBe('Synthetic response');
   addComment.mockResolvedValueOnce({});
   const form = screen.getByRole('button').form;
   fireEvent.submit(form);
