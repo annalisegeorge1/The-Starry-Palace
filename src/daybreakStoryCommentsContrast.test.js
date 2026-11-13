@@ -12,8 +12,9 @@ describe('Daybreak story and reader comments readability',()=>{
   expect(entry.indexOf(current)).toBeGreaterThan(entry.indexOf("import './daybreak-treasury-settings-tablet-finish.css';"));
  });
  it('makes the comment form container and textarea light, without changing moderation',()=>{
-  expect(work).toContain('className="comment-compose" onSubmit={post}');
-  expect(work).toContain('Send for moderation');
+  const composer=readFileSync('src/ReaderCommentComposer.jsx','utf8');
+  expect(composer).toContain('className="comment-compose" onSubmit={submit}');
+  expect(composer).toContain('Send for moderation');
   expect(css).toContain('.work-community .comment-compose {');
   expect(css).toContain('background:#f8f7fc!important');
   expect(css).toContain('height:82px!important');

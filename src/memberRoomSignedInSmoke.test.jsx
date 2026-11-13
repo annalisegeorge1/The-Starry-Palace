@@ -75,6 +75,14 @@ describe('member-room smoke checks with synthetic sessions',()=>{
   expect(screen.getByTestId('member-route').textContent).toBe('/palace-life?room=clubs');
   expect(services.saveCommunityIntroduction).not.toHaveBeenCalled();
  });
+ it('opens author review with a pending chapter response',async()=>{
+  services.getWritingExtras.mockResolvedValue({comments:[{id:'c',status:'pending',body:'Synthetic pending response',works:{title:'Rehearsal'}}],downloads:[],incoming:[],outgoing:[]});
+  mount(WritingLive,'/writing?tab=comments');
+  expect(await screen.findByText('Synthetic pending response')).toBeTruthy();
+  expect(screen.getByRole('button',{name:'Approve'})).toBeTruthy();
+  expect(screen.getByRole('button',{name:'Hide'})).toBeTruthy();
+  expect(services.createDraft).not.toHaveBeenCalled();
+ });
  it('opens the signed-in Writing Chamber with no manuscripts and never creates a draft on arrival',async()=>{
   mount(WritingLive,'/writing?tab=drafts');
   await waitFor(()=>expect(services.getMyWorks).toHaveBeenCalledWith('synthetic-test-member'));

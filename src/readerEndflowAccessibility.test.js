@@ -16,8 +16,9 @@ describe('Reader end-of-chapter accessibility pass',()=>{
   expect(live).toContain('LEAVE A LITTLE LIGHT ON THIS CHAPTER');
   expect(live).toContain('onClick={()=>praiseChapter(k)}');
   expect(live).toContain('onClick={shareChapter}');
-  expect(css).toContain('flex-wrap:nowrap!important');
-  expect(css).toContain('overflow-x:auto');
+  expect(css).toContain('flex-wrap:wrap!important');
+  expect(live.indexOf('Continue to next chapter →')).toBeLessThan(live.indexOf('id="comments" className="reader-comments-after-chapter"'));
+  expect(live.indexOf('aria-label="After the discussion"')).toBeGreaterThan(live.indexOf('key={chapterDiscussionView}'));
   expect(css).toContain('min-height:44px!important');
   expect(css).toContain('.chapter-praise-actions button:disabled');
  });
@@ -39,7 +40,7 @@ describe('Reader end-of-chapter accessibility pass',()=>{
  });
  it('keeps moderated responses and gives empty states and inputs readable text',()=>{
   expect(live).toContain('Be the first to leave a response.');
-  expect(live).toContain('Send for moderation');
+  expect(readFileSync('src/ReaderCommentComposer.jsx','utf8')).toContain('Send for moderation');
   expect(live).toContain("work.comment_policy!=='closed'");
   expect(css).toContain('.comment-compose textarea::placeholder');
   expect(css).toContain('.comment-compose > button');

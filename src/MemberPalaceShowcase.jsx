@@ -1,4 +1,4 @@
-import {WriterAward,PalaceBanner} from './PaintedPalaceArt';
+import {WriterAward} from './PaintedPalaceArt';
 import React,{useEffect,useState}from'react';
 import{Link}from'react-router-dom';
 import PalaceEmblem from './PalaceEmblem';
@@ -16,7 +16,7 @@ export default function MemberPalaceShowcase({profile,identity,own=false}){
  const palace=identity?.palace_slug?{slug:identity.palace_slug,name:identity.palace_name}:null;
  async function toggle(){if(busy||!stats)return;setBusy(true);setError('');try{await setMemberReadingShowcase(!stats.reading_opted_in);setStats(await getMemberCreativeShowcase(profile.id))}catch(e){setError(e.message)}finally{setBusy(false)}}
  return <section className="member-palace-showcase" style={{'--member-court-accent':lore.colour,'--member-court-deep':lore.secondary}} aria-label="Palace membership and achievements">
- {palace&&<Link className="member-palace-heraldry" to="/grand-palaces?tab=courts"><div className="member-palace-banner-rail" aria-hidden="true"><PalaceBanner palace={palace} rectangular/></div><span className="member-palace-heraldry-emblem" aria-hidden="true"><PalaceEmblem palace={palace} size={76} decorative/></span><div className="member-palace-heraldry-copy"><small>GRAND PALACE · YOUR PERMANENT COURT</small><strong>{identity.palace_name}</strong><p>{lore.epithet}</p><span>Enter your court <b aria-hidden="true">↗</b></span></div></Link>}
+ {palace&&<Link className="member-palace-heraldry" to="/grand-palaces?tab=courts"><span className="member-palace-heraldry-emblem" aria-hidden="true"><PalaceEmblem palace={palace} size={76} decorative/></span><div className="member-palace-heraldry-copy"><small>GRAND PALACE · YOUR PERMANENT COURT</small><strong>{identity.palace_name}</strong><p>{lore.epithet}</p><span>Enter your court <b aria-hidden="true">↗</b></span></div></Link>}
  <div className="member-palace-honour-room"><header><div><p className="eyebrow">THE CELESTIAL REGALIA</p><h3>Honours received</h3><p>A constellation of appreciation and accomplishment. Purchased tokens waiting to be gifted never count here.</p></div></header>
  <div className="member-palace-honour-grid">{honourTypes.map(([key,glyph,label,explain,color])=><article className={'member-palace-honour '+key} key={key} style={{'--honour-colour':color}}><span aria-hidden="true"><WriterAward kind={key} size={30}/></span><strong>{Number(identity?.honours?.[key]||0).toLocaleString()}</strong><small>{label}</small><em>{explain}</em></article>)}</div></div>
  <div className="member-palace-creative-room"><header><div><p className="eyebrow">MY LIVING LIBRARY</p><h3>Words written. Worlds explored.</h3></div><span className="member-palace-creative-mark" aria-hidden="true"><PalaceIcon name="feather" size={18}/><PalaceIcon name="book-open" size={18}/></span></header>

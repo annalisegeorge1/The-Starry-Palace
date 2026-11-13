@@ -858,6 +858,7 @@ function App(){const location=useLocation();return <AuthProvider><PalaceRouteSeo
  <Route path="/comic/:slug" element={<ComicLive Frame={Frame}/>}/>
  <Route path="/comic/:slug/episode/:episodeId" element={<ComicEpisodeLive Frame={Frame}/>}/>
  <Route path="/writing" element={<ProtectedRoute><WritingLive Frame={Frame}/></ProtectedRoute>}/>
+ <Route path="/writing/comments" element={<Navigate replace to="/writing?tab=comments"/>}/>
  <Route path="/writing/:slug" element={<ProtectedRoute><WorkStudioLive Frame={Frame}/></ProtectedRoute>}/>
  <Route path="/work/:slug" element={<WorkLive Frame={Frame}/>}/>
  <Route path="/work/:slug/chapter/:chapterId" element={<ChapterLive Frame={Frame}/>}/>
