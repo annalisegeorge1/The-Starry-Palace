@@ -35,3 +35,12 @@ it('keeps a failed spoiler draft across remount, isolated by chapter and account
   expect(addComment).toHaveBeenCalledTimes(2);
   expect(sessionStorage.length).toBe(0);
 });
+
+it('submits a moderated reply bound to its work, chapter and parent',async()=>{
+ const reload=vi.fn();
+ render(<ReaderCommentComposer userId="reader" workId="w" chapterId="c" parentId="parent" reload={reload} setError={vi.fn()}/>);
+ fireEvent.change(screen.getByRole('textbox',{name:'Reply to comment'}),{target:{value:'A reply'}});
+ fireEvent.click(screen.getByRole('button'));
+ await waitFor(()=>expect(reload).toHaveBeenCalledOnce());
+ expect(addComment).toHaveBeenCalledWith('reader','w','c','A reply','response',false,'parent');
+});
