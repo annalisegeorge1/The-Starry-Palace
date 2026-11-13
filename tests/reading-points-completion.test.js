@@ -74,7 +74,7 @@ describe('Celestial reading points after every chapter',()=>{
   expect(reader).toContain("onClick={()=>finish(false)} to={\"/work/\"+slug+\"/chapter/\"+next.id}");
   expect(reader).toContain('function jumpChapter(id){if(id&&id!==chapterId){finish(false);navigate(');
   expect(reader).toContain('onClick={()=>finish(true)}>Mark work finished ✦');
-  expect(reader).toContain('recordReadingProgress(session.user.id,data.work.id,data.chapter.id,done?100:Math.max(5,Math.min(95,progress)),done,done?100:readerPlace)');
+  expect(reader).toContain('recordReadingProgress(done?100:Math.max(5,Math.min(95,progress)),done,done?100:readerPlace)');
   expect(reader).toContain('90 seconds of reading');
   expect(reader).toContain("session?.user?.id&&session.user.id!==data.work.author_id");
  });

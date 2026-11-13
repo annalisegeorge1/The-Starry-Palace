@@ -1461,7 +1461,7 @@ export async function getWorkReaderState(userId,workId){
  const[saved,sub,progress]=await Promise.all([
   needClient().from('saved_works').select('work_id').eq('user_id',userId).eq('work_id',workId).maybeSingle(),
   needClient().from('story_subscriptions').select('enabled,frequency').eq('user_id',userId).eq('work_id',workId).maybeSingle(),
-  needClient().from('reading_progress').select('chapter_id,progress_percent,chapter_progress_percent,completed,updated_at').eq('user_id',userId).eq('work_id',workId).maybeSingle()
+  needClient().from('reading_progress').select('chapter_id,progress_percent,chapter_progress_percent,completed,updated_at,progress_revision').eq('user_id',userId).eq('work_id',workId).maybeSingle()
  ]);
  for(const r of[saved,sub,progress])if(r.error)throw r.error;
  return{saved:!!saved.data,following:!!sub.data?.enabled,frequency:sub.data?.frequency||'all',progress:progress.data||null}
@@ -1488,7 +1488,15 @@ export async function setWorkSaved(userId,workId,enabled){
 export async function setWorkFollowing(userId,workId,enabled){
  const{error}=await needClient().from('story_subscriptions').upsert({user_id:userId,work_id:workId,enabled,updated_at:new Date().toISOString()},{onConflict:'user_id,work_id'});if(error)throw error;return enabled
 }
-export async function recordReadingProgress(userId,workId,chapterId,percent=0,completed=false,chapterPercent=0){const next=Math.max(0,Math.min(100,Number(percent)||0));const chapterNext=Math.max(0,Math.min(100,Number(chapterPercent)||0));const current=await needClient().from('reading_progress').select('chapter_id,progress_percent,chapter_progress_percent,completed').eq('user_id',userId).eq('work_id',workId).maybeSingle();if(current.error)throw current.error;const sameChapter=current.data?.chapter_id===chapterId;const progress=sameChapter?Math.max(Number(current.data?.progress_percent||0),next):next;const done=sameChapter?Boolean(current.data?.completed||completed):Boolean(completed);const precise=completed?100:chapterNext;const{error}=await needClient().from('reading_progress').upsert({user_id:userId,work_id:workId,chapter_id:chapterId,progress_percent:progress,chapter_progress_percent:precise,completed:done,updated_at:new Date().toISOString()},{onConflict:'user_id,work_id'});if(error)throw error}
+export async function saveReadingPosition(workId,chapterId,revision,{percent,finished,chapterPercent}){
+ const clamp=value=>Math.max(0,Math.min(100,Number(value)||0));
+ const {data,error}=await needClient().rpc('save_reading_position',{
+  p_work:workId,p_chapter:chapterId,p_expected:revision,p_work_percent:clamp(percent),
+  p_finished:finished,p_chapter_percent:finished?100:clamp(chapterPercent)
+ });
+ if(error)throw error;
+ return data;
+}
 
 export async function getWorkLore(workId){
  const{data,error}=await needClient().rpc('get_work_lore',{p_work_id:workId});if(error)throw error;return data||[]
