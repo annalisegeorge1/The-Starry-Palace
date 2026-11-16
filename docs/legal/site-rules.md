@@ -2,7 +2,7 @@
 ## Site Rules
 **Effective:** 31 October 2026 · **Contact:** annalise.pierre.28@gmail.com
 
-The Palace welcomes writers, readers, poets, artists and storytellers. These rules summarize the Terms of Service and Palace Code. Follow the specific safety and privacy controls in each feature as well.
+The Palace welcomes writers, readers, poets, artists and storytellers. These rules summarize the Terms of Service, [Content Policy](/legal/content) and Palace Code. Follow the specific safety and privacy controls in each feature as well.
 
 ### 1. Your identity and your account
 The minimum age to create or use a Palace account is 13. Give your accurate date of birth when asked; it is stored privately for account eligibility and creator-set reader age limits, not shown on your public profile. The check is self-declared and cannot verify identity or prevent someone from lying about their age. The Palace does not separately verify guardian consent. People under 13 must not create or use a Palace account. Members aged 13–17 should involve a parent or guardian where local law requires it. Use a pen name if you wish. You do not have to place your legal name on a public profile. Do not impersonate someone, enter another person's account, evade a restriction with another account, or use bots and duplicate accounts to manipulate votes, badges, rewards or community activity.
@@ -16,6 +16,8 @@ Do not try to access, copy or share another member's unpublished drafts, private
 **The Palace has no intention of using AI models with member data on any front.** It will not submit or expose account or profile information, dates of birth, messages, reports, activity, technical records, drafts, published writing, artwork, comics, comments or uploaded files to AI models or services for training, generation, analysis, moderation, recommendations or any other AI processing. The Palace will not offer an AI feature that processes member data or give AI providers access to it. People maintaining the Palace must use source code, synthetic examples or properly redacted material for AI-assisted development—not member data, private messages, unpublished work or production database exports.
 
 ### 4. Publish thoughtfully
+The [Content Policy](/legal/content) explains our approach to creative expression, plagiarism, real-person fiction, required tags and public-facing imagery. Subjective offence alone is not normally grounds for removing a compliant fictional work.
+
 Choose a suitable rating, tags and content warnings. Writers can set a minimum reader age of 12, 13, 16 or 18 for stories and comics; rating floors apply, and writers may choose a higher age. The access setting applies to published work and its chapters, episodes, pages, comments, tags and comic images, including direct links. Readers below the selected age are blocked based on their self-declared date of birth. This work-level restriction is separate from the 13-year account minimum and cannot prevent a reader from lying about their age. Sexualised content involving minors, child sexual exploitation material, grooming, credible threats and predatory conduct are prohibited. Do not claim that preservation of a work gives you ownership or permission to publish it. Confirm that you have the rights or permission needed for material you upload.
 
 ### 5. Treat people with dignity

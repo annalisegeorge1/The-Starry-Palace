@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link, Navigate, useParams} from 'react-router-dom';
 import terms from '../docs/legal/terms-of-service.md?raw';
+import content from '../docs/legal/content-policy.md?raw';
 import privacy from '../docs/legal/privacy-policy.md?raw';
 import rules from '../docs/legal/site-rules.md?raw';
 import cookies from '../docs/legal/cookie-notice.md?raw';
@@ -10,6 +11,7 @@ import './palace-legal-pages.css';
 
 const policies=[
  {id:'terms',title:'Terms of Service',summary:'Accounts, publishing, creator rights, community conduct and moderation.',content:terms},
+ {id:'content',title:'Content Policy',summary:'Creative freedom, ratings, fanworks, copyright, harassment and safety.',content},
  {id:'privacy',title:'Privacy Policy',summary:'Account information, age checks, drafts, service providers and privacy requests.',content:privacy},
  {id:'rules',title:'Site Rules',summary:'The community standards members agree to follow.',content:rules},
  {id:'cookies',title:'Cookies and Browser Storage',summary:'Sign-in storage, device preferences and browser controls.',content:cookies},

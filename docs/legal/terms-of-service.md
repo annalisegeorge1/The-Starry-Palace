@@ -6,19 +6,19 @@
 **Contact:** annalise.pierre.28@gmail.com  
 **Minimum account age:** 13 years
 
-**Policy update — 15 November 2026:** Section 16 now explains who may appeal eligible moderation decisions, independent review, the effect of an appeal on existing restrictions, private outcomes, and the limits of internal finality. The existing Terms and other creator protections remain in place. This update expands and clarifies review safeguards; it does not remove members' existing legal rights.
+**Policy update — 15 November 2026:** Section 16 now explains who may appeal eligible moderation decisions, independent review, the effect of an appeal on existing restrictions, private outcomes, and the limits of internal finality. A separate [Content Policy](/legal/content) now explains creative-expression protections, copyright and plagiarism, tagging, real-person fiction, harassment, profile imagery and creator support. Existing creator protections remain in place, and members retain their legal rights.
 
 ### A word from the Palace
 The Starry Palace is being built as a community where writers, readers, poets, artists and storytellers can create, share, connect and find fellowship without surrendering ownership of their work. I want it to be a safe and warm place, with rules that are open enough for people to understand and fair enough for people to trust. Feedback is always welcome.
 
 Our first principle is simple: **Create freely. Treat people with dignity. Keep power accountable.**
 
-These Terms explain how The Starry Palace works, the rules that protect the community, and the limited permission needed to host member content. They take effect on the effective date shown above. The Palace Code and feature-specific rules form part of these Terms.
+These Terms explain how The Starry Palace works, the rules that protect the community, and the limited permission needed to host member content. They take effect on the effective date shown above. The Palace Code, [Content Policy](/legal/content) and feature-specific rules form part of these Terms.
 
 ### 1. What these terms cover
 “The Starry Palace”, “the Palace”, “we”, and “us” refer to Annalise Pierre, the operator of thestarrypalace.com. “Members” have registered accounts; “visitors” read or browse without signing in. “Content” includes writing, manuscripts, chapters, comments, artwork, comics, profiles, messages, links and other material contributed to the service.
 
-By accessing or using the service after the effective date, users agree to follow the applicable Terms, Palace Code, feature rules and the Privacy Policy. If a feature has additional rules—for example, a creative competition or a club—those rules apply within that feature, provided they do not override fundamental creator rights, safety protections or applicable law. Applicable laws and non-waivable legal rights always take priority.
+By accessing or using the service after the effective date, users agree to follow the applicable Terms, Content Policy, Palace Code, feature rules and the Privacy Policy. If a feature has additional rules—for example, a creative competition or a club—those rules apply within that feature, provided they do not override fundamental creator rights, safety protections or applicable law. Applicable laws and non-waivable legal rights always take priority.
 
 ### 2. Reading, accounts and eligibility
 People may read works marked **Public** without creating an account. Some published works may be marked **Members Only** and are intended for signed-in members. Commenting, following, messaging, posting, entering events, saving account-based reading progress and other interactive features may require an account.
@@ -64,6 +64,8 @@ We recognise that writers and readers have different views about AI-assisted and
 Members are responsible for respecting other creators' rights, for being truthful about authorship where relevant or required by a feature, and for following any future creator-disclosure rules published in advance. This section does not automatically ban all AI-assisted creative works; more detailed disclosure standards may be adopted following community consultation and notice. The Palace does not sell member manuscripts or art for AI training.
 
 ### 7. Fanfiction, translations, classics and Lost Works
+The [Content Policy](/legal/content) explains in more detail how creative expression, fanworks, copyright, plagiarism and permissions are handled.
+
 We welcome original fiction, fanfiction, poetry, comics, translated works and cultural storytelling within applicable law and the relevant rights of creators and rightsholders. Posting fanfiction does not make a member the owner of the underlying franchise or copyrighted world. Members may not misrepresent affiliation with an original rightsholder or use content they do not have the right to publish.
 
 Translation permission must follow the original creator's chosen option. Permission to translate does not transfer ownership of the original work. Public-domain status, Creative Commons licences, authorised reprints and other hosting rights must be checked rather than assumed. The **Lost Works** archive distinguishes preservation, provenance and hosting permission from ownership: *preservation is not possession*. A work is not automatically public domain merely because it is old, obscure or difficult to locate.
@@ -71,6 +73,8 @@ Translation permission must follow the original creator's chosen option. Permiss
 If a rightsholder identifies material that may infringe their rights, they may contact annalise.pierre.28@gmail.com with “Copyright report” in the subject line with a description of the work, the disputed URL and reasonable evidence of ownership or authority. We may restrict disputed material while reviewing the request, seek clarification from the uploader, and restore content where a complaint is not substantiated or applicable law permits it.
 
 ### 8. Ratings, warnings and responsible publishing
+The [Content Policy](/legal/content) gives additional guidance on required metadata, inaccurate tags, covers, public-facing images and context-sensitive moderation.
+
 Creators must make reasonable efforts to select an accurate content rating, appropriate tags and relevant warnings, including when writing may contain mature or distressing themes. A creator can set a minimum reader age of 12, 13, 16 or 18, subject to the minimum associated with the selected content rating. The setting applies to published stories and comics, including direct links, chapters, episodes, pages, comments and reader assets. A creator may choose a higher limit; the Palace blocks readers below that age based on the date of birth they supplied. Age is self-declared and is not identity-verified, so this is an access control and does not guarantee that a reader cannot evade it by lying about their age. This work-level restriction is separate from the 13-year minimum age to create an account. Ratings are content guidance, not rankings of artistic quality. Readers should review a work's details and exercise their own judgement; missing tags or warnings cannot guarantee that a work contains no sensitive material.
 
 Sexualised content involving minors, child sexual exploitation material, grooming, coercive sexual exploitation, credible threats of violence and other unlawful or predatory activity are prohibited. We may remove or escalate serious safety threats without waiting for the ordinary moderation process. Other mature material may be subject to ratings, visibility restrictions and feature-specific rules; an age label is not permission to post otherwise prohibited content.

@@ -1,8 +1,9 @@
 # Published legal and community pages
 
-These six Markdown files are the source for the public `/legal` pages:
+These seven Markdown files are the source for the public `/legal` pages:
 
 - `terms-of-service.md` — Terms of Service and Palace Code annex
+- `content-policy.md` — creative expression, tagging, rights, harassment and content moderation
 - `privacy-policy.md` — personal information, including self-declared account age
 - `site-rules.md` — community rules
 - `cookie-notice.md` — cookies and browser storage
