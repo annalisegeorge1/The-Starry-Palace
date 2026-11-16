@@ -1,7 +1,7 @@
 # THE STARRY PALACE
 ## Artificial Intelligence Policy
 **Effective:** 31 October 2026  
-**Last updated:** 31 October 2026  
+**Last updated:** 17 November 2026  
 **Contact:** Annalise Pierre · annalise.pierre.28@gmail.com
 
 The Starry Palace exists to support writers, readers, poets, artists and storytellers. Members keep the rights they own in their creative work. Posting or publishing work in the Palace is not permission for someone else to submit it to an AI system or use it to train a model.
@@ -13,6 +13,12 @@ The Starry Palace exists to support writers, readers, poets, artists and storyte
 People maintaining the Palace must not place member data, private messages, unpublished work, identifiable records or production database exports into AI coding assistants, test tools or other AI services. Development and troubleshooting must use source code, synthetic examples or properly redacted material that does not identify members or reveal their content.
 
 Hosting, authentication, database, storage and security providers may process information to deliver their contracted services as described in the Privacy Policy. The Palace will not direct them to use member data with AI models. This operational processing does not grant the Palace or a provider permission to use member data for AI training or other AI processing.
+
+### Crawler restrictions and author-controlled reading access
+
+The Palace publishes [`robots.txt`](/robots.txt) instructions requesting that known AI-training and dataset-collection crawlers not access our website. We also use Cloudflare's **Block AI Scrapers and Crawlers** protection to block recognised AI-crawler requests. We intend ordinary web search to continue discovering public content, but neither measure can reliably identify every scraper or prevent a human reader from copying text.
+
+A creator can publish a work as **Public** (visitors can read), **Members Only** (eligible signed-in members can read), or keep it **Private** (author and authorised collaborators). Database access policies enforce chapter visibility and reader age limits. These choices do not confer AI-training permission, and Members Only is not a promise that another member cannot misuse what they see. See [Terms sections 3, 6 and 17](/legal/terms) for the scope and limits.
 
 ### Member use of AI
 
