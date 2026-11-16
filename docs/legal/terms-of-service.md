@@ -6,6 +6,8 @@
 **Contact:** annalise.pierre.28@gmail.com  
 **Minimum account age:** 13 years
 
+**Policy update — 15 November 2026:** Section 16 now explains who may appeal eligible moderation decisions, independent review, the effect of an appeal on existing restrictions, private outcomes, and the limits of internal finality. The existing Terms and other creator protections remain in place. This update expands and clarifies review safeguards; it does not remove members' existing legal rights.
+
 ### A word from the Palace
 The Starry Palace is being built as a community where writers, readers, poets, artists and storytellers can create, share, connect and find fellowship without surrendering ownership of their work. I want it to be a safe and warm place, with rules that are open enough for people to understand and fair enough for people to trust. Feedback is always welcome.
 
