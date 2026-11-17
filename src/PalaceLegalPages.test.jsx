@@ -25,17 +25,15 @@ it('presents the Content Policy as a navigable policy with creative-freedom and 
  expect(screen.getByText(/the Palace allows voluntary external creator-support links/)).toBeTruthy();
 });
 
-it('explicitly allows non-explicit teenage romance and protects young characters',()=>{
+it('supports on-page non-graphic teen intimacy and contextual historical relationships',()=>{
  mount('/legal/content');
- expect(screen.getByRole('heading',{name:'3A. Young romance, difficult themes and protection of minors'})).toBeTruthy();
- expect(screen.getByText(/Non-explicit romantic stories involving teenage characters are welcome/)).toBeTruthy();
- expect(screen.getByText(/graphic, explicit or eroticised sexual content involving minors/)).toBeTruthy();
- expect(screen.getByText(/fictional depiction from endorsement/)).toBeTruthy();
- expect(screen.getByText(/Teen-to-teen intimacy is different from adult exploitation/)).toBeTruthy();
- expect(screen.getByText(/a fade-to-black/)).toBeTruthy();
- expect(screen.getByText(/Historical and culturally situated stories may depict practices/)).toBeTruthy();
- expect(screen.getByText(/a 16-year-old being married off/)).toBeTruthy();
+ expect(screen.getByRole('heading',{name:'3A. Young romance, historical relationships and child safety'})).toBeTruthy();
+ expect(screen.getByText(/Teen characters can be imperfect, curious and realistic/)).toBeTruthy();
+ expect(screen.getByText(/Non-graphic intimate moments may appear on the page/)).toBeTruthy();
+ expect(screen.getByText(/Historical, cultural, fantasy and politically arranged relationships/)).toBeTruthy();
+ expect(screen.getByText(/Non-negotiable safeguards/)).toBeTruthy();
 });
+
 it('links to the new Content Policy from the existing Terms',()=>{
  mount('/legal/terms');
  const links=screen.getAllByRole('link',{name:'Content Policy'});
