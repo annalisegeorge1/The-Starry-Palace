@@ -25,6 +25,14 @@ describe('creative freedom and minors safety policy boundaries',()=>{
   expect(content).toContain('An **Explicit** rating is not permission to post these materials');
   expect(content).toContain('a fictional framing nor a tag can override');
  });
+ it('allows historical arranged-marriage narratives while preserving explicit-content boundaries',()=>{
+  expect(content).toContain('Historical and culturally situated stories may depict practices');
+  expect(content).toContain('a 16-year-old being married off');
+  expect(content).toContain('an adult spouse may appear as a major character');
+  expect(content).toContain('Context does not waive safety boundaries');
+  expect(terms).toContain('Historical fiction may portray a 16-year-old being married off');
+  expect(rules).toContain('depiction is not endorsement');
+ });
  it('protects fictional difficult topics while separating references from depictions',()=>{
   expect(content).toContain('We distinguish fictional depiction from endorsement');
   expect(content).toContain('the **consequences** of childhood abuse');
