@@ -42,6 +42,11 @@
 .writer-early-mark{font-size:2.8rem;color:#cebaff;display:grid;place-items:center;min-height:110px;border-radius:22px;background:#a18bcf22}
 .writer-early-circle .writer-eyebrow{color:#d6bbff}
 .writer-early-circle p:not(.writer-eyebrow){max-width:770px;line-height:1.75;color:#ebe5fd}
+.writer-early-circle .writer-circle-lead{font-size:1.08rem;line-height:1.55}
+.writer-circle-benefits{margin:14px 0;padding:0;display:grid;gap:9px;list-style:none}
+.writer-circle-benefits li{position:relative;padding-left:25px;line-height:1.6;color:#f3edff}
+.writer-circle-benefits li:before{content:'✦';position:absolute;left:0;color:#cbb5fc}
+.writer-early-circle small{display:block;color:#ddd7f4;line-height:1.6;margin-top:4px}
 .writer-circle-actions a{border:1px solid #c5acef;color:#f3e9ff;background:#ab8ad12b}
 .writer-circle-actions a:hover{background:#bd9fe03d}
 .writer-faq-items{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
