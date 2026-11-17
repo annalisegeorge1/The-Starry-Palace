@@ -17,6 +17,11 @@ describe('creative freedom and minors safety policy boundaries',()=>{
    expect(policy).toMatch(/depictions of sexual violence against children/i);
    expect(policy).toMatch(/explicit or eroticised sexual content involving minors/i);
   }
+  expect(content).toContain('including when both characters are minors');
+  expect(content).toContain('no adult may be a romantic or sexual participant');
+  expect(content).toContain('a fade-to-black');
+  expect(terms).toContain('off-page implications of consensual intimacy');
+  expect(rules).toContain('no adult may be a romantic or sexual participant');
   expect(content).toContain('An **Explicit** rating is not permission to post these materials');
   expect(content).toContain('a fictional framing nor a tag can override');
  });
