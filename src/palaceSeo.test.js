@@ -26,5 +26,17 @@ describe('public Palace metadata', () => {
     expect(routeSeo('/writing/my-draft').robots).toContain('noindex');
     expect(routeSeo('/work/unknown').robots).toContain('noindex');
     expect(routeSeo('/reading').robots).toBe('index,follow');
+    expect(routeSeo('/search').robots).toContain('noindex');
+  });
+  it('uses search-specific language for public writing and reading landing pages', () => {
+    const writer = routeSeo('/writers');
+    expect(writer.title).toContain('Publish Original Fiction & Fanfiction');
+    expect(writer.description).toContain('Draft privately');
+    expect(writer.url).toBe('https://thestarrypalace.com/writers');
+    const reading = routeSeo('/reading');
+    expect(reading.title).toContain('Read Original Stories, Fanfiction & Poetry');
+    expect(routeSeo('/fandoms').title).toContain('Fanfiction by Fandom');
+    expect(routeSeo('/').description).toContain('publish your own stories');
+    expect(routeSeo('/tags').robots).toBe('index,follow');
   });
 });
