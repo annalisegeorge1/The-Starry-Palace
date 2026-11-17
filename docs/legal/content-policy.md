@@ -64,7 +64,7 @@ Similar ideas, tropes, plots, genres, character archetypes and general concepts 
 
 Members may use pen names and distinct creative identities. Do not expose, connect or speculate publicly about someone's non-public real name, home address, contact information, precise location, private accounts, unpublished messages or other sensitive identifying information without a lawful and appropriate basis. Do not link a member's pen name to an offline or professional identity without permission, even if you think you know who they are.
 
-Fiction featuring public figures or other real people is not automatically impersonation or harassment solely because it depicts a fictional scenario. However, a fictional label does not excuse doxxing, fabricated material presented as verified fact, threats, invasive disclosures, harassment or sexualised content involving minors. Moderators consider context, audience, targeting, potential harm and applicable law. Keep fictional portrayals clearly distinguishable from genuine communications or official statements.
+Fiction featuring public figures or other real people is not automatically impersonation or harassment solely because it depicts a fictional scenario. However, a fictional label does not excuse doxxing, fabricated material presented as verified fact, threats, invasive disclosures, harassment or sexualised or exploitative portrayals of real minors. Moderators consider context, audience, targeting, potential harm and applicable law. Keep fictional portrayals clearly distinguishable from genuine communications or official statements.
 
 ### 7. Impersonation and misleading authority
 
