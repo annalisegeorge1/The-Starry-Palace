@@ -28,7 +28,7 @@ it('presents the Content Policy as a navigable policy with creative-freedom and 
 it('supports on-page non-graphic teen intimacy and contextual historical relationships',()=>{
  mount('/legal/content');
  expect(screen.getByRole('heading',{name:'3A. Young romance, historical relationships and child safety'})).toBeTruthy();
- expect(screen.getByText(/Writers may explore teenage love and growing up without an automatic censorship rule/)).toBeTruthy();
+ expect(screen.getByText(/Teen characters can be imperfect, curious and realistic/)).toBeTruthy();
  expect(screen.getByText(/Non-graphic intimate moments may appear on the page/)).toBeTruthy();
  expect(screen.getByText(/Historical, cultural, fantasy and politically arranged relationships/)).toBeTruthy();
  expect(screen.getByText(/Non-negotiable safeguards/)).toBeTruthy();
