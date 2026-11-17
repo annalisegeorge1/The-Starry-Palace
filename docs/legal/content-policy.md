@@ -1,7 +1,7 @@
 # THE STARRY PALACE
 ## Content Policy
-**Revision prepared:** 15 November 2026  
-**Applicability:** This Policy forms part of the Terms of Service once published.  
+**Last updated:** 17 November 2026  
+**Applicability:** This Policy forms part of the published Terms of Service.  
 **Contact:** annalise.pierre.28@gmail.com
 
 The Starry Palace is a community for original writing, fanfiction, poetry, comics, artwork, translations and cultural storytelling. We welcome a wide range of genres, perspectives, characters and fictional subjects. **A work will not ordinarily be removed merely because someone considers its ideas, relationships, language or subject matter offensive.** Artistic freedom remains subject to the rights, safety and conduct rules below and applicable law.
@@ -10,7 +10,9 @@ This Policy explains which contributions are permitted and how content concerns 
 
 ### 1. Creative expression and difficult subject matter
 
-Fiction may portray conflict, prejudice, trauma, violence, death, unhealthy relationships, morally flawed characters or unpopular opinions without necessarily endorsing those things. A story's depiction of fictional wrongdoing is not, by itself, proof that its creator is promoting harm or harassing a real person.
+Fiction may portray conflict, prejudice, trauma, violence, death, unhealthy relationships, morally flawed characters, difficult family dynamics or unpopular opinions without necessarily endorsing those things. A story's depiction of fictional wrongdoing is not, by itself, proof that its creator is promoting harm or harassing a real person. The Palace does not remove otherwise compliant fiction simply because it includes a controversial pairing, an unpopular genre, a morally complicated character, an LGBTQ+ relationship, dark subject matter or a depiction of characters behaving badly.
+
+**We distinguish fictional depiction from endorsement.** Moderation should identify the applicable rule and examine context rather than remove a work merely because someone dislikes its romance, ship, fandom, viewpoint or genre. Meaningful reader warnings, age controls, filters and reporting are preferable to a blanket ban where content is otherwise lawful and within our safeguards. These protections do not excuse harassment of real people, exploitation, misrepresentation of real events as fact, or any prohibited content.
 
 Readers should consult ratings, warnings, tags and descriptions before opening works, and use available filters, muting and blocking tools to shape their own experience. Those tools supplement, but do not replace, platform safety rules. Context matters: a fictional scene, a character's speech, an author's note directed at a person, and a targeted message may warrant different moderation responses.
 
@@ -29,6 +31,24 @@ Creators must make reasonable efforts to choose an accurate available rating, re
 Where a publishing form requires a rating, warning, fandom, language or other metadata field, members must complete it using the options actually available. Do not deliberately mislabel a work to reach underage readers, avoid a warning or mislead the discovery system. Creators may choose a less specific warning only if the platform offers that option; we do not require creators to disclose every plot twist or spoiler.
 
 The Palace may ask a creator to fix inaccurate or missing metadata; add or adjust a supported neutral label where permitted; restrict discovery or access; temporarily hide content pending correction; or take further proportionate action. The applicable minimum reading ages remain subject to the existing rating floors and account-age rules. Readers are responsible for reviewing warnings, but misleading labels may still be moderated.
+
+### 3A. Young romance, difficult themes and protection of minors
+
+**Non-explicit romantic stories involving teenage characters are welcome.** Crushes, dating, holding hands, hugging, kissing, affection, first love, identity exploration, breakups and coming-of-age relationships between young characters are not banned merely because they are under eighteen. This also applies to same-sex and other LGBTQ+ young relationships. Such stories should use honest ratings and relevant warnings where needed; a normal teenage romance does not automatically require a Mature or Explicit rating.
+
+**Teen-to-teen intimacy is different from adult exploitation.** Fiction about consenting teenagers who are reasonably close in age may discuss attraction, boundaries, relationships and age-appropriate intimacy. If a story implies consensual intimacy between teenage characters, it must remain non-graphic and off-page (a fade-to-black), without sexual detail or eroticisation, and should be rated or warned appropriately for its themes. The presence of parents, teachers or other adults as ordinary non-romantic characters is fine; **no adult may be a romantic or sexual participant in this permitted teen-intimacy category**. Depictions of exploitation or coercion must not be presented as consensual teenage romance.
+
+**Historical and culturally situated stories may depict practices that would be unacceptable today without endorsing them.** For example, an author may portray a 16-year-old being married off, a coerced or arranged marriage, a large age or power imbalance, a royal betrothal, or a legal marriage to an adult in a historical or historically inspired setting. Such relationships may be central to a character's life, and an adult spouse may appear as a major character. This is **permitted as non-graphic narrative depiction**, whether the work examines the custom critically, presents conflicting characters' views, or explores its social consequences. Moderators must not treat historical setting, arranged-marriage subject matter, or portrayal of an adult spouse alone as proof that the writer promotes child marriage.
+
+**Context does not waive safety boundaries.** Marriage, historical legality, family approval or a fictional world's customs do not permit eroticised or explicit sexual scenes involving a person under eighteen or graphic depictions of sexual violence against a child. Authors may use dialogue, off-page references and the emotional or social aftermath to address coercion or abuse without depicting sexual acts. Appropriate warnings may include forced marriage, age gap, coercion, abuse or trauma, according to what appears in the work. A narrative about an unequal marriage does not have to approve of it or condemn it explicitly, but it must not use historical framing as a loophole to sexualise children.
+
+For the purposes of the Palace's prohibition on sexual content involving minors, a **minor is any character or real person under 18**. This safety boundary does not change with a fictional setting's age of adulthood or the age of consent in a different jurisdiction.
+
+**The following remain prohibited regardless of the author's intent, genre, rating, warnings or privacy setting:** graphic, explicit or eroticised sexual content involving minors, including when both characters are minors; depictions of sexual violence against children; sexual exploitation, grooming or predatory sexual conduct directed at minors; graphic depiction or eroticisation of adult–minor sexual contact, including romanticised sexual exploitation; and sexualised, exploitative or abusive images involving minors. An **Explicit** rating is not permission to post these materials. Where suspected unlawful child sexual abuse material is involved, the Palace may remove content and take appropriate safety or legal steps.
+
+Fiction may, however, address the **consequences** of childhood abuse through non-graphic references, survivor perspectives, support, investigation or recovery, where it does not describe or sexualise the abusive acts. Such works may require relevant warnings, audience restrictions and context-sensitive review. This distinction is not permission to stage, describe in sexual detail or eroticise an act of sexual violence against a child.
+
+Consensual sexual content involving **adult** characters is not automatically prohibited merely because it is mature or unpopular, but it remains subject to applicable law, Palace rules, suitable ratings, warnings and reader-age restrictions. Depictions of difficult adult themes also require context-sensitive moderation. Neither a fictional framing nor a tag can override the specific prohibitions above.
 
 ### 4. Copyright, fanworks and permission to publish
 
@@ -76,7 +96,7 @@ Unsolicited mass advertising, deceptive or malicious links, fraudulent fundraisi
 
 ### 11. Illegal content, exploitation and technical safety
 
-Content involving child sexual exploitation, **sexualised content involving minors**, grooming, coercive sexual exploitation, credible threats and other unlawful or predatory conduct is prohibited. An age label, fictional framing or content warning does not make prohibited material permissible. Nonsexual discussions or fictional depictions of abuse, harm or difficult experiences are not automatically prohibited simply because those subjects appear in a work; the applicable context, content and safeguards matter.
+Content involving child sexual exploitation, **explicit or eroticised sexual content involving minors**, depictions of sexual violence against children, grooming, coercive sexual exploitation, credible threats and other unlawful or predatory conduct is prohibited. An age label, fictional framing, private visibility choice or content warning does not make prohibited material permissible. As explained in Section 3A, non-explicit adolescent romance and non-graphic discussion of trauma, harm or recovery are not automatically prohibited merely because young characters or difficult experiences appear in a work; the applicable context, content and safeguards matter.
 
 Do not post malware, stolen credentials, malicious executables, disguised executable files, unlawful instructions intended to facilitate abuse, or material that creates a serious threat to the security of members or the service. Do not exploit vulnerabilities, bypass access restrictions, distribute another member's private drafts or messages, or use the Palace to facilitate illegal activity. Report security problems privately rather than publishing a working exploit.
 
