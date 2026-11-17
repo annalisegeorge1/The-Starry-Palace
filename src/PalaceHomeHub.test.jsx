@@ -9,6 +9,7 @@ function Location(){return <output data-testid="location">{useLocation().pathnam
 it('keeps guest creative destinations after sign-in and switches discovery paths',()=>{
  render(<MemoryRouter><PalaceHomeHub/></MemoryRouter>);
  expect(screen.getByRole('link',{name:/Comics Gallery/}).getAttribute('href')).toBe('/comics');
+ expect(screen.getByText(/Discover original fiction, fanfiction, poetry and comics/)).toBeTruthy();
  fireEvent.click(screen.getByRole('button',{name:'Create'}));
  expect(screen.getByRole('link',{name:/Writing Chamber/}).getAttribute('href')).toBe('/login?next=%2Fwriting');
  expect(screen.getByRole('button',{name:'Create'}).getAttribute('aria-pressed')).toBe('true');
