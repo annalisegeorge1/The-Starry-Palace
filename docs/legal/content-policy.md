@@ -1,7 +1,7 @@
 # THE STARRY PALACE
 ## Content Policy
-**Revision prepared:** 17 November 2026  
-**Applicability:** This Policy forms part of the Terms of Service once published.  
+**Last updated:** 17 November 2026  
+**Applicability:** This Policy forms part of the published Terms of Service.  
 **Contact:** annalise.pierre.28@gmail.com
 
 The Starry Palace is a community for original writing, fanfiction, poetry, comics, artwork, translations and cultural storytelling. We welcome a wide range of genres, perspectives, characters and fictional subjects. **A work will not ordinarily be removed merely because someone considers its ideas, relationships, language or subject matter offensive.** Artistic freedom remains subject to the rights, safety and conduct rules below and applicable law.
