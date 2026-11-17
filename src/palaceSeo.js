@@ -1,6 +1,6 @@
 const ORIGIN = 'https://thestarrypalace.com';
 const BRAND = 'The Starry Palace';
-const DEFAULT_DESCRIPTION = 'Discover original fiction, fanworks, comics and classics. Read, write and gather with a community of storytellers at The Starry Palace.';
+const DEFAULT_DESCRIPTION = 'Read original fiction, fanfiction, poetry and comics, or publish your own stories with creator-controlled access at The Starry Palace writing community.';
 
 function clean(value, limit = 170) {
   return String(value || '').replace(/<[^>]*>/g, ' ').replace(/&amp;/gi, '&').replace(/&nbsp;/gi, ' ')
@@ -38,24 +38,24 @@ export function memberSeo(profile) {
 }
 
 const PUBLIC_ROUTES = {
-  '/': ['Read, Write & Gather', DEFAULT_DESCRIPTION],
-  '/reading': ['Reading Room', 'Browse original stories, fanworks and literary worlds shared by Palace writers.'],
-  '/writers': ['For Writers', 'Share stories, create worlds, and find your literary community.'],
-  '/fandoms': ['Fandom Atlas', 'Explore fandoms, discover fanworks, and find stories by the worlds you love.'],
-  '/comics': ['Comics', 'Find original comics and illustrated stories at The Starry Palace.'],
-  '/series': ['Story Series', 'Explore collections and connected stories by Palace writers.'],
-  '/events': ['Events & Celebrations', 'Discover literary events, creative challenges and celebrations.'],
-  '/lost-works': ['Lost Works & Classics', 'Explore archival stories and classic literature in the Palace.'],
-  '/honour': ['Throne of Honor', 'Celebrate writers and creative achievements at The Starry Palace.'],
-  '/code': ['Community Guidelines', 'Read the community guidelines and standards of The Starry Palace.'],
-  '/tags': ['Story Tags', 'Explore stories through tags and reading interests.'],
-  '/search': ['Search Stories', 'Find writers, stories, comics and fandoms at The Starry Palace.']
+  '/': ['Read & Publish Stories, Fanfiction & Poetry', DEFAULT_DESCRIPTION],
+  '/reading': ['Read Original Stories, Fanfiction & Poetry', 'Find original fiction, fanfiction, poetry and serialized stories. Browse published writing and discover new authors in The Starry Palace Reading Rooms.'],
+  '/writers': ['Publish Original Fiction & Fanfiction', 'Publish original stories, fanfiction and poetry on The Starry Palace. Draft privately, organize chapters, choose reader access and keep your rights.'],
+  '/fandoms': ['Explore Fanfiction by Fandom', 'Browse fanfiction and fandoms in The Starry Palace, then discover published fanworks through fandom tags and reading collections.'],
+  '/comics': ['Read Comics & Illustrated Stories', 'Discover comics and illustrated storytelling from Palace creators and explore the Comics Gallery.'],
+  '/series': ['Read Story Series & Serialized Fiction', 'Explore connected stories, series and serialized fiction by writers in The Starry Palace.'],
+  '/events': ['Writing Events & Creative Challenges', 'Discover literary gatherings, creative writing challenges and cultural celebrations at The Starry Palace.'],
+  '/lost-works': ['Classic Literature & Lost Works', 'Browse classic literature and preserved works in The Starry Palace reading archive.'],
+  '/honour': ['Writer Achievements & Recognition', 'Celebrate writers and creative achievements in The Starry Palace community.'],
+  '/code': ['Community Rules & Content Policy', 'Read the Palace Code and learn about creative freedom, content ratings, safety rules and respectful community conduct.'],
+  '/tags': ['Explore Story Tags & Reading Interests', 'Find fiction and fanfiction by story tags, themes, relationships and fandoms at The Starry Palace.'],
+  '/search': ['Search Stories & Writers', 'Search The Starry Palace for published stories, writers, comics and fandoms.']
 };
 
 export function routeSeo(pathname = '/') {
   const path = typeof pathname === 'string' && pathname.startsWith('/') ? pathname : '/';
   const info = PUBLIC_ROUTES[path];
-  if (info) return result(info[0], info[1], path);
+  if (info) return result(info[0], info[1], path, path !== '/search');
   // Public detail pages opt in only after the fetched record confirms it is public.
   return result('The Starry Palace', DEFAULT_DESCRIPTION, path, false);
 }
