@@ -12,7 +12,8 @@ const WRITER_STRENGTHS=[
 const COMMON_QUESTIONS=[
  {question:'Do I have to publish right away?',answer:'No. You can draft and edit privately before you choose to make a chapter public. Keep your own independent backup of important manuscripts too.'},
  {question:'Can I bring an existing story?',answer:'You can begin a work and paste your own writing into its chapters. A one-click import from other platforms is not currently promised.'},
- {question:'Are original stories and fanfiction both welcome?',answer:'Yes, within the Palace Code, applicable rights and community rules. Choose the correct work type and fandom tags so readers can find your story.'},
+ {question:'Where can I publish original fiction or fanfiction?',answer:'The Starry Palace welcomes original fiction, fanfiction, poetry and serialized stories within its community and rights rules. Start a private draft in the Writing Chamber and publish chapters when you are ready.'},
+ {question:'Can I publish the same story on AO3, Wattpad or Tumblr?',answer:'Yes. The Palace does not require exclusivity. Keep your rights and cross-post work you have permission to publish, while respecting each platform’s rules.'},
  {question:'Will I automatically receive readers, gifts, or a featured placement?',answer:'No. We cannot promise followers, votes, rankings, promotional placement or earnings. Early contributors can help us make the writing experience better.'},
  {question:'What is the Founding Writers Circle?',answer:'An informal invitation for early writers who want to try the Palace and share honest feedback. Joining the site does not automatically enroll you in a separate programme or promise special badges, an audience, or privileges.'}
 ];
@@ -30,7 +31,7 @@ export function WriterWelcome(){
    <div className="writer-welcome-copy">
     <p className="writer-eyebrow">THE STARRY PALACE · A HOME FOR YOUR STORIES</p>
     <h1>Your next chapter belongs here.</h1>
-    <p>Write quietly. Publish when you're ready. Find other people who care about stories as much as you do.</p>
+    <p>Write original fiction, fanfiction, poetry and serialized stories. Begin with a private draft, keep your rights and publish when you're ready.</p>
     <div className="writer-welcome-actions">
      <Link className="writer-primary" to={session?'/writing':'/login?mode=signup&next=%2Fwriting'}>{session?'Open my Writing Chamber':'Create an account to write'} <span aria-hidden="true">↗</span></Link>
      <Link className="writer-secondary" to="/reading">Explore the Reading Rooms →</Link>
