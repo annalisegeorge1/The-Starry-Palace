@@ -1,9 +1,27 @@
 # The Starry Palace · Founding Writers Growth Plan
 
-**Planning date:** 7 October 2026  
+**Planning date:** 7 October 2026 · **Quiet-pilot refresh:** 16 November 2026  
 **Window:** 60 days from public pilot launch (schedule begins only once editor reliability checks pass).  
 **Budget:** $0 paid advertising to begin.  
 **Pilot goal:** 30 active, consenting early writers across multiple genres and forms. This is a target, not a current user count or promised outcome.
+
+## November 2026: make the first invitation real
+
+Use the existing /writers welcome page, /reading public shelves and /beta feedback route. Do not create a separate sign-up gate or promise a founding badge, guaranteed readers, exclusivity or automatic programme enrollment.
+
+**Next 14 days:** start by inviting 5–8 consenting volunteer writers to test private drafting, save/reopen and optional publishing. Ask for honest feedback, not praise. Encourage independent manuscript backups and cross-posting. Invite another group only when reliability and discoverability remain sound.
+
+**Public positioning:** “I'm building a new literary home and want early writers to help shape it. Your first draft can stay private. Tell us what would make the experience better.” Send interested people to https://thestarrypalace.com/writers and the existing /beta feedback guide.
+
+**First TikTok themes:** (1) Writers who do not know where to share a story, (2) one interactive Prompt Orrery first-line challenge, (3) the founder's invitation to shape an imperfect new community. Begin each video with the writer's problem, not a logo. End with one clear next action, not several feature lists.
+
+**Where to share:** the November 2026 r/writing monthly “Promote Yo' Self” thread explicitly welcomes writing communities and apps, subject to its template and current moderator rules: https://www.reddit.com/r/writing/comments/1xl0ccp/monthly_promote_yo_self_thread/. Ask permission before mentioning the project in other writing groups. Don't spam fanfiction threads with a generic platform advertisement; share specific hosted stories only with authors' permission.
+
+**Measure in aggregate:** affirmative replies, voluntarily created drafts, successful reopen, published chapters if writers choose, seven-day return and recurring usability problems. Do not read private work or collect personal data to judge marketing results. Five writers who return to write are more valuable than thousands of drive-by video views.
+
+The earlier target of 30 active pilot writers remains a **60-day aspiration**, not a current count or a promise of capacity.
+
+---
 
 ## The positioning
 
@@ -128,13 +146,13 @@ Metrics are pilot hypotheses. Adjust targets after collecting real baseline data
 **Tagline:** Your next chapter belongs here.
 
 **Short invitation:**  
-*The Starry Palace is a new literary home for storytellers, poets, fanfiction writers and readers. Begin privately, publish when you're ready, and meet people who love stories. We're welcoming early writers to help us make the experience better. Explore the Palace: https://the-starry-palace.onrender.com/writers*
+*The Starry Palace is a new literary home for storytellers, poets, fanfiction writers and readers. Begin privately, publish when you're ready, and meet people who love stories. We're welcoming early writers to help us make the experience better. Explore the Palace: https://thestarrypalace.com/writers*
 
 **Permission-first DM:**  
 *Hi! I enjoyed your writing about [specific, genuine detail]. I'm helping build The Starry Palace, a new reading and writing community. We're inviting a few writers to try the private drafting and publishing experience and tell us what needs work—there's no exclusivity or promise of views. Would you be open to a link? Absolutely no pressure.*
 
 **After consent:**  
-*Thank you! Here's the Writers' Door: https://the-starry-palace.onrender.com/writers. You can create a private draft first and explore before publishing. We'd especially appreciate honest feedback about the chapter editor, tags and navigation. Please keep your own backup of important work while we test.*
+*Thank you! Here's the Writers' Door: https://thestarrypalace.com/writers. You can create a private draft first and explore before publishing. We'd especially appreciate honest feedback about the chapter editor, tags and navigation. Please keep your own backup of important work while we test.*
 
 **First-week follow-up (only if invited):**  
 *How did the Writing Chamber feel? Was anything confusing, slow or difficult to save? You're welcome to share a bug report without sending us any private writing. Your honest experience is useful, even if you decide the Palace isn't for you.*

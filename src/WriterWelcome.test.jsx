@@ -19,6 +19,12 @@ it('explains that the founding programme is an invitation and not enrollment',()
  render(<MemoryRouter><WriterWelcome/></MemoryRouter>);
  expect(screen.getByRole('heading',{name:'The Founding Writers Circle'})).toBeTruthy();
  expect(screen.getByText(/joining the site does not automatically enroll/i)).toBeTruthy();
+ expect(screen.getByText(/joining the Palace does not automatically enroll/i)).toBeTruthy();
+ expect(screen.getByRole('link',{name:/Try the Writing Chamber/i}).getAttribute('href')).toBe('/login?mode=signup&next=%2Fwriting');
+ expect(screen.getByRole('link',{name:/Share honest feedback/i}).getAttribute('href')).toBe('/beta');
+ expect(screen.getByRole('link',{name:/Read stories first/i}).getAttribute('href')).toBe('/reading');
+ expect(screen.getByText(/continue publishing elsewhere/i)).toBeTruthy();
+ expect(screen.getByText(/No quotas, forced reviews or follower requirements/i)).toBeTruthy();
 });
 
 it('shows first manuscript guidance before publishing and hides it afterwards',()=>{

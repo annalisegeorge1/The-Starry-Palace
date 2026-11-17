@@ -14,7 +14,7 @@ const COMMON_QUESTIONS=[
  {question:'Can I bring an existing story?',answer:'You can begin a work and paste your own writing into its chapters. A one-click import from other platforms is not currently promised.'},
  {question:'Are original stories and fanfiction both welcome?',answer:'Yes, within the Palace Code, applicable rights and community rules. Choose the correct work type and fandom tags so readers can find your story.'},
  {question:'Will I automatically receive readers, gifts, or a featured placement?',answer:'No. We cannot promise followers, votes, rankings, promotional placement or earnings. Early contributors can help us make the writing experience better.'},
- {question:'What is the Founding Writers Circle?',answer:'A proposed, small early-community programme focused on feedback, genuine discussion and improving the tools. Participation is voluntary; joining the site does not automatically enroll you in a separate programme.'}
+ {question:'What is the Founding Writers Circle?',answer:'An informal invitation for early writers who want to try the Palace and share honest feedback. Joining the site does not automatically enroll you in a separate programme or promise special badges, an audience, or privileges.'}
 ];
 const FIRST_CHAPTER=[
  {number:'01',title:'Create your Chamber',description:'Make a free account and choose how you want to participate.'},
@@ -71,13 +71,20 @@ export function WriterWelcome(){
    <Link className="writer-primary" to={session?'/writing':'/login?mode=signup&next=%2Fwriting'}>{session?'Begin in the Writing Chamber →':'Create my free writing desk →'}</Link>
   </section>
 
-  <section className="writer-early-circle" id="founding-writers">
+  <section className="writer-early-circle" id="founding-writers" aria-labelledby="founding-writers-heading">
    <span className="writer-early-mark" aria-hidden="true">☾ ✧</span>
-   <div><p className="writer-eyebrow">HELP SHAPE A NEW LITERARY HOME</p>
-    <h2>The Founding Writers Circle</h2>
-    <p>We're preparing a small, voluntary early-writer community. The idea is simple: welcome writers, listen to their publishing experiences, run gentle reading and writing gatherings, and improve what isn't working.</p>
-    <p>Start writing now. A separate Founding Writers enrollment or badge is not being promised through this page.</p>
-    <div className="writer-circle-actions"><Link to={session?'/writing':'/login?mode=signup&next=%2Fwriting'}>Create a manuscript →</Link><Link to="/beta">Give feedback on the Palace →</Link></div>
+   <div><p className="writer-eyebrow">THE FIRST WRITERS HELP SHAPE WHAT COMES NEXT</p>
+    <h2 id="founding-writers-heading">The Founding Writers Circle</h2>
+    <p className="writer-circle-lead"><strong>We're welcoming a small group of early writers to help shape a new literary home.</strong></p>
+    <p>Try the Writing Chamber, tell us what's confusing, and help improve the experience for the next storyteller. Original fiction, fanfiction, poetry and other creative voices are welcome.</p>
+    <ul className="writer-circle-benefits">
+     <li>Keep your writing rights and continue publishing elsewhere if you wish.</li>
+     <li>Start privately, save your work and publish only when you're ready.</li>
+     <li>Give honest feedback if you want to. No quotas, forced reviews or follower requirements.</li>
+    </ul>
+    <p>Joining the Palace does not automatically enroll you in a separate programme or promise a Founding Writers badge, guaranteed views or special access. Keep an independent backup of any important manuscript.</p>
+    <div className="writer-circle-actions"><Link to={session?'/writing':'/login?mode=signup&next=%2Fwriting'}>{session?'Open my Writing Chamber →':'Try the Writing Chamber →'}</Link><Link to="/beta">Share honest feedback →</Link><Link to="/reading">Read stories first →</Link></div>
+    <small>Free to explore · Accounts are for people aged 13+ · Publishing is your choice</small>
    </div>
   </section>
 
