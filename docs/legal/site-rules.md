@@ -1,6 +1,6 @@
 # THE STARRY PALACE
 ## Site Rules
-**Effective:** 31 October 2026 · **Contact:** annalise.pierre.28@gmail.com
+**Effective:** 31 October 2026 · **Last updated:** 17 November 2026 · **Contact:** annalise.pierre.28@gmail.com
 
 The Palace welcomes writers, readers, poets, artists and storytellers. These rules summarize the Terms of Service, [Content Policy](/legal/content) and Palace Code. Follow the specific safety and privacy controls in each feature as well.
 
