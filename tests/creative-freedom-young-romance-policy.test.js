@@ -32,6 +32,9 @@ describe('creative freedom and minors safety policy boundaries',()=>{
   expect(content).toContain('Context does not waive safety boundaries');
   expect(terms).toContain('Historical fiction may portray a 16-year-old being married off');
   expect(rules).toContain('depiction is not endorsement');
+  expect(terms).toContain('Policy update — 17 November 2026 (creative freedom and child safety)');
+  expect(content).toContain('**Last updated:** 17 November 2026');
+  expect(rules).toContain('**Last updated:** 17 November 2026');
  });
  it('protects fictional difficult topics while separating references from depictions',()=>{
   expect(content).toContain('We distinguish fictional depiction from endorsement');
