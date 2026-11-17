@@ -1,4 +1,23 @@
-# Writing Desk release verification • 11 November 2026 (Tobago)
+# Writing Desk release verification
+
+## Released status — supersedes the historical gates below
+
+[PR #299](https://github.com/annalisegeorge1/The-Starry-Palace/pull/299)
+was merged as `f02fcf67f82d703fe9034565045971fc366144ca` and released on
+Worker 535. Its final release record identifies production migration
+`20261112033130`, approved SQL blob `ec14d951724c5d2ff77f3e37917fa37539e2919f`,
+and deployment `835df8ca-9d72-46c3-95f4-f847db4c3a77` at 100% traffic.
+It records successful two-account live conflict/export/restore checks, atomic
+owner publication, guest reading and withdrawal. These are prior release
+evidence, not tests repeated by the November 18 repository review.
+
+The draft status and production-prerequisite statements below are historical.
+Do not reinstall the SQL or repeat completed fixes based on those statements.
+Worker 534 was the rollback target for that release only; capture the current
+deployment before any future rollout. See [the beta release follow-up](./BETA_RELEASE_FOLLOWUP_2026-11-18.md)
+for the current repository review and its verification limits.
+
+## Historical verification — 11 November 2026 (Tobago)
 
 PR #299 remains in draft. The last application-code change is 5861f1dd2e096273650bc746ec22593cde33997b. GitHub runs 43140091844 and 43140091857 passed its merge candidate, including 1,644 tests / 340 files, production build and two-context Chrome/PostgreSQL rehearsal. The head-only local run passed 1,636 tests / 338 files. The browser fixture substitutes Auth and REST. The added restart check uses a persistent Chrome profile across two processes.
 
