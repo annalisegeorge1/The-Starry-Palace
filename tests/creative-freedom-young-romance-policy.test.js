@@ -10,7 +10,10 @@ describe('contextual fiction policy, teen intimacy and historical settings',()=>
   expect(content).toContain('Writers are not required to use a fade-to-black');
   expect(terms).toContain('does not automatically require fade-to-black');
   expect(rules).toContain('without a compulsory fade-to-black');
-  expect(content).toContain('there is no automatic removal simply because one teenager is slightly older or turns eighteen');
+  expect(content).toContain('Teen characters can be imperfect, curious and realistic');
+  expect(content).toContain('A non-graphic, non-erotic literary account');
+  expect(content).toContain('a relationship between seventeen- and eighteen-year-old characters');
+  expect(content).toContain('a grown man and a twelve-year-old');
  });
  it('respects historical marriages and does not require author moral disclaimers',()=>{
   expect(content).toContain('sixteen-year-old in a political marriage');
@@ -21,7 +24,7 @@ describe('contextual fiction policy, teen intimacy and historical settings',()=>
  it('maintains non-negotiable child safety and age boundaries',()=>{
   for(const s of [content,terms,rules]){
    expect(s).toMatch(/child sexual abuse material/i);
-   expect(s).toMatch(/graphic.*eroticised sexual depictions.*minors/i);
+   expect(s).toMatch(/graphic.*eroticised depictions of sexual acts involving minors/i);
    expect(s).toMatch(/graphic.*sexual violence against children|graphic child sexual violence/i);
   }
   expect(content).toContain('The minimum account age of 13');
