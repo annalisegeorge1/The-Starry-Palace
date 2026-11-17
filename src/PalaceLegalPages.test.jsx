@@ -31,6 +31,8 @@ it('explicitly allows non-explicit teenage romance and protects young characters
  expect(screen.getByText(/Non-explicit romantic stories involving teenage characters are welcome/)).toBeTruthy();
  expect(screen.getByText(/explicit or eroticised sexual content involving minors; depictions of sexual violence against children/)).toBeTruthy();
  expect(screen.getByText(/fictional depiction from endorsement/)).toBeTruthy();
+ expect(screen.getByText(/Teen-to-teen intimacy is different from adult exploitation/)).toBeTruthy();
+ expect(screen.getByText(/a fade-to-black/)).toBeTruthy();
 });
 it('links to the new Content Policy from the existing Terms',()=>{
  mount('/legal/terms');
