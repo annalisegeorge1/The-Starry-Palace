@@ -20,7 +20,7 @@ match main. No production deployment or configuration was changed in this review
 | --- | --- |
 | Persistent chapter comment label; Next chapter keyboard focus | Merged #314 and #315. |
 | Nested chapter responses and separate reply drafts | Merged #316. |
-| Server-authoritative reading checkpoints | Merged #317; client serialization and isolated SQL rehearsal are present. Production SQL installation was not reverified in this review. |
+| Server-authoritative reading checkpoints | Merged #317. Read-only production catalog checks confirmed the revision column, enabled guard trigger, matching invoker function bodies and member-only RPC execute access. The isolated SQL rehearsal also passed. |
 | Appeals, Content Policy and legal-page readability | Merged #318, #320 and #322; later policy revisions #327 and #328 are also merged. No policy revisions are proposed here. |
 | AI crawler/visibility explanations; Founding Writers pilot doorway | Merged #324 and #326. No outreach or mail is sent by this review. |
 | Earlier Writing Desk conflict recovery and atomic publication | #299's final release record confirms Worker 535 and live acceptance checks. Historical draft notes are now explicitly marked historical. |
@@ -38,7 +38,7 @@ The reading-progress two-connection PostgreSQL rehearsal existed but no main
 workflow ran it. The new narrowly triggered CI workflow executes that unchanged
 fixture on relevant PRs and main pushes, using a disposable local cluster,
 synthetic identities, no service credentials and pinned tooling outside the
-application dependency tree. The local rehearsal passed concurrent insert/update,
+application dependency tree. The local rehearsal and [GitHub rehearsal run 44154415414](https://github.com/annalisegeorge1/The-Starry-Palace/actions/runs/44154415414) passed concurrent insert/update,
 stale writes, rereading, completion retention, mixed clients, account isolation,
 chapter removal and rollback assertions. A README documents scope and limits.
 
@@ -48,8 +48,8 @@ chapter removal and rollback assertions. A README documents scope and limits.
 | --- | --- |
 | Royal Envoy sealed invitations, #309 | Draft and conflicting with main. Hosted confirmation/mail/notification/cosmetic/anti-abuse acceptance tests remain required by its runbook. Schema installation, issuer bootstrap, activation switches, token key, Founding period and final rewards need separate decisions/approval. Existing ordinary invitations remain separate. |
 | Achievement capacity, #313 | Draft and conflicting with main. The proposed 129–133 capacity, tier mapping, Envoy thresholds, discretionary criteria, art and authoritative award writer remain unapproved. Do not install the SQL or enable awards. |
-| Guest Heritage observances, #298 | Draft proposes a production read-policy change and says none was applied. Reproduce in isolated staging, verify published-only guest access/member/Council behavior, then request approval for the exact policy change if still needed. Production state was not queried here. |
-| Reading-progress hosted acceptance | Main includes the fix, but the retrieved PR record supplies no final production-installation evidence. Verify the installed RPC/trigger and two-device behavior read-only or with authorized disposable data before treating hosted rollout as independently confirmed. Do not reinstall based solely on missing evidence. |
+| Guest Heritage observances, #298 | Read-only production catalog checks confirmed the original shared SELECT policy still calls the role helper, and anon lacks EXECUTE on that helper. An anonymous read-only published-row count reproduced `42501: permission denied for function has_platform_role`. Verify the narrow published-only replacement with member/Council cases in isolation, then request approval for the exact production policy change. No permission change was made. |
+| Reading-progress device acceptance | Production installation is now confirmed read-only; no reinstallation is needed. This session did not repeat signed-in two-device browser acceptance, so the catalog check and isolated fixture must not be represented as that test. |
 | Wider beta readiness | The playbook requires actual volunteer task-completion and device/accessibility evidence. This repository review and isolated fixtures do not establish those outcomes or owner-held backup/restore readiness. Keep supervised beta until those gates have evidence. |
 
 Older Observatory/security/design drafts were not merged wholesale or counted as
