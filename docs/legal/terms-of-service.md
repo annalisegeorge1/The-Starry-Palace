@@ -81,6 +81,8 @@ Creators must make reasonable efforts to select an accurate content rating, appr
 
 Sexualised content involving minors, child sexual exploitation material, grooming, coercive sexual exploitation, credible threats of violence and other unlawful or predatory activity are prohibited. We may remove or escalate serious safety threats without waiting for the ordinary moderation process. Other mature material may be subject to ratings, visibility restrictions and feature-specific rules; an age label is not permission to post otherwise prohibited content.
 
+Non-explicit romance between young characters, including crushes, dating, affection and kissing, is not prohibited solely because the characters are under 18. The Palace welcomes original fiction and fanfiction that thoughtfully depict coming-of-age relationships and other difficult fictional themes. We draw the line at explicit or eroticised sexual content involving minors, depictions of sexual violence against children, grooming and sexual exploitation, regardless of the selected audience or rating. Non-graphic references to childhood abuse in a work concerned with its consequences or recovery may be permitted with context-appropriate warnings, but scenes describing or eroticising such abuse are not. The [Content Policy](/legal/content) explains these boundaries and contextual review in more detail.
+
 ### 9. Dignity, harassment and everyday conduct
 The Palace welcomes different cultures, identities, creative traditions, fandoms and interpretations. Members may disagree about literature, characters, ships, religion, art, culture and criticism; disagreement is not a licence to abuse people.
 
