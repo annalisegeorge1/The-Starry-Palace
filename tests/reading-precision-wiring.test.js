@@ -16,8 +16,11 @@ describe('honest Reading Rooms precision scope',()=>{
  });
  it('does not bypass precision in a linked fanfiction gallery',()=>{
   expect(reading).toContain('archiveWorks.filter(w=>matchesReadingPrecision(w,readingChoices.precision))');
-  expect(reading).toContain('externalWorks={hasReadingPrecision(readingChoices.precision)?[]:MODERN_FANFICTION_LINKS}');
-  expect(reading).toContain('Source-linked recommendations without compatible metadata are hidden');
+  expect(reading).toContain('externalWorks={strictFanfictionFilters?[]:MODERN_FANFICTION_LINKS}');
+  expect(reading).toContain('archiveWorks.filter(w=>matchesReadingFacets(w,effectiveReadingTags,excludedTags)&&matchesReadingRelationships(w,relationshipIncluded,relationshipExcluded)&&matchesReadingPrecision(w,readingChoices.precision))');
+  expect(reading).toContain('<div className="reading-fanfiction-filters">{facetPanel}</div>');
+  expect(reading).toContain('reading-fanfiction-results');
+  expect(reading).toContain('Off-site recommendations without comparable tag, word or date metadata are hidden');
  });
  it('tells readers which filters are loaded-only and preserves per-reader choices',()=>{
   expect(sidebar).toContain('currently loaded stories only');
