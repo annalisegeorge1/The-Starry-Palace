@@ -32,23 +32,27 @@ function InvitationPanel({children,Frame,title,eyebrow='A LETTER FROM THE PALACE
 
 export function PalaceInvitationLanding({Frame}){
  const {session,loading}=useAuth();
- const [secret]=useState(()=>readInvitationSecret(window.location.hash));
+ const [{hasSeal,secret}]=useState(()=>{
+  const hash=window.location.hash;
+  return {hasSeal:new URLSearchParams(hash.slice(1)).has('seal'),secret:readInvitationSecret(hash)};
+ });
  useEffect(()=>{
-  if(secret)window.history.replaceState(window.history.state,'',window.location.pathname+window.location.search);
- },[secret]);
+  if(hasSeal)window.history.replaceState(window.history.state,'',window.location.pathname+window.location.search);
+ },[hasSeal]);
  return <InvitationPanel Frame={Frame} title="The gates have opened for you.">
    <p className="palace-invite-poem">Some stories begin with a door.<br/>Yours begins beneath the stars.</p>
    <p>You've been invited to discover The Starry Palace: a home for readers, writers and artists, where your stories and imagination have a place to shine.</p>
    <p className="palace-invite-age">Membership is for people aged 13 or older. You'll enter your own date of birth privately during registration. An invitation does not bypass this requirement.</p>
    <div className="palace-invite-actions">
      {!loading&&secret&&<RoyalInvitationClaim key={session?.user?.id||'guest'} member={session?.user?.id} secret={secret}/>}
-     {!loading&&!secret&&(session?<Link className="palace-invite-primary" to="/chamber">Enter my Chamber</Link>:<>
+     {hasSeal&&!secret&&<p role="status">This sealed invitation link is incomplete or invalid. Reopen the original invitation email and use the link in the letter.</p>}
+     {!loading&&!hasSeal&&(session?<Link className="palace-invite-primary" to="/chamber">Enter my Chamber</Link>:<>
       <Link className="palace-invite-primary" to="/login?mode=signup">Accept my invitation</Link>
       <Link to="/login">Already a member? Sign in</Link>
      </>)}
      <Link to="/reading">Explore public stories first</Link>
    </div>
-  {!loading&&session?.user?.id&&!secret&&<p className="palace-invite-back"><Link to="/my-invitations">View My Royal Invitations</Link></p>}
+  {!loading&&session?.user?.id&&!hasSeal&&<p className="palace-invite-back"><Link to="/my-invitations">View My Royal Invitations</Link></p>}
  </InvitationPanel>;
 }
 
