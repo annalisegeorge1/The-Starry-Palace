@@ -41,3 +41,14 @@ it('links to the new Content Policy from the existing Terms',()=>{
  fireEvent.click(links[0]);
  expect(screen.getByRole('heading',{name:'Content Policy',level:1})).toBeTruthy();
 });
+
+it('addresses general messages and moderation appeals to the Palace inbox',()=>{
+ const email='thestarrypalace@gmail.com';
+ const hub=mount('/legal');
+ expect(screen.getByRole('link',{name:email}).getAttribute('href')).toBe('mailto:'+email);
+ hub.unmount();
+ mount('/legal/terms');
+ const destinations=screen.getAllByRole('link',{name:email}).map(link=>link.getAttribute('href'));
+ expect(destinations).toContain('mailto:'+email+'?subject=Moderation%20appeal');
+ expect(destinations).toContain('mailto:'+email);
+});
