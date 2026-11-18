@@ -22,8 +22,8 @@ export default function WriterDocumentImporter({onImport,disabled=false}){
  }
  return <section className="writer-document-import" aria-label="Import a document into a private chapter">
   <header><div><small>FROM YOUR DEVICE</small><strong>Import a manuscript</strong></div></header>
-  <p>Upload a Word .docx, text, Markdown or HTML document. We convert it on your device and create a <strong>new private chapter</strong> only after you approve. Your current chapter stays intact.</p>
-  <label>Choose document <input type="file" disabled={disabled||busy} accept=".docx,.txt,.md,.html,.htm,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/html" onChange={pick}/></label>
+  <p>Choose a Word (.docx), plain text, Markdown or HTML file up to 12 MB. For a book, choose one chapter at a time. We convert it on your device and create a <strong>new private chapter</strong> only after you approve. Your current chapter stays intact.</p>
+  <label>Choose manuscript file <input type="file" disabled={disabled||busy} accept=".docx,.txt,.md,.html,.htm,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/html" onChange={pick}/></label>
   {busy&&<p role="status">Reading your document…</p>}
   {draft&&<div className="writer-document-import-staged">
     <div className="writer-import-summary"><strong>{draft.title}</strong><small>{draft.words.toLocaleString()} words · private local preview</small></div>
@@ -36,6 +36,6 @@ export default function WriterDocumentImporter({onImport,disabled=false}){
    </div>}
   {notice&&<p role="status">{notice}</p>}
   {error&&<p role="alert" className="writer-import-error">{error}</p>}
-  <small>Never automatically publishes. Old .doc files need conversion to .docx. Decorative fonts, images and exact page layouts may need manual adjustment.</small>
+  <small>Never automatically publishes. For an older .doc file, use Save As in Word and choose .docx. Decorative fonts, images and exact page layouts may need manual adjustment.</small>
  </section>;
 }
