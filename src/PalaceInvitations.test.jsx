@@ -116,3 +116,18 @@ it('does not expose administrator shortcuts after a denied service check',async(
  await vi.waitFor(()=>expect(network).toHaveBeenCalledOnce());
  expect(screen.queryByRole('link',{name:'Open administrator invitation desk'})).toBeNull();
 });
+
+it.each(['#seal=', '#seal=incomplete'])('offers recovery for a damaged sealed link (%s)', hash=>{
+ const original=window.location.href;
+ try {
+  window.history.replaceState(null,'', '/invitation?source=letter'+hash);
+  render(<MemoryRouter><PalaceInvitationLanding Frame={Frame}/></MemoryRouter>);
+  expect(screen.getByRole('status').textContent).toMatch(/reopen the original invitation email/i);
+  expect(screen.queryByRole('link',{name:'Accept my invitation'})).toBeNull();
+  expect(screen.queryByRole('button',{name:'Accept my Royal Invitation'})).toBeNull();
+  expect(window.location.hash).toBe('');
+  expect(window.location.search).toBe('?source=letter');
+ } finally {
+  window.history.replaceState(null,'',original);
+ }
+});
