@@ -1,5 +1,6 @@
 import {useState,useEffect} from 'react';
-export const readingDefaults={query:'',rating:'all',status:'all',origin:'all',shelf:'first',vibeDoor:'all',readerLens:'all',catalogueSort:'updated',layout:'comfortable',discoveryMode:'browse',catalogueScope:'archive',visibleCount:24,includeTags:[],excludeTags:[],tagLabels:{}};
+import {READING_PRECISION_DEFAULTS,cleanReadingPrecision} from './readingPrecisionModel';
+export const readingDefaults={query:'',rating:'all',status:'all',origin:'all',shelf:'first',vibeDoor:'all',readerLens:'all',catalogueSort:'updated',layout:'comfortable',discoveryMode:'browse',catalogueScope:'archive',visibleCount:24,includeTags:[],excludeTags:[],tagLabels:{},precision:READING_PRECISION_DEFAULTS};
 const options={rating:['all','general','teen','mature','explicit','not_rated'],status:['all','in_progress','complete','hiatus','abandoned'],origin:['all','original','fandom'],shelf:['first','quiet','updated','following','continue','nightstand'],vibeDoor:['all','yearn','unsettle','soft','chaos','epic','strange'],readerLens:['all','unread','reading','new','saved','following','finished'],catalogueSort:['updated','published','oldest','title','words','chapters','comments','updated_oldest','title_desc','words_asc','chapters_asc','comments_asc','bookmarks','bookmarks_asc'],layout:['comfortable','compact','gallery'],discoveryMode:['browse','discover'],catalogueScope:['archive','loaded']};
 export function cleanReadingDiscovery(value){
  const clean={...readingDefaults};
@@ -9,6 +10,7 @@ export function cleanReadingDiscovery(value){
  if(Number.isSafeInteger(value.visibleCount)&&value.visibleCount>=24)clean.visibleCount=Math.min(value.visibleCount,10000);
  for(const key of ['includeTags','excludeTags'])if(Array.isArray(value[key]))clean[key]=[...new Set(value[key].filter(id=>typeof id==='string'&&id.length>0&&id.length<=128))].slice(0,24);
  clean.excludeTags=clean.excludeTags.filter(id=>!clean.includeTags.includes(id));
+ clean.precision=cleanReadingPrecision(value.precision);
  if(value.tagLabels&&typeof value.tagLabels==='object'&&!Array.isArray(value.tagLabels)){
   const chosen=new Set([...clean.includeTags,...clean.excludeTags]);
   clean.tagLabels=Object.fromEntries(Object.entries(value.tagLabels)
@@ -27,7 +29,7 @@ export default function useReadingDiscoveryState(memberId){
  function setField(field,next){
   setStored(previous=>{
    const current=previous.key===key?previous.value:read(key);
-   const resetsShelf=['query','rating','status','origin','vibeDoor','readerLens','catalogueSort','includeTags','excludeTags'].includes(field);
+   const resetsShelf=['query','rating','status','origin','vibeDoor','readerLens','catalogueSort','includeTags','excludeTags','precision'].includes(field);
    const value=cleanReadingDiscovery({...current,...(resetsShelf?{visibleCount:24}:{}),[field]:typeof next==='function'?next(current[field]):next});
    return {key,value};
   });

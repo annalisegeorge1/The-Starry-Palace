@@ -241,3 +241,23 @@ it('searches the full tag directory for both modes even when viewing only loaded
  expect(onSearchTags).toHaveBeenCalledWith('richonne','all',35);
  expect(onSearchTags).toHaveBeenCalledWith('slow','all',35);
 });
+
+it('shows separately labelled Boolean word and date ranges plus crossover filtering',()=>{
+ const onPrecision=vi.fn();
+ view({onPrecision,precision:{includeMinWords:'1000',crossover:'include'}});
+ fireEvent.click(screen.getByRole('button',{name:'Open Sort & Filter'}));
+ expect(screen.getByRole('button',{name:'Clear choices'})).toBeTruthy();
+ const section=screen.getByText(/5\. Word counts, dates & crossovers/);
+ expect(section).toBeTruthy();
+ fireEvent.click(section);
+ expect(screen.getByText(/currently loaded stories only/)).toBeTruthy();
+ expect(screen.getByLabelText('Minimum words').value).toBe('1000');
+ fireEvent.change(screen.getByLabelText('Maximum words'),{target:{value:'8000'}});
+ expect(onPrecision).toHaveBeenCalledWith(expect.objectContaining({includeMinWords:'1000',includeMaxWords:'8000',crossover:'include'}));
+ fireEvent.change(screen.getByLabelText('Exclude from date'),{target:{value:'2026-01-01'}});
+ expect(onPrecision).toHaveBeenCalledWith(expect.objectContaining({excludeFrom:'2026-01-01'}));
+ fireEvent.change(screen.getByLabelText('Crossovers'),{target:{value:'exclude'}});
+ expect(onPrecision).toHaveBeenCalledWith(expect.objectContaining({crossover:'exclude'}));
+ fireEvent.click(screen.getByRole('button',{name:'Clear word, date & crossover filters'}));
+ expect(onPrecision).toHaveBeenLastCalledWith({});
+});

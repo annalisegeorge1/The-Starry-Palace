@@ -43,3 +43,19 @@ it('retains loaded batches across story visits and resets them for a different s
  act(()=>next.result.current[1]('visibleCount',-1));
  expect(next.result.current[0].visibleCount).toBe(24);
 });
+
+it('restores validated precision choices per reader and resets loaded pagination',()=>{
+ const hook=renderHook(()=>useReadingDiscoveryState('precision-reader'));
+ act(()=>hook.result.current[1]('precision',{includeMinWords:'1000',excludeFrom:'2026-04-02',crossover:'exclude'}));
+ expect(hook.result.current[0].precision).toMatchObject({includeMinWords:'1000',excludeFrom:'2026-04-02',crossover:'exclude'});
+ hook.unmount();
+ const next=renderHook(()=>useReadingDiscoveryState('precision-reader'));
+ expect(next.result.current[0].precision.crossover).toBe('exclude');
+ act(()=>next.result.current[1]('visibleCount',48));
+ act(()=>next.result.current[1]('precision',{includeMinWords:'5000'}));
+ expect(next.result.current[0].visibleCount).toBe(24);
+ expect(next.result.current[0].precision).toMatchObject({includeMinWords:'5000',crossover:'all'});
+ next.rerender();
+ const other=renderHook(()=>useReadingDiscoveryState('different-reader'));
+ expect(other.result.current[0].precision.includeMinWords).toBe('');
+});

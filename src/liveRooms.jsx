@@ -99,6 +99,7 @@ import {TAG_BATCH_PAGE_SIZE,toggleQueuedTag,pendingTagBatch,visibleTagSuggestion
 import './palace-tag-batch.css';
 import {filterPalaceSearchGroups,countPalaceSearchGroups,activePalaceSearchFacets,buildSearchTagFacets,SEARCH_RESULT_KINDS,SEARCH_RATINGS,SEARCH_COMPLETION} from './palaceSearchResults';
 import {matchesReadingRelationships,RELATIONSHIP_TYPES} from './readingFacetModel';
+import {hasReadingPrecision,matchesReadingPrecision,READING_PRECISION_DEFAULTS} from './readingPrecisionModel';
 import {exactTagQueryMatches,searchSeveralTags,isMultiTagPhrase,resolveMultiTagPhrase} from './multiTagSearch';
 import PalaceRelationshipFilters from './PalaceRelationshipFilters';
 import PalaceCompactTagRefiner from './PalaceCompactTagRefiner';
@@ -387,13 +388,14 @@ export function ReadingLive({Frame}){
  // intentionally stay on the member's local reading shelf.
  const archiveBrowseEnabled=!inAdvancedSearch&&readingChoices.discoveryMode==='browse'
   &&readingChoices.catalogueScope==='archive'&&readerLens==='all'
-  &&vibeDoor==='all'&&isArchiveReadingSort(catalogueSort);
+  &&vibeDoor==='all'&&!hasReadingPrecision(readingChoices.precision)&&isArchiveReadingSort(catalogueSort);
  const archiveBrowse=usePublishedBrowse({
   enabled:archiveBrowseEnabled&&!multiTagWaiting,identity:session?.user?.id||'guest',
   text:effectiveReadingText,include:effectiveReadingTags,exclude:excludedTags,rating,status,origin,sort:catalogueSort
  });
  function browseAllPublished(){
   setRelationshipIncluded([]);setRelationshipExcluded([]);
+  setReadingChoice('precision',READING_PRECISION_DEFAULTS);
   setReadingChoice('catalogueScope','archive');
   setReaderLens('all');setVibeDoor('all');
   if(!isArchiveReadingSort(catalogueSort))setCatalogueSort('updated');
@@ -491,7 +493,7 @@ export function ReadingLive({Frame}){
  const storyHref=w=>{if(w.is_archive)return directClassicHref(w);const p=stateFor(w).progress;if(p&&!p.completed&&p.chapter_id)return"/work/"+w.slug+"/chapter/"+p.chapter_id;return"/work/"+w.slug};
  const storyCta=w=>w.is_archive?'Start reading →':reopened(w)?'Read new chapter →':stateFor(w).progress&&!stateFor(w).progress.completed?'Continue reading →':finished(w)?'Read again →':'Enter story →';
  const readerLensMatches=w=>readerLens==='all'||readerLens==='unread'&&!stateFor(w).progress||readerLens==='reading'&&needsReading(w)||readerLens==='new'&&hasNew(w)||readerLens==='saved'&&!!stateFor(w).saved||readerLens==='following'&&!!stateFor(w).following||readerLens==='finished'&&finished(w);
- const filtered=roomWorks.filter(w=>matchesReadingFacets(w,effectiveReadingTags,excludedTags)&&matchesReadingRelationships(w,relationshipIncluded,relationshipExcluded)&&moodMatches(w,vibeDoor)&&readerLensMatches(w)&&(rating==='all'||w.rating===rating)&&(status==='all'||w.completion_status===status)&&(!effectiveReadingText.trim()||[w.title,w.summary,w.profiles?.display_name,w.profiles?.username,w.profiles?.title,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase().includes(effectiveReadingText.trim().toLowerCase())));
+ const filtered=roomWorks.filter(w=>matchesReadingFacets(w,effectiveReadingTags,excludedTags)&&matchesReadingRelationships(w,relationshipIncluded,relationshipExcluded)&&matchesReadingPrecision(w,readingChoices.precision)&&moodMatches(w,vibeDoor)&&readerLensMatches(w)&&(rating==='all'||w.rating===rating)&&(status==='all'||w.completion_status===status)&&(!effectiveReadingText.trim()||[w.title,w.summary,w.profiles?.display_name,w.profiles?.username,w.profiles?.title,...workTags(w).flatMap(t=>[t.name,t.category])].filter(Boolean).join(' ').toLowerCase().includes(effectiveReadingText.trim().toLowerCase())));
  const catalogue=sortReadingWorks(filtered,catalogueSort);
  // Published archive-wide member search and the separately hosted archive use
  // different backends. Surface verified, readable fanworks in the same Reading
@@ -513,10 +515,11 @@ export function ReadingLive({Frame}){
  const showBrowseCards=archiveBrowseEnabled?Boolean(archiveBrowse.snapshot):Boolean(works)&&!multiTagWaiting;
  const browseLoading=archiveBrowseEnabled?(multiTagWaiting||archiveBrowse.loading):multiTagWaiting||(!works&&!error);
  const browseError=archiveBrowseEnabled?archiveBrowse.error:error;
- const activeReadingFilters=[...readingFilterChips({origin,query,rating,status,vibeDoor,readerLens},Object.fromEntries(moodDoors.map(door=>[door.id,door.label]))),...includedTags.map(id=>({key:'include:'+id,label:'Include: '+(facetNames[id]||'selected tag')})),...excludedTags.map(id=>({key:'exclude:'+id,label:'Exclude: '+(facetNames[id]||'selected tag')})),...relationshipIncluded.map(id=>({key:'relationship-include:'+id,label:'Include '+(RELATIONSHIP_TYPES.find(([k])=>k===id)?.[1]||id)})),...relationshipExcluded.map(id=>({key:'relationship-exclude:'+id,label:'Exclude '+(RELATIONSHIP_TYPES.find(([k])=>k===id)?.[1]||id)}))];
+ const activeReadingFilters=[...readingFilterChips({origin,query,rating,status,vibeDoor,readerLens},Object.fromEntries(moodDoors.map(door=>[door.id,door.label]))),...includedTags.map(id=>({key:'include:'+id,label:'Include: '+(facetNames[id]||'selected tag')})),...excludedTags.map(id=>({key:'exclude:'+id,label:'Exclude: '+(facetNames[id]||'selected tag')})),...relationshipIncluded.map(id=>({key:'relationship-include:'+id,label:'Include '+(RELATIONSHIP_TYPES.find(([k])=>k===id)?.[1]||id)})),...relationshipExcluded.map(id=>({key:'relationship-exclude:'+id,label:'Exclude '+(RELATIONSHIP_TYPES.find(([k])=>k===id)?.[1]||id)})),...(hasReadingPrecision(readingChoices.precision)?[{key:'precision',label:'Word, date & crossover precision (loaded shelves)'}]:[])];
  const fanfictionActiveFilters=activeReadingFilters.filter(item=>item.key!=='origin');
- function clearReadingFilters(){setOrigin('all');setVibeDoor('all');setReaderLens('all');setQuery('');setRating('all');setStatus('all');setReadingChoice('includeTags',[]);setReadingChoice('excludeTags',[]);setRelationshipIncluded([]);setRelationshipExcluded([])}
+ function clearReadingFilters(){setOrigin('all');setVibeDoor('all');setReaderLens('all');setQuery('');setRating('all');setStatus('all');setReadingChoice('includeTags',[]);setReadingChoice('excludeTags',[]);setRelationshipIncluded([]);setRelationshipExcluded([]);setReadingChoice('precision',READING_PRECISION_DEFAULTS)}
  function removeReadingFilter(key){
+  if(key==='precision'){setReadingChoice('precision',READING_PRECISION_DEFAULTS);return}
   if(key.startsWith('relationship-include:')){setRelationshipIncluded(x=>x.filter(k=>k!==key.slice(21)));return}
   if(key.startsWith('relationship-exclude:')){setRelationshipExcluded(x=>x.filter(k=>k!==key.slice(21)));return}
 
@@ -587,6 +590,8 @@ export function ReadingLive({Frame}){
  const advancedTagById={...advancedTagLabels,...Object.fromEntries(advancedTags.map(t=>[t.id,t]))};
  // The database has already filtered and ordered the ENTIRE archive.
  const advancedFiltered=advancedResults;
+ const strictFanfictionFilters=hasReadingPrecision(readingChoices.precision)||includedTags.length>0||excludedTags.length>0||relationshipIncluded.length>0||relationshipExcluded.length>0;
+ const facetPanel=<ReadingFacetSidebar facets={tagFacets} sort={catalogueSort} onSort={updateCatalogueSort} rating={rating} onRating={setRating} status={status} onStatus={setStatus} included={includedTags} excluded={excludedTags} onToggle={toggleReadingFacet} onClear={clearReadingFilters} relationshipIncluded={relationshipIncluded} relationshipExcluded={relationshipExcluded} onToggleRelationship={toggleRelationshipFacet} loadedCount={roomWorks.length} hasMore={!archiveBrowseEnabled&&hasMorePublished} archiveWide={archiveBrowseEnabled} onSearchTags={searchPalaceTags} onTagIdentified={identifyReadingTag} selectedTagNames={facetNames} precision={readingChoices.precision} onPrecision={next=>{setReadingChoice('precision',next);if(hasReadingPrecision(next))setReadingChoice('catalogueScope','loaded')}} resultsCount={origin==='fandom'?null:archiveBrowseEnabled?(archiveBrowse.snapshot?visibleTotal:null):catalogue.length} onShowResults={()=>{window.requestAnimationFrame(()=>{const result=document.getElementById(origin==='fandom'?'reading-fanfiction-results':'reading-results');if(!result)return;result.scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches?'auto':'smooth',block:'start'});result.focus({preventScroll:true})})}}/>;
  return <Frame><PrismWayfinder active="reading"/><section data-reading-layout={readingChoices.layout} className={"legacy-reading-page chic-reading-page"+(advancedView?' advanced-search-mode':'')+(origin==='fandom'&&!advancedView?' fanfiction-focused':'')}>
   <section className="legacy-reading-intro chic-reading-intro reading-intro-calm"><p className="eyebrow">FIND YOUR NEXT WORLD</p><h1>{advancedView?'Search with precision. Wander with style.':'Stories first. Filters when you need them.'} <PalaceTopicHelp id="reading"/></h1><p>{advancedView?'Build a constellation with text, include and exclude tags, rating, status and origin—without leaving the Reading Rooms.':'All Stories brings the Palace together. Original Fiction includes creator-owned work and readable Palace Classics, while Fanfiction includes member fanworks and properly attributed historical fanfiction.'}</p></section>
   {!session&&<GuestReadingInvitation returnTo="/reading" context="discover"/>}
@@ -598,8 +603,12 @@ export function ReadingLive({Frame}){
     <details className="reading-extra-views"><summary>Explore ▾</summary><div><Link to="/reading" onClick={()=>setReadingChoice('discoveryMode','browse')}>Stories</Link><Link to="/reading" onClick={()=>setReadingChoice('discoveryMode','discover')}>Discover</Link><Link to="/tags">Tags room</Link></div></details>
    </nav>
   {origin==='fandom'&&!advancedView&&<>
-   {fanfictionActiveFilters.length>0&&<nav className="reading-filter-trail fanfiction-active-trail" aria-label="Other active story filters"><span className="reading-filter-title">ACTIVE FILTERS</span><div>{fanfictionActiveFilters.map(item=><button type="button" key={item.key} onClick={()=>removeReadingFilter(item.key)} aria-label={'Remove '+item.label+' filter'}><span>{item.label}</span><b aria-hidden="true">×</b></button>)}</div><button type="button" className="reading-filter-clear" onClick={()=>{setQuery('');setRating('all');setStatus('all');setVibeDoor('all');setReadingChoice('includeTags',[]);setReadingChoice('excludeTags',[])}}>Clear filters</button></nav>}
-   <UnifiedFanworkCatalogue publishedWorks={[...visibleCatalogue,...archiveWorks]} globalQuery={query} globalRating={rating} completion={status} loading={browseLoading} loadError={browseError} hasMoreHosted={!archiveBrowseEnabled&&hasMorePublished} onMoreHosted={loadNextPublishedPage} defaultSource="all"/>
+   {fanfictionActiveFilters.length>0&&<nav className="reading-filter-trail fanfiction-active-trail" aria-label="Other active story filters"><span className="reading-filter-title">ACTIVE FILTERS</span><div>{fanfictionActiveFilters.map(item=><button type="button" key={item.key} onClick={()=>removeReadingFilter(item.key)} aria-label={'Remove '+item.label+' filter'}><span>{item.label}</span><b aria-hidden="true">×</b></button>)}</div><button type="button" className="reading-filter-clear" onClick={()=>{setQuery('');setRating('all');setStatus('all');setVibeDoor('all');setReadingChoice('includeTags',[]);setReadingChoice('excludeTags',[]);setReadingChoice('precision',READING_PRECISION_DEFAULTS)}}>Clear filters</button></nav>}
+   <div className="reading-fanfiction-filters">{facetPanel}</div>
+   {strictFanfictionFilters&&<p className="reading-partial-notice" role="status">Included and excluded filters apply to Palace works with matching metadata. Off-site recommendations without comparable tag, word or date metadata are hidden until you clear these filters.</p>}
+   <div id="reading-fanfiction-results" tabIndex="-1">
+   <UnifiedFanworkCatalogue publishedWorks={[...visibleCatalogue,...archiveWorks.filter(w=>matchesReadingFacets(w,effectiveReadingTags,excludedTags)&&matchesReadingRelationships(w,relationshipIncluded,relationshipExcluded)&&matchesReadingPrecision(w,readingChoices.precision))]} externalWorks={strictFanfictionFilters?[]:MODERN_FANFICTION_LINKS} globalQuery={query} globalRating={rating} completion={status} loading={browseLoading} loadError={browseError} hasMoreHosted={!archiveBrowseEnabled&&hasMorePublished} onMoreHosted={loadNextPublishedPage} defaultSource="all"/>
+   </div>
   </>}
   {advancedView&&<section className="reading-advanced-search">
    <div className="advanced-search-command"><div><p className="eyebrow">DEEP SEARCH · READER CONTROLLED</p><h2>Build your constellation.</h2><p>Choose what must be present, what must stay out, then refine the shelf. Tags remain a full Palace room too.</p></div><Link to="/tags">Open the Tags room →</Link></div>
@@ -715,7 +724,7 @@ export function ReadingLive({Frame}){
    {morePublishedError&&<p role="alert">{morePublishedError}</p>}
   </div>}
   </div>
-  <ReadingFacetSidebar facets={tagFacets} sort={catalogueSort} onSort={updateCatalogueSort} rating={rating} onRating={setRating} status={status} onStatus={setStatus} included={includedTags} excluded={excludedTags} onToggle={toggleReadingFacet} onClear={clearReadingFilters} relationshipIncluded={relationshipIncluded} relationshipExcluded={relationshipExcluded} onToggleRelationship={toggleRelationshipFacet} loadedCount={roomWorks.length} hasMore={!archiveBrowseEnabled&&hasMorePublished} archiveWide={archiveBrowseEnabled} onSearchTags={searchPalaceTags} onTagIdentified={identifyReadingTag} selectedTagNames={facetNames} resultsCount={archiveBrowseEnabled?(archiveBrowse.snapshot?visibleTotal:null):catalogue.length} onShowResults={()=>{window.requestAnimationFrame(()=>{const result=document.getElementById('reading-results');if(!result)return;result.scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches?'auto':'smooth',block:'start'});result.focus({preventScroll:true})})}}/>
+  {facetPanel}
   </div>}
   </>}
  </section></Frame>
