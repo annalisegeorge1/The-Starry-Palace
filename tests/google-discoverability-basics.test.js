@@ -7,6 +7,13 @@ const robots=readFileSync('public/robots.txt','utf8');
 const sitemap=readFileSync('public/sitemap.xml','utf8');
 
 describe('public Google discoverability essentials',()=>{
+ it('keeps the global boot status out of page headings without breaking boot error recovery',()=>{
+  expect(html).toContain('<div id="palace-boot" role="status" aria-live="polite">');
+  expect(html).toContain('<div class="boot-title">Opening The Starry Palace…</div>');
+  expect(html).toContain("boot.querySelector('.boot-title')");
+  expect(html).toContain('#palace-boot .boot-title{');
+  expect(html).not.toMatch(/<h1[^>]*>Opening The Starry Palace/);
+ });
  it('provides descriptive initial metadata and valid site-name markup',()=>{
   expect(html).toContain('Read &amp; Publish Stories, Fanfiction &amp; Poetry | The Starry Palace');
   expect(html).toContain('Read original fiction, fanfiction, poetry and comics');
