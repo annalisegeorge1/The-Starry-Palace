@@ -116,6 +116,27 @@ with sync_playwright() as playwright:
     assert reads == [], "Opening the writing desk fetched history"
     a = first.locator('[contenteditable=true]').first
     b = second.locator('[contenteditable=true]').first
+    # Appearance preferences belong to this device and must never create a manuscript save.
+    drawer = first.locator(".writer-desk-drawer")
+    if drawer.get_attribute("open") is None:
+        drawer.locator(":scope > summary").click()
+    first.get_by_label("Draft font", exact=True).select_option("classic")
+    first.get_by_label("Writing text size in pixels").select_option("40")
+    first.get_by_label("Show manuscript margin line").check()
+    expect(a).to_have_css("font-size", "40px")
+    expect(a).to_have_css("font-family", re.compile("Palatino"))
+    expect(a).to_have_css("border-inline-start-width", "3px")
+    first.reload()
+    expect(a).to_have_css("font-size", "40px")
+    expect(a).to_have_css("font-family", re.compile("Palatino"))
+    if drawer.get_attribute("open") is None:
+        drawer.locator(":scope > summary").click()
+    first.get_by_role("button", name="Restore page appearance defaults").click()
+    expect(a).to_have_css("font-size", "20px")
+    expect(first.get_by_label("Show manuscript margin line")).not_to_be_checked()
+    expect(a).to_have_text("Initial text")
+    assert writes == []
+    drawer.locator(":scope > summary").click()
     first.get_by_role("button", name="Enter focus", exact=True).click()
     expect(first.locator("body")).to_have_class(re.compile("focus-editor"))
     a.fill("Cloud version saved by A")
