@@ -46,8 +46,8 @@ begin
  -- serializes concurrent tabs; deleting a comment does not reset the budget.
  insert into private.discussion_submission_clock as gate(author_id,next_slot)
  values(actor,clock_time+interval '10 seconds')
- on conflict(author_id) do update set next_slot=greatest(clock_time,gate.next_slot)+interval '10 seconds'
- where gate.next_slot <= clock_time+interval '50 seconds';
+ on conflict(author_id) do update set next_slot=greatest(clock_timestamp(),gate.next_slot)+interval '10 seconds'
+ where gate.next_slot <= clock_timestamp()+interval '50 seconds';
  if not found then raise exception 'Please wait a moment before posting another response.'; end if;
  return new;
 end $$;

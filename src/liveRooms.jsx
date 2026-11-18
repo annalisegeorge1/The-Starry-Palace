@@ -1994,7 +1994,7 @@ export function WorkCommunity({work,community,session,reload,setError,chapterRet
  const discussion=useDiscussionInteractions(community.comments,work.id,chapterId,session?.user?.id);
  const visibleComments=community.comments.filter(c=>(chapterId?c.chapter_id===chapterId:!c.chapter_id)&&(own||c.status==='approved'||c.author_id===session?.user?.id));
  const [order,setOrder]=useState('oldest');
- const {hash,state:discussionOrigin}=useLocation();
+ const {hash}=useLocation();
  const threadRows=readerCommentThreads(visibleComments,order,work.author_id,discussion.items);
  const targetId=hash.startsWith('#comment-')?hash.slice(9):null;
  const targetIndex=targetId?threadRows.findIndex(row=>row.comment.id===targetId):-1;
@@ -2046,7 +2046,6 @@ export function WorkCommunity({work,community,session,reload,setError,chapterRet
   {!session&&work.comment_policy!=='closed'&&<GuestReadingInvitation returnTo={chapterReturnTo||'/work/'+work.slug+'#comments'} context="comment" compact/>}
    {session&&work.comment_policy!=='closed'&&<ReaderCommentComposer key={JSON.stringify([session.user.id,work.id,chapterId])} userId={session.user.id} workId={work.id} chapterId={chapterId} reload={reload} setError={setError}/>}
   </>}
-  {!chapterReturnTo&&discussionOrigin?.fromFullReader&&<Link className="discussion-return" to={'/work/'+encodeURIComponent(work.slug)+'/full'}>Return to full work</Link>}
   {chapterReturnTo&&<a className="discussion-return" href="#palace-reader-start">Return to chapter</a>}
   <PalaceDialog open={!!reporting} title="Report this comment?" eyebrow="PALACE COUNCIL" onClose={()=>setReporting(null)} actions={<><button className="quiet-button" onClick={()=>setReporting(null)}>Cancel</button><button className="danger-action" onClick={submitCommentReport} disabled={!reportReason.trim()}>Send report</button></>}><p className="quiet-copy">The Council will review the specific comment in context. Reporting does not automatically remove it.</p><label>What should the Council review?<textarea rows="5" maxLength="2000" value={reportReason} onChange={e=>setReportReason(e.target.value)} placeholder="Describe the concern clearly."/></label><small>{reportReason.length}/2000</small></PalaceDialog>
  </section>

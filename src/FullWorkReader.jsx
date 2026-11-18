@@ -5,6 +5,7 @@ import {safeReaderHtml} from './readerHtmlSanitizer';
 import {restoreFlatClassicChapterHtml} from './classicTextStructure';
 import {readPalaceChoice,readPalaceNumber,writePalacePreference} from './browserPreferences';
 import {readerFlow} from './readerFlowModel';
+import FullStoryDiscussion from './FullStoryDiscussion';
 import PalacePagedReader from './PalacePagedReader';
 import {PalaceTopicHelp} from './PalaceGuidebookHints';
 
@@ -79,7 +80,7 @@ export default function FullWorkReader({Frame}){
    <header className="palace-full-reader-heading">
     <Link to={'/work/'+work.slug}>← Story overview</Link>
     <p className="eyebrow">READ THE FULL WORK <PalaceTopicHelp id="reading-modes"/></p>
-    <h1>{work.title}</h1>
+    <h1 id="full-reader-heading" tabIndex={-1}>{work.title}</h1>
     <p>{chapters.length} published chapter{chapters.length===1?'':'s'} · {chapters.reduce((n,ch)=>n+(Number(ch.word_count)||0),0).toLocaleString()} words</p>
    </header>
    <div className="palace-full-reader-actions">
@@ -96,7 +97,8 @@ export default function FullWorkReader({Frame}){
     <PalacePagedReader key={slug+':full'} html={html} fontSize={fontSize} initialPercent={place} onPositionChange={remember} label="Turn pages through the full published work"/>:
     <div ref={contentRef} className="palace-full-reader-content" style={{fontSize:fontSize+'px'}} dangerouslySetInnerHTML={{__html:html}}/>:
     <p>No published chapters are available to read.</p>}
-   <footer className="reader-nav"><Link to={'/work/'+work.slug}>← Back to the story</Link><Link to={'/work/'+work.slug+'#comments'} state={{fromFullReader:true}}>Full story discussion</Link><p>To read or leave comments on a particular chapter, select its discussion link below that chapter. Private notes, reactions, and reading rewards remain available in the individual chapter reader.</p></footer>
+   {chapters.length>0&&<FullStoryDiscussion work={work}/>}
+   <footer className="reader-nav"><Link to={'/work/'+work.slug}>← Back to the story</Link><p>To read or leave comments on a particular chapter, select its discussion link below that chapter. Private notes, reactions, and reading rewards remain available in the individual chapter reader.</p></footer>
   </article>}
  </Frame>;
 }
