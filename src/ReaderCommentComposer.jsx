@@ -44,7 +44,8 @@ export default function ReaderCommentComposer({userId, workId, chapterId, parent
   const prompt = chapterId ? 'Leave a comment about this chapter…' : 'Leave a response for the writer…';
   return <form className="comment-compose" onSubmit={submit}>
     {(chapterId || parentId) && <label htmlFor={fieldId}>{parentId ? 'Reply to comment' : 'Chapter comment'}</label>}
-    <textarea id={fieldId} aria-label={chapterId || parentId ? undefined : prompt} placeholder={prompt} value={draft.body} disabled={sending}
+    <small id={fieldId+'-help'}>For a spoiler inside a sentence, put || around the part to hide.</small>
+    <textarea aria-describedby={fieldId+'-help'} id={fieldId} aria-label={chapterId || parentId ? undefined : prompt} placeholder={prompt} value={draft.body} disabled={sending}
       onChange={event => update({...draft, body: event.target.value})} required/>
     <label><input type="checkbox" checked={draft.spoiler} disabled={sending}
       onChange={event => update({...draft, spoiler: event.target.checked})}/> Contains spoilers</label>

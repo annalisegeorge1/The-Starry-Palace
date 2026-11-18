@@ -96,7 +96,7 @@ export default function FullWorkReader({Frame}){
     <PalacePagedReader key={slug+':full'} html={html} fontSize={fontSize} initialPercent={place} onPositionChange={remember} label="Turn pages through the full published work"/>:
     <div ref={contentRef} className="palace-full-reader-content" style={{fontSize:fontSize+'px'}} dangerouslySetInnerHTML={{__html:html}}/>:
     <p>No published chapters are available to read.</p>}
-   <footer className="reader-nav"><Link to={'/work/'+work.slug}>← Back to the story</Link><p>To read or leave comments on a particular chapter, select its discussion link below that chapter. Private notes, reactions, and reading rewards remain available in the individual chapter reader.</p></footer>
+   <footer className="reader-nav"><Link to={'/work/'+work.slug}>← Back to the story</Link><Link to={'/work/'+work.slug+'#comments'}>Full story discussion</Link><p>To read or leave comments on a particular chapter, select its discussion link below that chapter. Private notes, reactions, and reading rewards remain available in the individual chapter reader.</p></footer>
   </article>}
  </Frame>;
 }
