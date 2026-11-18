@@ -27,6 +27,8 @@ try{
  returns void language sql as $$insert into public.notices values($1,$3,$9)$$;
  create table works(id uuid primary key,author_id uuid,comment_policy text,slug text,visibility text,publication_status text,minimum_reader_age int);
  create table chapters(id uuid primary key,work_id uuid,status text);
+ create function private.can_read_chapter(p_work uuid,p_status text) returns boolean language sql as $$
+ select p_status='published' or exists(select 1 from public.works where id=p_work and author_id=auth.uid())$$;
  create table user_member_boundaries(user_id uuid,other_user_id uuid,blocked boolean,muted boolean default false);
  create table comments(id uuid primary key default gen_random_uuid(),work_id uuid,chapter_id uuid,author_id uuid,
  parent_comment_id uuid,body text,spoiler boolean default false,comment_type text default 'response',

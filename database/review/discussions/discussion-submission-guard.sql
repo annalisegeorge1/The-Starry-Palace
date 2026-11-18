@@ -19,7 +19,7 @@ begin
  if new.author_id is distinct from actor then raise exception 'Cannot post this response.'; end if;
  select w.author_id into writer from public.works w where w.id=new.work_id;
  if new.chapter_id is not null and not exists (
-  select 1 from public.chapters where id=new.chapter_id and work_id=new.work_id and (status='published' or writer=actor)
+  select 1 from public.chapters where id=new.chapter_id and work_id=new.work_id and private.can_read_chapter(work_id,status)
  ) then raise exception 'Discussion is unavailable for this chapter.'; end if;
  if new.parent_comment_id is not null then
   -- UNION removes repeated identities, so malformed legacy cycles terminate.
