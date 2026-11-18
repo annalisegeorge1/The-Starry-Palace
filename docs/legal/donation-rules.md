@@ -2,7 +2,7 @@
 ## Voluntary Support and Donation Rules
 **Effective:** 31 October 2026  
 **Last updated:** 31 October 2026  
-**Contact:** Annalise Pierre · annalise.pierre.28@gmail.com
+**Contact:** Annalise Pierre · thestarrypalace@gmail.com
 
 The Palace welcomes voluntary support for writers, artists and community projects. These rules explain how support links may be shared and what a payment does—and does not—mean on The Starry Palace.
 
@@ -24,4 +24,4 @@ Palace points, badges, digital gifts, Hearts, Stars, Moons, Crowns and titles ar
 
 ### Report a concern
 
-To report a suspicious fundraising link or a payment-related safety concern, use the report controls available on the page or email **annalise.pierre.28@gmail.com** with “Support link report” in the subject.
+To report a suspicious fundraising link or a payment-related safety concern, use the report controls available on the page or email **thestarrypalace@gmail.com** with “Support link report” in the subject.

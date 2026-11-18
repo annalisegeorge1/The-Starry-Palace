@@ -2,7 +2,7 @@
 ## Cookie and Browser Storage Notice
 **Effective:** 31 October 2026  
 **Last updated:** 31 October 2026  
-**Contact:** Annalise Pierre · annalise.pierre.28@gmail.com
+**Contact:** Annalise Pierre · thestarrypalace@gmail.com
 
 This notice explains what The Starry Palace may save in your browser and why. Cookies and browser storage are different: cookies are small files a website may save and receive again with a request; browser storage saves information in your browser on your device.
 
@@ -26,4 +26,4 @@ When you follow an external payment, video, social or other link, that provider 
 
 ### Contact
 
-For questions about cookies or browser storage used by the Palace, email **annalise.pierre.28@gmail.com**.
+For questions about cookies or browser storage used by the Palace, email **thestarrypalace@gmail.com**.

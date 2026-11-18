@@ -2,7 +2,7 @@
 ## Content Policy
 **Last updated:** 17 November 2026 · **Clarification:** Teen romance and historical fiction boundaries  
 **Applicability:** This Policy forms part of the published Terms of Service.  
-**Contact:** annalise.pierre.28@gmail.com
+**Contact:** thestarrypalace@gmail.com
 
 The Starry Palace is a community for original writing, fanfiction, poetry, comics, artwork, translations and cultural storytelling. We welcome a wide range of genres, perspectives, characters and fictional subjects. **A work will not ordinarily be removed merely because someone considers its ideas, relationships, language or subject matter offensive.** Artistic freedom remains subject to the rights, safety and conduct rules below and applicable law.
 
@@ -52,7 +52,7 @@ You must have the rights, permission or other lawful basis needed to upload what
 
 Creating a new work inspired by existing fictional settings or characters is different from reposting the original. Some fanworks may be lawful under particular exceptions or permissions, but fanwork status, non-commercial intent or calling a work transformative do not automatically establish a legal right to host it in every country. We assess rights complaints on the information and applicable law, rather than assuming that every fanwork either infringes or is automatically exempt.
 
-Respect creator-selected permissions for translation, adaptation, co-writing, downloads, redistribution and attribution. A credited download or a public page is not consent to sell, scrape, train an AI model on or republish that work. Report apparent copyright infringement privately to **annalise.pierre.28@gmail.com** with **“Copyright report”** in the subject, identifying the disputed work, URL and reasonable grounds for the complaint. Rights disputes may follow separate legal procedures; see Terms section 7.
+Respect creator-selected permissions for translation, adaptation, co-writing, downloads, redistribution and attribution. A credited download or a public page is not consent to sell, scrape, train an AI model on or republish that work. Report apparent copyright infringement privately to **thestarrypalace@gmail.com** with **“Copyright report”** in the subject, identifying the disputed work, URL and reasonable grounds for the complaint. Rights disputes may follow separate legal procedures; see Terms section 7.
 
 ### 5. Plagiarism and attribution
 
@@ -98,7 +98,7 @@ Do not post malware, stolen credentials, malicious executables, disguised execut
 
 ### 12. Reports, moderation, corrections and appeals
 
-If you believe content violates this Policy, use the available report controls or contact **annalise.pierre.28@gmail.com** with **“Content policy report”** in the subject line. Include the relevant URL or content identifier, the rule at issue and useful context; do not share unnecessary personal or sensitive information. Reporting content does not automatically establish a violation.
+If you believe content violates this Policy, use the available report controls or contact **thestarrypalace@gmail.com** with **“Content policy report”** in the subject line. Include the relevant URL or content identifier, the rule at issue and useful context; do not share unnecessary personal or sensitive information. Reporting content does not automatically establish a violation.
 
 Possible responses include guidance, a request to improve tags or credits, changing a supported label, reduced visibility, temporary hiding, removal or account restrictions proportionate to the concern. Serious safety or legal issues may require immediate action without advance warning. Where reasonable and safe, affected members should receive an explanation and an opportunity to correct an issue. For older material affected by a newly clarified metadata or public-image standard, we will ordinarily provide reasonable notice and a chance to correct it before imposing non-emergency penalties; serious safety, exploitation, legal and security concerns may require immediate action.
 

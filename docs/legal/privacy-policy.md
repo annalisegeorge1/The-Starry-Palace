@@ -3,7 +3,7 @@
 **Effective:** 31 October 2026  
 **Last updated:** 31 October 2026  
 **Operator:** Annalise Pierre  
-**Privacy contact:** annalise.pierre.28@gmail.com
+**Privacy contact:** thestarrypalace@gmail.com
 
 This policy explains how The Starry Palace handles information when visitors read public pages and when members create an account, write, read, message or take part in community features. The Palace is operated by Annalise Pierre. Send privacy questions or requests to the email above.
 
@@ -57,7 +57,7 @@ The Palace does not currently use its own advertising cookies or optional app-le
 
 The date of birth is kept in the private age record while an account remains active so the Palace can enforce the account minimum and reading limits. It is removed when the account record is deleted. Account, content, report and security information may need different retention periods for service operation, safety, dispute resolution, legal requirements and backups. The Palace does not promise that deletion from the active database immediately removes provider-held backups or operational logs; those may remain under the relevant provider's retention and deletion processes.
 
-To request account closure or deletion, access to your personal information, or correction of inaccurate profile information, email **annalise.pierre.28@gmail.com**. Include the email address associated with your account and describe the request; do not send a password or identity document unless we explain why it is necessary. We may need to verify that a request comes from the account holder. Some information may remain in backups or be retained where needed to resolve a report, protect another member, or comply with law. Public content already copied by another person or third party may not be recoverable.
+To request account closure or deletion, access to your personal information, or correction of inaccurate profile information, email **thestarrypalace@gmail.com**. Include the email address associated with your account and describe the request; do not send a password or identity document unless we explain why it is necessary. We may need to verify that a request comes from the account holder. Some information may remain in backups or be retained where needed to resolve a report, protect another member, or comply with law. Public content already copied by another person or third party may not be recoverable.
 
 ### 8. Security
 
@@ -65,6 +65,6 @@ The Palace uses authentication, row-level database policies and private storage 
 
 ### 9. Privacy choices and contact
 
-Members may use a pen name and do not need to put a legal name on a public profile. Available settings can control profile visibility, discovery, notifications, messages and contact boundaries. To ask about personal information, correction, account deletion or this policy, contact **Annalise Pierre at annalise.pierre.28@gmail.com**.
+Members may use a pen name and do not need to put a legal name on a public profile. Available settings can control profile visibility, discovery, notifications, messages and contact boundaries. To ask about personal information, correction, account deletion or this policy, contact **Annalise Pierre at thestarrypalace@gmail.com**.
 
 The Palace may update this policy when practices change. The latest revision date appears at the top of this page. Material changes will be explained before or when they take effect where practicable.

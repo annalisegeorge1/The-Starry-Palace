@@ -2,7 +2,7 @@
 ## Artificial Intelligence Policy
 **Effective:** 31 October 2026  
 **Last updated:** 17 November 2026  
-**Contact:** Annalise Pierre · annalise.pierre.28@gmail.com
+**Contact:** Annalise Pierre · thestarrypalace@gmail.com
 
 The Starry Palace exists to support writers, readers, poets, artists and storytellers. Members keep the rights they own in their creative work. Posting or publishing work in the Palace is not permission for someone else to submit it to an AI system or use it to train a model.
 
@@ -28,4 +28,4 @@ The Palace does not currently require a general label on every AI-assisted contr
 
 ### Questions or reports
 
-For an AI-related privacy or rights concern, email **annalise.pierre.28@gmail.com** with “AI policy” in the subject.
+For an AI-related privacy or rights concern, email **thestarrypalace@gmail.com** with “AI policy” in the subject.
