@@ -49,7 +49,7 @@
       box-shadow:0 24px 70px rgba(0,0,0,.24);
     }
     #palace-boot .moon{display:block;margin:0 auto 12px;font:34px Georgia,serif;color:#d7c9ed}
-    #palace-boot h1{margin:0 0 8px;font:600 20px "Playfair Display",Georgia,serif}
+    #palace-boot .boot-title{margin:0 0 8px;font:600 20px "Playfair Display",Georgia,serif}
     #palace-boot p{margin:0;color:#9c93aa;font-size:13px;line-height:1.5}
     #palace-boot button{
       display:none;margin:16px auto 0;min-height:38px;padding:8px 14px;border:1px solid rgba(205,182,237,.22);
@@ -82,7 +82,7 @@
         var boot=bootNode();if(!boot)return;
         boot.hidden=false;
         boot.dataset.failed='true';
-        var title=boot.querySelector('h1'),copy=boot.querySelector('p');
+        var title=boot.querySelector('.boot-title'),copy=boot.querySelector('p');
         if(title)title.textContent='The Palace did not finish opening.';
         if(copy)copy.textContent='The page did not finish loading. You can retry when ready; your browser will not keep restarting automatically.';
         boot.dataset.reason=String(reason||'startup');
@@ -136,7 +136,7 @@
   <div id="palace-boot" role="status" aria-live="polite">
     <div>
       <span class="moon" aria-hidden="true">☾ ✦</span>
-      <h1>Opening The Starry Palace…</h1>
+      <div class="boot-title">Opening The Starry Palace…</div>
       <p>Gathering your rooms, drafts and moonlight.</p>
       <button type="button" onclick="window.location.reload()">Restore the Palace</button>
     </div>
