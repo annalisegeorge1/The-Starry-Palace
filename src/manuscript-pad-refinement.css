@@ -223,3 +223,15 @@ body.writing-desk-open.daylight .chic-editor-form>.manuscript-sticky-toolbar,
 @media(min-width:761px) and (max-width:1279px){body.writing-desk-open .chic-editor-form>.manuscript-sticky-toolbar{top:68px!important}}
 .focus-editor .chic-editor-form>.manuscript-sticky-toolbar{top:0!important}
 @media(prefers-reduced-motion:reduce){.manuscript-sticky-toolbar *, .manuscript-sheet-frame *{transition:none!important}}
+
+body.writing-desk-open .manuscript-sheet-frame.font-classic .legacy-writing-canvas {
+  font-family: "Palatino Linotype", Palatino, "Book Antiqua", "Liberation Serif", serif !important;
+}
+
+body.writing-desk-open .manuscript-sheet-frame.font-humanist .legacy-writing-canvas {
+  font-family: "Trebuchet MS", "Gill Sans", Candara, "DejaVu Sans", sans-serif !important;
+}
+
+body.writing-desk-open .manuscript-sheet-frame.has-margin-guide .legacy-writing-canvas {
+  border-inline-start: 3px solid currentColor !important;
+}
