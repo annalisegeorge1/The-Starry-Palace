@@ -12,8 +12,9 @@ describe('safe reader and manuscript preferences',()=>{
   expect(reader).toContain("removePalacePreference(key)");
  });
  it('preserves valid writing typography while bounding stale values',()=>{
-  expect(writer).toContain("readPalaceNumber('palace-writer-font-size',20,16,30)");
-  expect(writer).toContain("readPalaceChoice('palace-writer-font',['serif','sans','mono','accessible'],'serif')");
+  expect(live).toContain("const manuscriptSize = {min:14, max:40, initial:20}");
+  expect(writer).toContain("readPalaceNumber('palace-writer-font-size',manuscriptSize.initial,manuscriptSize.min,manuscriptSize.max)");
+  expect(writer).toContain("readPalaceChoice('palace-writer-font',Object.keys(manuscriptTypefaces),'serif')");
   expect(writer).toContain("readPalaceChoice('palace-sprint-minutes',['10','15','25','45','60'],'25')");
   expect(writer).toContain("readPalaceChoice('palace-desk-mood',['moonlit','ink','paper'],'moonlit')");
  });
