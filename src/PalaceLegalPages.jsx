@@ -57,7 +57,8 @@ export function PalaceLegalPages(){
  return <main className="palace-legal-shell">
   <header className="palace-legal-intro"><p className="eyebrow">THE STARRY PALACE · POLICIES</p><h1>{selected?.title||'Policies and notices'}</h1><p>{selected?.summary||'Clear rules for your account, creative work, privacy and community participation.'}</p></header>
   <nav className="palace-legal-nav" aria-label="Policies and notices">{policies.map(item=><Link key={item.id} to={`/legal/${item.id}`} aria-current={policy===item.id?'page':undefined} className={policy===item.id?'active':''}>{item.title}</Link>)}</nav>
-  {selected?<article className="palace-legal-paper"><MarkdownContent source={selected.content}/><footer>Questions about this policy? Contact <a href="mailto:annalise.pierre.28@gmail.com">annalise.pierre.28@gmail.com</a>.</footer></article>:<section className="palace-legal-cards">{policies.map(item=><Link key={item.id} to={`/legal/${item.id}`}><span>✦</span><div><h2>{item.title}</h2><p>{item.summary}</p></div><b aria-hidden="true">→</b></Link>)}</section>}
+  {selected?<article className="palace-legal-paper"><MarkdownContent source={selected.content}/><footer>Questions about this policy? Contact <a href="mailto:thestarrypalace@gmail.com">thestarrypalace@gmail.com</a>.</footer></article>:<section className="palace-legal-cards">{policies.map(item=><Link key={item.id} to={`/legal/${item.id}`}><span>✦</span><div><h2>{item.title}</h2><p>{item.summary}</p></div><b aria-hidden="true">→</b></Link>)}</section>}
+  {!selected&&<p>For appeals or other messages to the Palace team, email <a href="mailto:thestarrypalace@gmail.com">thestarrypalace@gmail.com</a>.</p>}
  </main>;
 }
 
