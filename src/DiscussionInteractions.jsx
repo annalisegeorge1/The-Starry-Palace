@@ -48,17 +48,18 @@ export function useDiscussionInteractions(comments,work,chapter,viewer) {
 
 export function CommentInteractionMenu({comment,tools,owner,signedIn}) {
  const item=tools.items[comment.id];
+ const id=React.useId();
  if(!item)return null;
  const total=Object.values(item.counts||{}).reduce((n,count)=>n+count,0);
  if(!signedIn)return total?<small>{total} reaction{total===1?'':'s'}</small>:null;
  return <details className="response-menu"><summary>Response options{total?' · '+total+' reactions':''}</summary>
-  <label>Reaction <select disabled={tools.busy} value={item.reaction||'off'} onChange={e=>tools.setChoice(comment.id,'reaction',e.target.value)}>
+  <label htmlFor={id+'-reaction'}>Reaction</label> <select id={id+'-reaction'} disabled={tools.busy} value={item.reaction||'off'} onChange={e=>tools.setChoice(comment.id,'reaction',e.target.value)}>
    <option value="off">No reaction</option>
    {['heart','laugh','surprise'].map(k=><option key={k} value={k}>{k[0].toUpperCase()+k.slice(1)} ({item.counts?.[k]||0})</option>)}
-  </select></label>
-  <label>Thread notifications <select disabled={tools.busy} value={item.preference||'off'} onChange={e=>tools.setChoice(comment.id,'preference',e.target.value)}>
+  </select>
+  <label htmlFor={id+'-alerts'}>Thread notifications</label> <select id={id+'-alerts'} disabled={tools.busy} value={item.preference||'off'} onChange={e=>tools.setChoice(comment.id,'preference',e.target.value)}>
    <option value="off">Replies and mentions</option><option value="following">Follow thread</option><option value="muted">Mute thread</option>
-  </select></label>
+  </select>
   {owner&&!comment.parent_comment_id&&<button disabled={tools.busy} type="button" aria-pressed={item.pinned}
    onClick={()=>tools.setChoice(comment.id,'pin',item.pinned?'off':'on')}>{item.pinned?'Unpin thread':'Pin thread'}</button>}
  </details>;

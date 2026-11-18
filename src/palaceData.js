@@ -1,3 +1,4 @@
+import {loadDiscussionComments} from './loadDiscussionComments';
 import {writeChapterVersion} from './chapterCloudSave';
 import { supabase } from './supabase';
 import {validatePalaceWelcomeImage} from './palaceWelcomeMediaModel';
@@ -1529,7 +1530,15 @@ export async function saveCommentRevision(comment,body,spoiler) {
  if(error)throw error;
  if(!data)throw new Error('This comment has changed. Copy your draft and reload before editing.');
 }
-export async function getWorkCommunity(workId){const [tags,comments]=await Promise.all([needClient().from('work_tags').select('position,tags(id,name,category,status)').eq('work_id',workId).order('position'),needClient().from('comments').select('id,work_id,chapter_id,author_id,parent_comment_id,comment_type,body,spoiler,status,created_at'+commentRevisionFields+',profiles!comments_author_id_fkey(id,username,display_name,avatar_url)').eq('work_id',workId).order('created_at')]);if(tags.error)throw tags.error;if(comments.error)throw comments.error;return{tags:(tags.data||[]).filter(x=>['canonical','community'].includes(x.tags?.status)),comments:comments.data||[]}}
+export async function getWorkCommunity(workId){
+ const client=needClient();
+ const [tags,comments]=await Promise.all([
+  client.from('work_tags').select('position,tags(id,name,category,status)').eq('work_id',workId).order('position'),
+  loadDiscussionComments(client,workId,commentRevisionFields)
+ ]);
+ if(tags.error)throw tags.error;
+ return {tags:(tags.data||[]).filter(x=>['canonical','community'].includes(x.tags?.status)),comments};
+}
 export async function addWorkTag(userId,workId,tagId){const{error}=await needClient().from('work_tags').insert({work_id:workId,tag_id:tagId});if(error&&error.code!=='23505')throw error}
 export async function removeWorkTag(userId,workId,tagId){const{error}=await needClient().from('work_tags').delete().eq('work_id',workId).eq('tag_id',tagId);if(error)throw error}
 export async function proposeTag(userId,name,category){const clean=name.trim();if(!clean)throw new Error('Name the tag first.');const{data,error}=await needClient().from('tags').insert({name:clean,category,status:'pending',created_by:userId}).select().single();if(error)throw error;return data}

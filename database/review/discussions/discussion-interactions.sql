@@ -151,8 +151,8 @@ begin
  if slug is null then return new; end if;
  for recipient in
   with mentions as (
-   select distinct lower(m[2]) username from regexp_matches(new.body,
-    '(^|[^[:alnum:]_@])@([a-zA-Z0-9_]{3,30})(?![[:alnum:]_])','g') m limit 5
+   select lower(m[2]) username from regexp_matches(new.body,
+    '(^|[^[:alnum:]_@])@([a-zA-Z0-9_]{3,30})(?![[:alnum:]_])','g') with ordinality as hits(m,seq) group by lower(m[2]) order by min(seq) limit 5
   ), interested as (
    select author_id reader,1 priority from public.comments where id=new.parent_comment_id
    union all select p.id,2 from mentions m join public.profiles p on lower(p.username)=m.username
@@ -160,6 +160,7 @@ begin
   )
   select i.reader,min(i.priority) reason from interested i where i.reader<>new.author_id
   and not exists(select 1 from private.discussion_thread_preferences t where t.reader=i.reader and t.root=root_id and t.preference='muted')
+  and not exists(select 1 from public.user_member_boundaries b where b.user_id=i.reader and b.other_user_id=new.author_id and (b.muted or b.blocked))
   group by i.reader
  loop
   if private.discussion_visible_root(new.id,recipient.reader) is not null then

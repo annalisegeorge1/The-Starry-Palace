@@ -32,7 +32,9 @@ begin
     join parents p on p.parent_comment_id=c.id where c.work_id=new.work_id
     and c.chapter_id is not distinct from new.chapter_id and c.status='approved'
   ) select author_id into recipient from parents where id=new.parent_comment_id
-     and exists (select 1 from parents where parent_comment_id is null);
+     and exists (select 1 from parents where parent_comment_id is null)
+     and not exists (select 1 from parents p join public.user_member_boundaries b on b.blocked
+      and ((b.user_id=actor and b.other_user_id=p.author_id) or (b.other_user_id=actor and b.user_id=p.author_id)));
   if recipient is null then raise exception 'This response is unavailable for replies.'; end if;
  end if;
  if exists (

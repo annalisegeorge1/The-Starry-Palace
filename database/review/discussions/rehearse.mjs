@@ -27,7 +27,7 @@ try{
  returns void language sql as $$insert into public.notices values($1,$3,$9)$$;
  create table works(id uuid primary key,author_id uuid,comment_policy text,slug text,visibility text,publication_status text,minimum_reader_age int);
  create table chapters(id uuid primary key,work_id uuid,status text);
- create table user_member_boundaries(user_id uuid,other_user_id uuid,blocked boolean);
+ create table user_member_boundaries(user_id uuid,other_user_id uuid,blocked boolean,muted boolean default false);
  create table comments(id uuid primary key default gen_random_uuid(),work_id uuid,chapter_id uuid,author_id uuid,
  parent_comment_id uuid,body text,spoiler boolean default false,comment_type text default 'response',
  status text default 'pending',updated_at timestamptz,created_at timestamptz default now());`);
@@ -81,6 +81,18 @@ try{
  const alerts=(await db.query("select * from notices where metadata->>'comment_id'=$1",[mention])).rows;
  assert.equal(alerts.length,1);assert.equal(alerts[0].recipient,other);assert.match(alerts[0].title,/mentioned/);
  assert.equal(alerts[0].metadata.chapter_id,chapter);
+ await act(db,other);
+ await db.query("select public.set_discussion_interaction($1,'preference','off')",[root]);
+ await act(db,reader);const direct=await insert(db,reader,reply);
+ await act(db,writer);await db.query("update comments set status='approved' where id=$1",[direct]);
+ const directAlerts=(await db.query("select * from notices where metadata->>'comment_id'=$1",[direct])).rows;
+ assert.equal(directAlerts.length,1);assert.equal(directAlerts[0].recipient,other);assert.match(directAlerts[0].title,/replied/);
+ await act(db,other);
+ await db.query("select public.set_discussion_interaction($1,'preference','following')",[root]);
+ await act(db,reader);const followed=await insert(db,reader,root);
+ await act(db,writer);await db.query("update comments set status='approved' where id=$1",[followed]);
+ const follows=(await db.query("select * from notices where metadata->>'comment_id'=$1",[followed])).rows;
+ assert.equal(follows.length,1);assert.equal(follows[0].recipient,other);assert.match(follows[0].title,/followed/);
  await db.query("select public.set_discussion_chapter_closed($1,true)",[chapter]);
  await assert.rejects(insert(db,writer),/closed/);
  await act(db,reader);await assert.rejects(db.query("select public.set_discussion_chapter_closed($1,false)",[chapter]),/unavailable/);
