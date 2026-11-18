@@ -15,7 +15,6 @@ describe('honest Reading Rooms precision scope',()=>{
   expect(reading).toContain("setReadingChoice('precision',READING_PRECISION_DEFAULTS)");
  });
  it('does not bypass precision in a linked fanfiction gallery',()=>{
-  expect(reading).toContain('archiveWorks.filter(w=>matchesReadingPrecision(w,readingChoices.precision))');
   expect(reading).toContain('externalWorks={strictFanfictionFilters?[]:MODERN_FANFICTION_LINKS}');
   expect(reading).toContain('archiveWorks.filter(w=>matchesReadingFacets(w,effectiveReadingTags,excludedTags)&&matchesReadingRelationships(w,relationshipIncluded,relationshipExcluded)&&matchesReadingPrecision(w,readingChoices.precision))');
   expect(reading).toContain('<div className="reading-fanfiction-filters">{facetPanel}</div>');
