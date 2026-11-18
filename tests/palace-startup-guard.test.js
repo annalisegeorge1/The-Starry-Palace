@@ -8,7 +8,7 @@ const main=readFileSync('src/main.jsx','utf8');
 const openPages=[];
 
 function startBoot({mounted=false}={}){
- const dom=new JSDOM('<!doctype html><html><body><div id="palace-boot"><h1>Opening The Starry Palace…</h1><p>Gathering rooms.</p><button>Restore the Palace</button></div><div id="root"></div></body></html>',{url:'https://thestarrypalace.com/',runScripts:'outside-only'});
+ const dom=new JSDOM('<!doctype html><html><body><div id="palace-boot"><div class="boot-title">Opening The Starry Palace…</div><p>Gathering rooms.</p><button>Restore the Palace</button></div><div id="root"></div></body></html>',{url:'https://thestarrypalace.com/',runScripts:'outside-only'});
  const {window}=dom;
  const timers=[];
  window.setTimeout=(callback,ms)=>{timers.push({callback,ms});return timers.length};
@@ -35,7 +35,7 @@ describe('Palace startup never reloads itself in a loop',()=>{
   expect(boot.querySelector('p').textContent).toMatch(/taking longer/i);
   failed.callback();
   expect(boot.dataset.failed).toBe('true');
-  expect(boot.querySelector('h1').textContent).toContain('did not finish');
+  expect(boot.querySelector('.boot-title').textContent).toContain('did not finish');
   expect(window.location.pathname).toBe('/');
   expect(window.location.search).toBe('');
  });
