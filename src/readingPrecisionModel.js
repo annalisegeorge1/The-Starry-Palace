@@ -42,7 +42,8 @@ export const hasReadingPrecision=value=>readingPrecisionCount(value)>0;
 
 function inRange(value,from,to){
  if(value==null||value==='')return false;
- return (!from||value>=from)&&(!to||value<=to);
+ return (from===null||from===undefined||from===''||value>=from)
+  &&(to===null||to===undefined||to===''||value<=to);
 }
 function day(value){
  if(!value)return null;
