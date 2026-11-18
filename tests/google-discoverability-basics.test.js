@@ -33,5 +33,10 @@ describe('public Google discoverability essentials',()=>{
   }
   expect(listed.some(url=>/\/login|\/writing|\/settings|\/search/.test(url))).toBe(false);
   expect(routeSeo('/search').robots).toContain('noindex');
+  for(const path of ['/login', '/settings', '/writing', '/auth/callback', '/work/unresolved']){
+   expect(routeSeo(path).robots).toContain('noindex');
+  }
+  expect(routeSeo('/writers').robots).toBe('index,follow');
+  expect(routeSeo('/reading').robots).toBe('index,follow');
  });
 });
