@@ -4,6 +4,7 @@ import {createPortal} from 'react-dom';
 import {READING_SORT_OPTIONS,READING_FACET_ORDER,READING_FACET_NAMES} from './readingFacetModel';
 import PalaceRelationshipFilters from './PalaceRelationshipFilters';
 import {matchesTagQueries,exactTagQueryMatches,searchSeveralTags} from './multiTagSearch';
+import {cleanReadingPrecision,readingPrecisionCount} from './readingPrecisionModel';
 
 // The quick checklist ends at Genres. All later categories remain searchable.
 const QUICK_TAG_CATEGORIES=new Set(['fandom','character','warning','genre']);
@@ -18,7 +19,8 @@ export default function ReadingFacetSidebar({
  facets=[],sort='updated',onSort,rating='all',onRating,status='all',onStatus,
  included=[],excluded=[],onToggle,onClear,relationshipIncluded=[],relationshipExcluded=[],
  onToggleRelationship=()=>{},loadedCount=0,hasMore=false,archiveWide=false,
- onSearchTags,onTagIdentified,selectedTagNames={},resultsCount=null,onShowResults=()=>{}
+ onSearchTags,onTagIdentified,selectedTagNames={},resultsCount=null,onShowResults=()=>{},
+ precision={},onPrecision=()=>{}
 }){
  const [open,setOpen]=useState(false);
  const sidebarRef=useRef(null);
@@ -64,7 +66,10 @@ export default function ReadingFacetSidebar({
  const [busy,setBusy]=useState({include:false,exclude:false});
  const [errors,setErrors]=useState({include:'',exclude:''});
  const [expandedGroups,setExpandedGroups]=useState({});
- const active=included.length+excluded.length+relationshipIncluded.length+relationshipExcluded.length+(rating!=='all'?1:0)+(status!=='all'?1:0);
+ const chosenPrecision=cleanReadingPrecision(precision);
+ const precisionCount=readingPrecisionCount(chosenPrecision);
+ const setPrecision=(key,value)=>onPrecision({...chosenPrecision,[key]:value});
+ const active=included.length+excluded.length+relationshipIncluded.length+relationshipExcluded.length+(rating!=='all'?1:0)+(status!=='all'?1:0)+precisionCount;
  const modes=['include','exclude'];
  const includeQ=searches.include.trim().toLocaleLowerCase();
  const excludeQ=searches.exclude.trim().toLocaleLowerCase();
@@ -279,9 +284,58 @@ export default function ReadingFacetSidebar({
      {isExpanded&&tagGroups(mode)}
     </section>;
    })}
+   <details className="reading-facet-range-details">
+    <summary>5. Word counts, dates &amp; crossovers{precisionCount>0?' · '+precisionCount+' active':''}</summary>
+    <div className="reading-facet-range-body">
+     <p className="reading-facet-range-scope">These precision controls filter <strong>currently loaded stories only</strong>, not every page of the published archive. Use <Link to="/reading?view=search">Advanced search</Link> for archive-wide tag and word-count ranges.</p>
+     <div className="reading-facet-range-set">
+      <strong>Include word counts</strong><small>Keep works inside these word limits. Both ends are optional and inclusive.</small>
+      <div className="reading-facet-range-pair">
+       <label>Minimum words<input type="number" min="0" max="100000000" value={chosenPrecision.includeMinWords} onChange={e=>setPrecision('includeMinWords',e.target.value)} placeholder="Any"/></label>
+       <label>Maximum words<input type="number" min="0" max="100000000" value={chosenPrecision.includeMaxWords} onChange={e=>setPrecision('includeMaxWords',e.target.value)} placeholder="Any"/></label>
+      </div>
+     </div>
+     <div className="reading-facet-range-set">
+      <strong>Exclude word counts</strong><small>Hide works inside the excluded interval. Leave both blank to include all.</small>
+      <div className="reading-facet-range-pair">
+       <label>Exclude from words<input type="number" min="0" max="100000000" value={chosenPrecision.excludeMinWords} onChange={e=>setPrecision('excludeMinWords',e.target.value)} placeholder="Any"/></label>
+       <label>Exclude through words<input type="number" min="0" max="100000000" value={chosenPrecision.excludeMaxWords} onChange={e=>setPrecision('excludeMaxWords',e.target.value)} placeholder="Any"/></label>
+      </div>
+     </div>
+     <label className="reading-facet-range-date-kind">Filter by date
+      <select value={chosenPrecision.dateField} onChange={e=>setPrecision('dateField',e.target.value)}>
+       <option value="updated">Last published update</option>
+       <option value="published">First published</option>
+      </select>
+     </label>
+     <div className="reading-facet-range-set">
+      <strong>Include dates</strong><small>Keep works within the selected publication dates, including the endpoints.</small>
+      <div className="reading-facet-range-pair">
+       <label>From date<input type="date" value={chosenPrecision.includeFrom} onChange={e=>setPrecision('includeFrom',e.target.value)}/></label>
+       <label>Through date<input type="date" value={chosenPrecision.includeTo} onChange={e=>setPrecision('includeTo',e.target.value)}/></label>
+      </div>
+     </div>
+     <div className="reading-facet-range-set">
+      <strong>Exclude dates</strong><small>Hide works published or updated within this range.</small>
+      <div className="reading-facet-range-pair">
+       <label>Exclude from date<input type="date" value={chosenPrecision.excludeFrom} onChange={e=>setPrecision('excludeFrom',e.target.value)}/></label>
+       <label>Exclude through date<input type="date" value={chosenPrecision.excludeTo} onChange={e=>setPrecision('excludeTo',e.target.value)}/></label>
+      </div>
+     </div>
+     <label className="reading-facet-range-date-kind">Crossovers
+      <select value={chosenPrecision.crossover} onChange={e=>setPrecision('crossover',e.target.value)}>
+       <option value="all">Include all crossovers and single fandoms</option>
+       <option value="include">Include crossovers only</option>
+       <option value="exclude">Exclude recorded crossovers</option>
+      </select>
+     </label>
+     <small className="reading-facet-range-caveat">Crossover recognition uses explicit author metadata or two distinct accepted fandom tags. Works without enough metadata are not guessed. Unknown word counts or dates cannot satisfy a required range.</small>
+     {precisionCount>0&&<button type="button" className="reading-facet-range-clear" onClick={()=>onPrecision({})}>Clear word, date &amp; crossover filters</button>}
+    </div>
+   </details>
    <div className="reading-facet-footer">
-    {archiveWide?<p>Include and Exclude search the full Palace tag directory. Results cover the published archive; broad relationship categories still use loaded works.</p>:<p>Include and Exclude search the full Palace tag directory, while results cover <strong>{loadedCount}</strong> currently loaded works{hasMore?'. Load more stories or switch to Entire published archive for wider results.':'. Switch to Entire published archive for wider results.'}</p>}
-    <p>For word-count ranges and language, use <Link to="/reading?view=search">Advanced search</Link>.</p>
+    {archiveWide?<p>Include and Exclude tags search the full Palace directory across published works.</p>:<p>Tag choices search the full directory, while these results cover <strong>{loadedCount}</strong> currently loaded works{hasMore?'. Load more to expand this shelf.':'.'}</p>}
+    <p>For full-archive word-count ranges and language, use <Link to="/reading?view=search">Advanced search</Link>.</p>
    </div>
   </div>
   {open&&footerPosition.visible&&typeof document!=='undefined'&&createPortal(
