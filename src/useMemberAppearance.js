@@ -1,3 +1,4 @@
+import {invitationPalettes} from './royalWelcomeGifts';
 import {useEffect,useState} from 'react';
 import {getMemberAppearance} from './memberChamberDecorData';
 import {prismAppearance} from './prismAppearance';
@@ -9,7 +10,7 @@ export function useMemberAppearance(memberId,viewerId=memberId){
  useEffect(()=>{
   if(!memberId)return;
   let active=true,revision=0;
-  function apply(decor){setSaved({memberId,viewerId,appearance:prismAppearance(decor)})}
+  function apply(decor){setSaved({memberId,viewerId,appearance:Object.hasOwn(invitationPalettes,decor?.prism_palette)&&decor?.personal_skin?.appearance_mode!=='skin'?null:prismAppearance(decor)})}
   function changed(event){
    if(event.detail?.user_id!==memberId)return;
    revision++;
