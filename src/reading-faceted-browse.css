@@ -236,3 +236,20 @@
 @media(max-width:360px){
  .palace-shell.full-palace-shell .reading-facet-range-pair{grid-template-columns:1fr}
 }
+
+/* Fanfiction uses the same precise faceting panel in a compact disclosure,
+   instead of hiding crossover filters behind All Stories. */
+.palace-shell.full-palace-shell .reading-fanfiction-filters{
+ width:min(100%,740px);margin:14px auto 18px;min-width:0;
+}
+.palace-shell.full-palace-shell .reading-fanfiction-filters .reading-facet-sidebar{
+ position:relative;top:auto;width:100%;max-height:none;overflow:visible;
+}
+.palace-shell.full-palace-shell .reading-fanfiction-filters .reading-facet-mobile-toggle{
+ display:flex;align-items:center;justify-content:space-between;width:100%;
+ min-height:48px;padding:12px 16px;border:0;border-radius:13px;
+ background:var(--ui-surface);color:var(--ui-text);font:750 .83rem/1.35 system-ui,sans-serif;
+ cursor:pointer;
+}
+.palace-shell.full-palace-shell .reading-fanfiction-filters .reading-facet-controls{display:none}
+.palace-shell.full-palace-shell .reading-fanfiction-filters .reading-facet-controls.is-open{display:block}
