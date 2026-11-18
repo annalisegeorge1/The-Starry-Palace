@@ -14,6 +14,7 @@ describe('loaded-shelf Boolean precision',()=>{
   expect(matchesReadingPrecision(work(null),{includeMaxWords:'10000'})).toBe(false);
   expect(matchesReadingPrecision(work(null),{excludeMaxWords:'10000'})).toBe(true);
   expect(matchesReadingPrecision(work(0),{includeMaxWords:'0'})).toBe(true);
+  expect(matchesReadingPrecision(work(1),{includeMaxWords:'0'})).toBe(false);
   expect(matchesReadingPrecision(work(5000),{excludeMinWords:'5000'})).toBe(false);
  });
  it('supports inclusive and excluded date intervals using published or updated timestamps',()=>{
