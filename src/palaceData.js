@@ -1518,12 +1518,32 @@ export async function deleteWorkLoreEntry(id){
  const{data,error}=await needClient().rpc('delete_work_lore_entry',{p_id:id});if(error)throw error;return data
 }
 
-export async function getWorkCommunity(workId){const [tags,comments]=await Promise.all([needClient().from('work_tags').select('position,tags(id,name,category,status)').eq('work_id',workId).order('position'),needClient().from('comments').select('id,work_id,chapter_id,author_id,parent_comment_id,comment_type,body,spoiler,status,created_at,profiles!comments_author_id_fkey(id,username,display_name,avatar_url)').eq('work_id',workId).order('created_at')]);if(tags.error)throw tags.error;if(comments.error)throw comments.error;return{tags:(tags.data||[]).filter(x=>['canonical','community'].includes(x.tags?.status)),comments:comments.data||[]}}
+// Enable only after the reviewed revision guard is active in this environment.
+const commentRevisionFields = import.meta.env.VITE_COMMENT_REVISIONS === 'true' ? ',edit_revision,edited_at' : '';
+export async function saveCommentRevision(comment,body,spoiler) {
+ const text=body.trim();
+ if(!text || !Number.isInteger(comment.edit_revision))throw new Error('This comment cannot be edited.');
+ const {data,error}=await needClient().from('comments').update({body:text,spoiler})
+  .eq('id',comment.id).eq('author_id',comment.author_id).eq('edit_revision',comment.edit_revision)
+  .eq('status',comment.status).select('id').maybeSingle();
+ if(error)throw error;
+ if(!data)throw new Error('This comment has changed. Copy your draft and reload before editing.');
+}
+export async function getWorkCommunity(workId){const [tags,comments]=await Promise.all([needClient().from('work_tags').select('position,tags(id,name,category,status)').eq('work_id',workId).order('position'),needClient().from('comments').select('id,work_id,chapter_id,author_id,parent_comment_id,comment_type,body,spoiler,status,created_at'+commentRevisionFields+',profiles!comments_author_id_fkey(id,username,display_name,avatar_url)').eq('work_id',workId).order('created_at')]);if(tags.error)throw tags.error;if(comments.error)throw comments.error;return{tags:(tags.data||[]).filter(x=>['canonical','community'].includes(x.tags?.status)),comments:comments.data||[]}}
 export async function addWorkTag(userId,workId,tagId){const{error}=await needClient().from('work_tags').insert({work_id:workId,tag_id:tagId});if(error&&error.code!=='23505')throw error}
 export async function removeWorkTag(userId,workId,tagId){const{error}=await needClient().from('work_tags').delete().eq('work_id',workId).eq('tag_id',tagId);if(error)throw error}
 export async function proposeTag(userId,name,category){const clean=name.trim();if(!clean)throw new Error('Name the tag first.');const{data,error}=await needClient().from('tags').insert({name:clean,category,status:'pending',created_by:userId}).select().single();if(error)throw error;return data}
 export async function addComment(userId,workId,chapterId,body,type='response',spoiler=false,parentId=null){const text=body.trim();if(!text)throw new Error('Write a response first.');const{data,error}=await needClient().from('comments').insert({work_id:workId,chapter_id:chapterId||null,author_id:userId,parent_comment_id:parentId,comment_type:type,body:text,spoiler,status:'pending'}).select().single();if(error)throw error;return data}
-export async function moderateComment(commentId,status){const{data,error}=await needClient().from('comments').update({status,updated_at:new Date().toISOString()}).eq('id',commentId).select().single();if(error)throw error;return data}
+export async function moderateComment(commentId,status,revision){
+ const patch={status,updated_at:new Date().toISOString()};
+ if(Number.isInteger(revision))patch.reviewed_revision=revision;
+ let query=needClient().from('comments').update(patch).eq('id',commentId);
+ if(Number.isInteger(revision))query=query.eq('edit_revision',revision);
+ const {data,error}=await query.select('id').maybeSingle();
+ if(error)throw error;
+ if(!data)throw new Error('This response changed. Reload it before moderation.');
+ return data;
+}
 
 /**
  * Search the entire published archive on the server, never the first 100 rows.
@@ -1882,7 +1902,7 @@ export async function getWritingExtras(userId){
  const [incoming,outgoing,comments,downloads]=await Promise.all([
   needClient().from('work_collaborators').select('work_id,user_id,role,status,invited_by,created_at,responded_at,works(id,title,slug,author_id,publication_status)').eq('user_id',userId).order('created_at',{ascending:false}),
   needClient().from('work_collaborators').select('work_id,user_id,role,status,invited_by,created_at,responded_at,works(id,title,slug,author_id,publication_status)').eq('invited_by',userId).order('created_at',{ascending:false}),
-  needClient().from('comments').select('id,work_id,chapter_id,author_id,comment_type,body,spoiler,status,created_at,works!inner(id,title,slug,author_id),profiles!comments_author_id_fkey(id,username,display_name,avatar_url)').eq('works.author_id',userId).order('created_at',{ascending:false}).limit(100),
+  needClient().from('comments').select('id,work_id,chapter_id,author_id,comment_type,body,spoiler,status,created_at'+commentRevisionFields+',works!inner(id,title,slug,author_id),profiles!comments_author_id_fkey(id,username,display_name,avatar_url)').eq('works.author_id',userId).order('created_at',{ascending:false}).limit(100),
   needClient().from('comic_download_requests').select('id,comic_id,requester_id,requested_scope,note,status,created_at,decided_at,comics!inner(id,title,slug,creator_id)').eq('comics.creator_id',userId).order('created_at',{ascending:false}).limit(100)
  ]);for(const r of[incoming,outgoing,comments,downloads])if(r.error)throw r.error;
  const profileIds=[...new Set([...(incoming.data||[]).map(x=>x.invited_by),...(outgoing.data||[]).map(x=>x.user_id),...(downloads.data||[]).map(x=>x.requester_id)].filter(Boolean))];let profiles=[];

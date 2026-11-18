@@ -271,3 +271,7 @@
 @media(max-width:640px){
  .work-community .reader-comment.thread-reply {margin-inline-start:calc(var(--reply-level) * .4rem)}
 }
+.work-community .response-menu {margin-block:.25rem}
+.work-community .response-menu :is(summary,select,button) {min-height:44px;align-content:center;cursor:pointer}
+.work-community .response-menu label {display:inline-flex;align-items:center;gap:.4em;flex-wrap:wrap;margin:.2em .6em .2em 0}
+.work-community .response-menu summary:focus-visible {outline:2px solid currentColor;outline-offset:2px}
