@@ -128,6 +128,8 @@ import ReadingStoryStats from './ReadingStoryStats';
 import ReaderChapterShelf from './ReaderChapterShelf';
 import './reader-afterword.css';
 import {readerCommentThreads} from './readerCommentThreads';
+import CommentRevisionEditor from './CommentRevisionEditor';
+import {CommentInteractionMenu,useDiscussionInteractions} from './DiscussionInteractions';
 import CommentText from './CommentText';
 import ReaderCommentComposer from './ReaderCommentComposer';
 import './reader-book-finish.css';
@@ -869,7 +871,7 @@ export function WritingLive({Frame}){
  async function answerDuelInvite(duelId,response){try{setDuelBusy('invite'+duelId);await respondMicroDuelInvitation(duelId,response);await load()}catch(e){setError(e.message)}finally{setDuelBusy('')}}
  async function ringGroupBell(duelId){try{setDuelBusy('start'+duelId);await startMicroDuel(duelId);await load()}catch(e){setError(e.message)}finally{setDuelBusy('')}}
  async function castDuelMark(duelId,entryId,markType){try{setDuelBusy('mark'+duelId+markType);await markMicroDuelEntry(duelId,entryId,markType);await load()}catch(e){setError(e.message)}finally{setDuelBusy('')}}
- async function moderate(id,status){try{await moderateComment(id,status);await load()}catch(e){setError(e.message)}}
+ async function moderate(id,status){try{await moderateComment(id,status,extras.comments.find(row=>row.id===id)?.edit_revision);await load()}catch(e){setError(e.message)}}
  async function permission(id,status){try{await respondComicDownloadRequest(session.user.id,id,status);await load()}catch(e){setError(e.message)}}
  const pendingComments=extras?.comments.filter(c=>c.status==='pending')||[];const pendingDownloads=extras?.downloads.filter(d=>d.status==='pending')||[];
  const totalWords=(works||[]).reduce((sum,w)=>sum+(w.chapters||[]).reduce((n,c)=>n+(c.word_count||0),0),0);
@@ -1986,13 +1988,14 @@ export function WorkLive({Frame}){
 export function WorkCommunity({work,community,session,reload,setError,chapterReturnTo=null,chapterId=null,showTags=true}){
  const[revealedSpoilers,setRevealedSpoilers]=useState(()=>new Set());const[reporting,setReporting]=useState(null);const[reportReason,setReportReason]=useState('');const[notice,setNotice]=useState('');const own=Boolean(session?.user?.id&&session.user.id===work.author_id);
  function revealSpoiler(id){setRevealedSpoilers(current=>{const next=new Set(current);next.add(id);return next})}
- async function mod(id,status){try{await moderateComment(id,status);reload()}catch(e){setError(e.message)}}
+ async function mod(id,status){try{await moderateComment(id,status,community.comments.find(row=>row.id===id)?.edit_revision);reload()}catch(e){setError(e.message)}}
  function openCommentReport(comment){setReporting(comment);setReportReason('')}
  async function submitCommentReport(){if(!session||!reporting||!reportReason.trim())return;try{await submitCommunityReport(session.user.id,'comment',reporting.id,reportReason,{work_id:work.id,work_slug:work.slug,comment_author_id:reporting.author_id||null});setReporting(null);setReportReason('');setNotice('Comment report sent to Palace Council for review.')}catch(e){setError(e.message)}}
+ const discussion=useDiscussionInteractions(community.comments,work.id,chapterId,session?.user?.id);
  const visibleComments=community.comments.filter(c=>(chapterId?c.chapter_id===chapterId:!c.chapter_id)&&(own||c.status==='approved'||c.author_id===session?.user?.id));
  const [order,setOrder]=useState('oldest');
  const {hash}=useLocation();
- const threadRows=readerCommentThreads(visibleComments,order,work.author_id);
+ const threadRows=readerCommentThreads(visibleComments,order,work.author_id,discussion.items);
  const targetId=hash.startsWith('#comment-')?hash.slice(9):null;
  const targetIndex=targetId?threadRows.findIndex(row=>row.comment.id===targetId):-1;
  const targetVisible=targetIndex>=0;
@@ -2008,11 +2011,16 @@ export function WorkCommunity({work,community,session,reload,setError,chapterRet
 
  const [displayLimit,setDisplayLimit]=useState(20);
  const shown=Math.max(displayLimit, targetIndex+1);
+ const [editing,setEditing]=useState(null);
  const [replyTo,setReplyTo]=useState(null);
  return <section id={chapterReturnTo?undefined:"comments"} className={"work-community"+(chapterReturnTo?" chapter-end-comments":"")}>
   {showTags&&<div className="work-tags">{community.tags.map(x=><Link key={x.tags.id} to={"/tags?q="+encodeURIComponent(x.tags.name)}>#{x.tags.name}</Link>)}</div>}
   <p className="eyebrow">{chapterId?'CHAPTER COMMENTS':'STORY COMMENTS'}</p>
   {chapterReturnTo&&<><h2>{chapterId?'Discuss this chapter':'Discuss the full story'}</h2><p className="chapter-comments-description">{chapterId?'Read and leave responses about this chapter. Spoilers can be hidden, and comments are moderated.':'These comments discuss the story as a whole and may contain spoilers for other chapters.'}</p></>}
+  {discussion.notice&&<p role="status">{discussion.notice} <button type="button" onClick={discussion.retry}>Refresh controls</button></p>}
+  {discussion.closed&&<p>This chapter is closed to new responses.</p>}
+  {own&&chapterId&&discussion.available&&<button type="button" disabled={discussion.busy} onClick={()=>discussion.setClosed(!discussion.closed)}>
+   {discussion.closed?'Reopen chapter comments':'Close chapter comments'}</button>}
   {notice&&<div className="save-note" role="status">{notice}</div>}
   {threadRows.length>1&&<label className="discussion-sort">Sort threads <select value={order} onChange={e=>setOrder(e.target.value)}>
    <option value="oldest">Oldest</option><option value="newest">Newest</option><option value="writer">Writer replies first</option>
@@ -2023,14 +2031,21 @@ export function WorkCommunity({work,community,session,reload,setError,chapterRet
     className={"reader-comment "+(depth?'thread-reply ':'')+(c.status==='pending'?'pending':'')+(c.spoiler&&!revealed?' spoiler-hidden':'')}
     key={c.id} style={{'--reply-level':Math.min(depth,3)}}>
     {parent&&<a className="comment-parent" href={'#comment-'+parent.id}>Reply to {readerName(parent)}</a>}
-    <div><strong>{session&&session.user.id!==c.author_id&&c.profiles?.username
+    <div>{discussion.items[c.id]?.pinned&&<span className="comment-writer">Pinned</span>}<strong>{session&&session.user.id!==c.author_id&&c.profiles?.username
      ?<Link to={'/member/'+encodeURIComponent(c.profiles.username)+'#member-boundaries'} title="Member profile and block controls">{readerName(c)}</Link>
      :readerName(c)}</strong>
     {work.author_id&&c.author_id===work.author_id&&<span className="comment-writer">Writer</span>}
-    <small>{c.comment_type}{c.status==='pending'?' · awaiting moderation':''}{c.spoiler?' · spoiler':''}</small></div>{revealed?<CommentText body={c.body}/>:<button className="spoiler-reveal" onClick={()=>revealSpoiler(c.id)}><span aria-hidden="true">◈</span><strong>Spoiler hidden</strong><small>Reveal this reader response</small></button>}<div className="reader-comment-actions"><a href={responsePath+'#comment-'+c.id} aria-label={'Link to comment by '+readerName(c)}>Comment link</a>{session&&work.comment_policy!=='closed'&&c.status==='approved'&&<button type="button" aria-expanded={replyTo===c.id} onClick={()=>setReplyTo(current=>current===c.id?null:c.id)}>{replyTo===c.id?'Close reply':'Reply'}</button>}{own&&c.status==='pending'&&<div className="moderation-actions"><button onClick={()=>mod(c.id,'approved')}>Approve</button><button onClick={()=>mod(c.id,'hidden')}>Decline</button></div>}{session&&session.user.id!==c.author_id&&<button className="quiet-button" onClick={()=>openCommentReport(c)}>Report comment</button>}</div>{replyTo===c.id&&session&&work.comment_policy!=='closed'&&c.status==='approved'&&<ReaderCommentComposer key={JSON.stringify([session.user.id,c.id])} userId={session.user.id} workId={work.id} chapterId={chapterId} parentId={c.id} setError={setError} reload={async()=>{setReplyTo(null);await reload()}}/>}</article>}):<p className="reader-responses-empty">{work.comment_policy==='closed'?'No reader responses have been published. Responses are closed for this work.':(chapterId?'No comments on this chapter yet. Be the first to leave one.':'No story-wide comments yet. Be the first to leave a response.')}</p>}
+    <small>{c.comment_type}{c.edited_at?' · Edited':''}{c.status==='pending'?' · awaiting moderation':''}{c.spoiler?' · spoiler':''}</small></div>{revealed?<CommentText body={c.body}/>:<button className="spoiler-reveal" onClick={()=>revealSpoiler(c.id)}><span aria-hidden="true">◈</span><strong>Spoiler hidden</strong><small>Reveal this reader response</small></button>}<CommentInteractionMenu comment={c} tools={discussion} owner={own} signedIn={Boolean(session)}/><div className="reader-comment-actions"><a href={responsePath+'#comment-'+c.id} aria-label={'Link to comment by '+readerName(c)}>Comment link</a>
+    {Number.isInteger(c.edit_revision)&&session?.user.id===c.author_id&&c.status!=='hidden'&&work.comment_policy!=='closed'&&
+     <button type="button" aria-expanded={editing===c.id} onClick={()=>setEditing(editing===c.id?null:c.id)}>Edit</button>}
+    {session&&work.comment_policy!=='closed'&&!discussion.closed&&c.status==='approved'&&<button type="button" aria-expanded={replyTo===c.id} onClick={()=>setReplyTo(current=>current===c.id?null:c.id)}>{replyTo===c.id?'Close reply':'Reply'}</button>}{own&&c.status==='pending'&&<div className="moderation-actions"><button onClick={()=>mod(c.id,'approved')}>Approve</button><button onClick={()=>mod(c.id,'hidden')}>Decline</button></div>}{session&&session.user.id!==c.author_id&&<button className="quiet-button" onClick={()=>openCommentReport(c)}>Report comment</button>}</div>{editing===c.id&&Number.isInteger(c.edit_revision)&&session?.user.id===c.author_id&&c.status!=='hidden'&&work.comment_policy!=='closed'&&
+     <CommentRevisionEditor comment={c} close={()=>setEditing(null)} reload={reload}/>}
+    {replyTo===c.id&&session&&work.comment_policy!=='closed'&&!discussion.closed&&c.status==='approved'&&<ReaderCommentComposer key={JSON.stringify([session.user.id,c.id])} userId={session.user.id} workId={work.id} chapterId={chapterId} parentId={c.id} setError={setError} reload={async()=>{setReplyTo(null);await reload()}}/>}</article>}):<p className="reader-responses-empty">{work.comment_policy==='closed'?'No reader responses have been published. Responses are closed for this work.':(chapterId?'No comments on this chapter yet. Be the first to leave one.':'No story-wide comments yet. Be the first to leave a response.')}</p>}
   {threadRows.length>shown&&<button type="button" className="quiet-button" onClick={()=>setDisplayLimit(shown+20)}>Show more responses ({threadRows.length-shown} remaining)</button>}
+  {!discussion.closed&&<>
   {!session&&work.comment_policy!=='closed'&&<GuestReadingInvitation returnTo={chapterReturnTo||'/work/'+work.slug+'#comments'} context="comment" compact/>}
    {session&&work.comment_policy!=='closed'&&<ReaderCommentComposer key={JSON.stringify([session.user.id,work.id,chapterId])} userId={session.user.id} workId={work.id} chapterId={chapterId} reload={reload} setError={setError}/>}
+  </>}
   {chapterReturnTo&&<a className="discussion-return" href="#palace-reader-start">Return to chapter</a>}
   <PalaceDialog open={!!reporting} title="Report this comment?" eyebrow="PALACE COUNCIL" onClose={()=>setReporting(null)} actions={<><button className="quiet-button" onClick={()=>setReporting(null)}>Cancel</button><button className="danger-action" onClick={submitCommentReport} disabled={!reportReason.trim()}>Send report</button></>}><p className="quiet-copy">The Council will review the specific comment in context. Reporting does not automatically remove it.</p><label>What should the Council review?<textarea rows="5" maxLength="2000" value={reportReason} onChange={e=>setReportReason(e.target.value)} placeholder="Describe the concern clearly."/></label><small>{reportReason.length}/2000</small></PalaceDialog>
  </section>
@@ -2127,7 +2142,10 @@ function ReaderChapter({Frame,slug,chapterId}){
   return()=>{active=false;earnSessionRef.current=null;earnSessionRequestRef.current=null};
  },[data?.chapter?.id,session?.user?.id]);
  useEffect(()=>{if(readerFlowMode==='pages'||!data||!session||readerPlace<=1||!readingPlaceReadyRef.current)return;const restoreKey=data.chapter.id;if(restoredPlaceRef.current===restoreKey)return;restoredPlaceRef.current=restoreKey;if(window.location.hash.startsWith('#comment-'))return;const timer=window.setTimeout(()=>{const el=chapterTextRef.current;if(!el)return;const top=window.scrollY+el.getBoundingClientRect().top;const travel=Math.max(1,el.offsetHeight-window.innerHeight*.35);window.scrollTo({top:Math.max(0,top+(readerPlace/100)*travel),left:0,behavior:'auto'})},120);return()=>window.clearTimeout(timer)},[data?.chapter?.id,readerPlace,session?.user?.id,readerFlowMode]);
- useEffect(()=>{if(!data||!session||readerFlowMode==='pages')return;const readable=data.work.chapters.filter(ch=>ch.status==='published');const index=Math.max(0,readable.findIndex(ch=>ch.id===data.chapter.id));const overall=Math.max(5,Math.min(95,Math.round((index/Math.max(1,readable.length))*100)));const savePlace=()=>{if(!readingPlaceReadyRef.current||restoredPlaceRef.current!==data.chapter.id)return;const el=chapterTextRef.current;if(!el)return;const top=window.scrollY+el.getBoundingClientRect().top;const anchor=window.scrollY+window.innerHeight*.35;const pct=Math.max(0,Math.min(100,((anchor-top)/Math.max(1,el.offsetHeight))*100));setReaderPlace(prev=>Math.abs(prev-pct)>=1?pct:prev);try{rememberReaderPosition(window.localStorage,session.user.id,data.chapter.id,pct)}catch{}if(placeTimerRef.current)window.clearTimeout(placeTimerRef.current);placeTimerRef.current=window.setTimeout(()=>recordReadingProgress(overall,false,pct).catch(reportPositionError),900)};window.addEventListener('scroll',savePlace,{passive:true});window.addEventListener('pagehide',savePlace);return()=>{window.removeEventListener('scroll',savePlace);window.removeEventListener('pagehide',savePlace);if(placeTimerRef.current)window.clearTimeout(placeTimerRef.current)}},[data?.chapter?.id,session?.user?.id,readerFlowMode]); useEffect(()=>{document.body.classList.toggle('reader-focus-mode',readerFocus);return()=>document.body.classList.remove('reader-focus-mode')},[readerFocus]);
+ useEffect(()=>{if(!data||!session||readerFlowMode==='pages')return;const readable=data.work.chapters.filter(ch=>ch.status==='published');const index=Math.max(0,readable.findIndex(ch=>ch.id===data.chapter.id));const overall=Math.max(5,Math.min(95,Math.round((index/Math.max(1,readable.length))*100)));const savePlace=()=>{if(!readingPlaceReadyRef.current||restoredPlaceRef.current!==data.chapter.id)return;const el=chapterTextRef.current;if(!el)return;const bounds=el.getBoundingClientRect();
+   // Opening a response below the text must not mark a saved chapter as finished.
+   if(window.location.hash.startsWith('#comment-')&&(bounds.bottom<=0||bounds.top>=window.innerHeight))return;
+   const top=window.scrollY+bounds.top;const anchor=window.scrollY+window.innerHeight*.35;const pct=Math.max(0,Math.min(100,((anchor-top)/Math.max(1,el.offsetHeight))*100));setReaderPlace(prev=>Math.abs(prev-pct)>=1?pct:prev);try{rememberReaderPosition(window.localStorage,session.user.id,data.chapter.id,pct)}catch{}if(placeTimerRef.current)window.clearTimeout(placeTimerRef.current);placeTimerRef.current=window.setTimeout(()=>recordReadingProgress(overall,false,pct).catch(reportPositionError),900)};window.addEventListener('scroll',savePlace,{passive:true});window.addEventListener('pagehide',savePlace);return()=>{window.removeEventListener('scroll',savePlace);window.removeEventListener('pagehide',savePlace);if(placeTimerRef.current)window.clearTimeout(placeTimerRef.current)}},[data?.chapter?.id,session?.user?.id,readerFlowMode]); useEffect(()=>{document.body.classList.toggle('reader-focus-mode',readerFocus);return()=>document.body.classList.remove('reader-focus-mode')},[readerFocus]);
  const readerHtml=React.useMemo(()=>{if(!data)return '';const safe=safeReaderHtml(data.chapter.body_html||'');return data.work?.is_archive?restoreFlatClassicChapterHtml(safe):safe},[data?.chapter?.id,data?.chapter?.body_html,data?.work?.is_archive]);
  const readerLandmarks=React.useMemo(()=>{if(!readerHtml||typeof DOMParser==='undefined')return[];try{const doc=new DOMParser().parseFromString('<body>'+readerHtml+'</body>','text/html');let scene=0;return[...doc.body.querySelectorAll('h2,h3,p')].filter(node=>node.matches('h2,h3')||(node.tagName==='P'&&(node.textContent||'').trim()==='✦')).map((node,index)=>{const tag=node.tagName.toLowerCase();if(tag==='p')scene+=1;return{index,kind:tag==='p'?'scene':tag,label:tag==='p'?'Scene break '+scene:((node.textContent||'').trim()||'Untitled section')}})}catch{return[]}},[readerHtml]);
  async function toggleChapterSave(){
