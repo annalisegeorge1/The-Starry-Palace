@@ -178,6 +178,8 @@ import './heritage-festival-pink-gold.css';
 import './heritage-dark-vibrancy.css';
 // Last: selected Prism colours get correct foregrounds on dark grounds and light Letters paper.
 import './palace-prism-letter-contrast.css';
+// Compact member statistics outrank older tile layouts without changing profile data.
+import './member-chamber-compact-stats.css';
 import {palaceCommandIcon,uniquePalaceCommandRecents} from './palaceCommandModel';
 import {shouldShowPalaceTidings} from './palaceTidingsModel';
 import {shouldCelebratePalaceVictory} from './palaceVictoryModel';
