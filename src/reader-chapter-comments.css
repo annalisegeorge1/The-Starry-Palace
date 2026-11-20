@@ -275,3 +275,44 @@
 .work-community .response-menu :is(summary,select,button) {min-height:44px;align-content:center;cursor:pointer}
 .work-community .response-menu label {display:inline-flex;align-items:center;gap:.4em;flex-wrap:wrap;margin:.2em .6em .2em 0}
 .work-community .response-menu summary:focus-visible {outline:2px solid currentColor;outline-offset:2px}
+
+/* Keep the primary action and the disclosure together on narrow screens. */
+.work-community .reader-comment .reader-comment-actions {
+ display:flex;
+ flex-flow:row wrap;
+ justify-content:flex-start;
+ align-items:baseline;
+ gap:.25rem .75rem;
+ margin-block:.25rem 0;
+}
+.work-community .reader-comment-actions > button,
+.work-community .reader-comment-actions .response-menu summary,
+.work-community .comment-format-help summary {
+ box-sizing:border-box;
+ min-height:44px;
+ padding:.5rem .65rem;
+ border:0;
+ border-radius:.55rem;
+ color:inherit;
+ background:transparent;
+ font:600 .85rem/1.4 system-ui,sans-serif;
+ align-content:center;
+ cursor:pointer;
+}
+.work-community .reader-comment-actions > button {
+ background:color-mix(in srgb,currentColor 9%,transparent);
+}
+.work-community .reader-comment-actions .response-menu {min-width:0;margin:0}
+.work-community .reader-comment-actions .response-menu[open] {
+ flex-basis:100%;
+ padding:.3rem .7rem;
+ border-inline-start:2px solid currentColor;
+}
+.work-community .comment-secondary-actions {
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ gap:.7rem;
+}
+.work-community .comment-format-help {font-size:.85rem}
+.work-community .comment-format-help small {display:block;padding:0 .65rem .6rem}

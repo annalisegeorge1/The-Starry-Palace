@@ -46,13 +46,15 @@ export function useDiscussionInteractions(comments,work,chapter,viewer) {
   setChoice:(id,kind,choice)=>change('set_discussion_interaction',{response_id:id,kind,choice})};
 }
 
-export function CommentInteractionMenu({comment,tools,owner,signedIn}) {
+export function CommentInteractionMenu({comment,tools,owner,signedIn,children}) {
  const item=tools.items[comment.id];
  const id=React.useId();
- if(!item)return null;
- const total=Object.values(item.counts||{}).reduce((n,count)=>n+count,0);
- if(!signedIn)return total?<small>{total} reaction{total===1?'':'s'}</small>:null;
+ if(!item&&!children)return null;
+ const total=Object.values(item?.counts||{}).reduce((n,count)=>n+count,0);
+ const interactive=Boolean(item&&signedIn);
+ if(!children&&!interactive)return total?<small>{total} reaction{total===1?'':'s'}</small>:null;
  return <details className="response-menu"><summary>Response options{total?' · '+total+' reactions':''}</summary>
+  {interactive&&<>
   <label htmlFor={id+'-reaction'}>Reaction</label> <select id={id+'-reaction'} disabled={tools.busy} value={item.reaction||'off'} onChange={e=>tools.setChoice(comment.id,'reaction',e.target.value)}>
    <option value="off">No reaction</option>
    {['heart','laugh','surprise'].map(k=><option key={k} value={k}>{k[0].toUpperCase()+k.slice(1)} ({item.counts?.[k]||0})</option>)}
@@ -62,5 +64,7 @@ export function CommentInteractionMenu({comment,tools,owner,signedIn}) {
   </select>
   {owner&&!comment.parent_comment_id&&<button disabled={tools.busy} type="button" aria-pressed={item.pinned}
    onClick={()=>tools.setChoice(comment.id,'pin',item.pinned?'off':'on')}>{item.pinned?'Unpin thread':'Pin thread'}</button>}
+  </>}
+  {children}
  </details>;
 }
